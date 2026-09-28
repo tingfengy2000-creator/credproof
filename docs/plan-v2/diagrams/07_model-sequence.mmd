@@ -1,0 +1,54 @@
+sequenceDiagram
+    autonumber
+    actor U as 用户
+    participant UI as 证据详情页
+    participant API as 解释接口
+    participant R as 确定性报告与快照
+    participant P as 白名单脱敏器
+    participant Q as 串行队列与本地适配器
+    participant L as Ollama本地模型
+    participant V as 输出校验器
+    participant T as 规则模板
+    U->>UI: 点击解释当前发现
+    UI->>API: POST finding_id、snapshot_id、request_id
+    API->>R: 读取授权范围内的报告
+    R-->>API: 冻结事实、范围、未知项
+    alt 快照不匹配或报告不可用
+        API-->>UI: stale或unavailable及重新检查提示
+    else 报告可用
+        API->>P: 最小事实集合
+        P->>P: 白名单重建、脱敏、长度检查
+        alt 输入不合格或模型关闭
+            P-->>API: 拒绝原因
+            API->>T: 根据原报告生成模板
+            T-->>API: 确定性解释
+        else 输入合格
+            P-->>API: 脱敏JSON与引用映射
+            API->>Q: 检查队列容量、去重并登记
+            Q-->>API: 已接受，返回解释ID
+            API-->>UI: 202与explanation_id，后续轮询
+            Q->>L: 本地api/chat，无工具，无流式展示
+            alt 超时、未安装、内存不足或服务失败
+                Q-->>API: 类型化错误，停止交付本次模型结果
+                Note over Q,L: 完成状态未确认时禁止继续提交模型调用
+                API->>T: 生成降级模板
+                T-->>API: 模板及降级原因
+            else 收到完整响应
+                L-->>Q: JSON候选
+                Q->>V: 候选与本次输入契约
+                V->>V: Schema、引用、未知项、隐私和越权检查
+                V-->>API: 接受或拒绝及原因
+                opt 响应被拒绝
+                    API->>T: 生成降级模板
+                    T-->>API: 模板解释
+                end
+            end
+        end
+        API->>R: 再核对快照身份
+        R-->>API: 当前或已过期
+        opt 已接受为异步解释任务
+            UI->>API: GET explanation_id查询终态
+        end
+        API-->>UI: explanation状态、版本、固定事实条
+        UI-->>U: 展示解释卡；过期结果不覆盖当前结果
+    end

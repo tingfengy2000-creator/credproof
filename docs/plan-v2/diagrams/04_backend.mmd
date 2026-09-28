@@ -1,0 +1,18 @@
+flowchart TB
+    UI["React页面<br/>轮询任务 展示脱敏证据"] --> API["FastAPI单进程<br/>参数校验与响应契约"]
+    API --> DB[("SQLite<br/>请求 任务 状态 结果")]
+    API --> REG["已登记根目录<br/>固定范围与资源配置"]
+    DB --> WORK["单后台工作线程<br/>一次一个任务"]
+    REG --> WORK
+    WORK --> SNAP["快照与输入清单<br/>工作区 index 分开"]
+    SNAP --> DET["有限格式扫描<br/>四类候选与出现位置"]
+    DET --> EVID["脱敏 HMAC 证据"]
+    EVID --> DB
+    WORK --> PLAN["修复计划白名单<br/>绑定扫描快照与范围"]
+    PLAN --> COPY["新建受控副本<br/>仅改一处赋值"]
+    COPY --> VERIFY["独立验证器<br/>逐项PASS FAIL UNKNOWN"]
+    VERIFY --> DB
+    WORK --> STORE["仓库外运行目录<br/>快照 副本 证据清单"]
+    STORE --> VERIFY
+    DB --> REP["限定范围报告<br/>保留未处理风险"]
+    REP --> API

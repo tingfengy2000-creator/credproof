@@ -1,0 +1,22 @@
+flowchart TB
+    APP[AppShell 导航与原型标识] --> ROUTER[五页路由与上下文ID]
+    ROUTER --> OVERVIEW[OverviewPage]
+    ROUTER --> EVIDENCE[EvidencePage]
+    ROUTER --> REPAIR[VerificationPage]
+    ROUTER --> AI[ExplanationPage]
+    ROUTER --> REPORT[ReportPage]
+    EVIDENCE --> LIST[FindingList 与搜索筛选]
+    EVIDENCE --> SOURCE[SourceTabs 与脱敏证据]
+    REPAIR --> OBL[ObligationChecklist 与范围说明]
+    AI --> FACT[固定事实条与解释卡]
+    REPORT --> PREVIEW[脱敏报告预览]
+    API[类型化API客户端] --> STORE[服务端结果缓存与请求状态]
+    STORE --> OVERVIEW
+    STORE --> EVIDENCE
+    STORE --> REPAIR
+    STORE --> AI
+    STORE --> REPORT
+    STORE --> JOB[任务阶段 计数 取消状态]
+    TOKENS[视觉Token与状态文案] --> SHARED[Badge Dialog Toast EmptyState]
+    SHARED --> ROUTER
+    LOCAL[页面本地状态 选择项 筛选 视角] --> ROUTER

@@ -1,0 +1,18 @@
+flowchart TB
+  U["参赛演示者 / 项目维护者"] --> UI["React + TypeScript 工作台<br/>总览 / 证据 / 验证 / AI / 报告"]
+  UI -->|"本地 JSON 请求与任务轮询"| API["FastAPI 接口<br/>会话校验 / 范围校验 / 类型契约"]
+  API --> JOB["单任务工作线程<br/>SQLite 持久化状态"]
+  JOB --> CAP["采集工作区与 index<br/>固定范围 / 哈希 / 覆盖记录"]
+  REPO["本地原仓库 · 只读<br/>保留原 index 状态"] --> CAP
+  CAP -.-> P1["P1 扩展<br/>有界历史 / 对象关系"]
+  CAP --> DET["有限格式检测<br/>候选 / 位置 / 来源证据"]
+  DET --> REP["受控 Python 修复计划<br/>仅修改独立副本"]
+  REP --> COPY["任务私有副本<br/>固定清单 / 限定改动"]
+  COPY --> VAL["独立验证义务<br/>移除 / 语法 / 自有功能 / 复扫"]
+  DET --> DTO["脱敏展示对象<br/>来源五态 / 覆盖 / 验证三态"]
+  VAL --> DTO
+  DTO --> EXP["确定性展示与报告<br/>证据页 / 验证页 / HTML / JSON"]
+  DTO --> GATE["模型输入白名单<br/>最小事实 / 不含原值 / 证据 ID"]
+  GATE --> OLLAMA["本地 Ollama 旁路<br/>Qwen3 4B / 本项目不训练"]
+  OLLAMA --> CHECK["输出结构与引用校验<br/>失败则固定模板"]
+  CHECK --> AI["前端辅助解释卡<br/>不改变检测与验证结论"]

@@ -1,0 +1,18 @@
+flowchart LR
+  subgraph PC["一台演示电脑"]
+    WEB["浏览器<br/>正式构建的前端静态文件"]
+    SRV["127.0.0.1 本地服务<br/>FastAPI API + 静态文件"]
+    DB["SQLite<br/>任务 / 证据元数据 / 验证记录"]
+    PRIV["Git 目录之外的私有运行数据<br/>快照 / 副本 / 本地密钥"]
+    MODEL["127.0.0.1:11434<br/>Ollama 模型进程"]
+    ORIG["用户选定并校验的原仓库"]
+    WEB -->|"同源 API / 启动会话校验"| SRV
+    SRV --> DB
+    SRV --> PRIV
+    ORIG -->|"只读采集"| SRV
+    SRV -->|"脱敏证据"| MODEL
+    MODEL -->|"待校验解释"| SRV
+  end
+  DEV["开发过程"] -->|"仅源代码、设计和合成测试样例"| GIT["GitHub 私有仓库 credproof"]
+  DB -. "运行数据不提交" .-> NG["不进入 Git"]
+  PRIV -. "原始敏感材料不提交" .-> NG
