@@ -1,0 +1,47 @@
+# Credentials and machine-local settings
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.p12
+*.pfx
+credentials.json
+local_settings.json
+.codex/
+
+# Runtime data and private evidence
+runs/
+private_data/
+snapshots/
+repair_copies/
+*.sqlite
+*.sqlite3
+*.db
+*.log
+
+# Dependencies and generated application builds
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+node_modules/
+dist/
+build/
+.next/
+coverage/
+
+# Model files and download caches
+models/
+*.gguf
+*.safetensors
+.cache/
+
+# Local editor and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.zip
