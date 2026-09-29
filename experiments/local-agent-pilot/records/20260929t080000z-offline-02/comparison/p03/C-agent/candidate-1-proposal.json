@@ -1,0 +1,4 @@
+{
+  "rationale": "The patch fixes the credential leak by ensuring that when debug mode is enabled, the credential is not included in the debug output. Instead of including the actual credential in the transport dictionary for debugging, it shows \"[REDACTED]\" to prevent exposure of sensitive information. The authentication call itself still uses the real credential, but the debug output no longer leaks it.",
+  "source_sha256": "ba662eb32c679a9ef9243d9dff1f050378a211529faa5311705d55ae720bb24c"
+}

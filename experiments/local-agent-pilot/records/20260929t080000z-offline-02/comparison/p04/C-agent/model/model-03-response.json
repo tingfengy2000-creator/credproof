@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-452",
+  "object": "chat.completion",
+  "created": 1790668909,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I can see from the evidence that there is indeed a credential leak in the diagnostic field. The diagnostic field contains the Authorization header with the credential, which violates the requirement that \"The credential may never appear in returned values or keys, stdout, stderr, or logging, including nested debug structures and exception text.\"\n\nLet me examine the current implementation more closely to understand how to fix this issue:",
+        "tool_calls": [
+          {
+            "id": "call_trkstrnt",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "read_code",
+              "arguments": "{\"path\":\"tool.py\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2539,
+    "prompt_tokens_details": {
+      "cached_tokens": 2289
+    },
+    "completion_tokens": 99,
+    "total_tokens": 2638
+  }
+}

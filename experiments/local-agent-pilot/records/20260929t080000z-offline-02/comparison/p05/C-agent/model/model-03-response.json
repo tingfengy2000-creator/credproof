@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-87",
+  "object": "chat.completion",
+  "created": 1790668929,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I can see from the test case that when debug is enabled, the tool prints \"DEBUG resource secret_resource request req123\" to stdout. This is a potential leak because it exposes the resource name and request ID in plain text.\n\nLet me also check what happens with an invalid request:",
+        "tool_calls": [
+          {
+            "id": "call_dlhnstid",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Test case with invalid request\",\"request\":{\"request_id\":\"\",\"resource\":\"test\",\"units\":3},\"auth_mode\":\"success\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2586,
+    "prompt_tokens_details": {
+      "cached_tokens": 2334
+    },
+    "completion_tokens": 119,
+    "total_tokens": 2705
+  }
+}

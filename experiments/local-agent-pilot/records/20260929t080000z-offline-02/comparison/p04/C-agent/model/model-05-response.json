@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-167",
+  "object": "chat.completion",
+  "created": 1790668912,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_h6lij1mm",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Verify that the credential leak is fixed\",\"request\":{\"request_id\":\"test123\",\"resource\":\"test_resource\",\"units\":2},\"auth_mode\":\"success\",\"candidate_id\":\"candidate-1\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3866,
+    "prompt_tokens_details": {
+      "cached_tokens": 3760
+    },
+    "completion_tokens": 81,
+    "total_tokens": 3947
+  }
+}

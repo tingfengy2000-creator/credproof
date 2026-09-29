@@ -1,0 +1,77 @@
+{
+  "p01": {
+    "verdict": "FAIL",
+    "reasons": [
+      "CREDENTIAL_LEAK",
+      "RESPONSE_CONTRACT"
+    ],
+    "checks_run": 13,
+    "leak_channels": [
+      "return"
+    ],
+    "trial_counts": {
+      "PASS": 11,
+      "FAIL": 2
+    }
+  },
+  "p02": {
+    "verdict": "FAIL",
+    "reasons": [
+      "CREDENTIAL_LEAK"
+    ],
+    "checks_run": 13,
+    "leak_channels": [
+      "logging"
+    ],
+    "trial_counts": {
+      "FAIL": 7,
+      "PASS": 6
+    }
+  },
+  "p03": {
+    "verdict": "FAIL",
+    "reasons": [
+      "CREDENTIAL_LEAK"
+    ],
+    "checks_run": 13,
+    "leak_channels": [
+      "stdout"
+    ],
+    "trial_counts": {
+      "PASS": 10,
+      "FAIL": 3
+    }
+  },
+  "p04": {
+    "verdict": "FAIL",
+    "reasons": [
+      "CREDENTIAL_LEAK"
+    ],
+    "checks_run": 13,
+    "leak_channels": [
+      "return"
+    ],
+    "trial_counts": {
+      "FAIL": 3,
+      "PASS": 10
+    }
+  },
+  "p05": {
+    "verdict": "PASS",
+    "reasons": [],
+    "checks_run": 13,
+    "leak_channels": [],
+    "trial_counts": {
+      "PASS": 13
+    }
+  },
+  "p06": {
+    "verdict": "PASS",
+    "reasons": [],
+    "checks_run": 13,
+    "leak_channels": [],
+    "trial_counts": {
+      "PASS": 13
+    }
+  }
+}

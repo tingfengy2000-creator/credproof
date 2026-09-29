@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-863",
+  "object": "chat.completion",
+  "created": 1790668885,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_kimn697r",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Verify auth unavailable case still works\",\"request\":{\"debug\":false,\"request_id\":\"req102\",\"resource\":\"test_resource5\",\"units\":2},\"auth_mode\":\"provider_error\",\"candidate_id\":\"candidate-1\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4208,
+    "prompt_tokens_details": {
+      "cached_tokens": 3998
+    },
+    "completion_tokens": 86,
+    "total_tokens": 4294
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-434",
+  "object": "chat.completion",
+  "created": 1790668802,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The challenge has been successfully completed with the correct nonce and computed answer.<tool_call>"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 591,
+    "prompt_tokens_details": {
+      "cached_tokens": 510
+    },
+    "completion_tokens": 16,
+    "total_tokens": 607
+  }
+}

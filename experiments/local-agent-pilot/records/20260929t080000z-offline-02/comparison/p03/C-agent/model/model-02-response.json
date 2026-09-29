@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-637",
+  "object": "chat.completion",
+  "created": 1790668877,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I'll analyze the tool.py code to identify any potential credential leaks or security issues.\n\nLooking at the current implementation, I can see several issues:\n\n1. The credential is being included in debug output via the `transport` dictionary\n2. The credential is being exposed in the debug print statement even when debug is enabled\n3. There's no redaction of the credential from the debug output\n\nLet me run a controlled case to confirm my hypothesis about the credential leak.",
+        "tool_calls": [
+          {
+            "id": "call_px9xqq2v",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"The tool leaks credentials in debug output\",\"request\":{\"debug\":true,\"request_id\":\"req123\",\"resource\":\"test_resource\",\"units\":3},\"auth_mode\":\"success\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2179,
+    "prompt_tokens_details": {
+      "cached_tokens": 1622
+    },
+    "completion_tokens": 172,
+    "total_tokens": 2351
+  }
+}

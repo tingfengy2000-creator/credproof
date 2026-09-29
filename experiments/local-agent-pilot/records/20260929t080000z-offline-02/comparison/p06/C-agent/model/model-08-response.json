@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-307",
+  "object": "chat.completion",
+  "created": 1790668953,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Based on my analysis of the tool.py code and all test cases, I don't see any credential leaks or security issues. The implementation properly:\n\n1. Reads only the required credential from `os.environ[\"CP_TEST_CREDENTIAL\"]`\n2. Passes it to the authentication service exactly once\n3. Does not return the credential in any response\n4. Handles all error conditions appropriately without leaking credentials\n5. Properly validates input and returns correct error messages for invalid requests\n6. Correctly processes debug parameter in the returned metadata\n\nThe code appears to be secure and follows all the requirements specified. No changes are needed.",
+        "tool_calls": [
+          {
+            "id": "call_twl2jhek",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"original\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3619,
+    "prompt_tokens_details": {
+      "cached_tokens": 3433
+    },
+    "completion_tokens": 150,
+    "total_tokens": 3769
+  }
+}

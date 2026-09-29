@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-170",
+  "object": "chat.completion",
+  "created": 1790668883,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_hozfmm6q",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Verify that the tool still works correctly for non-debug mode\",\"request\":{\"debug\":false,\"request_id\":\"req456\",\"resource\":\"test_resource2\",\"units\":2},\"auth_mode\":\"success\",\"candidate_id\":\"candidate-1\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3547,
+    "prompt_tokens_details": {
+      "cached_tokens": 3471
+    },
+    "completion_tokens": 90,
+    "total_tokens": 3637
+  }
+}

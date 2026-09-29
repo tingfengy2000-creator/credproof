@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-2",
+  "object": "chat.completion",
+  "created": 1790668948,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I'll analyze the tool.py code to identify any potential credential leaks or security issues.\n\nLooking at the code, I can see several key aspects:\n\n1. The tool reads `os.environ[\"CP_TEST_CREDENTIAL\"]` which is the credential source\n2. It calls `auth_service.authenticate(credential, request[\"resource\"])` \n3. It returns various fields including subject, but importantly it doesn't return the credential itself\n\nLet me run a controlled case to see if there are any issues with how the credential is handled.",
+        "tool_calls": [
+          {
+            "id": "call_qibvqyq7",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Testing if credential appears in returned data\",\"request\":{\"request_id\":\"test123\",\"resource\":\"test_resource\",\"units\":2},\"auth_mode\":\"success\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2147,
+    "prompt_tokens_details": {
+      "cached_tokens": 1622
+    },
+    "completion_tokens": 179,
+    "total_tokens": 2326
+  }
+}

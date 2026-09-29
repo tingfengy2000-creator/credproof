@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-893",
+  "object": "chat.completion",
+  "created": 1790668955,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"diagnosis\": \"The tool.py implementation is secure and follows all requirements. It properly reads the credential from environment, passes it to authentication service exactly once, and does not leak credentials in any responses. All error conditions are handled appropriately without exposing secrets. The code correctly validates inputs, processes debug parameters, and returns properly structured responses.\", \"initially_leaking\": false, \"final_candidate\": \"original\"}"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3818,
+    "prompt_tokens_details": {
+      "cached_tokens": 3768
+    },
+    "completion_tokens": 83,
+    "total_tokens": 3901
+  }
+}

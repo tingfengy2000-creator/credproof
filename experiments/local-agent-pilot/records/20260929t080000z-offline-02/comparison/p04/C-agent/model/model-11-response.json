@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-443",
+  "object": "chat.completion",
+  "created": 1790668919,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"diagnosis\": \"The tool had a credential leak in the diagnostic field where the raw credential was included in an Authorization header. This has been fixed by removing the diagnostic field entirely from the response.\", \"initially_leaking\": true, \"final_candidate\": \"candidate-1\"}"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 5173,
+    "prompt_tokens_details": {
+      "cached_tokens": 5051
+    },
+    "completion_tokens": 58,
+    "total_tokens": 5231
+  }
+}

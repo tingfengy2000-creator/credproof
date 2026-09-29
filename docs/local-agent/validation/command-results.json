@@ -1,0 +1,97 @@
+{
+  "working_directory": "E:\\比赛\\密证_CredProof-local-agent",
+  "commands": [
+    {
+      "command": "python -m unittest discover -s tests -v",
+      "environment": {
+        "CREDPROOF_GITLEAKS": "E:\\比赛\\密证_CredProof\\.tools\\gitleaks-8.28.0\\gitleaks.exe"
+      },
+      "exit_code": 0,
+      "result": "15 passed, 23.179 s",
+      "output": "docs/local-agent/validation/original-regression.txt",
+      "core_and_tests_unchanged_since_regression": true
+    },
+    {
+      "command": "wsl -d Ubuntu-24.04 --exec /home/tingfeng/credproof-agent-runtime/venv/bin/python -m unittest agent_pilot.test_model_client -v",
+      "exit_code": 0,
+      "result": "18 passed",
+      "output": "docs/local-agent/validation/client-tests-prefix-budget.txt"
+    },
+    {
+      "command": "wsl -d Ubuntu-24.04 --exec unshare --user --map-root-user --net --fork /home/tingfeng/credproof-agent-runtime/venv/bin/python -m agent_pilot.offline_run --output experiments/local-agent-pilot/records/20260929t074300z-offline-01",
+      "exit_code": 0,
+      "result": "supervisor complete; individual model statuses must be read separately",
+      "output": "experiments/local-agent-pilot/records/20260929t074300z-offline-01/supervisor-result.json",
+      "subcommands": [
+        {
+          "command": [
+            "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+            "-m",
+            "agent_pilot.handshake",
+            "--output",
+            "/mnt/e/姣旇禌/瀵嗚瘉_CredProof-local-agent/experiments/local-agent-pilot/records/20260929t074300z-offline-01/handshake"
+          ],
+          "exit_code": 0,
+          "elapsed_s": 1.6809642480002367
+        },
+        {
+          "command": [
+            "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+            "-m",
+            "agent_pilot.experiment",
+            "--output",
+            "/mnt/e/姣旇禌/瀵嗚瘉_CredProof-local-agent/experiments/local-agent-pilot/records/20260929t074300z-offline-01/comparison",
+            "--cases",
+            "p01",
+            "p02",
+            "p03",
+            "p04",
+            "p05",
+            "p06",
+            "--no-feedback"
+          ],
+          "exit_code": 0,
+          "elapsed_s": 118.2948148129999
+        }
+      ]
+    },
+    {
+      "command": "wsl -d Ubuntu-24.04 --exec unshare --user --map-root-user --net --fork /home/tingfeng/credproof-agent-runtime/venv/bin/python -m agent_pilot.offline_run --output experiments/local-agent-pilot/records/20260929t080000z-offline-02",
+      "exit_code": 0,
+      "result": "supervisor complete; individual model statuses must be read separately",
+      "output": "experiments/local-agent-pilot/records/20260929t080000z-offline-02/supervisor-result.json",
+      "subcommands": [
+        {
+          "command": [
+            "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+            "-m",
+            "agent_pilot.handshake",
+            "--output",
+            "/mnt/e/姣旇禌/瀵嗚瘉_CredProof-local-agent/experiments/local-agent-pilot/records/20260929t080000z-offline-02/handshake"
+          ],
+          "exit_code": 0,
+          "elapsed_s": 1.5358854560000008
+        },
+        {
+          "command": [
+            "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+            "-m",
+            "agent_pilot.experiment",
+            "--output",
+            "/mnt/e/姣旇禌/瀵嗚瘉_CredProof-local-agent/experiments/local-agent-pilot/records/20260929t080000z-offline-02/comparison",
+            "--cases",
+            "p01",
+            "p02",
+            "p03",
+            "p04",
+            "p05",
+            "p06",
+            "--no-feedback"
+          ],
+          "exit_code": 0,
+          "elapsed_s": 155.36108897300002
+        }
+      ]
+    }
+  ]
+}

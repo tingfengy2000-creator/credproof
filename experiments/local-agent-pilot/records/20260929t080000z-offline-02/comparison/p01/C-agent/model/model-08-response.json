@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-510",
+  "object": "chat.completion",
+  "created": 1790668829,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_f4lztkcg",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Verify the fix for credential leak in authentication provider error\",\"request\":{\"request_id\":\"req789\",\"resource\":\"test\",\"units\":3},\"auth_mode\":\"provider_error\",\"candidate_id\":\"candidate-1\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3876,
+    "prompt_tokens_details": {
+      "cached_tokens": 3800
+    },
+    "completion_tokens": 84,
+    "total_tokens": 3960
+  }
+}

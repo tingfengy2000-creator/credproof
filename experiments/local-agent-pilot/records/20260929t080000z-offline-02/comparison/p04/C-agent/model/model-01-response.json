@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-48",
+  "object": "chat.completion",
+  "created": 1790668907,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_d6tlopiq",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "read_code",
+              "arguments": "{\"path\":\"tool.py\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1623,
+    "prompt_tokens_details": {
+      "cached_tokens": 1622
+    },
+    "completion_tokens": 22,
+    "total_tokens": 1645
+  }
+}

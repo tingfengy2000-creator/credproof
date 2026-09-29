@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-148",
+  "object": "chat.completion",
+  "created": 1790668886,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"diagnosis\": \"The tool had a credential leak in debug output where the actual credential was exposed in the debug print statement. The patch fixes this by redacting the credential from debug output while maintaining all other functionality.\", \"initially_leaking\": true, \"final_candidate\": \"candidate-1\"}"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4418,
+    "prompt_tokens_details": {
+      "cached_tokens": 4207
+    },
+    "completion_tokens": 62,
+    "total_tokens": 4480
+  }
+}

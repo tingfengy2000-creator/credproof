@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-966",
+  "object": "chat.completion",
+  "created": 1790668931,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let me also test the authentication service unavailable case:",
+        "tool_calls": [
+          {
+            "id": "call_dofots99",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Test case with valid request but authentication error\",\"request\":{\"request_id\":\"req789\",\"resource\":\"test_resource\",\"units\":1},\"auth_mode\":\"provider_error\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3042,
+    "prompt_tokens_details": {
+      "cached_tokens": 2900
+    },
+    "completion_tokens": 80,
+    "total_tokens": 3122
+  }
+}

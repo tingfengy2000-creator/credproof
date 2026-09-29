@@ -1,0 +1,113 @@
+{
+  "status": "COMPLETED",
+  "messages": [
+    {
+      "role": "assistant",
+      "content": "",
+      "function_call": {
+        "name": "issue_challenge",
+        "arguments": "{}"
+      },
+      "extra": {
+        "function_id": "call_yzvi4903"
+      }
+    },
+    {
+      "role": "function",
+      "content": "{\"nonce\": \"c490e8afd76a7e1d47ab1dd6\", \"value\": 370, \"operation\": \"answer = value + 17\"}",
+      "name": "issue_challenge",
+      "extra": {
+        "function_id": "call_yzvi4903"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "function_call": {
+        "name": "complete_challenge",
+        "arguments": "{\"nonce\":\"c490e8afd76a7e1d47ab1dd6\",\"answer\":387}"
+      },
+      "extra": {
+        "function_id": "call_e2yioima"
+      }
+    },
+    {
+      "role": "function",
+      "content": "{\"status\": \"PASS\", \"reason\": \"actual_dependency_checked\"}",
+      "name": "complete_challenge",
+      "extra": {
+        "function_id": "call_e2yioima"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "The challenge has been successfully completed with the correct nonce and computed answer.<tool_call>"
+    }
+  ],
+  "model_calls": 3,
+  "usage": [
+    {
+      "call_id": 1,
+      "usage": {
+        "prompt_tokens": 441,
+        "prompt_tokens_details": {
+          "cached_tokens": 1
+        },
+        "completion_tokens": 13,
+        "total_tokens": 454
+      },
+      "status": "REPORTED_BY_SERVER"
+    },
+    {
+      "call_id": 2,
+      "usage": {
+        "prompt_tokens": 511,
+        "prompt_tokens_details": {
+          "cached_tokens": 440
+        },
+        "completion_tokens": 54,
+        "total_tokens": 565
+      },
+      "status": "REPORTED_BY_SERVER"
+    },
+    {
+      "call_id": 3,
+      "usage": {
+        "prompt_tokens": 591,
+        "prompt_tokens_details": {
+          "cached_tokens": 510
+        },
+        "completion_tokens": 16,
+        "total_tokens": 607
+      },
+      "status": "REPORTED_BY_SERVER"
+    }
+  ],
+  "elapsed_s": 0.7200543650000011,
+  "error": null,
+  "tool_audit": [
+    {
+      "tool": "issue_challenge",
+      "arguments": "{}",
+      "result": {
+        "nonce": "c490e8afd76a7e1d47ab1dd6",
+        "value": 370,
+        "operation": "answer = value + 17"
+      },
+      "elapsed_s": 0.0007065750000005977
+    },
+    {
+      "tool": "complete_challenge",
+      "arguments": "{\"nonce\":\"c490e8afd76a7e1d47ab1dd6\",\"answer\":387}",
+      "result": {
+        "status": "PASS",
+        "reason": "actual_dependency_checked"
+      },
+      "elapsed_s": 0.0008992009999992945
+    }
+  ],
+  "dependency_verified": true,
+  "execution_kind": "real-local-model-inference",
+  "completed_at_utc": "2026-09-29T08:00:02.382523+00:00",
+  "does_not_establish": "Credential repair capability or offline egress isolation"
+}
