@@ -83,6 +83,10 @@ class BundleTests(unittest.TestCase):
         self.assertFalse((self.output / "private").exists())
         self.assertIn("[REDACTED]", (self.output / "trace/model/model-01-response.json").read_text())
         self.assertEqual((self.output / "current.py").read_text(), self.code)
+        self.assertEqual((self.output / "agent_pilot/runtime_config.py").read_bytes(),
+                         (bundle.PACKAGE / "runtime_config.py").read_bytes())
+        self.assertEqual((self.output / "config/runtime.example.json").read_bytes(),
+                         (bundle.PACKAGE.parent / "config/runtime.example.json").read_bytes())
 
     def test_rejects_wrong_run_binding_and_existing_destination(self):
         (self.run / "final-candidate.py").write_text(self.code + "# changed\n", encoding="utf-8")
@@ -107,6 +111,7 @@ class BundleTests(unittest.TestCase):
         self.assertEqual(execute.call_count, 13)
         self.assertEqual(result["validation"]["verdict"], "PASS")
         self.assertTrue(result["prior_report_applicable"])
+        self.assertEqual(result["historical_evidence_integrity"]["status"], "INTACT")
         self.assertFalse(result["historical_task_status_rewritten"])
         self.assertNotIn("CP_EXEC_", (self.root / "fresh.json").read_text())
 
@@ -118,6 +123,83 @@ class BundleTests(unittest.TestCase):
         self.assertFalse(result["prior_report_applicable"])
         self.assertIn("CANDIDATE_CHANGED", result["prior_report_reasons"])
         self.assertEqual(result["validation"]["verdict"], "PASS")
+        self.assertEqual(result["historical_evidence_integrity"]["status"], "INTACT")
+
+    def test_missing_optional_trace_is_visible_without_failing_candidate(self):
+        self.export()
+        (self.output / "trace/initial-evidence.json").unlink()
+        with patch.object(bundle, "run_isolated", side_effect=fake_isolated) as execute:
+            result = bundle.recheck_bundle(self.output, self.root / "missing-trace.json")
+        integrity = result["historical_evidence_integrity"]
+        self.assertEqual(execute.call_count, 13)
+        self.assertEqual(integrity["status"], "DEGRADED")
+        self.assertEqual(integrity["missing_files"], ["trace/initial-evidence.json"])
+        self.assertEqual(integrity["changed_files"], [])
+        self.assertEqual((integrity["declared_files"], integrity["checked_files"]), (3, 2))
+        self.assertTrue(result["prior_report_applicable"])
+        self.assertEqual(result["validation"]["verdict"], "PASS")
+
+    def test_changed_nested_trace_is_independent_of_fresh_unknown(self):
+        (self.run / "model").mkdir()
+        bundle._write_json(self.run / "model/model-01-response.json", {"content": "original"})
+        self.export()
+        (self.output / "trace/model/model-01-response.json").write_text("{}\n", encoding="utf-8")
+        with patch.object(bundle, "run_isolated", return_value={"status": "ISOLATION_ERROR"}):
+            result = bundle.recheck_bundle(self.output, self.root / "changed-trace.json")
+        integrity = result["historical_evidence_integrity"]
+        self.assertEqual(integrity["status"], "DEGRADED")
+        self.assertEqual(integrity["changed_files"], ["trace/model/model-01-response.json"])
+        self.assertEqual(integrity["missing_files"], [])
+        self.assertTrue(result["prior_report_applicable"])
+        self.assertEqual(result["validation"]["verdict"], "UNKNOWN")
+
+    def test_trace_changed_during_fresh_check_is_reported_separately(self):
+        self.export()
+        def mutation(*args, **kwargs):
+            (self.output / "trace/initial-evidence.json").write_text("[1]\n", encoding="utf-8")
+            return fake_isolated(*args, **kwargs)
+        with patch.object(bundle, "run_isolated", side_effect=mutation):
+            result = bundle.recheck_bundle(self.output, self.root / "trace-race.json")
+        self.assertEqual(result["historical_evidence_integrity"]["changed_files"],
+                         ["trace/initial-evidence.json"])
+        self.assertTrue(result["prior_report_applicable"])
+        self.assertEqual(result["validation"]["verdict"], "PASS")
+
+    def test_old_manifest_without_trace_declarations_checks_only_declared_history(self):
+        (self.run / "initial-evidence.json").unlink()
+        self.export()
+        with patch.object(bundle, "run_isolated", side_effect=fake_isolated):
+            result = bundle.recheck_bundle(self.output, self.root / "legacy.json")
+        integrity = result["historical_evidence_integrity"]
+        self.assertEqual(integrity["status"], "INTACT")
+        self.assertEqual(integrity["declared_files"], 2)
+        self.assertEqual(integrity["scope"], "manifest-listed historical files only")
+        self.assertEqual(result["validation"]["verdict"], "PASS")
+
+    def test_unsafe_manifest_history_path_is_not_read(self):
+        with patch.object(bundle, "_read") as read:
+            integrity = bundle._historical_integrity(self.root,
+                {"trace/../../outside.json": "0" * 64, "trace/bad.json": "not-a-digest"})
+        read.assert_not_called()
+        self.assertEqual(integrity["status"], "UNKNOWN")
+        self.assertEqual(integrity["unavailable_files"],
+                         ["trace/../../outside.json", "trace/bad.json"])
+
+    def test_linked_history_parent_is_not_followed(self):
+        outside = self.root / "outside"
+        outside.mkdir()
+        (outside / "record.json").write_text("{}", encoding="utf-8")
+        material = self.root / "material"
+        material.mkdir()
+        try:
+            (material / "trace").symlink_to(outside, target_is_directory=True)
+        except (OSError, NotImplementedError):
+            self.skipTest("symlink creation unavailable on this test host")
+        with patch.object(bundle, "_read") as read:
+            integrity = bundle._historical_integrity(material, {"trace/record.json": "0" * 64})
+        read.assert_not_called()
+        self.assertEqual(integrity["status"], "UNKNOWN")
+        self.assertEqual(integrity["unavailable_files"], ["trace/record.json"])
 
     def test_report_changed_to_pass_does_not_bypass_unknown(self):
         self.export()
@@ -130,6 +212,7 @@ class BundleTests(unittest.TestCase):
         self.assertEqual(execute.call_count, 13)
         self.assertEqual(result["validation"]["verdict"], "UNKNOWN")
         self.assertFalse(result["prior_report_applicable"])
+        self.assertEqual(result["historical_evidence_integrity"]["changed_files"], ["report.json"])
 
     def test_fixed_judge_fail_dominates_unavailable_trials(self):
         self.export()
@@ -178,6 +261,7 @@ class BundleTests(unittest.TestCase):
         (self.output / "manifest.json").write_text("[]", encoding="utf-8")
         result = bundle.recheck_bundle(self.output, self.root / "malformed.json")
         self.assertEqual(result["validation"]["verdict"], "UNKNOWN")
+        self.assertEqual(result["historical_evidence_integrity"]["status"], "UNKNOWN")
 
     def test_unsafe_source_is_not_executed_and_existing_report_not_overwritten(self):
         self.export()

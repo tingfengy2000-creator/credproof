@@ -17,9 +17,9 @@ import time
 import urllib.request
 
 from .tools import write_json_new
+from .runtime_config import linux_runtime_root
 
 ROOT = Path(__file__).resolve().parents[1]
-RUNTIME = Path('/home/tingfeng/credproof-agent-runtime')
 BASE = 'http://127.0.0.1:11435'
 
 
@@ -61,6 +61,7 @@ def main():
     parser.add_argument('--reliability', action='store_true', help='Use shared evidence gate and executor completion pilot')
     parser.add_argument('--agent-only', action='store_true', help='One reviewed UI task; reliability mode only')
     args = parser.parse_args()
+    runtime = linux_runtime_root()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     before = network_receipt()
@@ -68,15 +69,15 @@ def main():
     if before['interfaces'] != ['lo'] or any(x['connected'] for x in before['outside_connect_tests']):
         raise SystemExit('Refuse to run: expected fresh namespace with only loopback and no external route')
     subprocess.run(['/usr/sbin/ip', 'link', 'set', 'lo', 'up'], check=True)
-    home = RUNTIME / 'service-home'
+    home = runtime / 'service-home'
     home.mkdir(exist_ok=True)
     env = {'PATH': '/usr/bin:/bin:/usr/lib/wsl/lib', 'HOME': str(home), 'LANG': 'C.UTF-8',
            'LD_LIBRARY_PATH': '/usr/lib/wsl/lib', 'OLLAMA_HOST': '127.0.0.1:11435',
-           'OLLAMA_MODELS': str(RUNTIME / 'models'), 'OLLAMA_NO_CLOUD': '1',
+           'OLLAMA_MODELS': str(runtime / 'models'), 'OLLAMA_NO_CLOUD': '1',
            'OLLAMA_CONTEXT_LENGTH': '16384', 'OLLAMA_NUM_PARALLEL': '1',
            'OLLAMA_MAX_LOADED_MODELS': '1', 'OLLAMA_KEEP_ALIVE': '-1',
            'OLLAMA_FLASH_ATTENTION': '1', 'OLLAMA_KV_CACHE_TYPE': 'q8_0'}
-    binary = RUNTIME / 'ollama/bin/ollama'
+    binary = runtime / 'ollama/bin/ollama'
     write_json_new(output / 'service-config.json', {'environment': env, 'binary': str(binary),
                    'policy': 'No cloud fallback, credentials, proxy inheritance, RAG or arbitrary execution tools',
                    'paid_api_budget': 0, 'model': 'qwen3-coder:30b'})
@@ -89,7 +90,7 @@ def main():
             stop.wait(2)
     stdout = (output / 'ollama-stdout.txt').open('x')
     stderr = (output / 'ollama-stderr.txt').open('x')
-    server = subprocess.Popen([str(binary), 'serve'], env=env, cwd=RUNTIME, stdout=stdout, stderr=stderr, start_new_session=True)
+    server = subprocess.Popen([str(binary), 'serve'], env=env, cwd=runtime, stdout=stdout, stderr=stderr, start_new_session=True)
     sampler = threading.Thread(target=sample, daemon=True)
     sampler.start()
     status = {'complete': False, 'commands': []}
@@ -122,6 +123,7 @@ def main():
             comparison += ['--methods', 'C-agent'] if args.agent_only and args.reliability else ['--no-feedback']
             commands.append(comparison)
         child_env = {'PATH': env['PATH'], 'HOME': str(home), 'LANG': 'C.UTF-8', 'PYTHONIOENCODING': 'utf-8',
+                     'CREDPROOF_RUNTIME_ROOT': str(runtime),
                      'PYTHONDONTWRITEBYTECODE': '1', 'HF_HUB_OFFLINE': '1', 'HF_HUB_DISABLE_TELEMETRY': '1', 'DO_NOT_TRACK': '1'}
         for i, command in enumerate(commands):
             started = time.perf_counter()

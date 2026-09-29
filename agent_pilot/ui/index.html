@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light">
   <meta name="referrer" content="no-referrer">
-  <title>密证 CredProof · 本地修复工作台</title>
+  <title>密证 CredProof · 凭据泄露验证与受控修复</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./app.js" type="module"></script>
 </head>
@@ -32,11 +32,14 @@
 </header>
 <main id="workspace" class="workspace">
   <section class="heading">
-    <div><div class="eyebrow">CODE · EVIDENCE · VERIFICATION</div><h1>从怀疑，到可验证的修复。</h1><p>模型提出假设与候选代码，程序用隔离执行的证据作出判定。</p></div>
+    <div><div class="eyebrow">CREDPROOF / PRELIMINARY CANDIDATE</div><h1>让修复，有据可查。</h1><p>面向 AI 工具的凭据泄露验证与受控修复 · 本地模型提出候选，程序检验安全与业务行为。</p></div>
     <div class="heading-note"><svg class="icon"><use href="#i-lock"/></svg><span>只运行已审查的合成任务<br><strong>无任意文件、命令或网络输入</strong></span></div>
   </section>
+  <section class="demo-gallery" aria-label="典型案例演示"><div class="gallery-heading"><span class="eyebrow">SELECTED REAL CASES</span><span>典型案例 · 真实历史回放，非总体成功率</span></div><div id="demo-cards" class="demo-cards"></div></section>
   <div id="error-banner" class="error-banner" role="alert" hidden></div>
   <div id="replay-banner" class="replay-banner" hidden><svg class="icon"><use href="#i-clock"/></svg><div><strong>历史回放</strong><span id="replay-description">这里展示已保存的运行记录，不是本次实时执行。</span></div><button id="leave-replay" class="button compact secondary">返回新任务</button></div>
+  <section id="story-panel" class="panel story-panel" hidden></section>
+  <div id="material-warning" class="error-banner" hidden></div>
   <section class="task-toolbar" aria-label="任务操作">
     <div class="toolbar-context"><span id="run-status" class="badge neutral">等待选择</span><span class="toolbar-description" id="run-description">连接服务后选择一个受限案例</span></div>
     <div class="toolbar-actions"><button id="refresh" class="button secondary" aria-label="刷新任务状态"><svg class="icon"><use href="#i-refresh"/></svg><span>刷新</span></button><button id="start" class="button primary" disabled><svg class="icon"><use href="#i-play"/></svg><span>开始分析与修复</span></button></div>

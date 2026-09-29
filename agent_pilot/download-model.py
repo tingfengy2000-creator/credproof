@@ -6,9 +6,10 @@ from pathlib import Path
 import shutil
 import time
 import urllib.request
+from runtime_config import linux_runtime_root
 
 BASE = 'https://registry.ollama.ai/v2/library/qwen3-coder'
-ROOT = Path('/home/tingfeng/credproof-agent-runtime')
+ROOT = linux_runtime_root()
 MODELS = ROOT / 'models'
 EXPECTED_MANIFEST = '06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca'
 

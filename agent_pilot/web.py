@@ -23,9 +23,10 @@ from urllib.parse import urlsplit
 import uuid
 import zipfile
 
+from .runtime_config import load_config, validate_runtime_root, wsl_prefix
+from .preflight import observe as observe_runtime
+
 ROOT = Path(__file__).resolve().parents[1]
-RUNTIME = '/home/tingfeng/credproof-agent-runtime'
-VENV = RUNTIME + '/venv/bin/python'
 ID = re.compile(r'[a-z][a-z0-9_-]{1,63}\Z')
 SECRET = re.compile(r'CP_EXEC_[0-9a-fA-F]{24,}')
 VERDICTS = {'PASS', 'FAIL', 'UNKNOWN'}
@@ -119,45 +120,26 @@ def linux_path(path):
 
 
 def launch_command(root, case_id, output):
-    command = ['unshare', '--user', '--map-root-user', '--net', '--fork', VENV,
+    config = load_config(root)
+    observed = runtime_observation(root)
+    runtime = observed.get('runtime_root')
+    if (observed.get('ready') is not True or observed.get('isolation_ready') is not True
+            or observed.get('model_ready') is not True or not isinstance(runtime, str)
+            or not runtime.startswith('/')):
+        raise ValueError('Read-only preflight did not establish available runtime files')
+    validate_runtime_root(runtime)
+    command = ['/usr/bin/env', 'CREDPROOF_RUNTIME_ROOT=' + runtime,
+               'unshare', '--user', '--map-root-user', '--net', '--fork', runtime + '/venv/bin/python',
                '-m', 'agent_pilot.offline_run', '--reliability', '--agent-only',
                '--cases', case_id, '--output', linux_path(output)]
     if os.name == 'nt':
-        command = ['wsl.exe', '-d', 'Ubuntu-24.04', '-u', 'tingfeng', '--cd', linux_path(root), '--exec', *command]
+        command = [*wsl_prefix(config), '--cd', linux_path(root), '--exec', *command]
     return command
 
 
 def runtime_observation(root):
-    """Fixed read-only facility observation; no model/probe/candidate execution."""
-    script = '''import hashlib,json,pathlib,sys
-b=pathlib.Path('/home/tingfeng/credproof-agent-runtime')
-r=b/'isolation'
-reasons=[]
-try:
- p=json.loads((r/'probe-receipt.json').read_text())
- if p.get('ready') is not True: reasons.append('isolation_receipt_not_ready')
- if p.get('runner_id')!=sys.argv[1]: reasons.append('isolation_supervisor_changed')
- for key,relative in [('bwrap_sha256','tools/usr/bin/bwrap'),('seccomp_sha256','seccomp.bpf')]:
-  if hashlib.sha256((r/relative).read_bytes()).hexdigest()!=p.get(key): reasons.append('isolation_facility_changed')
-except (OSError,ValueError,KeyError): reasons.append('isolation_receipt_unavailable')
-for f in ['venv/bin/python','ollama/bin/ollama','models/manifests/registry.ollama.ai/library/qwen3-coder/30b']:
- if not (b/f).is_file(): reasons.append('runtime_component_missing')
-print(json.dumps({'ready':not reasons,'reasons':sorted(set(reasons)),'observed_at':__import__('datetime').datetime.now(__import__('datetime').timezone.utc).isoformat()}))
-'''
-    identity = hashlib.sha256((root / 'agent_pilot/sandbox_runner.py').read_bytes()).hexdigest()
-    command = ['python3', '-I', '-c', script, identity]
-    if os.name == 'nt':
-        command = ['wsl.exe', '-d', 'Ubuntu-24.04', '-u', 'tingfeng', '--exec', *command]
-    try:
-        result = subprocess.run(command, capture_output=True, timeout=12, cwd=root)
-        if result.returncode:
-            raise ValueError('Runtime observation failed')
-        data = json.loads(result.stdout)
-    except (OSError, ValueError, subprocess.TimeoutExpired):
-        data = {'ready': False, 'reasons': ['runtime_observation_unavailable'], 'observed_at': now()}
-    data.update(model_label='qwen3-coder:30b · 本地服务',
-                observation_scope='Read-only availability and saved gate identity; not a fresh isolation or model acceptance test')
-    return data
+    """Delegate to shared read-only file/hash observation, never a fresh probe."""
+    return observe_runtime(root)
 
 
 def validation_view(value):
@@ -259,6 +241,9 @@ class Run:
     error: str | None = None
     bundle: Path | None = None
     recheck: dict | None = None
+    material_snapshot: dict | None = None
+    material_failure: str | None = None
+    recheck_binding: str | None = None
 
 
 class Application:
@@ -307,6 +292,7 @@ class Application:
                            'source_code': text_file(path), 'source_sha256': sha(text_file(path)),
                            'rules': PUBLIC_RULES} for key, path in self.cases.items()],
                 'runtime': self.runtime(),
+                'demonstrations': getattr(self, 'demonstrations', []),
                 'history': [{'id': run.id, 'case_id': run.case_id, 'created_at': run.started_at,
                              'label': f'{run.case_id.upper()} · {run.started_at or "未提供时间"}'}
                             for run in saved_runs if run.status not in ('QUEUED', 'RUNNING')]}
@@ -369,8 +355,101 @@ class Application:
             raise Problem(404, '没有这份受控任务记录。')
         return self.runs[identifier]
 
+    @staticmethod
+    def _binding_id(snapshot):
+        return sha(json.dumps(snapshot, sort_keys=True, separators=(',', ':')))
+
+    def _material_inputs(self, run):
+        """Hash exactly the export's inputs, including its full public trace set.
+
+        Imported bundle constants select the same runtime/trace files as export.
+        This is identity checking, not execution or authentication of those files.
+        """
+        from . import bundle
+        method = confined(run.method, self.root / 'runs')
+        package = Path(bundle.PACKAGE).absolute()
+        paths = {'run/' + name: confined(method / name, self.root / 'runs')
+                 for name in ('original.py', 'final-candidate.py', 'result.json')}
+        for path in method.iterdir():
+            if bundle.TOP_RECORD.fullmatch(path.name):
+                paths['run/' + path.name] = confined(path, self.root / 'runs')
+        model = confined(method / 'model', self.root / 'runs')
+        if model.exists():
+            if not model.is_dir():
+                raise ValueError('Model record directory unavailable')
+            for path in model.iterdir():
+                if bundle.MODEL_RECORD.fullmatch(path.name):
+                    paths['run/model/' + path.name] = confined(path, self.root / 'runs')
+        for name in (*bundle.RUNTIME_FILES, 'reliability.py', 'fixtures/requirements.md'):
+            paths['verifier/' + name] = confined(package / name, package)
+        paths['configuration/runtime.example.json'] = confined(package.parent / 'config/runtime.example.json', package.parent)
+        return self._hash_material_paths(paths)
+
+    @staticmethod
+    def _hash_material_paths(paths):
+        if len(paths) > 1024:
+            raise ValueError('Too many material files')
+        result, total = {}, 0
+        for name, path in sorted(paths.items()):
+            if not path.is_file() or path.stat().st_size > 16 * 1024 * 1024:
+                raise ValueError('Required material unavailable or oversized')
+            data = path.read_bytes()
+            total += len(data)
+            if total > 256 * 1024 * 1024:
+                raise ValueError('Material scope oversized')
+            result[name] = hashlib.sha256(data).hexdigest()
+        return result
+
+    def _package_material(self, path):
+        material = confined(path, self.runs_root)
+        if not material.is_dir():
+            raise ValueError('Cached package unavailable')
+        files = {}
+        for item in material.rglob('*'):
+            confined(item, material)
+            if item.is_file():
+                files[item.relative_to(material).as_posix()] = item
+            if len(files) > 1024:
+                raise ValueError('Cached package oversized')
+        if 'manifest.json' not in files:
+            raise ValueError('Cached package manifest unavailable')
+        return self._hash_material_paths(files)
+
+    def _material_state(self, run):
+        saved = run.material_snapshot
+        state = {'status': 'NOT_CAPTURED', 'binding_sha256': None,
+                 'exported_binding_sha256': self._binding_id(saved) if saved else None,
+                 'reasons': [], 'historical_bundle_available': run.bundle is not None}
+        if run.material_failure:
+            state.update(status=run.material_failure, reasons=['material_binding_invalidated'])
+            return state
+        if saved is None:
+            if run.bundle is not None or run.recheck is not None:
+                run.material_failure = 'UNAVAILABLE'
+                state.update(status='UNAVAILABLE', reasons=['cached_material_binding_missing'])
+            return state
+        try:
+            current = {'inputs': self._material_inputs(run), 'package': self._package_material(run.bundle)}
+            state['binding_sha256'] = self._binding_id(current)
+            if current != saved:
+                run.material_failure = 'CHANGED'
+                state.update(status='CHANGED', reasons=['export_inputs_or_cached_package_changed'])
+            else:
+                state['status'] = 'CURRENT'
+        except (OSError, ValueError, TypeError, AttributeError):
+            run.material_failure = 'UNAVAILABLE'
+            state.update(status='UNAVAILABLE', reasons=['required_material_unavailable'])
+        return state
+
+    def _require_current_material(self, run):
+        state = self._material_state(run)
+        if state['status'] != 'CURRENT':
+            raise Problem(409, '材料已变化或无法核对；旧包与旧复检仅属历史对象，请创建新任务并重新验收。')
+        return state
+
     def view(self, identifier):
         run = self.get(identifier)
+        material = self._material_state(run)
         row, candidate, original, notes = None, None, run.original, []
         result = confined(run.method / 'result.json', self.root / 'runs')
         if result.exists():
@@ -397,6 +476,25 @@ class Application:
         authority = (row or {}).get('initial_authority') or {}
         validation = validation_view((row or {}).get('final_validation'))
         task = (row or {}).get('task') or {}
+        applicable = {'status': 'NOT_CHECKED', 'reasons': []}
+        recheck, historical_recheck = None, None
+        if run.recheck is not None:
+            if (material['status'] == 'CURRENT' and run.recheck_binding
+                    and run.recheck_binding == material['binding_sha256']):
+                recheck = run.recheck
+                applicable['status'] = 'APPLICABLE'
+            else:
+                applicable.update(status='UNAVAILABLE' if material['status'] == 'UNAVAILABLE' else 'INAPPLICABLE',
+                                  reasons=['recheck_bound_to_previous_material'])
+                historical_recheck = {'checked_at': run.recheck.get('checked_at'),
+                    'candidate_sha256': run.recheck.get('candidate_sha256'),
+                    'verdict_at_check': (run.recheck.get('validation') or {}).get('verdict', 'UNKNOWN'),
+                    'notice': '旧对象的历史复检；不适用于当前材料。'}
+        if material['status'] in ('CHANGED', 'UNAVAILABLE'):
+            notes.append('exported_material_changed_or_unavailable')
+            validation = {'verdict': 'UNKNOWN', 'reasons': ['MATERIAL_BINDING_INVALIDATED'], 'checks': []}
+            task = {'task_status': 'UNKNOWN', 'reason': 'material_binding_invalidated'}
+            authority = {'confirmed': 'UNKNOWN', 'repair_authorized': False}
         if run.status == 'ERROR':
             notes.append(run.error or 'supervisor_error')
         if not row:
@@ -419,22 +517,40 @@ class Application:
                   'candidate_code': candidate, 'candidate_sha256': sha(candidate) if candidate is not None else None,
                   'diff': ''.join(difflib.unified_diff(original.splitlines(keepends=True), candidate.splitlines(keepends=True),
                                     fromfile='original/tool.py', tofile='candidate/tool.py')) if candidate is not None else None,
-                  'evidence': public_evidence, 'validation': validation, 'recheck': run.recheck,
+                  'evidence': public_evidence, 'validation': validation, 'recheck': recheck,
+                  'material_binding': material, 'recheck_applicability': applicable,
+                  'historical_recheck': historical_recheck,
                   'stop_reason': task.get('reason') or run.error,
                   'remaining_uncertainty': notes,
                   'process': {'exit_code': run.exit_code, 'raw_streams_retained_locally': run.mode == 'LIVE'},
                   'limitations': ['仅覆盖登记的合成任务与固定检查协议；不表示任意真实项目安全。',
                                   '模型回答与程序判决独立；任务结束不等于验收通过。']}
+        from .presentation import story_for
+        result['presentation'] = story_for(self, run)
         return safe_public(result)
 
     def _material(self, run):
         if run.status in ('QUEUED', 'RUNNING') or not (run.method / 'result.json').is_file():
             raise Problem(409, '任务尚无完整材料，不能导出或复检。')
+        state = self._material_state(run)
+        if state['status'] in ('CHANGED', 'UNAVAILABLE'):
+            self._require_current_material(run)
         if run.bundle is None:
             from .bundle import export_bundle
             parent = confined(self.runs_root / ('package-' + uuid.uuid4().hex), self.runs_root)
-            export_bundle(run.method, parent)
-            run.bundle = parent
+            try:
+                before = self._material_inputs(run)
+                export_bundle(run.method, parent)
+                after = self._material_inputs(run)
+                if before != after:
+                    run.material_failure = 'CHANGED'
+                    raise Problem(409, '导出期间原始材料变化；未绑定该包，请创建新任务并重新验收。')
+                snapshot = {'inputs': after, 'package': self._package_material(parent)}
+            except (OSError, ValueError, TypeError, AttributeError):
+                run.material_failure = 'UNAVAILABLE'
+                raise Problem(409, '完整导出材料或规则绑定不可用；未生成可复用的材料包。')
+            run.material_snapshot, run.bundle = snapshot, parent
+        self._require_current_material(run)
         return run.bundle
 
     def recheck(self, identifier):
@@ -446,8 +562,10 @@ class Application:
             material = self._material(run)
             output = confined(self.runs_root / ('recheck-' + uuid.uuid4().hex + '.json'), self.runs_root)
             fresh = recheck_bundle(material, output)
+            binding = self._require_current_material(run)
             # The bundle is the authority for this result, never the old UI badge.
             run.recheck = {**fresh, 'validation': validation_view(fresh.get('validation'))}
+            run.recheck_binding = binding['binding_sha256']
             return self.view(identifier)
         finally:
             self.operation.release()
@@ -464,6 +582,7 @@ class Application:
                     confined(path, material)
                     if path.is_file():
                         output.write(path, path.relative_to(material).as_posix())
+            self._require_current_material(run)
             return archive
         finally:
             self.operation.release()

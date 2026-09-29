@@ -33,7 +33,9 @@ class WebTests(unittest.TestCase):
             (ui / name).write_text('test static asset', encoding='utf-8')
         self.app = web.Application(root=self.root)
         self.observation = patch.object(web, 'runtime_observation', return_value={
-            'ready': True, 'reasons': [], 'model_label': 'TEST MOCK, no model executed'})
+            'ready': True, 'isolation_ready': True, 'model_ready': True,
+            'runtime_root': '/home/test/credproof-agent-runtime',
+            'reasons': [], 'model_label': 'TEST MOCK, no model executed'})
         self.observation.start()
         self.server = web.Server(('127.0.0.1', 0), self.app)
         self.server_thread = threading.Thread(target=self.server.serve_forever, daemon=True)
@@ -227,9 +229,12 @@ class WebTests(unittest.TestCase):
         self.assertFalse(value['diagnosis']['repair_authorized'])
 
     def test_bundle_export_and_recheck_are_called_and_do_not_overwrite_old_verdict(self):
+        from agent_pilot import bundle as real_bundle
         identifier, _ = self.historical()
         calls = []
         module = types.ModuleType('agent_pilot.bundle')
+        for name in ('PACKAGE', 'RUNTIME_FILES', 'TOP_RECORD', 'MODEL_RECORD'):
+            setattr(module, name, getattr(real_bundle, name))
         def export_bundle(run_path, out_path):
             calls.append(('export', run_path))
             out_path.mkdir()
@@ -254,6 +259,19 @@ class WebTests(unittest.TestCase):
             self.assertEqual(value['validation']['verdict'], 'FAIL')
             self.assertEqual(value['recheck']['validation']['verdict'], 'PASS')
             self.assertFalse(value['recheck']['prior_report_applicable'])
+            self.assertEqual([x[0] for x in calls], ['export', 'recheck'])
+            run = self.app.get(identifier)
+            (run.method / 'final-candidate.py').write_text('# drift after checked export\n')
+            status, value, _ = self.call('GET', f'/api/agent/runs/{identifier}')
+            self.assertEqual(status, 200)
+            self.assertEqual(value['material_binding']['status'], 'CHANGED')
+            self.assertIsNone(value['recheck'])
+            self.assertEqual(value['historical_recheck']['verdict_at_check'], 'PASS')
+            self.assertEqual(value['validation']['verdict'], 'UNKNOWN')
+            status, _, _ = self.call('GET', f'/api/agent/runs/{identifier}/export')
+            self.assertEqual(status, 409)
+            status, _, _ = self.call('POST', f'/api/agent/runs/{identifier}/recheck', {})
+            self.assertEqual(status, 409)
             self.assertEqual([x[0] for x in calls], ['export', 'recheck'])
 
 

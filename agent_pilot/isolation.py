@@ -9,28 +9,37 @@ from pathlib import Path
 import subprocess
 import sys
 
+from .runtime_config import load_config, linux_runtime_root, wsl_prefix
+
 RUNNER = Path(__file__).with_name('sandbox_runner.py')
 BOOTSTRAP = """import base64,hashlib,json,sys
+from pathlib import Path
 packet=json.load(sys.stdin)
 source=base64.b64decode(packet['runner_b64'])
 namespace={'__name__':'credproof_trusted_isolation'}
 exec(compile(source,'<trusted-sandbox-runner>','exec'),namespace)
+runtime=Path(packet['runtime_root']).expanduser()
+if not runtime.is_absolute(): raise ValueError('absolute Linux runtime required')
+namespace['BASE']=runtime/'isolation'
 result=namespace['handle'](packet['request'],hashlib.sha256(source).hexdigest())
 sys.stdout.write(json.dumps(result,ensure_ascii=False))
 """
 
 
 def _dispatch(request):
-    source = RUNNER.read_bytes()
-    identity = hashlib.sha256(source).hexdigest()
-    if sys.platform == 'linux':
-        from . import sandbox_runner
-        return sandbox_runner.handle(request, identity)
-    if os.name != 'nt':
-        return {'status': 'ISOLATION_ERROR', 'reason': 'supported_linux_or_wsl_required'}
-    packet = {'runner_b64': base64.b64encode(source).decode('ascii'), 'request': request}
     try:
-        process = subprocess.run(['wsl.exe', '-d', 'Ubuntu-24.04', '-u', 'tingfeng', '--',
+        config = load_config()
+        source = RUNNER.read_bytes()
+        identity = hashlib.sha256(source).hexdigest()
+        if sys.platform == 'linux':
+            from . import sandbox_runner
+            sandbox_runner.BASE = linux_runtime_root(config) / 'isolation'
+            return sandbox_runner.handle(request, identity)
+        if os.name != 'nt':
+            return {'status': 'ISOLATION_ERROR', 'reason': 'supported_linux_or_wsl_required'}
+        packet = {'runner_b64': base64.b64encode(source).decode('ascii'), 'request': request,
+                  'runtime_root': config['runtime_root']}
+        process = subprocess.run([*wsl_prefix(config), '--exec',
             'python3', '-I', '-c', BOOTSTRAP], input=json.dumps(packet).encode('utf-8'),
             stdout=subprocess.PIPE, stderr=subprocess.PIPE,
             timeout=120 if request['operation'] == 'prepare' else 35)

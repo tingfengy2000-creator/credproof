@@ -135,8 +135,11 @@ function renderActions() {
   $('start').disabled = state.busy || isRunning() || !selectedCase() || state.bootstrap?.runtime.ready !== true || !!state.error || state.replay;
   $('start').querySelector('span').textContent = isRunning() ? '任务执行中' : '开始分析与修复';
   $('refresh').disabled = state.busy;
-  $('recheck').disabled = state.busy || isRunning() || !run || !run.validation || state.stale;
-  $('export').disabled = state.busy || isRunning() || !run || state.stale;
+  const changed = ['CHANGED', 'UNAVAILABLE'].includes(run?.material_binding?.status);
+  $('recheck').disabled = state.busy || isRunning() || !run || !run.validation || state.stale || changed;
+  $('export').disabled = state.busy || isRunning() || !run || state.stale || changed;
+  $('material-warning').hidden = !changed;
+  $('material-warning').textContent = changed ? '材料已变化或不可读取：历史结果不适用于当前对象。请返回新任务重新验收；旧包仍对应旧对象。' : '';
   $('leave-replay').disabled = state.busy;
   $('replay-banner').hidden = !state.replay;
   $('replay-description').textContent = run
@@ -246,6 +249,10 @@ function renderValidation() {
       : recheck.prior_report_applicable === false ? '先前报告不适用于当前材料' : '先前报告适用性未知';
     $('recheck-result').innerHTML = `<div class="recheck-heading"><div><span class="eyebrow">FRESH RECHECK</span><h3>独立复检记录</h3></div>${badge(verdictNames[validation.verdict] ? `${verdictNames[validation.verdict]} · ${validation.verdict}` : recheck.status || '尚无复检判决', tone(validation.verdict))}</div><p>${escape(displayTime(recheck.checked_at ?? validation.checked_at ?? validation.checked_at_utc))} · 固定程序重新验收，不调用模型。</p><p>${escape(prior)}。适用性不替代新验收判决。</p>${recheck.candidate_sha256 ? `<p class="recheck-identity">candidate sha256 ${escape(recheck.candidate_sha256)}</p>` : ''}<p>${escape(array(validation.reasons).map(text).join('；') || '')}</p><div>${checksMarkup(validation.checks)}</div>`;
   }
+  if (recheck) {
+    const integrity = recheck.historical_evidence_integrity;
+    $('recheck-result').innerHTML += `<div class="recheck-integrity"><strong>历史材料完整性：${escape(integrity?.status || 'UNKNOWN')}</strong><br>缺失：${escape(array(integrity?.missing_files).join('、') || '无已报告缺失')}<br>变化：${escape(array(integrity?.changed_files).join('、') || '无已报告变化')}<br>旧报告适用性、历史证据完整性与本次复检判决分别显示。</div>`;
+  }
   const modelCalls = run?.model?.calls;
   const toolCalls = run?.tool_calls;
   $('task-state').textContent = run ? text(taskNames[run.task_status] || run.task_status || '任务结果未知') : '未启动';
@@ -256,7 +263,17 @@ function renderValidation() {
   $('updated-at').textContent = run ? `最近取得的状态 · ${displayTime(run.updated_at)}` : '状态按请求刷新，不是实时监控。';
 }
 
-function render() { renderConnection(); renderScope(); renderActions(); renderDecisions(); renderCode(); renderEvidence(); renderValidation(); }
+function renderStories() {
+  const demos = array(state.bootstrap?.demonstrations);
+  $('demo-cards').innerHTML = demos.map((item, i) => `<button class="demo-card ${state.run?.id === item.run_id ? 'selected' : ''}" data-demo="${escape(item.run_id)}" ${state.busy || isRunning() ? 'disabled' : ''}><span class="demo-number">0${i + 1} / ${escape(item.case_id.toUpperCase())}</span><strong>${escape(item.title)}</strong><span>${escape(item.subtitle)}</span><small>打开真实历史回放 →</small></button>`).join('') || '<p>以 --demo 启动可打开精选历史；现场任务使用下方操作区。</p>';
+  const story = state.run?.presentation;
+  $('story-panel').hidden = !story;
+  if (!story) return;
+  const stages = array(story.stages);
+  $('story-panel').innerHTML = `<div class="story-intro"><div><span class="eyebrow">${escape(story.case_id.toUpperCase())} / REPLAY</span><h2>${escape(story.title)}</h2><p>${escape(story.phenomenon)}</p></div><div class="story-conclusion"><span class="small-label">这份记录说明什么</span><p>${escape(story.explanation)}</p></div></div><div class="stage-list">${stages.map(stage => `<details class="stage"><summary><strong>${escape(stage.candidate_id)}</strong>${badge(stage.validation.verdict, tone(stage.validation.verdict))}<span>${escape(JSON.stringify(stage.validation.trial_counts || {}))}</span><span>查看实际补丁差异</span></summary><p>${escape(array(stage.validation.reasons).join('；'))} ${escape(array(stage.validation.leak_channels).join('、'))}</p><pre>${escape(stage.diff)}</pre></details>`).join('') || '<p>这份记录没有提交补丁：保持原代码。</p>'}</div><div class="story-foot"><span>同批固定流程：${escape(story.fixed_comparison.verdict)} · ${escape(taskNames[story.fixed_comparison.task_status] || story.fixed_comparison.task_status)}</span><span>批次 ${escape(story.batch)} · ${escape(story.source_commit.slice(0, 7))}</span></div>`;
+}
+
+function render() { renderConnection(); renderScope(); renderActions(); renderDecisions(); renderCode(); renderEvidence(); renderValidation(); renderStories(); }
 function clearPoll() { if (state.timer) window.clearTimeout(state.timer); state.timer = null; }
 function schedulePoll() {
   clearPoll();
@@ -310,6 +327,11 @@ $('refresh').addEventListener('click', () => busyAction(async () => {
   await loadBootstrap();
   if (state.run) acceptRun(await request(runPath(state.run.id)), state.replay);
 }));
+$('demo-cards').addEventListener('click', event => {
+  const button = event.target.closest('[data-demo]');
+  if (!button || button.disabled) return;
+  busyAction(async () => { clearPoll(); acceptRun(await request(runPath(button.dataset.demo)), true); state.view = 'diff'; announce('精选真实历史回放，不是现场模型推理。'); });
+});
 $('case-select').addEventListener('change', event => {
   if (state.busy || isRunning()) return;
   clearPoll(); state.caseId = event.target.value; state.run = null; state.replay = false;

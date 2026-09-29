@@ -21,7 +21,8 @@ from .isolation import run_isolated
 
 PACKAGE = Path(__file__).resolve().parent
 SCHEMA = "credproof.portable-bundle.v1"
-RUNTIME_FILES = ("__init__.py", "bundle.py", "judge.py", "isolation.py", "sandbox_runner.py")
+RUNTIME_FILES = ("__init__.py", "bundle.py", "judge.py", "isolation.py", "sandbox_runner.py",
+                 "runtime_config.py")
 EXECUTION_SECRET = re.compile(r"CP_EXEC_[A-Za-z0-9]{16,}")
 TOP_RECORD = re.compile(r"(?:initial-evidence|final-validation|fixed-transform|"
                         r"verify-\d+-validation|candidate-\d+-proposal)\.json\Z")
@@ -77,6 +78,57 @@ def _trusted_policy():
     return values[0]
 
 
+def _historical_integrity(root, hashes):
+    """Check only declared historical files; absence of unlisted history is unknowable.
+
+    This is independent of object applicability and of the fresh judge result.
+    Never follow a manifest path outside the bundle or through a linked parent.
+    """
+    result = {"status": "UNKNOWN", "scope": "manifest-listed historical files only",
+              "declared_files": 0, "checked_files": 0, "missing_files": [],
+              "changed_files": [], "unavailable_files": [], "reasons": []}
+    if not isinstance(hashes, dict):
+        result["reasons"] = ["HISTORICAL_MANIFEST_UNAVAILABLE"]
+        return result
+    entries = {name: digest for name, digest in hashes.items()
+               if isinstance(name, str) and (name in {"report.json", "original.py"}
+                                             or name.startswith("trace/"))}
+    result["declared_files"] = len(entries)
+    if not entries:
+        result["reasons"] = ["NO_HISTORICAL_FILES_DECLARED"]
+        return result
+    for name, digest in sorted(entries.items()):
+        parts = name.split("/")
+        if (any(part in {"", ".", ".."} for part in parts)
+                or any(char in name for char in "\\:\x00")
+                or not isinstance(digest, str) or not re.fullmatch(r"[0-9a-f]{64}", digest)):
+            result["unavailable_files"].append(name)
+            continue
+        try:
+            path = root
+            for part in parts:
+                path = path / part
+                if path.is_symlink() or getattr(path, "is_junction", lambda: False)():
+                    raise ValueError("linked_historical_path")
+            if not path.exists():
+                result["missing_files"].append(name)
+                continue
+            actual = _sha(_read(path))
+            result["checked_files"] += 1
+            if actual != digest:
+                result["changed_files"].append(name)
+        except (OSError, ValueError):
+            result["unavailable_files"].append(name)
+    for key, reason in (("missing_files", "HISTORICAL_FILES_MISSING"),
+                        ("changed_files", "HISTORICAL_FILES_CHANGED"),
+                        ("unavailable_files", "HISTORICAL_FILES_UNAVAILABLE")):
+        if result[key]:
+            result["reasons"].append(reason)
+    result["status"] = ("DEGRADED" if result["missing_files"] or result["changed_files"]
+                        else "UNKNOWN" if result["unavailable_files"] else "INTACT")
+    return result
+
+
 def _public(value):
     """Reject recognizable private envelopes; redact synthetic values in records."""
     if isinstance(value, dict):
@@ -105,9 +157,12 @@ an object change, but a fresh verdict can still be PASS, FAIL, or UNKNOWN.
 
 This package contains the verifier source and fixed 13-test judge. It does not
 contain model weights, .env files, raw private executions, or an inference server.
-It requires the already prepared/probed isolation runtime: on Windows, WSL
-Ubuntu-24.04, user tingfeng; Linux profile at
-`/home/tingfeng/credproof-agent-runtime/isolation`. No original checkout is used.
+It requires an already prepared/probed isolation runtime. Select it using
+`config/local-runtime.json` or a JSON path in `CREDPROOF_CONFIG`.
+`config/runtime.example.json` contains portable defaults, not a recorded account
+or an installed runtime. Copy the example to your own configuration and set its
+runtime root/WSL settings for the prepared environment. No original checkout is
+used. Configuration is not permission to execute a candidate outside isolation.
 The runner verifies its probe receipt and runtime hashes; missing or changed
 isolation produces UNKNOWN, never a host execution fallback. Recheck does not
 download, install, start a model, or silently prepare/re-probe the environment.
@@ -116,6 +171,12 @@ The fixed judge checks runtime synthetic credential leakage and the constrained
 tool response/authentication contract. It is not a general vulnerability proof,
 nor evidence that an Agent diagnosed correctly or completed its whole task.
 Current fresh validation cannot overwrite the historical task status.
+Recheck reports three separate facts: `prior_report_applicable` binds the old
+report to the current objects; `historical_evidence_integrity` checks only the
+historical files listed by the supplied manifest; `validation` is the fresh
+fixed-judge result. Missing or changed optional trace files are explicitly listed
+but do not automatically fail the candidate. INTACT does not prove that every
+original event was collected or that the supplied manifest is authentic.
 
 The operator and bundled verifier/judge/isolation source must be trusted. Hashes
 detect changes against the supplied manifest, but are not authentication. A party
@@ -128,6 +189,9 @@ to edit the judge or shrink its fixed matrix. Raw synthetic credentials exist
 only in memory during recheck; output contains verdicts and reason codes only.
 Published trace is a sanitized copy; do not assume this export is a general
 real-secret discovery service. Only reviewed synthetic reliability runs apply.
+Older bundles remain unchanged and can use their own bundled verifier. A newer
+checkout refuses a bundle whose verifier bytes differ; it does not relax this
+check to force compatibility or silently upgrade old material.
 
 CLI exit codes: 0 exported/fresh PASS, 1 fresh FAIL, 2 fresh UNKNOWN/blocked,
 3 invalid arguments, input, or output path. Existing files are never overwritten.
@@ -149,6 +213,7 @@ def export_bundle(run_path, out_path) -> dict:
         raise ValueError("reliability_report_required")
     policy = _trusted_policy()
     requirements = _read(PACKAGE / "fixtures" / "requirements.md")
+    runtime_example = _read(PACKAGE.parent / "config" / "runtime.example.json")
     runtime = {name: _read(PACKAGE / name) for name in RUNTIME_FILES}
     rules = _rules_hash(requirements, runtime["judge.py"], policy)
     if (report.get("source_sha256") != _sha(original)
@@ -175,6 +240,8 @@ def export_bundle(run_path, out_path) -> dict:
                      "timeout_seconds": 10, "rule_hash_algorithm": "sha256(requirements_text+judge_text+canonical_policy)"}
     output.mkdir(parents=True, exist_ok=False)
     (output / "agent_pilot").mkdir()
+    (output / "config").mkdir()
+    (output / "config/runtime.example.json").write_bytes(runtime_example)
     for name, data in runtime.items():
         (output / "agent_pilot" / name).write_bytes(data)
     (output / "original.py").write_bytes(original)
@@ -248,6 +315,7 @@ def recheck_bundle(bundle_path, output_path) -> dict:
         raise ValueError("new_output_file_in_existing_directory_required")
     checked_at = _now()
     candidate = None
+    hashes = None
     prior_reasons, block_reasons = [], []
     try:
         manifest = _json(root / "manifest.json")
@@ -312,6 +380,7 @@ def recheck_bundle(bundle_path, output_path) -> dict:
     result = {"status": "RECHECKED" if validation["checks"] else "BLOCKED", "checked_at": checked_at,
               "validation": validation, "candidate_sha256": candidate,
               "prior_report_applicable": prior, "prior_report_reasons": sorted(set(prior_reasons)),
+              "historical_evidence_integrity": _historical_integrity(root, hashes),
               "historical_task_status_rewritten": False,
               "trust_boundary": "trusted verifier/operator; hashes detect changes, not authenticity"}
     _write_json(output, result)
