@@ -1,0 +1,1648 @@
+{
+  "source": "experiments/results/20260929T014733Z_00c48b93/results.json",
+  "source_sha256": "d4373aa82a036c30e0497c4329c356dc63503ac216ba26999b0b503211885d59",
+  "case_id": "syntax_broken",
+  "source_trial_indices_zero_based": [
+    5,
+    21,
+    37
+  ],
+  "transformation": "All trial fields preserved; grouped by case ID only. No statuses recomputed.",
+  "trials": [
+    {
+      "case_id": "syntax_broken",
+      "layer": "fresh",
+      "repeat": 1,
+      "object_relative_path": "objects/o0006",
+      "expected_C": "FAIL",
+      "oracle": {
+        "expected_verdict": "FAIL",
+        "facts": {
+          "syntax_valid": false,
+          "required_env_read": false,
+          "positive_behavior": false,
+          "missing_env_fails_closed": false,
+          "only_authorized_change": false,
+          "old_value_absent": true,
+          "non_target_files_unchanged": true
+        },
+        "delivery_facts": {},
+        "method": "independent allowlisted AST interpretation and direct file comparisons"
+      },
+      "reports": {
+        "A": {
+          "schema": "credproof-report/1",
+          "mode": "A",
+          "verdict": "PASS",
+          "applicability": "CURRENT",
+          "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+          "current_binding": {
+            "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 108.77040005289018
+        },
+        "B": {
+          "schema": "credproof-report/1",
+          "mode": "B",
+          "verdict": "FAIL",
+          "applicability": "CURRENT",
+          "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+          "current_binding": {
+            "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan",
+            "syntax",
+            "function"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            },
+            "syntax": {
+              "status": "FAIL",
+              "reason": "syntax_error",
+              "files": [
+                "config.py"
+              ]
+            },
+            "function": {
+              "status": "UNKNOWN",
+              "reason": "function_not_run_syntax_invalid"
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 108.70360000990331
+        },
+        "C": {
+          "schema": "credproof-report/1",
+          "mode": "C",
+          "verdict": "FAIL",
+          "applicability": "CURRENT",
+          "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+          "current_binding": {
+            "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan",
+            "syntax",
+            "function",
+            "removal",
+            "allowed_changes"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            },
+            "syntax": {
+              "status": "FAIL",
+              "reason": "syntax_error",
+              "files": [
+                "config.py"
+              ]
+            },
+            "function": {
+              "status": "UNKNOWN",
+              "reason": "function_not_run_syntax_invalid"
+            },
+            "removal": {
+              "status": "PASS",
+              "reason": "target_removed",
+              "files": [],
+              "representations": [
+                "exact_utf8_bytes",
+                "parseable_python_string_literals"
+              ]
+            },
+            "allowed_changes": {
+              "status": "FAIL",
+              "reason": "outside_frozen_edit",
+              "files": [
+                "config.py"
+              ]
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 101.64100001566112
+        },
+        "C-no-binding": {
+          "schema": "credproof-report/1",
+          "mode": "C-no-binding",
+          "verdict": "FAIL",
+          "applicability": "CURRENT",
+          "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+          "current_binding": {
+            "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan",
+            "syntax",
+            "function",
+            "removal",
+            "allowed_changes"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            },
+            "syntax": {
+              "status": "FAIL",
+              "reason": "syntax_error",
+              "files": [
+                "config.py"
+              ]
+            },
+            "function": {
+              "status": "UNKNOWN",
+              "reason": "function_not_run_syntax_invalid"
+            },
+            "removal": {
+              "status": "PASS",
+              "reason": "target_removed",
+              "files": [],
+              "representations": [
+                "exact_utf8_bytes",
+                "parseable_python_string_literals"
+              ]
+            },
+            "allowed_changes": {
+              "status": "FAIL",
+              "reason": "outside_frozen_edit",
+              "files": [
+                "config.py"
+              ]
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 108.30249998252839
+        },
+        "B-fresh": {
+          "schema": "credproof-report/1",
+          "mode": "B",
+          "verdict": "FAIL",
+          "applicability": "CURRENT",
+          "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+          "current_binding": {
+            "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan",
+            "syntax",
+            "function"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            },
+            "syntax": {
+              "status": "FAIL",
+              "reason": "syntax_error",
+              "files": [
+                "config.py"
+              ]
+            },
+            "function": {
+              "status": "UNKNOWN",
+              "reason": "function_not_run_syntax_invalid"
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 110.80679995939136
+        }
+      },
+      "C_matches_oracle": true,
+      "original_unchanged": true,
+      "error": null,
+      "evidence_summary": {
+        "binding": {
+          "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+          "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+          "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+          "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+          "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+        },
+        "scope": [
+          "config.py",
+          "notes.txt"
+        ],
+        "checks": {
+          "scan": {
+            "status": "PASS",
+            "binding": {
+              "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 196.58230000641197
+          },
+          "syntax": {
+            "status": "FAIL",
+            "binding": {
+              "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 0.10140007361769676
+          },
+          "function": {
+            "status": "UNKNOWN",
+            "binding": {
+              "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 0.0347999157384038
+          },
+          "removal": {
+            "status": "PASS",
+            "binding": {
+              "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 0.031800009310245514
+          },
+          "allowed_changes": {
+            "status": "FAIL",
+            "binding": {
+              "contract_id": "e83799702b7186e91a71b813f8c105689785d2b7613fa2e818eab3470dcc43d9",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 0.007700058631598949
+          }
+        },
+        "shared_full_collect_ms": 247.4694000557065
+      },
+      "remaining_risks_match_oracle": true,
+      "B_fresh_expected": "FAIL",
+      "B_fresh_matches_own_oracle": true,
+      "B_fresh_total_ms": 338.564,
+      "elapsed_seconds": 1.453633
+    },
+    {
+      "case_id": "syntax_broken",
+      "layer": "fresh",
+      "repeat": 2,
+      "object_relative_path": "objects/o0022",
+      "expected_C": "FAIL",
+      "oracle": {
+        "expected_verdict": "FAIL",
+        "facts": {
+          "syntax_valid": false,
+          "required_env_read": false,
+          "positive_behavior": false,
+          "missing_env_fails_closed": false,
+          "only_authorized_change": false,
+          "old_value_absent": true,
+          "non_target_files_unchanged": true
+        },
+        "delivery_facts": {},
+        "method": "independent allowlisted AST interpretation and direct file comparisons"
+      },
+      "reports": {
+        "A": {
+          "schema": "credproof-report/1",
+          "mode": "A",
+          "verdict": "PASS",
+          "applicability": "CURRENT",
+          "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+          "current_binding": {
+            "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 101.52620007283986
+        },
+        "B": {
+          "schema": "credproof-report/1",
+          "mode": "B",
+          "verdict": "FAIL",
+          "applicability": "CURRENT",
+          "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+          "current_binding": {
+            "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan",
+            "syntax",
+            "function"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            },
+            "syntax": {
+              "status": "FAIL",
+              "reason": "syntax_error",
+              "files": [
+                "config.py"
+              ]
+            },
+            "function": {
+              "status": "UNKNOWN",
+              "reason": "function_not_run_syntax_invalid"
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 102.36490005627275
+        },
+        "C": {
+          "schema": "credproof-report/1",
+          "mode": "C",
+          "verdict": "FAIL",
+          "applicability": "CURRENT",
+          "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+          "current_binding": {
+            "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan",
+            "syntax",
+            "function",
+            "removal",
+            "allowed_changes"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            },
+            "syntax": {
+              "status": "FAIL",
+              "reason": "syntax_error",
+              "files": [
+                "config.py"
+              ]
+            },
+            "function": {
+              "status": "UNKNOWN",
+              "reason": "function_not_run_syntax_invalid"
+            },
+            "removal": {
+              "status": "PASS",
+              "reason": "target_removed",
+              "files": [],
+              "representations": [
+                "exact_utf8_bytes",
+                "parseable_python_string_literals"
+              ]
+            },
+            "allowed_changes": {
+              "status": "FAIL",
+              "reason": "outside_frozen_edit",
+              "files": [
+                "config.py"
+              ]
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 99.04940007254481
+        },
+        "C-no-binding": {
+          "schema": "credproof-report/1",
+          "mode": "C-no-binding",
+          "verdict": "FAIL",
+          "applicability": "CURRENT",
+          "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+          "current_binding": {
+            "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan",
+            "syntax",
+            "function",
+            "removal",
+            "allowed_changes"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            },
+            "syntax": {
+              "status": "FAIL",
+              "reason": "syntax_error",
+              "files": [
+                "config.py"
+              ]
+            },
+            "function": {
+              "status": "UNKNOWN",
+              "reason": "function_not_run_syntax_invalid"
+            },
+            "removal": {
+              "status": "PASS",
+              "reason": "target_removed",
+              "files": [],
+              "representations": [
+                "exact_utf8_bytes",
+                "parseable_python_string_literals"
+              ]
+            },
+            "allowed_changes": {
+              "status": "FAIL",
+              "reason": "outside_frozen_edit",
+              "files": [
+                "config.py"
+              ]
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 108.97609998937696
+        },
+        "B-fresh": {
+          "schema": "credproof-report/1",
+          "mode": "B",
+          "verdict": "FAIL",
+          "applicability": "CURRENT",
+          "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+          "current_binding": {
+            "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan",
+            "syntax",
+            "function"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            },
+            "syntax": {
+              "status": "FAIL",
+              "reason": "syntax_error",
+              "files": [
+                "config.py"
+              ]
+            },
+            "function": {
+              "status": "UNKNOWN",
+              "reason": "function_not_run_syntax_invalid"
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 108.21660002693534
+        }
+      },
+      "C_matches_oracle": true,
+      "original_unchanged": true,
+      "error": null,
+      "evidence_summary": {
+        "binding": {
+          "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+          "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+          "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+          "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+          "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+        },
+        "scope": [
+          "config.py",
+          "notes.txt"
+        ],
+        "checks": {
+          "scan": {
+            "status": "PASS",
+            "binding": {
+              "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 187.52899998798966
+          },
+          "syntax": {
+            "status": "FAIL",
+            "binding": {
+              "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 0.08769996929913759
+          },
+          "function": {
+            "status": "UNKNOWN",
+            "binding": {
+              "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 0.03490003291517496
+          },
+          "removal": {
+            "status": "PASS",
+            "binding": {
+              "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 0.036800047382712364
+          },
+          "allowed_changes": {
+            "status": "FAIL",
+            "binding": {
+              "contract_id": "7cf7d0b215ae6c52e46c283dc2e1c370bc8f7f5582a2b22ea742d2637ca05b11",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 0.007300055585801601
+          }
+        },
+        "shared_full_collect_ms": 248.58040001709014
+      },
+      "remaining_risks_match_oracle": true,
+      "B_fresh_expected": "FAIL",
+      "B_fresh_matches_own_oracle": true,
+      "B_fresh_total_ms": 326.338,
+      "elapsed_seconds": 1.432394
+    },
+    {
+      "case_id": "syntax_broken",
+      "layer": "fresh",
+      "repeat": 3,
+      "object_relative_path": "objects/o0038",
+      "expected_C": "FAIL",
+      "oracle": {
+        "expected_verdict": "FAIL",
+        "facts": {
+          "syntax_valid": false,
+          "required_env_read": false,
+          "positive_behavior": false,
+          "missing_env_fails_closed": false,
+          "only_authorized_change": false,
+          "old_value_absent": true,
+          "non_target_files_unchanged": true
+        },
+        "delivery_facts": {},
+        "method": "independent allowlisted AST interpretation and direct file comparisons"
+      },
+      "reports": {
+        "A": {
+          "schema": "credproof-report/1",
+          "mode": "A",
+          "verdict": "PASS",
+          "applicability": "CURRENT",
+          "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+          "current_binding": {
+            "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 119.45999995805323
+        },
+        "B": {
+          "schema": "credproof-report/1",
+          "mode": "B",
+          "verdict": "FAIL",
+          "applicability": "CURRENT",
+          "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+          "current_binding": {
+            "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan",
+            "syntax",
+            "function"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            },
+            "syntax": {
+              "status": "FAIL",
+              "reason": "syntax_error",
+              "files": [
+                "config.py"
+              ]
+            },
+            "function": {
+              "status": "UNKNOWN",
+              "reason": "function_not_run_syntax_invalid"
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 108.16940001677722
+        },
+        "C": {
+          "schema": "credproof-report/1",
+          "mode": "C",
+          "verdict": "FAIL",
+          "applicability": "CURRENT",
+          "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+          "current_binding": {
+            "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan",
+            "syntax",
+            "function",
+            "removal",
+            "allowed_changes"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            },
+            "syntax": {
+              "status": "FAIL",
+              "reason": "syntax_error",
+              "files": [
+                "config.py"
+              ]
+            },
+            "function": {
+              "status": "UNKNOWN",
+              "reason": "function_not_run_syntax_invalid"
+            },
+            "removal": {
+              "status": "PASS",
+              "reason": "target_removed",
+              "files": [],
+              "representations": [
+                "exact_utf8_bytes",
+                "parseable_python_string_literals"
+              ]
+            },
+            "allowed_changes": {
+              "status": "FAIL",
+              "reason": "outside_frozen_edit",
+              "files": [
+                "config.py"
+              ]
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 110.09760003071278
+        },
+        "C-no-binding": {
+          "schema": "credproof-report/1",
+          "mode": "C-no-binding",
+          "verdict": "FAIL",
+          "applicability": "CURRENT",
+          "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+          "current_binding": {
+            "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan",
+            "syntax",
+            "function",
+            "removal",
+            "allowed_changes"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            },
+            "syntax": {
+              "status": "FAIL",
+              "reason": "syntax_error",
+              "files": [
+                "config.py"
+              ]
+            },
+            "function": {
+              "status": "UNKNOWN",
+              "reason": "function_not_run_syntax_invalid"
+            },
+            "removal": {
+              "status": "PASS",
+              "reason": "target_removed",
+              "files": [],
+              "representations": [
+                "exact_utf8_bytes",
+                "parseable_python_string_literals"
+              ]
+            },
+            "allowed_changes": {
+              "status": "FAIL",
+              "reason": "outside_frozen_edit",
+              "files": [
+                "config.py"
+              ]
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 107.65599994920194
+        },
+        "B-fresh": {
+          "schema": "credproof-report/1",
+          "mode": "B",
+          "verdict": "FAIL",
+          "applicability": "CURRENT",
+          "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+          "current_binding": {
+            "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+            "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+            "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+            "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+            "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+          },
+          "scope": [
+            "config.py",
+            "notes.txt"
+          ],
+          "required_checks": [
+            "scan",
+            "syntax",
+            "function"
+          ],
+          "obligations": {
+            "scan": {
+              "status": "PASS",
+              "reason": "zero_findings",
+              "finding_count": 0,
+              "locations": [],
+              "objects_scanned": 2
+            },
+            "syntax": {
+              "status": "FAIL",
+              "reason": "syntax_error",
+              "files": [
+                "config.py"
+              ]
+            },
+            "function": {
+              "status": "UNKNOWN",
+              "reason": "function_not_run_syntax_invalid"
+            }
+          },
+          "reasons": [],
+          "candidate_read_errors": {},
+          "candidate_manifest": {
+            "config.py": "72e01c09859056260ca2fa5148dab7cefc22afacaebf1a6f150c99ad18caee89",
+            "notes.txt": "aae1175dee3600957f23f98f6b0e34128816487bcd99b4807aca3d03247634d3"
+          },
+          "remaining_risks": {
+            "external_revocation": "UNKNOWN",
+            "history": "NOT_SCANNED",
+            "worktree": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            },
+            "index": {
+              "presence": "PRESENT",
+              "scope": [
+                "config.py",
+                "notes.txt"
+              ],
+              "coverage": "COMPLETE",
+              "unchanged_since_freeze": true,
+              "matches_candidate": false,
+              "observation": "current_origin_read_separately_from_frozen_before_material"
+            }
+          },
+          "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+          "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+          "limitations": [
+            "synthetic-only",
+            "one restricted Python assignment",
+            "closed functional fixture grammar",
+            "local untrusted hashes are not signatures or third-party attestation"
+          ],
+          "duration_ms": 118.00590006168932
+        }
+      },
+      "C_matches_oracle": true,
+      "original_unchanged": true,
+      "error": null,
+      "evidence_summary": {
+        "binding": {
+          "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+          "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+          "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+          "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+          "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+        },
+        "scope": [
+          "config.py",
+          "notes.txt"
+        ],
+        "checks": {
+          "scan": {
+            "status": "PASS",
+            "binding": {
+              "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 188.25729994568974
+          },
+          "syntax": {
+            "status": "FAIL",
+            "binding": {
+              "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 0.09129999671131372
+          },
+          "function": {
+            "status": "UNKNOWN",
+            "binding": {
+              "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 0.035499921068549156
+          },
+          "removal": {
+            "status": "PASS",
+            "binding": {
+              "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 0.031000003218650818
+          },
+          "allowed_changes": {
+            "status": "FAIL",
+            "binding": {
+              "contract_id": "c26592a6964884bd517c1036c520a39098f0f7cf574df5bce0b82ea329d3c7e0",
+              "candidate_id": "1f7635febf64102c54f10d170d65b02dd5acd2f2d37014848db655bdffdebfab",
+              "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+              "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+              "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+            },
+            "duration_ms": 0.007500057108700275
+          }
+        },
+        "shared_full_collect_ms": 231.0359999537468
+      },
+      "remaining_risks_match_oracle": true,
+      "B_fresh_expected": "FAIL",
+      "B_fresh_matches_own_oracle": true,
+      "B_fresh_total_ms": 334.299,
+      "elapsed_seconds": 1.453734
+    }
+  ]
+}

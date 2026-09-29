@@ -1,0 +1,100 @@
+{
+  "schema": "credproof-report/1",
+  "mode": "C",
+  "verdict": "FAIL",
+  "applicability": "CURRENT",
+  "contract_id": "5dbcd0a0cede16145083b793892db715c1f97cad42f710832b37be38919d329a",
+  "current_binding": {
+    "contract_id": "5dbcd0a0cede16145083b793892db715c1f97cad42f710832b37be38919d329a",
+    "candidate_id": "2990ea13e40c68d2022ae663441194379f2b78741bcb4db3e8790e367145a46b",
+    "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+    "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+    "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+  },
+  "scope": [
+    "config.py",
+    "notes.txt"
+  ],
+  "required_checks": [
+    "scan",
+    "syntax",
+    "function",
+    "removal",
+    "allowed_changes"
+  ],
+  "obligations": {
+    "scan": {
+      "status": "PASS",
+      "reason": "zero_findings",
+      "finding_count": 0,
+      "locations": [],
+      "objects_scanned": 2
+    },
+    "syntax": {
+      "status": "PASS",
+      "reason": "syntax_valid",
+      "files": []
+    },
+    "function": {
+      "status": "FAIL",
+      "reason": "wrong_behavior_when_variable_present"
+    },
+    "removal": {
+      "status": "PASS",
+      "reason": "target_removed",
+      "files": [],
+      "representations": [
+        "exact_utf8_bytes",
+        "parseable_python_string_literals"
+      ]
+    },
+    "allowed_changes": {
+      "status": "FAIL",
+      "reason": "outside_frozen_edit",
+      "files": [
+        "config.py"
+      ]
+    }
+  },
+  "reasons": [],
+  "candidate_read_errors": {},
+  "candidate_manifest": {
+    "config.py": "d2a02f59e3970d73192d7fa900d539f1219d1820d34c2cd96302606869499bfd",
+    "notes.txt": "75598292701f8c8f4e44f1a86af50d6ae36d76db4eed770e413f4bd82074f292"
+  },
+  "remaining_risks": {
+    "external_revocation": "UNKNOWN",
+    "history": "NOT_SCANNED",
+    "worktree": {
+      "presence": "PRESENT",
+      "scope": [
+        "config.py",
+        "notes.txt"
+      ],
+      "coverage": "COMPLETE",
+      "unchanged_since_freeze": true,
+      "matches_candidate": false,
+      "observation": "current_origin_read_separately_from_frozen_before_material"
+    },
+    "index": {
+      "presence": "PRESENT",
+      "scope": [
+        "config.py",
+        "notes.txt"
+      ],
+      "coverage": "COMPLETE",
+      "unchanged_since_freeze": true,
+      "matches_candidate": false,
+      "observation": "current_origin_read_separately_from_frozen_before_material"
+    }
+  },
+  "application_boundary": "A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.",
+  "claim": "Only the specified candidate and declared conditions; not incident closure or credential revocation",
+  "limitations": [
+    "synthetic-only",
+    "one restricted Python assignment",
+    "closed functional fixture grammar",
+    "local untrusted hashes are not signatures or third-party attestation"
+  ],
+  "duration_ms": 109.93739997502416
+}

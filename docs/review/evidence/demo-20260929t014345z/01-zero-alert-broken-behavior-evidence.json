@@ -1,0 +1,95 @@
+{
+  "schema": "credproof-evidence/1",
+  "binding": {
+    "contract_id": "5dbcd0a0cede16145083b793892db715c1f97cad42f710832b37be38919d329a",
+    "candidate_id": "2990ea13e40c68d2022ae663441194379f2b78741bcb4db3e8790e367145a46b",
+    "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+    "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+    "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+  },
+  "scope": [
+    "config.py",
+    "notes.txt"
+  ],
+  "candidate_manifest": {
+    "config.py": "d2a02f59e3970d73192d7fa900d539f1219d1820d34c2cd96302606869499bfd",
+    "notes.txt": "75598292701f8c8f4e44f1a86af50d6ae36d76db4eed770e413f4bd82074f292"
+  },
+  "read_errors": {},
+  "stable_during_collection": true,
+  "checks": {
+    "scan": {
+      "status": "PASS",
+      "reason": "zero_findings",
+      "finding_count": 0,
+      "locations": [],
+      "objects_scanned": 2,
+      "binding": {
+        "contract_id": "5dbcd0a0cede16145083b793892db715c1f97cad42f710832b37be38919d329a",
+        "candidate_id": "2990ea13e40c68d2022ae663441194379f2b78741bcb4db3e8790e367145a46b",
+        "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+        "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+        "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+      },
+      "duration_ms": 189.5964000141248
+    },
+    "syntax": {
+      "status": "PASS",
+      "reason": "syntax_valid",
+      "files": [],
+      "binding": {
+        "contract_id": "5dbcd0a0cede16145083b793892db715c1f97cad42f710832b37be38919d329a",
+        "candidate_id": "2990ea13e40c68d2022ae663441194379f2b78741bcb4db3e8790e367145a46b",
+        "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+        "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+        "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+      },
+      "duration_ms": 0.06420002318918705
+    },
+    "function": {
+      "status": "FAIL",
+      "reason": "wrong_behavior_when_variable_present",
+      "binding": {
+        "contract_id": "5dbcd0a0cede16145083b793892db715c1f97cad42f710832b37be38919d329a",
+        "candidate_id": "2990ea13e40c68d2022ae663441194379f2b78741bcb4db3e8790e367145a46b",
+        "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+        "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+        "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+      },
+      "duration_ms": 0.11350004933774471
+    },
+    "removal": {
+      "status": "PASS",
+      "reason": "target_removed",
+      "files": [],
+      "representations": [
+        "exact_utf8_bytes",
+        "parseable_python_string_literals"
+      ],
+      "binding": {
+        "contract_id": "5dbcd0a0cede16145083b793892db715c1f97cad42f710832b37be38919d329a",
+        "candidate_id": "2990ea13e40c68d2022ae663441194379f2b78741bcb4db3e8790e367145a46b",
+        "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+        "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+        "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+      },
+      "duration_ms": 0.03529991954565048
+    },
+    "allowed_changes": {
+      "status": "FAIL",
+      "reason": "outside_frozen_edit",
+      "files": [
+        "config.py"
+      ],
+      "binding": {
+        "contract_id": "5dbcd0a0cede16145083b793892db715c1f97cad42f710832b37be38919d329a",
+        "candidate_id": "2990ea13e40c68d2022ae663441194379f2b78741bcb4db3e8790e367145a46b",
+        "scope_id": "d2495a9c36044bd838eaf6a2efce003e04e11281cf0b692726166f62e6cd8967",
+        "rules_id": "181afb8a601cb9cf7f5acec909c5f1bf0d234895a58c0105773c49bb0e90b9dd",
+        "validator_id": "f4b2039f3fd96123909f2f678e4f3c11b9b219aecfe5640f128f5e8b8be7f638"
+      },
+      "duration_ms": 0.006200047209858894
+    }
+  },
+  "duration_ms": 227.3205000674352
+}
