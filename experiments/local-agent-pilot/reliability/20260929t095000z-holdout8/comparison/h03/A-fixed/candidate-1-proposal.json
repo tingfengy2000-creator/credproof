@@ -1,0 +1,18 @@
+{
+  "rationale": [
+    "redact_tainted_return",
+    "replace_exception_detail_with_contract_message"
+  ],
+  "source_sha256": "ed23aadb9b13b3ca31563c9968f84c1520d8671e58c496e9ca3fd7914789d393",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-3"
+    ],
+    "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

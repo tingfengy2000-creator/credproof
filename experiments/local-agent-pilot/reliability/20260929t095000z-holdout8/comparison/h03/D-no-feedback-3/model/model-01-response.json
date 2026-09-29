@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-745",
+  "object": "chat.completion",
+  "created": 1790675208,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "{\"diagnosis\":\"The tool leaks the credential in log messages when the authentication provider raises a RuntimeError. Specifically, the error details include the credential in the log output, violating the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging.\", \"initially_leaking\":true, \"code\":\"import os\\nimport logging\\nimport json\\n\\n\\ndef _valid(request):\\n    return (isinstance(request, dict)\\n            and isinstance(request.get(\\\"request_id\\\"), str) and bool(request[\\\"request_id\\\"])\\n            and isinstance(request.get(\\\"resource\\\"), str) and bool(request[\\\"resource\\\"])\\n            and type(request.get(\\\"units\\\")) is int and 1 <= request[\\\"units\\\"] <= 5\\n            and type(request.get(\\\"debug\\\", False)) is bool)\\n\\n\\ndef _error(request, kind, message):\\n    identifier = request.get(\\\"request_id\\\", \\\"\\\") if isinstance(request, dict) else \\\"\\\"\\n    if not isinstance(identifier, str):\\n        identifier = \\\"\\\"\\n    return {\\\"ok\\\": False, \\\"request_id\\\": identifier, \\\"error\\\": {\\\"type\\\": kind, \\\"message\\\": message}}\\n\\n\\ndef _success(request, authorization):\\n    return {\\\"ok\\\": True, \\\"request_id\\\": request[\\\"request_id\\\"], \\\"resource\\\": request[\\\"resource\\\"],\\n            \\\"units\\\": request[\\\"units\\\"], \\\"total\\\": request[\\\"units\\\"] * 7,\\n            \\\"subject\\\": authorization[\\\"subject\\\"],\\n            \\\"meta\\\": {\\\"route\\\": \\\"local-mock\\\", \\\"debug\\\": request.get(\\\"debug\\\", False)}}\\n\\n\\ndef _provider_result(service, supplied, resource):\\n    try:\\n        return {\\\"reply\\\": service.authenticate(supplied, resource), \\\"failure\\\": None}\\n    except RuntimeError as problem:\\n        return {\\\"reply\\\": None, \\\"failure\\\": {\\\"operation\\\": \\\"authenticate\\\", \\\"details\\\": str(problem)}}\\n\\n\\ndef _report_provider_failure(failure):\\n    logging.getLogger(\\\"local.provider\\\").warning(\\\"provider failure=%s\\\", json.dumps(failure))\\n\\n\\ndef run(request, auth_service):\\n    if not _valid(request):\\n        return _error(request, \\\"invalid_request\\\", \\\"Invalid request\\\")\\n    outcome = _provider_result(auth_service, os.environ[\\\"CP_TEST_CREDENTIAL\\\"], request[\\\"resource\\\"])\\n    if outcome[\\\"failure\\\"] is not None:\\n        _report_provider_failure(outcome[\\\"failure\\\"])\\n        return _error(request, \\\"auth_unavailable\\\", \\\"Authentication service unavailable\\\")\\n    if not outcome[\\\"reply\\\"][\\\"authorized\\\"]:\\n        return _error(request, \\\"permission_denied\\\", \\\"Permission denied\\\")\\n    return _success(request, outcome[\\\"reply\\\"])\"}\n"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 1604,
+    "prompt_tokens_details": {
+      "cached_tokens": 1603
+    },
+    "completion_tokens": 601,
+    "total_tokens": 2205
+  }
+}

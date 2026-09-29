@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-713",
+  "object": "chat.completion",
+  "created": 1790675185,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_0ratzey8",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"candidate-2\",\"initially_leaking\":true,\"diagnosis\":\"The second patch fixes the credential leak by completely sanitizing the failure details before logging. Instead of logging the raw failure information that might contain credential references, it creates a new sanitized failure object with a generic error message that doesn't reveal any credential information or processing details.\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 5828,
+    "prompt_tokens_details": {
+      "cached_tokens": 5725
+    },
+    "completion_tokens": 101,
+    "total_tokens": 5929
+  }
+}

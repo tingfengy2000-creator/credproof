@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-875",
+  "object": "chat.completion",
+  "created": 1790675172,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_yrc1w4dn",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "read_code",
+              "arguments": "{\"path\":\"tool.py\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2014,
+    "prompt_tokens_details": {
+      "cached_tokens": 1645
+    },
+    "completion_tokens": 22,
+    "total_tokens": 2036
+  }
+}

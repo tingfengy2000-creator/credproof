@@ -1,0 +1,17 @@
+{
+  "rationale": "Fixed credential leak in logging statement. The original code was logging both the resource and the credential directly in the log message, which violates the requirement that credentials must never appear in logs or any output channels. The fix removes the credential from the logging statement while preserving all other functionality.",
+  "source_sha256": "a5a0a63639f1c0c8d410b04ce91f3795383d439e4ba2b50ca4cdc5e355079dee",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-1",
+      "evidence-2",
+      "evidence-3"
+    ],
+    "source_sha256": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

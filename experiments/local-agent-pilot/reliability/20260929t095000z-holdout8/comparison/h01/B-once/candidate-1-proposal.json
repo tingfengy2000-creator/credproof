@@ -1,0 +1,17 @@
+{
+  "rationale": "The tool leaks the credential through logging by passing it to _authorize_with_audit which logs it with the resource, violating the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging. The credential is redacted in the log output but still passed to the logger, confirming a leak.",
+  "source_sha256": "a3b156575e63c9e3b2d972cf1c29042f26249b938fc6d1dad58526ddaf88b6eb",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-1",
+      "evidence-2",
+      "evidence-3"
+    ],
+    "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

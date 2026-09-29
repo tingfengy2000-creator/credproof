@@ -1,0 +1,63 @@
+{
+  "boundary": "actual isolated executions; missing-current is explicit material-omission fault injection, not a model trial",
+  "rows": [
+    {
+      "example": "accepted",
+      "source_case": "h03",
+      "method": "C-agent",
+      "current_verdict": "PASS",
+      "prior_report_applicable": true,
+      "reasons": [],
+      "old_report_preserved": true
+    },
+    {
+      "example": "rejected",
+      "source_case": "h01",
+      "method": "A-fixed",
+      "current_verdict": "FAIL",
+      "prior_report_applicable": true,
+      "reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "old_report_preserved": true
+    },
+    {
+      "example": "unchanged",
+      "source_case": "h07",
+      "method": "C-agent",
+      "current_verdict": "PASS",
+      "prior_report_applicable": true,
+      "reasons": [],
+      "old_report_preserved": true
+    },
+    {
+      "example": "incomplete",
+      "source_case": "h05",
+      "method": "C-agent",
+      "current_verdict": "PASS",
+      "prior_report_applicable": true,
+      "reasons": [],
+      "old_report_preserved": true
+    },
+    {
+      "example": "stale-pass",
+      "source_case": "h03",
+      "method": "C-agent",
+      "current_verdict": "PASS",
+      "prior_report_applicable": false,
+      "reasons": [],
+      "old_report_preserved": true
+    },
+    {
+      "example": "missing-current",
+      "source_case": "h03",
+      "method": "C-agent",
+      "current_verdict": "UNKNOWN",
+      "prior_report_applicable": false,
+      "reasons": [
+        "BUNDLE_MATERIAL_UNAVAILABLE"
+      ],
+      "old_report_preserved": true
+    }
+  ]
+}

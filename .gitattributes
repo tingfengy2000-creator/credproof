@@ -20,3 +20,6 @@ agent_pilot/protocol*.json -text whitespace=cr-at-eol
 agent_pilot/isolation-tests/*.json -text whitespace=cr-at-eol
 agent_pilot/isolation-tests/observations-*/** -text whitespace=cr-at-eol
 experiments/local-agent-pilot/records/** -text whitespace=-blank-at-eol,cr-at-eol
+experiments/local-agent-pilot/reliability/** -text whitespace=-blank-at-eol,cr-at-eol
+examples/local-agent/** -text whitespace=-blank-at-eol,cr-at-eol
+experiments/local-agent-pilot/source-snapshots/** -text whitespace=-blank-at-eol,cr-at-eol

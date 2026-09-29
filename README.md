@@ -1,3 +1,5 @@
+> Local Agent engineering review: see [current entry](docs/local-agent/reliability/README.md). This experimental branch preserves the earlier verifier below; no competition submission or public release in this round.
+
 # CredProof 密证
 
 面向凭据修复的证据化验收系统。当前提供受控合成场景的真实 CLI 与实验材料，不是完整安全平台。

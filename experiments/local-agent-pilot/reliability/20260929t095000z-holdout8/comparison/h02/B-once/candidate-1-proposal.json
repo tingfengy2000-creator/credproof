@@ -1,0 +1,15 @@
+{
+  "rationale": "The tool leaks the credential in stdout when authorization is denied, as evidenced by the audit log containing the redacted credential in the 'supplied' field. This violates the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging.",
+  "source_sha256": "2113136c31b98a2665e08b484e46a11368f08299554bcd70ecf51718f5bc4751",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-2"
+    ],
+    "source_sha256": "3fd570865d7a5b36a38352aa0e584c12e2673c01451192ad6795b0b763b4c345",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

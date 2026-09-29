@@ -1,0 +1,15 @@
+{
+  "rationale": "The patch removes the diagnostic field that was leaking the credential. The original code added a 'diagnostic' field to the result which contained the credential in transport.headers.Authorization. This field is removed to prevent any credential leakage in the response.",
+  "source_sha256": "704e4f51dab78ed36459965a475664d2830549c6581f54adb2b5ed7e6f6313ed",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-1"
+    ],
+    "source_sha256": "81d28257bdf9f4e55b7b09a87612ad1eef0aa64ae12e756f3a38029ce33f1072",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

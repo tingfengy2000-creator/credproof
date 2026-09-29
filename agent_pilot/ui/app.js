@@ -124,8 +124,10 @@ function renderScope() {
 function renderActions() {
   const run = state.run;
   const status = run?.status;
+  const finishedLabel = !activeStatuses.has(status) && taskNames[run?.task_status]
+    ? taskNames[run.task_status] : statusNames[status];
   const caption = !run ? selectedCase() ? '已选择案例，尚未执行' : '等待选择'
-    : state.replay ? `回放 · ${statusNames[status]}` : statusNames[status];
+    : state.replay ? `回放 · ${finishedLabel}` : finishedLabel;
   $('run-status').className = `badge ${status === 'RUNNING' || status === 'QUEUED' ? 'running' : status === 'ERROR' || status === 'STOPPED' ? 'unknown' : 'neutral'}`;
   $('run-status').textContent = caption;
   $('run-description').textContent = state.busy ? '正在向本机服务发送请求…'

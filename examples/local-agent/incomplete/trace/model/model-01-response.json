@@ -1,0 +1,25 @@
+{
+  "choices": [
+    {
+      "finish_reason": "stop",
+      "index": 0,
+      "message": {
+        "content": "<function=read_code>\n<parameter=path>\ntool.py\n</parameter>\n</function>\n</tool_call>",
+        "role": "assistant"
+      }
+    }
+  ],
+  "created": 1790675250,
+  "id": "chatcmpl-977",
+  "model": "qwen3-coder:30b",
+  "object": "chat.completion",
+  "system_fingerprint": "fp_ollama",
+  "usage": {
+    "completion_tokens": 20,
+    "prompt_tokens": 1975,
+    "prompt_tokens_details": {
+      "cached_tokens": 1632
+    },
+    "total_tokens": 1995
+  }
+}

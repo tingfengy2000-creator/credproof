@@ -1,0 +1,15 @@
+{
+  "rationale": "The patch fixes the credential leak by redacting credential information from the logging output in the _report_provider_failure function. The original code was directly logging the failure details which contained credential information. This patch creates a copy of the failure object and removes or replaces credential references in the details string before logging.",
+  "source_sha256": "05541cc1b10b278ef1ec08d9935423ef9f83935cd69eb01afa45c92291575c1e",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-3"
+    ],
+    "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

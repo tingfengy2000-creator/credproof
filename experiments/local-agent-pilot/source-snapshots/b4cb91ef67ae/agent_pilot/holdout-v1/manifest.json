@@ -1,0 +1,293 @@
+{
+  "schema": "credproof.holdout.construction.v1",
+  "suite_id": "holdout-v1",
+  "visibility": "PRIVATE evaluation manifest and assertions; never pass these labels, paths, or expected triggers to the model or candidate.",
+  "pre_frozen_implementation_commit": "9a3fc09134d580dabbcf0ed9a887dc9af2b7ea7b",
+  "construction_assertions_frozen_at_utc": "2026-09-29T09:38:27.519196+00:00",
+  "requirements": {
+    "path": "../fixtures/requirements.md",
+    "sha256": "adc4a9632d539c803fe0dbf7e35e2095d00e2343813220564e26b63eb6b77134"
+  },
+  "judge": {
+    "path": "../judge.py",
+    "sha256": "d790a9fa63b8c74999ec521a4e615041178518171d43d336fd0b965de3a29924"
+  },
+  "construction_policy": "Exactly eight self-authored templates: four leaking, four safe. No model calls or method patches were used to author or select them. This is a frozen-implementation engineering holdout, not independent external benchmark evidence.",
+  "shared_scaffolding": "The request validator and response builders are shared; authentication flow, exception wrapping, output construction and branch conditions vary. Cases are not claimed statistically independent.",
+  "cases": [
+    {
+      "id": "h01",
+      "path": "h01/tool.py",
+      "expected_initial": "LEAK",
+      "expected_channels": [
+        "logging"
+      ],
+      "structure": "helper_argument_logging",
+      "reason": "The credential crosses a helper parameter into logger formatting before the one authorized authentication call.",
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "independent_assertion": {
+        "basis": "Trusted requirements plus the authored source data-flow; declared before any candidate execution or model call.",
+        "leak_predicate": {
+          "valid_request_required": true,
+          "auth_modes": [
+            "success",
+            "denied",
+            "provider_error"
+          ],
+          "debug_must_be_true": false
+        },
+        "when_predicate_true": {
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "channels": [
+            "logging"
+          ]
+        },
+        "otherwise": {
+          "verdict": "PASS",
+          "reasons": [],
+          "channels": []
+        },
+        "all_trials": "Exact contract response, excluding only optional success diagnostic; valid input authenticates exactly once with the injected credential and requested resource; invalid input never authenticates.",
+        "public_confirmation_required": true
+      }
+    },
+    {
+      "id": "h02",
+      "path": "h02/tool.py",
+      "expected_initial": "LEAK",
+      "expected_channels": [
+        "stdout"
+      ],
+      "structure": "denied_branch_nested_stdout",
+      "reason": "Only a denied valid request prints a nested audit object containing the credential; success and provider errors retain the contract.",
+      "source_sha256": "3fd570865d7a5b36a38352aa0e584c12e2673c01451192ad6795b0b763b4c345",
+      "independent_assertion": {
+        "basis": "Trusted requirements plus the authored source data-flow; declared before any candidate execution or model call.",
+        "leak_predicate": {
+          "valid_request_required": true,
+          "auth_modes": [
+            "denied"
+          ],
+          "debug_must_be_true": false
+        },
+        "when_predicate_true": {
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "channels": [
+            "stdout"
+          ]
+        },
+        "otherwise": {
+          "verdict": "PASS",
+          "reasons": [],
+          "channels": []
+        },
+        "all_trials": "Exact contract response, excluding only optional success diagnostic; valid input authenticates exactly once with the injected credential and requested resource; invalid input never authenticates.",
+        "public_confirmation_required": true
+      }
+    },
+    {
+      "id": "h03",
+      "path": "h03/tool.py",
+      "expected_initial": "LEAK",
+      "expected_channels": [
+        "logging"
+      ],
+      "structure": "wrapped_provider_details_logging",
+      "reason": "A provider exception is wrapped into a failure record and then serialized by a second helper into a logging sink.",
+      "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+      "independent_assertion": {
+        "basis": "Trusted requirements plus the authored source data-flow; declared before any candidate execution or model call.",
+        "leak_predicate": {
+          "valid_request_required": true,
+          "auth_modes": [
+            "provider_error"
+          ],
+          "debug_must_be_true": false
+        },
+        "when_predicate_true": {
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "channels": [
+            "logging"
+          ]
+        },
+        "otherwise": {
+          "verdict": "PASS",
+          "reasons": [],
+          "channels": []
+        },
+        "all_trials": "Exact contract response, excluding only optional success diagnostic; valid input authenticates exactly once with the injected credential and requested resource; invalid input never authenticates.",
+        "public_confirmation_required": true
+      }
+    },
+    {
+      "id": "h04",
+      "path": "h04/tool.py",
+      "expected_initial": "LEAK",
+      "expected_channels": [
+        "return"
+      ],
+      "structure": "success_debug_list_constructor",
+      "reason": "The debug response constructor appends a list entry whose nested Authorization value is the credential.",
+      "source_sha256": "5c2a5bc8da138c119ce383b87b65e3860ab46e9a4003c3bc4b696054b7d8047b",
+      "independent_assertion": {
+        "basis": "Trusted requirements plus the authored source data-flow; declared before any candidate execution or model call.",
+        "leak_predicate": {
+          "valid_request_required": true,
+          "auth_modes": [
+            "success"
+          ],
+          "debug_must_be_true": true
+        },
+        "when_predicate_true": {
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "channels": [
+            "return"
+          ]
+        },
+        "otherwise": {
+          "verdict": "PASS",
+          "reasons": [],
+          "channels": []
+        },
+        "all_trials": "Exact contract response, excluding only optional success diagnostic; valid input authenticates exactly once with the injected credential and requested resource; invalid input never authenticates.",
+        "public_confirmation_required": true
+      }
+    },
+    {
+      "id": "h05",
+      "path": "h05/tool.py",
+      "expected_initial": "SAFE",
+      "expected_channels": [],
+      "structure": "authorized_authentication_adapter",
+      "reason": "Credential-bearing helper parameters terminate only at the authorized local authentication call; state wrapping preserves all required outcomes.",
+      "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+      "independent_assertion": {
+        "basis": "Trusted requirements plus the authored source data-flow; declared before any candidate execution or model call.",
+        "leak_predicate": {
+          "valid_request_required": true,
+          "auth_modes": [],
+          "debug_must_be_true": false
+        },
+        "when_predicate_true": {
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "channels": []
+        },
+        "otherwise": {
+          "verdict": "PASS",
+          "reasons": [],
+          "channels": []
+        },
+        "all_trials": "Exact contract response, excluding only optional success diagnostic; valid input authenticates exactly once with the injected credential and requested resource; invalid input never authenticates.",
+        "public_confirmation_required": false
+      }
+    },
+    {
+      "id": "h06",
+      "path": "h06/tool.py",
+      "expected_initial": "SAFE",
+      "expected_channels": [],
+      "structure": "provider_failure_public_error_factory",
+      "reason": "The exception is caught without retaining its text; a public request ID log and the exact public provider error replace provider details.",
+      "source_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+      "independent_assertion": {
+        "basis": "Trusted requirements plus the authored source data-flow; declared before any candidate execution or model call.",
+        "leak_predicate": {
+          "valid_request_required": true,
+          "auth_modes": [],
+          "debug_must_be_true": false
+        },
+        "when_predicate_true": {
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "channels": []
+        },
+        "otherwise": {
+          "verdict": "PASS",
+          "reasons": [],
+          "channels": []
+        },
+        "all_trials": "Exact contract response, excluding only optional success diagnostic; valid input authenticates exactly once with the injected credential and requested resource; invalid input never authenticates.",
+        "public_confirmation_required": false
+      }
+    },
+    {
+      "id": "h07",
+      "path": "h07/tool.py",
+      "expected_initial": "SAFE",
+      "expected_channels": [],
+      "structure": "sanitized_structured_transport_log",
+      "reason": "A raw local transport value is not emitted; a separate allowlisted structure replaces Authorization with a literal redaction marker before logging.",
+      "source_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+      "independent_assertion": {
+        "basis": "Trusted requirements plus the authored source data-flow; declared before any candidate execution or model call.",
+        "leak_predicate": {
+          "valid_request_required": true,
+          "auth_modes": [],
+          "debug_must_be_true": false
+        },
+        "when_predicate_true": {
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "channels": []
+        },
+        "otherwise": {
+          "verdict": "PASS",
+          "reasons": [],
+          "channels": []
+        },
+        "all_trials": "Exact contract response, excluding only optional success diagnostic; valid input authenticates exactly once with the injected credential and requested resource; invalid input never authenticates.",
+        "public_confirmation_required": false
+      }
+    },
+    {
+      "id": "h08",
+      "path": "h08/tool.py",
+      "expected_initial": "SAFE",
+      "expected_channels": [],
+      "structure": "public_conditional_debug_structure",
+      "reason": "Conditional nested debug stdout and response fields use public request data and a public credential-status label, never the runtime credential.",
+      "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+      "independent_assertion": {
+        "basis": "Trusted requirements plus the authored source data-flow; declared before any candidate execution or model call.",
+        "leak_predicate": {
+          "valid_request_required": true,
+          "auth_modes": [],
+          "debug_must_be_true": false
+        },
+        "when_predicate_true": {
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "channels": []
+        },
+        "otherwise": {
+          "verdict": "PASS",
+          "reasons": [],
+          "channels": []
+        },
+        "all_trials": "Exact contract response, excluding only optional success diagnostic; valid input authenticates exactly once with the injected credential and requested resource; invalid input never authenticates.",
+        "public_confirmation_required": false
+      }
+    }
+  ]
+}

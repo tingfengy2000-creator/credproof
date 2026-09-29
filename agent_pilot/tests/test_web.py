@@ -200,6 +200,32 @@ class WebTests(unittest.TestCase):
         self.assertEqual(result['checks'][0]['status'], 'UNKNOWN')
         self.assertEqual(result['checks'][0]['reason'], 'ISOLATION_ERROR')
 
+    def test_all_tool_judgments_survive_later_assessment_without_changing_confirmation(self):
+        identifier, method = self.historical()
+        record = json.loads((method / 'result.json').read_text())
+        record['diagnosis'] = {'diagnosis': 'Later corrected assessment', 'initially_leaking': False}
+        early = {'diagnosis': 'Earlier false positive', 'initially_leaking': True, 'candidate_id': 'original'}
+        record['tool_trace'] = [
+            {'tool': 'verify_patch', 'arguments': json.dumps(early), 'result': {'verdict': 'PASS'}},
+            {'tool': 'run_controlled_case', 'arguments': {'hypothesis': 'Original runtime suspicion'}, 'result': {}},
+            {'tool': 'verify_patch', 'arguments': early, 'result': {'verdict': 'PASS'}},
+            {'tool': 'submit_patch', 'arguments': {'rationale': 'Unconfirmed repair proposal'},
+             'result': {'status': 'REJECTED', 'reason': 'no_current_confirmed_leak_evidence'}},
+            {'tool': 'verify_patch', 'arguments': record['diagnosis'], 'result': {'verdict': 'PASS'}},
+        ]
+        (method / 'result.json').write_text(json.dumps(record))
+        _, value, _ = self.call('GET', '/api/agent/runs/' + identifier)
+        notes = value['model']['raw_notes']
+        judgments = [json.loads(note['text']) for note in notes if 'verify_patch' in note['source']]
+        self.assertEqual([item['initially_leaking'] for item in judgments], [True, True, False])
+        self.assertEqual(judgments[0]['diagnosis'], 'Earlier false positive')
+        self.assertTrue(any(note['text'] == 'Original runtime suspicion' for note in notes))
+        self.assertEqual(value['model']['proposals'][0]['rationale'], 'Unconfirmed repair proposal')
+        self.assertEqual(value['model']['proposals'][0]['tool_call_index'], 4)
+        self.assertEqual(value['diagnosis']['model_suspicion'], 'Later corrected assessment')
+        self.assertEqual(value['diagnosis']['confirmed'], 'UNKNOWN')
+        self.assertFalse(value['diagnosis']['repair_authorized'])
+
     def test_bundle_export_and_recheck_are_called_and_do_not_overwrite_old_verdict(self):
         identifier, _ = self.historical()
         calls = []

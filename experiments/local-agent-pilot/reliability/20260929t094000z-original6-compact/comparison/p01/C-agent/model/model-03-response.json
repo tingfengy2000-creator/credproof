@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-861",
+  "object": "chat.completion",
+  "created": 1790674479,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let me analyze the code more carefully to understand how to properly construct a test case that would expose this issue.",
+        "tool_calls": [
+          {
+            "id": "call_3knts4qz",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"The credential is leaked in the error message when auth_service.authenticate raises RuntimeError\",\"request\":{\"request_id\":\"public-check\",\"resource\":\"public-resource\",\"units\":2},\"auth_mode\":\"provider_error\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3031,
+    "prompt_tokens_details": {
+      "cached_tokens": 2909
+    },
+    "completion_tokens": 96,
+    "total_tokens": 3127
+  }
+}

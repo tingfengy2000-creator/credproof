@@ -1,0 +1,19 @@
+{
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "evidence_ids": [
+      "evidence-1",
+      "evidence-2",
+      "evidence-3"
+    ],
+    "repair_authorized": true,
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety",
+    "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a"
+  },
+  "rationale": [
+    "redact_tainted_return"
+  ],
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "source_sha256": "9b065136c80dbbc32492241c3df7284e1c57ff73a5a6770bd7ba24117c766eaa"
+}

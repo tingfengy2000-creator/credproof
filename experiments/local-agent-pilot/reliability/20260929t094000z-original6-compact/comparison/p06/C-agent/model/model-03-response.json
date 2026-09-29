@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-985",
+  "object": "chat.completion",
+  "created": 1790674625,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let me try a different approach and run a case with a denied authorization to see if there are any issues:",
+        "tool_calls": [
+          {
+            "id": "call_dzwh85q6",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Check if credential appears in error messages or logs during permission denied scenario\",\"request\":{\"debug\":true,\"request_id\":\"test-123\",\"resource\":\"test-resource\",\"units\":3},\"auth_mode\":\"denied\",\"candidate_id\":\"test-2\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2976,
+    "prompt_tokens_details": {
+      "cached_tokens": 2853
+    },
+    "completion_tokens": 115,
+    "total_tokens": 3091
+  }
+}

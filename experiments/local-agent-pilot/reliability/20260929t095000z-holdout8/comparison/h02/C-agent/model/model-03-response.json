@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-308",
+  "object": "chat.completion",
+  "created": 1790675154,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_asb7hsox",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original tool.py had a credential leak in the run function where, during authorization denial, the credential was printed to stdout in a debug audit log. The patch removes this leak by eliminating the debug print statement that was outputting the credential.\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3516,
+    "prompt_tokens_details": {
+      "cached_tokens": 2971
+    },
+    "completion_tokens": 96,
+    "total_tokens": 3612
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-548",
+  "object": "chat.completion",
+  "created": 1790675306,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let me try a different approach to test the behavior. I'll analyze the code more carefully for potential issues.\n\nLooking at the code, I can see that in `_public_diagnostic` function:\n1. It prints diagnostic information using `print(json.dumps(...))`\n2. The print statement includes request_id and resource values\n3. However, it does not include the credential\n\nBut there's a potential issue: if debug mode is enabled, the diagnostic output could potentially expose sensitive information through the printed JSON.\n\nLet me check if there are any other issues by running another test case:",
+        "tool_calls": [
+          {
+            "id": "call_scpauvw3",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Testing behavior with invalid request\",\"request\":{\"debug\":true,\"request_id\":\"\",\"resource\":\"test-resource\",\"units\":2},\"auth_mode\":\"success\",\"candidate_id\":\"test-2\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3118,
+    "prompt_tokens_details": {
+      "cached_tokens": 3001
+    },
+    "completion_tokens": 195,
+    "total_tokens": 3313
+  }
+}

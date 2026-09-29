@@ -1,0 +1,54 @@
+[
+  {
+    "name": "core-regression",
+    "command": [
+      "C:/Python314/python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 23.07878079987131
+  },
+  {
+    "name": "agent-regression",
+    "command": [
+      "wsl",
+      "-d",
+      "Ubuntu-24.04",
+      "--cd",
+      "/mnt/e/比赛/密证_CredProof-local-agent",
+      "--exec",
+      "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "agent_pilot/tests",
+      "-v"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 8.917825899785385
+  },
+  {
+    "name": "model-client",
+    "command": [
+      "wsl",
+      "-d",
+      "Ubuntu-24.04",
+      "--cd",
+      "/mnt/e/比赛/密证_CredProof-local-agent",
+      "--exec",
+      "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+      "-m",
+      "unittest",
+      "agent_pilot.test_model_client",
+      "-v"
+    ],
+    "exit_code": 0,
+    "elapsed_s": 0.7884162999689579
+  }
+]

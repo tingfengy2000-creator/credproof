@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-810",
+  "object": "chat.completion",
+  "created": 1790674624,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I've reviewed the tool.py code and the initial diagnostic observations. Based on the code, I need to form a hypothesis about potential leaks and then test it.\n\nLooking at the code, there doesn't appear to be an obvious credential leak in the main execution path. The credential is read from `os.environ[\"CP_TEST_CREDENTIAL\"]` and passed only to the authentication service, which is correct per requirements.\n\nHowever, I should test a specific scenario that might reveal a leak - for example, what happens if we examine the logging output or error messages more closely.\n\nLet me run a test case to check for potential issues:",
+        "tool_calls": [
+          {
+            "id": "call_bnqw5pvm",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Check if credential appears in error messages or logs during authentication failure\",\"request\":{\"debug\":true,\"request_id\":\"test-123\",\"resource\":\"test-resource\",\"units\":3},\"auth_mode\":\"provider_error\",\"candidate_id\":\"test-1\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2729,
+    "prompt_tokens_details": {
+      "cached_tokens": 1967
+    },
+    "completion_tokens": 223,
+    "total_tokens": 2952
+  }
+}

@@ -1,0 +1,123 @@
+[
+  {
+    "conditions": {
+      "auth_mode": "success",
+      "request": {
+        "debug": true,
+        "request_id": "public-check",
+        "resource": "public-resource",
+        "units": 2
+      }
+    },
+    "conditions_sha256": "9b8f2ef5f4edc657068b4eb8fae025ff3e661097fd1cac8cdfe77e21f97fd6e8",
+    "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+    "id": "evidence-1",
+    "observation": {
+      "actual": {
+        "logs": [],
+        "raised": null,
+        "returned": {
+          "meta": {
+            "debug": true,
+            "route": "local-mock"
+          },
+          "ok": true,
+          "request_id": "public-check",
+          "resource": "public-resource",
+          "subject": "subject:public-resource",
+          "total": 14,
+          "units": 2
+        },
+        "stderr": "",
+        "stdout": ""
+      },
+      "auth_call_count": 1,
+      "leak_channels": [],
+      "reasons": [],
+      "verdict": "PASS"
+    },
+    "observed_at": "2026-09-29T09:46:11.480387+00:00",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e"
+  },
+  {
+    "conditions": {
+      "auth_mode": "denied",
+      "request": {
+        "debug": true,
+        "request_id": "public-check",
+        "resource": "public-resource",
+        "units": 2
+      }
+    },
+    "conditions_sha256": "a172742221fc518ba15aa094eda501d2fb6ccbf0ffe46fa5064976741638ad3a",
+    "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+    "id": "evidence-2",
+    "observation": {
+      "actual": {
+        "logs": [],
+        "raised": null,
+        "returned": {
+          "error": {
+            "message": "Permission denied",
+            "type": "permission_denied"
+          },
+          "ok": false,
+          "request_id": "public-check"
+        },
+        "stderr": "",
+        "stdout": ""
+      },
+      "auth_call_count": 1,
+      "leak_channels": [],
+      "reasons": [],
+      "verdict": "PASS"
+    },
+    "observed_at": "2026-09-29T09:46:11.643172+00:00",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e"
+  },
+  {
+    "conditions": {
+      "auth_mode": "provider_error",
+      "request": {
+        "debug": true,
+        "request_id": "public-check",
+        "resource": "public-resource",
+        "units": 2
+      }
+    },
+    "conditions_sha256": "f4f673840e4c0e3edead27b51d6c7556c3adfcf07e3f755697b93d3c1aee78a2",
+    "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+    "id": "evidence-3",
+    "observation": {
+      "actual": {
+        "logs": [
+          "WARNING:provider failure={\"operation\": \"authenticate\", \"details\": \"provider rejected credential=[REDACTED]\"}"
+        ],
+        "raised": null,
+        "returned": {
+          "error": {
+            "message": "Authentication service unavailable",
+            "type": "auth_unavailable"
+          },
+          "ok": false,
+          "request_id": "public-check"
+        },
+        "stderr": "",
+        "stdout": ""
+      },
+      "auth_call_count": 1,
+      "leak_channels": [
+        "logging"
+      ],
+      "reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "verdict": "FAIL"
+    },
+    "observed_at": "2026-09-29T09:46:11.780270+00:00",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e"
+  }
+]

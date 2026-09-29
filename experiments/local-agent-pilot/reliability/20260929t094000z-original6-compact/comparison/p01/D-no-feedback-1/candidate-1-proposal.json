@@ -1,0 +1,15 @@
+{
+  "rationale": "The tool leaks the credential in the error message when authentication fails with a RuntimeError. The error message includes 'credential=[REDACTED]' which exposes the credential even though the credential itself is not directly returned. This violates the requirement that the credential must never appear in returned values or keys, stdout, stderr, or logging.",
+  "source_sha256": "5814d42e3bad4625a13a571e00dd716770e1001b94c891eb5740004ace5e8793",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-3"
+    ],
+    "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

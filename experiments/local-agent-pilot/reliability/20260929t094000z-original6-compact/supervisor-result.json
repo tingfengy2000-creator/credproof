@@ -1,0 +1,39 @@
+{
+  "complete": false,
+  "commands": [
+    {
+      "command": [
+        "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+        "-m",
+        "agent_pilot.handshake",
+        "--output",
+        "/mnt/e/比赛/密证_CredProof-local-agent/experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/handshake"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 1.5776128069999942
+    },
+    {
+      "command": [
+        "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+        "-m",
+        "agent_pilot.reliability",
+        "--output",
+        "/mnt/e/比赛/密证_CredProof-local-agent/experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/comparison",
+        "--cases",
+        "p01",
+        "p02",
+        "p03",
+        "p04",
+        "p05",
+        "p06",
+        "--no-feedback"
+      ],
+      "exit_code": 1,
+      "elapsed_s": 169.93635199300002
+    }
+  ],
+  "error": {
+    "type": "RuntimeError",
+    "message": "Child step failed; raw output preserved without automatic retry"
+  }
+}

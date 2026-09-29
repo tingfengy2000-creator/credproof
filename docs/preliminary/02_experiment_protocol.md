@@ -1,5 +1,7 @@
 # 初赛机制 pilot：预先登记协议
 
+> 保留原验收机制实验协议。本轮 Agent 对照、授权门禁、模板留出与分母定义见 [新协议](../local-agent/reliability/protocol.md)，两组结果不合并成一个成功率。
+
 案例预期标签先于第一次执行登记。目标是核查“快照绑定的副本修复义务链”是否按定义工作，不把少量人工场景包装成真实世界检出率或领先成绩。机器可读定义为 `experiments/protocol.json`，runner 为 `experiments/pilot.py`。案例表中的 PASS、FAIL、UNKNOWN 是预期标签，实测另见具体 run 的结果文件。
 
 这是一轮机制开发 pilot：16 个案例全部对开发者可见，没有独立最终留出集或盲测。开发 smoke 后，为澄清同范围公平比较，将 scope_omission 与 function_not_checked 从 fresh 移入 evidence_completeness 层，标签不变；同期明确 B-fresh 的独立统计和源码冻结记录。不能将这次澄清后的协议称为整个文本在所有开发结果之前完全冻结。

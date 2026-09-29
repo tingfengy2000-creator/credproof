@@ -1,0 +1,17 @@
+{
+  "rationale": "The patch fixes the credential leak by redacting the credential from the debug transport output. In the original code, when debug mode was enabled, the full credential was included in the Authorization header within the debug print statement. This violated the security requirement that credentials must never appear in stdout, stderr, or logging. The fix replaces the actual credential with \"[REDACTED]\" in the debug transport information, while preserving all other functionality.",
+  "source_sha256": "55998484ebd7c75c0cf1b8f20f18dde876bbb4e83ad82ce5bcbb66bdd4a39706",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-1",
+      "evidence-2",
+      "evidence-3"
+    ],
+    "source_sha256": "392ccb198bf3d89562061953bd3f0a6bf73b2e6da314a222e9e25149c541533f",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

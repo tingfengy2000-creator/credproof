@@ -210,6 +210,21 @@ class ReliabilityTests(unittest.TestCase):
         self.session.check("original")
         self.assertEqual(self.session.terminal["task_status"], "UNKNOWN")
 
+    def test_unknown_trial_projection(self):
+        # All input slots are present, but one transcript is not trustworthy.
+        # This fabricated aggregate tests display projection only, not execution.
+        aggregate = {"verdict": "UNKNOWN", "reasons": ["INVALID_TRANSCRIPT"],
+                     "checks_run": 13, "leak_channels": [],
+                     "trial_counts": {"PASS": 12, "UNKNOWN": 1}}
+        with patch.object(rel.Session, "verify", return_value=copy.deepcopy(aggregate)):
+            result = rel.GovernedSession.verify(self.session, SOURCE, "unknown-projection")
+        checks = {item["id"]: item["status"] for item in result["checks"]}
+        self.assertEqual(result["verdict"], "UNKNOWN")
+        self.assertEqual(checks["source-boundary"], "PASS")
+        self.assertEqual(checks["credential-channels"], "UNKNOWN")
+        self.assertEqual(checks["behavior"], "UNKNOWN")
+        self.assertEqual(checks["coverage"], "UNKNOWN")
+
     def test_failed_required_verification_does_not_complete(self):
         self.session.verify.return_value = {"verdict": "FAIL", "reasons": ["RESPONSE_CONTRACT"]}
         self.session.check("original")

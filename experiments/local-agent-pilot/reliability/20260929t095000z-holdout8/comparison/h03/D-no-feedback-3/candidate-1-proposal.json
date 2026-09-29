@@ -1,0 +1,15 @@
+{
+  "rationale": "The tool leaks the credential in log messages when the authentication provider raises a RuntimeError. Specifically, the error details include the credential in the log output, violating the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging.",
+  "source_sha256": "9f8318f519a142f08c48a1f1629084cd09f520ae6b52cb08013d009b11ac2fd3",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-3"
+    ],
+    "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

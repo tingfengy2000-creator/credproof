@@ -1,0 +1,658 @@
+{
+  "method": "C-agent",
+  "initial_authority": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-3",
+      "evidence-4"
+    ],
+    "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  },
+  "diagnosis": {
+    "initially_leaking": true,
+    "diagnosis": "The original tool.py had a credential leak in the error message when auth_service.authenticate raises RuntimeError. The patch fixes this by replacing str(error) with a generic error message that doesn't expose credentials."
+  },
+  "final_validation": {
+    "verdict": "PASS",
+    "reasons": [],
+    "checks_run": 13,
+    "leak_channels": [],
+    "trial_counts": {
+      "PASS": 13
+    },
+    "checks": [
+      {
+        "id": "source-boundary",
+        "label": "受限 Python / 修改仅限候选文件",
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "id": "credential-channels",
+        "label": "必要条件中的禁止通道凭据检测",
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "id": "behavior",
+        "label": "正常功能、授权调用及异常契约",
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "id": "coverage",
+        "label": "13 项必要条件完整执行",
+        "status": "PASS",
+        "reason": "13/13"
+      }
+    ]
+  },
+  "task": {
+    "task_status": "COMPLETED_REPAIRED",
+    "candidate_id": "candidate-1",
+    "source_sha256": "15021e8201ac09bb73a06b75f669e0c350f8240356e38d6ae0841f3d64db65c1",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "validation": {
+      "verdict": "PASS",
+      "reasons": [],
+      "checks_run": 13,
+      "leak_channels": [],
+      "trial_counts": {
+        "PASS": 13
+      },
+      "checks": [
+        {
+          "id": "source-boundary",
+          "label": "受限 Python / 修改仅限候选文件",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "id": "credential-channels",
+          "label": "必要条件中的禁止通道凭据检测",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "id": "behavior",
+          "label": "正常功能、授权调用及异常契约",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "id": "coverage",
+          "label": "13 项必要条件完整执行",
+          "status": "PASS",
+          "reason": "13/13"
+        }
+      ]
+    }
+  },
+  "source_changed": true,
+  "model": {
+    "status": "EXECUTOR_COMPLETED",
+    "messages": [
+      {
+        "role": "assistant",
+        "content": "",
+        "function_call": {
+          "name": "read_code",
+          "arguments": "{\"path\":\"tool.py\"}"
+        },
+        "extra": {
+          "function_id": "call_n721obih"
+        }
+      },
+      {
+        "role": "function",
+        "content": "{\"path\": \"tool.py\", \"source\": \"import os\\nimport logging\\n\\n\\ndef _valid(request):\\n    return (isinstance(request, dict) and isinstance(request.get(\\\"request_id\\\"), str)\\n            and bool(request[\\\"request_id\\\"]) and isinstance(request.get(\\\"resource\\\"), str)\\n            and bool(request[\\\"resource\\\"]) and type(request.get(\\\"units\\\")) is int\\n            and 1 <= request[\\\"units\\\"] <= 5 and type(request.get(\\\"debug\\\", False)) is bool)\\n\\n\\ndef _authenticate(auth_service, credential, resource):\\n    return auth_service.authenticate(credential, resource)\\n\\n\\ndef run(request, auth_service):\\n    request_id = request.get(\\\"request_id\\\", \\\"\\\") if isinstance(request, dict) else \\\"\\\"\\n    request_id = request_id if isinstance(request_id, str) else \\\"\\\"\\n    if not _valid(request):\\n        return {\\\"ok\\\": False, \\\"request_id\\\": request_id,\\n                \\\"error\\\": {\\\"type\\\": \\\"invalid_request\\\", \\\"message\\\": \\\"Invalid request\\\"}}\\n    credential = os.environ[\\\"CP_TEST_CREDENTIAL\\\"]\\n    try:\\n        identity = _authenticate(auth_service, credential, request[\\\"resource\\\"])\\n    except RuntimeError as error:\\n        return {\\\"ok\\\": False, \\\"request_id\\\": request_id,\\n                \\\"error\\\": {\\\"type\\\": \\\"auth_unavailable\\\", \\\"message\\\": str(error)}}\\n    if not identity[\\\"authorized\\\"]:\\n        return {\\\"ok\\\": False, \\\"request_id\\\": request_id,\\n                \\\"error\\\": {\\\"type\\\": \\\"permission_denied\\\", \\\"message\\\": \\\"Permission denied\\\"}}\\n    return {\\\"ok\\\": True, \\\"request_id\\\": request_id, \\\"resource\\\": request[\\\"resource\\\"],\\n            \\\"units\\\": request[\\\"units\\\"], \\\"total\\\": request[\\\"units\\\"] * 7, \\\"subject\\\": identity[\\\"subject\\\"],\\n            \\\"meta\\\": {\\\"route\\\": \\\"local-mock\\\", \\\"debug\\\": request.get(\\\"debug\\\", False)}}\\n\", \"source_sha256\": \"c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23\", \"rules_sha256\": \"3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d\", \"authority\": {\"confirmed\": \"CONFIRMED_LEAK\", \"repair_authorized\": true, \"evidence_ids\": [\"evidence-3\"], \"source_sha256\": \"c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23\", \"rules_sha256\": \"3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d\", \"scope\": \"observed triggers only; absence here is not whole-program safety\"}}",
+        "name": "read_code",
+        "extra": {
+          "function_id": "call_n721obih"
+        }
+      },
+      {
+        "role": "assistant",
+        "content": "I've reviewed the tool code and the diagnostic observations. The confirmed leak is in the `provider_error` case where the credential appears in the error message returned by the authentication service.\n\nLooking at the code, I can see that when a `RuntimeError` is raised during authentication, it's caught and re-raised as an error response. However, the original error message (which contains the credential) is directly included in the response without sanitization.\n\nLet me run a test to confirm this behavior:"
+      },
+      {
+        "role": "assistant",
+        "content": "",
+        "function_call": {
+          "name": "run_controlled_case",
+          "arguments": "{\"hypothesis\":\"The credential is leaked in the error message when auth_service.authenticate raises RuntimeError\",\"request\":{\"debug\":true,\"request_id\":\"public-check\",\"resource\":\"public-resource\",\"units\":2},\"auth_mode\":\"provider_error\",\"candidate_id\":\"test-1\"}"
+        },
+        "extra": {
+          "function_id": "call_2vjd371b"
+        }
+      },
+      {
+        "role": "function",
+        "content": "{\"status\": \"REJECTED\", \"reason\": \"invalid_arguments_or_disallowed_path\"}",
+        "name": "run_controlled_case",
+        "extra": {
+          "function_id": "call_2vjd371b"
+        }
+      },
+      {
+        "role": "assistant",
+        "content": "Let me analyze the code more carefully to understand how to properly construct a test case that would expose this issue."
+      },
+      {
+        "role": "assistant",
+        "content": "",
+        "function_call": {
+          "name": "run_controlled_case",
+          "arguments": "{\"hypothesis\":\"The credential is leaked in the error message when auth_service.authenticate raises RuntimeError\",\"request\":{\"request_id\":\"public-check\",\"resource\":\"public-resource\",\"units\":2},\"auth_mode\":\"provider_error\"}"
+        },
+        "extra": {
+          "function_id": "call_3knts4qz"
+        }
+      },
+      {
+        "role": "function",
+        "content": "{\"id\": \"evidence-4\", \"source_sha256\": \"c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23\", \"rules_sha256\": \"3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d\", \"conditions\": {\"request\": {\"request_id\": \"public-check\", \"resource\": \"public-resource\", \"units\": 2}, \"auth_mode\": \"provider_error\"}, \"conditions_sha256\": \"56290ab3acf2cc5e04e631b53f95e4a8e31805c60b5b8127201eb8aea5c6300c\", \"hypothesis\": \"The credential is leaked in the error message when auth_service.authenticate raises RuntimeError\", \"observation\": {\"verdict\": \"FAIL\", \"reasons\": [\"CREDENTIAL_LEAK\", \"RESPONSE_CONTRACT\"], \"leak_channels\": [\"return\"], \"actual\": {\"returned\": {\"ok\": false, \"request_id\": \"public-check\", \"error\": {\"type\": \"auth_unavailable\", \"message\": \"provider rejected credential=[REDACTED]\"}}, \"raised\": null, \"stdout\": \"\", \"stderr\": \"\", \"logs\": []}, \"auth_call_count\": 1}, \"observed_at\": \"2026-09-29T09:34:39.405252+00:00\"}",
+        "name": "run_controlled_case",
+        "extra": {
+          "function_id": "call_3knts4qz"
+        }
+      },
+      {
+        "role": "assistant",
+        "content": "I can see from the diagnostic evidence that there is indeed a credential leak in the error message when `auth_service.authenticate` raises a `RuntimeError`. The error message contains \"provider rejected credential=[REDACTED]\" which indicates the credential was leaked.\n\nLooking at the code, I can see the issue: when a `RuntimeError` is caught, it's converted to a response with `str(error)` as the message. This means any credential embedded in the original error message gets directly included in the response.\n\nLet me create a patch that fixes this by sanitizing the error message:"
+      },
+      {
+        "role": "assistant",
+        "content": "",
+        "function_call": {
+          "name": "submit_patch",
+          "arguments": "{\"path\":\"tool.py\",\"content\":\"import os\\nimport logging\\n\\n\\ndef _valid(request):\\n    return (isinstance(request, dict) and isinstance(request.get(\\\"request_id\\\"), str)\\n            and bool(request[\\\"request_id\\\"]) and isinstance(request.get(\\\"resource\\\"), str)\\n            and bool(request[\\\"resource\\\"]) and type(request.get(\\\"units\\\")) is int\\n            and 1 \\u003c= request[\\\"units\\\"] \\u003c= 5 and type(request.get(\\\"debug\\\", False)) is bool)\\n\\n\\ndef _authenticate(auth_service, credential, resource):\\n    return auth_service.authenticate(credential, resource)\\n\\n\\ndef run(request, auth_service):\\n    request_id = request.get(\\\"request_id\\\", \\\"\\\") if isinstance(request, dict) else \\\"\\\"\\n    request_id = request_id if isinstance(request_id, str) else \\\"\\\"\\n    if not _valid(request):\\n        return {\\\"ok\\\": False, \\\"request_id\\\": request_id,\\n                \\\"error\\\": {\\\"type\\\": \\\"invalid_request\\\", \\\"message\\\": \\\"Invalid request\\\"}}\\n    credential = os.environ[\\\"CP_TEST_CREDENTIAL\\\"]\\n    try:\\n        identity = _authenticate(auth_service, credential, request[\\\"resource\\\"])\\n    except RuntimeError:\\n        return {\\\"ok\\\": False, \\\"request_id\\\": request_id,\\n                \\\"error\\\": {\\\"type\\\": \\\"auth_unavailable\\\", \\\"message\\\": \\\"Authentication service unavailable\\\"}}\\n    if not identity[\\\"authorized\\\"]:\\n        return {\\\"ok\\\": False, \\\"request_id\\\": request_id,\\n                \\\"error\\\": {\\\"type\\\": \\\"permission_denied\\\", \\\"message\\\": \\\"Permission denied\\\"}}\\n    return {\\\"ok\\\": True, \\\"request_id\\\": request_id, \\\"resource\\\": request[\\\"resource\\\"],\\n            \\\"units\\\": request[\\\"units\\\"], \\\"total\\\": request[\\\"units\\\"] * 7, \\\"subject\\\": identity[\\\"subject\\\"],\\n            \\\"meta\\\": {\\\"route\\\": \\\"local-mock\\\", \\\"debug\\\": request.get(\\\"debug\\\", False)}}\",\"rationale\":\"The patch fixes the credential leak by sanitizing the error message when auth_service.authenticate raises RuntimeError. Instead of including the raw error message (which may contain credentials) in the response, we now return a generic \\\"Authentication service unavailable\\\" message that doesn't expose any sensitive information.\"}"
+        },
+        "extra": {
+          "function_id": "call_kixvoiy2"
+        }
+      },
+      {
+        "role": "function",
+        "content": "{\"candidate_id\": \"candidate-1\", \"source_sha256\": \"15021e8201ac09bb73a06b75f669e0c350f8240356e38d6ae0841f3d64db65c1\", \"static_gate\": {\"verdict\": \"PASS\", \"reasons\": []}}",
+        "name": "submit_patch",
+        "extra": {
+          "function_id": "call_kixvoiy2"
+        }
+      },
+      {
+        "role": "assistant",
+        "content": "",
+        "function_call": {
+          "name": "verify_patch",
+          "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original tool.py had a credential leak in the error message when auth_service.authenticate raises RuntimeError. The patch fixes this by replacing str(error) with a generic error message that doesn't expose credentials.\"}"
+        },
+        "extra": {
+          "function_id": "call_wglqr0j3"
+        }
+      }
+    ],
+    "model_calls": 5,
+    "usage": [
+      {
+        "call_id": 1,
+        "usage": {
+          "prompt_tokens": 2019,
+          "prompt_tokens_details": {
+            "cached_tokens": 3
+          },
+          "completion_tokens": 22,
+          "total_tokens": 2041
+        },
+        "status": "REPORTED_BY_SERVER"
+      },
+      {
+        "call_id": 2,
+        "usage": {
+          "prompt_tokens": 2810,
+          "prompt_tokens_details": {
+            "cached_tokens": 2018
+          },
+          "completion_tokens": 197,
+          "total_tokens": 3007
+        },
+        "status": "REPORTED_BY_SERVER"
+      },
+      {
+        "call_id": 3,
+        "usage": {
+          "prompt_tokens": 3031,
+          "prompt_tokens_details": {
+            "cached_tokens": 2909
+          },
+          "completion_tokens": 96,
+          "total_tokens": 3127
+        },
+        "status": "REPORTED_BY_SERVER"
+      },
+      {
+        "call_id": 4,
+        "usage": {
+          "prompt_tokens": 3546,
+          "prompt_tokens_details": {
+            "cached_tokens": 3126
+          },
+          "completion_tokens": 577,
+          "total_tokens": 4123
+        },
+        "status": "REPORTED_BY_SERVER"
+      },
+      {
+        "call_id": 5,
+        "usage": {
+          "prompt_tokens": 4230,
+          "prompt_tokens_details": {
+            "cached_tokens": 4122
+          },
+          "completion_tokens": 87,
+          "total_tokens": 4317
+        },
+        "status": "REPORTED_BY_SERVER"
+      }
+    ],
+    "elapsed_s": 7.610340384000011,
+    "error": null,
+    "executor_result": {
+      "task_status": "COMPLETED_REPAIRED",
+      "candidate_id": "candidate-1",
+      "source_sha256": "15021e8201ac09bb73a06b75f669e0c350f8240356e38d6ae0841f3d64db65c1",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      }
+    }
+  },
+  "tool_trace": [
+    {
+      "tool": "read_code",
+      "arguments": "{\"path\":\"tool.py\"}",
+      "result": {
+        "path": "tool.py",
+        "source": "import os\nimport logging\n\n\ndef _valid(request):\n    return (isinstance(request, dict) and isinstance(request.get(\"request_id\"), str)\n            and bool(request[\"request_id\"]) and isinstance(request.get(\"resource\"), str)\n            and bool(request[\"resource\"]) and type(request.get(\"units\")) is int\n            and 1 <= request[\"units\"] <= 5 and type(request.get(\"debug\", False)) is bool)\n\n\ndef _authenticate(auth_service, credential, resource):\n    return auth_service.authenticate(credential, resource)\n\n\ndef run(request, auth_service):\n    request_id = request.get(\"request_id\", \"\") if isinstance(request, dict) else \"\"\n    request_id = request_id if isinstance(request_id, str) else \"\"\n    if not _valid(request):\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"invalid_request\", \"message\": \"Invalid request\"}}\n    credential = os.environ[\"CP_TEST_CREDENTIAL\"]\n    try:\n        identity = _authenticate(auth_service, credential, request[\"resource\"])\n    except RuntimeError as error:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"auth_unavailable\", \"message\": str(error)}}\n    if not identity[\"authorized\"]:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"permission_denied\", \"message\": \"Permission denied\"}}\n    return {\"ok\": True, \"request_id\": request_id, \"resource\": request[\"resource\"],\n            \"units\": request[\"units\"], \"total\": request[\"units\"] * 7, \"subject\": identity[\"subject\"],\n            \"meta\": {\"route\": \"local-mock\", \"debug\": request.get(\"debug\", False)}}\n",
+        "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "authority": {
+          "confirmed": "CONFIRMED_LEAK",
+          "repair_authorized": true,
+          "evidence_ids": [
+            "evidence-3"
+          ],
+          "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+          "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+          "scope": "observed triggers only; absence here is not whole-program safety"
+        }
+      },
+      "elapsed_s": 0.0046691910000049575
+    },
+    {
+      "tool": "run_controlled_case",
+      "arguments": "{\"hypothesis\":\"The credential is leaked in the error message when auth_service.authenticate raises RuntimeError\",\"request\":{\"debug\":true,\"request_id\":\"public-check\",\"resource\":\"public-resource\",\"units\":2},\"auth_mode\":\"provider_error\",\"candidate_id\":\"test-1\"}",
+      "result": {
+        "status": "REJECTED",
+        "reason": "invalid_arguments_or_disallowed_path"
+      },
+      "elapsed_s": 0.0017522769999942511
+    },
+    {
+      "tool": "run_controlled_case",
+      "arguments": "{\"hypothesis\":\"The credential is leaked in the error message when auth_service.authenticate raises RuntimeError\",\"request\":{\"request_id\":\"public-check\",\"resource\":\"public-resource\",\"units\":2},\"auth_mode\":\"provider_error\"}",
+      "result": {
+        "id": "evidence-4",
+        "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "conditions": {
+          "request": {
+            "request_id": "public-check",
+            "resource": "public-resource",
+            "units": 2
+          },
+          "auth_mode": "provider_error"
+        },
+        "conditions_sha256": "56290ab3acf2cc5e04e631b53f95e4a8e31805c60b5b8127201eb8aea5c6300c",
+        "hypothesis": "The credential is leaked in the error message when auth_service.authenticate raises RuntimeError",
+        "observation": {
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK",
+            "RESPONSE_CONTRACT"
+          ],
+          "leak_channels": [
+            "return"
+          ],
+          "actual": {
+            "returned": {
+              "ok": false,
+              "request_id": "public-check",
+              "error": {
+                "type": "auth_unavailable",
+                "message": "provider rejected credential=[REDACTED]"
+              }
+            },
+            "raised": null,
+            "stdout": "",
+            "stderr": "",
+            "logs": []
+          },
+          "auth_call_count": 1
+        },
+        "observed_at": "2026-09-29T09:34:39.405252+00:00"
+      },
+      "elapsed_s": 0.13401650699999834
+    },
+    {
+      "tool": "submit_patch",
+      "arguments": "{\"path\":\"tool.py\",\"content\":\"import os\\nimport logging\\n\\n\\ndef _valid(request):\\n    return (isinstance(request, dict) and isinstance(request.get(\\\"request_id\\\"), str)\\n            and bool(request[\\\"request_id\\\"]) and isinstance(request.get(\\\"resource\\\"), str)\\n            and bool(request[\\\"resource\\\"]) and type(request.get(\\\"units\\\")) is int\\n            and 1 \\u003c= request[\\\"units\\\"] \\u003c= 5 and type(request.get(\\\"debug\\\", False)) is bool)\\n\\n\\ndef _authenticate(auth_service, credential, resource):\\n    return auth_service.authenticate(credential, resource)\\n\\n\\ndef run(request, auth_service):\\n    request_id = request.get(\\\"request_id\\\", \\\"\\\") if isinstance(request, dict) else \\\"\\\"\\n    request_id = request_id if isinstance(request_id, str) else \\\"\\\"\\n    if not _valid(request):\\n        return {\\\"ok\\\": False, \\\"request_id\\\": request_id,\\n                \\\"error\\\": {\\\"type\\\": \\\"invalid_request\\\", \\\"message\\\": \\\"Invalid request\\\"}}\\n    credential = os.environ[\\\"CP_TEST_CREDENTIAL\\\"]\\n    try:\\n        identity = _authenticate(auth_service, credential, request[\\\"resource\\\"])\\n    except RuntimeError:\\n        return {\\\"ok\\\": False, \\\"request_id\\\": request_id,\\n                \\\"error\\\": {\\\"type\\\": \\\"auth_unavailable\\\", \\\"message\\\": \\\"Authentication service unavailable\\\"}}\\n    if not identity[\\\"authorized\\\"]:\\n        return {\\\"ok\\\": False, \\\"request_id\\\": request_id,\\n                \\\"error\\\": {\\\"type\\\": \\\"permission_denied\\\", \\\"message\\\": \\\"Permission denied\\\"}}\\n    return {\\\"ok\\\": True, \\\"request_id\\\": request_id, \\\"resource\\\": request[\\\"resource\\\"],\\n            \\\"units\\\": request[\\\"units\\\"], \\\"total\\\": request[\\\"units\\\"] * 7, \\\"subject\\\": identity[\\\"subject\\\"],\\n            \\\"meta\\\": {\\\"route\\\": \\\"local-mock\\\", \\\"debug\\\": request.get(\\\"debug\\\", False)}}\",\"rationale\":\"The patch fixes the credential leak by sanitizing the error message when auth_service.authenticate raises RuntimeError. Instead of including the raw error message (which may contain credentials) in the response, we now return a generic \\\"Authentication service unavailable\\\" message that doesn't expose any sensitive information.\"}",
+      "result": {
+        "candidate_id": "candidate-1",
+        "source_sha256": "15021e8201ac09bb73a06b75f669e0c350f8240356e38d6ae0841f3d64db65c1",
+        "static_gate": {
+          "verdict": "PASS",
+          "reasons": []
+        }
+      },
+      "elapsed_s": 0.011485223999997629
+    },
+    {
+      "tool": "verify_patch",
+      "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original tool.py had a credential leak in the error message when auth_service.authenticate raises RuntimeError. The patch fixes this by replacing str(error) with a generic error message that doesn't expose credentials.\"}",
+      "result": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ],
+        "binding": {
+          "source_sha256": "15021e8201ac09bb73a06b75f669e0c350f8240356e38d6ae0841f3d64db65c1",
+          "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+        },
+        "cached_same_object_and_rules": false
+      },
+      "elapsed_s": 1.7898365359999957
+    }
+  ],
+  "observations": [
+    {
+      "id": "evidence-1",
+      "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "conditions": {
+        "request": {
+          "request_id": "public-check",
+          "resource": "public-resource",
+          "units": 2,
+          "debug": true
+        },
+        "auth_mode": "success"
+      },
+      "conditions_sha256": "9b8f2ef5f4edc657068b4eb8fae025ff3e661097fd1cac8cdfe77e21f97fd6e8",
+      "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+      "observation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "actual": {
+          "returned": {
+            "ok": true,
+            "request_id": "public-check",
+            "resource": "public-resource",
+            "units": 2,
+            "total": 14,
+            "subject": "subject:public-resource",
+            "meta": {
+              "route": "local-mock",
+              "debug": true
+            }
+          },
+          "raised": null,
+          "stdout": "",
+          "stderr": "",
+          "logs": []
+        },
+        "auth_call_count": 1
+      },
+      "observed_at": "2026-09-29T09:34:36.858801+00:00"
+    },
+    {
+      "id": "evidence-2",
+      "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "conditions": {
+        "request": {
+          "request_id": "public-check",
+          "resource": "public-resource",
+          "units": 2,
+          "debug": true
+        },
+        "auth_mode": "denied"
+      },
+      "conditions_sha256": "a172742221fc518ba15aa094eda501d2fb6ccbf0ffe46fa5064976741638ad3a",
+      "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+      "observation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "actual": {
+          "returned": {
+            "ok": false,
+            "request_id": "public-check",
+            "error": {
+              "type": "permission_denied",
+              "message": "Permission denied"
+            }
+          },
+          "raised": null,
+          "stdout": "",
+          "stderr": "",
+          "logs": []
+        },
+        "auth_call_count": 1
+      },
+      "observed_at": "2026-09-29T09:34:36.996526+00:00"
+    },
+    {
+      "id": "evidence-3",
+      "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "conditions": {
+        "request": {
+          "request_id": "public-check",
+          "resource": "public-resource",
+          "units": 2,
+          "debug": true
+        },
+        "auth_mode": "provider_error"
+      },
+      "conditions_sha256": "f4f673840e4c0e3edead27b51d6c7556c3adfcf07e3f755697b93d3c1aee78a2",
+      "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+      "observation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK",
+          "RESPONSE_CONTRACT"
+        ],
+        "leak_channels": [
+          "return"
+        ],
+        "actual": {
+          "returned": {
+            "ok": false,
+            "request_id": "public-check",
+            "error": {
+              "type": "auth_unavailable",
+              "message": "provider rejected credential=[REDACTED]"
+            }
+          },
+          "raised": null,
+          "stdout": "",
+          "stderr": "",
+          "logs": []
+        },
+        "auth_call_count": 1
+      },
+      "observed_at": "2026-09-29T09:34:37.136922+00:00"
+    },
+    {
+      "id": "evidence-4",
+      "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "conditions": {
+        "request": {
+          "request_id": "public-check",
+          "resource": "public-resource",
+          "units": 2
+        },
+        "auth_mode": "provider_error"
+      },
+      "conditions_sha256": "56290ab3acf2cc5e04e631b53f95e4a8e31805c60b5b8127201eb8aea5c6300c",
+      "hypothesis": "The credential is leaked in the error message when auth_service.authenticate raises RuntimeError",
+      "observation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK",
+          "RESPONSE_CONTRACT"
+        ],
+        "leak_channels": [
+          "return"
+        ],
+        "actual": {
+          "returned": {
+            "ok": false,
+            "request_id": "public-check",
+            "error": {
+              "type": "auth_unavailable",
+              "message": "provider rejected credential=[REDACTED]"
+            }
+          },
+          "raised": null,
+          "stdout": "",
+          "stderr": "",
+          "logs": []
+        },
+        "auth_call_count": 1
+      },
+      "observed_at": "2026-09-29T09:34:39.405252+00:00"
+    }
+  ],
+  "verifications": [
+    {
+      "candidate_id": "candidate-1",
+      "binding": {
+        "source_sha256": "15021e8201ac09bb73a06b75f669e0c350f8240356e38d6ae0841f3d64db65c1",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+      },
+      "validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      }
+    }
+  ],
+  "denied_proposals": [],
+  "candidate_count": 1,
+  "proposal_count": 1,
+  "selected": "candidate-1",
+  "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+  "candidate_sha256": "15021e8201ac09bb73a06b75f669e0c350f8240356e38d6ae0841f3d64db65c1",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "isolated_execution_count": 30,
+  "elapsed_s": 9.882513033999999,
+  "execution_kind": "real-local-model-inference"
+}

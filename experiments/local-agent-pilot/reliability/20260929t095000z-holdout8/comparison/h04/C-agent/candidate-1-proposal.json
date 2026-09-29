@@ -1,0 +1,16 @@
+{
+  "rationale": "The patch fixes the credential leak by redacting the actual credential value from the diagnostic output. In the `_diagnostic_entries` function, instead of including the full credential in the Authorization header, it now shows \"[REDACTED]\" to prevent exposure of the sensitive information while still maintaining the structure of the debug information for troubleshooting purposes.",
+  "source_sha256": "f7912ca008f13ca43b99392799e2778bc58d942773ff68c6588c8346c46fa105",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-1",
+      "evidence-4"
+    ],
+    "source_sha256": "5c2a5bc8da138c119ce383b87b65e3860ab46e9a4003c3bc4b696054b7d8047b",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

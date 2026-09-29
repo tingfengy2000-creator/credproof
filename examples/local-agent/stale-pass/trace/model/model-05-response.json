@@ -1,0 +1,36 @@
+{
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "content": "",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original code had a credential leak in the logging channel because the _report_provider_failure function was logging failure details that contained credential information. The patch addresses this by redacting credential references from the log message before it's written.\"}",
+              "name": "verify_patch"
+            },
+            "id": "call_cpjy5xro",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1790675178,
+  "id": "chatcmpl-318",
+  "model": "qwen3-coder:30b",
+  "object": "chat.completion",
+  "system_fingerprint": "fp_ollama",
+  "usage": {
+    "completion_tokens": 93,
+    "prompt_tokens": 4577,
+    "prompt_tokens_details": {
+      "cached_tokens": 4473
+    },
+    "total_tokens": 4670
+  }
+}

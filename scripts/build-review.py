@@ -144,6 +144,9 @@ def build(args):
             raise ValueError("Commit conflicts with generated release filename: " + name)
         entry = {"path": name, "git_mode": mode, "git_blob_oid": oid}
         reason = exclusion_reason(path)
+        prefixes = getattr(args, 'include_prefix', [])
+        if not reason and prefixes and not any(name == p.rstrip('/') or name.startswith(p.rstrip('/') + '/') for p in prefixes):
+            reason = 'outside explicitly selected local review scope'
         if reason:
             excluded.append({**entry, "reason": reason})
         else:
@@ -177,6 +180,7 @@ def build(args):
                           "--repo", ".", "--output-dir", "<new-output-directory>"],
         "command_note": "Reproduction command; machine-local paths replaced by placeholders.",
         "source_policy": "Raw tracked Git blob bytes at review_commit; no working-tree source reads.",
+        "include_prefixes": getattr(args, 'include_prefix', []),
         "historical_experiments": {
             "rerun_during_build": False,
             "notice": "Included historical experiment artifacts are not results of a rerun for this release.",
@@ -241,6 +245,7 @@ def main():
     parser.add_argument("--source-workspace-commit", default=SOURCE_COMMIT)
     parser.add_argument("--repo", type=Path, default=Path(__file__).resolve().parents[1])
     parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--include-prefix", action="append", default=[], help="Optional repeatable exact tracked file/directory scope; default keeps existing complete-review behavior")
     args = parser.parse_args()
     try:
         build(args)

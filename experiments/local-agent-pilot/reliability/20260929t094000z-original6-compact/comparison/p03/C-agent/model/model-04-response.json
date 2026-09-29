@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-445",
+  "object": "chat.completion",
+  "created": 1790674547,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_tr85arsb",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original tool had a credential leak in debug output where the full credential was printed in the Authorization header. The patch correctly redacts the credential by replacing it with \\\"[REDACTED]\\\" in the debug transport information while maintaining all other functionality.\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3952,
+    "prompt_tokens_details": {
+      "cached_tokens": 3852
+    },
+    "completion_tokens": 97,
+    "total_tokens": 4049
+  }
+}

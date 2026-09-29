@@ -1,0 +1,36 @@
+{
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "content": "I need to analyze the code more carefully. The issue is in how the credential is being logged in the `_report_provider_failure` function. Let me examine what exactly is happening with the credential and logging.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"hypothesis\":\"The credential is leaked through the logging channel in _report_provider_failure function\",\"request\":{\"debug\":true,\"request_id\":\"public-check\",\"resource\":\"public-resource\",\"units\":2},\"auth_mode\":\"provider_error\"}",
+              "name": "run_controlled_case"
+            },
+            "id": "call_5hlduhm0",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1790675174,
+  "id": "chatcmpl-994",
+  "model": "qwen3-coder:30b",
+  "object": "chat.completion",
+  "system_fingerprint": "fp_ollama",
+  "usage": {
+    "completion_tokens": 119,
+    "prompt_tokens": 3199,
+    "prompt_tokens_details": {
+      "cached_tokens": 3077
+    },
+    "total_tokens": 3318
+  }
+}

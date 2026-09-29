@@ -63,7 +63,10 @@ class GovernedSession(Session):
     def verify(self, source, label):
         result = super().verify(source, label)
         static = judge.validate_source(source)
-        complete = result.get('checks_run') == len(judge.hidden_matrix()) and 'MATRIX_COVERAGE' not in result.get('reasons', [])
+        complete = (result.get('checks_run') == len(judge.hidden_matrix())
+                    and not result.get('trial_counts', {}).get('UNKNOWN', 0)
+                    and result.get('verdict') != 'UNKNOWN'
+                    and not {'MATRIX_COVERAGE', 'INVALID_TRANSCRIPT'} & set(result.get('reasons', [])))
         reasons = result.get('reasons', [])
         functional = [x for x in reasons if x in ('RESPONSE_CONTRACT', 'UNHANDLED_EXCEPTION', 'NON_JSON_RETURN') or x.startswith('AUTH_')]
         result['checks'] = [

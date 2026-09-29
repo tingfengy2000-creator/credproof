@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-942",
+  "object": "chat.completion",
+  "created": 1790675284,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I can see from the test results that the logging is working as intended - it's redacting the Authorization field properly in the log output. However, I notice a potential issue with how the `_write_sanitized_audit` function works. Let me analyze this more carefully.\n\nLooking at the code and the test result:\n1. The credential is read from `os.environ[\"CP_TEST_CREDENTIAL\"]`\n2. It's passed to `auth_service.authenticate()` \n3. It's also logged via `_write_sanitized_audit()` which attempts redaction\n\nThe potential issue I see is in how the logging works - while it appears to be properly redacting in the log output, there could still be a leak if:\n1. The logging configuration itself leaks the credential\n2. There are edge cases where the redaction fails\n3. The credential might be exposed through other means\n\nHowever, from the evidence provided, no leaks were observed in any of the test cases. Let me verify that the current implementation is actually correct by running one more test with a different scenario to make sure there's no hidden vulnerability.",
+        "tool_calls": [
+          {
+            "id": "call_nc57zqux",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Checking if credential might leak through logging mechanism or other indirect channels\",\"request\":{\"debug\":false,\"request_id\":\"test-456\",\"resource\":\"another-resource\",\"units\":1},\"auth_mode\":\"denied\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3731,
+    "prompt_tokens_details": {
+      "cached_tokens": 3249
+    },
+    "completion_tokens": 301,
+    "total_tokens": 4032
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-344",
+  "object": "chat.completion",
+  "created": 1790675232,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_jlcl1b5n",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original code leaked the full credential in the diagnostic field when debug=True. The patch redacts the credential value in the Authorization header while preserving the diagnostic structure for debugging purposes.\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4463,
+    "prompt_tokens_details": {
+      "cached_tokens": 4356
+    },
+    "completion_tokens": 83,
+    "total_tokens": 4546
+  }
+}

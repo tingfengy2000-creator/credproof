@@ -1,0 +1,26 @@
+{
+  "status": "COMPLETED",
+  "messages": [
+    {
+      "role": "assistant",
+      "content": "<function=read_code>\n<parameter=path>\ntool.py\n</parameter>\n</function>\n</tool_call>"
+    }
+  ],
+  "model_calls": 1,
+  "usage": [
+    {
+      "call_id": 1,
+      "usage": {
+        "prompt_tokens": 1975,
+        "prompt_tokens_details": {
+          "cached_tokens": 1632
+        },
+        "completion_tokens": 20,
+        "total_tokens": 1995
+      },
+      "status": "REPORTED_BY_SERVER"
+    }
+  ],
+  "elapsed_s": 0.302784177999996,
+  "error": null
+}

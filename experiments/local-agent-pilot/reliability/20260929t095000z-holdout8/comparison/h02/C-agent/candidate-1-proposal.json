@@ -1,0 +1,15 @@
+{
+  "rationale": "The patch removes the credential leak by eliminating the debug print statement that was outputting the credential to stdout. The audit log that contained the credential has been removed entirely, which is the minimal change needed to fix the security issue while maintaining all other functionality.",
+  "source_sha256": "2ce55848bfd8b45de02347a937b4648784e0d856a1454e653d5133ba10e74897",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-2"
+    ],
+    "source_sha256": "3fd570865d7a5b36a38352aa0e584c12e2673c01451192ad6795b0b763b4c345",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

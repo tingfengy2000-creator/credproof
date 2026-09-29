@@ -187,13 +187,13 @@ def validation_view(value):
 
 
 def model_notes(row, method, root):
-    """Only saved assistant text and proposal rationales; never label them facts."""
+    """Keep original model judgments, including superseded ones, separate from facts."""
     notes, proposals, seen = [], [], set()
-    def add(content, source):
+    def add(content, source, deduplicate=True):
         if not isinstance(content, str) or not content.strip():
             return
         content = safe_public(content.strip())
-        if content in seen:
+        if deduplicate and content in seen:
             return
         seen.add(content)
         notes.append({'source': source, 'text': content[:8000], 'display_truncated': len(content) > 8000})
@@ -212,17 +212,28 @@ def model_notes(row, method, root):
                         add(message.get('content'), path.name)
             except (OSError, ValueError, TypeError, AttributeError):
                 continue  # A partially written response is not an available observation.
-    for item in (row or {}).get('tool_trace', []):
-        if not isinstance(item, dict) or item.get('tool') != 'submit_patch':
+    for call_index, item in enumerate((row or {}).get('tool_trace', []), 1):
+        if not isinstance(item, dict) or item.get('tool') not in ('verify_patch', 'run_controlled_case', 'submit_patch'):
             continue
         try:
             arguments = item.get('arguments', {})
             arguments = json.loads(arguments) if isinstance(arguments, str) else arguments
             outcome = item.get('result') or {}
-            rationale = arguments.get('rationale')
-            if rationale is not None:
-                proposals.append({'rationale': safe_public(rationale), 'status': outcome.get('status') or 'PROPOSED',
-                                  'reason': outcome.get('reason'), 'candidate_id': outcome.get('candidate_id')})
+            tool = item['tool']
+            if tool == 'verify_patch':
+                original_judgment = {key: arguments[key] for key in ('diagnosis', 'initially_leaking') if key in arguments}
+                if original_judgment:
+                    add(json.dumps(original_judgment, ensure_ascii=False, indent=2),
+                        f'tool call {call_index} · verify_patch 原始判断（非程序确认）', deduplicate=False)
+            elif tool == 'run_controlled_case':
+                add(arguments.get('hypothesis'),
+                    f'tool call {call_index} · run_controlled_case 执行前假设（非程序确认）', deduplicate=False)
+            else:
+                rationale = arguments.get('rationale')
+                if rationale is not None:
+                    proposals.append({'rationale': safe_public(rationale), 'status': outcome.get('status') or 'PROPOSED',
+                                      'reason': outcome.get('reason'), 'candidate_id': outcome.get('candidate_id'),
+                                      'tool_call_index': call_index})
         except (ValueError, TypeError, AttributeError):
             continue
     return notes, proposals

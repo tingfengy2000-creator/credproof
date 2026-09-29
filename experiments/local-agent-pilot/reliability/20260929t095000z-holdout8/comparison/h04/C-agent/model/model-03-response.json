@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-479",
+  "object": "chat.completion",
+  "created": 1790675228,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_9fpmkch3",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"The credential is leaked in the diagnostic field when debug=True\",\"request\":{\"debug\":true,\"request_id\":\"test-id\",\"resource\":\"test-resource\",\"units\":2},\"auth_mode\":\"success\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3176,
+    "prompt_tokens_details": {
+      "cached_tokens": 3058
+    },
+    "completion_tokens": 74,
+    "total_tokens": 3250
+  }
+}

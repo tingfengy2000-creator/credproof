@@ -1,0 +1,15 @@
+{
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "evidence_ids": [
+      "evidence-3"
+    ],
+    "repair_authorized": true,
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety",
+    "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e"
+  },
+  "rationale": "The patch fixes the credential leak by completely sanitizing the failure details before logging. Instead of logging the raw failure information that might contain credential references, it creates a new sanitized failure object with generic error message that doesn't reveal any credential information or processing details.",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "source_sha256": "4d750e13393b33f8fefcab9953e12369a271fa8fd2de1d7d308ece4e01a7512b"
+}
