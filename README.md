@@ -1,4 +1,4 @@
-> Local Agent engineering review: see [current entry](docs/local-agent/reliability/README.md). This experimental branch preserves the earlier verifier below; no competition submission or public release in this round.
+> Local Agent engineering review: see [current revision entry](docs/local-agent/tool-call-revision/README.md), with the [previous local review](docs/local-agent/reliability/README.md) preserved. This experimental branch preserves the earlier verifier below; no competition submission or public release in this round.
 
 # CredProof 密证
 

@@ -1,6 +1,6 @@
 # CredProof 本地 Agent 小试验
 
-**2026-09-29 当前入口：[可靠性修正、真实单页与复检材料](reliability/README.md)。** 本文下方保留前两轮试验说明；其“尚未整合/误修改”等状态属于当时版本，不替代新一轮逐例结果。原版、旧失败与旧文档均保留。
+**2026-09-29 当前入口：[工具调用修订与外部审查材料](tool-call-revision/README.md)。** [上一版可靠性修正、真实单页与复检材料](reliability/README.md)及本文下方的前两轮试验说明保留；历史状态不替代新轮逐例记录。原版、旧失败与旧文档均保留。
 
 这是独立的 `experiment/local-agent-pilot` 本地试验，不是比赛终版，不替换已发布 `v0.1.0-review.1`，本轮不推送或发布。实际原目录为 `E:\比赛\密证_CredProof`；试验 worktree 为 `E:\比赛\密证_CredProof-local-agent`，起点 `38456bad7d757d2e188e552372ae9bf1227773b6`。原 review.2 的未提交源码、界面和结果仍保留在原目录。
 

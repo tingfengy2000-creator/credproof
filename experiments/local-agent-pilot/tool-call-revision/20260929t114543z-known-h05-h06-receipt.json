@@ -1,0 +1,33 @@
+{
+  "commit": "6fadc5db6bd02c9bd3012b76417ca498eb413006",
+  "started_at_utc": "2026-09-29T11:45:43.580451+00:00",
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu-24.04",
+    "--cd",
+    "/mnt/e/比赛/密证_CredProof-local-agent",
+    "--exec",
+    "unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "--fork",
+    "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+    "-B",
+    "-m",
+    "agent_pilot.offline_run",
+    "--reliability",
+    "--agent-only",
+    "--output",
+    "experiments/local-agent-pilot/tool-call-revision/20260929t114543z-known-h05-h06",
+    "--cases",
+    "h05",
+    "h06"
+  ],
+  "run_path": "experiments/local-agent-pilot/tool-call-revision/20260929t114543z-known-h05-h06",
+  "execution_kind": "NEW-real-local-model-inference-known-regression-cases",
+  "exit_code": 0,
+  "elapsed_s": 41.0908761001192,
+  "ended_at_utc": "2026-09-29T11:46:24.671711+00:00"
+}

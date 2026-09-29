@@ -1,0 +1,135 @@
+[
+  {
+    "id": "evidence-1",
+    "source_sha256": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "conditions": {
+      "request": {
+        "request_id": "public-check",
+        "resource": "public-resource",
+        "units": 2,
+        "debug": true
+      },
+      "auth_mode": "success"
+    },
+    "conditions_sha256": "9b8f2ef5f4edc657068b4eb8fae025ff3e661097fd1cac8cdfe77e21f97fd6e8",
+    "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+    "observation": {
+      "verdict": "FAIL",
+      "reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "leak_channels": [
+        "logging"
+      ],
+      "actual": {
+        "returned": {
+          "ok": true,
+          "request_id": "public-check",
+          "resource": "public-resource",
+          "units": 2,
+          "total": 14,
+          "subject": "subject:public-resource",
+          "meta": {
+            "route": "local-mock",
+            "debug": true
+          }
+        },
+        "raised": null,
+        "stdout": "",
+        "stderr": "",
+        "logs": [
+          "INFO:Authenticating resource=public-resource credential=[REDACTED]"
+        ]
+      },
+      "auth_call_count": 1
+    },
+    "observed_at": "2026-09-29T11:52:35.086291+00:00"
+  },
+  {
+    "id": "evidence-2",
+    "source_sha256": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "conditions": {
+      "request": {
+        "request_id": "public-check",
+        "resource": "public-resource",
+        "units": 2,
+        "debug": true
+      },
+      "auth_mode": "denied"
+    },
+    "conditions_sha256": "a172742221fc518ba15aa094eda501d2fb6ccbf0ffe46fa5064976741638ad3a",
+    "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+    "observation": {
+      "verdict": "FAIL",
+      "reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "leak_channels": [
+        "logging"
+      ],
+      "actual": {
+        "returned": {
+          "ok": false,
+          "request_id": "public-check",
+          "error": {
+            "type": "permission_denied",
+            "message": "Permission denied"
+          }
+        },
+        "raised": null,
+        "stdout": "",
+        "stderr": "",
+        "logs": [
+          "INFO:Authenticating resource=public-resource credential=[REDACTED]"
+        ]
+      },
+      "auth_call_count": 1
+    },
+    "observed_at": "2026-09-29T11:52:35.223449+00:00"
+  },
+  {
+    "id": "evidence-3",
+    "source_sha256": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "conditions": {
+      "request": {
+        "request_id": "public-check",
+        "resource": "public-resource",
+        "units": 2,
+        "debug": true
+      },
+      "auth_mode": "provider_error"
+    },
+    "conditions_sha256": "f4f673840e4c0e3edead27b51d6c7556c3adfcf07e3f755697b93d3c1aee78a2",
+    "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+    "observation": {
+      "verdict": "FAIL",
+      "reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "leak_channels": [
+        "logging"
+      ],
+      "actual": {
+        "returned": {
+          "ok": false,
+          "request_id": "public-check",
+          "error": {
+            "type": "auth_unavailable",
+            "message": "Authentication service unavailable"
+          }
+        },
+        "raised": null,
+        "stdout": "",
+        "stderr": "",
+        "logs": [
+          "INFO:Authenticating resource=public-resource credential=[REDACTED]"
+        ]
+      },
+      "auth_call_count": 1
+    },
+    "observed_at": "2026-09-29T11:52:35.357890+00:00"
+  }
+]

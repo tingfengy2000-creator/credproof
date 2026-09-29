@@ -1,0 +1,710 @@
+{
+  "schema": "credproof.freeze-deviation-review.v1",
+  "audited_at_utc": "2026-09-29T11:48:08.094332+00:00",
+  "basis_git_commit": "65abca2ac6c531f2b790cf893da7a0c5ad166752",
+  "run_id": "20260929t094000z-original6-compact",
+  "audit_kind": "retrospective_read_only_source_and_artifact_review",
+  "new_model_or_candidate_execution": false,
+  "disposition": {
+    "classification": "DEVELOPMENT_OBSERVATIONS_WITH_FREEZE_DEVIATION",
+    "retain_historical_exit_code": 1,
+    "full_freeze_pass": false,
+    "specific_core_contamination_path_found": false,
+    "reason": "No core contamination path was found, but absent per-file end hashes prevent proving only the two metadata files differed at finish. User requested fixed-version rerun where proof is incomplete; preserve old exit 1.",
+    "conservative_rerun_decided_by_root": true
+  },
+  "observed_execution": {
+    "complete": false,
+    "frozen_inputs_unchanged": false,
+    "commands": [
+      {
+        "argv": [
+          "<RUNTIME>/venv/bin/python",
+          "-m",
+          "agent_pilot.handshake",
+          "--output",
+          "<REPO>/experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/handshake"
+        ],
+        "exit_code": 0,
+        "elapsed_s": 1.5776128069999942
+      },
+      {
+        "argv": [
+          "<RUNTIME>/venv/bin/python",
+          "-m",
+          "agent_pilot.reliability",
+          "--output",
+          "<REPO>/experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/comparison",
+          "--cases",
+          "p01",
+          "p02",
+          "p03",
+          "p04",
+          "p05",
+          "p06",
+          "--no-feedback"
+        ],
+        "exit_code": 1,
+        "elapsed_s": 169.93635199300002
+      }
+    ],
+    "command_path_placeholders": "<RUNTIME> and <REPO> replace private absolute runtime/repository roots; argv order preserved.",
+    "network_before_at_utc": "2026-09-29T09:34:09.806665+00:00",
+    "freeze_created_at_utc": "2026-09-29T09:34:23.751532+00:00",
+    "network_after_at_utc": "2026-09-29T09:37:12.954697+00:00",
+    "directory_name_is_not_start_time": true,
+    "aggregate_row_count": 24,
+    "stdout_json_line_count": 24,
+    "stderr_bytes": 0,
+    "error": {
+      "type": "RuntimeError",
+      "message": "Child step failed; raw output preserved without automatic retry"
+    }
+  },
+  "snapshot_recovery": {
+    "archive_root": "experiments/local-agent-pilot/source-snapshots/9a3fc09134d5",
+    "frozen_count": 23,
+    "matched_count": 21,
+    "files": [
+      {
+        "path": "agent_pilot/bundle.py",
+        "expected_sha256": "c20bad8fbb685950350f4813b81ad8b7d8eb414b05a63f5271e47802d2c041aa",
+        "archived_sha256": null,
+        "status": "MISSING"
+      },
+      {
+        "path": "agent_pilot/download-model.py",
+        "expected_sha256": "1215c5327fd678b3fb11363f0b61166f830c021a140e7424721d2c020453298d",
+        "archived_sha256": "1215c5327fd678b3fb11363f0b61166f830c021a140e7424721d2c020453298d",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/experiment.py",
+        "expected_sha256": "4085f2fdbe111fdf398ad3445c0070589b0e1b1ac0773be7b39a3dcfd2c85272",
+        "archived_sha256": "4085f2fdbe111fdf398ad3445c0070589b0e1b1ac0773be7b39a3dcfd2c85272",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/fixed.py",
+        "expected_sha256": "54a7fd16a5f3dc39f196749c8dc64a18a59d8d234b250929394ccf7282eeaac7",
+        "archived_sha256": "54a7fd16a5f3dc39f196749c8dc64a18a59d8d234b250929394ccf7282eeaac7",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/handshake.py",
+        "expected_sha256": "0c2d03def12987a54dfec69c71bbe3d3f2677bc9ed29416ca2f120cc9770c203",
+        "archived_sha256": "0c2d03def12987a54dfec69c71bbe3d3f2677bc9ed29416ca2f120cc9770c203",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/isolation.py",
+        "expected_sha256": "ac0aa1efdef622921715f4ac09d1b1c22b209bb543f28512ab74ab76b2656498",
+        "archived_sha256": "ac0aa1efdef622921715f4ac09d1b1c22b209bb543f28512ab74ab76b2656498",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/judge.py",
+        "expected_sha256": "d790a9fa63b8c74999ec521a4e615041178518171d43d336fd0b965de3a29924",
+        "archived_sha256": "d790a9fa63b8c74999ec521a4e615041178518171d43d336fd0b965de3a29924",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/model_client.py",
+        "expected_sha256": "244da40a1824ddc4672354fe525caf6b31370996cd62d1c6b39e6ad4f795a060",
+        "archived_sha256": "244da40a1824ddc4672354fe525caf6b31370996cd62d1c6b39e6ad4f795a060",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/offline_run.py",
+        "expected_sha256": "e3b202a01b488a33f5e56e220a1eb057a707dc1fe39018e21f7f8c87f5a4207c",
+        "archived_sha256": "e3b202a01b488a33f5e56e220a1eb057a707dc1fe39018e21f7f8c87f5a4207c",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/prepare-ollama.py",
+        "expected_sha256": "f8710cf888fe63651915c84517eed6d96514cc279199630ba40fdc3d0bce0bb7",
+        "archived_sha256": "f8710cf888fe63651915c84517eed6d96514cc279199630ba40fdc3d0bce0bb7",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/reliability.py",
+        "expected_sha256": "8a3a0cebc683434c6690250a8d75a5a4accb7eb08c163cfdb7f000015a91635a",
+        "archived_sha256": "8a3a0cebc683434c6690250a8d75a5a4accb7eb08c163cfdb7f000015a91635a",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/sandbox_runner.py",
+        "expected_sha256": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+        "archived_sha256": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/summarize.py",
+        "expected_sha256": "ff6faed94fc6f80bfc81ed32a86d95a095d58cbaff9762315f75c01a5deb6a1e",
+        "archived_sha256": "ff6faed94fc6f80bfc81ed32a86d95a095d58cbaff9762315f75c01a5deb6a1e",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/test_model_client.py",
+        "expected_sha256": "06d79fb719fcef4f8fc62ab1406c6accc83a4c54dd47ee018f187bec5e81ce30",
+        "archived_sha256": "06d79fb719fcef4f8fc62ab1406c6accc83a4c54dd47ee018f187bec5e81ce30",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/tools.py",
+        "expected_sha256": "d180137bf516a5b2d9a1725575b7c8bca9edd8f0157696e12ed6c009f6c43ff0",
+        "archived_sha256": "d180137bf516a5b2d9a1725575b7c8bca9edd8f0157696e12ed6c009f6c43ff0",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/web.py",
+        "expected_sha256": "4004841b660d61c3f05c267734ac5a0299e6dc693bd72944c91689401080fbcc",
+        "archived_sha256": null,
+        "status": "MISSING"
+      },
+      {
+        "path": "agent_pilot/__init__.py",
+        "expected_sha256": "69c8bf94f4106791728bb7cb7317601d3a1c7d6f0cd14424c9be7bc28732d3e2",
+        "archived_sha256": "69c8bf94f4106791728bb7cb7317601d3a1c7d6f0cd14424c9be7bc28732d3e2",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/fixtures/p01/tool.py",
+        "expected_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+        "archived_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/fixtures/p02/tool.py",
+        "expected_sha256": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+        "archived_sha256": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/fixtures/p03/tool.py",
+        "expected_sha256": "392ccb198bf3d89562061953bd3f0a6bf73b2e6da314a222e9e25149c541533f",
+        "archived_sha256": "392ccb198bf3d89562061953bd3f0a6bf73b2e6da314a222e9e25149c541533f",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/fixtures/p04/tool.py",
+        "expected_sha256": "81d28257bdf9f4e55b7b09a87612ad1eef0aa64ae12e756f3a38029ce33f1072",
+        "archived_sha256": "81d28257bdf9f4e55b7b09a87612ad1eef0aa64ae12e756f3a38029ce33f1072",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/fixtures/p05/tool.py",
+        "expected_sha256": "d84d3ab8e865b23f6d86d604fb8555a0911d3c187bfae06aeef3b43117a9f7ac",
+        "archived_sha256": "d84d3ab8e865b23f6d86d604fb8555a0911d3c187bfae06aeef3b43117a9f7ac",
+        "status": "MATCH"
+      },
+      {
+        "path": "agent_pilot/fixtures/p06/tool.py",
+        "expected_sha256": "bffe129c58ca65b1ce028fc00644baa23a53dfd07322aec315fc95eb41878ede",
+        "archived_sha256": "bffe129c58ca65b1ce028fc00644baa23a53dfd07322aec315fc95eb41878ede",
+        "status": "MATCH"
+      }
+    ],
+    "search_limit": "Archived source snapshots and corresponding file history reachable from basis HEAD; not an exhaustive search of unreachable Git objects."
+  },
+  "prior_post_run_comparison": {
+    "audit_path": "experiments/local-agent-pilot/reliability/original6-audit.json",
+    "audited_at": "2026-09-29T09:47:38.035912+00:00",
+    "different_files": [
+      {
+        "path": "agent_pilot/bundle.py",
+        "frozen_sha256": "c20bad8fbb685950350f4813b81ad8b7d8eb414b05a63f5271e47802d2c041aa",
+        "audited_sha256": "0dd94e02e5cf89d9ddd5de9a82b60eb8f918d2db206f235c5852fbe7263ec431"
+      },
+      {
+        "path": "agent_pilot/web.py",
+        "frozen_sha256": "4004841b660d61c3f05c267734ac5a0299e6dc693bd72944c91689401080fbcc",
+        "audited_sha256": "a01a5d6de8df38a62124e37ed911e6fe6f38d23ef9b3fda949b67d71388f668c"
+      }
+    ],
+    "is_exact_end_file_hash_map": false
+  },
+  "basis_head_comparison": {
+    "matched_count": 20,
+    "different_files": [
+      {
+        "path": "agent_pilot/bundle.py",
+        "expected_sha256": "c20bad8fbb685950350f4813b81ad8b7d8eb414b05a63f5271e47802d2c041aa",
+        "basis_head_sha256": "0dd94e02e5cf89d9ddd5de9a82b60eb8f918d2db206f235c5852fbe7263ec431",
+        "status": "DIFFERENT"
+      },
+      {
+        "path": "agent_pilot/reliability.py",
+        "expected_sha256": "8a3a0cebc683434c6690250a8d75a5a4accb7eb08c163cfdb7f000015a91635a",
+        "basis_head_sha256": "5b64b5e2b9067cd57dd9f5f31a010c6d14a43ab2c394cdb1f3e315276a66d7dd",
+        "status": "DIFFERENT"
+      },
+      {
+        "path": "agent_pilot/web.py",
+        "expected_sha256": "4004841b660d61c3f05c267734ac5a0299e6dc693bd72944c91689401080fbcc",
+        "basis_head_sha256": "b4380be0627aa504aed8c20737d40877ba709ae5c24bc7e72726e7e83c3af404",
+        "status": "DIFFERENT"
+      }
+    ],
+    "warning": "This is the specified audit basis HEAD, not the source at experiment start or the concurrently changing working tree. Later reliability completeness gates must not be substituted into the old run."
+  },
+  "target_roles": [
+    {
+      "path": "agent_pilot/web.py",
+      "frozen_at_start_sha256": "4004841b660d61c3f05c267734ac5a0299e6dc693bd72944c91689401080fbcc",
+      "included_in_global_freeze_input": true,
+      "affects_freeze_metadata_and_exit_gate": true,
+      "core_static_dependency": false,
+      "model_input_path_found": false,
+      "judge_or_candidate_execution_path_found": false,
+      "classification": "METADATA_GLOB_ONLY_IN_INSPECTED_SELECTED_PATH",
+      "initial_full_bytes_recovered": false
+    },
+    {
+      "path": "agent_pilot/bundle.py",
+      "frozen_at_start_sha256": "c20bad8fbb685950350f4813b81ad8b7d8eb414b05a63f5271e47802d2c041aa",
+      "included_in_global_freeze_input": true,
+      "affects_freeze_metadata_and_exit_gate": true,
+      "core_static_dependency": false,
+      "model_input_path_found": false,
+      "judge_or_candidate_execution_path_found": false,
+      "classification": "METADATA_GLOB_ONLY_IN_INSPECTED_SELECTED_PATH",
+      "initial_full_bytes_recovered": false
+    }
+  ],
+  "static_local_dependency_closure": {
+    "module_count": 11,
+    "imports": {
+      "__init__": [],
+      "offline_run": [
+        "tools"
+      ],
+      "handshake": [
+        "model_client",
+        "tools"
+      ],
+      "reliability": [
+        "experiment",
+        "fixed",
+        "judge",
+        "model_client",
+        "tools"
+      ],
+      "experiment": [
+        "fixed",
+        "isolation",
+        "judge",
+        "model_client",
+        "tools"
+      ],
+      "isolation": [
+        "sandbox_runner"
+      ],
+      "fixed": [],
+      "judge": [],
+      "model_client": [],
+      "tools": [],
+      "sandbox_runner": []
+    },
+    "all_modules_available_in_matching_start_snapshot": true,
+    "method": "AST import inspection plus manual review of selected CLI branches, module-level reads, subprocesses, dynamic calls and tool dispatch."
+  },
+  "dynamic_entry_review": [
+    {
+      "component": "offline_run",
+      "finding": "Actual commands select handshake and reliability via fixed argv. Other subprocesses are local Ollama and fixed network/GPU observation tools; no web/bundle execution."
+    },
+    {
+      "component": "model_client/tools",
+      "finding": "Explicit function list and name dispatch, schema-checked arguments, knowledge-file injection disabled; no discovered web/bundle file loader."
+    },
+    {
+      "component": "reliability/experiment",
+      "finding": "Registry selects fixed fixture source, rules use judge plus requirements and policy. experiment.main is not selected. Top-level py glob hashes include the two targets."
+    },
+    {
+      "component": "isolation",
+      "finding": "Linux path imports fixed sandbox_runner. Windows bridge exec/compile compiles that trusted sibling source; it is not a model-selected module and was not the selected Linux execution branch."
+    },
+    {
+      "component": "sandbox_runner/judge",
+      "finding": "Fixed candidate and harness filenames inside prepared rootfs/work; no project root mount. Harness imports tool; fixed datetime dynamic import is standard library. Preparation tools are not invoked by candidate-run operation."
+    }
+  ],
+  "artifact_cross_checks": {
+    "per_method": [
+      {
+        "case": "p01",
+        "method": "A-fixed",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p01",
+        "method": "B-once",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p01",
+        "method": "C-agent",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p01",
+        "method": "D-no-feedback-1",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p01",
+        "method": "D-no-feedback-2",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p01",
+        "method": "D-no-feedback-3",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p02",
+        "method": "A-fixed",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p02",
+        "method": "B-once",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p02",
+        "method": "C-agent",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p03",
+        "method": "A-fixed",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p03",
+        "method": "B-once",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p03",
+        "method": "C-agent",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p03",
+        "method": "D-no-feedback-1",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p03",
+        "method": "D-no-feedback-2",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p03",
+        "method": "D-no-feedback-3",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p04",
+        "method": "A-fixed",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p04",
+        "method": "B-once",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p04",
+        "method": "C-agent",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p05",
+        "method": "A-fixed",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p05",
+        "method": "B-once",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p05",
+        "method": "C-agent",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p06",
+        "method": "A-fixed",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p06",
+        "method": "B-once",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      },
+      {
+        "case": "p06",
+        "method": "C-agent",
+        "aggregate_matches_result": true,
+        "original_matches_frozen_fixture": true,
+        "rules_match_frozen": true
+      }
+    ],
+    "all_aggregate_copies_match": true,
+    "all_original_sources_match": true,
+    "all_rules_match": true,
+    "rules_recomputed_from_archived_text_and_policy_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "model_request_count": 40,
+    "literal_filename_term_hits": {
+      "agent_pilot.web": [],
+      "agent_pilot.bundle": [],
+      "web.py": [],
+      "bundle.py": []
+    },
+    "term_scan_limit": "Absence of these exact terms is auxiliary evidence only, not proof against equivalent information flow.",
+    "observed_tool_names": [
+      "read_code",
+      "run_controlled_case",
+      "submit_patch",
+      "verify_patch"
+    ]
+  },
+  "proof_limits": [
+    "No runtime import/open event trace or continuous file attestation.",
+    "Initial full web.py/bundle.py bytes unavailable in inspected archives and reachable file histories.",
+    "End-of-run only stores global boolean; short-circuit all() is not an exact per-file end hash map.",
+    "Post-run two-file mismatch does not exclude an unobserved change-and-restore or establish exactly two end mismatches.",
+    "External dependency effects and concurrent resource contention are not continuously traced."
+  ],
+  "claim_policy": {
+    "allowed": [
+      "Keep all 24 saved development observations with explicit freeze deviation.",
+      "State no web/bundle inference, repair, candidate or judge path was found in recovered selected source.",
+      "Classify their demonstrated role as freeze metadata and exit gating."
+    ],
+    "not_supported": [
+      "Whole run passed freezing.",
+      "The two files never participated in any input/output.",
+      "All files were unchanged throughout execution.",
+      "The missing initial blobs were recovered.",
+      "h03 has been newly verified live in the browser."
+    ]
+  },
+  "ui_review": {
+    "model_suspicion_separate_from_program_verdict": true,
+    "program_sources": [
+      "initial_authority",
+      "final_validation"
+    ],
+    "raw_model_notes_do_not_override_verdict": true,
+    "replay_requires_registered_C_agent_record": true,
+    "live_cli_agent_only": true,
+    "h03_existing_records": {
+      "A-fixed": {
+        "verdict": "PASS",
+        "selected_candidate": "candidate-1",
+        "model_calls": 0,
+        "selected_sha256": "ed23aadb9b13b3ca31563c9968f84c1520d8671e58c496e9ca3fd7914789d393"
+      },
+      "C-agent": {
+        "verdict": "PASS",
+        "selected_candidate": "candidate-2",
+        "model_calls": 7,
+        "selected_sha256": "4d750e13393b33f8fefcab9953e12369a271fa8fd2de1d7d308ece4e01a7512b"
+      }
+    },
+    "h03_browser_live_verified_by_this_review": false,
+    "existing_browser_record_scope": "P01 and P05 live, P01 replay, export/recheck; not h03.",
+    "approved_copy_changes": [
+      {
+        "file": "agent_pilot/ui/app.js",
+        "before": "原执行时间",
+        "after": "回放记录时间"
+      },
+      {
+        "file": "agent_pilot/ui/app.js",
+        "before": "首次验收 ·",
+        "after": "验收记录时间 ·"
+      }
+    ],
+    "timestamp_limit": "Replay started_at is based on result file mtime; validation display may use record updated_at. Labels changed only; values unchanged. Consult supervisor/logs for actual execution time.",
+    "syntax_check": {
+      "command": "node --check agent_pilot/ui/app.js",
+      "exit_code": 0
+    },
+    "layout_or_business_state_changes": false
+  },
+  "evidence_files": [
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/comparison/frozen-inputs.json",
+      "sha256": "073256cb3bed55f6fc7260498e427de5ddcf0424b35628feaed61c70b3b45f42"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/comparison/results.json",
+      "sha256": "4de855cbc27cf5051028a1fbf53c23648862422f4eee8ef15a167ab5862f7ae4"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/supervisor-result.json",
+      "sha256": "aa4ea7993d47f25ff17be4d6edac3437a2d23424ae97f6c38444e5b2ab4a0fc4"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/command-0-stdout.txt",
+      "sha256": "85b7edfdcfb5a17fbf2b6b196d3a0ab593d0d8848213610b1dda7ce2882443a1"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/command-0-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/command-1-stdout.txt",
+      "sha256": "b00ad4c96828c9bf84d4379ba76ae9f676ba4e180e7085f08eb990314c1fabcf"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/command-1-stderr.txt",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/network-before.json",
+      "sha256": "bdd8e35328ed65d0281bbbb90498b07765b4604d8b0f4bc54ece332143318e96"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/network-after.json",
+      "sha256": "45adc3c7bdf1841082f2956b897812704374bacb4bedd17cc7123420fe96a8c7"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/service-config.json",
+      "sha256": "ddb55e5a27e71d27bda2b3f718a656227636f2bc50eeb4d87f088bc5ee77ca70"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/service-version.json",
+      "sha256": "2876d4c7617a05d66d1f116d8ca08c117a51b3f8bdc197b490c399351024f280"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/model-show.json",
+      "sha256": "df96a48c7c1d23431850f35bf43df091c892270b6b304d486a5494260c0bf284"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/model-tags.json",
+      "sha256": "34a6f846c4c14cf41696aab0c0c0ae2a939e2af085fa43fea3cd51e437d97852"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/model-ps.json",
+      "sha256": "3f7d0aef27e445b850308775d7933a6bae50fad2c7c973d820f7c24c98e2ab0b"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/namespace-membership.json",
+      "sha256": "33ba6add2bb2ed0cbd50088a755f121826cb11aa530efb0af4ca35cc39ec91e6"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/handshake/result.json",
+      "sha256": "ecb949707e954e677569eb4e05790b91ebbc32429c8da227ad47d6eb61616c9c"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/handshake/programmatic-boundary-tests.json",
+      "sha256": "a323a9536c309934326b22a358e69935c2f279769547ed415d55320f96d56f3a"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/original6-audit.json",
+      "sha256": "2ec1f7f0b7a47f57f33da23a00dabf643c6e24ac230204648499df0894f2d55d"
+    },
+    {
+      "path": "experiments/local-agent-pilot/reliability/clean-validation/browser-verification.json",
+      "sha256": "ae9f1d037986b2e8ade1edfaad079b58d040cea0fc78fb02259681b04cec9d8d"
+    }
+  ],
+  "planned_conservative_rerun": {
+    "status": "DECIDED_NOT_EXECUTED_BY_THIS_REVIEW",
+    "ordering": "After the current h05/h06 run finishes.",
+    "source_git_commit": "9a3fc09134d580dabbcf0ed9a887dc9af2b7ea7b",
+    "directory": "New independent clean export, chosen by root.",
+    "scope": {
+      "A-fixed": [
+        "p01",
+        "p02",
+        "p03",
+        "p04",
+        "p05",
+        "p06"
+      ],
+      "B-once": [
+        "p01",
+        "p02",
+        "p03",
+        "p04",
+        "p05",
+        "p06"
+      ],
+      "C-agent": [
+        "p01",
+        "p02",
+        "p03",
+        "p04",
+        "p05",
+        "p06"
+      ],
+      "D-no-feedback": {
+        "cases": [
+          "p01",
+          "p03"
+        ],
+        "attempts_per_case": 3
+      }
+    },
+    "code_and_budget": "Use the specified original fixed source and original budgets.",
+    "freeze_set_boundary": "Freeze the actually exported tracked content. The two missing starting web/bundle files are not present in this commit and are outside the inspected selected core dependency path. This new freeze set differs from the old broad 23-file manifest.",
+    "record_policy": "Save a separate new record; do not replace old results, reclassify old exit 1, or claim these are unseen cases.",
+    "why": "Conservative response to missing per-file end evidence, not proof that either changed metadata file entered the core execution."
+  }
+}

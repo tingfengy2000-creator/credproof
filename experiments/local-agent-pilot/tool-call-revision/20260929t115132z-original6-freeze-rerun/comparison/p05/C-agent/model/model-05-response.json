@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-221",
+  "object": "chat.completion",
+  "created": 1790682848,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Now I have confirmed the issue. The debug output is indeed leaking information through stdout. When `debug=true`, the tool prints:\n\n```\nDEBUG resource <resource> request <request_id>\n```\n\nThis is a clear violation of the security requirements because it exposes potentially sensitive information about the resource and request ID in the stdout channel.\n\nLet me also test with debug=false to confirm that normal operation doesn't have this issue:",
+        "tool_calls": [
+          {
+            "id": "call_py4h7xrh",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Normal operation should not leak information\",\"request\":{\"debug\":false,\"request_id\":\"normal-test\",\"resource\":\"normal-resource\",\"units\":2},\"auth_mode\":\"success\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4159,
+    "prompt_tokens_details": {
+      "cached_tokens": 3706
+    },
+    "completion_tokens": 153,
+    "total_tokens": 4312
+  }
+}

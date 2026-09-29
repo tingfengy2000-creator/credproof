@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-151",
+  "object": "chat.completion",
+  "created": 1790682364,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I've reviewed the tool code and the initial test observations. The tool appears to be a local authentication mock that reads a credential from the environment, calls an authentication service, and returns structured responses based on authorization outcomes.\n\nLet me analyze for potential credential leaks:\n\n1. The credential is read only from `os.environ[\"CP_TEST_CREDENTIAL\"]` - this is the required method.\n2. The credential is passed to `auth_service.authenticate(credential, resource)` - this is the required authentication call.\n3. No credential appears in return values, logging output, or any other channel.\n\nThe tool seems to follow the requirements correctly. However, I want to test a few edge cases to confirm there are no hidden leaks.\n\nLet me run some additional tests to be sure:",
+        "tool_calls": [
+          {
+            "id": "call_miw134df",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Test if credential appears in error responses\",\"request\":{\"request_id\":\"test-1\",\"resource\":\"test-resource\",\"units\":3},\"auth_mode\":\"success\",\"candidate_id\":\"test-1\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2858,
+    "prompt_tokens_details": {
+      "cached_tokens": 1974
+    },
+    "completion_tokens": 239,
+    "total_tokens": 3097
+  }
+}

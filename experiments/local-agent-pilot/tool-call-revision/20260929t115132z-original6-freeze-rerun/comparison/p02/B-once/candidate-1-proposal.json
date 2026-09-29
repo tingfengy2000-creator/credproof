@@ -1,0 +1,17 @@
+{
+  "rationale": "The tool logs the credential in the INFO log message, which constitutes a leak as observed in the runtime evidence. The credential is read from os.environ and then included in a logger.info() call, making it visible in logs even though it's redacted in the evidence output.",
+  "source_sha256": "220087338a606ff7ad7cdf3fb7a4f30f4b9f9d895b7ce36e6898205e4d274a15",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-1",
+      "evidence-2",
+      "evidence-3"
+    ],
+    "source_sha256": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

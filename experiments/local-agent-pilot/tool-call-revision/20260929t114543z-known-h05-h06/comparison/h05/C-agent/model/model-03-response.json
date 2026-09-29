@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-910",
+  "object": "chat.completion",
+  "created": 1790682364,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let me try a different approach to test for potential credential leaks by running a few more controlled cases.",
+        "tool_calls": [
+          {
+            "id": "call_r3w081zy",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Test if credential appears in success responses\",\"request\":{\"debug\":true,\"request_id\":\"test-1\",\"resource\":\"test-resource\",\"units\":3},\"auth_mode\":\"success\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3122,
+    "prompt_tokens_details": {
+      "cached_tokens": 3011
+    },
+    "completion_tokens": 91,
+    "total_tokens": 3213
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "status": "BLOCKED_BEFORE_MODEL_RUN",
+  "error": "Git archive bytes did not equal raw Git blob bytes; extraction rejected before execution",
+  "exit_code": 1,
+  "mismatches": [
+    {
+      "path": "agent_pilot/requirements-lock.txt",
+      "archive_sha256": "64c6c3d9cfb6d7944b74ca213a212f68edee784ec5baf4b60f1ae7fe62b80ce4",
+      "git_blob_sha256": "7231f03daf9bcc0c6d279bbfd38febcdfe47f074e7967a8d8c5830f51731bb89",
+      "archive_size": 1383,
+      "blob_size": 1319
+    }
+  ],
+  "model_calls": 0,
+  "manifest_claim_retracted": true
+}

@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-183",
+  "object": "chat.completion",
+  "created": 1790682847,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I can see from the test results that there is indeed a debug output leak. The stdout contains:\n\n```\nDEBUG resource secret-resource request test-123\n```\n\nThis shows that when `debug=true`, the tool prints the resource and request_id to stdout, which could potentially expose sensitive information in certain contexts.\n\nLet me run another test to confirm this behavior with different parameters.",
+        "tool_calls": [
+          {
+            "id": "call_rxwgkqbf",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Debug output might leak credential information\",\"request\":{\"debug\":true,\"request_id\":\"another-test\",\"resource\":\"another-resource\",\"units\":1},\"auth_mode\":\"success\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3561,
+    "prompt_tokens_details": {
+      "cached_tokens": 3101
+    },
+    "completion_tokens": 146,
+    "total_tokens": 3707
+  }
+}

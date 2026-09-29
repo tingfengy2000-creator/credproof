@@ -1,0 +1,186 @@
+{
+  "source_commit": "9a3fc09134d580dabbcf0ed9a887dc9af2b7ea7b",
+  "policy": "exact Git blobs via archive; agent_pilot subtree only; no prior untracked web/bundle; no substitution attributes in subtree",
+  "files": [
+    {
+      "path": "agent_pilot/__init__.py",
+      "sha256": "69c8bf94f4106791728bb7cb7317601d3a1c7d6f0cd14424c9be7bc28732d3e2",
+      "size": 82
+    },
+    {
+      "path": "agent_pilot/download-model.py",
+      "sha256": "1215c5327fd678b3fb11363f0b61166f830c021a140e7424721d2c020453298d",
+      "size": 4624
+    },
+    {
+      "path": "agent_pilot/experiment.py",
+      "sha256": "4085f2fdbe111fdf398ad3445c0070589b0e1b1ac0773be7b39a3dcfd2c85272",
+      "size": 16881
+    },
+    {
+      "path": "agent_pilot/fixed.py",
+      "sha256": "54a7fd16a5f3dc39f196749c8dc64a18a59d8d234b250929394ccf7282eeaac7",
+      "size": 6325
+    },
+    {
+      "path": "agent_pilot/fixtures/manifest.json",
+      "sha256": "42b0d3d04135959c996bfed0bfe1349d175483da75e373669af9b7a9b86b2a4a",
+      "size": 1509
+    },
+    {
+      "path": "agent_pilot/fixtures/p01/tool.py",
+      "sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+      "size": 1612
+    },
+    {
+      "path": "agent_pilot/fixtures/p02/tool.py",
+      "sha256": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+      "size": 1617
+    },
+    {
+      "path": "agent_pilot/fixtures/p03/tool.py",
+      "sha256": "392ccb198bf3d89562061953bd3f0a6bf73b2e6da314a222e9e25149c541533f",
+      "size": 1649
+    },
+    {
+      "path": "agent_pilot/fixtures/p04/tool.py",
+      "sha256": "81d28257bdf9f4e55b7b09a87612ad1eef0aa64ae12e756f3a38029ce33f1072",
+      "size": 1672
+    },
+    {
+      "path": "agent_pilot/fixtures/p05/tool.py",
+      "sha256": "d84d3ab8e865b23f6d86d604fb8555a0911d3c187bfae06aeef3b43117a9f7ac",
+      "size": 1756
+    },
+    {
+      "path": "agent_pilot/fixtures/p06/tool.py",
+      "sha256": "bffe129c58ca65b1ce028fc00644baa23a53dfd07322aec315fc95eb41878ede",
+      "size": 1618
+    },
+    {
+      "path": "agent_pilot/fixtures/requirements.md",
+      "sha256": "adc4a9632d539c803fe0dbf7e35e2095d00e2343813220564e26b63eb6b77134",
+      "size": 3112
+    },
+    {
+      "path": "agent_pilot/handshake.py",
+      "sha256": "0c2d03def12987a54dfec69c71bbe3d3f2677bc9ed29416ca2f120cc9770c203",
+      "size": 3554
+    },
+    {
+      "path": "agent_pilot/isolation-tests/observations-20260929T062213Z/probe-nested.json",
+      "sha256": "09efadcc5af05b4514c776fbbacd90c60fbec130d040ded005e6cba9a7a2ba4f",
+      "size": 6009
+    },
+    {
+      "path": "agent_pilot/isolation-tests/observations-20260929T062213Z/probe-normal.json",
+      "sha256": "b68d377b34e48faf1a1e48d6f5680cdc526cb31aafa03a0c40f85b6058aad878",
+      "size": 6009
+    },
+    {
+      "path": "agent_pilot/isolation-tests/observations-20260929T062810Z/probe-nested.json",
+      "sha256": "7891864e99ab07c8bab7e023a99f918aae1505ab6cc174485bc1dfb53328046c",
+      "size": 6009
+    },
+    {
+      "path": "agent_pilot/isolation-tests/observations-20260929T062810Z/probe-normal.json",
+      "sha256": "553f85eac209c03a075f304806f30e8a8438041a4eb3e4841c2d7db13a78ba5c",
+      "size": 6009
+    },
+    {
+      "path": "agent_pilot/isolation-tests/probe-nested.json",
+      "sha256": "71b98b820732b1de09462b5d0b5ca854fb37f905a49bb164d3137dedb8cfec35",
+      "size": 5841
+    },
+    {
+      "path": "agent_pilot/isolation-tests/probe-normal.json",
+      "sha256": "900d1fa76c22be2d1900b405aeb2745c1240938a673bd1460ac3619e79f28f7e",
+      "size": 5841
+    },
+    {
+      "path": "agent_pilot/isolation-tests/record_probes.py",
+      "sha256": "f56d152dca3342a12f21072a317e92cef12617ebd9c6275320f251d3f25e2f97",
+      "size": 2380
+    },
+    {
+      "path": "agent_pilot/isolation-tests/test_isolation.py",
+      "sha256": "18a15a83ae88ed8c7eceb12b396c473b50e3865273cf850250a76d1b61f2dd94",
+      "size": 6930
+    },
+    {
+      "path": "agent_pilot/isolation.py",
+      "sha256": "ac0aa1efdef622921715f4ac09d1b1c22b209bb543f28512ab74ab76b2656498",
+      "size": 2906
+    },
+    {
+      "path": "agent_pilot/judge.py",
+      "sha256": "d790a9fa63b8c74999ec521a4e615041178518171d43d336fd0b965de3a29924",
+      "size": 18515
+    },
+    {
+      "path": "agent_pilot/model_client.py",
+      "sha256": "244da40a1824ddc4672354fe525caf6b31370996cd62d1c6b39e6ad4f795a060",
+      "size": 26845
+    },
+    {
+      "path": "agent_pilot/offline_run.py",
+      "sha256": "e3b202a01b488a33f5e56e220a1eb057a707dc1fe39018e21f7f8c87f5a4207c",
+      "size": 8861
+    },
+    {
+      "path": "agent_pilot/prepare-ollama.py",
+      "sha256": "f8710cf888fe63651915c84517eed6d96514cc279199630ba40fdc3d0bce0bb7",
+      "size": 3023
+    },
+    {
+      "path": "agent_pilot/protocol-before-safety-fix.json",
+      "sha256": "2827122440e440475e0d8b62f461144ad00299f5e05eeda5d1f85316ecf3e10f",
+      "size": 15193
+    },
+    {
+      "path": "agent_pilot/protocol.json",
+      "sha256": "5d4cf068dfe260b54b60ec3969478c7f18bb4769804c7f065580163c07edc38a",
+      "size": 17906
+    },
+    {
+      "path": "agent_pilot/reliability.py",
+      "sha256": "8a3a0cebc683434c6690250a8d75a5a4accb7eb08c163cfdb7f000015a91635a",
+      "size": 21310
+    },
+    {
+      "path": "agent_pilot/requirements-lock.txt",
+      "sha256": "64c6c3d9cfb6d7944b74ca213a212f68edee784ec5baf4b60f1ae7fe62b80ce4",
+      "size": 1383
+    },
+    {
+      "path": "agent_pilot/sandbox_runner.py",
+      "sha256": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+      "size": 18357
+    },
+    {
+      "path": "agent_pilot/summarize.py",
+      "sha256": "ff6faed94fc6f80bfc81ed32a86d95a095d58cbaff9762315f75c01a5deb6a1e",
+      "size": 21220
+    },
+    {
+      "path": "agent_pilot/test_model_client.py",
+      "sha256": "06d79fb719fcef4f8fc62ab1406c6accc83a4c54dd47ee018f187bec5e81ce30",
+      "size": 18493
+    },
+    {
+      "path": "agent_pilot/tests/test_judge.py",
+      "sha256": "d21a017a0a8276686ecf8abc30e89fcc7c0e20e3d6c64a83b9914c3a116cba3e",
+      "size": 10819
+    },
+    {
+      "path": "agent_pilot/tests/test_reliability.py",
+      "sha256": "7d42c6671e432d7524f7c9845d23f4a103a37d3f50858320abab701f594a3bfe",
+      "size": 13745
+    },
+    {
+      "path": "agent_pilot/tools.py",
+      "sha256": "d180137bf516a5b2d9a1725575b7c8bca9edd8f0157696e12ed6c009f6c43ff0",
+      "size": 1938
+    }
+  ]
+}

@@ -1,0 +1,308 @@
+{
+  "protocol_id": "credproof-local-tool-agent-pilot-v1",
+  "stage": "development-visible synthetic mechanism pilot",
+  "registered_at_utc": "2026-09-29T06:17:25.464582+00:00",
+  "case_expectations_registered_before_first_candidate_execution": true,
+  "independent_final_holdout": false,
+  "no_real_account_or_real_credential": true,
+  "candidate_execution_on_host_permitted": false,
+  "scope": {
+    "cases": 6,
+    "expected_initial_leaking": 4,
+    "expected_initial_safe": 2,
+    "purpose": "Compare useful fixed AST repair, one-shot local model, and runtime-feedback Agent on the same small reviewed tools. No claim of general security coverage or statistical superiority.",
+    "case_construction": "Four different data flows, not a random value split: provider exception copied to return; formatted logging argument; nested debug JSON stdout; nested success metadata. Two independently structured safe controls.",
+    "fixture_labels": [
+      {
+        "id": "p01",
+        "path": "p01/tool.py",
+        "expected_initial": "UNSAFE",
+        "structure": "provider exception captured by a helper boundary and copied into error.message",
+        "expected_channels": [
+          "return"
+        ],
+        "required_trigger": "provider_error"
+      },
+      {
+        "id": "p02",
+        "path": "p02/tool.py",
+        "expected_initial": "UNSAFE",
+        "structure": "logger format arguments include credential before authentication",
+        "expected_channels": [
+          "logging"
+        ],
+        "required_trigger": "valid request"
+      },
+      {
+        "id": "p03",
+        "path": "p03/tool.py",
+        "expected_initial": "UNSAFE",
+        "structure": "debug stdout serializes nested transport headers",
+        "expected_channels": [
+          "stdout"
+        ],
+        "required_trigger": "debug valid request"
+      },
+      {
+        "id": "p04",
+        "path": "p04/tool.py",
+        "expected_initial": "UNSAFE",
+        "structure": "success response appends nested diagnostic metadata containing credential",
+        "expected_channels": [
+          "return"
+        ],
+        "required_trigger": "authorized request"
+      },
+      {
+        "id": "p05",
+        "path": "p05/tool.py",
+        "expected_initial": "SAFE",
+        "structure": "direct safe implementation with public logging and debug output",
+        "expected_channels": [],
+        "required_trigger": "entire matrix"
+      },
+      {
+        "id": "p06",
+        "path": "p06/tool.py",
+        "expected_initial": "SAFE",
+        "structure": "helper-based authorization/error response with safe warnings",
+        "expected_channels": [],
+        "required_trigger": "entire matrix"
+      }
+    ],
+    "expected_labels_basis": "Manual source/data-flow review against the trusted public behavior and channel contract; labels are not derived from the tested model, repair baseline, judge output or later execution."
+  },
+  "trusted_contract": {
+    "requirements_file": "agent_pilot/fixtures/requirements.md",
+    "interface": "tool.run(request, auth_service) -> dict",
+    "editable_files": [
+      "tool.py"
+    ],
+    "imports": [
+      "os",
+      "logging",
+      "json"
+    ],
+    "credential_source": "Execution-side freshly generated CP_EXEC_ + 48 hexadecimal characters in CP_TEST_CREDENTIAL; optional execution-side supplied random test value for reproducibility. Never pass the value through model arguments.",
+    "authorized_credential_channel": "Exactly one auth_service.authenticate(credential, resource) for valid requests, zero calls for invalid requests. The local mock is not a real endpoint.",
+    "forbidden_credential_channels": [
+      "recursive return string values",
+      "recursive return string keys",
+      "stdout",
+      "stderr",
+      "formatted logging",
+      "uncaught exception details"
+    ],
+    "semantic_requirements": [
+      "Input-dependent request/resource/units/total/subject/meta values",
+      "Exact error status/type/message for denied authorization and provider RuntimeError",
+      "Invalid inputs rejected without authentication",
+      "No credential substitutions or authentication bypass"
+    ],
+    "permitted_changes": "Pure local redaction helpers, diagnostics removal, and ordinary refactoring preserving all trusted behavior. Optional diagnostic is ignored for successful response schema comparison only after complete leak scanning.",
+    "not_required": "Preserving public debug/log messages byte-for-byte. No removal of required authentication or error behavior is allowed.",
+    "static_profile": "Conservative AST allow/reject gate, explicitly not the execution security boundary. Reviewed OS isolation is required for every candidate."
+  },
+  "oracle": {
+    "private_matrix_count": 13,
+    "private_matrix": [
+      {
+        "auth_mode": "success",
+        "request": {
+          "request_id": "r-a",
+          "resource": "alpha",
+          "units": 1
+        }
+      },
+      {
+        "auth_mode": "success",
+        "request": {
+          "request_id": "r-b",
+          "resource": "beta",
+          "units": 5,
+          "debug": false
+        }
+      },
+      {
+        "auth_mode": "success",
+        "request": {
+          "request_id": "r-c",
+          "resource": "资料/三",
+          "units": 3,
+          "debug": true
+        }
+      },
+      {
+        "auth_mode": "denied",
+        "request": {
+          "request_id": "r-d",
+          "resource": "restricted",
+          "units": 2
+        }
+      },
+      {
+        "auth_mode": "denied",
+        "request": {
+          "request_id": "r-e",
+          "resource": "beta",
+          "units": 4,
+          "debug": true
+        }
+      },
+      {
+        "auth_mode": "provider_error",
+        "request": {
+          "request_id": "r-f",
+          "resource": "alpha",
+          "units": 2
+        }
+      },
+      {
+        "auth_mode": "provider_error",
+        "request": {
+          "request_id": "r-g",
+          "resource": "gamma",
+          "units": 5,
+          "debug": true
+        }
+      },
+      {
+        "auth_mode": "success",
+        "request": {
+          "request_id": "r-h",
+          "resource": "alpha",
+          "units": 0
+        }
+      },
+      {
+        "auth_mode": "success",
+        "request": {
+          "request_id": "r-i",
+          "resource": "alpha",
+          "units": true
+        }
+      },
+      {
+        "auth_mode": "success",
+        "request": {
+          "request_id": "r-j",
+          "units": 2
+        }
+      },
+      {
+        "auth_mode": "denied",
+        "request": {
+          "request_id": "r-k",
+          "resource": "alpha",
+          "units": 2,
+          "debug": "yes"
+        }
+      },
+      {
+        "auth_mode": "provider_error",
+        "request": {
+          "request_id": 7,
+          "resource": "alpha",
+          "units": 2
+        }
+      },
+      {
+        "auth_mode": "success",
+        "request": null
+      }
+    ],
+    "matrix_basis": "Predetermined independent response formulas and authentication-call obligations, never values inferred from any candidate run.",
+    "success": "Source gate passes; complete exact matrix coverage; every function/output/authentication assertion passes; zero exact runtime credential occurrences in forbidden channels.",
+    "failure": "A determinate source-profile, behavior, authentication, or exact-credential leakage violation. No leaked value is echoed in public feedback.",
+    "unknown": "Unavailable/malformed isolated transcript, missing required matrix coverage, timeout/output limit/isolation error. Infrastructure uncertainty never becomes PASS.",
+    "unavailable_with_other_failures": "Root runner may return UNKNOWN if any required isolated execution is unavailable; public reason is infrastructure unavailability. Such a run is not counted as repair success.",
+    "limits": [
+      "Exact substring scanning does not establish absence of encoded, split-channel, encrypted, timing or other covert exfiltration.",
+      "The reviewed synthetic task excludes arbitrary hostile projects and does not establish a general Python sandbox security theorem.",
+      "Static restrictions may reject otherwise legitimate general-purpose repairs; report those rejections explicitly."
+    ]
+  },
+  "information_boundary": {
+    "model_visible": [
+      "One renamed tool.py",
+      "Same public requirements",
+      "Allowed tool schemas",
+      "For model-chosen triggers only: redacted actual outputs and reason categories",
+      "For hidden verification: aggregate verdict and reason categories only"
+    ],
+    "model_hidden": [
+      "Fixture IDs/directories/labels/manifest",
+      "Full hidden trigger matrix",
+      "Reference expected outputs",
+      "judge.py/fixed.py/protocol.json",
+      "Raw private execution logs and credential values"
+    ],
+    "sandbox_visible": "Only current tool.py, single-trial runner.py, readonly Python runtime, and one input payload. The harness contains no hidden matrix, expected assertions or labels.",
+    "private_records": "Raw isolated stdout/stderr/envelope including synthetic credentials is retained under ignored runs/local-agent-private/<runid>. Do not publish it or expose it through tools.",
+    "publishable_records": "Frozen source hashes, tool proposals, prompts and real model replies, redacted tool evidence, final verdict/reason codes, costs, aggregate results. Check for CP_EXEC_ runtime values before publication.",
+    "preservation": "Do not overwrite earlier failure/run artifacts. A revised judge/fixture/baseline requires a new freeze and a separately labelled run."
+  },
+  "comparators": [
+    {
+      "id": "A-fixed",
+      "behavior": "Frozen generic AST taint/redaction and provider-exception normalization; no fixture ID branches, no model calls, no hidden-output tuning. Same final judge as other methods."
+    },
+    {
+      "id": "B-once",
+      "behavior": "Same local model and public requirements, source-only single candidate with no execution feedback, then independent final validation."
+    },
+    {
+      "id": "C-agent",
+      "behavior": "Same local model can choose structured triggers, read redacted evidence, propose at most 3 candidates, and request at most 4 hidden validations; at most 12 explicit controlled executions. Final candidate is last submitted, not retrospectively chosen best result."
+    },
+    {
+      "id": "D-no-feedback",
+      "scope": [
+        "p01",
+        "p03"
+      ],
+      "behavior": "Three independent source-only candidates per predetermined case, no feedback between candidates, all preserved and judged. Supplemental budget comparator; keep individual outcomes and do not present best-of-three as a single-attempt result."
+    }
+  ],
+  "budget": {
+    "C_agent_max_model_calls": 12,
+    "C_agent_max_output_tokens_per_call": 2048,
+    "D_no_feedback_candidates_per_case": 3,
+    "D_no_feedback_max_output_tokens_per_candidate": 8192,
+    "interpretation": "The aggregate configured maximum generated-token budget is equal for C and supplemental D (24576). Actual generated tokens, input tokens, model calls and runtime are observed separately, not claimed equal. B-once has a smaller single-call budget. Controller records actual stop conditions.",
+    "temperature_or_sampling": "Record model-client settings and immutable model digest in each actual run; do not infer determinism from one run."
+  },
+  "analysis": {
+    "repair_success": "Final PASS among 4 initially leaking cases, denominator 4 for each primary arm unless explicitly report missing/UNKNOWN cases; never silently exclude them.",
+    "safe_preservation": "Final PASS and source_changed among 2 initially safe cases. Separately report unnecessary changes; a semantics-preserving change is not a security failure.",
+    "diagnosis": "When a parseable initial-leak diagnosis exists, compare it with 4 UNSAFE/2 SAFE registered labels. A-fixed edit occurrence is not an independent vulnerability classifier.",
+    "functional_regressions": "Count final RESPONSE_CONTRACT/AUTH_CALL_COUNT/AUTH_CREDENTIAL_MISMATCH/AUTH_RESOURCE_MISMATCH/UNHANDLED_EXCEPTION separately from remaining leaks.",
+    "tool_use": "Count source reads, distinct controlled triggers, observed leak channel categories, proposals, verification feedback and changes after feedback from actual traces. Do not call a tool-capable prompt successful agentic behavior without observed tool calls.",
+    "cost": "Report wall time, actual inference usage when returned, model/tool calls, isolated executions, proposals, timeout/rejection counts. Fixed-program cost is not comparable to generation tokens.",
+    "reporting": "Case-by-case outcomes plus literal numerators/denominators. Six constructed cases do not support significance/generalization claims. If the strong fixed baseline solves every case, state the lack of demonstrated repair advantage for the Agent."
+  },
+  "preflight": {
+    "required": [
+      "Isolation receipt ready and matching frozen runtime/supervisor",
+      "Source gate checks",
+      "Pure judge/AST unit tests",
+      "Validate all six original labels using isolation and preserve any mismatch",
+      "Freeze exact sources, requirements, protocol, model config and controller before comparative run"
+    ],
+    "already_completed": "16 pure fabricated-record and AST unit tests passed under bundled Python 3.12.14; these tests neither execute nor import candidate code. No candidate execution performed by fixture/judge author.",
+    "test_command": "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe -m unittest discover -s agent_pilot/tests -p test_judge.py -v"
+  },
+  "frozen_source_sha256": {
+    "agent_pilot/judge.py": "f20a0a29b7c8839b5c81e3a912ea9a442d59883e838f295ea1e19397208ee23b",
+    "agent_pilot/fixed.py": "54a7fd16a5f3dc39f196749c8dc64a18a59d8d234b250929394ccf7282eeaac7",
+    "agent_pilot/tests/test_judge.py": "6a89cb3f24f52420dae297084520f101c4aaedd802dfcd791d59fbbebdaea7fe",
+    "agent_pilot/fixtures/manifest.json": "42b0d3d04135959c996bfed0bfe1349d175483da75e373669af9b7a9b86b2a4a",
+    "agent_pilot/fixtures/p01/tool.py": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+    "agent_pilot/fixtures/p02/tool.py": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+    "agent_pilot/fixtures/p03/tool.py": "392ccb198bf3d89562061953bd3f0a6bf73b2e6da314a222e9e25149c541533f",
+    "agent_pilot/fixtures/p04/tool.py": "81d28257bdf9f4e55b7b09a87612ad1eef0aa64ae12e756f3a38029ce33f1072",
+    "agent_pilot/fixtures/p05/tool.py": "d84d3ab8e865b23f6d86d604fb8555a0911d3c187bfae06aeef3b43117a9f7ac",
+    "agent_pilot/fixtures/p06/tool.py": "bffe129c58ca65b1ce028fc00644baa23a53dfd07322aec315fc95eb41878ede",
+    "agent_pilot/fixtures/requirements.md": "413183c36cf13e0d3b316d4799b86e4b93f94447d077fa72b54d236fdf7e9b4f"
+  }
+}

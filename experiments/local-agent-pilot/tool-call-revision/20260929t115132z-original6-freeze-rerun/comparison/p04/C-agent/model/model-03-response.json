@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-361",
+  "object": "chat.completion",
+  "created": 1790682827,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_tkpagt1w",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original code had a diagnostic field in the return value that leaked the credential through transport.headers.Authorization. The patch removes this diagnostic field to prevent the credential leak.\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3522,
+    "prompt_tokens_details": {
+      "cached_tokens": 2973
+    },
+    "completion_tokens": 80,
+    "total_tokens": 3602
+  }
+}

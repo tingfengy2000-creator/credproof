@@ -1,0 +1,16 @@
+{
+  "rationale": "The patch fixes the credential leak by sanitizing the error message when auth_service.authenticate raises RuntimeError. Instead of including the raw error message (which may contain credentials) in the response, we now return a generic \"Authentication service unavailable\" message that doesn't expose any sensitive information.",
+  "source_sha256": "15021e8201ac09bb73a06b75f669e0c350f8240356e38d6ae0841f3d64db65c1",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-3",
+      "evidence-4"
+    ],
+    "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

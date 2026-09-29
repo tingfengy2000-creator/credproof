@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-949",
+  "object": "chat.completion",
+  "created": 1790682375,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_qi2oejoo",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"The credential may leak via the debug log message in _public_provider_error.\",\"request\":{\"debug\":true,\"request_id\":\"test-id\",\"resource\":\"test-resource\",\"units\":3},\"auth_mode\":\"denied\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3879,
+    "prompt_tokens_details": {
+      "cached_tokens": 3381
+    },
+    "completion_tokens": 78,
+    "total_tokens": 3957
+  }
+}

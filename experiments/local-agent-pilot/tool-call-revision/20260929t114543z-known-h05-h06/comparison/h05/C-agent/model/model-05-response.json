@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-963",
+  "object": "chat.completion",
+  "created": 1790682365,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_p5mye3xk",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Test if credential appears in denied responses\",\"request\":{\"debug\":true,\"request_id\":\"test-2\",\"resource\":\"test-resource\",\"units\":2},\"auth_mode\":\"denied\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4100,
+    "prompt_tokens_details": {
+      "cached_tokens": 3649
+    },
+    "completion_tokens": 72,
+    "total_tokens": 4172
+  }
+}

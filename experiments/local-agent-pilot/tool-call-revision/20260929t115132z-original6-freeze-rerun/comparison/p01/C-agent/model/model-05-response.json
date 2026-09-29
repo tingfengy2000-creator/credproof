@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-885",
+  "object": "chat.completion",
+  "created": 1790682729,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_kyfqi77s",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original tool.py had a credential leak in the error message when auth_service.authenticate raises RuntimeError. The patch fixes this by replacing str(error) with a generic error message that doesn't expose credentials.\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4230,
+    "prompt_tokens_details": {
+      "cached_tokens": 4122
+    },
+    "completion_tokens": 87,
+    "total_tokens": 4317
+  }
+}

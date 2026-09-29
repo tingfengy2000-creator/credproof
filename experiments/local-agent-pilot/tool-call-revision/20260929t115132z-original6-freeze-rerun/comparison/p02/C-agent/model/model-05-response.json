@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-921",
+  "object": "chat.completion",
+  "created": 1790682771,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_fjkccn9q",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original tool had a credential leak in its logging statement where both the resource and credential were being logged. The fix removes the credential from the log message while preserving all other functionality.\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4315,
+    "prompt_tokens_details": {
+      "cached_tokens": 3757
+    },
+    "completion_tokens": 84,
+    "total_tokens": 4399
+  }
+}

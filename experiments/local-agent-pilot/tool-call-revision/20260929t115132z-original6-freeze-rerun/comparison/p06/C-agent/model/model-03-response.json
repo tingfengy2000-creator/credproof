@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-331",
+  "object": "chat.completion",
+  "created": 1790682878,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_j7e6m1oi",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"No credential leak in current implementation\",\"request\":{\"debug\":true,\"request_id\":\"test-123\",\"resource\":\"test-resource\",\"units\":3},\"auth_mode\":\"success\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3058,
+    "prompt_tokens_details": {
+      "cached_tokens": 2978
+    },
+    "completion_tokens": 72,
+    "total_tokens": 3130
+  }
+}

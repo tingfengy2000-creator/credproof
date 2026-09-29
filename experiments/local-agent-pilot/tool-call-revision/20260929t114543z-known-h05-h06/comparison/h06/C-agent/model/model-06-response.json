@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-411",
+  "object": "chat.completion",
+  "created": 1790682376,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_g64krwku",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "get_evidence",
+              "arguments": "{\"evidence_id\":\"evidence-4\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4358,
+    "prompt_tokens_details": {
+      "cached_tokens": 3878
+    },
+    "completion_tokens": 27,
+    "total_tokens": 4385
+  }
+}
