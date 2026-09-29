@@ -1,0 +1,110 @@
+{
+  "model": "qwen3-coder:30b",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are testing a local function-calling interface. Actually use the tools. First call issue_challenge, then read its runtime result and call complete_challenge with its nonce and value + 17. No guess or textual imitation counts. Stop after completion."
+    },
+    {
+      "role": "user",
+      "content": "Perform the real two-step challenge now."
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_0wfc5x3l",
+          "type": "function",
+          "function": {
+            "name": "issue_challenge",
+            "arguments": "{}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_0wfc5x3l",
+      "content": "{\"nonce\": \"73fe462994d5e7176dacc5af\", \"value\": 761, \"operation\": \"answer = value + 17\"}"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "tool_calls": [
+        {
+          "id": "call_bef3fp3q",
+          "type": "function",
+          "function": {
+            "name": "complete_challenge",
+            "arguments": "{\"nonce\":\"73fe462994d5e7176dacc5af\",\"answer\":778}"
+          }
+        }
+      ]
+    },
+    {
+      "role": "tool",
+      "tool_call_id": "call_bef3fp3q",
+      "content": "{\"status\": \"PASS\", \"reason\": \"actual_dependency_checked\"}"
+    }
+  ],
+  "stream": false,
+  "temperature": 0.2,
+  "top_p": 0.8,
+  "max_tokens": 2048,
+  "seed": 0,
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "issue_challenge",
+        "description": "Create a fresh runtime challenge; call once before completing it.",
+        "parameters": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "complete_challenge",
+        "description": "Actually validate the nonce and computed answer from issue_challenge.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "nonce": {
+              "type": "string"
+            },
+            "answer": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "nonce",
+            "answer"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "read_code",
+        "description": "Read only the explicitly allowed tool.py path.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-615",
+  "object": "chat.completion",
+  "created": 1790667907,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I'll analyze the tool.py code to identify any potential credential leaks or security issues.\n\nLooking at the code, I can see several areas that need attention:\n\n1. The `run` function reads from `os.environ[\"CP_TEST_CREDENTIAL\"]` which is a credential source\n2. There's a potential issue with how the request_id is handled in error cases\n3. The error handling for RuntimeError might expose the credential in the error message\n\nLet me run some controlled test cases to understand the behavior better.",
+        "tool_calls": [
+          {
+            "id": "call_yvcb0kux",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Test invalid request handling\",\"request\":{\"request_id\":\"\",\"resource\":\"test\",\"units\":1},\"auth_mode\":\"success\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2166,
+    "prompt_tokens_details": {
+      "cached_tokens": 1622
+    },
+    "completion_tokens": 167,
+    "total_tokens": 2333
+  }
+}

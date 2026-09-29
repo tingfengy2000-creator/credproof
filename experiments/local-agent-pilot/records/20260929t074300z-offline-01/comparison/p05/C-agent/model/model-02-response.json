@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-941",
+  "object": "chat.completion",
+  "created": 1790667989,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I've read the tool.py code. Now I need to analyze it for potential credential leaks or other issues.\n\nLooking at the code, I can see a few potential problems:\n\n1. The credential is read from `os.environ[\"CP_TEST_CREDENTIAL\"]` and used in the authentication call, which is correct.\n2. However, there's a debug print statement that outputs the resource and request_id, which could potentially expose sensitive information if the debug flag is enabled.\n3. There's also a logging.info call that includes the resource and request_id, which might be problematic if these contain sensitive data.\n\nLet me run some controlled test cases to see how this behaves under different conditions.",
+        "tool_calls": [
+          {
+            "id": "call_u4ad3zbl",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Test case with debug enabled and valid request\",\"request\":{\"debug\":true,\"request_id\":\"req123\",\"resource\":\"secret_resource\",\"units\":3},\"auth_mode\":\"success\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2198,
+    "prompt_tokens_details": {
+      "cached_tokens": 1622
+    },
+    "completion_tokens": 216,
+    "total_tokens": 2414
+  }
+}

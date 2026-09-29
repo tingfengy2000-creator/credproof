@@ -1,0 +1,25 @@
+{
+  "id": "chatcmpl-701",
+  "object": "chat.completion",
+  "created": 1790667887,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "The challenge has been successfully completed with the correct nonce and computed answer. The system confirmed the validation with the message \"actual_dependency_checked\".<tool_call>"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 591,
+    "prompt_tokens_details": {
+      "cached_tokens": 510
+    },
+    "completion_tokens": 29,
+    "total_tokens": 620
+  }
+}

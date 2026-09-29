@@ -1,0 +1,35 @@
+{
+  "complete": true,
+  "commands": [
+    {
+      "command": [
+        "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+        "-m",
+        "agent_pilot.handshake",
+        "--output",
+        "/mnt/e/比赛/密证_CredProof-local-agent/experiments/local-agent-pilot/records/20260929t074300z-offline-01/handshake"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 1.6809642480002367
+    },
+    {
+      "command": [
+        "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+        "-m",
+        "agent_pilot.experiment",
+        "--output",
+        "/mnt/e/比赛/密证_CredProof-local-agent/experiments/local-agent-pilot/records/20260929t074300z-offline-01/comparison",
+        "--cases",
+        "p01",
+        "p02",
+        "p03",
+        "p04",
+        "p05",
+        "p06",
+        "--no-feedback"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 118.2948148129999
+    }
+  ]
+}

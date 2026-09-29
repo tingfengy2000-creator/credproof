@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-314",
+  "object": "chat.completion",
+  "created": 1790668002,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_mbp6i63q",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Testing authentication service unavailable case\",\"request\":{\"request_id\":\"test123\",\"resource\":\"test_resource\",\"units\":2},\"auth_mode\":\"provider_error\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2851,
+    "prompt_tokens_details": {
+      "cached_tokens": 2663
+    },
+    "completion_tokens": 67,
+    "total_tokens": 2918
+  }
+}

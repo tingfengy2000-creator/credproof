@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-136",
+  "object": "chat.completion",
+  "created": 1790667908,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_fb4hp0df",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Test valid request with denied authentication\",\"request\":{\"request_id\":\"req456\",\"resource\":\"test\",\"units\":1},\"auth_mode\":\"denied\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2655,
+    "prompt_tokens_details": {
+      "cached_tokens": 2442
+    },
+    "completion_tokens": 67,
+    "total_tokens": 2722
+  }
+}

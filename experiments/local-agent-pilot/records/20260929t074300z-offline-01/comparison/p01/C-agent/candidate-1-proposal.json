@@ -1,0 +1,4 @@
+{
+  "rationale": "The fix addresses a credential leak in the error handling for authentication provider errors. When a RuntimeError was raised by the authentication service, the original code included `str(error)` in the response message, which could expose the credential value. The fix replaces this with a generic error message \"Authentication service unavailable\" that doesn't reveal any credential information. This maintains the required error reporting while preventing credential leakage.",
+  "source_sha256": "15021e8201ac09bb73a06b75f669e0c350f8240356e38d6ae0841f3d64db65c1"
+}

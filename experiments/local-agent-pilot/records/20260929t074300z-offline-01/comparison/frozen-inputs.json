@@ -1,0 +1,43 @@
+{
+  "at_utc": "2026-09-29T07:44:48.644577+00:00",
+  "hashes": {
+    "agent_pilot/download-model.py": "1215c5327fd678b3fb11363f0b61166f830c021a140e7424721d2c020453298d",
+    "agent_pilot/experiment.py": "4085f2fdbe111fdf398ad3445c0070589b0e1b1ac0773be7b39a3dcfd2c85272",
+    "agent_pilot/fixed.py": "54a7fd16a5f3dc39f196749c8dc64a18a59d8d234b250929394ccf7282eeaac7",
+    "agent_pilot/handshake.py": "0c2d03def12987a54dfec69c71bbe3d3f2677bc9ed29416ca2f120cc9770c203",
+    "agent_pilot/isolation.py": "ac0aa1efdef622921715f4ac09d1b1c22b209bb543f28512ab74ab76b2656498",
+    "agent_pilot/judge.py": "d790a9fa63b8c74999ec521a4e615041178518171d43d336fd0b965de3a29924",
+    "agent_pilot/model_client.py": "f19c80c231ac45d709a30e2a132dd211d433112b5be2d88d16a4a6d006d4b248",
+    "agent_pilot/offline_run.py": "eac55430d9cdf936da827812ad81c5abcd384ea5a7eebd51ab84cfe8f7511d2b",
+    "agent_pilot/prepare-ollama.py": "f8710cf888fe63651915c84517eed6d96514cc279199630ba40fdc3d0bce0bb7",
+    "agent_pilot/sandbox_runner.py": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+    "agent_pilot/summarize.py": "ff6faed94fc6f80bfc81ed32a86d95a095d58cbaff9762315f75c01a5deb6a1e",
+    "agent_pilot/test_model_client.py": "44badb92fc0e173cd6d19f240d2ee6bb310af05b4313a7ea2810dbc31d5d656a",
+    "agent_pilot/tools.py": "d180137bf516a5b2d9a1725575b7c8bca9edd8f0157696e12ed6c009f6c43ff0",
+    "agent_pilot/__init__.py": "69c8bf94f4106791728bb7cb7317601d3a1c7d6f0cd14424c9be7bc28732d3e2",
+    "agent_pilot/protocol.json": "5d4cf068dfe260b54b60ec3969478c7f18bb4769804c7f065580163c07edc38a",
+    "agent_pilot/fixtures/manifest.json": "42b0d3d04135959c996bfed0bfe1349d175483da75e373669af9b7a9b86b2a4a",
+    "agent_pilot/fixtures/requirements.md": "adc4a9632d539c803fe0dbf7e35e2095d00e2343813220564e26b63eb6b77134",
+    "agent_pilot/fixtures/p01/tool.py": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+    "agent_pilot/fixtures/p02/tool.py": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+    "agent_pilot/fixtures/p03/tool.py": "392ccb198bf3d89562061953bd3f0a6bf73b2e6da314a222e9e25149c541533f",
+    "agent_pilot/fixtures/p04/tool.py": "81d28257bdf9f4e55b7b09a87612ad1eef0aa64ae12e756f3a38029ce33f1072",
+    "agent_pilot/fixtures/p05/tool.py": "d84d3ab8e865b23f6d86d604fb8555a0911d3c187bfae06aeef3b43117a9f7ac",
+    "agent_pilot/fixtures/p06/tool.py": "bffe129c58ca65b1ce028fc00644baa23a53dfd07322aec315fc95eb41878ede"
+  },
+  "cases": [
+    "p01",
+    "p02",
+    "p03",
+    "p04",
+    "p05",
+    "p06"
+  ],
+  "methods": [
+    "A-fixed",
+    "B-once",
+    "C-agent"
+  ],
+  "no_feedback": true,
+  "interpretation": "Development-visible synthetic pilot, not blind testing. No paid APIs."
+}

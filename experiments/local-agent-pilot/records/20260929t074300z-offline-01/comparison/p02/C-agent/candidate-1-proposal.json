@@ -1,0 +1,4 @@
+{
+  "rationale": "The main issue was that the credential was being logged in plain text in the logger.info statement. This could potentially expose credentials in logs. I've fixed this by:\n\n1. Removing the credential from the logging statement entirely\n2. Changed from logger.info to logger.debug for the resource logging (which doesn't include credential)\n3. Ensured no credential appears anywhere in the output or logs\n\nThis maintains all functionality while eliminating the credential leak.",
+  "source_sha256": "64ad1d5d3f5e9de94b71127434ef58569ef6a742f6900060a313cfe886c94d4b"
+}

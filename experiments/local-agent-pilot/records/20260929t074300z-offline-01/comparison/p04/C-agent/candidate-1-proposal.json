@@ -1,0 +1,4 @@
+{
+  "rationale": "The patch removes the diagnostic field that was containing the credential in the Authorization header. This fixes the credential leak issue while maintaining all other functionality. The diagnostic field was not required by the specification and contained sensitive information that should never be returned.",
+  "source_sha256": "704e4f51dab78ed36459965a475664d2830549c6581f54adb2b5ed7e6f6313ed"
+}
