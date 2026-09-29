@@ -1,0 +1,18 @@
+{
+  "rationale": "The credential was being leaked through direct logging in the _authorize_with_audit function. The fix changes the log message to only include the resource parameter instead of the credential value, which prevents the credential from appearing in logs while maintaining the necessary audit trail for debugging.",
+  "source_sha256": "aa098f54a3ad3b5004a0ed20f0e335ae05e6be904e5bf244c2c689377f27c3d8",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-1",
+      "evidence-2",
+      "evidence-3",
+      "evidence-4"
+    ],
+    "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

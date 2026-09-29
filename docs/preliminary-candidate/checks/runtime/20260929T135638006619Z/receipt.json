@@ -1,0 +1,31 @@
+{
+  "command": [
+    "python",
+    "-m",
+    "agent_pilot.preflight"
+  ],
+  "exit_code": 0,
+  "observed_at": "2026-09-29T13:56:39.756914+00:00",
+  "model_executed": false,
+  "candidate_executed": false,
+  "cache_modified": false,
+  "runner_sha256": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+  "runner_matches_head": true,
+  "small_blob_metadata_warning": [
+    {
+      "code": "SMALL_BLOB_SIZE_METADATA_MISMATCH",
+      "digest": "sha256:24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318",
+      "declared_size": 539,
+      "actual_size": 542,
+      "sha256_verified": true
+    }
+  ],
+  "full_weight_rehashed": false,
+  "configuration_tests": {
+    "command": "python -m unittest discover -s agent_pilot/tests -p test_runtime_config.py -v",
+    "count": 8,
+    "status": "PASS",
+    "elapsed_s": 0.239,
+    "evidence": "Earlier terminal output in this task; not rerun or fabricated raw output."
+  }
+}

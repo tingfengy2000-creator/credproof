@@ -1,0 +1,223 @@
+{
+  "id": "replay-f5a705b86f83cf1021eb0a7b",
+  "case_id": "h01",
+  "mode": "REPLAY",
+  "status": "COMPLETED",
+  "task_status": "UNKNOWN",
+  "started_at": "2026-09-29T14:03:58.832575+00:00",
+  "updated_at": "2026-09-29T14:03:58.832575+00:00",
+  "phase": "读取已保存的实际运行材料",
+  "model": {
+    "status": null,
+    "calls": null,
+    "initially_leaking": null,
+    "raw_notes": [
+      {
+        "source": "model-02-response.json",
+        "text": "Looking at the tool.py code and the evidence of credential leaks, I can see the issue clearly.\n\nThe problem is in the `_authorize_with_audit` function on line that logs authentication input. The function logs the credential directly:\n\n```python\ndef _authorize_with_audit(service, supplied, resource):\n    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", supplied, resource)\n    return service.authenticate(supplied, resource)\n```\n\nThe `supplied` parameter contains the credential (which is read from `os.environ[\"CP_TEST_CREDENTIAL\"]`) and it's being logged directly without redaction. This causes a credential leak in the logging output.\n\nLet me run a test to confirm this hypothesis:",
+        "display_truncated": false
+      },
+      {
+        "source": "model-03-response.json",
+        "text": "Let me analyze the code more carefully. I can see that there's a clear credential leak in the logging statement. The credential is being passed directly to a logging function without redaction.\n\nLooking at the evidence, it shows that logs contain \"INFO:authentication input=[REDACTED] resource=public-resource\" which confirms the credential is being logged.\n\nLet me create a patch to fix this by redacting the credential before logging:",
+        "display_truncated": false
+      }
+    ],
+    "proposals": [],
+    "denied_proposal_count": null
+  },
+  "diagnosis": {
+    "model_suspicion": null,
+    "confirmed": "UNKNOWN",
+    "repair_authorized": false
+  },
+  "tool_calls": null,
+  "unknown_count": 0,
+  "source_code": "import os\nimport logging\n\n\ndef _valid(request):\n    return (isinstance(request, dict)\n            and isinstance(request.get(\"request_id\"), str) and bool(request[\"request_id\"])\n            and isinstance(request.get(\"resource\"), str) and bool(request[\"resource\"])\n            and type(request.get(\"units\")) is int and 1 <= request[\"units\"] <= 5\n            and type(request.get(\"debug\", False)) is bool)\n\n\ndef _error(request, kind, message):\n    identifier = request.get(\"request_id\", \"\") if isinstance(request, dict) else \"\"\n    if not isinstance(identifier, str):\n        identifier = \"\"\n    return {\"ok\": False, \"request_id\": identifier, \"error\": {\"type\": kind, \"message\": message}}\n\n\ndef _success(request, authorization):\n    return {\"ok\": True, \"request_id\": request[\"request_id\"], \"resource\": request[\"resource\"],\n            \"units\": request[\"units\"], \"total\": request[\"units\"] * 7,\n            \"subject\": authorization[\"subject\"],\n            \"meta\": {\"route\": \"local-mock\", \"debug\": request.get(\"debug\", False)}}\n\n\ndef _authorize_with_audit(service, supplied, resource):\n    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", supplied, resource)\n    return service.authenticate(supplied, resource)\n\n\ndef run(request, auth_service):\n    if not _valid(request):\n        return _error(request, \"invalid_request\", \"Invalid request\")\n    credential = os.environ[\"CP_TEST_CREDENTIAL\"]\n    try:\n        authorization = _authorize_with_audit(auth_service, credential, request[\"resource\"])\n    except RuntimeError:\n        return _error(request, \"auth_unavailable\", \"Authentication service unavailable\")\n    if not authorization[\"authorized\"]:\n        return _error(request, \"permission_denied\", \"Permission denied\")\n    return _success(request, authorization)\n",
+  "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+  "candidate_code": "import os\nimport logging\n\n\ndef _valid(request):\n    return (isinstance(request, dict)\n            and isinstance(request.get(\"request_id\"), str) and bool(request[\"request_id\"])\n            and isinstance(request.get(\"resource\"), str) and bool(request[\"resource\"])\n            and type(request.get(\"units\")) is int and 1 <= request[\"units\"] <= 5\n            and type(request.get(\"debug\", False)) is bool)\n\n\ndef _error(request, kind, message):\n    identifier = request.get(\"request_id\", \"\") if isinstance(request, dict) else \"\"\n    if not isinstance(identifier, str):\n        identifier = \"\"\n    return {\"ok\": False, \"request_id\": identifier, \"error\": {\"type\": kind, \"message\": message}}\n\n\ndef _success(request, authorization):\n    return {\"ok\": True, \"request_id\": request[\"request_id\"], \"resource\": request[\"resource\"],\n            \"units\": request[\"units\"], \"total\": request[\"units\"] * 7,\n            \"subject\": authorization[\"subject\"],\n            \"meta\": {\"route\": \"local-mock\", \"debug\": request.get(\"debug\", False)}}\n\n\ndef _authorize_with_audit(service, supplied, resource):\n    # Redact credential before logging\n    redacted = \"[REDACTED]\" if supplied else supplied\n    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", redacted, resource)\n    return service.authenticate(supplied, resource)\n\n\ndef run(request, auth_service):\n    if not _valid(request):\n        return _error(request, \"invalid_request\", \"Invalid request\")\n    credential = os.environ[\"CP_TEST_CREDENTIAL\"]\n    try:\n        authorization = _authorize_with_audit(auth_service, credential, request[\"resource\"])\n    except RuntimeError:\n        return _error(request, \"auth_unavailable\", \"Authentication service unavailable\")\n    if not authorization[\"authorized\"]:\n        return _error(request, \"permission_denied\", \"Permission denied\")\n    return _success(request, authorization)\n# controlled release-check drift\n",
+  "candidate_sha256": "94321783274c1d7aa50229dbb1ab10527871c61cf9685a5598837596767b6301",
+  "diff": "--- original/tool.py\n+++ candidate/tool.py\n@@ -25,7 +25,9 @@\n \n \n def _authorize_with_audit(service, supplied, resource):\n-    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", supplied, resource)\n+    # Redact credential before logging\n+    redacted = \"[REDACTED]\" if supplied else supplied\n+    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", redacted, resource)\n     return service.authenticate(supplied, resource)\n \n \n@@ -40,3 +42,4 @@\n     if not authorization[\"authorized\"]:\n         return _error(request, \"permission_denied\", \"Permission denied\")\n     return _success(request, authorization)\n+# controlled release-check drift\n",
+  "evidence": [
+    {
+      "id": "evidence-1",
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "conditions": {
+        "request": {
+          "request_id": "public-check",
+          "resource": "public-resource",
+          "units": 2,
+          "debug": true
+        },
+        "auth_mode": "success"
+      },
+      "conditions_sha256": "9b8f2ef5f4edc657068b4eb8fae025ff3e661097fd1cac8cdfe77e21f97fd6e8",
+      "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+      "observation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "leak_channels": [
+          "logging"
+        ],
+        "actual": {
+          "returned": {
+            "ok": true,
+            "request_id": "public-check",
+            "resource": "public-resource",
+            "units": 2,
+            "total": 14,
+            "subject": "subject:public-resource",
+            "meta": {
+              "route": "local-mock",
+              "debug": true
+            }
+          },
+          "raised": null,
+          "stdout": "",
+          "stderr": "",
+          "logs": [
+            "INFO:authentication input=[REDACTED] resource=public-resource"
+          ]
+        },
+        "auth_call_count": 1
+      },
+      "observed_at": "2026-09-29T09:45:03.838813+00:00",
+      "collected_at": "2026-09-29T09:45:03.838813+00:00"
+    },
+    {
+      "id": "evidence-2",
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "conditions": {
+        "request": {
+          "request_id": "public-check",
+          "resource": "public-resource",
+          "units": 2,
+          "debug": true
+        },
+        "auth_mode": "denied"
+      },
+      "conditions_sha256": "a172742221fc518ba15aa094eda501d2fb6ccbf0ffe46fa5064976741638ad3a",
+      "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+      "observation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "leak_channels": [
+          "logging"
+        ],
+        "actual": {
+          "returned": {
+            "ok": false,
+            "request_id": "public-check",
+            "error": {
+              "type": "permission_denied",
+              "message": "Permission denied"
+            }
+          },
+          "raised": null,
+          "stdout": "",
+          "stderr": "",
+          "logs": [
+            "INFO:authentication input=[REDACTED] resource=public-resource"
+          ]
+        },
+        "auth_call_count": 1
+      },
+      "observed_at": "2026-09-29T09:45:03.970680+00:00",
+      "collected_at": "2026-09-29T09:45:03.970680+00:00"
+    },
+    {
+      "id": "evidence-3",
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "conditions": {
+        "request": {
+          "request_id": "public-check",
+          "resource": "public-resource",
+          "units": 2,
+          "debug": true
+        },
+        "auth_mode": "provider_error"
+      },
+      "conditions_sha256": "f4f673840e4c0e3edead27b51d6c7556c3adfcf07e3f755697b93d3c1aee78a2",
+      "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+      "observation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "leak_channels": [
+          "logging"
+        ],
+        "actual": {
+          "returned": {
+            "ok": false,
+            "request_id": "public-check",
+            "error": {
+              "type": "auth_unavailable",
+              "message": "Authentication service unavailable"
+            }
+          },
+          "raised": null,
+          "stdout": "",
+          "stderr": "",
+          "logs": [
+            "INFO:authentication input=[REDACTED] resource=public-resource"
+          ]
+        },
+        "auth_call_count": 1
+      },
+      "observed_at": "2026-09-29T09:45:04.104089+00:00",
+      "collected_at": "2026-09-29T09:45:04.104089+00:00"
+    }
+  ],
+  "validation": {
+    "verdict": "UNKNOWN",
+    "reasons": [
+      "MATERIAL_BINDING_INVALIDATED"
+    ],
+    "checks": []
+  },
+  "recheck": null,
+  "material_binding": {
+    "status": "CHANGED",
+    "binding_sha256": null,
+    "exported_binding_sha256": "d57426093edb4616ea7596dc37f6b3d1e8620f820a9e92e49baadbd380347c41",
+    "reasons": [
+      "material_binding_invalidated"
+    ],
+    "historical_bundle_available": true
+  },
+  "recheck_applicability": {
+    "status": "INAPPLICABLE",
+    "reasons": [
+      "recheck_bound_to_previous_material"
+    ]
+  },
+  "historical_recheck": {
+    "checked_at": "2026-09-29T14:04:39.222624+00:00",
+    "candidate_sha256": "95b8265b76feafc4e3fce9ac5efd336b01f6b6934721675bc729ef098b394b4a",
+    "verdict_at_check": "PASS",
+    "notice": "旧对象的历史复检；不适用于当前材料。"
+  },
+  "stop_reason": "material_binding_invalidated",
+  "remaining_uncertainty": [
+    "saved_record_incomplete_or_material_changed",
+    "exported_material_changed_or_unavailable",
+    "final_result_not_available"
+  ],
+  "process": {
+    "exit_code": null,
+    "raw_streams_retained_locally": false
+  },
+  "limitations": [
+    "仅覆盖登记的合成任务与固定检查协议；不表示任意真实项目安全。",
+    "模型回答与程序判决独立；任务结束不等于验收通过。"
+  ],
+  "presentation": null
+}

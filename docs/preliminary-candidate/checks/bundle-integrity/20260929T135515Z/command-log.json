@@ -1,0 +1,133 @@
+{
+  "schema": "credproof.bundle-integrity-validation.v1",
+  "started_at": "2026-09-29T13:55:15.991591+00:00",
+  "execution_kind": "new real isolated fixed-judge recheck of previously saved candidate; no model inference",
+  "unit_test_kind": "fabricated transcripts, no candidate execution",
+  "source_run": "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/comparison/p01/C-agent",
+  "head": "4030394d51f4cbfc17d12aa253c378216bba311d",
+  "head_source": "Windows git rev-parse HEAD, exit 0; WSL Git cannot resolve this Windows worktree pointer",
+  "working_tree_source": true,
+  "commands": [
+    {
+      "label": "unit",
+      "argv": [
+        "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "agent_pilot.tests.test_bundle",
+        "-v"
+      ],
+      "cwd": "/mnt/e/比赛/密证_CredProof-local-agent",
+      "exit_code": 0
+    },
+    {
+      "label": "export",
+      "argv": [
+        "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+        "-B",
+        "-m",
+        "agent_pilot.bundle",
+        "export",
+        "--run",
+        "/mnt/e/比赛/密证_CredProof-local-agent/experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/comparison/p01/C-agent",
+        "--output",
+        "/mnt/e/比赛/密证_CredProof-local-agent/runs/bundle-integrity-validation/20260929T135515Z/intact"
+      ],
+      "cwd": "/mnt/e/比赛/密证_CredProof-local-agent",
+      "exit_code": 0
+    },
+    {
+      "label": "intact",
+      "argv": [
+        "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+        "-B",
+        "-S",
+        "-m",
+        "agent_pilot.bundle",
+        "recheck",
+        "--bundle",
+        ".",
+        "--output",
+        "/mnt/e/比赛/密证_CredProof-local-agent/docs/preliminary-candidate/checks/bundle-integrity/20260929T135515Z/intact-recheck.json"
+      ],
+      "cwd": "/mnt/e/比赛/密证_CredProof-local-agent/runs/bundle-integrity-validation/20260929T135515Z/intact",
+      "exit_code": 0
+    },
+    {
+      "label": "missing-optional-trace",
+      "argv": [
+        "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+        "-B",
+        "-S",
+        "-m",
+        "agent_pilot.bundle",
+        "recheck",
+        "--bundle",
+        ".",
+        "--output",
+        "/mnt/e/比赛/密证_CredProof-local-agent/docs/preliminary-candidate/checks/bundle-integrity/20260929T135515Z/missing-optional-trace-recheck.json"
+      ],
+      "cwd": "/mnt/e/比赛/密证_CredProof-local-agent/runs/bundle-integrity-validation/20260929T135515Z/missing-optional-trace",
+      "exit_code": 0
+    }
+  ],
+  "prior_material_hashes": {
+    "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/comparison/p01/C-agent/original.py": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+    "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/comparison/p01/C-agent/final-candidate.py": "15021e8201ac09bb73a06b75f669e0c350f8240356e38d6ae0841f3d64db65c1",
+    "experiments/local-agent-pilot/reliability/20260929t094000z-original6-compact/comparison/p01/C-agent/result.json": "02d3c6904170fa17162a0718697e1c48b1f1765c22bdd15ccf1fc0c3c5b7f3b1",
+    "runs/bundle-validation/pass-01/manifest.json": "116f8e23790ac5c7a80dfed4757416f2f3c27b23dd45feb29519ca657285f678"
+  },
+  "complete": true,
+  "intentional_new_copy_mutation": {
+    "bundle": "runs/bundle-integrity-validation/20260929T135515Z/missing-optional-trace",
+    "removed_file": "trace/model/model-01-response.json",
+    "historical_original_modified": false
+  },
+  "new_bundled_runtime_sha256": {
+    "agent_pilot/__init__.py": "69c8bf94f4106791728bb7cb7317601d3a1c7d6f0cd14424c9be7bc28732d3e2",
+    "agent_pilot/bundle.py": "c00b3a1934914db1bb370248dd54cbd0efc0b4f955fdd6e53c04036833fec1e9",
+    "agent_pilot/isolation.py": "1600017b8bd2742152278fc18b24e845ed1f0f2aa486d79125549439cf554e54",
+    "agent_pilot/judge.py": "d790a9fa63b8c74999ec521a4e615041178518171d43d336fd0b965de3a29924",
+    "agent_pilot/runtime_config.py": "14e14757d57f049b603686b29311e69bccd2fcf27ab69b197436f6fbb5084072",
+    "agent_pilot/sandbox_runner.py": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947"
+  },
+  "summaries": {
+    "intact": {
+      "validation": "PASS",
+      "completed_trials": 13,
+      "prior_report_applicable": true,
+      "historical_evidence_integrity": {
+        "changed_files": [],
+        "checked_files": 23,
+        "declared_files": 23,
+        "missing_files": [],
+        "reasons": [],
+        "scope": "manifest-listed historical files only",
+        "status": "INTACT",
+        "unavailable_files": []
+      }
+    },
+    "missing-optional-trace": {
+      "validation": "PASS",
+      "completed_trials": 13,
+      "prior_report_applicable": true,
+      "historical_evidence_integrity": {
+        "changed_files": [],
+        "checked_files": 22,
+        "declared_files": 23,
+        "missing_files": [
+          "trace/model/model-01-response.json"
+        ],
+        "reasons": [
+          "HISTORICAL_FILES_MISSING"
+        ],
+        "scope": "manifest-listed historical files only",
+        "status": "DEGRADED",
+        "unavailable_files": []
+      }
+    }
+  },
+  "prior_materials_unchanged": true,
+  "finished_at": "2026-09-29T13:55:23.326053+00:00"
+}

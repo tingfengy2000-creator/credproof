@@ -1,0 +1,129 @@
+[
+  {
+    "name": "preflight",
+    "command": [
+      "C:\\Python314\\python.exe",
+      "-m",
+      "agent_pilot.preflight"
+    ],
+    "cwd": "<validation-root>\\source",
+    "exit_code": 0,
+    "elapsed_s": 3.1465775000397116
+  },
+  {
+    "name": "unit-test_bundle.py",
+    "command": [
+      "C:\\Python314\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "agent_pilot/tests",
+      "-p",
+      "test_bundle.py",
+      "-v"
+    ],
+    "cwd": "<validation-root>\\source",
+    "exit_code": 0,
+    "elapsed_s": 1.5041129000019282
+  },
+  {
+    "name": "unit-test_runtime_config.py",
+    "command": [
+      "C:\\Python314\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "agent_pilot/tests",
+      "-p",
+      "test_runtime_config.py",
+      "-v"
+    ],
+    "cwd": "<validation-root>\\source",
+    "exit_code": 0,
+    "elapsed_s": 0.2642358001321554
+  },
+  {
+    "name": "unit-test_weball.py",
+    "command": [
+      "C:\\Python314\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "agent_pilot/tests",
+      "-p",
+      "test_web*.py",
+      "-v"
+    ],
+    "cwd": "<validation-root>\\source",
+    "exit_code": 0,
+    "elapsed_s": 14.183648999780416
+  },
+  {
+    "name": "unit-test_presentation.py",
+    "command": [
+      "C:\\Python314\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "agent_pilot/tests",
+      "-p",
+      "test_presentation.py",
+      "-v"
+    ],
+    "cwd": "<validation-root>\\source",
+    "exit_code": 0,
+    "elapsed_s": 1.1937778000719845
+  },
+  {
+    "name": "h01-direct-recheck",
+    "command": [
+      "C:\\Python314\\python.exe",
+      "-m",
+      "agent_pilot.bundle",
+      "recheck",
+      "--bundle",
+      ".",
+      "--output",
+      "<validation-root>\\checks\\h01-direct-recheck.json"
+    ],
+    "cwd": "<validation-root>\\checks\\h01-direct-material",
+    "exit_code": 0,
+    "elapsed_s": 2.8425907001364976
+  },
+  {
+    "name": "h03-direct-recheck",
+    "command": [
+      "C:\\Python314\\python.exe",
+      "-m",
+      "agent_pilot.bundle",
+      "recheck",
+      "--bundle",
+      ".",
+      "--output",
+      "<validation-root>\\checks\\h03-direct-recheck.json"
+    ],
+    "cwd": "<validation-root>\\checks\\h03-direct-material",
+    "exit_code": 0,
+    "elapsed_s": 3.0247241999022663
+  },
+  {
+    "name": "h07-direct-recheck",
+    "command": [
+      "C:\\Python314\\python.exe",
+      "-m",
+      "agent_pilot.bundle",
+      "recheck",
+      "--bundle",
+      ".",
+      "--output",
+      "<validation-root>\\checks\\h07-direct-recheck.json"
+    ],
+    "cwd": "<validation-root>\\checks\\h07-direct-material",
+    "exit_code": 0,
+    "elapsed_s": 3.0276426000054926
+  }
+]

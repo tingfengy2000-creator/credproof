@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "wsl.exe",
+    "-d",
+    "Ubuntu-24.04",
+    "--cd",
+    "/mnt/e/CredProof-local-runtime/review-validation/candidate-20260929T140358Z/source",
+    "--exec",
+    "/usr/bin/env",
+    "CREDPROOF_RUNTIME_ROOT=<configured-runtime>",
+    "unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "--fork",
+    "<configured-runtime>/venv/bin/python",
+    "-m",
+    "agent_pilot.offline_run",
+    "--reliability",
+    "--agent-only",
+    "--cases",
+    "h01",
+    "--output",
+    "/mnt/e/CredProof-local-runtime/review-validation/candidate-20260929T140358Z/source/runs/ui/live-f9fd9e6317ad403f8e20d4c341c296b1/output"
+  ],
+  "started_at": "2026-09-29T14:04:57.335415+00:00"
+}

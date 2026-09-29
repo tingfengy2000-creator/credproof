@@ -1,5 +1,8 @@
 # 开源来源与 AI 辅助说明
 
+> 当前初赛候选版使用本地 Qwen3-Coder、Qwen-Agent 与 Ollama。当前来源、版本、许可及 AI 辅助开发披露以 [Agent 来源说明](docs/local-agent/reliability/source-attribution.md) 为准。下文保留原验收器阶段的归属记录，其中“本轮”仅指当时版本，不代表当前候选功能。项目自有代码的正式分发许可仍由作者确认；此文件不替作者授权。
+
+## 历史验收器阶段
 - **Gitleaks v8.28.0**：本轮真实使用的检测引擎，MIT License。来源：https://github.com/gitleaks/gitleaks/tree/v8.28.0 。下载脚本校验同一官方 release 发布的 SHA256；原 LICENSE 保留在本机 `.tools/gitleaks-8.28.0/LICENSE`。二进制不提交 Git。若以后分发二进制，须同时附带对应许可证。
 - **Python 标准库与 Git**：负责受限 AST 检查、受控样例执行、数据序列化和读取 Git index。未调用 Git checkout、hooks 或被扫描仓库测试脚本。
 - **自写部分**：本轮契约冻结、精确允许修改、证据绑定、三态聚合、复检入口、受控样例、基线策略及实验汇总由本项目实现。检测器本身不是本作品创新。

@@ -1,0 +1,44 @@
+{
+  "attempts": 1,
+  "elapsed_s": 30.230057699838653,
+  "status": "COMPLETED",
+  "task_status": "COMPLETED_REPAIRED",
+  "model_calls": 5,
+  "validation": {
+    "verdict": "PASS",
+    "reasons": [],
+    "checks_run": 13,
+    "leak_channels": [],
+    "trial_counts": {
+      "PASS": 13
+    },
+    "checks": [
+      {
+        "id": "source-boundary",
+        "label": "受限 Python / 修改仅限候选文件",
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "id": "credential-channels",
+        "label": "必要条件中的禁止通道凭据检测",
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "id": "behavior",
+        "label": "正常功能、授权调用及异常契约",
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "id": "coverage",
+        "label": "13 项必要条件完整执行",
+        "status": "PASS",
+        "reason": "13/13"
+      }
+    ]
+  },
+  "record_directory": "<validation-root>\\source\\runs\\ui\\live-f9fd9e6317ad403f8e20d4c341c296b1",
+  "not_a_new_batch_performance_claim": true
+}

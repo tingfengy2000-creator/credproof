@@ -1,0 +1,58 @@
+{
+  "id": "live-f9fd9e6317ad403f8e20d4c341c296b1",
+  "case_id": "h01",
+  "mode": "LIVE",
+  "status": "QUEUED",
+  "task_status": "UNKNOWN",
+  "started_at": "2026-09-29T14:04:57.217986+00:00",
+  "updated_at": "2026-09-29T14:04:57.217997+00:00",
+  "phase": "读取已保存的实际运行材料",
+  "model": {
+    "status": null,
+    "calls": null,
+    "initially_leaking": null,
+    "raw_notes": [],
+    "proposals": [],
+    "denied_proposal_count": null
+  },
+  "diagnosis": {
+    "model_suspicion": null,
+    "confirmed": "UNKNOWN",
+    "repair_authorized": null
+  },
+  "tool_calls": null,
+  "unknown_count": null,
+  "source_code": "import os\nimport logging\n\n\ndef _valid(request):\n    return (isinstance(request, dict)\n            and isinstance(request.get(\"request_id\"), str) and bool(request[\"request_id\"])\n            and isinstance(request.get(\"resource\"), str) and bool(request[\"resource\"])\n            and type(request.get(\"units\")) is int and 1 <= request[\"units\"] <= 5\n            and type(request.get(\"debug\", False)) is bool)\n\n\ndef _error(request, kind, message):\n    identifier = request.get(\"request_id\", \"\") if isinstance(request, dict) else \"\"\n    if not isinstance(identifier, str):\n        identifier = \"\"\n    return {\"ok\": False, \"request_id\": identifier, \"error\": {\"type\": kind, \"message\": message}}\n\n\ndef _success(request, authorization):\n    return {\"ok\": True, \"request_id\": request[\"request_id\"], \"resource\": request[\"resource\"],\n            \"units\": request[\"units\"], \"total\": request[\"units\"] * 7,\n            \"subject\": authorization[\"subject\"],\n            \"meta\": {\"route\": \"local-mock\", \"debug\": request.get(\"debug\", False)}}\n\n\ndef _authorize_with_audit(service, supplied, resource):\n    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", supplied, resource)\n    return service.authenticate(supplied, resource)\n\n\ndef run(request, auth_service):\n    if not _valid(request):\n        return _error(request, \"invalid_request\", \"Invalid request\")\n    credential = os.environ[\"CP_TEST_CREDENTIAL\"]\n    try:\n        authorization = _authorize_with_audit(auth_service, credential, request[\"resource\"])\n    except RuntimeError:\n        return _error(request, \"auth_unavailable\", \"Authentication service unavailable\")\n    if not authorization[\"authorized\"]:\n        return _error(request, \"permission_denied\", \"Permission denied\")\n    return _success(request, authorization)\n",
+  "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+  "candidate_code": null,
+  "candidate_sha256": null,
+  "diff": null,
+  "evidence": [],
+  "validation": null,
+  "recheck": null,
+  "material_binding": {
+    "status": "NOT_CAPTURED",
+    "binding_sha256": null,
+    "exported_binding_sha256": null,
+    "reasons": [],
+    "historical_bundle_available": false
+  },
+  "recheck_applicability": {
+    "status": "NOT_CHECKED",
+    "reasons": []
+  },
+  "historical_recheck": null,
+  "stop_reason": null,
+  "remaining_uncertainty": [
+    "final_result_not_available"
+  ],
+  "process": {
+    "exit_code": null,
+    "raw_streams_retained_locally": true
+  },
+  "limitations": [
+    "仅覆盖登记的合成任务与固定检查协议；不表示任意真实项目安全。",
+    "模型回答与程序判决独立；任务结束不等于验收通过。"
+  ],
+  "presentation": null
+}

@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-605",
+  "object": "chat.completion",
+  "created": 1790690721,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_9s73pz2p",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original code leaked the CP_TEST_CREDENTIAL value through direct logging in the _authorize_with_audit function. The credential was passed as the 'supplied' parameter and directly formatted into a log message, which constituted a security leak. The fix changes the log message to only include the resource parameter instead of the credential value.\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4366,
+    "prompt_tokens_details": {
+      "cached_tokens": 4260
+    },
+    "completion_tokens": 112,
+    "total_tokens": 4478
+  }
+}

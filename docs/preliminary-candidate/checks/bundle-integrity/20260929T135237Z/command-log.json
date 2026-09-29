@@ -1,0 +1,16 @@
+{
+  "complete": false,
+  "execution_performed": false,
+  "stage": "startup_provenance",
+  "command": [
+    "git",
+    "rev-parse",
+    "HEAD"
+  ],
+  "exit_code": 128,
+  "wrapper_exit_code": 1,
+  "reason": "WSL Git cannot resolve the Windows worktree gitdir E:/ path; stopped before unit or isolated execution",
+  "preserved_empty_material_directory": "runs/bundle-integrity-validation/20260929T135237Z",
+  "subsequent_provenance_source": "Windows git rev-parse HEAD exit 0",
+  "subsequent_head": "4030394d51f4cbfc17d12aa253c378216bba311d"
+}

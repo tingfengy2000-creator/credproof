@@ -1,0 +1,36 @@
+{
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "content": "Let me try a different approach to test my hypothesis by examining the code more carefully and then proposing a patch if needed.",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"hypothesis\":\"The _write_sanitized_audit function may leak the credential through improper redaction\",\"request\":{\"debug\":true,\"request_id\":\"test-123\",\"resource\":\"test-resource\",\"units\":3},\"auth_mode\":\"success\"}",
+              "name": "run_controlled_case"
+            },
+            "id": "call_a130dmdn",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1790675282,
+  "id": "chatcmpl-241",
+  "model": "qwen3-coder:30b",
+  "object": "chat.completion",
+  "system_fingerprint": "fp_ollama",
+  "usage": {
+    "completion_tokens": 105,
+    "prompt_tokens": 3145,
+    "prompt_tokens_details": {
+      "cached_tokens": 3017
+    },
+    "total_tokens": 3250
+  }
+}

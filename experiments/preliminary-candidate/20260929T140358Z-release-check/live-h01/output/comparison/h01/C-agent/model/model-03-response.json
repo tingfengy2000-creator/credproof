@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-562",
+  "object": "chat.completion",
+  "created": 1790690717,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let me analyze the code more carefully and then propose a fix. The issue is clearly in how the logging is done - it's directly logging the credential value which is a security leak.",
+        "tool_calls": [
+          {
+            "id": "call_ygldgvei",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"The credential is leaked through logging in _authorize_with_audit function\",\"request\":{\"debug\":true,\"request_id\":\"test-id\",\"resource\":\"test-resource\",\"units\":2},\"auth_mode\":\"success\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3133,
+    "prompt_tokens_details": {
+      "cached_tokens": 3014
+    },
+    "completion_tokens": 112,
+    "total_tokens": 3245
+  }
+}

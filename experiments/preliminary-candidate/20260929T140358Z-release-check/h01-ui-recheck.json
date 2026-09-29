@@ -1,0 +1,696 @@
+{
+  "id": "replay-f5a705b86f83cf1021eb0a7b",
+  "case_id": "h01",
+  "mode": "REPLAY",
+  "status": "COMPLETED",
+  "task_status": "COMPLETED_REPAIRED",
+  "started_at": "2026-09-29T14:03:58.832575+00:00",
+  "updated_at": "2026-09-29T14:03:58.832575+00:00",
+  "phase": "读取已保存的实际运行材料",
+  "model": {
+    "status": "EXECUTOR_COMPLETED",
+    "calls": 4,
+    "initially_leaking": true,
+    "raw_notes": [
+      {
+        "source": "saved_model_messages",
+        "text": "Looking at the tool.py code and the evidence of credential leaks, I can see the issue clearly.\n\nThe problem is in the `_authorize_with_audit` function on line that logs authentication input. The function logs the credential directly:\n\n```python\ndef _authorize_with_audit(service, supplied, resource):\n    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", supplied, resource)\n    return service.authenticate(supplied, resource)\n```\n\nThe `supplied` parameter contains the credential (which is read from `os.environ[\"CP_TEST_CREDENTIAL\"]`) and it's being logged directly without redaction. This causes a credential leak in the logging output.\n\nLet me run a test to confirm this hypothesis:",
+        "display_truncated": false
+      },
+      {
+        "source": "saved_model_messages",
+        "text": "Let me analyze the code more carefully. I can see that there's a clear credential leak in the logging statement. The credential is being passed directly to a logging function without redaction.\n\nLooking at the evidence, it shows that logs contain \"INFO:authentication input=[REDACTED] resource=public-resource\" which confirms the credential is being logged.\n\nLet me create a patch to fix this by redacting the credential before logging:",
+        "display_truncated": false
+      },
+      {
+        "source": "tool call 2 · run_controlled_case 执行前假设（非程序确认）",
+        "text": "The credential is leaked through logging in _authorize_with_audit function",
+        "display_truncated": false
+      },
+      {
+        "source": "tool call 4 · verify_patch 原始判断（非程序确认）",
+        "text": "{\n  \"diagnosis\": \"The original tool had a credential leak in the _authorize_with_audit function where the raw credential was logged directly. The patch fixes this by redacting the credential before logging while preserving all other functionality.\",\n  \"initially_leaking\": true\n}",
+        "display_truncated": false
+      }
+    ],
+    "proposals": [
+      {
+        "rationale": "The credential leak occurs in the _authorize_with_audit function where the raw credential is passed to a logging statement. The fix redacts the credential by replacing it with '[REDACTED]' before logging, while preserving the functionality of the authentication call. This ensures that no actual credential appears in log output, addressing the confirmed leak in the diagnostic evidence.",
+        "status": "PROPOSED",
+        "reason": null,
+        "candidate_id": "candidate-1",
+        "tool_call_index": 3
+      }
+    ],
+    "denied_proposal_count": 0
+  },
+  "diagnosis": {
+    "model_suspicion": "The original tool had a credential leak in the _authorize_with_audit function where the raw credential was logged directly. The patch fixes this by redacting the credential before logging while preserving all other functionality.",
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true
+  },
+  "tool_calls": 4,
+  "unknown_count": 0,
+  "source_code": "import os\nimport logging\n\n\ndef _valid(request):\n    return (isinstance(request, dict)\n            and isinstance(request.get(\"request_id\"), str) and bool(request[\"request_id\"])\n            and isinstance(request.get(\"resource\"), str) and bool(request[\"resource\"])\n            and type(request.get(\"units\")) is int and 1 <= request[\"units\"] <= 5\n            and type(request.get(\"debug\", False)) is bool)\n\n\ndef _error(request, kind, message):\n    identifier = request.get(\"request_id\", \"\") if isinstance(request, dict) else \"\"\n    if not isinstance(identifier, str):\n        identifier = \"\"\n    return {\"ok\": False, \"request_id\": identifier, \"error\": {\"type\": kind, \"message\": message}}\n\n\ndef _success(request, authorization):\n    return {\"ok\": True, \"request_id\": request[\"request_id\"], \"resource\": request[\"resource\"],\n            \"units\": request[\"units\"], \"total\": request[\"units\"] * 7,\n            \"subject\": authorization[\"subject\"],\n            \"meta\": {\"route\": \"local-mock\", \"debug\": request.get(\"debug\", False)}}\n\n\ndef _authorize_with_audit(service, supplied, resource):\n    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", supplied, resource)\n    return service.authenticate(supplied, resource)\n\n\ndef run(request, auth_service):\n    if not _valid(request):\n        return _error(request, \"invalid_request\", \"Invalid request\")\n    credential = os.environ[\"CP_TEST_CREDENTIAL\"]\n    try:\n        authorization = _authorize_with_audit(auth_service, credential, request[\"resource\"])\n    except RuntimeError:\n        return _error(request, \"auth_unavailable\", \"Authentication service unavailable\")\n    if not authorization[\"authorized\"]:\n        return _error(request, \"permission_denied\", \"Permission denied\")\n    return _success(request, authorization)\n",
+  "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+  "candidate_code": "import os\nimport logging\n\n\ndef _valid(request):\n    return (isinstance(request, dict)\n            and isinstance(request.get(\"request_id\"), str) and bool(request[\"request_id\"])\n            and isinstance(request.get(\"resource\"), str) and bool(request[\"resource\"])\n            and type(request.get(\"units\")) is int and 1 <= request[\"units\"] <= 5\n            and type(request.get(\"debug\", False)) is bool)\n\n\ndef _error(request, kind, message):\n    identifier = request.get(\"request_id\", \"\") if isinstance(request, dict) else \"\"\n    if not isinstance(identifier, str):\n        identifier = \"\"\n    return {\"ok\": False, \"request_id\": identifier, \"error\": {\"type\": kind, \"message\": message}}\n\n\ndef _success(request, authorization):\n    return {\"ok\": True, \"request_id\": request[\"request_id\"], \"resource\": request[\"resource\"],\n            \"units\": request[\"units\"], \"total\": request[\"units\"] * 7,\n            \"subject\": authorization[\"subject\"],\n            \"meta\": {\"route\": \"local-mock\", \"debug\": request.get(\"debug\", False)}}\n\n\ndef _authorize_with_audit(service, supplied, resource):\n    # Redact credential before logging\n    redacted = \"[REDACTED]\" if supplied else supplied\n    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", redacted, resource)\n    return service.authenticate(supplied, resource)\n\n\ndef run(request, auth_service):\n    if not _valid(request):\n        return _error(request, \"invalid_request\", \"Invalid request\")\n    credential = os.environ[\"CP_TEST_CREDENTIAL\"]\n    try:\n        authorization = _authorize_with_audit(auth_service, credential, request[\"resource\"])\n    except RuntimeError:\n        return _error(request, \"auth_unavailable\", \"Authentication service unavailable\")\n    if not authorization[\"authorized\"]:\n        return _error(request, \"permission_denied\", \"Permission denied\")\n    return _success(request, authorization)",
+  "candidate_sha256": "95b8265b76feafc4e3fce9ac5efd336b01f6b6934721675bc729ef098b394b4a",
+  "diff": "--- original/tool.py\n+++ candidate/tool.py\n@@ -25,7 +25,9 @@\n \n \n def _authorize_with_audit(service, supplied, resource):\n-    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", supplied, resource)\n+    # Redact credential before logging\n+    redacted = \"[REDACTED]\" if supplied else supplied\n+    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", redacted, resource)\n     return service.authenticate(supplied, resource)\n \n \n@@ -39,4 +41,4 @@\n         return _error(request, \"auth_unavailable\", \"Authentication service unavailable\")\n     if not authorization[\"authorized\"]:\n         return _error(request, \"permission_denied\", \"Permission denied\")\n-    return _success(request, authorization)\n+    return _success(request, authorization)",
+  "evidence": [
+    {
+      "id": "evidence-1",
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "conditions": {
+        "request": {
+          "request_id": "public-check",
+          "resource": "public-resource",
+          "units": 2,
+          "debug": true
+        },
+        "auth_mode": "success"
+      },
+      "conditions_sha256": "9b8f2ef5f4edc657068b4eb8fae025ff3e661097fd1cac8cdfe77e21f97fd6e8",
+      "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+      "observation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "leak_channels": [
+          "logging"
+        ],
+        "actual": {
+          "returned": {
+            "ok": true,
+            "request_id": "public-check",
+            "resource": "public-resource",
+            "units": 2,
+            "total": 14,
+            "subject": "subject:public-resource",
+            "meta": {
+              "route": "local-mock",
+              "debug": true
+            }
+          },
+          "raised": null,
+          "stdout": "",
+          "stderr": "",
+          "logs": [
+            "INFO:authentication input=[REDACTED] resource=public-resource"
+          ]
+        },
+        "auth_call_count": 1
+      },
+      "observed_at": "2026-09-29T09:45:03.838813+00:00",
+      "collected_at": "2026-09-29T09:45:03.838813+00:00"
+    },
+    {
+      "id": "evidence-2",
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "conditions": {
+        "request": {
+          "request_id": "public-check",
+          "resource": "public-resource",
+          "units": 2,
+          "debug": true
+        },
+        "auth_mode": "denied"
+      },
+      "conditions_sha256": "a172742221fc518ba15aa094eda501d2fb6ccbf0ffe46fa5064976741638ad3a",
+      "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+      "observation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "leak_channels": [
+          "logging"
+        ],
+        "actual": {
+          "returned": {
+            "ok": false,
+            "request_id": "public-check",
+            "error": {
+              "type": "permission_denied",
+              "message": "Permission denied"
+            }
+          },
+          "raised": null,
+          "stdout": "",
+          "stderr": "",
+          "logs": [
+            "INFO:authentication input=[REDACTED] resource=public-resource"
+          ]
+        },
+        "auth_call_count": 1
+      },
+      "observed_at": "2026-09-29T09:45:03.970680+00:00",
+      "collected_at": "2026-09-29T09:45:03.970680+00:00"
+    },
+    {
+      "id": "evidence-3",
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "conditions": {
+        "request": {
+          "request_id": "public-check",
+          "resource": "public-resource",
+          "units": 2,
+          "debug": true
+        },
+        "auth_mode": "provider_error"
+      },
+      "conditions_sha256": "f4f673840e4c0e3edead27b51d6c7556c3adfcf07e3f755697b93d3c1aee78a2",
+      "hypothesis": "Common diagnostic: inspect forbidden channels under this auth outcome",
+      "observation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "leak_channels": [
+          "logging"
+        ],
+        "actual": {
+          "returned": {
+            "ok": false,
+            "request_id": "public-check",
+            "error": {
+              "type": "auth_unavailable",
+              "message": "Authentication service unavailable"
+            }
+          },
+          "raised": null,
+          "stdout": "",
+          "stderr": "",
+          "logs": [
+            "INFO:authentication input=[REDACTED] resource=public-resource"
+          ]
+        },
+        "auth_call_count": 1
+      },
+      "observed_at": "2026-09-29T09:45:04.104089+00:00",
+      "collected_at": "2026-09-29T09:45:04.104089+00:00"
+    }
+  ],
+  "validation": {
+    "verdict": "PASS",
+    "reasons": [],
+    "checks_run": 13,
+    "leak_channels": [],
+    "trial_counts": {
+      "PASS": 13
+    },
+    "checks": [
+      {
+        "id": "source-boundary",
+        "label": "受限 Python / 修改仅限候选文件",
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "id": "credential-channels",
+        "label": "必要条件中的禁止通道凭据检测",
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "id": "behavior",
+        "label": "正常功能、授权调用及异常契约",
+        "status": "PASS",
+        "reason": ""
+      },
+      {
+        "id": "coverage",
+        "label": "13 项必要条件完整执行",
+        "status": "PASS",
+        "reason": "13/13"
+      }
+    ]
+  },
+  "recheck": {
+    "status": "RECHECKED",
+    "checked_at": "2026-09-29T14:04:39.222624+00:00",
+    "validation": {
+      "verdict": "PASS",
+      "reasons": [],
+      "checks_run": 13,
+      "leak_channels": [],
+      "trial_counts": {
+        "PASS": 13
+      },
+      "checks": [
+        {
+          "name": "source_profile",
+          "verdict": "PASS",
+          "reasons": [],
+          "id": "source_profile",
+          "label": "source_profile",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_01",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 78.67,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_01",
+          "label": "trial_01",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_02",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 78.54,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_02",
+          "label": "trial_02",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_03",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 76.3,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_03",
+          "label": "trial_03",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_04",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 80.52,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_04",
+          "label": "trial_04",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_05",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 81.55,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_05",
+          "label": "trial_05",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_06",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 73.83,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_06",
+          "label": "trial_06",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_07",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 77.88,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_07",
+          "label": "trial_07",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_08",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 77.73,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_08",
+          "label": "trial_08",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_09",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 87.69,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_09",
+          "label": "trial_09",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_10",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 79.17,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_10",
+          "label": "trial_10",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_11",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 74.21,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_11",
+          "label": "trial_11",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_12",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 77.28,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_12",
+          "label": "trial_12",
+          "status": "PASS",
+          "reason": ""
+        },
+        {
+          "name": "trial_13",
+          "verdict": "PASS",
+          "reasons": [],
+          "leak_channels": [],
+          "isolation_status": "OK",
+          "duration_ms": 76.01,
+          "isolation_receipt": {
+            "profile": "credproof-python-single-process-v1",
+            "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+            "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+            "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+            "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+            "kernel": "6.18.33.2-microsoft-standard-WSL2",
+            "limits": {
+              "address_space_bytes": 268435456,
+              "cpu_seconds": 3,
+              "file_bytes": 4194304,
+              "open_files": 32,
+              "output_bytes": 262144,
+              "tmpfs_bytes": 16777216
+            }
+          },
+          "id": "trial_13",
+          "label": "trial_13",
+          "status": "PASS",
+          "reason": ""
+        }
+      ],
+      "completed_trials": 13,
+      "required_trials": 13
+    },
+    "candidate_sha256": "95b8265b76feafc4e3fce9ac5efd336b01f6b6934721675bc729ef098b394b4a",
+    "prior_report_applicable": true,
+    "prior_report_reasons": [],
+    "historical_evidence_integrity": {
+      "status": "INTACT",
+      "scope": "manifest-listed historical files only",
+      "declared_files": 20,
+      "checked_files": 20,
+      "missing_files": [],
+      "changed_files": [],
+      "unavailable_files": [],
+      "reasons": []
+    },
+    "historical_task_status_rewritten": false,
+    "trust_boundary": "trusted verifier/operator; hashes detect changes, not authenticity"
+  },
+  "material_binding": {
+    "status": "CURRENT",
+    "binding_sha256": "d57426093edb4616ea7596dc37f6b3d1e8620f820a9e92e49baadbd380347c41",
+    "exported_binding_sha256": "d57426093edb4616ea7596dc37f6b3d1e8620f820a9e92e49baadbd380347c41",
+    "reasons": [],
+    "historical_bundle_available": true
+  },
+  "recheck_applicability": {
+    "status": "APPLICABLE",
+    "reasons": []
+  },
+  "historical_recheck": null,
+  "stop_reason": null,
+  "remaining_uncertainty": [],
+  "process": {
+    "exit_code": null,
+    "raw_streams_retained_locally": false
+  },
+  "limitations": [
+    "仅覆盖登记的合成任务与固定检查协议；不表示任意真实项目安全。",
+    "模型回答与程序判决独立；任务结束不等于验收通过。"
+  ],
+  "presentation": {
+    "case_id": "h01",
+    "title": "跨函数的日志泄露",
+    "subtitle": "模型补丁补足有限规则的结构盲点",
+    "phenomenon": "凭据由环境变量读入，经函数参数传递后进入调试日志；源码中没有硬编码密钥。",
+    "explanation": "本项目固定启发式未完成这处修改；模型候选消除日志中的凭据，并保留授权认证和必要业务行为。这是该合成案例上的有限增量。",
+    "run_id": "replay-f5a705b86f83cf1021eb0a7b",
+    "mode": "REPLAY",
+    "batch": "20260929t095000z-holdout8",
+    "source_commit": "b4cb91ef67ae2d14d6cc37f9e18cf6c23e36e8ea",
+    "provenance": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent",
+    "record_sha256": "f9e3ad211f25c8e486cf049fbf82142e2098f0a4743576e9f64bf9214932bc3b",
+    "fixed_result_sha256": "cce90ab2e467339daac1e3e8dd939676af5d2dd4ed62be48eeb43d88f35fd650",
+    "stages": [
+      {
+        "candidate_id": "candidate-1",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        },
+        "sha256": "95b8265b76feafc4e3fce9ac5efd336b01f6b6934721675bc729ef098b394b4a",
+        "diff": "--- original/tool.py\n+++ candidate-1.py\n@@ -25,7 +25,9 @@\n \n \n def _authorize_with_audit(service, supplied, resource):\n-    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", supplied, resource)\n+    # Redact credential before logging\n+    redacted = \"[REDACTED]\" if supplied else supplied\n+    logging.getLogger(\"local.authorization\").info(\"authentication input=%s resource=%s\", redacted, resource)\n     return service.authenticate(supplied, resource)\n \n \n@@ -39,4 +41,4 @@\n         return _error(request, \"auth_unavailable\", \"Authentication service unavailable\")\n     if not authorization[\"authorized\"]:\n         return _error(request, \"permission_denied\", \"Permission denied\")\n-    return _success(request, authorization)\n+    return _success(request, authorization)"
+      }
+    ],
+    "fixed_comparison": {
+      "method": "A-fixed",
+      "verdict": "FAIL",
+      "task_status": "INCOMPLETE"
+    },
+    "initial_confirmation": "CONFIRMED_LEAK",
+    "notice": "精选的真实历史记录，不是本次模型推理；不代表总体成功率。"
+  }
+}

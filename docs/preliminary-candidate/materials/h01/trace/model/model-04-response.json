@@ -1,0 +1,36 @@
+{
+  "choices": [
+    {
+      "finish_reason": "tool_calls",
+      "index": 0,
+      "message": {
+        "content": "",
+        "role": "assistant",
+        "tool_calls": [
+          {
+            "function": {
+              "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original tool had a credential leak in the _authorize_with_audit function where the raw credential was logged directly. The patch fixes this by redacting the credential before logging while preserving all other functionality.\"}",
+              "name": "verify_patch"
+            },
+            "id": "call_37n5xlkh",
+            "index": 0,
+            "type": "function"
+          }
+        ]
+      }
+    }
+  ],
+  "created": 1790675112,
+  "id": "chatcmpl-464",
+  "model": "qwen3-coder:30b",
+  "object": "chat.completion",
+  "system_fingerprint": "fp_ollama",
+  "usage": {
+    "completion_tokens": 87,
+    "prompt_tokens": 3860,
+    "prompt_tokens_details": {
+      "cached_tokens": 3758
+    },
+    "total_tokens": 3947
+  }
+}

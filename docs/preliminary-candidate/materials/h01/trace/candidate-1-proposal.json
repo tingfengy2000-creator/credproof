@@ -1,0 +1,17 @@
+{
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "evidence_ids": [
+      "evidence-1",
+      "evidence-2",
+      "evidence-3"
+    ],
+    "repair_authorized": true,
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety",
+    "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a"
+  },
+  "rationale": "The credential leak occurs in the _authorize_with_audit function where the raw credential is passed to a logging statement. The fix redacts the credential by replacing it with '[REDACTED]' before logging, while preserving the functionality of the authentication call. This ensures that no actual credential appears in log output, addressing the confirmed leak in the diagnostic evidence.",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "source_sha256": "95b8265b76feafc4e3fce9ac5efd336b01f6b6934721675bc729ef098b394b4a"
+}
