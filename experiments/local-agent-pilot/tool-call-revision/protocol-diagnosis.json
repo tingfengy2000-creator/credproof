@@ -1,0 +1,143 @@
+{
+  "schema": "credproof.tool-protocol-diagnosis.v1",
+  "checked_at_utc": "2026-09-29T11:41:36.302464+00:00",
+  "audit_kind": "Codex-assisted internal source audit plus offline REPLAY; not third-party or human-independent audit",
+  "audit_start_commit": "65abca2ac6c531f2b790cf893da7a0c5ad166752",
+  "new_model_calls": 0,
+  "candidate_executions": 0,
+  "historical_artifacts": [
+    {
+      "case": "h05",
+      "request_path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/C-agent/model/model-01-request.json",
+      "request_sha256": "abb3cbc69ac71590263a0ea4772b1785753c2fdc2dd5260b11373266f612d56a",
+      "response_path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/C-agent/model/model-01-response.json",
+      "response_sha256": "5b4b2a17429841dbedff36a5129989233c4e515caa5ee553e7badb97c2410dce",
+      "client_result_path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/C-agent/model/result.json",
+      "task_result_path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/C-agent/result.json",
+      "observed_content": "<function=read_code>\n<parameter=path>\ntool.py\n</parameter>\n</function>\n</tool_call>",
+      "native_tool_calls_present": false,
+      "finish_reason": "stop",
+      "reported_usage": {
+        "prompt_tokens": 1975,
+        "prompt_tokens_details": {
+          "cached_tokens": 1632
+        },
+        "completion_tokens": 20,
+        "total_tokens": 1995
+      },
+      "historical_client_status": "COMPLETED",
+      "historical_task_status": "INCOMPLETE",
+      "historical_tool_dispatches": 0,
+      "failure_class": "MALFORMED_TOOL_SYNTAX_RETURNED_AS_CONTENT_WITHOUT_NATIVE_CALL",
+      "classification_is_audit_label_not_historical_runtime_status": true
+    },
+    {
+      "case": "h06",
+      "request_path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/C-agent/model/model-01-request.json",
+      "request_sha256": "d4863ef30327448407a97da0325da3846b37bf66495d5cdf1df64962b1b2eb49",
+      "response_path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/C-agent/model/model-01-response.json",
+      "response_sha256": "ce552707835664d7c3a4c3cd2e712d8ca2ea11d349943a1d3fbc8a6dd0e129b3",
+      "client_result_path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/C-agent/model/result.json",
+      "task_result_path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/C-agent/result.json",
+      "observed_content": "<function=read_code>\n<parameter=path>\ntool.py\n</parameter>\n</function>\n</tool_call>",
+      "native_tool_calls_present": false,
+      "finish_reason": "stop",
+      "reported_usage": {
+        "prompt_tokens": 1972,
+        "prompt_tokens_details": {
+          "cached_tokens": 1735
+        },
+        "completion_tokens": 20,
+        "total_tokens": 1992
+      },
+      "historical_client_status": "COMPLETED",
+      "historical_task_status": "INCOMPLETE",
+      "historical_tool_dispatches": 0,
+      "failure_class": "MALFORMED_TOOL_SYNTAX_RETURNED_AS_CONTENT_WITHOUT_NATIVE_CALL",
+      "classification_is_audit_label_not_historical_runtime_status": true
+    }
+  ],
+  "installed": {
+    "qwen_agent_version": "0.0.34",
+    "qwen_llm_base_sha256": "2cbf81cf2f9035c2d6013f11f7ceff8dc141eb9329fcd8ba1617eeb59cd6d7ae",
+    "qwen_fncall_agent_sha256": "21de0e5ccc054ea33e63586192843d466d6e4de4f8a4adfe34f3519f61851ec6",
+    "ollama_version": "0.34.4",
+    "ollama_binary_sha256": "ad9c53441752620a2314a65a798a888d98df3636c8815ca044de591f82892ff4",
+    "model": "qwen3-coder:30b",
+    "renderer": "qwen3-coder",
+    "parser": "qwen3-coder"
+  },
+  "diagnosis": {
+    "confirmed": "Both saved server messages lack native tool_calls and the opening tool_call tag. The adapter preserves content; official FnCallAgent sees no function_call and ends normally. This is not an observed transport, budget, output truncation, or call-ID loss.",
+    "source_supported_inference": "The response shape is consistent with the pinned parser falling through on bare function tags. The client/framework lacks an executor-aware bounded continuation in the old run.",
+    "not_established": [
+      "The raw sampled token stream before Ollama parsing was not recorded.",
+      "Prompt caching or a particular sampling mechanism caused the malformed output.",
+      "Changing protocol or adding a correction will make the real model succeed."
+    ]
+  },
+  "revision_policy": {
+    "wire": "POST http://127.0.0.1:11435/v1/chat/completions; stream=false; use_raw_api=true",
+    "execution": "Only decoded native tool_calls; never parse prose/XML into actions or invent IDs/results.",
+    "model_generation_format": "Use the format provided by the service tool definitions; do not forbid the XML that the pinned renderer requires.",
+    "format_correction_default": 0,
+    "agent_format_correction_limit": 1,
+    "original_model_call_limit": 12,
+    "no_reset": [
+      "task clock",
+      "model call count",
+      "usage",
+      "prefix measurement",
+      "context size",
+      "candidate cap"
+    ],
+    "when": "Only normal framework end with tools and a trusted completion callback still pending; no correction on timeout/error/poisoned budget.",
+    "terminal": "No extra request after trusted completion; second non-actionable natural finish remains INCOMPLETE.",
+    "history": "Original inputs, full prior outputs, fixed correction message and later output remain auditable; old records unchanged."
+  },
+  "regression": {
+    "classification": "REPLAY and synthetic control-flow fixtures; mock HTTP runs the real _request accounting and official Assistant loop; never new inference.",
+    "test_file": "agent_pilot/test_tool_protocol.py",
+    "tests": 15,
+    "exit_code": 0,
+    "command": "wsl --exec bash -lc 'cd /mnt/e/比赛/密证_CredProof-local-agent && /home/tingfeng/credproof-agent-runtime/venv/bin/python -B -m unittest agent_pilot.test_tool_protocol -v'",
+    "covers": [
+      "h05/h06 verbatim response decode",
+      "one correction with later native call",
+      "repeated bare output stays incomplete",
+      "total request budgets 1 and 2",
+      "terminal before request and in native batch",
+      "wall-clock timeout and late mock response",
+      "HTTP error",
+      "default zero",
+      "no-tools control",
+      "unknown tool",
+      "invalid JSON, fields, types and paths",
+      "native tool result and ID retained across a later format correction without redispatch or budget reset"
+    ],
+    "limitation": "Control fixtures do not measure correction prompt effectiveness.",
+    "last_observed_elapsed_s": 0.178
+  },
+  "official_sources": [
+    {
+      "url": "https://raw.githubusercontent.com/ollama/ollama/v0.34.4/model/parsers/qwen3coder.go",
+      "scope": "Pinned v0.34.4 parser, especially lines 140-183: starts tool collection only from literal opening tool_call tag; otherwise emits content."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ollama/ollama/v0.34.4/model/renderers/qwen3coder.go",
+      "scope": "Pinned v0.34.4 renderer, lines 86-127: tools rendered with Qwen coder XML generation format, not literal wire-level tool_calls JSON."
+    },
+    {
+      "url": "https://raw.githubusercontent.com/ollama/ollama/v0.34.4/openai/openai.go",
+      "scope": "Pinned v0.34.4 OpenAI-compatible wire message fields, including tool_calls and tool_call_id."
+    },
+    {
+      "url": "https://github.com/QwenLM/Qwen-Agent",
+      "scope": "Official raw native API guidance; installed 0.0.34 source is authoritative for exact local loop behavior."
+    },
+    {
+      "url": "https://docs.ollama.com/api/openai-compatibility",
+      "scope": "Official compatibility surface; live page is not a replacement for pinned version source."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "command": [
+    "wsl",
+    "-d",
+    "Ubuntu-24.04",
+    "--cd",
+    "/mnt/e/比赛/密证_CredProof-local-agent",
+    "--exec",
+    "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+    "-B",
+    "-m",
+    "unittest",
+    "agent_pilot.test_model_client",
+    "agent_pilot.test_tool_protocol",
+    "-v"
+  ],
+  "exit_code": 0,
+  "elapsed_s": 3.859197000041604,
+  "execution_kind": "REPLAY-and-control-unit-tests-NOT-new-inference"
+}

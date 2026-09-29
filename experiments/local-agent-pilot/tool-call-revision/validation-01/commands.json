@@ -1,0 +1,40 @@
+[
+  {
+    "name": "agent-unit",
+    "command": [
+      "wsl",
+      "-d",
+      "Ubuntu-24.04",
+      "--cd",
+      "/mnt/e/比赛/密证_CredProof-local-agent",
+      "--exec",
+      "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "agent_pilot/tests",
+      "-v"
+    ],
+    "cwd": "E:\\比赛\\密证_CredProof-local-agent",
+    "exit_code": 0,
+    "elapsed_s": 9.807727199979126,
+    "execution_kind": "unit-and-regression-not-model-inference"
+  },
+  {
+    "name": "original-core",
+    "command": [
+      "C:\\Python314\\python.exe",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tests",
+      "-v"
+    ],
+    "cwd": "E:\\比赛\\密证_CredProof-local-agent",
+    "exit_code": 0,
+    "elapsed_s": 23.786589700030163,
+    "execution_kind": "unit-and-regression-not-model-inference"
+  }
+]

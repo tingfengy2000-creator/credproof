@@ -225,7 +225,7 @@ def run_method(method, source, output, private, *, max_tokens=2048, seed=0):
         session.check(session.selected()[0])
     elif method == 'C-agent':
         client = LocalAgentClient(tools=session.tools(), system_message=SYSTEM, log_dir=session.output / 'model',
-                                  execution_completion=lambda: session.terminal)
+                                  execution_completion=lambda: session.terminal, max_format_corrections=1)
         model = client.run([{'role': 'user', 'content': 'Diagnose using these shared initial observations. Read tool.py; use optional tests if useful, then verify.\n' + shared}])
     else:
         client = LocalAgentClient(tools=[], system_message=ONCE, log_dir=session.output / 'model',

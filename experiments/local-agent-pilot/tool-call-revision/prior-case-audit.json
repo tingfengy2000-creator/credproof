@@ -1,0 +1,2359 @@
+{
+  "schema": "credproof.prior-case-audit.v1",
+  "audit_date": "2026-09-29",
+  "audit_context_head": "65abca2ac6c531f2b790cf893da7a0c5ad166752",
+  "auditor": "Codex semantic self-review; not independent human review",
+  "operation": "Read records and parse source only; no candidate/model execution",
+  "assessed_run": "20260929t095000z-holdout8",
+  "not_aggregated_with_other_runs": true,
+  "future_case_status": {
+    "label": "known regression cases",
+    "case_ids": [
+      "p01",
+      "p02",
+      "p03",
+      "p04",
+      "p05",
+      "p06",
+      "h01",
+      "h02",
+      "h03",
+      "h04",
+      "h05",
+      "h06",
+      "h07",
+      "h08"
+    ],
+    "reuse_is_not_unseen_holdout": true
+  },
+  "provenance": {
+    "results_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/results.json",
+    "results_sha256": "5f21ec3f402f5eb29cf774b22410bcaaf1b2f0d495bb5c0474e18d744955cef2",
+    "frozen_inputs_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/frozen-inputs.json",
+    "frozen_inputs_sha256": "3b378ddf5581c94138ae216fda4a26bbc0dd3e0d953c6e8127e0b21bb15d25d1",
+    "frozen_inputs_unchanged": true,
+    "supervisor_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/supervisor-result.json",
+    "supervisor_sha256": "9b7a91cfbe5669cc77f4dec70c815272b51600fe724667c24790166174fc802d",
+    "supervisor_complete": true,
+    "supervisor_exit_codes": [
+      0,
+      0
+    ],
+    "aggregate_equals_per_method_results": true,
+    "all_30_original_final_selected_hashes_checked": true,
+    "audit_head_not_asserted_as_executed_frozen_source": true,
+    "all_counted_completed_tasks_have_final_pass_and_matching_pass_receipt": true
+  },
+  "metric_definitions": {
+    "task_complete": "Exact boolean: task.task_status in [COMPLETED_REPAIRED, COMPLETED_UNCHANGED]. model.status is not substituted; final PASS alone is insufficient. Diagnosis correctness is separate.",
+    "final_object_pass": "Independent final validation on selected candidate or unchanged original.",
+    "qualified_unsafe_repair": "Expected LEAK and final verdict PASS.",
+    "structured_diagnosis": "Machine parsed field retained; null remains UNKNOWN. Binary correctness is not root-cause-quality or independent discovery.",
+    "raw_semantics": "Codex reads actual prose; affirmative actual leak, tentative concern and no diagnosis distinguished.",
+    "false_positive": "Safe case affirmative leakage diagnosis; fixed program and model kept separate.",
+    "initial_confirmation": "Same fixed initial controlled triggers shared across methods; not agent autonomous reproduction.",
+    "unnecessary_change": "Actual changed selected source on SAFE case; denied proposals are separate."
+  },
+  "metrics": {
+    "A-fixed": {
+      "task_complete": {
+        "numerator": 7,
+        "denominator": 8
+      },
+      "final_object_pass": {
+        "numerator": 7,
+        "denominator": 8
+      },
+      "qualified_unsafe_repairs": {
+        "numerator": 3,
+        "denominator": 4
+      },
+      "safe_final_pass": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "positive_unsafe_structured_diagnosis": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "safe_structured_correct": {
+        "numerator": 3,
+        "denominator": 4
+      },
+      "safe_structured_incorrect": {
+        "numerator": 1,
+        "denominator": 4
+      },
+      "safe_structured_unknown": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "common_initial_true_confirmation": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "common_initial_false_confirmation": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "actual_unnecessary_safe_change": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "safe_raw_affirmative_false_positive_observed": null,
+      "safe_raw_no_diagnosis": null,
+      "safe_tentative_concern": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "model_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "elapsed_s_sum": 33.53803479200001
+    },
+    "B-once": {
+      "task_complete": {
+        "numerator": 4,
+        "denominator": 8
+      },
+      "final_object_pass": {
+        "numerator": 5,
+        "denominator": 8
+      },
+      "qualified_unsafe_repairs": {
+        "numerator": 1,
+        "denominator": 4
+      },
+      "safe_final_pass": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "positive_unsafe_structured_diagnosis": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "safe_structured_correct": {
+        "numerator": 3,
+        "denominator": 4
+      },
+      "safe_structured_incorrect": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "safe_structured_unknown": {
+        "numerator": 1,
+        "denominator": 4
+      },
+      "common_initial_true_confirmation": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "common_initial_false_confirmation": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "actual_unnecessary_safe_change": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "safe_raw_affirmative_false_positive_observed": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "safe_raw_no_diagnosis": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "safe_tentative_concern": {
+        "numerator": 1,
+        "denominator": 4
+      },
+      "model_calls": 8,
+      "prompt_tokens": 12567,
+      "completion_tokens": 4634,
+      "elapsed_s_sum": 57.178003628
+    },
+    "C-agent": {
+      "task_complete": {
+        "numerator": 6,
+        "denominator": 8
+      },
+      "final_object_pass": {
+        "numerator": 8,
+        "denominator": 8
+      },
+      "qualified_unsafe_repairs": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "safe_final_pass": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "positive_unsafe_structured_diagnosis": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "safe_structured_correct": {
+        "numerator": 2,
+        "denominator": 4
+      },
+      "safe_structured_incorrect": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "safe_structured_unknown": {
+        "numerator": 2,
+        "denominator": 4
+      },
+      "common_initial_true_confirmation": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "common_initial_false_confirmation": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "actual_unnecessary_safe_change": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "safe_raw_affirmative_false_positive_observed": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "safe_raw_no_diagnosis": {
+        "numerator": 2,
+        "denominator": 4
+      },
+      "safe_tentative_concern": {
+        "numerator": 2,
+        "denominator": 4
+      },
+      "model_calls": 31,
+      "prompt_tokens": 99142,
+      "completion_tokens": 6648,
+      "elapsed_s_sum": 74.33455218799999
+    },
+    "D-no-feedback": {
+      "cases": [
+        "h01",
+        "h03"
+      ],
+      "attempts": 6,
+      "seeds_per_case": [
+        1,
+        2,
+        3
+      ],
+      "task_complete": {
+        "numerator": 0,
+        "denominator": 6
+      },
+      "qualified_repairs": {
+        "numerator": 0,
+        "denominator": 6
+      },
+      "failure_reasons": {
+        "CREDENTIAL_LEAK_logging": 6
+      },
+      "all_candidates_ast_unchanged": true,
+      "not_six_independent_cases": true,
+      "all_attempts_retained_no_selection": true,
+      "model_calls": 6,
+      "prompt_tokens": 9567,
+      "completion_tokens": 3428,
+      "elapsed_s_sum": 43.187973764
+    }
+  },
+  "a_failure_correction": {
+    "failed_case": "h01",
+    "not_failed_case": "h03",
+    "h03_first_candidate_pass": true
+  },
+  "h03_feedback": {
+    "failed_candidate": "candidate-1",
+    "failure_trace_zero_based": 4,
+    "failure_native_tool_call_id": "call_cpjy5xro",
+    "next_actual_request": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-06-request.json",
+    "next_request_message_zero_based": 11,
+    "next_request_sha256": "08b1f5d50baad1b35f31ffdb0540a43e471ef413f978cf73abbf54650f0b51da",
+    "failure_feedback_received": true,
+    "second_submission_trace_zero_based": 5,
+    "pass_trace_zero_based": 6,
+    "final_selected": "candidate-2",
+    "first_failure_cause": "Prefix replacement leaves original credential value after the new REDACTED marker.",
+    "model_causal_explanation": "Incorrectly treats word credential= as the failure cause.",
+    "actual_improvement": "Second patch replaces dynamic details with fixed text; PASS despite fixed text containing credential.",
+    "observed_feedback_success": {
+      "numerator": 1,
+      "denominator": 1
+    },
+    "denominator": "Actual C failed candidate verification opportunity, not all cases.",
+    "A_first_candidate_already_passed": true,
+    "does_not_show_C_better_than_A_on_h03": true,
+    "original_controlled_call_reuses_cached_initial_evidence": true
+  },
+  "budget": {
+    "comparison": "Output cap equality only, not actual compute/input/output equality.",
+    "C_per_case": {
+      "max_calls": 12,
+      "max_output_per_call": 2048,
+      "sum_output_upper_bound": 24576
+    },
+    "D_per_case": {
+      "independent_attempts": 3,
+      "max_calls_per_attempt": 1,
+      "max_output_per_attempt": 8192,
+      "sum_output_upper_bound": 24576
+    },
+    "paired_cases": [
+      "h01",
+      "h03"
+    ],
+    "C_actual_on_paired": {
+      "calls": 11,
+      "prompt_tokens": 39265,
+      "completion_tokens": 2968
+    },
+    "D_actual_on_paired": {
+      "calls": 6,
+      "prompt_tokens": 9567,
+      "completion_tokens": 3428
+    }
+  },
+  "limitations": [
+    "Developer-authored synthetic restricted Python cases; not a real-world benchmark.",
+    "No combination with the previous six-case runs.",
+    "No replacement of missing parsed diagnosis by semantic inference.",
+    "C h05/h06 pseudo tool text did not execute read_code; final unchanged-object PASS does not complete task.",
+    "Observed zero affirmative model false positives must be reported with missing-diagnosis counts.",
+    "One feedback improvement is not a stable success-rate estimate."
+  ],
+  "rows": [
+    {
+      "case": "h01",
+      "method": "A-fixed",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "NOT_APPLICABLE_FIXED_RULE",
+      "raw_affirmative_false_positive": null,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "FAIL",
+      "final_reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "final_leak_channels": [
+        "logging"
+      ],
+      "checks_run": 13,
+      "trial_counts": {
+        "FAIL": 7,
+        "PASS": 6
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": null,
+      "model_calls": 0,
+      "tokens": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "elapsed_s": 4.208040474999997,
+      "model_configuration": null,
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "trial_counts": {
+            "FAIL": 7,
+            "PASS": 6
+          }
+        }
+      ],
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "candidate_sha256": "9b065136c80dbbc32492241c3df7284e1c57ff73a5a6770bd7ba24117c766eaa",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/A-fixed/result.json",
+      "result_file_sha256": "cce90ab2e467339daac1e3e8dd939676af5d2dd4ed62be48eeb43d88f35fd650",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/A-fixed/final-candidate.py",
+      "notes": "Return redaction does not remove helper logging of supplied credential. Sole A failure.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": null,
+      "executor_completed_model_status": null
+    },
+    {
+      "case": "h01",
+      "method": "B-once",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "FAIL",
+      "final_reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "final_leak_channels": [
+        "logging"
+      ],
+      "checks_run": 13,
+      "trial_counts": {
+        "FAIL": 7,
+        "PASS": 6
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1585,
+        "completion_tokens": 534,
+        "total_tokens": 2119
+      },
+      "elapsed_s": 7.009915213999999,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "trial_counts": {
+            "FAIL": 7,
+            "PASS": 6
+          }
+        }
+      ],
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "candidate_sha256": "a3b156575e63c9e3b2d972cf1c29042f26249b938fc6d1dad58526ddaf88b6eb",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/B-once/result.json",
+      "result_file_sha256": "d8877046fa89dc17dd5ef7b2970463fcbcd846de3ca1b62182f99015086c1253",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/B-once/final-candidate.py",
+      "notes": "Candidate AST unchanged; whitespace-only change leaves logging credential leak.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h01",
+      "method": "C-agent",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_REPAIRED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 4,
+      "model_status": "EXECUTOR_COMPLETED",
+      "model_calls": 4,
+      "tokens": {
+        "prompt_tokens": 11957,
+        "completion_tokens": 948,
+        "total_tokens": 12905
+      },
+      "elapsed_s": 12.81796242,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 12,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": true,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "candidate_sha256": "95b8265b76feafc4e3fce9ac5efd336b01f6b6934721675bc729ef098b394b4a",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/result.json",
+      "result_file_sha256": "b5054ca5da994c470cf23bf7b8be0935f1d802d05e5ffeffc97eb08b7ad7c377",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/final-candidate.py",
+      "notes": "",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": true,
+      "executor_completed_model_status": true
+    },
+    {
+      "case": "h01",
+      "method": "D-no-feedback-1",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "FAIL",
+      "final_reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "final_leak_channels": [
+        "logging"
+      ],
+      "checks_run": 13,
+      "trial_counts": {
+        "FAIL": 7,
+        "PASS": 6
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1585,
+        "completion_tokens": 541,
+        "total_tokens": 2126
+      },
+      "elapsed_s": 6.913905532999998,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 8192,
+        "seed": 1,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "trial_counts": {
+            "FAIL": 7,
+            "PASS": 6
+          }
+        }
+      ],
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "candidate_sha256": "7d329a4ebf17db1bdabe27bf3e9d6ec5c20b0181294522e30f2fac6d36aadb93",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/D-no-feedback-1/result.json",
+      "result_file_sha256": "2319f16c6c013db5f42edaaae974a80794d27ce4c8c6a3408036a2fcae0d4bf8",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/D-no-feedback-1/final-candidate.py",
+      "notes": "Candidate AST unchanged; whitespace-only change leaves logging credential leak.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h01",
+      "method": "D-no-feedback-2",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "FAIL",
+      "final_reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "final_leak_channels": [
+        "logging"
+      ],
+      "checks_run": 13,
+      "trial_counts": {
+        "FAIL": 7,
+        "PASS": 6
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1585,
+        "completion_tokens": 534,
+        "total_tokens": 2119
+      },
+      "elapsed_s": 6.761258798,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 8192,
+        "seed": 2,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "trial_counts": {
+            "FAIL": 7,
+            "PASS": 6
+          }
+        }
+      ],
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "candidate_sha256": "a3b156575e63c9e3b2d972cf1c29042f26249b938fc6d1dad58526ddaf88b6eb",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/D-no-feedback-2/result.json",
+      "result_file_sha256": "76670b494d76e55bafa63c6c985ad531170fe357c95e6d21493354e8613329bb",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/D-no-feedback-2/final-candidate.py",
+      "notes": "Candidate AST unchanged; whitespace-only change leaves logging credential leak.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h01",
+      "method": "D-no-feedback-3",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "FAIL",
+      "final_reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "final_leak_channels": [
+        "logging"
+      ],
+      "checks_run": 13,
+      "trial_counts": {
+        "FAIL": 7,
+        "PASS": 6
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1585,
+        "completion_tokens": 534,
+        "total_tokens": 2119
+      },
+      "elapsed_s": 6.76901106599999,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 8192,
+        "seed": 3,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "trial_counts": {
+            "FAIL": 7,
+            "PASS": 6
+          }
+        }
+      ],
+      "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+      "candidate_sha256": "a3b156575e63c9e3b2d972cf1c29042f26249b938fc6d1dad58526ddaf88b6eb",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/D-no-feedback-3/result.json",
+      "result_file_sha256": "0fc041054146ddb12f9f0d6a23bdf54ff3009ade6c933f26065895c606c48dbb",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/D-no-feedback-3/final-candidate.py",
+      "notes": "Candidate AST unchanged; whitespace-only change leaves logging credential leak.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h02",
+      "method": "A-fixed",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "NOT_APPLICABLE_FIXED_RULE",
+      "raw_affirmative_false_positive": null,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_REPAIRED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": null,
+      "model_calls": 0,
+      "tokens": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "elapsed_s": 4.214521777999991,
+      "model_configuration": null,
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "3fd570865d7a5b36a38352aa0e584c12e2673c01451192ad6795b0b763b4c345",
+      "candidate_sha256": "b09dcb862a217b907a0d75909cea75f1e47953e46abed3554244e9d7e10b31d3",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h02/A-fixed/result.json",
+      "result_file_sha256": "e09326ae81921c815b66d9d8b188275a04969edfcb88a0a473f8c5e13c6fc9e3",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h02/A-fixed/final-candidate.py",
+      "notes": "",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": null,
+      "executor_completed_model_status": null
+    },
+    {
+      "case": "h02",
+      "method": "B-once",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_REPAIRED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1543,
+        "completion_tokens": 489,
+        "total_tokens": 2032
+      },
+      "elapsed_s": 6.853783743999998,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "3fd570865d7a5b36a38352aa0e584c12e2673c01451192ad6795b0b763b4c345",
+      "candidate_sha256": "2113136c31b98a2665e08b484e46a11368f08299554bcd70ecf51718f5bc4751",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h02/B-once/result.json",
+      "result_file_sha256": "231f155fc4d34fc122fed8337df5f67e4f03eadbebe71945f68fad5a1a3ae025",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h02/B-once/final-candidate.py",
+      "notes": "",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h02",
+      "method": "C-agent",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_REPAIRED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 3,
+      "model_status": "EXECUTOR_COMPLETED",
+      "model_calls": 3,
+      "tokens": {
+        "prompt_tokens": 8381,
+        "completion_tokens": 686,
+        "total_tokens": 9067
+      },
+      "elapsed_s": 8.057624312000002,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 12,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": true,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "3fd570865d7a5b36a38352aa0e584c12e2673c01451192ad6795b0b763b4c345",
+      "candidate_sha256": "2ce55848bfd8b45de02347a937b4648784e0d856a1454e653d5133ba10e74897",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h02/C-agent/result.json",
+      "result_file_sha256": "cf44bf1b41f7b2c55edb641b3e56889785c2c2cf47978abe3b6fbba428c4036a",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h02/C-agent/final-candidate.py",
+      "notes": "",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": true,
+      "executor_completed_model_status": true
+    },
+    {
+      "case": "h03",
+      "method": "A-fixed",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "NOT_APPLICABLE_FIXED_RULE",
+      "raw_affirmative_false_positive": null,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_REPAIRED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": null,
+      "model_calls": 0,
+      "tokens": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "elapsed_s": 4.1166506010000035,
+      "model_configuration": null,
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+      "candidate_sha256": "ed23aadb9b13b3ca31563c9968f84c1520d8671e58c496e9ca3fd7914789d393",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/A-fixed/result.json",
+      "result_file_sha256": "d98f4a32d2c3f9da449525f034bd37d430a0cdc355aa813206983d8e22810230",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/A-fixed/final-candidate.py",
+      "notes": "First candidate PASS; exception detail replaced with fixed contract message.",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": null,
+      "executor_completed_model_status": null
+    },
+    {
+      "case": "h03",
+      "method": "B-once",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "FAIL",
+      "final_reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "final_leak_channels": [
+        "logging"
+      ],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 11,
+        "FAIL": 2
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1604,
+        "completion_tokens": 601,
+        "total_tokens": 2205
+      },
+      "elapsed_s": 7.416552648000007,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "trial_counts": {
+            "PASS": 11,
+            "FAIL": 2
+          }
+        }
+      ],
+      "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+      "candidate_sha256": "9f8318f519a142f08c48a1f1629084cd09f520ae6b52cb08013d009b11ac2fd3",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/B-once/result.json",
+      "result_file_sha256": "c99de9f5a9d4cb60203fde8c1ba2bd5a06272d9881ff1b91353d3faeeb3b59c8",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/B-once/final-candidate.py",
+      "notes": "Candidate AST unchanged; whitespace-only change leaves logging credential leak.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h03",
+      "method": "C-agent",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_REPAIRED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 2,
+      "candidate_count": 2,
+      "denied_proposals_count": 0,
+      "selected": "candidate-2",
+      "native_tool_dispatch_count": 7,
+      "model_status": "EXECUTOR_COMPLETED",
+      "model_calls": 7,
+      "tokens": {
+        "prompt_tokens": 27308,
+        "completion_tokens": 2020,
+        "total_tokens": 29328
+      },
+      "elapsed_s": 18.09899335099999,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 12,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": true,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "trial_counts": {
+            "PASS": 11,
+            "FAIL": 2
+          }
+        },
+        {
+          "candidate_id": "candidate-2",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+      "candidate_sha256": "4d750e13393b33f8fefcab9953e12369a271fa8fd2de1d7d308ece4e01a7512b",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/result.json",
+      "result_file_sha256": "fb4b600094c1e5acb36169894b50a3c839031710afacd6467c5a075db33f8676",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/final-candidate.py",
+      "notes": "First candidate logging leak FAIL, feedback enters next request, second candidate PASS. Causal prose wrongly blames credential= marker rather than remaining value.",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": true,
+      "executor_completed_model_status": true
+    },
+    {
+      "case": "h03",
+      "method": "D-no-feedback-1",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "FAIL",
+      "final_reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "final_leak_channels": [
+        "logging"
+      ],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 11,
+        "FAIL": 2
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1604,
+        "completion_tokens": 609,
+        "total_tokens": 2213
+      },
+      "elapsed_s": 7.787921949000008,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 8192,
+        "seed": 1,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "trial_counts": {
+            "PASS": 11,
+            "FAIL": 2
+          }
+        }
+      ],
+      "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+      "candidate_sha256": "9f8318f519a142f08c48a1f1629084cd09f520ae6b52cb08013d009b11ac2fd3",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/D-no-feedback-1/result.json",
+      "result_file_sha256": "2ee72f603fb73f347b3ee1a6041c71e374b7cc363b02c3ad43ec1aa7ed9c7b00",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/D-no-feedback-1/final-candidate.py",
+      "notes": "Candidate AST unchanged; whitespace-only change leaves logging credential leak.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h03",
+      "method": "D-no-feedback-2",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "FAIL",
+      "final_reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "final_leak_channels": [
+        "logging"
+      ],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 11,
+        "FAIL": 2
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1604,
+        "completion_tokens": 609,
+        "total_tokens": 2213
+      },
+      "elapsed_s": 7.742321806999996,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 8192,
+        "seed": 2,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "trial_counts": {
+            "PASS": 11,
+            "FAIL": 2
+          }
+        }
+      ],
+      "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+      "candidate_sha256": "9f8318f519a142f08c48a1f1629084cd09f520ae6b52cb08013d009b11ac2fd3",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/D-no-feedback-2/result.json",
+      "result_file_sha256": "2c7c77772893d1a9446efb3462cb98b846c4fa172ab1378f96f8ce3f0ce4530a",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/D-no-feedback-2/final-candidate.py",
+      "notes": "Candidate AST unchanged; whitespace-only change leaves logging credential leak.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h03",
+      "method": "D-no-feedback-3",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "FAIL",
+      "final_reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "final_leak_channels": [
+        "logging"
+      ],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 11,
+        "FAIL": 2
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1604,
+        "completion_tokens": 601,
+        "total_tokens": 2205
+      },
+      "elapsed_s": 7.213554611000006,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 8192,
+        "seed": 3,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "trial_counts": {
+            "PASS": 11,
+            "FAIL": 2
+          }
+        }
+      ],
+      "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+      "candidate_sha256": "9f8318f519a142f08c48a1f1629084cd09f520ae6b52cb08013d009b11ac2fd3",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/D-no-feedback-3/result.json",
+      "result_file_sha256": "2f0307031a44fa03009545e402e887bdccfa3b69436cb2c6f8bb72b025f5df23",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/D-no-feedback-3/final-candidate.py",
+      "notes": "Candidate AST unchanged; whitespace-only change leaves logging credential leak.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h04",
+      "method": "A-fixed",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "NOT_APPLICABLE_FIXED_RULE",
+      "raw_affirmative_false_positive": null,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_REPAIRED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 0,
+      "model_status": null,
+      "model_calls": 0,
+      "tokens": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "elapsed_s": 4.321821485000015,
+      "model_configuration": null,
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "5c2a5bc8da138c119ce383b87b65e3860ab46e9a4003c3bc4b696054b7d8047b",
+      "candidate_sha256": "7c36b21e02330c8daa91e7bcc40d93b6a8a0030fdc86fbb915fc67073e1e7990",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/A-fixed/result.json",
+      "result_file_sha256": "5ef29ddee2ce7b0c8141910661f0fb6cf173a7bab6c7e497f9f1076b3211e3bb",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/A-fixed/final-candidate.py",
+      "notes": "",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": null,
+      "executor_completed_model_status": null
+    },
+    {
+      "case": "h04",
+      "method": "B-once",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "FAIL",
+      "final_reasons": [
+        "CREDENTIAL_LEAK"
+      ],
+      "final_leak_channels": [
+        "return"
+      ],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 12,
+        "FAIL": 1
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 0,
+      "candidate_count": 0,
+      "denied_proposals_count": 0,
+      "selected": "original",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1647,
+        "completion_tokens": 587,
+        "total_tokens": 2234
+      },
+      "elapsed_s": 7.413696216999995,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "original",
+          "verdict": "FAIL",
+          "reasons": [
+            "CREDENTIAL_LEAK"
+          ],
+          "trial_counts": {
+            "PASS": 12,
+            "FAIL": 1
+          }
+        }
+      ],
+      "source_sha256": "5c2a5bc8da138c119ce383b87b65e3860ab46e9a4003c3bc4b696054b7d8047b",
+      "candidate_sha256": "5c2a5bc8da138c119ce383b87b65e3860ab46e9a4003c3bc4b696054b7d8047b",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/B-once/result.json",
+      "result_file_sha256": "70fbce0610d1f9e141fc39d3652d4d8032e1fa0dc2d9158c35ecc3f11146f7d8",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/B-once/final-candidate.py",
+      "notes": "Positive diagnosis but exact original code returned; no proposal/candidate; original remains leaking.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h04",
+      "method": "C-agent",
+      "expected_initial": "LEAK",
+      "initial_confirmation": "CONFIRMED_LEAK",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "AFFIRMATIVE_LEAK",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_REPAIRED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": true,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 1,
+      "denied_proposals_count": 0,
+      "selected": "candidate-1",
+      "native_tool_dispatch_count": 5,
+      "model_status": "EXECUTOR_COMPLETED",
+      "model_calls": 5,
+      "tokens": {
+        "prompt_tokens": 16400,
+        "completion_tokens": 996,
+        "total_tokens": 17396
+      },
+      "elapsed_s": 10.168153048000022,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 12,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": true,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "candidate-1",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "5c2a5bc8da138c119ce383b87b65e3860ab46e9a4003c3bc4b696054b7d8047b",
+      "candidate_sha256": "f7912ca008f13ca43b99392799e2778bc58d942773ff68c6588c8346c46fa105",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/result.json",
+      "result_file_sha256": "a5042edc0cff4ec802fe2417cd4c40d5371a38426ee104878a0bf3670e596583",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/final-candidate.py",
+      "notes": "",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": true,
+      "executor_completed_model_status": true
+    },
+    {
+      "case": "h05",
+      "method": "A-fixed",
+      "expected_initial": "SAFE",
+      "initial_confirmation": "NO_LEAK_OBSERVED",
+      "structured_diagnosis": true,
+      "structured_diagnosis_status": "INCORRECT",
+      "raw_semantic_codex_self_review": "NOT_APPLICABLE_FIXED_RULE",
+      "raw_affirmative_false_positive": null,
+      "fixed_rule_false_positive": true,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_UNCHANGED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 0,
+      "denied_proposals_count": 1,
+      "selected": "original",
+      "native_tool_dispatch_count": 0,
+      "model_status": null,
+      "model_calls": 0,
+      "tokens": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "elapsed_s": 4.21861334099998,
+      "model_configuration": null,
+      "candidate_validations": [
+        {
+          "candidate_id": "original",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+      "candidate_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/A-fixed/result.json",
+      "result_file_sha256": "77b1d85a1b5537e991f0982ea5644ce91f93f48078dd58c18b904d836c988560",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/A-fixed/final-candidate.py",
+      "notes": "Fixed-program false positive: redact_tainted_return; proposal rejected for no confirmed current leak. Not an LLM false positive.",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": null,
+      "executor_completed_model_status": null
+    },
+    {
+      "case": "h05",
+      "method": "B-once",
+      "expected_initial": "SAFE",
+      "initial_confirmation": "NO_LEAK_OBSERVED",
+      "structured_diagnosis": false,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "NEGATIVE",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_UNCHANGED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 0,
+      "denied_proposals_count": 1,
+      "selected": "original",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1557,
+        "completion_tokens": 618,
+        "total_tokens": 2175
+      },
+      "elapsed_s": 7.932617641999997,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "original",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+      "candidate_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/B-once/result.json",
+      "result_file_sha256": "39ed50bcb66ed86d48a69bade6e8f6f62a88a8042ac30bb0ae579898ceb6404d",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/B-once/final-candidate.py",
+      "notes": " Denied proposal differs only in trailing whitespace; not a substantive unsafe patch.",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h05",
+      "method": "C-agent",
+      "expected_initial": "SAFE",
+      "initial_confirmation": "NO_LEAK_OBSERVED",
+      "structured_diagnosis": null,
+      "structured_diagnosis_status": "UNKNOWN",
+      "raw_semantic_codex_self_review": "NO_DIAGNOSIS",
+      "raw_affirmative_false_positive": null,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 0,
+      "candidate_count": 0,
+      "denied_proposals_count": 0,
+      "selected": "original",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1975,
+        "completion_tokens": 20,
+        "total_tokens": 1995
+      },
+      "elapsed_s": 2.682032878000001,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 12,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": true,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [],
+      "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+      "candidate_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/C-agent/result.json",
+      "result_file_sha256": "a72dd2821c5848b10f124b809f722b7422c1c2a9d99834426d84adff2254af3e",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/C-agent/final-candidate.py",
+      "notes": "One text-only pseudo tool call; no native tool dispatch, diagnosis, verification or task completion.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h06",
+      "method": "A-fixed",
+      "expected_initial": "SAFE",
+      "initial_confirmation": "NO_LEAK_OBSERVED",
+      "structured_diagnosis": false,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "NOT_APPLICABLE_FIXED_RULE",
+      "raw_affirmative_false_positive": null,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_UNCHANGED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 0,
+      "candidate_count": 0,
+      "denied_proposals_count": 0,
+      "selected": "original",
+      "native_tool_dispatch_count": 0,
+      "model_status": null,
+      "model_calls": 0,
+      "tokens": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "elapsed_s": 4.1163232789999995,
+      "model_configuration": null,
+      "candidate_validations": [
+        {
+          "candidate_id": "original",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+      "candidate_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/A-fixed/result.json",
+      "result_file_sha256": "01b2cb17be51170e0c03304379ba363c89f64db0ab3b85e921e36279e9de2226",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/A-fixed/final-candidate.py",
+      "notes": "",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": null,
+      "executor_completed_model_status": null
+    },
+    {
+      "case": "h06",
+      "method": "B-once",
+      "expected_initial": "SAFE",
+      "initial_confirmation": "NO_LEAK_OBSERVED",
+      "structured_diagnosis": false,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "NEGATIVE",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_UNCHANGED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 0,
+      "denied_proposals_count": 1,
+      "selected": "original",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1495,
+        "completion_tokens": 539,
+        "total_tokens": 2034
+      },
+      "elapsed_s": 7.096512410999992,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "original",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+      "candidate_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/B-once/result.json",
+      "result_file_sha256": "411c1b53d32c1748e44087131b965466c901a5aa224f8f2e70222e48955b4773",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/B-once/final-candidate.py",
+      "notes": " Denied proposal differs only in trailing whitespace; not a substantive unsafe patch.",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h06",
+      "method": "C-agent",
+      "expected_initial": "SAFE",
+      "initial_confirmation": "NO_LEAK_OBSERVED",
+      "structured_diagnosis": null,
+      "structured_diagnosis_status": "UNKNOWN",
+      "raw_semantic_codex_self_review": "NO_DIAGNOSIS",
+      "raw_affirmative_false_positive": null,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 0,
+      "candidate_count": 0,
+      "denied_proposals_count": 0,
+      "selected": "original",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1972,
+        "completion_tokens": 20,
+        "total_tokens": 1992
+      },
+      "elapsed_s": 2.5768004099999757,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 12,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": true,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [],
+      "source_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+      "candidate_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/C-agent/result.json",
+      "result_file_sha256": "d800760984c1f32a0730a55f8fd52efa3ab13c961c7ea8e6c94f3c141a87275e",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/C-agent/final-candidate.py",
+      "notes": "One text-only pseudo tool call; no native tool dispatch, diagnosis, verification or task completion.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h07",
+      "method": "A-fixed",
+      "expected_initial": "SAFE",
+      "initial_confirmation": "NO_LEAK_OBSERVED",
+      "structured_diagnosis": false,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "NOT_APPLICABLE_FIXED_RULE",
+      "raw_affirmative_false_positive": null,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_UNCHANGED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 0,
+      "candidate_count": 0,
+      "denied_proposals_count": 0,
+      "selected": "original",
+      "native_tool_dispatch_count": 0,
+      "model_status": null,
+      "model_calls": 0,
+      "tokens": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "elapsed_s": 4.1495517120000045,
+      "model_configuration": null,
+      "candidate_validations": [
+        {
+          "candidate_id": "original",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+      "candidate_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/A-fixed/result.json",
+      "result_file_sha256": "94590d13df37f683456b45cd9d32e3f46bca0ec0a2bbb16a27f8326e40747412",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/A-fixed/final-candidate.py",
+      "notes": "",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": null,
+      "executor_completed_model_status": null
+    },
+    {
+      "case": "h07",
+      "method": "B-once",
+      "expected_initial": "SAFE",
+      "initial_confirmation": "NO_LEAK_OBSERVED",
+      "structured_diagnosis": null,
+      "structured_diagnosis_status": "UNKNOWN",
+      "raw_semantic_codex_self_review": "NEGATIVE_RAW_ONLY_FORMAT_INVALID",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "INCOMPLETE",
+      "task_complete": false,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 0,
+      "candidate_count": 0,
+      "denied_proposals_count": 0,
+      "selected": "original",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1561,
+        "completion_tokens": 601,
+        "total_tokens": 2162
+      },
+      "elapsed_s": 5.523011560000015,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [],
+      "source_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+      "candidate_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/B-once/result.json",
+      "result_file_sha256": "43b76b63226cbd9b1efe212e12fe3788b8231414e09b6d212facddc5b2bc3522",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/B-once/final-candidate.py",
+      "notes": "Raw prose says no leak; malformed JSON prevents structured diagnosis. Final original PASS does not complete task.",
+      "matching_current_object_pass_receipt": false,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h07",
+      "method": "C-agent",
+      "expected_initial": "SAFE",
+      "initial_confirmation": "NO_LEAK_OBSERVED",
+      "structured_diagnosis": false,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "NEGATIVE_WITH_TENTATIVE_CONCERN",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": true,
+      "task_status": "COMPLETED_UNCHANGED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 0,
+      "candidate_count": 0,
+      "denied_proposals_count": 0,
+      "selected": "original",
+      "native_tool_dispatch_count": 5,
+      "model_status": "EXECUTOR_COMPLETED",
+      "model_calls": 5,
+      "tokens": {
+        "prompt_tokens": 16205,
+        "completion_tokens": 963,
+        "total_tokens": 17168
+      },
+      "elapsed_s": 10.080663547,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 12,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": true,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "original",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+      "candidate_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/result.json",
+      "result_file_sha256": "8a9afcacbc20fbf0cd116a851cb80540b31a4ab32d3922fa185f1b8f054ff4ef",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/final-candidate.py",
+      "notes": "Tentative redaction concern, tests reveal no leak, final diagnosis negative; original verified.",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": true,
+      "executor_completed_model_status": true
+    },
+    {
+      "case": "h08",
+      "method": "A-fixed",
+      "expected_initial": "SAFE",
+      "initial_confirmation": "NO_LEAK_OBSERVED",
+      "structured_diagnosis": false,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "NOT_APPLICABLE_FIXED_RULE",
+      "raw_affirmative_false_positive": null,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": false,
+      "task_status": "COMPLETED_UNCHANGED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 0,
+      "candidate_count": 0,
+      "denied_proposals_count": 0,
+      "selected": "original",
+      "native_tool_dispatch_count": 0,
+      "model_status": null,
+      "model_calls": 0,
+      "tokens": {
+        "prompt_tokens": 0,
+        "completion_tokens": 0,
+        "total_tokens": 0
+      },
+      "elapsed_s": 4.192512121000021,
+      "model_configuration": null,
+      "candidate_validations": [
+        {
+          "candidate_id": "original",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+      "candidate_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/A-fixed/result.json",
+      "result_file_sha256": "633a701a33bbf250f27d4acc09cc18e64aeb0f2e8bf4ac08cf6747986f000ff8",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/A-fixed/final-candidate.py",
+      "notes": "",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": null,
+      "executor_completed_model_status": null
+    },
+    {
+      "case": "h08",
+      "method": "B-once",
+      "expected_initial": "SAFE",
+      "initial_confirmation": "NO_LEAK_OBSERVED",
+      "structured_diagnosis": false,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "NEGATIVE_WITH_TENTATIVE_CONCERN",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": true,
+      "task_status": "COMPLETED_UNCHANGED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 1,
+      "candidate_count": 0,
+      "denied_proposals_count": 1,
+      "selected": "original",
+      "native_tool_dispatch_count": 0,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "tokens": {
+        "prompt_tokens": 1575,
+        "completion_tokens": 665,
+        "total_tokens": 2240
+      },
+      "elapsed_s": 7.931914191999994,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 1,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": false,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "original",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+      "candidate_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/B-once/result.json",
+      "result_file_sha256": "393b3167ea6618343185aa615389f61b3c0f54157711876428dc7bbd514686ab",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/B-once/final-candidate.py",
+      "notes": "Tentative concern about diagnostic output, expressly no actual leak observed. Returned source differs only by trailing newline. Denied proposal differs only in trailing whitespace; not a substantive unsafe patch.",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": true,
+      "executor_completed_model_status": false
+    },
+    {
+      "case": "h08",
+      "method": "C-agent",
+      "expected_initial": "SAFE",
+      "initial_confirmation": "NO_LEAK_OBSERVED",
+      "structured_diagnosis": false,
+      "structured_diagnosis_status": "CORRECT",
+      "raw_semantic_codex_self_review": "NEGATIVE_WITH_TENTATIVE_CONCERN",
+      "raw_affirmative_false_positive": false,
+      "fixed_rule_false_positive": false,
+      "tentative_concern": true,
+      "task_status": "COMPLETED_UNCHANGED",
+      "task_complete": true,
+      "final_verdict": "PASS",
+      "final_reasons": [],
+      "final_leak_channels": [],
+      "checks_run": 13,
+      "trial_counts": {
+        "PASS": 13
+      },
+      "actual_source_changed": false,
+      "actual_unnecessary_safe_change": false,
+      "proposal_count": 0,
+      "candidate_count": 0,
+      "denied_proposals_count": 0,
+      "selected": "original",
+      "native_tool_dispatch_count": 5,
+      "model_status": "EXECUTOR_COMPLETED",
+      "model_calls": 5,
+      "tokens": {
+        "prompt_tokens": 14944,
+        "completion_tokens": 995,
+        "total_tokens": 15939
+      },
+      "elapsed_s": 9.852322221999998,
+      "model_configuration": {
+        "framework": "qwen-agent",
+        "framework_version": "0.0.34",
+        "model": "qwen3-coder:30b",
+        "max_model_calls": 12,
+        "max_output_tokens": 2048,
+        "seed": 0,
+        "context_tokens": 16384,
+        "execution_completion_enabled": true,
+        "automatic_retries": 0
+      },
+      "candidate_validations": [
+        {
+          "candidate_id": "original",
+          "verdict": "PASS",
+          "reasons": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        }
+      ],
+      "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+      "candidate_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+      "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+      "final_matches_selected": true,
+      "result_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/result.json",
+      "result_file_sha256": "dc800b9d83d83528cdf66d530274565aa01d76d5916c0afe0729da3fa86ae1ed",
+      "final_file": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/final-candidate.py",
+      "notes": "Potential public diagnostic exposure concern, not affirmative credential leak; three rejected invalid candidate references before original verification.",
+      "matching_current_object_pass_receipt": true,
+      "generation_completed": true,
+      "executor_completed_model_status": true
+    }
+  ]
+}

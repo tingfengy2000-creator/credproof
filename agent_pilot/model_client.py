@@ -31,6 +31,16 @@ MAX_RESPONSE_BYTES = 2_097_152
 CONTEXT_TOKENS = 16_384
 TEMPLATE_RESERVE = 512
 NEW_MESSAGE_RESERVE = 512
+FORMAT_CORRECTION = (
+    "The trusted executor still has outstanding required checks. Your previous "
+    "turn ended with a text reply without completing them. If you can continue, "
+    "make an actual tool call following the tool-calling format supplied with "
+    "the tool definitions, rather than explaining or quoting an example call. "
+    "If a proposed call appeared only as plain text, that text did not execute a tool. "
+    "Do not invent results or change task requirements. If you cannot continue, "
+    "state the limitation; the task will remain incomplete. This is the only "
+    "format correction request and it uses the original task budget."
+)
 
 
 class BudgetExceeded(RuntimeError):
@@ -250,7 +260,14 @@ class _LocalModel(TextChatAtOAI):
             raise ValueError(f"Unsupported generation fields: {sorted(set(generate_cfg) - permitted)}")
         payload = {"model": MODEL, "messages": to_ollama_messages(messages),
                    "stream": False, **generate_cfg}
-        yield from [from_ollama_response(self.owner._request(payload))]
+        raw = self.owner._request(payload)
+        decoded = from_ollama_response(raw)
+        self.owner._journal.emit(
+            "native_response_decoded", call_id=self.owner.model_calls,
+            native_tool_calls=sum(bool(item.function_call) for item in decoded),
+            finish_reason=raw["choices"][0].get("finish_reason"),
+            protocol="openai-compatible-native-tools", prose_execution_enabled=False)
+        yield decoded
 
 
 class _RestrictedAssistant(Assistant):
@@ -296,12 +313,18 @@ class LocalAgentClient:
     JSON-serializable dict to end with EXECUTOR_COMPLETED and executor_result.
     This does not synthesize a model final response. The terminal tool result
     stays in the audit even when Qwen has not yet yielded it into messages.
+
+    max_format_corrections=1 permits one explicit continuation after an ordinary
+    text ending while the executor is incomplete. It uses this same task/call
+    budget and full history; text is never parsed as an executable call. The
+    default is zero, so one-shot controls and ordinary chat retain their policy.
     """
     def __init__(self, *, tools: Sequence[BaseTool], system_message: str,
                  log_dir: Path, max_model_calls: int = 12,
                  request_timeout_s: float = 120, task_budget_s: float = 900,
                  max_output_tokens: int = 2048, seed: int = 0,
-                 execution_completion: Callable[[], dict | None] | None = None):
+                 execution_completion: Callable[[], dict | None] | None = None,
+                 max_format_corrections: int = 0):
         if not 1 <= max_model_calls <= 12 or not 0 < request_timeout_s <= 120 or not 0 < task_budget_s <= 900:
             raise ValueError("Budgets may be reduced but not exceed 12 / 120 s / 900 s")
         if any(not isinstance(tool, BaseTool) for tool in tools):
@@ -316,6 +339,10 @@ class LocalAgentClient:
             raise ValueError("Automatic file-access tools are forbidden")
         if execution_completion is not None and not callable(execution_completion):
             raise TypeError("execution_completion must be callable or None")
+        if type(max_format_corrections) is not int or max_format_corrections not in (0, 1):
+            raise ValueError("At most one explicit format correction is permitted")
+        if max_format_corrections and (not tools or execution_completion is None):
+            raise ValueError("Format correction requires tools and a trusted completion callback")
         self.max_model_calls = max_model_calls
         self.request_timeout_s = request_timeout_s
         self.task_budget_s = task_budget_s
@@ -331,6 +358,10 @@ class LocalAgentClient:
         self._poisoned = False
         self._execution_completion = execution_completion
         self._executor_result: dict | None = None
+        self.max_format_corrections = max_format_corrections
+        self.format_correction_attempts = 0
+        self.format_correction_call_ids: list[int] = []
+        self._format_correction_pending = False
         self._journal = _Journal(Path(log_dir))
         self._assistant = _RestrictedAssistant(self, llm=_LocalModel(self),
                                                function_list=list(tools), system_message=system_message)
@@ -344,6 +375,7 @@ class LocalAgentClient:
                            context_tokens=CONTEXT_TOKENS, global_reserve_tokens=TEMPLATE_RESERVE,
                            per_new_message_reserve_tokens=NEW_MESSAGE_RESERVE,
                            execution_completion_enabled=execution_completion is not None,
+                           max_format_corrections=max_format_corrections,
                            automatic_retries=0, knowledge_files_enabled=False)
 
     def _after_tool_result(self) -> None:
@@ -394,6 +426,11 @@ class LocalAgentClient:
             raise BudgetExceeded("Request exceeds the recorded conservative input budget; no silent truncation")
         self.model_calls += 1
         call_id = self.model_calls
+        if self._format_correction_pending:
+            self.format_correction_call_ids.append(call_id)
+            self._format_correction_pending = False
+            self._journal.emit("format_correction_dispatched", call_id=call_id,
+                               counted_in_original_model_budget=True)
         timeout = min(self.request_timeout_s, remaining)
         self._journal.artifact(f"model-{call_id:02d}-request.json", payload)
         self._journal.artifact(f"model-{call_id:02d}-input-budget.json", budget)
@@ -473,11 +510,37 @@ class LocalAgentClient:
         latest: list[dict] = []
         status, error = "COMPLETED", None
         try:
-            for response in self._assistant.run(messages=messages, lang="zh"):
-                latest = [item.model_dump() if isinstance(item, Message) else item for item in response]
-                self._check_budget()
-            if not latest or latest[-1].get("role") == "function" or latest[-1].get("function_call"):
-                raise BudgetExceeded("Framework loop ended before a final assistant response")
+            conversation = copy.deepcopy(messages)
+            if self.max_format_corrections:
+                # Already-complete trusted work needs no extra model request.
+                self._after_tool_result()
+            while True:
+                turn: list[dict] = []
+                for response in self._assistant.run(messages=conversation, lang="zh"):
+                    turn = [item.model_dump() if isinstance(item, Message) else item for item in response]
+                    latest = conversation[len(messages):] + turn
+                    self._check_budget()
+                if not turn or turn[-1].get("role") == "function" or turn[-1].get("function_call"):
+                    raise BudgetExceeded("Framework loop ended before a final assistant response")
+                if not self.max_format_corrections:
+                    break
+                # The callback is trusted state, never a model-written PASS.
+                self._after_tool_result()
+                self._journal.emit("framework_ended_with_pending_checks",
+                                   model_call_id=self.model_calls, output=turn)
+                if self.format_correction_attempts >= self.max_format_corrections:
+                    status, error = "INCOMPLETE", "No executor completion after the one permitted format correction"
+                    break
+                self.format_correction_attempts += 1
+                self._format_correction_pending = True
+                correction = {"role": "user", "content": FORMAT_CORRECTION}
+                # Keep the original reply verbatim as untrusted assistant data.
+                # Only a later native tool_calls field can dispatch a tool.
+                conversation = conversation + turn + [correction]
+                self._journal.emit("format_correction_scheduled", message=correction,
+                                   attempt=self.format_correction_attempts,
+                                   max_model_calls=self.max_model_calls,
+                                   budget_reset=False, prose_execution_enabled=False)
         except _ExecutorCompleted:
             status = "EXECUTOR_COMPLETED"
         except BudgetExceeded as exc:
@@ -485,7 +548,9 @@ class LocalAgentClient:
         except Exception as exc:
             status, error = "ERROR", f"{type(exc).__name__}: {exc}"
         result = {"status": status, "messages": latest, "model_calls": self.model_calls,
-                  "usage": self.usage, "elapsed_s": time.monotonic() - self._started, "error": error}
+                  "usage": self.usage, "elapsed_s": time.monotonic() - self._started, "error": error,
+                  "format_correction_attempts": self.format_correction_attempts,
+                  "format_correction_call_ids": self.format_correction_call_ids}
         if status == "EXECUTOR_COMPLETED":
             result["executor_result"] = copy.deepcopy(self._executor_result)
         self._journal.artifact("result.json", result)
