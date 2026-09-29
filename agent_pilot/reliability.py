@@ -60,6 +60,22 @@ class GovernedSession(Session):
         self.duplicate_count = 0
         self.verifications = []
 
+    def verify(self, source, label):
+        result = super().verify(source, label)
+        static = judge.validate_source(source)
+        complete = result.get('checks_run') == len(judge.hidden_matrix()) and 'MATRIX_COVERAGE' not in result.get('reasons', [])
+        reasons = result.get('reasons', [])
+        functional = [x for x in reasons if x in ('RESPONSE_CONTRACT', 'UNHANDLED_EXCEPTION', 'NON_JSON_RETURN') or x.startswith('AUTH_')]
+        result['checks'] = [
+            {'id': 'source-boundary', 'label': '受限 Python / 修改仅限候选文件', 'status': static['verdict'], 'reason': ', '.join(static['reasons'])},
+            {'id': 'credential-channels', 'label': '必要条件中的禁止通道凭据检测', 'status': 'FAIL' if 'CREDENTIAL_LEAK' in reasons else ('PASS' if complete else 'UNKNOWN'), 'reason': ', '.join(result.get('leak_channels', []))},
+            {'id': 'behavior', 'label': '正常功能、授权调用及异常契约', 'status': 'FAIL' if functional else ('PASS' if complete else 'UNKNOWN'), 'reason': ', '.join(functional)},
+            {'id': 'coverage', 'label': '13 项必要条件完整执行', 'status': 'PASS' if complete else 'UNKNOWN', 'reason': str(result.get('checks_run', 0)) + '/13'},
+        ]
+        # Original validation file is preserved; add explicitly derived check view.
+        write_json_new(self.output / (label + '-checks.json'), result['checks'])
+        return result
+
     def binding(self, source):
         return {'source_sha256': sha(source), 'rules_sha256': rules_hash()}
 
@@ -186,7 +202,17 @@ def run_method(method, source, output, private, *, max_tokens=2048, seed=0):
     session = GovernedSession(source, output, private)
     session.initialize()
     model = None
-    shared = canonical({'evidence': session.observations, 'authority': session.authority()})
+    # Shared compact view avoids repeating source/rule digests and complete public
+    # success responses. Same observations remain available in full in the audit.
+    common = []
+    for receipt in session.observations:
+        observation = receipt['observation']
+        common.append({'id': receipt['id'], 'conditions': receipt['conditions'],
+                       'verdict': observation['verdict'], 'reasons': observation.get('reasons', []),
+                       'leak_channels': observation.get('leak_channels', []),
+                       'leak_observations': {k: v for k,v in observation.get('actual', {}).items()
+                                             if {'returned':'return', 'raised':'exception', 'logs':'logging'}.get(k,k) in observation.get('leak_channels', [])}})
+    shared = canonical({'evidence': common, 'authority': session.authority()})
     if method == 'A-fixed':
         generated = repair(source)
         write_json_new(session.output / 'fixed-transform.json', generated)
