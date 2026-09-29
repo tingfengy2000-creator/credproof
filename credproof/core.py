@@ -6,6 +6,7 @@ reads material and runs checks again; a saved verdict is never an input verdict.
 """
 import ast
 import copy
+from datetime import datetime, timezone
 import hashlib
 import hmac
 import json
@@ -24,6 +25,10 @@ MAX_FILE = 128 * 1024
 MAX_FILES = 32
 TOKEN = re.compile(r'CP_SYNTH_[A-F0-9]{24}\Z')
 PROFILE = 'authorization-header-v1'
+
+
+def utc_now():
+    return datetime.now(timezone.utc).isoformat()
 
 
 def canonical(value):
@@ -192,7 +197,10 @@ def _planned(before, target, symbol, env_name):
 
 
 def freeze(repo, bundle, scanner, *, source='index', scope=('config.py', 'notes.txt'),
-           target='config.py', symbol='SERVICE_TOKEN', env_name='CP_DEMO_TOKEN', allow_fixture=False):
+           target='config.py', symbol='SERVICE_TOKEN', env_name='CP_DEMO_TOKEN', allow_fixture=False,
+           edit_policy='exact-v1'):
+    if edit_policy not in ('exact-v1', 'python-env-v2'):
+        raise ValueError('Unsupported edit policy')
     repo = Path(repo).resolve(strict=True)
     bundle = Path(bundle).resolve()
     if bundle == repo or bundle.is_relative_to(repo) or repo.is_relative_to(bundle):
@@ -218,7 +226,7 @@ def freeze(repo, bundle, scanner, *, source='index', scope=('config.py', 'notes.
     contract = {'schema': 'credproof-contract/1', 'source': source, 'scope': scope,
                 'target': target, 'symbol': symbol, 'env_name': env_name,
                 'before_manifest': _manifest(before), 'expected_manifest': _manifest(expected),
-                'allowed_edit': edit, 'original_manifests': original,
+                'allowed_edit': edit, 'edit_policy': edit_policy, 'original_manifests': original,
                 'target_fingerprint': hmac.new(key, secret.encode(), hashlib.sha256).hexdigest(),
                 'scanner': scanner.descriptor(), 'validator_id': validator_id(),
                 'function_profile': PROFILE if allow_fixture else None,
@@ -247,6 +255,8 @@ def _load(bundle):
         raise ValueError('Contract does not match local anchor')
     if contract['required_checks'] != list(CHECKS):
         raise ValueError('Unsupported acceptance conditions')
+    if contract.get('edit_policy', 'exact-v1') not in ('exact-v1', 'python-env-v2'):
+        raise ValueError('Unsupported edit policy')
     _scope(contract['scope'])
     before, errors = _tree(bundle / 'before')
     if errors or _manifest(before) != contract['before_manifest']:
@@ -294,10 +304,73 @@ def _safe_expr(node):
     if isinstance(node, ast.Subscript):
         return environ(node.value) and isinstance(node.slice, ast.Constant) and isinstance(node.slice.value, str)
     if isinstance(node, ast.Call):
+        if (isinstance(node.func, ast.Attribute) and node.func.attr == 'getenv'
+                and isinstance(node.func.value, ast.Name) and node.func.value.id == 'os'):
+            return not node.keywords and len(node.args) == 1 and isinstance(node.args[0], ast.Constant) and isinstance(node.args[0].value, str)
         return (isinstance(node.func, ast.Attribute) and node.func.attr == 'get' and environ(node.func.value)
                 and not node.keywords and 1 <= len(node.args) <= 2
                 and all(isinstance(a, ast.Constant) and isinstance(a.value, str) for a in node.args))
     return False
+
+
+def _env_form(node, env_name):
+    """Small explicit edit language; not general Python equivalence."""
+    forms = {
+        'subscript': f'os.environ[{env_name!r}]',
+        'get': f'os.environ.get({env_name!r})',
+        'getenv': f'os.getenv({env_name!r})',
+    }
+    for name, expression in forms.items():
+        if ast.dump(node) == ast.dump(ast.parse(expression, mode='eval').body):
+            return name
+    return None
+
+
+def _is_guard(node, symbol, env_name):
+    guard = ast.parse(f'if {symbol} is None:\n    raise KeyError({env_name!r})\n').body[0]
+    return ast.dump(node) == ast.dump(guard)
+
+
+def _normalized_edit_tree(data, contract):
+    tree = ast.parse(data.decode('utf-8-sig'))
+    targets = [(i, n) for i, n in enumerate(tree.body) if isinstance(n, ast.Assign)
+               and len(n.targets) == 1 and isinstance(n.targets[0], ast.Name)
+               and n.targets[0].id == contract['symbol']]
+    if len(targets) != 1:
+        raise ValueError('Expected one target assignment')
+    index, assignment = targets[0]
+    form = _env_form(assignment.value, contract['env_name'])
+    if form is None:
+        raise ValueError('RHS outside declared env read forms')
+    guarded = index + 1 < len(tree.body) and _is_guard(tree.body[index + 1], contract['symbol'], contract['env_name'])
+    if form in ('get', 'getenv') and not guarded:
+        raise ValueError('Optional env read requires immediate missing-value guard')
+    if guarded:
+        del tree.body[index + 1]
+    assignment.value = ast.parse(f'os.environ[{contract["env_name"]!r}]', mode='eval').body
+    return ast.dump(tree, include_attributes=False)
+
+
+def _allowed_changes(files, errors, observed, expected, contract):
+    extras = sorted(set(files) - set(expected))
+    changed = []
+    for name in observed:
+        if name not in expected or observed[name] == expected[name]:
+            continue
+        if contract.get('edit_policy', 'exact-v1') == 'python-env-v2' and name == contract['target']:
+            try:
+                if _normalized_edit_tree(observed[name], contract) == _normalized_edit_tree(expected[name], contract):
+                    continue
+            except SyntaxError:
+                return _status('UNKNOWN', 'edit_not_compared_syntax_invalid')
+            except (ValueError, UnicodeError):
+                pass
+        changed.append(name)
+    if extras or changed:
+        return _status('FAIL', 'outside_frozen_edit', files=extras + sorted(changed))
+    if errors or set(files) != set(expected):
+        return _status('UNKNOWN', 'missing_or_unreadable_candidate_material')
+    return _status('PASS', 'declared_edit_policy_satisfied', policy=contract.get('edit_policy', 'exact-v1'))
 
 
 def _function(files, contract):
@@ -322,9 +395,12 @@ def _function(files, contract):
                 assignments += 1
                 body.append(node)
                 continue
-            if name not in ('os', 'authorization_header') and not name.startswith('_') and isinstance(node.value, ast.Constant) and _safe_expr(node.value):
+            if name not in ('os', 'authorization_header', 'KeyError') and not name.startswith('_') and isinstance(node.value, ast.Constant) and _safe_expr(node.value):
                 body.append(node)
                 continue
+        if _is_guard(node, contract['symbol'], contract['env_name']):
+            body.append(node)
+            continue
         if (isinstance(node, ast.FunctionDef) and node.name == 'authorization_header'
                 and not node.decorator_list and not node.returns and not getattr(node, 'type_params', [])
                 and not node.args.args and not node.args.posonlyargs and not node.args.kwonlyargs
@@ -339,7 +415,9 @@ def _function(files, contract):
         return _status('UNKNOWN', 'fixture_shape_not_supported')
     code = compile(ast.Module(body=body, type_ignores=[]), '<approved-fixture>', 'exec')
     for value in ('runtime-test-alpha', 'runtime-test-beta'):
-        namespace = {'__builtins__': {}, 'os': SimpleNamespace(environ={contract['env_name']: value})}
+        environ = {contract['env_name']: value}
+        namespace = {'__builtins__': {}, 'KeyError': KeyError,
+                     'os': SimpleNamespace(environ=environ, getenv=environ.get)}
         try:
             exec(code, namespace)  # Only the closed grammar above, with no real os or builtins.
             if namespace['authorization_header']() != 'Bearer ' + value:
@@ -347,7 +425,7 @@ def _function(files, contract):
         except Exception:
             return _status('FAIL', 'exception_when_variable_present')
     try:
-        namespace = {'__builtins__': {}, 'os': SimpleNamespace(environ={})}
+        namespace = {'__builtins__': {}, 'KeyError': KeyError, 'os': SimpleNamespace(environ={}, getenv={}.get)}
         exec(code, namespace)
         namespace['authorization_header']()
     except KeyError:
@@ -394,41 +472,66 @@ def collect(bundle, scanner, *, scope_override=None, skip=()):
     run('syntax', lambda: _syntax(observed))
     run('function', lambda: _function(observed, contract))
     run('removal', lambda: _removal(observed, private['target_value']))
-    def changes():
-        extras = sorted(set(files) - set(expected))
-        changed = sorted(name for name in observed if name in expected and observed[name] != expected[name])
-        if extras or changed:
-            return _status('FAIL', 'outside_frozen_edit', files=extras + changed)
-        if errors or set(files) != set(expected):
-            return _status('UNKNOWN', 'missing_or_unreadable_candidate_material')
-        return _status('PASS', 'exact_planned_change')
-    run('allowed_changes', changes)
+    run('allowed_changes', lambda: _allowed_changes(files, errors, observed, expected, contract))
     final_files, final_errors = _tree(Path(bundle) / 'candidate')
     stable = digest({'files': _manifest(files), 'errors': errors}) == digest({'files': _manifest(final_files), 'errors': final_errors})
     if not stable or binding['rules_id'] != digest(scanner.descriptor()):
         for check in checks.values():
             check.update(status='UNKNOWN', reason='candidate_or_rules_changed_during_checks')
-    evidence = {'schema': 'credproof-evidence/1', 'binding': binding, 'scope': scope,
+    evidence = {'schema': 'credproof-evidence/1', 'collected_at_utc': utc_now(), 'binding': binding, 'scope': scope,
             'candidate_manifest': _manifest(files), 'read_errors': errors,
             'stable_during_collection': stable, 'checks': checks,
             'duration_ms': (time.perf_counter() - started) * 1000}
     return _redact(evidence, private['target_value'])
 
 
-def _remaining(private, contract, accepted_manifest):
+def _remaining(private, contract, accepted_manifest, bundle=None):
     result = {'external_revocation': 'UNKNOWN', 'history': 'NOT_SCANNED'}
     for layer in ('worktree', 'index'):
         try:
-            files = _capture(Path(private['repo']), layer, contract['scope'])
+            if private.get('origin_kind') == 'exported-synthetic-snapshots':
+                origin = Path(bundle) / 'origin' / layer
+                files = {name: _read(origin, name) for name in contract['scope']}
+                observation = 'EXPORTED_SNAPSHOT_NOT_LIVE'
+            else:
+                files = _capture(Path(private['repo']), layer, contract['scope'])
+                observation = 'current_origin_read_separately_from_frozen_before_material'
             present = _removal(files, private['target_value'])['status'] == 'FAIL'
             result[layer] = {'presence': 'PRESENT' if present else 'ABSENT_WITHIN_SCOPE',
                              'scope': contract['scope'], 'coverage': 'COMPLETE',
                              'unchanged_since_freeze': _manifest(files) == contract['original_manifests'][layer],
                              'matches_candidate': _manifest(files) == accepted_manifest,
-                             'observation': 'current_origin_read_separately_from_frozen_before_material'}
-        except (OSError, ValueError, UnicodeError, subprocess.TimeoutExpired):
+                             'observation': observation}
+        except (OSError, ValueError, KeyError, UnicodeError, subprocess.TimeoutExpired):
             result[layer] = {'presence': 'FAILED', 'coverage': 'INCOMPLETE', 'matches_candidate': None}
     return result
+
+
+def evidence_applicability(bundle, evidence, scanner):
+    """Applicability is a different question from a fresh repair verdict."""
+    try:
+        contract, _, _, _ = _load(bundle)
+        files, errors = _tree(Path(bundle) / 'candidate')
+        current = _binding(contract, files, errors, contract['scope'], scanner)
+    except (OSError, ValueError, KeyError, UnicodeError):
+        return {'status': 'UNAVAILABLE', 'reasons': ['current_prerequisites_unavailable']}
+    mismatched, missing = [], []
+    for name in contract['required_checks']:
+        check = evidence.get('checks', {}).get(name)
+        if not isinstance(check, dict) or check.get('status') not in ('PASS', 'FAIL', 'UNKNOWN'):
+            missing.append(name + ':missing_or_invalid_receipt')
+            continue
+        binding = check.get('binding', {})
+        for key, value in current.items():
+            if binding.get(key) != value:
+                mismatched.append(name + ':' + key + '_mismatch')
+    if current['rules_id'] != digest(contract['scanner']):
+        mismatched.append('rules_differ_from_contract')
+    if current['validator_id'] != contract['validator_id']:
+        mismatched.append('validator_differs_from_contract')
+    status = 'INAPPLICABLE' if mismatched else 'INSUFFICIENT' if missing else 'APPLICABLE'
+    return {'status': status, 'reasons': mismatched + missing, 'current_binding': current,
+            'meaning': 'APPLICABLE does not mean PASS; fresh checks answer current repair quality'}
 
 
 def assess(bundle, evidence, scanner, *, mode='C'):
@@ -463,11 +566,12 @@ def assess(bundle, evidence, scanner, *, mode='C'):
     states = [x['status'] for x in obligations.values()]
     verdict = 'FAIL' if 'FAIL' in states else 'UNKNOWN' if 'UNKNOWN' in states else 'PASS'
     report = {'schema': 'credproof-report/1', 'mode': mode, 'verdict': verdict, 'applicability': applicable,
+              'checked_at_utc': evidence.get('collected_at_utc'), 'assessed_at_utc': utc_now(),
               'contract_id': contract['contract_id'], 'current_binding': current,
               'scope': contract['scope'], 'required_checks': list(needed), 'obligations': obligations,
               'reasons': reasons, 'candidate_read_errors': errors,
               'candidate_manifest': _manifest(files),
-              'remaining_risks': _remaining(private, contract, _manifest(files)),
+              'remaining_risks': _remaining(private, contract, _manifest(files), bundle),
               'application_boundary': 'A local-copy PASS may remain valid if the original repository changes; applying its patch requires a separate current-source match.',
               'claim': 'Only the specified candidate and declared conditions; not incident closure or credential revocation',
               'limitations': ['synthetic-only', 'one restricted Python assignment', 'closed functional fixture grammar',
