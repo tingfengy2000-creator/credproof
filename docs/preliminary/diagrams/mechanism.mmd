@@ -1,0 +1,43 @@
+%% 已实现的合成机制试验；节点不代表未来产品模块。
+flowchart TB
+    subgraph SRC[原来源 · 分开只读]
+        direction LR
+        W[工作区 worktree]
+        I[暂存区 index]
+    end
+
+    F[固定验收对象<br/>before 快照 · 明确文件范围<br/>规则 / 验证器版本<br/>精确允许编辑 · 5 项必要条件]
+    C[候选副本 candidate<br/>允许计划内的预期修改<br/>内容哈希变化不直接等于失败]
+    K[执行 5 项检查<br/>扫描告警 · 独立原值移除<br/>Python 语法 · 受控功能夹具<br/>是否仅有允许修改]
+    E[每一项证据分别绑定<br/>contract · candidate<br/>scope · rules · validator]
+    D[按证据适用性和必要条件判决]
+    P[PASS · 副本验收通过<br/>全部必要证据齐全<br/>适用且通过]
+    N[FAIL · 已知条件不满足<br/>存在适用于当前对象<br/>的失败证据]
+    U[UNKNOWN · 无法充分验收<br/>无适用失败，但必要证据<br/>缺失、错绑或不可用]
+    R[独立披露原来源风险<br/>当前 worktree / index 是否匹配副本<br/>原 index 是否残留原值<br/>当前来源是否偏离冻结版本<br/>历史 NOT_SCANNED；撤销 UNKNOWN<br/>副本 PASS 不等于原来源已处理]
+    V[本地复检入口<br/>重读冻结材料与当前副本<br/>重新执行检查<br/>保存的 PASS / FAIL 字段<br/>不是判决输入]
+
+    W -->|选择工作区时冻结| F
+    I -->|选择暂存区时冻结| F
+    F --> C --> K --> E --> D
+    D --> P
+    D --> N
+    D --> U
+    W -.->|当前来源独立观测| R
+    I -.-> R
+    V -.->|复核原始本地材料| F
+
+    classDef source fill:#eef3fa,stroke:#a8b8ce,color:#26374d,stroke-width:1.5px;
+    classDef main fill:#f3f8fc,stroke:#a9bdcf,color:#16334b,stroke-width:1.5px;
+    classDef bind fill:#e9f7f4,stroke:#66ae9f,color:#14584b,stroke-width:1.5px;
+    classDef pass fill:#e8f6ee,stroke:#62a880,color:#1c6540,stroke-width:1.5px;
+    classDef fail fill:#fbeeed,stroke:#ca8e87,color:#923c35,stroke-width:1.5px;
+    classDef unknown fill:#fff5de,stroke:#c6a05d,color:#765512,stroke-width:1.5px;
+    classDef note fill:#f7f8fb,stroke:#a9b5c6,color:#334963,stroke-width:1.4px;
+    class W,I source;
+    class F,C,K main;
+    class E,D bind;
+    class P pass;
+    class N fail;
+    class U unknown;
+    class R,V note;
