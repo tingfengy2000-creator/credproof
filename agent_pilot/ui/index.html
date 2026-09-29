@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="referrer" content="no-referrer">
+  <title>密证 CredProof · 本地修复工作台</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script src="./app.js" type="module"></script>
+</head>
+<body>
+<a class="skip-link" href="#workspace">跳到工作台</a>
+<svg class="icon-library" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-shield" viewBox="0 0 24 24"><path d="m12 3 8 3v6c0 4-4 7-8 9-4-2-8-5-8-9V6z"/><path d="m8 12 3 3 5-6"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7z"/></symbol>
+  <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6 7a7 7 0 0 1 12-1l2 3M4 15l2 3a7 7 0 0 0 12-1"/></symbol>
+  <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v12m-5-5 5 5 5-5M5 16v5h14v-5"/></symbol>
+  <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6m-3-14-2 16"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 5v2"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+  <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5z"/></symbol>
+</svg>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#workspace" aria-label="密证 CredProof 工作台"><span class="brand-mark"><svg><use href="#i-shield"/></svg></span><span><strong>密证 <em>CredProof</em></strong><small>本地修复工作台</small></span></a>
+    <div class="header-meta"><span class="agent-label">单 Agent · 受限任务</span><span id="connection" class="connection"><i></i>正在连接本机服务</span></div>
+  </div>
+</header>
+<main id="workspace" class="workspace">
+  <section class="heading">
+    <div><div class="eyebrow">CODE · EVIDENCE · VERIFICATION</div><h1>从怀疑，到可验证的修复。</h1><p>模型提出假设与候选代码，程序用隔离执行的证据作出判定。</p></div>
+    <div class="heading-note"><svg class="icon"><use href="#i-lock"/></svg><span>只运行已审查的合成任务<br><strong>无任意文件、命令或网络输入</strong></span></div>
+  </section>
+  <div id="error-banner" class="error-banner" role="alert" hidden></div>
+  <div id="replay-banner" class="replay-banner" hidden><svg class="icon"><use href="#i-clock"/></svg><div><strong>历史回放</strong><span id="replay-description">这里展示已保存的运行记录，不是本次实时执行。</span></div><button id="leave-replay" class="button compact secondary">返回新任务</button></div>
+  <section class="task-toolbar" aria-label="任务操作">
+    <div class="toolbar-context"><span id="run-status" class="badge neutral">等待选择</span><span class="toolbar-description" id="run-description">连接服务后选择一个受限案例</span></div>
+    <div class="toolbar-actions"><button id="refresh" class="button secondary" aria-label="刷新任务状态"><svg class="icon"><use href="#i-refresh"/></svg><span>刷新</span></button><button id="start" class="button primary" disabled><svg class="icon"><use href="#i-play"/></svg><span>开始分析与修复</span></button></div>
+  </section>
+  <div class="work-grid">
+    <aside class="scope-column">
+      <section class="panel scope-panel">
+        <div class="panel-heading"><div><span class="eyebrow">01 / TASK SCOPE</span><h2>本次任务</h2></div><span class="tiny-tag">白名单</span></div>
+        <div class="scope-body"><label class="field-label" for="case-select">已审查案例</label><select id="case-select" disabled><option value="">正在获取案例…</option></select><p id="case-description" class="case-description">只显示服务端允许选择的任务，页面不会生成测试输入或安全判决。</p><div class="scope-file"><svg class="icon"><use href="#i-code"/></svg><span><strong>tool.py</strong><small>候选仅在隔离副本内运行</small></span><span class="tiny-tag">受限文件</span></div></div>
+        <div class="rule-area"><h3><svg class="icon"><use href="#i-shield"/></svg>安全与功能规则</h3><ul id="rule-list" class="rule-list"><li class="placeholder-line">等待服务端提供本任务规则。</li></ul></div>
+        <div class="model-info"><span class="small-label">当前模型</span><strong id="model-label">尚未取得运行信息</strong><p id="runtime-reason">只有运行设施就绪后才可发起新任务。</p></div>
+      </section>
+      <section class="panel history-panel"><div class="panel-heading"><div><span class="eyebrow">SAVED RUNS</span><h2>历史运行</h2></div><svg class="icon muted"><use href="#i-clock"/></svg></div><div class="history-body"><label class="sr-only" for="history-select">选择历史运行回放</label><select id="history-select" disabled><option value="">尚无可读取的记录</option></select><button id="load-history" class="button secondary full-width" disabled>打开历史回放</button><p>历史数据有独立的任务 ID 和执行时间；重新验收会产生新的程序证据。</p></div></section>
+      <div class="scope-boundary"><svg class="icon"><use href="#i-info"/></svg><p>结论只覆盖本次受限任务及实际执行的检查，不代表任意项目或真实凭据已安全。</p></div>
+    </aside>
+    <div class="content-column">
+      <section class="decision-grid" aria-label="模型判断与程序结论">
+        <article class="panel model-panel"><div class="panel-heading"><div class="section-label"><span class="section-icon"><svg class="icon"><use href="#i-spark"/></svg></span><div><span class="eyebrow">MODEL HYPOTHESIS</span><h2>模型怀疑</h2></div></div><span id="model-status" class="badge neutral">未分析</span></div><div class="decision-content"><p id="diagnosis" class="diagnosis">尚无模型诊断。</p><details id="model-raw" class="model-raw" hidden><summary>模型原始疑点与提案 <span id="proposal-count"></span></summary><div id="model-raw-content"></div></details><div class="decision-footnote">假设、原始提案和文字结论均不构成程序确认。</div></div></article>
+        <article id="program-panel" class="panel program-panel"><div class="panel-heading"><div class="section-label"><span class="section-icon"><svg class="icon"><use href="#i-shield"/></svg></span><div><span class="eyebrow">PROGRAM VERDICT</span><h2>程序确认</h2></div></div><span id="verdict" class="badge neutral">未验收</span></div><div class="decision-content"><p id="verdict-description" class="verdict-description">等待真实检查结果</p><p id="verdict-reasons" class="verdict-reasons">缺少证据时，页面不会显示通过。</p><div id="diagnosis-confirmation" class="diagnosis-confirmation" hidden></div><div id="checked-at" class="decision-footnote">尚未取得验收时间</div></div></article>
+      </section>
+      <section class="panel code-panel">
+        <div class="panel-heading"><div><span class="eyebrow">02 / SOURCE & CANDIDATE</span><h2>代码与候选差异</h2></div><div class="code-tabs" role="tablist" aria-label="代码视图"><button type="button" id="tab-source" role="tab" aria-selected="true" aria-controls="code-content" data-code-view="source">原始代码</button><button type="button" id="tab-diff" role="tab" aria-selected="false" aria-controls="code-content" data-code-view="diff" tabindex="-1">候选差异</button><button type="button" id="tab-candidate" role="tab" aria-selected="false" aria-controls="code-content" data-code-view="candidate" tabindex="-1">候选代码</button></div></div>
+        <div class="code-meta"><span><i class="file-dot"></i><code>tool.py</code><span id="code-kind">原始受限文件</span></span><code id="code-identity">identity 未提供</code></div><div id="code-content" class="code-content" role="tabpanel" aria-labelledby="tab-source" tabindex="0"><div class="empty-state"><svg class="icon"><use href="#i-code"/></svg><span>等待加载已审查代码</span></div></div><div class="code-note"><svg class="icon"><use href="#i-lock"/></svg>代码和工具输出作为不可信数据展示，不会在浏览器中执行。页面不接受任意代码上传。</div>
+      </section>
+      <section class="panel evidence-panel"><div class="panel-heading"><div><span class="eyebrow">03 / EXECUTION EVIDENCE</span><h2>实际执行证据</h2></div><span id="evidence-count" class="tiny-tag">0 条已取得</span></div><div id="evidence-list" class="evidence-list"><div class="empty-state compact-empty"><svg class="icon"><use href="#i-clock"/></svg><span>工具执行后，脱敏证据会出现在这里。</span><small>没有执行记录，就没有证据条目。</small></div></div></section>
+      <section class="panel validation-panel"><div class="panel-heading"><div><span class="eyebrow">04 / ACCEPTANCE</span><h2>安全、功能与边界检查</h2></div><button id="recheck" class="button secondary compact" disabled><svg class="icon"><use href="#i-refresh"/></svg>重新验收</button></div><div id="check-list" class="check-list"><div class="empty-state compact-empty"><span>检查尚未执行</span><small>只有服务端返回的实际检查会显示结果。</small></div></div><div class="validation-footer"><p id="validation-scope">验收与模型文字回答分开；缺失、不完整或执行异常均不能推断为通过。</p><button id="export" class="button secondary compact" disabled><svg class="icon"><use href="#i-download"/></svg>导出证据包</button></div><div id="recheck-result" class="recheck-result" hidden></div></section>
+      <section class="run-summary" aria-label="任务运行状态"><div><span class="small-label">任务状态</span><strong id="task-state">未启动</strong></div><div><span class="small-label">模型调用</span><strong id="model-calls">—</strong></div><div><span class="small-label">工具调用</span><strong id="tool-calls">—</strong></div><div><span class="small-label">未知 / 不完整</span><strong id="unknown-count">—</strong></div></section>
+      <div id="run-details" class="run-details"><span id="task-identity">未创建任务</span><span id="updated-at">状态按请求刷新，不是实时监控。</span></div>
+    </div>
+  </div>
+  <footer class="footer"><span>密证 CredProof <i>·</i> 本地单 Agent 试验</span><span>提出假设 <svg class="icon"><use href="#i-arrow"/></svg> 观察证据 <svg class="icon"><use href="#i-arrow"/></svg> 独立验收</span></footer>
+</main>
+<div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
+</body>
+</html>
