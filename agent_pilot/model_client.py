@@ -30,10 +30,89 @@ MAX_REQUEST_BYTES = 262_144
 MAX_RESPONSE_BYTES = 2_097_152
 CONTEXT_TOKENS = 16_384
 TEMPLATE_RESERVE = 512
+NEW_MESSAGE_RESERVE = 512
 
 
 class BudgetExceeded(RuntimeError):
     """No more actions may be dispatched by this task."""
+
+
+class InputBudgetViolation(RuntimeError):
+    """A server observation contradicted the recorded conservative budget."""
+
+
+def _json_structure(value: Any) -> str:
+    """Compare JSON structure, including primitive types, without key ordering."""
+    return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False)
+
+
+def _valid_prompt_count(value: Any) -> bool:
+    # bool is an int subclass; zero placeholders must not become measurements.
+    return type(value) is int and 0 < value <= CONTEXT_TOKENS
+
+
+def estimate_input_budget(payload: dict, max_output_tokens: int, previous: dict | None = None) -> dict:
+    """Pure budget arithmetic; previous must come from this client's last response.
+
+    The first request/fallback counts complete wire bytes. With an exact prior
+    structural prefix, use its observed prompt tokens plus complete suffix JSON
+    bytes and 512 framing tokens per new message. This is a conservative pilot
+    estimate for the frozen model/template, not a tokenizer correctness proof.
+    """
+    wire_bytes = len(json.dumps(payload, ensure_ascii=False).encode("utf-8"))
+    bound = wire_bytes
+    method = "UTF8_WIRE_BYTES"
+    reason = "no_previous_measured_request"
+    prefix_call_id = prefix_tokens = suffix_bytes = new_count = None
+    if previous is not None:
+        prior = previous.get("payload")
+        measured = previous.get("prompt_tokens")
+        prior_messages = prior.get("messages") if isinstance(prior, dict) else None
+        messages = payload.get("messages")
+        if not _valid_prompt_count(measured):
+            reason = "invalid_previous_prompt_tokens"
+        elif (not isinstance(prior_messages, list) or not prior_messages
+              or not isinstance(messages, list)
+              or not all(isinstance(item, dict) for item in [*prior_messages, *messages])):
+            reason = "unsupported_message_structure"
+        elif _json_structure({k: v for k, v in prior.items() if k != "messages"}) != _json_structure(
+                {k: v for k, v in payload.items() if k != "messages"}):
+            reason = "request_configuration_changed"
+        elif (len(messages) < len(prior_messages)
+              or _json_structure(messages[:len(prior_messages)]) != _json_structure(prior_messages)):
+            reason = "message_prefix_changed"
+        else:
+            suffix = messages[len(prior_messages):]
+            suffix_bytes = len(json.dumps(suffix, ensure_ascii=False).encode("utf-8"))
+            new_count = len(suffix)
+            prefix_tokens = measured
+            prefix_call_id = previous.get("call_id")
+            bound = measured + suffix_bytes + NEW_MESSAGE_RESERVE * new_count
+            method = "MEASURED_PREFIX_PLUS_UTF8_SUFFIX"
+            reason = "exact_previous_request_prefix_and_configuration"
+    input_limit = CONTEXT_TOKENS - max_output_tokens - TEMPLATE_RESERVE
+    return {
+        "method": method, "reuse_reason": reason, "request_bytes": wire_bytes,
+        "prefix_call_id": prefix_call_id, "prefix_prompt_tokens": prefix_tokens,
+        "suffix_json_bytes": suffix_bytes, "new_message_count": new_count,
+        "new_message_reserve_tokens": NEW_MESSAGE_RESERVE * (new_count or 0),
+        "global_reserve_tokens": TEMPLATE_RESERVE, "max_output_tokens": max_output_tokens,
+        "input_token_upper_bound": bound, "input_token_limit": input_limit,
+        "context_token_upper_bound": bound + max_output_tokens + TEMPLATE_RESERVE,
+        "context_token_limit": CONTEXT_TOKENS,
+        "within_context_budget": bound <= input_limit,
+        "within_wire_limit": wire_bytes <= MAX_REQUEST_BYTES,
+    }
+
+
+def check_reported_prompt_tokens(budget: dict, usage: dict | None) -> int | None:
+    """Validate an observation before making any returned tool call actionable."""
+    count = usage.get("prompt_tokens") if isinstance(usage, dict) else None
+    if type(count) is int and count > 0:
+        if count > budget["input_token_upper_bound"] or count > budget["input_token_limit"]:
+            raise InputBudgetViolation("Server prompt_tokens exceeded the recorded input bound; response discarded")
+        return count
+    return None
 
 
 def utc_now() -> str:
@@ -221,9 +300,10 @@ class LocalAgentClient:
         self.task_budget_s = task_budget_s
         self.max_output_tokens = max_output_tokens
         self.seed = seed
-        # A deliberately conservative wire-byte gate, not measured model tokens.
-        # Model/service context length is configured externally to 16,384 tokens.
+        # Retain the first/fallback byte gate. Later requests may bind to only the
+        # immediately preceding successful observation, never another task/run.
         self.max_request_bytes = min(MAX_REQUEST_BYTES, CONTEXT_TOKENS - max_output_tokens - TEMPLATE_RESERVE)
+        self._last_measured_request: dict | None = None
         self.model_calls = 0
         self.usage: list[dict] = []
         self._started: float | None = None
@@ -235,12 +315,16 @@ class LocalAgentClient:
                            model=MODEL, base_url=BASE_URL, tools=[tool.function for tool in tools],
                            max_model_calls=max_model_calls, request_timeout_s=request_timeout_s,
                            task_budget_s=task_budget_s, max_output_tokens=max_output_tokens, seed=seed,
-                           max_request_bytes=self.max_request_bytes, input_budget_kind="CONSERVATIVE_UTF8_WIRE_BYTES",
+                           initial_max_request_bytes=self.max_request_bytes,
+                           absolute_max_request_bytes=MAX_REQUEST_BYTES,
+                           input_budget_kind="EXACT_MEASURED_PREFIX_OR_UTF8_WIRE_BYTES",
+                           context_tokens=CONTEXT_TOKENS, global_reserve_tokens=TEMPLATE_RESERVE,
+                           per_new_message_reserve_tokens=NEW_MESSAGE_RESERVE,
                            automatic_retries=0, knowledge_files_enabled=False)
 
     def _check_budget(self) -> float:
         if self._poisoned:
-            raise BudgetExceeded("Client is sealed after a timeout; do not start another request")
+            raise BudgetExceeded("Client is sealed after a timeout or budget violation; do not start another request")
         if self._started is None:
             raise RuntimeError("The task has not started")
         remaining = self.task_budget_s - (time.monotonic() - self._started)
@@ -253,16 +337,18 @@ class LocalAgentClient:
         if self.model_calls >= self.max_model_calls:
             raise BudgetExceeded("Model request budget exhausted")
         encoded = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-        if len(encoded) > self.max_request_bytes:
-            self._journal.emit("input_budget_exceeded", request_bytes=len(encoded),
-                               max_request_bytes=self.max_request_bytes,
-                               input_budget_kind="CONSERVATIVE_UTF8_WIRE_BYTES", measured_model_tokens=None)
-            raise BudgetExceeded(f"Request exceeds the conservative {self.max_request_bytes}-byte input cap; no silent truncation")
+        budget = estimate_input_budget(payload, self.max_output_tokens, self._last_measured_request)
+        self._journal.emit("input_budget_checked", next_call_id=self.model_calls + 1, budget=budget)
+        if not budget["within_context_budget"] or not budget["within_wire_limit"]:
+            self._journal.emit("input_budget_exceeded", budget=budget, measured_model_tokens=None)
+            raise BudgetExceeded("Request exceeds the recorded conservative input budget; no silent truncation")
         self.model_calls += 1
         call_id = self.model_calls
         timeout = min(self.request_timeout_s, remaining)
         self._journal.artifact(f"model-{call_id:02d}-request.json", payload)
-        self._journal.emit("model_request", call_id=call_id, timeout_s=timeout, request_bytes=len(encoded))
+        self._journal.artifact(f"model-{call_id:02d}-input-budget.json", budget)
+        self._journal.emit("model_request", call_id=call_id, timeout_s=timeout,
+                           request_bytes=len(encoded), input_budget=budget)
         started = time.monotonic()
         completed: queue.Queue = queue.Queue(maxsize=1)
 
@@ -301,15 +387,30 @@ class LocalAgentClient:
         if error is not None:
             self._journal.emit("model_error", call_id=call_id, elapsed_s=elapsed,
                                error_type=type(error).__name__, error=str(error),
+                               http_status=getattr(error, "code", None), input_budget=budget,
                                usage=None, usage_status="UNAVAILABLE")
             raise error
         usage = response_body.get("usage")
         usage = usage if isinstance(usage, dict) else None
         self.usage.append({"call_id": call_id, "usage": usage,
                            "status": "REPORTED_BY_SERVER" if usage is not None else "UNAVAILABLE"})
+        try:
+            actual_prompt_tokens = check_reported_prompt_tokens(budget, usage)
+        except InputBudgetViolation as exc:
+            self._poisoned = True
+            self._last_measured_request = None
+            self._journal.emit("input_budget_violation", call_id=call_id, budget=budget,
+                               actual_prompt_tokens=usage.get("prompt_tokens"), error=str(exc),
+                               elapsed_s=elapsed, usage=usage,
+                               response_discarded=True, context_expanded=False)
+            raise
         self._journal.emit("model_response", call_id=call_id, elapsed_s=elapsed,
-                           usage=usage, usage_status=self.usage[-1]["status"])
+                           usage=usage, usage_status=self.usage[-1]["status"],
+                           actual_prompt_tokens=actual_prompt_tokens, input_budget=budget)
         self._check_budget()
+        self._last_measured_request = ({"payload": copy.deepcopy(payload),
+                                        "prompt_tokens": actual_prompt_tokens, "call_id": call_id}
+                                       if actual_prompt_tokens is not None else None)
         return response_body
 
     def run(self, messages: list[dict]) -> dict:

@@ -1,10 +1,14 @@
 """Pure serialization checks, not a claim that a model service was reached."""
+import copy
+import json
 import tempfile
 import time
 import unittest
 from pathlib import Path
 
-from agent_pilot.model_client import BudgetExceeded, LocalAgentClient, from_ollama_response, to_ollama_messages
+from agent_pilot.model_client import (BudgetExceeded, InputBudgetViolation, LocalAgentClient,
+                                     check_reported_prompt_tokens, estimate_input_budget,
+                                     from_ollama_response, to_ollama_messages)
 
 
 class SerializationTests(unittest.TestCase):
@@ -79,6 +83,115 @@ class SerializationTests(unittest.TestCase):
                 self.assertEqual(client.model_calls, 0)
             finally:
                 client._journal.events.close()
+
+
+class InputBudgetTests(unittest.TestCase):
+    """Fabricated arithmetic inputs only; no model/server/response mock is used."""
+    def setUp(self):
+        self.payload = {
+            "model": "qwen3-coder:30b", "stream": False, "max_tokens": 2048,
+            "temperature": 0.2, "top_p": 0.8, "seed": 0,
+            "messages": [{"role": "system", "content": "requirements"},
+                         {"role": "user", "content": "inspect"}],
+            "tools": [{"type": "function", "function": {"name": "read", "parameters": {}}}],
+        }
+        self.previous = {"payload": copy.deepcopy(self.payload), "prompt_tokens": 100, "call_id": 2}
+
+    def extended(self):
+        result = copy.deepcopy(self.payload)
+        result["messages"] += [{"role": "assistant", "content": "检查"},
+                               {"role": "tool", "tool_call_id": "fixture", "content": "{}"}]
+        return result
+
+    def test_first_request_uses_full_wire_bytes_and_global_reserve(self):
+        budget = estimate_input_budget(self.payload, 2048)
+        self.assertEqual(budget["method"], "UTF8_WIRE_BYTES")
+        expected = len(json.dumps(self.payload, ensure_ascii=False).encode("utf-8"))
+        self.assertEqual(budget["input_token_upper_bound"], expected)
+        self.assertEqual(budget["context_token_upper_bound"], expected + 2048 + 512)
+
+    def test_exact_measured_prefix_counts_all_suffix_json_bytes_and_framing(self):
+        payload = self.extended()
+        budget = estimate_input_budget(payload, 2048, self.previous)
+        suffix_bytes = len(json.dumps(payload["messages"][2:], ensure_ascii=False).encode("utf-8"))
+        self.assertEqual(budget["method"], "MEASURED_PREFIX_PLUS_UTF8_SUFFIX")
+        self.assertEqual(budget["prefix_call_id"], 2)
+        self.assertEqual(budget["suffix_json_bytes"], suffix_bytes)
+        self.assertEqual(budget["input_token_upper_bound"], 100 + suffix_bytes + 2 * 512)
+        self.assertEqual(budget["context_token_upper_bound"], 100 + suffix_bytes + 2 * 512 + 2048 + 512)
+
+    def test_changed_or_shortened_prefix_never_reuses_measurement(self):
+        variants = [self.extended(), self.extended(), self.extended()]
+        variants[0]["messages"][0]["content"] += " changed"
+        variants[1]["messages"][1]["content"] += " appended to last prior message"
+        variants[2]["messages"] = variants[2]["messages"][:1]
+        for payload in variants:
+            with self.subTest(messages=payload["messages"]):
+                budget = estimate_input_budget(payload, 2048, self.previous)
+                self.assertEqual(budget["method"], "UTF8_WIRE_BYTES")
+                self.assertEqual(budget["reuse_reason"], "message_prefix_changed")
+
+    def test_tools_model_generation_or_other_configuration_change_disables_reuse(self):
+        variants = []
+        for key, value in [("tools", []), ("model", "different-model"), ("seed", 1),
+                           ("temperature", 0.3), ("max_tokens", 8192), ("format", "json")]:
+            payload = self.extended()
+            payload[key] = value
+            variants.append(payload)
+        omitted = self.extended()
+        del omitted["tools"]
+        variants.append(omitted)
+        for payload in variants:
+            budget = estimate_input_budget(payload, 2048, self.previous)
+            self.assertEqual(budget["method"], "UTF8_WIRE_BYTES")
+            self.assertEqual(budget["reuse_reason"], "request_configuration_changed")
+
+    def test_invalid_or_missing_measurements_fall_back(self):
+        for count in [None, 0, -1, True, 100.0, "100", 16385]:
+            previous = dict(self.previous, prompt_tokens=count)
+            budget = estimate_input_budget(self.extended(), 2048, previous)
+            self.assertEqual(budget["method"], "UTF8_WIRE_BYTES")
+        previous = dict(self.previous, payload={"messages": "not a list"})
+        self.assertEqual(estimate_input_budget(self.payload, 2048, previous)["method"], "UTF8_WIRE_BYTES")
+
+    def test_structural_comparison_preserves_types_but_ignores_dictionary_key_order(self):
+        reordered = copy.deepcopy(self.payload)
+        reordered["messages"][0] = {"content": "requirements", "role": "system"}
+        self.assertEqual(estimate_input_budget(reordered, 2048, self.previous)["method"],
+                         "MEASURED_PREFIX_PLUS_UTF8_SUFFIX")
+        previous = copy.deepcopy(self.previous)
+        previous["payload"]["seed"] = False  # False == 0 in Python, but not the same JSON primitive.
+        self.assertEqual(estimate_input_budget(self.payload, 2048, previous)["method"], "UTF8_WIRE_BYTES")
+
+    def test_measured_prefix_can_admit_history_without_removing_it_or_expanding_context(self):
+        payload = copy.deepcopy(self.payload)
+        payload["messages"][1]["content"] = "x" * 12000
+        self.assertTrue(estimate_input_budget(payload, 2048)["within_context_budget"])
+        previous = {"payload": copy.deepcopy(payload), "prompt_tokens": 3000, "call_id": 1}
+        payload["messages"].append({"role": "assistant", "content": "y" * 3000})
+        untouched = copy.deepcopy(payload)
+        self.assertFalse(estimate_input_budget(payload, 2048)["within_context_budget"])
+        budget = estimate_input_budget(payload, 2048, previous)
+        self.assertTrue(budget["within_context_budget"])
+        self.assertEqual(budget["context_token_limit"], 16384)
+        self.assertEqual(payload, untouched)
+
+    def test_context_and_absolute_wire_caps_still_reject(self):
+        payload = self.extended()
+        payload["messages"][-1]["content"] = "x" * 15000
+        self.assertFalse(estimate_input_budget(payload, 2048, self.previous)["within_context_budget"])
+        payload["messages"][-1]["content"] = "x" * 262145
+        self.assertFalse(estimate_input_budget(payload, 2048, self.previous)["within_wire_limit"])
+
+    def test_server_observation_above_bound_is_rejected_and_invalid_usage_not_reused(self):
+        budget = estimate_input_budget(self.extended(), 2048, self.previous)
+        self.assertEqual(check_reported_prompt_tokens(budget, {"prompt_tokens": 101}), 101)
+        with self.assertRaises(InputBudgetViolation):
+            check_reported_prompt_tokens(budget, {"prompt_tokens": budget["input_token_upper_bound"] + 1})
+        for usage in [None, {}, {"prompt_tokens": 0}, {"prompt_tokens": True}, {"prompt_tokens": "101"}]:
+            self.assertIsNone(check_reported_prompt_tokens(budget, usage))
+        with self.assertRaises(InputBudgetViolation):
+            check_reported_prompt_tokens(dict(budget, input_token_upper_bound=20000), {"prompt_tokens": 16384})
 
 
 if __name__ == "__main__":
