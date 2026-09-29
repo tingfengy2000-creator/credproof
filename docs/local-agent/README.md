@@ -13,6 +13,7 @@
 - [模型客户端](../../agent_pilot/model_client.py)、[权限工具](../../agent_pilot/tools.py)、[真实比较控制器](../../agent_pilot/experiment.py)。
 - [框架与依赖来源](framework.md)、[隔离边界与探针](isolation.md)。
 - [两步真实握手](../../agent_pilot/handshake.py)、[离线监督进程](../../agent_pilot/offline_run.py)。
+- [预先过程评分规则](process-scoring.md)：把模型主动复现、反馈确实进入下一轮与最终补丁通过分开，不能用最终 PASS 替代闭环证据。
 
 目前源码不包含模型权重。权重和软件位于仓库外 `/home/tingfeng/credproof-agent-runtime` 及 `E:\CredProof-local-runtime`。模型运行配置与实测结论以各次不可覆盖的运行目录为准；准备阶段的测试不能替代实际推理。
 
@@ -50,5 +51,7 @@ wsl -d Ubuntu-24.04 --exec unshare --user --map-root-user --net --fork /home/tin
 `experiments/local-agent-pilot/records/<run>/` 为保留的脱敏记录：协议/源码 hash、真实模型请求与返回、工具轨迹、全部候选、逐例判决、资源与离线检查。`runs/local-agent-private/` 为隔离采集器的原始合成凭据记录，模型工具不可读取、默认不纳入 Git。可公开记录须检查没有完整 `CP_EXEC_` 运行时值。
 
 PASS 指完整固定条件通过；明确行为/泄露/允许范围反例为 FAIL；执行条件或证据不足为 UNKNOWN。模型文本中的 PASS 不参与判决，框架 COMPLETED 也不等于修复 PASS。保存旧失败，修正后另开新记录，不能改写先前实验。
+
+已有 [A-only 隔离预检](../../experiments/local-agent-pilot/records/20260929t063200z-fixed-preflight/results.json)：四个原始泄露和两个正常标签均先执行确认，固定规则修复 4/4，正常保持通过且未修改 2/2，模型调用为 0。正式推理前又明确“最终选择最后提交文件”的提示，并拒绝空白假设；没有改变样例、裁判或固定基线。后续汇总用 `python -m agent_pilot.summarize --records <完整比较目录> --output <新目录>`，人工核查假设与反馈作用，不能自动宣称模型推理质量。
 
 费用口径仅为“作品本次运行未调用付费 API”；硬件、电力和开发工具订阅不是零成本。本试验由同一开发过程构造，不是独立盲测，六例结果不能说明稳定成功率或优于现有工具。
