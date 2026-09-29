@@ -58,6 +58,8 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--handshake-only', action='store_true')
     parser.add_argument('--cases', nargs='+', default=['p01', 'p02', 'p03', 'p04', 'p05', 'p06'])
+    parser.add_argument('--reliability', action='store_true', help='Use shared evidence gate and executor completion pilot')
+    parser.add_argument('--agent-only', action='store_true', help='One reviewed UI task; reliability mode only')
     args = parser.parse_args()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -115,7 +117,10 @@ def main():
             'same_namespace': os.readlink('/proc/self/ns/net') == os.readlink(f'/proc/{server.pid}/ns/net')})
         commands = [[sys.executable, '-m', 'agent_pilot.handshake', '--output', str(output / 'handshake')]]
         if not args.handshake_only:
-            commands.append([sys.executable, '-m', 'agent_pilot.experiment', '--output', str(output / 'comparison'), '--cases', *args.cases, '--no-feedback'])
+            module = 'agent_pilot.reliability' if args.reliability else 'agent_pilot.experiment'
+            comparison = [sys.executable, '-m', module, '--output', str(output / 'comparison'), '--cases', *args.cases]
+            comparison += ['--methods', 'C-agent'] if args.agent_only and args.reliability else ['--no-feedback']
+            commands.append(comparison)
         child_env = {'PATH': env['PATH'], 'HOME': str(home), 'LANG': 'C.UTF-8', 'PYTHONIOENCODING': 'utf-8',
                      'PYTHONDONTWRITEBYTECODE': '1', 'HF_HUB_OFFLINE': '1', 'HF_HUB_DISABLE_TELEMETRY': '1', 'DO_NOT_TRACK': '1'}
         for i, command in enumerate(commands):

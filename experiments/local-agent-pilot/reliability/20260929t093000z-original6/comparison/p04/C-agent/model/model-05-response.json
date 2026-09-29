@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-103",
+  "object": "chat.completion",
+  "created": 1790674235,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_isyakx38",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":false,\"diagnosis\":\"The patch successfully removes the credential leak by eliminating the diagnostic field that was including the full credential in the Authorization header. The tool now properly authenticates and returns results without exposing the credential in any output channel.\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4801,
+    "prompt_tokens_details": {
+      "cached_tokens": 4238
+    },
+    "completion_tokens": 89,
+    "total_tokens": 4890
+  }
+}

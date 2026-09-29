@@ -1,0 +1,36 @@
+{
+  "at_utc": "2026-09-29T09:28:39.638250+00:00",
+  "network_namespace": "net:[4026532228]",
+  "interfaces": [
+    "lo"
+  ],
+  "ipv4_routes": "",
+  "ipv6_routes": "00000000000000000000000000000000 00 00000000000000000000000000000000 00 00000000000000000000000000000000 ffffffff 00000001 00000000 00200200       lo\n00000000000000000000000000000000 00 00000000000000000000000000000000 00 00000000000000000000000000000000 ffffffff 00000001 00000000 00200200       lo\n",
+  "outside_connect_tests": [
+    {
+      "address": "1.1.1.1",
+      "port": 443,
+      "connected": false,
+      "errno": 101,
+      "reason": "OSError",
+      "elapsed_s": 1.1727000000405496e-05
+    },
+    {
+      "address": "8.8.8.8",
+      "port": 443,
+      "connected": false,
+      "errno": 101,
+      "reason": "OSError",
+      "elapsed_s": 1.94699999944703e-06
+    },
+    {
+      "address": "2606:4700:4700::1111",
+      "port": 443,
+      "connected": false,
+      "errno": 99,
+      "reason": "OSError",
+      "elapsed_s": 5.05900000113968e-06
+    }
+  ],
+  "boundary": "Local child network namespace; no host firewall/proxy or Codex network change"
+}

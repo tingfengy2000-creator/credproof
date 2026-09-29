@@ -1,0 +1,17 @@
+{
+  "rationale": "The tool leaks the credential through logging by including it in the log message 'Authenticating resource=%s credential=%s'. This violates the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging.",
+  "source_sha256": "a4290728ebd8c54f3b8825aec9199230bd4c47e24e5eca8b9e8abc439761dbb1",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-1",
+      "evidence-2",
+      "evidence-3"
+    ],
+    "source_sha256": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

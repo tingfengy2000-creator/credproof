@@ -1,0 +1,15 @@
+{
+  "rationale": "The fix addresses the credential leak in the auth_unavailable error case. Previously, when a RuntimeError was raised by the authentication service, the error message would include the credential (as seen in evidence-3: \"provider rejected credential=[REDACTED]\"). This was a direct violation of the security requirement that credentials must never appear in outputs.\n\nThe fix changes the error handling to catch RuntimeError specifically and return a generic error message \"Authentication service unavailable\" instead of including the credential in the error details. This preserves the intended behavior of indicating authentication unavailability while preventing credential exposure.",
+  "source_sha256": "15021e8201ac09bb73a06b75f669e0c350f8240356e38d6ae0841f3d64db65c1",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-3"
+    ],
+    "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

@@ -1,10 +1,14 @@
-"""Pure serialization checks, not a claim that a model service was reached."""
+"""Local boundary/control-flow checks, never evidence of model inference."""
 import copy
 import json
 import tempfile
 import time
 import unittest
 from pathlib import Path
+from unittest.mock import patch
+
+from qwen_agent.llm.schema import Message
+from qwen_agent.tools.base import BaseTool
 
 from agent_pilot.model_client import (BudgetExceeded, InputBudgetViolation, LocalAgentClient,
                                      check_reported_prompt_tokens, estimate_input_budget,
@@ -192,6 +196,128 @@ class InputBudgetTests(unittest.TestCase):
             self.assertIsNone(check_reported_prompt_tokens(budget, usage))
         with self.assertRaises(InputBudgetViolation):
             check_reported_prompt_tokens(dict(budget, input_token_upper_bound=20000), {"prompt_tokens": 16384})
+
+
+class ExecutionCompletionTests(unittest.TestCase):
+    """Real FnCallAgent loop and tools; explicitly scripted LLM control fixture.
+
+    No model, HTTP server, candidate code, or repair verdict is involved. The
+    fixture only makes subsequent model/tool dispatch observable in these tests.
+    """
+    def run_fixture(self, completion=None, *, expire_in_tool=False, unknown=False):
+        context = {"tools_dispatched": [], "model_dispatches": []}
+
+        class CountingTool(BaseTool):
+            description = "Unit-test in-memory side effect only."
+            parameters = []
+
+            def __init__(self, name):
+                self.name = name
+                super().__init__()
+
+            def call(self, params, **kwargs):
+                context["tools_dispatched"].append(self.name)
+                if expire_in_tool:
+                    context["client"]._started -= 1000
+                return json.dumps({"test_fixture_tool": self.name})
+
+        with tempfile.TemporaryDirectory() as folder:
+            context["folder"] = Path(folder)
+            callback = None if completion is None else lambda: completion(context)
+            client = LocalAgentClient(tools=[CountingTool("first"), CountingTool("second")],
+                                      system_message="UNIT TEST ONLY: no inference.", log_dir=Path(folder),
+                                      execution_completion=callback)
+            context["client"] = client
+
+            def scripted_llm(**kwargs):
+                context["model_dispatches"].append(copy.deepcopy(kwargs))
+                if len(context["model_dispatches"]) == 1:
+                    names = ["not_registered"] if unknown else ["first", "second"]
+                    yield [Message(role="assistant", content="", function_call={"name": name, "arguments": "{}"},
+                                   extra={"function_id": f"unit_fixture_{index}"})
+                           for index, name in enumerate(names)]
+                else:
+                    yield [Message(role="assistant", content="UNIT_TEST_SCRIPTED_FINAL")]
+
+            with patch.object(client._assistant, "_call_llm", new=scripted_llm), \
+                    patch("agent_pilot.model_client.urllib.request.build_opener",
+                          side_effect=AssertionError("Tests must not contact a model")):
+                result = client.run([{"role": "user", "content": "Dispatch-control test fixture, not inference."}])
+            context["events"] = [json.loads(line) for line in (Path(folder) / "events.jsonl").read_text(encoding="utf-8").splitlines()]
+            context["saved_result"] = json.loads((Path(folder) / "result.json").read_text(encoding="utf-8"))
+            self.assertEqual(client.model_calls, 0)  # Do not count fixture dispatch as actual model use.
+            return result, context
+
+    def test_terminal_stops_remaining_batch_and_next_model_after_actual_tool_audit(self):
+        terminal = {"source": "UNIT_TEST_EXECUTOR", "terminal": True}
+        observed_last_events = []
+
+        def complete(context):
+            events = [json.loads(line) for line in (context["folder"] / "events.jsonl").read_text(encoding="utf-8").splitlines()]
+            observed_last_events.append(events[-1]["event"])
+            self.assertEqual(context["tools_dispatched"], ["first"])
+            return terminal
+
+        result, context = self.run_fixture(complete)
+        self.assertEqual(result["status"], "EXECUTOR_COMPLETED")
+        self.assertEqual(result["executor_result"], terminal)
+        self.assertIsNone(result["error"])
+        self.assertEqual(observed_last_events, ["tool_result"])
+        self.assertEqual(context["tools_dispatched"], ["first"])
+        self.assertEqual(len(context["model_dispatches"]), 1)
+        self.assertEqual([e["name"] for e in context["events"] if e["event"] == "tool_result"], ["first"])
+        self.assertTrue(all(m.get("function_call") for m in result["messages"]))
+        self.assertNotIn("UNIT_TEST_SCRIPTED_FINAL", json.dumps(result["messages"]))
+        self.assertEqual(context["saved_result"], result)
+        terminal["terminal"] = False
+        self.assertTrue(result["executor_result"]["terminal"])  # Snapshot, not mutable executor state.
+
+    def test_no_callback_or_none_result_preserves_default_dispatch(self):
+        for completion in [None, lambda context: None]:
+            with self.subTest(callback_enabled=completion is not None):
+                result, context = self.run_fixture(completion)
+                self.assertEqual(result["status"], "COMPLETED")
+                self.assertNotIn("executor_result", result)
+                self.assertEqual(context["tools_dispatched"], ["first", "second"])
+                self.assertEqual(len(context["model_dispatches"]), 2)
+                self.assertEqual(result["messages"][-1]["content"], "UNIT_TEST_SCRIPTED_FINAL")
+
+    def test_callback_errors_are_not_swallowed_or_reclassified_as_completion(self):
+        for error_type in [ValueError, BudgetExceeded]:
+            def fail(context):
+                raise error_type("unit callback failure")
+            with self.subTest(error_type=error_type.__name__):
+                result, context = self.run_fixture(fail)
+                self.assertEqual(result["status"], "ERROR")
+                self.assertNotIn("executor_result", result)
+                self.assertIn("unit callback failure", result["error"])
+                self.assertEqual(context["tools_dispatched"], ["first"])
+                self.assertEqual(len(context["model_dispatches"]), 1)
+                self.assertTrue(any(e["event"] == "execution_completion_error" for e in context["events"]))
+
+    def test_invalid_callback_values_fail_closed(self):
+        for value in [False, [], {}, {"bad": float("nan")}, {"bad": object()}]:
+            with self.subTest(value_type=type(value).__name__):
+                result, context = self.run_fixture(lambda current: value)
+                self.assertEqual(result["status"], "ERROR")
+                self.assertNotIn("executor_result", result)
+                self.assertEqual(context["tools_dispatched"], ["first"])
+                self.assertEqual(len(context["model_dispatches"]), 1)
+
+    def test_completion_precedes_post_tool_budget_check(self):
+        result, context = self.run_fixture(lambda current: {"terminal": True}, expire_in_tool=True)
+        self.assertEqual(result["status"], "EXECUTOR_COMPLETED")
+        self.assertEqual(context["tools_dispatched"], ["first"])
+        self.assertEqual(len(context["model_dispatches"]), 1)
+
+    def test_unknown_tool_does_not_invoke_execution_completion(self):
+        def unexpected(context):
+            raise AssertionError("An unregistered tool is not a real tool execution")
+        result, context = self.run_fixture(unexpected, unknown=True)
+        self.assertEqual(result["status"], "COMPLETED")
+        self.assertEqual(context["tools_dispatched"], [])
+        self.assertEqual(len(context["model_dispatches"]), 2)
+        self.assertFalse(any(e["event"] == "execution_completion_checked" for e in context["events"]))
 
 
 if __name__ == "__main__":

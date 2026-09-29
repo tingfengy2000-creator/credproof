@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-805",
+  "object": "chat.completion",
+  "created": 1790674272,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I've reviewed the tool code and the initial diagnostic observations. The tool appears to be a local authentication mock that reads a credential from the environment, calls an authentication service, and returns structured results based on the authorization outcome.\n\nFrom the provided evidence, all test cases (success, denied, provider_error) pass without any leaks being observed. The tool correctly:\n1. Validates input requests\n2. Reads the credential from `os.environ[\"CP_TEST_CREDENTIAL\"]`\n3. Calls `auth_service.authenticate()` exactly once\n4. Handles different authentication outcomes appropriately\n5. Returns results with proper structure and no credential exposure\n\nNo forbidden-channel leaks were detected in any of the test cases.\n\nLet me run one additional diagnostic test to be thorough.",
+        "tool_calls": [
+          {
+            "id": "call_3gdfsq7v",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Checking for potential credential leak in error paths\",\"request\":{\"debug\":false,\"request_id\":\"test-credential-check\",\"resource\":\"test-resource\",\"units\":3},\"auth_mode\":\"success\",\"candidate_id\":\"diagnostic-1\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3585,
+    "prompt_tokens_details": {
+      "cached_tokens": 2823
+    },
+    "completion_tokens": 241,
+    "total_tokens": 3826
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-705",
+  "object": "chat.completion",
+  "created": 1790674150,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let me check what the actual error message looks like in the evidence and then create a proper patch.",
+        "tool_calls": [
+          {
+            "id": "call_2gz1ncw8",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "get_evidence",
+              "arguments": "{\"evidence_id\":\"evidence-3\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4060,
+    "prompt_tokens_details": {
+      "cached_tokens": 4029
+    },
+    "completion_tokens": 47,
+    "total_tokens": 4107
+  }
+}

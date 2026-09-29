@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-360",
+  "object": "chat.completion",
+  "created": 1790674183,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_4dhi6jzc",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original tool.py had a credential leak in the logging statement where the credential was passed as a parameter to logger.info(), which could expose it through logging channels. The patch removes this problematic logging line while preserving all other functionality.\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4634,
+    "prompt_tokens_details": {
+      "cached_tokens": 4532
+    },
+    "completion_tokens": 93,
+    "total_tokens": 4727
+  }
+}

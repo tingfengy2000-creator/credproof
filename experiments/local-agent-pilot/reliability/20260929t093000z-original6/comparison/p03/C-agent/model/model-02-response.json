@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-173",
+  "object": "chat.completion",
+  "created": 1790674200,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Looking at the tool.py code and the evidence, I can see that there's a clear credential leak in the stdout channel. The issue is on this line:\n\n```python\nif request.get(\"debug\", False):\n    print(\"DEBUG\", json.dumps({\"request\": request_id, \"transport\": transport}))\n```\n\nThe `transport` dictionary contains the credential in the Authorization header, and when debug mode is enabled, this gets printed to stdout, leaking the credential.\n\nLet me run a few more tests to confirm this behavior and then propose a fix.",
+        "tool_calls": [
+          {
+            "id": "call_48srmt5j",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Confirm credential leak in stdout when debug is enabled\",\"request\":{\"debug\":true,\"request_id\":\"test-1\",\"resource\":\"test-resource\",\"units\":3},\"auth_mode\":\"success\",\"candidate_id\":\"test-1\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3790,
+    "prompt_tokens_details": {
+      "cached_tokens": 2971
+    },
+    "completion_tokens": 202,
+    "total_tokens": 3992
+  }
+}

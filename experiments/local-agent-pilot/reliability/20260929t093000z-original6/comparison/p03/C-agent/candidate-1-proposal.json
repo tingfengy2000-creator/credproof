@@ -1,0 +1,17 @@
+{
+  "rationale": "The fix addresses the credential leak by redacting the Authorization header in debug output. The original code was printing the full transport dictionary containing the credential to stdout when debug mode was enabled. This has been fixed by creating a separate debug_transport dictionary with the credential redacted before printing to stdout, while maintaining all other functionality.",
+  "source_sha256": "8929a3a434d599a1e143b7a9c54f5a2b5cb4c0c42dfb996ca9ce9d3170d82acd",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-1",
+      "evidence-2",
+      "evidence-3"
+    ],
+    "source_sha256": "392ccb198bf3d89562061953bd3f0a6bf73b2e6da314a222e9e25149c541533f",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

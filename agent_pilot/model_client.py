@@ -17,7 +17,7 @@ from datetime import datetime, timezone
 from importlib.metadata import version
 from pathlib import Path
 from types import SimpleNamespace
-from typing import Any, Sequence
+from typing import Any, Callable, Sequence
 
 from qwen_agent.agents import Assistant
 from qwen_agent.llm.oai import TextChatAtOAI
@@ -39,6 +39,14 @@ class BudgetExceeded(RuntimeError):
 
 class InputBudgetViolation(RuntimeError):
     """A server observation contradicted the recorded conservative budget."""
+
+
+class _ExecutorCompleted(Exception):
+    """Internal control flow: an audited tool completed the trusted executor."""
+
+
+class _ExecutionCompletionError(RuntimeError):
+    """The trusted completion callback failed or returned invalid data."""
 
 
 def _json_structure(value: Any) -> str:
@@ -268,6 +276,10 @@ class _RestrictedAssistant(Assistant):
             result = super()._call_tool(tool_name, tool_args, **kwargs)
         self.owner._journal.emit("tool_result", name=tool_name, result=result,
                                  elapsed_s=time.monotonic() - started)
+        if tool_name in self.function_map:
+            # Outside super()._call_tool's exception handler: completion/error
+            # must unwind FnCallAgent, including the rest of a parallel batch.
+            self.owner._after_tool_result()
         self.owner._check_budget()
         return result
 
@@ -278,11 +290,18 @@ class LocalAgentClient:
     Network timeout stops the client and refuses further calls. It does not prove
     server generation stopped. The supervisor must enforce the process deadline
     and reset/confirm idle Ollama before starting a new task after a timeout.
+
+    execution_completion is a trusted, zero-argument callback after each real
+    registered tool result is audited. Return None to continue, or a nonempty
+    JSON-serializable dict to end with EXECUTOR_COMPLETED and executor_result.
+    This does not synthesize a model final response. The terminal tool result
+    stays in the audit even when Qwen has not yet yielded it into messages.
     """
     def __init__(self, *, tools: Sequence[BaseTool], system_message: str,
                  log_dir: Path, max_model_calls: int = 12,
                  request_timeout_s: float = 120, task_budget_s: float = 900,
-                 max_output_tokens: int = 2048, seed: int = 0):
+                 max_output_tokens: int = 2048, seed: int = 0,
+                 execution_completion: Callable[[], dict | None] | None = None):
         if not 1 <= max_model_calls <= 12 or not 0 < request_timeout_s <= 120 or not 0 < task_budget_s <= 900:
             raise ValueError("Budgets may be reduced but not exceed 12 / 120 s / 900 s")
         if any(not isinstance(tool, BaseTool) for tool in tools):
@@ -295,6 +314,8 @@ class LocalAgentClient:
             raise ValueError("Duplicate tool names are forbidden")
         if any(tool.file_access for tool in tools):
             raise ValueError("Automatic file-access tools are forbidden")
+        if execution_completion is not None and not callable(execution_completion):
+            raise TypeError("execution_completion must be callable or None")
         self.max_model_calls = max_model_calls
         self.request_timeout_s = request_timeout_s
         self.task_budget_s = task_budget_s
@@ -308,6 +329,8 @@ class LocalAgentClient:
         self.usage: list[dict] = []
         self._started: float | None = None
         self._poisoned = False
+        self._execution_completion = execution_completion
+        self._executor_result: dict | None = None
         self._journal = _Journal(Path(log_dir))
         self._assistant = _RestrictedAssistant(self, llm=_LocalModel(self),
                                                function_list=list(tools), system_message=system_message)
@@ -320,9 +343,36 @@ class LocalAgentClient:
                            input_budget_kind="EXACT_MEASURED_PREFIX_OR_UTF8_WIRE_BYTES",
                            context_tokens=CONTEXT_TOKENS, global_reserve_tokens=TEMPLATE_RESERVE,
                            per_new_message_reserve_tokens=NEW_MESSAGE_RESERVE,
+                           execution_completion_enabled=execution_completion is not None,
                            automatic_retries=0, knowledge_files_enabled=False)
 
+    def _after_tool_result(self) -> None:
+        if self._execution_completion is None:
+            return
+        try:
+            terminal = self._execution_completion()
+            if terminal is not None:
+                if not isinstance(terminal, dict) or not terminal:
+                    raise ValueError("Completion callback must return None or a nonempty terminal dict")
+                # Freeze a JSON value rather than retaining mutable executor
+                # state; non-JSON objects and NaN are callback errors.
+                terminal = json.loads(json.dumps(terminal, ensure_ascii=False, allow_nan=False))
+        except Exception as exc:
+            self._journal.emit("execution_completion_error", error_type=type(exc).__name__, error=str(exc))
+            # Even BudgetExceeded raised inside the callback is a callback
+            # error, not a successful completion or an ordinary model limit.
+            raise _ExecutionCompletionError(f"{type(exc).__name__}: {exc}") from exc
+        self._journal.emit("execution_completion_checked", terminal=terminal is not None)
+        if terminal is not None:
+            self._journal.emit("executor_completed", executor_result=terminal)
+            self._executor_result = terminal
+            # Completion has precedence over a post-tool budget check: the last
+            # allowed dispatch may itself produce the authoritative terminal.
+            raise _ExecutorCompleted()
+
     def _check_budget(self) -> float:
+        if self._executor_result is not None:
+            raise _ExecutorCompleted()
         if self._poisoned:
             raise BudgetExceeded("Client is sealed after a timeout or budget violation; do not start another request")
         if self._started is None:
@@ -428,12 +478,16 @@ class LocalAgentClient:
                 self._check_budget()
             if not latest or latest[-1].get("role") == "function" or latest[-1].get("function_call"):
                 raise BudgetExceeded("Framework loop ended before a final assistant response")
+        except _ExecutorCompleted:
+            status = "EXECUTOR_COMPLETED"
         except BudgetExceeded as exc:
             status, error = "STOPPED_LIMIT", str(exc)
         except Exception as exc:
             status, error = "ERROR", f"{type(exc).__name__}: {exc}"
         result = {"status": status, "messages": latest, "model_calls": self.model_calls,
                   "usage": self.usage, "elapsed_s": time.monotonic() - self._started, "error": error}
+        if status == "EXECUTOR_COMPLETED":
+            result["executor_result"] = copy.deepcopy(self._executor_result)
         self._journal.artifact("result.json", result)
         self._journal.emit("task_finished", **result)
         # Keep the log available for a late response artifact after a timeout;

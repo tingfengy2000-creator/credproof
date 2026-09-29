@@ -1,0 +1,15 @@
+{
+  "rationale": "The tool leaks the credential in the diagnostic field of the success response, which includes a redacted copy of the Authorization header containing the credential. This violates the requirement that the credential must never appear in returned values, keys, stdout, stderr, or logging, including nested debug structures.",
+  "source_sha256": "d50003ac3d7976bcc631d3c3cd7f9faaf144f3a3c255c8c0570d49833ab7dfe0",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-1"
+    ],
+    "source_sha256": "81d28257bdf9f4e55b7b09a87612ad1eef0aa64ae12e756f3a38029ce33f1072",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

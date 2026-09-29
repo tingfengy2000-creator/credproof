@@ -1,0 +1,17 @@
+{
+  "rationale": "Removed the logging line that was exposing the credential in the log output. The original code was calling logger.info() with the credential as a parameter, which could lead to credential leakage through logging channels. This is a minimal fix that preserves all functionality while eliminating the security vulnerability.",
+  "source_sha256": "1f16d7712840fd7ccc0c47fc7fe5cae54038f023bc89286b4d3e564ad836cd82",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-1",
+      "evidence-2",
+      "evidence-3"
+    ],
+    "source_sha256": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

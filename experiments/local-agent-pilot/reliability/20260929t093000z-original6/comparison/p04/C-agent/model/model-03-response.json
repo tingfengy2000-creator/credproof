@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-898",
+  "object": "chat.completion",
+  "created": 1790674230,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let me verify the original diagnosis and then propose a patch to fix the credential leak.",
+        "tool_calls": [
+          {
+            "id": "call_hugqn1gm",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"original\",\"initially_leaking\":true,\"diagnosis\":\"The tool has a credential leak in the diagnostic field where it includes the full credential in the Authorization header. This is exactly what the evidence shows - the credential appears in the returned diagnostic history.\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3930,
+    "prompt_tokens_details": {
+      "cached_tokens": 3810
+    },
+    "completion_tokens": 101,
+    "total_tokens": 4031
+  }
+}
