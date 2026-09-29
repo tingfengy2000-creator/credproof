@@ -1,0 +1,5595 @@
+{
+  "schema": "credproof.holdout8.audit.v1",
+  "audited_at": "2026-09-29T10:02:11.060138+00:00",
+  "audit_kind": "read-only retrospective Codex semantic self-review; not independent human review",
+  "new_execution_performed": false,
+  "run_id": "20260929t095000z-holdout8",
+  "stage": "developer-authored template holdout synthetic evaluation, not independent blind evaluation",
+  "supervisor": {
+    "complete": true,
+    "commands": [
+      {
+        "command": [
+          "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+          "-m",
+          "agent_pilot.handshake",
+          "--output",
+          "/mnt/e/比赛/密证_CredProof-local-agent/experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/handshake"
+        ],
+        "exit_code": 0,
+        "elapsed_s": 1.5732259599999985
+      },
+      {
+        "command": [
+          "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+          "-m",
+          "agent_pilot.reliability",
+          "--output",
+          "/mnt/e/比赛/密证_CredProof-local-agent/experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison",
+          "--cases",
+          "h01",
+          "h02",
+          "h03",
+          "h04",
+          "h05",
+          "h06",
+          "h07",
+          "h08",
+          "--no-feedback"
+        ],
+        "exit_code": 0,
+        "elapsed_s": 224.021549868
+      }
+    ]
+  },
+  "frozen_inputs_unchanged_at_finish": true,
+  "frozen_file_count": 34,
+  "source_comparison_at_audit": [
+    {
+      "path": "agent_pilot/reliability.py",
+      "frozen_sha256": "8a3a0cebc683434c6690250a8d75a5a4accb7eb08c163cfdb7f000015a91635a",
+      "audited_sha256": "5b64b5e2b9067cd57dd9f5f31a010c6d14a43ab2c394cdb1f3e315276a66d7dd"
+    },
+    {
+      "path": "agent_pilot/web.py",
+      "frozen_sha256": "a01a5d6de8df38a62124e37ed911e6fe6f38d23ef9b3fda949b67d71388f668c",
+      "audited_sha256": "b4380be0627aa504aed8c20737d40877ba709ae5c24bc7e72726e7e83c3af404"
+    }
+  ],
+  "source_version_note": "Run ended with frozen=true and exit0; reliability.py has since changed. Later source changes are not credited to this run.",
+  "aggregate_sha256": "5f21ec3f402f5eb29cf774b22410bcaaf1b2f0d495bb5c0474e18d744955cef2",
+  "frozen_inputs_sha256": "3b378ddf5581c94138ae216fda4a26bbc0dd3e0d953c6e8127e0b21bb15d25d1",
+  "rows": [
+    {
+      "case": "h01",
+      "method": "A-fixed",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/A-fixed/result.json",
+      "record_sha256": "cce90ab2e467339daac1e3e8dd939676af5d2dd4ed62be48eeb43d88f35fd650",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-1",
+          "evidence-2",
+          "evidence-3"
+        ],
+        "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": true,
+        "diagnosis": [
+          "redact_tainted_return"
+        ]
+      },
+      "final_validation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "logging"
+        ],
+        "trial_counts": {
+          "FAIL": 7,
+          "PASS": 6
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "FAIL",
+            "reason": "logging"
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": null,
+      "model_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "elapsed_s": 4.208040474999997,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "9b065136c80dbbc32492241c3df7284e1c57ff73a5a6770bd7ba24117c766eaa",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "checks_run": 13,
+            "leak_channels": [
+              "logging"
+            ],
+            "trial_counts": {
+              "FAIL": 7,
+              "PASS": 6
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "FAIL",
+                "reason": "logging"
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0
+    },
+    {
+      "case": "h01",
+      "method": "B-once",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/B-once/result.json",
+      "record_sha256": "d8877046fa89dc17dd5ef7b2970463fcbcd846de3ca1b62182f99015086c1253",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-1",
+          "evidence-2",
+          "evidence-3"
+        ],
+        "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The tool leaks the credential through logging by passing it to _authorize_with_audit which logs it with the resource, violating the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging. The credential is redacted in the log output but still passed to the logger, confirming a leak.",
+        "initially_leaking": true
+      },
+      "final_validation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "logging"
+        ],
+        "trial_counts": {
+          "FAIL": 7,
+          "PASS": 6
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "FAIL",
+            "reason": "logging"
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1585,
+      "completion_tokens": 534,
+      "elapsed_s": 7.009915213999999,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "a3b156575e63c9e3b2d972cf1c29042f26249b938fc6d1dad58526ddaf88b6eb",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "checks_run": 13,
+            "leak_channels": [
+              "logging"
+            ],
+            "trial_counts": {
+              "FAIL": 7,
+              "PASS": 6
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "FAIL",
+                "reason": "logging"
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": false,
+        "same_after_strip": false,
+        "same_ast": true
+      }
+    },
+    {
+      "case": "h01",
+      "method": "C-agent",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/result.json",
+      "record_sha256": "b5054ca5da994c470cf23bf7b8be0935f1d802d05e5ffeffc97eb08b7ad7c377",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-1",
+          "evidence-2",
+          "evidence-3"
+        ],
+        "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": true,
+        "diagnosis": "The original tool had a credential leak in the _authorize_with_audit function where the raw credential was logged directly. The patch fixes this by redacting the credential before logging while preserving all other functionality."
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_REPAIRED",
+        "candidate_id": "candidate-1",
+        "source_sha256": "95b8265b76feafc4e3fce9ac5efd336b01f6b6934721675bc729ef098b394b4a",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "EXECUTOR_COMPLETED",
+      "model_calls": 4,
+      "prompt_tokens": 11957,
+      "completion_tokens": 948,
+      "elapsed_s": 12.81796242,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "95b8265b76feafc4e3fce9ac5efd336b01f6b6934721675bc729ef098b394b4a",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [
+        {
+          "trace_index": 0,
+          "model_message_index": 0,
+          "tool_call_id": "call_0oabxf0r",
+          "tool": "read_code",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/model/model-02-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/model/model-03-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/model/model-04-request.json",
+              "native_message_index": 3
+            }
+          ]
+        },
+        {
+          "trace_index": 1,
+          "model_message_index": 3,
+          "tool_call_id": "call_jv66yiyu",
+          "tool": "run_controlled_case",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/model/model-03-request.json",
+              "native_message_index": 5
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/model/model-04-request.json",
+              "native_message_index": 5
+            }
+          ]
+        },
+        {
+          "trace_index": 2,
+          "model_message_index": 6,
+          "tool_call_id": "call_pk7sj5oa",
+          "tool": "submit_patch",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/model/model-04-request.json",
+              "native_message_index": 7
+            }
+          ]
+        },
+        {
+          "trace_index": 3,
+          "model_message_index": 8,
+          "tool_call_id": "call_37n5xlkh",
+          "tool": "verify_patch",
+          "delivered_in_requests": []
+        }
+      ],
+      "controlled_call_summary": [
+        {
+          "trace_index": 1,
+          "arguments": {
+            "hypothesis": "The credential is leaked through logging in _authorize_with_audit function",
+            "request": {
+              "debug": true,
+              "request_id": "test",
+              "resource": "test-resource",
+              "units": 1
+            },
+            "auth_mode": "success",
+            "candidate_id": "test-1"
+          },
+          "status": "REJECTED",
+          "cached": false,
+          "observation": {}
+        }
+      ],
+      "native_tool_count": 4
+    },
+    {
+      "case": "h01",
+      "method": "D-no-feedback-1",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/D-no-feedback-1/result.json",
+      "record_sha256": "2319f16c6c013db5f42edaaae974a80794d27ce4c8c6a3408036a2fcae0d4bf8",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-1",
+          "evidence-2",
+          "evidence-3"
+        ],
+        "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The tool leaks the credential through logging by passing it to _authorize_with_audit which logs it with the resource, violating the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging. The credential is redacted in the log output but still passed to the logging function, making it a leak.",
+        "initially_leaking": true
+      },
+      "final_validation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "logging"
+        ],
+        "trial_counts": {
+          "FAIL": 7,
+          "PASS": 6
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "FAIL",
+            "reason": "logging"
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1585,
+      "completion_tokens": 541,
+      "elapsed_s": 6.913905532999998,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "7d329a4ebf17db1bdabe27bf3e9d6ec5c20b0181294522e30f2fac6d36aadb93",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "checks_run": 13,
+            "leak_channels": [
+              "logging"
+            ],
+            "trial_counts": {
+              "FAIL": 7,
+              "PASS": 6
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "FAIL",
+                "reason": "logging"
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": false,
+        "same_after_strip": true,
+        "same_ast": true
+      },
+      "seed": 1,
+      "failure_class": "valid_json_but_AST_unchanged_leaking_candidate"
+    },
+    {
+      "case": "h01",
+      "method": "D-no-feedback-2",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/D-no-feedback-2/result.json",
+      "record_sha256": "76670b494d76e55bafa63c6c985ad531170fe357c95e6d21493354e8613329bb",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-1",
+          "evidence-2",
+          "evidence-3"
+        ],
+        "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The tool leaks the credential through logging by passing it to _authorize_with_audit which logs it with the resource, violating the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging. The credential is redacted in the log output but still passed to the logger, confirming a leak.",
+        "initially_leaking": true
+      },
+      "final_validation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "logging"
+        ],
+        "trial_counts": {
+          "FAIL": 7,
+          "PASS": 6
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "FAIL",
+            "reason": "logging"
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1585,
+      "completion_tokens": 534,
+      "elapsed_s": 6.761258798,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "a3b156575e63c9e3b2d972cf1c29042f26249b938fc6d1dad58526ddaf88b6eb",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "checks_run": 13,
+            "leak_channels": [
+              "logging"
+            ],
+            "trial_counts": {
+              "FAIL": 7,
+              "PASS": 6
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "FAIL",
+                "reason": "logging"
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": false,
+        "same_after_strip": false,
+        "same_ast": true
+      },
+      "seed": 2,
+      "failure_class": "valid_json_but_AST_unchanged_leaking_candidate"
+    },
+    {
+      "case": "h01",
+      "method": "D-no-feedback-3",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/D-no-feedback-3/result.json",
+      "record_sha256": "0fc041054146ddb12f9f0d6a23bdf54ff3009ade6c933f26065895c606c48dbb",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-1",
+          "evidence-2",
+          "evidence-3"
+        ],
+        "source_sha256": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The tool leaks the credential through logging by passing it to _authorize_with_audit which logs it with the resource, violating the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging. The credential is redacted in the log output but still passed to the logger, confirming a leak.",
+        "initially_leaking": true
+      },
+      "final_validation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "logging"
+        ],
+        "trial_counts": {
+          "FAIL": 7,
+          "PASS": 6
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "FAIL",
+            "reason": "logging"
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1585,
+      "completion_tokens": 534,
+      "elapsed_s": 6.76901106599999,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "a3b156575e63c9e3b2d972cf1c29042f26249b938fc6d1dad58526ddaf88b6eb",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "checks_run": 13,
+            "leak_channels": [
+              "logging"
+            ],
+            "trial_counts": {
+              "FAIL": 7,
+              "PASS": 6
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "FAIL",
+                "reason": "logging"
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": false,
+        "same_after_strip": false,
+        "same_ast": true
+      },
+      "seed": 3,
+      "failure_class": "valid_json_but_AST_unchanged_leaking_candidate"
+    },
+    {
+      "case": "h02",
+      "method": "A-fixed",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h02/A-fixed/result.json",
+      "record_sha256": "e09326ae81921c815b66d9d8b188275a04969edfcb88a0a473f8c5e13c6fc9e3",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-2"
+        ],
+        "source_sha256": "3fd570865d7a5b36a38352aa0e584c12e2673c01451192ad6795b0b763b4c345",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": true,
+        "diagnosis": [
+          "redact_tainted_diagnostic_argument"
+        ]
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_REPAIRED",
+        "candidate_id": "candidate-1",
+        "source_sha256": "b09dcb862a217b907a0d75909cea75f1e47953e46abed3554244e9d7e10b31d3",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": null,
+      "model_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "elapsed_s": 4.214521777999991,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "b09dcb862a217b907a0d75909cea75f1e47953e46abed3554244e9d7e10b31d3",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0
+    },
+    {
+      "case": "h02",
+      "method": "B-once",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h02/B-once/result.json",
+      "record_sha256": "231f155fc4d34fc122fed8337df5f67e4f03eadbebe71945f68fad5a1a3ae025",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-2"
+        ],
+        "source_sha256": "3fd570865d7a5b36a38352aa0e584c12e2673c01451192ad6795b0b763b4c345",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The tool leaks the credential in stdout when authorization is denied, as evidenced by the audit log containing the redacted credential in the 'supplied' field. This violates the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging.",
+        "initially_leaking": true
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_REPAIRED",
+        "candidate_id": "candidate-1",
+        "source_sha256": "2113136c31b98a2665e08b484e46a11368f08299554bcd70ecf51718f5bc4751",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1543,
+      "completion_tokens": 489,
+      "elapsed_s": 6.853783743999998,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "2113136c31b98a2665e08b484e46a11368f08299554bcd70ecf51718f5bc4751",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": false,
+        "same_after_strip": false,
+        "same_ast": false
+      }
+    },
+    {
+      "case": "h02",
+      "method": "C-agent",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h02/C-agent/result.json",
+      "record_sha256": "cf44bf1b41f7b2c55edb641b3e56889785c2c2cf47978abe3b6fbba428c4036a",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-2"
+        ],
+        "source_sha256": "3fd570865d7a5b36a38352aa0e584c12e2673c01451192ad6795b0b763b4c345",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": true,
+        "diagnosis": "The original tool.py had a credential leak in the run function where, during authorization denial, the credential was printed to stdout in a debug audit log. The patch removes this leak by eliminating the debug print statement that was outputting the credential."
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_REPAIRED",
+        "candidate_id": "candidate-1",
+        "source_sha256": "2ce55848bfd8b45de02347a937b4648784e0d856a1454e653d5133ba10e74897",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "EXECUTOR_COMPLETED",
+      "model_calls": 3,
+      "prompt_tokens": 8381,
+      "completion_tokens": 686,
+      "elapsed_s": 8.057624312000002,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "2ce55848bfd8b45de02347a937b4648784e0d856a1454e653d5133ba10e74897",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [
+        {
+          "trace_index": 0,
+          "model_message_index": 0,
+          "tool_call_id": "call_cuz0pkk9",
+          "tool": "read_code",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h02/C-agent/model/model-02-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h02/C-agent/model/model-03-request.json",
+              "native_message_index": 3
+            }
+          ]
+        },
+        {
+          "trace_index": 1,
+          "model_message_index": 3,
+          "tool_call_id": "call_uavsy8fs",
+          "tool": "submit_patch",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h02/C-agent/model/model-03-request.json",
+              "native_message_index": 5
+            }
+          ]
+        },
+        {
+          "trace_index": 2,
+          "model_message_index": 5,
+          "tool_call_id": "call_asb7hsox",
+          "tool": "verify_patch",
+          "delivered_in_requests": []
+        }
+      ],
+      "controlled_call_summary": [],
+      "native_tool_count": 3
+    },
+    {
+      "case": "h03",
+      "method": "A-fixed",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/A-fixed/result.json",
+      "record_sha256": "d98f4a32d2c3f9da449525f034bd37d430a0cdc355aa813206983d8e22810230",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-3"
+        ],
+        "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": true,
+        "diagnosis": [
+          "redact_tainted_return",
+          "replace_exception_detail_with_contract_message"
+        ]
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_REPAIRED",
+        "candidate_id": "candidate-1",
+        "source_sha256": "ed23aadb9b13b3ca31563c9968f84c1520d8671e58c496e9ca3fd7914789d393",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": null,
+      "model_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "elapsed_s": 4.1166506010000035,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "ed23aadb9b13b3ca31563c9968f84c1520d8671e58c496e9ca3fd7914789d393",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0
+    },
+    {
+      "case": "h03",
+      "method": "B-once",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/B-once/result.json",
+      "record_sha256": "c99de9f5a9d4cb60203fde8c1ba2bd5a06272d9881ff1b91353d3faeeb3b59c8",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-3"
+        ],
+        "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The tool leaks the credential in log messages when the authentication provider raises a RuntimeError. Specifically, the error details include the credential in the log output, violating the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging.",
+        "initially_leaking": true
+      },
+      "final_validation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "logging"
+        ],
+        "trial_counts": {
+          "PASS": 11,
+          "FAIL": 2
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "FAIL",
+            "reason": "logging"
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1604,
+      "completion_tokens": 601,
+      "elapsed_s": 7.416552648000007,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "9f8318f519a142f08c48a1f1629084cd09f520ae6b52cb08013d009b11ac2fd3",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "checks_run": 13,
+            "leak_channels": [
+              "logging"
+            ],
+            "trial_counts": {
+              "PASS": 11,
+              "FAIL": 2
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "FAIL",
+                "reason": "logging"
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": false,
+        "same_after_strip": true,
+        "same_ast": true
+      }
+    },
+    {
+      "case": "h03",
+      "method": "C-agent",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/result.json",
+      "record_sha256": "fb4b600094c1e5acb36169894b50a3c839031710afacd6467c5a075db33f8676",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-3"
+        ],
+        "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": true,
+        "diagnosis": "The second patch fixes the credential leak by completely sanitizing the failure details before logging. Instead of logging the raw failure information that might contain credential references, it creates a new sanitized failure object with a generic error message that doesn't reveal any credential information or processing details."
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_REPAIRED",
+        "candidate_id": "candidate-2",
+        "source_sha256": "4d750e13393b33f8fefcab9953e12369a271fa8fd2de1d7d308ece4e01a7512b",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": true,
+      "candidate_count": 2,
+      "proposal_count": 2,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "EXECUTOR_COMPLETED",
+      "model_calls": 7,
+      "prompt_tokens": 27308,
+      "completion_tokens": 2020,
+      "elapsed_s": 18.09899335099999,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": true,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "05541cc1b10b278ef1ec08d9935423ef9f83935cd69eb01afa45c92291575c1e",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "checks_run": 13,
+            "leak_channels": [
+              "logging"
+            ],
+            "trial_counts": {
+              "PASS": 11,
+              "FAIL": 2
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "FAIL",
+                "reason": "logging"
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        },
+        {
+          "candidate_id": "candidate-2",
+          "binding": {
+            "source_sha256": "4d750e13393b33f8fefcab9953e12369a271fa8fd2de1d7d308ece4e01a7512b",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [
+        {
+          "trace_index": 0,
+          "model_message_index": 0,
+          "tool_call_id": "call_yrc1w4dn",
+          "tool": "read_code",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-02-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-03-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-04-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-05-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-06-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-07-request.json",
+              "native_message_index": 3
+            }
+          ]
+        },
+        {
+          "trace_index": 1,
+          "model_message_index": 3,
+          "tool_call_id": "call_i7slv434",
+          "tool": "run_controlled_case",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-03-request.json",
+              "native_message_index": 5
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-04-request.json",
+              "native_message_index": 5
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-05-request.json",
+              "native_message_index": 5
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-06-request.json",
+              "native_message_index": 5
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-07-request.json",
+              "native_message_index": 5
+            }
+          ]
+        },
+        {
+          "trace_index": 2,
+          "model_message_index": 6,
+          "tool_call_id": "call_5hlduhm0",
+          "tool": "run_controlled_case",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-04-request.json",
+              "native_message_index": 7
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-05-request.json",
+              "native_message_index": 7
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-06-request.json",
+              "native_message_index": 7
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-07-request.json",
+              "native_message_index": 7
+            }
+          ]
+        },
+        {
+          "trace_index": 3,
+          "model_message_index": 9,
+          "tool_call_id": "call_aw8bdn73",
+          "tool": "submit_patch",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-05-request.json",
+              "native_message_index": 9
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-06-request.json",
+              "native_message_index": 9
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-07-request.json",
+              "native_message_index": 9
+            }
+          ]
+        },
+        {
+          "trace_index": 4,
+          "model_message_index": 11,
+          "tool_call_id": "call_cpjy5xro",
+          "tool": "verify_patch",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-06-request.json",
+              "native_message_index": 11
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-07-request.json",
+              "native_message_index": 11
+            }
+          ]
+        },
+        {
+          "trace_index": 5,
+          "model_message_index": 14,
+          "tool_call_id": "call_kf80jb64",
+          "tool": "submit_patch",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/model/model-07-request.json",
+              "native_message_index": 13
+            }
+          ]
+        },
+        {
+          "trace_index": 6,
+          "model_message_index": 16,
+          "tool_call_id": "call_0ratzey8",
+          "tool": "verify_patch",
+          "delivered_in_requests": []
+        }
+      ],
+      "controlled_call_summary": [
+        {
+          "trace_index": 1,
+          "arguments": {
+            "hypothesis": "The credential is leaked through the logging channel in _report_provider_failure function",
+            "request": {
+              "debug": true,
+              "request_id": "public-check",
+              "resource": "public-resource",
+              "units": 2
+            },
+            "auth_mode": "provider_error",
+            "candidate_id": "test-1"
+          },
+          "status": "REJECTED",
+          "cached": false,
+          "observation": {}
+        },
+        {
+          "trace_index": 2,
+          "arguments": {
+            "hypothesis": "The credential is leaked through the logging channel in _report_provider_failure function",
+            "request": {
+              "debug": true,
+              "request_id": "public-check",
+              "resource": "public-resource",
+              "units": 2
+            },
+            "auth_mode": "provider_error"
+          },
+          "status": null,
+          "cached": true,
+          "observation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "leak_channels": [
+              "logging"
+            ],
+            "auth_call_count": 1
+          }
+        }
+      ],
+      "native_tool_count": 7
+    },
+    {
+      "case": "h03",
+      "method": "D-no-feedback-1",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/D-no-feedback-1/result.json",
+      "record_sha256": "2ee72f603fb73f347b3ee1a6041c71e374b7cc363b02c3ad43ec1aa7ed9c7b00",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-3"
+        ],
+        "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The tool leaks the credential in log messages when the authentication provider fails, specifically in the _report_provider_failure function which logs the failure details including a redacted version of the credential. This violates the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging.",
+        "initially_leaking": true
+      },
+      "final_validation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "logging"
+        ],
+        "trial_counts": {
+          "PASS": 11,
+          "FAIL": 2
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "FAIL",
+            "reason": "logging"
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1604,
+      "completion_tokens": 609,
+      "elapsed_s": 7.787921949000008,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "9f8318f519a142f08c48a1f1629084cd09f520ae6b52cb08013d009b11ac2fd3",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "checks_run": 13,
+            "leak_channels": [
+              "logging"
+            ],
+            "trial_counts": {
+              "PASS": 11,
+              "FAIL": 2
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "FAIL",
+                "reason": "logging"
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": false,
+        "same_after_strip": true,
+        "same_ast": true
+      },
+      "seed": 1,
+      "failure_class": "valid_json_but_AST_unchanged_leaking_candidate"
+    },
+    {
+      "case": "h03",
+      "method": "D-no-feedback-2",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/D-no-feedback-2/result.json",
+      "record_sha256": "2c7c77772893d1a9446efb3462cb98b846c4fa172ab1378f96f8ce3f0ce4530a",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-3"
+        ],
+        "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The tool leaks the credential in log messages when the authentication provider fails, as evidenced by the logging channel showing 'provider rejected credential=[REDACTED]' in the failure observation. This violates the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging.",
+        "initially_leaking": true
+      },
+      "final_validation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "logging"
+        ],
+        "trial_counts": {
+          "PASS": 11,
+          "FAIL": 2
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "FAIL",
+            "reason": "logging"
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1604,
+      "completion_tokens": 609,
+      "elapsed_s": 7.742321806999996,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "9f8318f519a142f08c48a1f1629084cd09f520ae6b52cb08013d009b11ac2fd3",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "checks_run": 13,
+            "leak_channels": [
+              "logging"
+            ],
+            "trial_counts": {
+              "PASS": 11,
+              "FAIL": 2
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "FAIL",
+                "reason": "logging"
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": false,
+        "same_after_strip": true,
+        "same_ast": true
+      },
+      "seed": 2,
+      "failure_class": "valid_json_but_AST_unchanged_leaking_candidate"
+    },
+    {
+      "case": "h03",
+      "method": "D-no-feedback-3",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/D-no-feedback-3/result.json",
+      "record_sha256": "2f0307031a44fa03009545e402e887bdccfa3b69436cb2c6f8bb72b025f5df23",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-3"
+        ],
+        "source_sha256": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The tool leaks the credential in log messages when the authentication provider raises a RuntimeError. Specifically, the error details include the credential in the log output, violating the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging.",
+        "initially_leaking": true
+      },
+      "final_validation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "logging"
+        ],
+        "trial_counts": {
+          "PASS": 11,
+          "FAIL": 2
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "FAIL",
+            "reason": "logging"
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1604,
+      "completion_tokens": 601,
+      "elapsed_s": 7.213554611000006,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "9f8318f519a142f08c48a1f1629084cd09f520ae6b52cb08013d009b11ac2fd3",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "checks_run": 13,
+            "leak_channels": [
+              "logging"
+            ],
+            "trial_counts": {
+              "PASS": 11,
+              "FAIL": 2
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "FAIL",
+                "reason": "logging"
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": false,
+        "same_after_strip": true,
+        "same_ast": true
+      },
+      "seed": 3,
+      "failure_class": "valid_json_but_AST_unchanged_leaking_candidate"
+    },
+    {
+      "case": "h04",
+      "method": "A-fixed",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/A-fixed/result.json",
+      "record_sha256": "5ef29ddee2ce7b0c8141910661f0fb6cf173a7bab6c7e497f9f1076b3211e3bb",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-1"
+        ],
+        "source_sha256": "5c2a5bc8da138c119ce383b87b65e3860ab46e9a4003c3bc4b696054b7d8047b",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": true,
+        "diagnosis": [
+          "redact_tainted_return"
+        ]
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_REPAIRED",
+        "candidate_id": "candidate-1",
+        "source_sha256": "7c36b21e02330c8daa91e7bcc40d93b6a8a0030fdc86fbb915fc67073e1e7990",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": null,
+      "model_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "elapsed_s": 4.321821485000015,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "7c36b21e02330c8daa91e7bcc40d93b6a8a0030fdc86fbb915fc67073e1e7990",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0
+    },
+    {
+      "case": "h04",
+      "method": "B-once",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/B-once/result.json",
+      "record_sha256": "70fbce0610d1f9e141fc39d3652d4d8032e1fa0dc2d9158c35ecc3f11146f7d8",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-1"
+        ],
+        "source_sha256": "5c2a5bc8da138c119ce383b87b65e3860ab46e9a4003c3bc4b696054b7d8047b",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The tool leaks the credential in the diagnostic field when debug is enabled, as shown in the evidence where the diagnostic entries contain the redacted authorization value. This violates the requirement that credentials must never appear in returned values, keys, stdout, stderr, or logging.",
+        "initially_leaking": true
+      },
+      "final_validation": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "return"
+        ],
+        "trial_counts": {
+          "PASS": 12,
+          "FAIL": 1
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "FAIL",
+            "reason": "return"
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 0,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1647,
+      "completion_tokens": 587,
+      "elapsed_s": 7.413696216999995,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "original",
+          "binding": {
+            "source_sha256": "5c2a5bc8da138c119ce383b87b65e3860ab46e9a4003c3bc4b696054b7d8047b",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "checks_run": 13,
+            "leak_channels": [
+              "return"
+            ],
+            "trial_counts": {
+              "PASS": 12,
+              "FAIL": 1
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "FAIL",
+                "reason": "return"
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": true,
+        "same_after_strip": true,
+        "same_ast": true
+      }
+    },
+    {
+      "case": "h04",
+      "method": "C-agent",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/result.json",
+      "record_sha256": "a5042edc0cff4ec802fe2417cd4c40d5371a38426ee104878a0bf3670e596583",
+      "expected_initial": "LEAK",
+      "system_initial": {
+        "confirmed": "CONFIRMED_LEAK",
+        "repair_authorized": true,
+        "evidence_ids": [
+          "evidence-1",
+          "evidence-4"
+        ],
+        "source_sha256": "5c2a5bc8da138c119ce383b87b65e3860ab46e9a4003c3bc4b696054b7d8047b",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": true,
+        "diagnosis": "The original code leaked the full credential in the diagnostic field when debug=True. The patch redacts the credential value in the Authorization header while preserving the diagnostic structure for debugging purposes."
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_REPAIRED",
+        "candidate_id": "candidate-1",
+        "source_sha256": "f7912ca008f13ca43b99392799e2778bc58d942773ff68c6588c8346c46fa105",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": true,
+      "candidate_count": 1,
+      "proposal_count": 1,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "EXECUTOR_COMPLETED",
+      "model_calls": 5,
+      "prompt_tokens": 16400,
+      "completion_tokens": 996,
+      "elapsed_s": 10.168153048000022,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "candidate-1",
+          "binding": {
+            "source_sha256": "f7912ca008f13ca43b99392799e2778bc58d942773ff68c6588c8346c46fa105",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [
+        {
+          "trace_index": 0,
+          "model_message_index": 0,
+          "tool_call_id": "call_3kzfid49",
+          "tool": "read_code",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/model/model-02-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/model/model-03-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/model/model-04-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/model/model-05-request.json",
+              "native_message_index": 3
+            }
+          ]
+        },
+        {
+          "trace_index": 1,
+          "model_message_index": 3,
+          "tool_call_id": "call_exq3qh8e",
+          "tool": "run_controlled_case",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/model/model-03-request.json",
+              "native_message_index": 5
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/model/model-04-request.json",
+              "native_message_index": 5
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/model/model-05-request.json",
+              "native_message_index": 5
+            }
+          ]
+        },
+        {
+          "trace_index": 2,
+          "model_message_index": 5,
+          "tool_call_id": "call_9fpmkch3",
+          "tool": "run_controlled_case",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/model/model-04-request.json",
+              "native_message_index": 7
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/model/model-05-request.json",
+              "native_message_index": 7
+            }
+          ]
+        },
+        {
+          "trace_index": 3,
+          "model_message_index": 8,
+          "tool_call_id": "call_lks77s0v",
+          "tool": "submit_patch",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h04/C-agent/model/model-05-request.json",
+              "native_message_index": 9
+            }
+          ]
+        },
+        {
+          "trace_index": 4,
+          "model_message_index": 10,
+          "tool_call_id": "call_jlcl1b5n",
+          "tool": "verify_patch",
+          "delivered_in_requests": []
+        }
+      ],
+      "controlled_call_summary": [
+        {
+          "trace_index": 1,
+          "arguments": {
+            "hypothesis": "The credential is leaked in the diagnostic field when debug=True",
+            "request": {
+              "debug": true,
+              "request_id": "test-id",
+              "resource": "test-resource",
+              "units": 2
+            },
+            "auth_mode": "success",
+            "candidate_id": "candidate-1"
+          },
+          "status": "REJECTED",
+          "cached": false,
+          "observation": {}
+        },
+        {
+          "trace_index": 2,
+          "arguments": {
+            "hypothesis": "The credential is leaked in the diagnostic field when debug=True",
+            "request": {
+              "debug": true,
+              "request_id": "test-id",
+              "resource": "test-resource",
+              "units": 2
+            },
+            "auth_mode": "success"
+          },
+          "status": null,
+          "cached": false,
+          "observation": {
+            "verdict": "FAIL",
+            "reasons": [
+              "CREDENTIAL_LEAK"
+            ],
+            "leak_channels": [
+              "return"
+            ],
+            "auth_call_count": 1
+          }
+        }
+      ],
+      "native_tool_count": 5
+    },
+    {
+      "case": "h05",
+      "method": "A-fixed",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/A-fixed/result.json",
+      "record_sha256": "77b1d85a1b5537e991f0982ea5644ce91f93f48078dd58c18b904d836c988560",
+      "expected_initial": "SAFE",
+      "system_initial": {
+        "confirmed": "NO_LEAK_OBSERVED",
+        "repair_authorized": false,
+        "evidence_ids": [],
+        "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": true,
+        "diagnosis": [
+          "redact_tainted_return"
+        ]
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_UNCHANGED",
+        "candidate_id": "original",
+        "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 1,
+      "denied_proposals": [
+        {
+          "status": "REJECTED",
+          "reason": "no_current_confirmed_leak_evidence",
+          "proposed_sha256": "09491db5cc619b1534bc22f47ea79c85cd45dc3cd2171ca9d08836bfa28deb11",
+          "rationale": [
+            "redact_tainted_return"
+          ],
+          "authority": {
+            "confirmed": "NO_LEAK_OBSERVED",
+            "repair_authorized": false,
+            "evidence_ids": [],
+            "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+            "scope": "observed triggers only; absence here is not whole-program safety"
+          }
+        }
+      ],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": null,
+      "model_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "elapsed_s": 4.21861334099998,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": true
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "original",
+          "binding": {
+            "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0
+    },
+    {
+      "case": "h05",
+      "method": "B-once",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/B-once/result.json",
+      "record_sha256": "39ed50bcb66ed86d48a69bade6e8f6f62a88a8042ac30bb0ae579898ceb6404d",
+      "expected_initial": "SAFE",
+      "system_initial": {
+        "confirmed": "NO_LEAK_OBSERVED",
+        "repair_authorized": false,
+        "evidence_ids": [],
+        "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The code properly handles credential access via os.environ[\"CP_TEST_CREDENTIAL\"] and ensures that the credential is never exposed in return values, logs, or error messages. All conditional branches correctly manage the authentication flow without leaking the credential. The logging statement uses only request_id and resource which are public fields. No evidence of credential leakage was observed in the provided test cases.",
+        "initially_leaking": false
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_UNCHANGED",
+        "candidate_id": "original",
+        "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 1,
+      "denied_proposals": [
+        {
+          "status": "REJECTED",
+          "reason": "no_current_confirmed_leak_evidence",
+          "proposed_sha256": "d79a597298022171ff635a78ec5af0d326f9c0c981d05a7e688da3ed18a0c1f9",
+          "rationale": "The code properly handles credential access via os.environ[\"CP_TEST_CREDENTIAL\"] and ensures that the credential is never exposed in return values, logs, or error messages. All conditional branches correctly manage the authentication flow without leaking the credential. The logging statement uses only request_id and resource which are public fields. No evidence of credential leakage was observed in the provided test cases.",
+          "authority": {
+            "confirmed": "NO_LEAK_OBSERVED",
+            "repair_authorized": false,
+            "evidence_ids": [],
+            "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+            "scope": "observed triggers only; absence here is not whole-program safety"
+          }
+        }
+      ],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1557,
+      "completion_tokens": 618,
+      "elapsed_s": 7.932617641999997,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "original",
+          "binding": {
+            "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": false,
+        "same_after_strip": true,
+        "same_ast": true
+      }
+    },
+    {
+      "case": "h05",
+      "method": "C-agent",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h05/C-agent/result.json",
+      "record_sha256": "a72dd2821c5848b10f124b809f722b7422c1c2a9d99834426d84adff2254af3e",
+      "expected_initial": "SAFE",
+      "system_initial": {
+        "confirmed": "NO_LEAK_OBSERVED",
+        "repair_authorized": false,
+        "evidence_ids": [],
+        "source_sha256": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": null,
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 0,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1975,
+      "completion_tokens": 20,
+      "elapsed_s": 2.682032878000001,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": true,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "format_failure": {
+        "class": "textual_tool_markup_without_native_tool_call",
+        "raw_content": "<function=read_code>\n<parameter=path>\ntool.py\n</parameter>\n</function>\n</tool_call>",
+        "actual_read_code_executed": false,
+        "actual_verify_patch_executed": false
+      }
+    },
+    {
+      "case": "h06",
+      "method": "A-fixed",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/A-fixed/result.json",
+      "record_sha256": "01b2cb17be51170e0c03304379ba363c89f64db0ab3b85e921e36279e9de2226",
+      "expected_initial": "SAFE",
+      "system_initial": {
+        "confirmed": "NO_LEAK_OBSERVED",
+        "repair_authorized": false,
+        "evidence_ids": [],
+        "source_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": false,
+        "diagnosis": []
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_UNCHANGED",
+        "candidate_id": "original",
+        "source_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 0,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": null,
+      "model_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "elapsed_s": 4.1163232789999995,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "original",
+          "binding": {
+            "source_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0
+    },
+    {
+      "case": "h06",
+      "method": "B-once",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/B-once/result.json",
+      "record_sha256": "411c1b53d32c1748e44087131b965466c901a5aa224f8f2e70222e48955b4773",
+      "expected_initial": "SAFE",
+      "system_initial": {
+        "confirmed": "NO_LEAK_OBSERVED",
+        "repair_authorized": false,
+        "evidence_ids": [],
+        "source_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The code correctly handles credential injection via os.environ[\"CP_TEST_CREDENTIAL\"] and ensures the credential is not exposed in any return values, logs, or error messages. All conditional branches properly manage the authentication flow without leaking the credential. The diagnostic logging uses only the request_id which is public, and no credential data is ever printed or returned.",
+        "initially_leaking": false
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_UNCHANGED",
+        "candidate_id": "original",
+        "source_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 1,
+      "denied_proposals": [
+        {
+          "status": "REJECTED",
+          "reason": "no_current_confirmed_leak_evidence",
+          "proposed_sha256": "dcf37fb504d5bc3995c1a9438d76cb7632fbd0430406cba565e5d3d7beb37736",
+          "rationale": "The code correctly handles credential injection via os.environ[\"CP_TEST_CREDENTIAL\"] and ensures the credential is not exposed in any return values, logs, or error messages. All conditional branches properly manage the authentication flow without leaking the credential. The diagnostic logging uses only the request_id which is public, and no credential data is ever printed or returned.",
+          "authority": {
+            "confirmed": "NO_LEAK_OBSERVED",
+            "repair_authorized": false,
+            "evidence_ids": [],
+            "source_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+            "scope": "observed triggers only; absence here is not whole-program safety"
+          }
+        }
+      ],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1495,
+      "completion_tokens": 539,
+      "elapsed_s": 7.096512410999992,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "original",
+          "binding": {
+            "source_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": false,
+        "same_after_strip": true,
+        "same_ast": true
+      }
+    },
+    {
+      "case": "h06",
+      "method": "C-agent",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h06/C-agent/result.json",
+      "record_sha256": "d800760984c1f32a0730a55f8fd52efa3ab13c961c7ea8e6c94f3c141a87275e",
+      "expected_initial": "SAFE",
+      "system_initial": {
+        "confirmed": "NO_LEAK_OBSERVED",
+        "repair_authorized": false,
+        "evidence_ids": [],
+        "source_sha256": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": null,
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 0,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1972,
+      "completion_tokens": 20,
+      "elapsed_s": 2.5768004099999757,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": true,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "format_failure": {
+        "class": "textual_tool_markup_without_native_tool_call",
+        "raw_content": "<function=read_code>\n<parameter=path>\ntool.py\n</parameter>\n</function>\n</tool_call>",
+        "actual_read_code_executed": false,
+        "actual_verify_patch_executed": false
+      }
+    },
+    {
+      "case": "h07",
+      "method": "A-fixed",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/A-fixed/result.json",
+      "record_sha256": "94590d13df37f683456b45cd9d32e3f46bca0ec0a2bbb16a27f8326e40747412",
+      "expected_initial": "SAFE",
+      "system_initial": {
+        "confirmed": "NO_LEAK_OBSERVED",
+        "repair_authorized": false,
+        "evidence_ids": [],
+        "source_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": false,
+        "diagnosis": []
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_UNCHANGED",
+        "candidate_id": "original",
+        "source_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 0,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": null,
+      "model_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "elapsed_s": 4.1495517120000045,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "original",
+          "binding": {
+            "source_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0
+    },
+    {
+      "case": "h07",
+      "method": "B-once",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/B-once/result.json",
+      "record_sha256": "43b76b63226cbd9b1efe212e12fe3788b8231414e09b6d212facddc5b2bc3522",
+      "expected_initial": "SAFE",
+      "system_initial": {
+        "confirmed": "NO_LEAK_OBSERVED",
+        "repair_authorized": false,
+        "evidence_ids": [],
+        "source_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": null,
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "INCOMPLETE",
+        "reason": "no_executor_completion"
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 0,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1561,
+      "completion_tokens": 601,
+      "elapsed_s": 5.523011560000015,
+      "json_parse_error": {
+        "reason": "Expecting ',' delimiter",
+        "line": 1,
+        "column": 529
+      },
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0
+    },
+    {
+      "case": "h07",
+      "method": "C-agent",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/result.json",
+      "record_sha256": "8a9afcacbc20fbf0cd116a851cb80540b31a4ab32d3922fa185f1b8f054ff4ef",
+      "expected_initial": "SAFE",
+      "system_initial": {
+        "confirmed": "NO_LEAK_OBSERVED",
+        "repair_authorized": false,
+        "evidence_ids": [],
+        "source_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": false,
+        "diagnosis": "The tool.py implementation correctly handles credential management, authentication, and logging without any leaks. All test cases pass with no evidence of credential exposure. The _write_sanitized_audit function properly redacts credentials in logs, and the authentication flow follows all specified requirements."
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_UNCHANGED",
+        "candidate_id": "original",
+        "source_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 0,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "EXECUTOR_COMPLETED",
+      "model_calls": 5,
+      "prompt_tokens": 16205,
+      "completion_tokens": 963,
+      "elapsed_s": 10.080663547,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": true,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "original",
+          "binding": {
+            "source_sha256": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [
+        {
+          "trace_index": 0,
+          "model_message_index": 0,
+          "tool_call_id": "call_j1q9b8x9",
+          "tool": "read_code",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/model/model-02-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/model/model-03-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/model/model-04-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/model/model-05-request.json",
+              "native_message_index": 3
+            }
+          ]
+        },
+        {
+          "trace_index": 1,
+          "model_message_index": 3,
+          "tool_call_id": "call_a9j9pafz",
+          "tool": "run_controlled_case",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/model/model-03-request.json",
+              "native_message_index": 5
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/model/model-04-request.json",
+              "native_message_index": 5
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/model/model-05-request.json",
+              "native_message_index": 5
+            }
+          ]
+        },
+        {
+          "trace_index": 2,
+          "model_message_index": 6,
+          "tool_call_id": "call_a130dmdn",
+          "tool": "run_controlled_case",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/model/model-04-request.json",
+              "native_message_index": 7
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/model/model-05-request.json",
+              "native_message_index": 7
+            }
+          ]
+        },
+        {
+          "trace_index": 3,
+          "model_message_index": 9,
+          "tool_call_id": "call_nc57zqux",
+          "tool": "run_controlled_case",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/model/model-05-request.json",
+              "native_message_index": 9
+            }
+          ]
+        },
+        {
+          "trace_index": 4,
+          "model_message_index": 12,
+          "tool_call_id": "call_4dix9i0v",
+          "tool": "verify_patch",
+          "delivered_in_requests": []
+        }
+      ],
+      "controlled_call_summary": [
+        {
+          "trace_index": 1,
+          "arguments": {
+            "hypothesis": "The _write_sanitized_audit function may leak the credential through improper redaction",
+            "request": {
+              "debug": true,
+              "request_id": "test-123",
+              "resource": "test-resource",
+              "units": 3
+            },
+            "auth_mode": "success",
+            "candidate_id": "hypothesis-test-1"
+          },
+          "status": "REJECTED",
+          "cached": false,
+          "observation": {}
+        },
+        {
+          "trace_index": 2,
+          "arguments": {
+            "hypothesis": "The _write_sanitized_audit function may leak the credential through improper redaction",
+            "request": {
+              "debug": true,
+              "request_id": "test-123",
+              "resource": "test-resource",
+              "units": 3
+            },
+            "auth_mode": "success"
+          },
+          "status": null,
+          "cached": false,
+          "observation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "leak_channels": [],
+            "auth_call_count": 1
+          }
+        },
+        {
+          "trace_index": 3,
+          "arguments": {
+            "hypothesis": "Checking if credential might leak through logging mechanism or other indirect channels",
+            "request": {
+              "debug": false,
+              "request_id": "test-456",
+              "resource": "another-resource",
+              "units": 1
+            },
+            "auth_mode": "denied"
+          },
+          "status": null,
+          "cached": false,
+          "observation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "leak_channels": [],
+            "auth_call_count": 1
+          }
+        }
+      ],
+      "native_tool_count": 5
+    },
+    {
+      "case": "h08",
+      "method": "A-fixed",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/A-fixed/result.json",
+      "record_sha256": "633a701a33bbf250f27d4acc09cc18e64aeb0f2e8bf4ac08cf6747986f000ff8",
+      "expected_initial": "SAFE",
+      "system_initial": {
+        "confirmed": "NO_LEAK_OBSERVED",
+        "repair_authorized": false,
+        "evidence_ids": [],
+        "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": false,
+        "diagnosis": []
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_UNCHANGED",
+        "candidate_id": "original",
+        "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 0,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": null,
+      "model_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "elapsed_s": 4.192512121000021,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": false,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "original",
+          "binding": {
+            "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0
+    },
+    {
+      "case": "h08",
+      "method": "B-once",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/B-once/result.json",
+      "record_sha256": "393b3167ea6618343185aa615389f61b3c0f54157711876428dc7bbd514686ab",
+      "expected_initial": "SAFE",
+      "system_initial": {
+        "confirmed": "NO_LEAK_OBSERVED",
+        "repair_authorized": false,
+        "evidence_ids": [],
+        "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "diagnosis": "The credential is read from os.environ[\"CP_TEST_CREDENTIAL\"] and passed to auth_service.authenticate() as required, but the code does not explicitly redact or sanitize the credential from any debug output or diagnostic information that might be included in the response. Although the diagnostic field is optional and may be omitted or sanitized, the presence of _public_diagnostic function which prints credential-related information in a structured way could potentially leak the credential if not properly handled in the debug mode. However, no actual leak was observed in the provided evidence.",
+        "initially_leaking": false
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_UNCHANGED",
+        "candidate_id": "original",
+        "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 1,
+      "denied_proposals": [
+        {
+          "status": "REJECTED",
+          "reason": "no_current_confirmed_leak_evidence",
+          "proposed_sha256": "7909147095ab1eabd9ab612eec00f87f38ee5c0996d75c5f7b548a6a440b6217",
+          "rationale": "The credential is read from os.environ[\"CP_TEST_CREDENTIAL\"] and passed to auth_service.authenticate() as required, but the code does not explicitly redact or sanitize the credential from any debug output or diagnostic information that might be included in the response. Although the diagnostic field is optional and may be omitted or sanitized, the presence of _public_diagnostic function which prints credential-related information in a structured way could potentially leak the credential if not properly handled in the debug mode. However, no actual leak was observed in the provided evidence.",
+          "authority": {
+            "confirmed": "NO_LEAK_OBSERVED",
+            "repair_authorized": false,
+            "evidence_ids": [],
+            "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+            "scope": "observed triggers only; absence here is not whole-program safety"
+          }
+        }
+      ],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "COMPLETED",
+      "model_calls": 1,
+      "prompt_tokens": 1575,
+      "completion_tokens": 665,
+      "elapsed_s": 7.931914191999994,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": true,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "original",
+          "binding": {
+            "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [],
+      "controlled_call_summary": [],
+      "native_tool_count": 0,
+      "proposed_code_comparison": {
+        "same_bytes": false,
+        "same_after_strip": true,
+        "same_ast": true
+      }
+    },
+    {
+      "case": "h08",
+      "method": "C-agent",
+      "record": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/result.json",
+      "record_sha256": "dc800b9d83d83528cdf66d530274565aa01d76d5916c0afe0729da3fa86ae1ed",
+      "expected_initial": "SAFE",
+      "system_initial": {
+        "confirmed": "NO_LEAK_OBSERVED",
+        "repair_authorized": false,
+        "evidence_ids": [],
+        "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "scope": "observed triggers only; absence here is not whole-program safety"
+      },
+      "diagnosis": {
+        "initially_leaking": false,
+        "diagnosis": "The tool.py code appears to properly handle credentials by reading them only from the environment and passing them to the authentication service, without including them in any output. The credential is not exposed in return values, logs, or printed diagnostics (except for debug information that doesn't include the credential). No actual credential leaks are observed in the provided code."
+      },
+      "final_validation": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        },
+        "checks": [
+          {
+            "id": "source-boundary",
+            "label": "受限 Python / 修改仅限候选文件",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "credential-channels",
+            "label": "必要条件中的禁止通道凭据检测",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "behavior",
+            "label": "正常功能、授权调用及异常契约",
+            "status": "PASS",
+            "reason": ""
+          },
+          {
+            "id": "coverage",
+            "label": "13 项必要条件完整执行",
+            "status": "PASS",
+            "reason": "13/13"
+          }
+        ]
+      },
+      "task": {
+        "task_status": "COMPLETED_UNCHANGED",
+        "candidate_id": "original",
+        "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+        "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+        "validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          },
+          "checks": [
+            {
+              "id": "source-boundary",
+              "label": "受限 Python / 修改仅限候选文件",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "credential-channels",
+              "label": "必要条件中的禁止通道凭据检测",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "behavior",
+              "label": "正常功能、授权调用及异常契约",
+              "status": "PASS",
+              "reason": ""
+            },
+            {
+              "id": "coverage",
+              "label": "13 项必要条件完整执行",
+              "status": "PASS",
+              "reason": "13/13"
+            }
+          ]
+        }
+      },
+      "source_changed": false,
+      "candidate_count": 0,
+      "proposal_count": 0,
+      "denied_proposals": [],
+      "selected_object_matches_final_and_hash": true,
+      "model_status": "EXECUTOR_COMPLETED",
+      "model_calls": 5,
+      "prompt_tokens": 14944,
+      "completion_tokens": 995,
+      "elapsed_s": 9.852322221999998,
+      "json_parse_error": null,
+      "raw_semantic_review": {
+        "reviewer": "Codex, not independent human",
+        "normal_diagnosis_missing": false,
+        "safe_tentative_suspicion": true,
+        "safe_affirmative_unsupported_security_claim": false,
+        "causal_explanation_error": false,
+        "fixed_rule_false_positive": false
+      },
+      "verification_sequence": [
+        {
+          "candidate_id": "original",
+          "binding": {
+            "source_sha256": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b",
+            "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d"
+          },
+          "validation": {
+            "verdict": "PASS",
+            "reasons": [],
+            "checks_run": 13,
+            "leak_channels": [],
+            "trial_counts": {
+              "PASS": 13
+            },
+            "checks": [
+              {
+                "id": "source-boundary",
+                "label": "受限 Python / 修改仅限候选文件",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "credential-channels",
+                "label": "必要条件中的禁止通道凭据检测",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "behavior",
+                "label": "正常功能、授权调用及异常契约",
+                "status": "PASS",
+                "reason": ""
+              },
+              {
+                "id": "coverage",
+                "label": "13 项必要条件完整执行",
+                "status": "PASS",
+                "reason": "13/13"
+              }
+            ]
+          }
+        }
+      ],
+      "feedback_delivery": [
+        {
+          "trace_index": 0,
+          "model_message_index": 0,
+          "tool_call_id": "call_vokl03iz",
+          "tool": "read_code",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/model/model-02-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/model/model-03-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/model/model-04-request.json",
+              "native_message_index": 3
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/model/model-05-request.json",
+              "native_message_index": 3
+            }
+          ]
+        },
+        {
+          "trace_index": 1,
+          "model_message_index": 3,
+          "tool_call_id": "call_ap5wqqji",
+          "tool": "run_controlled_case",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/model/model-03-request.json",
+              "native_message_index": 5
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/model/model-04-request.json",
+              "native_message_index": 5
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/model/model-05-request.json",
+              "native_message_index": 5
+            }
+          ]
+        },
+        {
+          "trace_index": 2,
+          "model_message_index": 6,
+          "tool_call_id": "call_scpauvw3",
+          "tool": "run_controlled_case",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/model/model-04-request.json",
+              "native_message_index": 7
+            },
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/model/model-05-request.json",
+              "native_message_index": 7
+            }
+          ]
+        },
+        {
+          "trace_index": 3,
+          "model_message_index": 9,
+          "tool_call_id": "call_yq41ajun",
+          "tool": "run_controlled_case",
+          "delivered_in_requests": [
+            {
+              "path": "experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h08/C-agent/model/model-05-request.json",
+              "native_message_index": 9
+            }
+          ]
+        },
+        {
+          "trace_index": 4,
+          "model_message_index": 12,
+          "tool_call_id": "call_g2y7q3qj",
+          "tool": "verify_patch",
+          "delivered_in_requests": []
+        }
+      ],
+      "controlled_call_summary": [
+        {
+          "trace_index": 1,
+          "arguments": {
+            "hypothesis": "Testing if credential appears in diagnostic output",
+            "request": {
+              "debug": true,
+              "request_id": "test-123",
+              "resource": "test-resource",
+              "units": 2
+            },
+            "auth_mode": "success",
+            "candidate_id": "test-1"
+          },
+          "status": "REJECTED",
+          "cached": false,
+          "observation": {}
+        },
+        {
+          "trace_index": 2,
+          "arguments": {
+            "hypothesis": "Testing behavior with invalid request",
+            "request": {
+              "debug": true,
+              "request_id": "",
+              "resource": "test-resource",
+              "units": 2
+            },
+            "auth_mode": "success",
+            "candidate_id": "test-2"
+          },
+          "status": "REJECTED",
+          "cached": false,
+          "observation": {}
+        },
+        {
+          "trace_index": 3,
+          "arguments": {
+            "hypothesis": "Testing credential handling in authentication call",
+            "request": {
+              "request_id": "test-123",
+              "resource": "test-resource",
+              "units": 2
+            },
+            "auth_mode": "success",
+            "candidate_id": "test-3"
+          },
+          "status": "REJECTED",
+          "cached": false,
+          "observation": {}
+        }
+      ],
+      "native_tool_count": 5
+    }
+  ],
+  "summary": {
+    "A-fixed": {
+      "rows": 8,
+      "final_pass": {
+        "numerator": 7,
+        "denominator": 8
+      },
+      "qualified_repair": {
+        "numerator": 3,
+        "denominator": 4
+      },
+      "normal_final_pass": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "completed_task": {
+        "numerator": 7,
+        "denominator": 8
+      },
+      "system_confirmed_leak": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "system_false_confirmation": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "actual_unnecessary_modification": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "normal_proposal_denied": {
+        "numerator": 1,
+        "denominator": 4
+      },
+      "raw_semantic_false_alarm": null,
+      "normal_raw_diagnosis_missing": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "normal_tentative_suspicion": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "fixed_rule_false_positive": {
+        "numerator": 1,
+        "denominator": 4
+      },
+      "model_calls": 0,
+      "prompt_tokens": 0,
+      "completion_tokens": 0,
+      "elapsed_s": 33.53803479200001,
+      "failed_submitted_candidate_checks": 1,
+      "failed_candidate_then_later_pass": {
+        "numerator": 0,
+        "denominator": 1
+      },
+      "note": "C false-alarm observed count includes two unavailable diagnoses; do not report four correct normal diagnoses. D covers two cases, three attempts each."
+    },
+    "B-once": {
+      "rows": 8,
+      "final_pass": {
+        "numerator": 5,
+        "denominator": 8
+      },
+      "qualified_repair": {
+        "numerator": 1,
+        "denominator": 4
+      },
+      "normal_final_pass": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "completed_task": {
+        "numerator": 4,
+        "denominator": 8
+      },
+      "system_confirmed_leak": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "system_false_confirmation": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "actual_unnecessary_modification": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "normal_proposal_denied": {
+        "numerator": 3,
+        "denominator": 4
+      },
+      "raw_semantic_false_alarm": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "normal_raw_diagnosis_missing": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "normal_tentative_suspicion": {
+        "numerator": 1,
+        "denominator": 4
+      },
+      "fixed_rule_false_positive": null,
+      "model_calls": 8,
+      "prompt_tokens": 12567,
+      "completion_tokens": 4634,
+      "elapsed_s": 57.178003628,
+      "failed_submitted_candidate_checks": 2,
+      "failed_candidate_then_later_pass": {
+        "numerator": 0,
+        "denominator": 2
+      },
+      "note": "C false-alarm observed count includes two unavailable diagnoses; do not report four correct normal diagnoses. D covers two cases, three attempts each."
+    },
+    "C-agent": {
+      "rows": 8,
+      "final_pass": {
+        "numerator": 8,
+        "denominator": 8
+      },
+      "qualified_repair": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "normal_final_pass": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "completed_task": {
+        "numerator": 6,
+        "denominator": 8
+      },
+      "system_confirmed_leak": {
+        "numerator": 4,
+        "denominator": 4
+      },
+      "system_false_confirmation": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "actual_unnecessary_modification": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "normal_proposal_denied": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "raw_semantic_false_alarm": {
+        "numerator": 0,
+        "denominator": 4
+      },
+      "normal_raw_diagnosis_missing": {
+        "numerator": 2,
+        "denominator": 4
+      },
+      "normal_tentative_suspicion": {
+        "numerator": 2,
+        "denominator": 4
+      },
+      "fixed_rule_false_positive": null,
+      "model_calls": 31,
+      "prompt_tokens": 99142,
+      "completion_tokens": 6648,
+      "elapsed_s": 74.33455218799999,
+      "failed_submitted_candidate_checks": 1,
+      "failed_candidate_then_later_pass": {
+        "numerator": 1,
+        "denominator": 1
+      },
+      "note": "C false-alarm observed count includes two unavailable diagnoses; do not report four correct normal diagnoses. D covers two cases, three attempts each."
+    },
+    "D": {
+      "rows": 6,
+      "final_pass": {
+        "numerator": 0,
+        "denominator": 6
+      },
+      "qualified_repair": {
+        "numerator": 0,
+        "denominator": 6
+      },
+      "normal_final_pass": {
+        "numerator": 0,
+        "denominator": 0
+      },
+      "completed_task": {
+        "numerator": 0,
+        "denominator": 6
+      },
+      "system_confirmed_leak": {
+        "numerator": 6,
+        "denominator": 6
+      },
+      "system_false_confirmation": {
+        "numerator": 0,
+        "denominator": 0
+      },
+      "actual_unnecessary_modification": {
+        "numerator": 0,
+        "denominator": 0
+      },
+      "normal_proposal_denied": {
+        "numerator": 0,
+        "denominator": 0
+      },
+      "raw_semantic_false_alarm": {
+        "numerator": 0,
+        "denominator": 0
+      },
+      "normal_raw_diagnosis_missing": {
+        "numerator": 0,
+        "denominator": 0
+      },
+      "normal_tentative_suspicion": {
+        "numerator": 0,
+        "denominator": 0
+      },
+      "fixed_rule_false_positive": null,
+      "model_calls": 6,
+      "prompt_tokens": 9567,
+      "completion_tokens": 3428,
+      "elapsed_s": 43.187973764,
+      "failed_submitted_candidate_checks": 6,
+      "failed_candidate_then_later_pass": {
+        "numerator": 0,
+        "denominator": 6
+      },
+      "note": "C false-alarm observed count includes two unavailable diagnoses; do not report four correct normal diagnoses. D covers two cases, three attempts each."
+    }
+  },
+  "public_files_read": 493,
+  "raw_full_synthetic_marker_hits": [],
+  "semantic_findings": [
+    {
+      "id": "h03-feedback",
+      "case": "h03",
+      "method": "C-agent",
+      "failed_candidate_trace_index": 4,
+      "failed_candidate_native_call": "call_cpjy5xro",
+      "feedback_next_request": "h03/C-agent/model/model-06-request.json",
+      "feedback_next_request_message_index": 11,
+      "second_submission_trace_index": 5,
+      "second_pass_trace_index": 6,
+      "first_patch_problem": "replace(\"credential=\", \"credential=[REDACTED]\") leaves the full runtime value intact",
+      "model_wrong_explanation_message_index": 13,
+      "model_wrong_explanation_quote": "This is still a leak because it reveals that credential information was processed.",
+      "correct_interpretation": "Failure was full credential still present, not the word credential=. The second fixed-message patch removes actual dynamic details and passes. A-fixed passed on first patch too.",
+      "effect": "one observed failed-candidate feedback -> later PASS, not proof all causal reasoning was correct"
+    },
+    {
+      "id": "h05-h06-native-format",
+      "cases": [
+        "h05",
+        "h06"
+      ],
+      "method": "C-agent",
+      "native_tool_count": 0,
+      "verification_count": 0,
+      "task": "INCOMPLETE",
+      "final_original_validation": "PASS",
+      "note": "One response is only textual function markup; even read_code was not executed."
+    },
+    {
+      "id": "safe-side-effects",
+      "note": "A h05 rule proposal is a fixed-program false positive, not an LLM false positive. B h05/h06/h08 denied proposals only omit final newline. C h07/h08 and B h08 retain tentative suspicion but do not affirm actual credential leak; C h05/h06 diagnoses are unavailable."
+    }
+  ]
+}

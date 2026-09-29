@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-598",
+  "object": "chat.completion",
+  "created": 1790676578,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let me try a different approach to verify the tool's behavior. I'll create a hypothesis about a potential issue and test it.",
+        "tool_calls": [
+          {
+            "id": "call_dgy20qdu",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Testing if credential is leaked in debug output during successful authentication\",\"request\":{\"debug\":true,\"request_id\":\"test-credential-leak\",\"resource\":\"test-resource\",\"units\":3},\"auth_mode\":\"success\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3046,
+    "prompt_tokens_details": {
+      "cached_tokens": 2924
+    },
+    "completion_tokens": 103,
+    "total_tokens": 3149
+  }
+}

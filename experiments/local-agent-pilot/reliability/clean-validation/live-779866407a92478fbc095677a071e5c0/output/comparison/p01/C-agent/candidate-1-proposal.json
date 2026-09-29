@@ -1,0 +1,15 @@
+{
+  "rationale": "The fix removes the credential from the error message when auth_service raises RuntimeError. \nIn the original code, `str(error)` was being used in the error message, which likely contained the credential.\nThe new code returns a generic error message without any credential information, satisfying the requirement that\nthe credential must never appear in returned values or keys, stdout, stderr, or logging.",
+  "source_sha256": "15021e8201ac09bb73a06b75f669e0c350f8240356e38d6ae0841f3d64db65c1",
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "authorization": {
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true,
+    "evidence_ids": [
+      "evidence-3"
+    ],
+    "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+    "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+    "scope": "observed triggers only; absence here is not whole-program safety"
+  }
+}

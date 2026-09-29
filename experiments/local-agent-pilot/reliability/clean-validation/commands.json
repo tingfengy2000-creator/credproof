@@ -1,0 +1,156 @@
+{
+  "source_commit": "56f40519d10a5e2d3530bac3db77068579397f59",
+  "zip_sha256": "10b4db345de15b74a5fae32270a7bd72c9a01e23e5a8b01f517832183579e355",
+  "manifest_verified": true,
+  "original_checkout_not_on_pythonpath": true,
+  "commands": [
+    {
+      "name": "core",
+      "command": [
+        "C:/Python314/python.exe",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 25.779053300153464
+    },
+    {
+      "name": "agent",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/e/CredProof-local-runtime/review-validation/20260929-agent-01",
+        "--exec",
+        "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "agent_pilot/tests",
+        "-v"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 10.100632699904963
+    },
+    {
+      "name": "client",
+      "command": [
+        "wsl",
+        "-d",
+        "Ubuntu-24.04",
+        "--cd",
+        "/mnt/e/CredProof-local-runtime/review-validation/20260929-agent-01",
+        "--exec",
+        "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+        "-m",
+        "unittest",
+        "agent_pilot.test_model_client",
+        "-v"
+      ],
+      "exit_code": 0,
+      "elapsed_s": 0.7577961999922991
+    },
+    {
+      "name": "accepted",
+      "command": [
+        "C:/Python314/python.exe",
+        "-m",
+        "agent_pilot.bundle",
+        "recheck",
+        "--bundle",
+        "examples/local-agent/accepted",
+        "--output",
+        "runs/clean-validation/accepted.json"
+      ],
+      "exit_code": 0,
+      "fresh": "PASS",
+      "prior": true
+    },
+    {
+      "name": "rejected",
+      "command": [
+        "C:/Python314/python.exe",
+        "-m",
+        "agent_pilot.bundle",
+        "recheck",
+        "--bundle",
+        "examples/local-agent/rejected",
+        "--output",
+        "runs/clean-validation/rejected.json"
+      ],
+      "exit_code": 1,
+      "fresh": "FAIL",
+      "prior": true
+    },
+    {
+      "name": "unchanged",
+      "command": [
+        "C:/Python314/python.exe",
+        "-m",
+        "agent_pilot.bundle",
+        "recheck",
+        "--bundle",
+        "examples/local-agent/unchanged",
+        "--output",
+        "runs/clean-validation/unchanged.json"
+      ],
+      "exit_code": 0,
+      "fresh": "PASS",
+      "prior": true
+    },
+    {
+      "name": "incomplete",
+      "command": [
+        "C:/Python314/python.exe",
+        "-m",
+        "agent_pilot.bundle",
+        "recheck",
+        "--bundle",
+        "examples/local-agent/incomplete",
+        "--output",
+        "runs/clean-validation/incomplete.json"
+      ],
+      "exit_code": 0,
+      "fresh": "PASS",
+      "prior": true
+    },
+    {
+      "name": "stale-pass",
+      "command": [
+        "C:/Python314/python.exe",
+        "-m",
+        "agent_pilot.bundle",
+        "recheck",
+        "--bundle",
+        "examples/local-agent/stale-pass",
+        "--output",
+        "runs/clean-validation/stale-pass.json"
+      ],
+      "exit_code": 0,
+      "fresh": "PASS",
+      "prior": false
+    },
+    {
+      "name": "missing-current",
+      "command": [
+        "C:/Python314/python.exe",
+        "-m",
+        "agent_pilot.bundle",
+        "recheck",
+        "--bundle",
+        "examples/local-agent/missing-current",
+        "--output",
+        "runs/clean-validation/missing-current.json"
+      ],
+      "exit_code": 2,
+      "fresh": "UNKNOWN",
+      "prior": false
+    }
+  ]
+}

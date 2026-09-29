@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "wsl.exe",
+    "-d",
+    "Ubuntu-24.04",
+    "-u",
+    "tingfeng",
+    "--cd",
+    "/mnt/e/CredProof-local-runtime/review-validation/20260929-agent-01",
+    "--exec",
+    "unshare",
+    "--user",
+    "--map-root-user",
+    "--net",
+    "--fork",
+    "/home/tingfeng/credproof-agent-runtime/venv/bin/python",
+    "-m",
+    "agent_pilot.offline_run",
+    "--reliability",
+    "--agent-only",
+    "--cases",
+    "p01",
+    "--output",
+    "/mnt/e/CredProof-local-runtime/review-validation/20260929-agent-01/runs/ui/live-779866407a92478fbc095677a071e5c0/output"
+  ],
+  "started_at": "2026-09-29T10:05:42.573411+00:00"
+}

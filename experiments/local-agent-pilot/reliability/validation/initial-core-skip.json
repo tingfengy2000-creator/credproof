@@ -1,0 +1,16 @@
+{
+  "command": [
+    "C:/Python314/python.exe",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tests",
+    "-v"
+  ],
+  "exit_code": 0,
+  "tests_run": 0,
+  "skipped_classes": 2,
+  "reason": "Pinned real Gitleaks 8.28.0 not available; set CREDPROOF_GITLEAKS. These checks are not replaced by a mock scanner.",
+  "interpretation": "This first setup attempt is not counted as a regression pass; later real runs supply the same previously installed pinned scanner via explicit external-runtime path."
+}

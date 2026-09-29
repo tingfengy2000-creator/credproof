@@ -1,0 +1,43 @@
+{
+  "at_utc": "2026-09-29T10:18:09.752085+00:00",
+  "source_commit": "56f40519d10a5e2d3530bac3db77068579397f59",
+  "url": "http://127.0.0.1:8766/",
+  "scope": "Actual browser buttons in clean extracted checkout; integration runs not added to holdout sample count",
+  "rows": [
+    {
+      "case": "p01",
+      "id": "live-779866407a92478fbc095677a071e5c0",
+      "task_status": "COMPLETED_REPAIRED",
+      "candidate_verdict": "PASS",
+      "model_calls": 5,
+      "tool_calls": 5,
+      "latest_recheck": "UNKNOWN"
+    },
+    {
+      "case": "p05",
+      "id": "live-064332d8fd224cd7b78146ef5fad7902",
+      "task_status": "COMPLETED_UNCHANGED",
+      "candidate_verdict": "PASS",
+      "model_calls": 5,
+      "tool_calls": 5,
+      "latest_recheck": null
+    }
+  ],
+  "operations": [
+    "P01 live repair",
+    "actual diff viewed",
+    "fresh recheck PASS",
+    "download actual ZIP via button",
+    "export moved and python -S recheck PASS13",
+    "P05 live unchanged with denied unnecessary proposal",
+    "historical P01 labelled replay",
+    "current.py withheld in dedicated exported test bundle: UNKNOWN, old report inapplicable"
+  ],
+  "console_errors": [],
+  "tooling_notes": [
+    "One locator read timed out while recheck pending; subsequent observation confirmed PASS",
+    "Browser tab_content_export unsupported, no saved screenshot is claimed",
+    "Combined directory collection and artifact restoration was blocked by automatic review; only explicit scanned public-file copies were then collected. Withheld test file remains preserved under its renamed name."
+  ],
+  "original_and_primary_candidate_unmodified": true
+}

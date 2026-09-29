@@ -194,6 +194,8 @@ def build(args):
             "note": "Path-based packaging exclusions are not a credential-content audit.",
         },
     }
+    for prefix in getattr(args, 'include_prefix', []):
+        metadata['build_command'].extend(['--include-prefix', prefix])
     metadata_data = json_bytes(metadata)
     records, created = [], []
     try:

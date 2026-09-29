@@ -1,0 +1,58 @@
+{
+  "hashes": {
+    "agent_pilot/bundle.py": "0dd94e02e5cf89d9ddd5de9a82b60eb8f918d2db206f235c5852fbe7263ec431",
+    "agent_pilot/download-model.py": "1215c5327fd678b3fb11363f0b61166f830c021a140e7424721d2c020453298d",
+    "agent_pilot/experiment.py": "4085f2fdbe111fdf398ad3445c0070589b0e1b1ac0773be7b39a3dcfd2c85272",
+    "agent_pilot/fixed.py": "54a7fd16a5f3dc39f196749c8dc64a18a59d8d234b250929394ccf7282eeaac7",
+    "agent_pilot/handshake.py": "0c2d03def12987a54dfec69c71bbe3d3f2677bc9ed29416ca2f120cc9770c203",
+    "agent_pilot/isolation.py": "ac0aa1efdef622921715f4ac09d1b1c22b209bb543f28512ab74ab76b2656498",
+    "agent_pilot/judge.py": "d790a9fa63b8c74999ec521a4e615041178518171d43d336fd0b965de3a29924",
+    "agent_pilot/model_client.py": "244da40a1824ddc4672354fe525caf6b31370996cd62d1c6b39e6ad4f795a060",
+    "agent_pilot/offline_run.py": "e3b202a01b488a33f5e56e220a1eb057a707dc1fe39018e21f7f8c87f5a4207c",
+    "agent_pilot/prepare-ollama.py": "f8710cf888fe63651915c84517eed6d96514cc279199630ba40fdc3d0bce0bb7",
+    "agent_pilot/reliability.py": "5b64b5e2b9067cd57dd9f5f31a010c6d14a43ab2c394cdb1f3e315276a66d7dd",
+    "agent_pilot/sandbox_runner.py": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+    "agent_pilot/summarize.py": "ff6faed94fc6f80bfc81ed32a86d95a095d58cbaff9762315f75c01a5deb6a1e",
+    "agent_pilot/test_model_client.py": "06d79fb719fcef4f8fc62ab1406c6accc83a4c54dd47ee018f187bec5e81ce30",
+    "agent_pilot/tools.py": "d180137bf516a5b2d9a1725575b7c8bca9edd8f0157696e12ed6c009f6c43ff0",
+    "agent_pilot/web.py": "b4380be0627aa504aed8c20737d40877ba709ae5c24bc7e72726e7e83c3af404",
+    "agent_pilot/__init__.py": "69c8bf94f4106791728bb7cb7317601d3a1c7d6f0cd14424c9be7bc28732d3e2",
+    "agent_pilot/fixtures/p01/tool.py": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+    "agent_pilot/fixtures/p02/tool.py": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+    "agent_pilot/fixtures/p03/tool.py": "392ccb198bf3d89562061953bd3f0a6bf73b2e6da314a222e9e25149c541533f",
+    "agent_pilot/fixtures/p04/tool.py": "81d28257bdf9f4e55b7b09a87612ad1eef0aa64ae12e756f3a38029ce33f1072",
+    "agent_pilot/fixtures/p05/tool.py": "d84d3ab8e865b23f6d86d604fb8555a0911d3c187bfae06aeef3b43117a9f7ac",
+    "agent_pilot/fixtures/p06/tool.py": "bffe129c58ca65b1ce028fc00644baa23a53dfd07322aec315fc95eb41878ede",
+    "agent_pilot/holdout-v1/manifest.json": "92cbf8026559df9850e4b1656d20fcd895e65df3aa72cee5cddc080905911352",
+    "agent_pilot/holdout-v1/README.md": "155de489cbe0e7e2b9218144a600454bd51a4921613e3a283d1373d3e8d70162",
+    "agent_pilot/holdout-v1/validation.json": "81570fded5f8573faf6ab728d5b3c2ab6425c8ee8c0826b802f5d53d6ab7a72d",
+    "agent_pilot/holdout-v1/h01/tool.py": "0744122c971c586598b1b10b87278f2fe66e3cbb0faf0ab3666b047568f6016a",
+    "agent_pilot/holdout-v1/h02/tool.py": "3fd570865d7a5b36a38352aa0e584c12e2673c01451192ad6795b0b763b4c345",
+    "agent_pilot/holdout-v1/h03/tool.py": "002d15e95b2f8a0a8a6ef2c233afb289f58323798e7ef260766001116ee49f4e",
+    "agent_pilot/holdout-v1/h04/tool.py": "5c2a5bc8da138c119ce383b87b65e3860ab46e9a4003c3bc4b696054b7d8047b",
+    "agent_pilot/holdout-v1/h05/tool.py": "081f7956c39a6c7fa6b12cfa41785bb4333e8e028330cf6bb715038a9daa57bb",
+    "agent_pilot/holdout-v1/h06/tool.py": "14121d9a27bb07626e608df61ee84016b5bae75c40ef82baa7fa9bcc851d8dfe",
+    "agent_pilot/holdout-v1/h07/tool.py": "3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7",
+    "agent_pilot/holdout-v1/h08/tool.py": "2154f28ebf6e4ded799400227356913d2577196503ac6072911a6b8ece21427b"
+  },
+  "rules_sha256": "3de953896db254f93c81316e97af91413d557f827174ced131c18c36bd385d0d",
+  "cases": [
+    "p01"
+  ],
+  "policy": {
+    "schema": "credproof.reliability.v1",
+    "max_model_calls": 12,
+    "max_candidates": 3,
+    "forbidden_channels": [
+      "return",
+      "exception",
+      "stdout",
+      "stderr",
+      "logging"
+    ],
+    "authorized_use": "one local mock authenticate call with the injected credential",
+    "scope": "reviewed Python profile; exact full synthetic credential matching only",
+    "completion": "current selected object passes full required suite; no pending candidate"
+  },
+  "created_at": "2026-09-29T10:05:58.039412+00:00"
+}

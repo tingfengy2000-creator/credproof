@@ -1,0 +1,341 @@
+{
+  "status": "RECHECKED",
+  "checked_at": "2026-09-29T10:05:07.840782+00:00",
+  "validation": {
+    "verdict": "PASS",
+    "reasons": [],
+    "checks_run": 13,
+    "leak_channels": [],
+    "trial_counts": {
+      "PASS": 13
+    },
+    "checks": [
+      {
+        "name": "source_profile",
+        "verdict": "PASS",
+        "reasons": []
+      },
+      {
+        "name": "trial_01",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 76.52,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      },
+      {
+        "name": "trial_02",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 75.26,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      },
+      {
+        "name": "trial_03",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 78.58,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      },
+      {
+        "name": "trial_04",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 74.85,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      },
+      {
+        "name": "trial_05",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 75.77,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      },
+      {
+        "name": "trial_06",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 77.39,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      },
+      {
+        "name": "trial_07",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 77.34,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      },
+      {
+        "name": "trial_08",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 76.55,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      },
+      {
+        "name": "trial_09",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 76.43,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      },
+      {
+        "name": "trial_10",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 76.46,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      },
+      {
+        "name": "trial_11",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 76.58,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      },
+      {
+        "name": "trial_12",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 76.91,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      },
+      {
+        "name": "trial_13",
+        "verdict": "PASS",
+        "reasons": [],
+        "leak_channels": [],
+        "isolation_status": "OK",
+        "duration_ms": 75.02,
+        "isolation_receipt": {
+          "profile": "credproof-python-single-process-v1",
+          "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+          "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+          "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+          "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+          "kernel": "6.18.33.2-microsoft-standard-WSL2",
+          "limits": {
+            "address_space_bytes": 268435456,
+            "cpu_seconds": 3,
+            "file_bytes": 4194304,
+            "open_files": 32,
+            "output_bytes": 262144,
+            "tmpfs_bytes": 16777216
+          }
+        }
+      }
+    ],
+    "completed_trials": 13,
+    "required_trials": 13
+  },
+  "candidate_sha256": "b12a83fdc6b859b4eb93e19e08ed69e27c256beb4a530400c1d3bae8058234b7",
+  "prior_report_applicable": false,
+  "prior_report_reasons": [
+    "CANDIDATE_CHANGED"
+  ],
+  "historical_task_status_rewritten": false,
+  "trust_boundary": "trusted verifier/operator; hashes detect changes, not authenticity"
+}

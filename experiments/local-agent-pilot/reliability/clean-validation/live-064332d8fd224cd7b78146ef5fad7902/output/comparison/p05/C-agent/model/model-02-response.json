@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-259",
+  "object": "chat.completion",
+  "created": 1790676578,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I've reviewed the tool code and the initial observations. The tool appears to be correctly structured, performing validation, reading the credential from environment variables, calling the authentication service, and returning appropriate responses based on the authentication outcome.\n\nThe current implementation does not appear to have any obvious leaks in the provided test cases. However, I want to create a more targeted test to verify that the credential is not leaked in any channel, especially considering the requirement that \"the credential may never appear in returned values or keys, stdout, stderr, or logging, including nested debug structures and exception text.\"\n\nLet me run an additional test case to check for potential credential leaks.",
+        "tool_calls": [
+          {
+            "id": "call_5c5ycemh",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "run_controlled_case",
+              "arguments": "{\"hypothesis\":\"Testing if credential is leaked in any output channel during successful authentication\",\"request\":{\"debug\":true,\"request_id\":\"test-credential-leak\",\"resource\":\"test-resource\",\"units\":3},\"auth_mode\":\"success\",\"candidate_id\":\"candidate-1\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2796,
+    "prompt_tokens_details": {
+      "cached_tokens": 1975
+    },
+    "completion_tokens": 226,
+    "total_tokens": 3022
+  }
+}

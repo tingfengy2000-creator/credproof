@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-739",
+  "object": "chat.completion",
+  "created": 1790676365,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_jn1bh1fs",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{\"candidate_id\":\"candidate-1\",\"initially_leaking\":true,\"diagnosis\":\"The original tool had a credential leak in the auth_unavailable error response when RuntimeError was raised. The fix replaces str(error) with a generic error message that doesn't expose the credential.\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 4166,
+    "prompt_tokens_details": {
+      "cached_tokens": 4058
+    },
+    "completion_tokens": 85,
+    "total_tokens": 4251
+  }
+}

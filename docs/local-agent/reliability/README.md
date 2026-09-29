@@ -18,6 +18,8 @@ AI 工具即使没有硬编码密钥，也可能把环境变量中的凭据带�
 
 主机制如下，方框均对应实际程序；不是“接模型便自动可信”。
 
+规范CI也可以实现这些证据门禁、验证和停止控制。本项目自行实现的部分是受限工具与共享权限、任务状态、对象适用性、实际材料复检和单页呈现；模型提供候选选择与修订。普通控制流、哈希绑定与开源框架接入不作为首创。
+
 ```mermaid
 flowchart LR
   UI[单页：受控案例/规则/代码] --> S[会话：冻结原始副本与规则]
@@ -96,6 +98,10 @@ python -m agent_pilot.bundle recheck --bundle examples/local-agent/accepted --ou
 ```
 
 最后一条的 `runs` 必须先创建，输出必须不存在。复检不需要模型，仅依赖可信Python与已验收隔离设施。返回0=PASS，1=FAIL，2=UNKNOWN；预期反例返回1/2不是脚本崩溃。
+
+干净目录验证的 [命令与退出码](../../../experiments/local-agent-pilot/reliability/clean-validation/commands.json) 和 [浏览器记录](../../../experiments/local-agent-pilot/reliability/clean-validation/browser-verification.json) 单独保留。15项原功能、64项Agent单元/边界测试、24项模型客户端测试通过。浏览器真实运行P01与P05（不计入新8例），点击复验和导出；导出ZIP移动后用 `python -S` 重新执行13项并PASS；显式缺材料测试返回UNKNOWN。单页无构建依赖，HTML/JS来自包内同源静态文件。
+
+历史列表在本服务进程内保存；浏览器重载可重新取列表，服务重启不会自动扫描旧目录，可用 `--history <本代码树runs下的明确C-agent目录>` 只读挂载既有记录。运行设施读取只是就绪检查，不代替每次隔离执行门禁。
 
 ## 三分钟讲解稿
 

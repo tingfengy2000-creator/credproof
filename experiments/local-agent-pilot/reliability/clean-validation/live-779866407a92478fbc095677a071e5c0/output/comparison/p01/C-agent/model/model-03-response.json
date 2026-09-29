@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-427",
+  "object": "chat.completion",
+  "created": 1790676362,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Let me analyze the code more carefully to understand how to properly construct a test case that would trigger the leak, based on the existing evidence.",
+        "tool_calls": [
+          {
+            "id": "call_rysf6msh",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "get_evidence",
+              "arguments": "{\"evidence_id\":\"evidence-3\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 3036,
+    "prompt_tokens_details": {
+      "cached_tokens": 2913
+    },
+    "completion_tokens": 55,
+    "total_tokens": 3091
+  }
+}
