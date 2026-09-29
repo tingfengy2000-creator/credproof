@@ -1,0 +1,231 @@
+{
+  "rows": [
+    {
+      "case": "p01",
+      "method": "A-fixed",
+      "initial": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK",
+          "RESPONSE_CONTRACT"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "return"
+        ],
+        "trial_counts": {
+          "PASS": 11,
+          "FAIL": 2
+        }
+      },
+      "result": {
+        "method": "A-fixed",
+        "final_validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        },
+        "source_changed": true,
+        "diagnosis": null,
+        "model": null,
+        "tool_trace": [],
+        "candidate_count": 1,
+        "isolated_execution_count": 13,
+        "elapsed_s": 1.7964465350000864,
+        "selection": "last submitted candidate, never best observed result",
+        "execution_kind": "fixed_program"
+      }
+    },
+    {
+      "case": "p02",
+      "method": "A-fixed",
+      "initial": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "logging"
+        ],
+        "trial_counts": {
+          "FAIL": 7,
+          "PASS": 6
+        }
+      },
+      "result": {
+        "method": "A-fixed",
+        "final_validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        },
+        "source_changed": true,
+        "diagnosis": null,
+        "model": null,
+        "tool_trace": [],
+        "candidate_count": 1,
+        "isolated_execution_count": 13,
+        "elapsed_s": 1.748694045000093,
+        "selection": "last submitted candidate, never best observed result",
+        "execution_kind": "fixed_program"
+      }
+    },
+    {
+      "case": "p03",
+      "method": "A-fixed",
+      "initial": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "stdout"
+        ],
+        "trial_counts": {
+          "PASS": 10,
+          "FAIL": 3
+        }
+      },
+      "result": {
+        "method": "A-fixed",
+        "final_validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        },
+        "source_changed": true,
+        "diagnosis": null,
+        "model": null,
+        "tool_trace": [],
+        "candidate_count": 1,
+        "isolated_execution_count": 13,
+        "elapsed_s": 1.7956396100000802,
+        "selection": "last submitted candidate, never best observed result",
+        "execution_kind": "fixed_program"
+      }
+    },
+    {
+      "case": "p04",
+      "method": "A-fixed",
+      "initial": {
+        "verdict": "FAIL",
+        "reasons": [
+          "CREDENTIAL_LEAK"
+        ],
+        "checks_run": 13,
+        "leak_channels": [
+          "return"
+        ],
+        "trial_counts": {
+          "FAIL": 3,
+          "PASS": 10
+        }
+      },
+      "result": {
+        "method": "A-fixed",
+        "final_validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        },
+        "source_changed": true,
+        "diagnosis": null,
+        "model": null,
+        "tool_trace": [],
+        "candidate_count": 1,
+        "isolated_execution_count": 13,
+        "elapsed_s": 1.8090501720000702,
+        "selection": "last submitted candidate, never best observed result",
+        "execution_kind": "fixed_program"
+      }
+    },
+    {
+      "case": "p05",
+      "method": "A-fixed",
+      "initial": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        }
+      },
+      "result": {
+        "method": "A-fixed",
+        "final_validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        },
+        "source_changed": false,
+        "diagnosis": null,
+        "model": null,
+        "tool_trace": [],
+        "candidate_count": 1,
+        "isolated_execution_count": 13,
+        "elapsed_s": 1.8385626279998633,
+        "selection": "last submitted candidate, never best observed result",
+        "execution_kind": "fixed_program"
+      }
+    },
+    {
+      "case": "p06",
+      "method": "A-fixed",
+      "initial": {
+        "verdict": "PASS",
+        "reasons": [],
+        "checks_run": 13,
+        "leak_channels": [],
+        "trial_counts": {
+          "PASS": 13
+        }
+      },
+      "result": {
+        "method": "A-fixed",
+        "final_validation": {
+          "verdict": "PASS",
+          "reasons": [],
+          "checks_run": 13,
+          "leak_channels": [],
+          "trial_counts": {
+            "PASS": 13
+          }
+        },
+        "source_changed": false,
+        "diagnosis": null,
+        "model": null,
+        "tool_trace": [],
+        "candidate_count": 1,
+        "isolated_execution_count": 13,
+        "elapsed_s": 1.7515411370000038,
+        "selection": "last submitted candidate, never best observed result",
+        "execution_kind": "fixed_program"
+      }
+    }
+  ],
+  "frozen_inputs_unchanged": true,
+  "completed_at_utc": "2026-09-29T06:32:07.594358+00:00"
+}

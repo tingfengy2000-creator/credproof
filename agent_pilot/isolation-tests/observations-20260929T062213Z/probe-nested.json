@@ -1,0 +1,173 @@
+{
+  "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+  "candidate_executed": false,
+  "kernel": "6.18.33.2-microsoft-standard-WSL2",
+  "limits": {
+    "address_space_bytes": 268435456,
+    "cpu_seconds": 3,
+    "file_bytes": 4194304,
+    "open_files": 32,
+    "output_bytes": 262144,
+    "tmpfs_bytes": 16777216
+  },
+  "package_sha256": "2461f1beee9cb04c8942739fe1a2b37e7b7c2a3d518f0779dc75f9245baa3094",
+  "package_url": "https://archive.ubuntu.com/ubuntu/pool/main/b/bubblewrap/bubblewrap_0.9.0-1ubuntu0.3_amd64.deb",
+  "profile": "credproof-python-single-process-v1",
+  "python_version": "3.12.3",
+  "ready": true,
+  "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+  "runner_id": "7c092a8a8e7817405dbb5223125c23d05056f0d61a8291530490f884eda7c12f",
+  "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+  "probed_at_utc": "2026-09-29T06:22:20.826594+00:00",
+  "checks": {
+    "no_host_home": true,
+    "no_windows_mount": true,
+    "no_gpu": true,
+    "no_host_pid_root": true,
+    "empty_routes": true,
+    "capabilities_dropped": true,
+    "no_new_privileges": true,
+    "seccomp_active": true,
+    "socket_denied": true,
+    "fork_denied": true,
+    "input_readonly": true,
+    "device_directory_readonly": true,
+    "shared_memory_readonly_or_absent": true,
+    "runtime_readonly": true,
+    "root_mount_readonly": true,
+    "env_scrubbed": true,
+    "fd_scope": true,
+    "namespace_creation_denied": true,
+    "memory_limited": true,
+    "private_scratch_available": true,
+    "scratch_size_limited": true,
+    "namespace_ids_distinct": true,
+    "output_bounded": true,
+    "cpu_limited": true,
+    "wall_time_limited": true
+  },
+  "namespace_observation": {
+    "checks": {
+      "no_host_home": true,
+      "no_windows_mount": true,
+      "no_gpu": true,
+      "no_host_pid_root": true,
+      "empty_routes": true,
+      "capabilities_dropped": true,
+      "no_new_privileges": true,
+      "seccomp_active": true,
+      "socket_denied": true,
+      "fork_denied": true,
+      "input_readonly": true,
+      "device_directory_readonly": true,
+      "shared_memory_readonly_or_absent": true,
+      "runtime_readonly": true,
+      "root_mount_readonly": true,
+      "env_scrubbed": true,
+      "fd_scope": true,
+      "namespace_creation_denied": true,
+      "memory_limited": true,
+      "private_scratch_available": true,
+      "scratch_size_limited": true,
+      "namespace_ids_distinct": true,
+      "output_bounded": true,
+      "cpu_limited": true,
+      "wall_time_limited": true
+    },
+    "namespaces": {
+      "user": "user:[4026532227]",
+      "mnt": "mnt:[4026532230]",
+      "pid": "pid:[4026532296]",
+      "net": "net:[4026532298]",
+      "ipc": "ipc:[4026532295]",
+      "uts": "uts:[4026532294]"
+    },
+    "root_entries": [
+      "tmp",
+      "lib64",
+      "usr",
+      "proc",
+      "lib",
+      "work",
+      "dev",
+      "nonexistent"
+    ],
+    "pid": 2
+  },
+  "initial_namespace_ids": {
+    "user": "user:[4026532228]",
+    "mnt": "mnt:[4026532220]",
+    "pid": "pid:[4026532223]",
+    "net": "net:[4026532232]",
+    "ipc": "ipc:[4026532208]",
+    "uts": "uts:[4026532222]"
+  },
+  "probe_processes": {
+    "basic": {
+      "status": "OK",
+      "returncode": 0,
+      "stderr": "",
+      "duration_ms": 53.08,
+      "isolation_receipt": {
+        "profile": "credproof-python-single-process-v1",
+        "runner_id": "7c092a8a8e7817405dbb5223125c23d05056f0d61a8291530490f884eda7c12f",
+        "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+        "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+        "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+        "kernel": "6.18.33.2-microsoft-standard-WSL2",
+        "limits": {
+          "address_space_bytes": 268435456,
+          "cpu_seconds": 3,
+          "file_bytes": 4194304,
+          "open_files": 32,
+          "output_bytes": 262144,
+          "tmpfs_bytes": 16777216
+        }
+      }
+    },
+    "cpu": {
+      "status": "PROCESS_ERROR",
+      "returncode": 137,
+      "stderr": "",
+      "duration_ms": 3001.71,
+      "isolation_receipt": {
+        "profile": "credproof-python-single-process-v1",
+        "runner_id": "7c092a8a8e7817405dbb5223125c23d05056f0d61a8291530490f884eda7c12f",
+        "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+        "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+        "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+        "kernel": "6.18.33.2-microsoft-standard-WSL2",
+        "limits": {
+          "address_space_bytes": 268435456,
+          "cpu_seconds": 3,
+          "file_bytes": 4194304,
+          "open_files": 32,
+          "output_bytes": 262144,
+          "tmpfs_bytes": 16777216
+        }
+      }
+    },
+    "wall": {
+      "status": "TIMEOUT",
+      "returncode": -9,
+      "stderr": "",
+      "duration_ms": 302.61,
+      "isolation_receipt": {
+        "profile": "credproof-python-single-process-v1",
+        "runner_id": "7c092a8a8e7817405dbb5223125c23d05056f0d61a8291530490f884eda7c12f",
+        "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+        "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+        "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+        "kernel": "6.18.33.2-microsoft-standard-WSL2",
+        "limits": {
+          "address_space_bytes": 268435456,
+          "cpu_seconds": 3,
+          "file_bytes": 4194304,
+          "open_files": 32,
+          "output_bytes": 262144,
+          "tmpfs_bytes": 16777216
+        }
+      }
+    }
+  }
+}

@@ -15,3 +15,8 @@
 # Preserve experiment exports byte-for-byte, including generated Markdown breaks.
 experiments/results/** -text whitespace=-blank-at-eol,cr-at-eol
 docs/review/evidence/** -text whitespace=-blank-at-eol,cr-at-eol
+# Registered local-agent protocols and raw observations retain their exact bytes.
+agent_pilot/protocol*.json -text whitespace=cr-at-eol
+agent_pilot/isolation-tests/*.json -text whitespace=cr-at-eol
+agent_pilot/isolation-tests/observations-*/** -text whitespace=cr-at-eol
+experiments/local-agent-pilot/records/** -text whitespace=-blank-at-eol,cr-at-eol

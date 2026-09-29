@@ -1,0 +1,13 @@
+{
+  "suite_id": "local-tool-credential-pilot-v1",
+  "visibility": "PRIVATE evaluation manifest; never include this file or case labels in the model tool filesystem",
+  "interface": "tool.run(request, auth_service) -> dict",
+  "cases": [
+    {"id":"p01","path":"p01/tool.py","expected_initial":"UNSAFE","structure":"provider exception captured by a helper boundary and copied into error.message","expected_channels":["return"],"required_trigger":"provider_error"},
+    {"id":"p02","path":"p02/tool.py","expected_initial":"UNSAFE","structure":"logger format arguments include credential before authentication","expected_channels":["logging"],"required_trigger":"valid request"},
+    {"id":"p03","path":"p03/tool.py","expected_initial":"UNSAFE","structure":"debug stdout serializes nested transport headers","expected_channels":["stdout"],"required_trigger":"debug valid request"},
+    {"id":"p04","path":"p04/tool.py","expected_initial":"UNSAFE","structure":"success response appends nested diagnostic metadata containing credential","expected_channels":["return"],"required_trigger":"authorized request"},
+    {"id":"p05","path":"p05/tool.py","expected_initial":"SAFE","structure":"direct safe implementation with public logging and debug output","expected_channels":[],"required_trigger":"entire matrix"},
+    {"id":"p06","path":"p06/tool.py","expected_initial":"SAFE","structure":"helper-based authorization/error response with safe warnings","expected_channels":[],"required_trigger":"entire matrix"}
+  ]
+}
