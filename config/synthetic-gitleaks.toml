@@ -1,0 +1,7 @@
+title = "CredProof synthetic-only mechanism pilot, not a real-secret detection benchmark"
+
+[[rules]]
+id = "credproof-synthetic"
+description = "Non-authenticating synthetic fixture marker"
+regex = '''CP_SYNTH_[A-F0-9]{24}'''
+keywords = ["CP_SYNTH_"]

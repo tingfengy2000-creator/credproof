@@ -1,0 +1,60 @@
+{
+  "protocol_id": "credproof-mechanism-pilot-v1",
+  "stage": "mechanism-development-pilot",
+  "kind": "prospective-mechanism-pilot",
+  "case_expectations_registered_before_first_execution": true,
+  "independent_final_holdout": false,
+  "post_dev_revision": "After development smoke runs, scope_omission and function_not_checked were separated into evidence_completeness to clarify fair same-scope fresh comparison; expected labels were unchanged. B-fresh accounting and provenance records were clarified. All 16 cases are development-visible, not a final blinded test.",
+  "layers": ["fresh", "evidence_completeness", "delivery"],
+  "scope": ["config.py", "notes.txt"],
+  "target": "config.py",
+  "symbol": "SERVICE_TOKEN",
+  "environment_variable": "CP_DEMO_TOKEN",
+  "function": "authorization_header",
+  "source": "index",
+  "repeats_default": 3,
+  "overhead_samples_per_mode": 3,
+  "modes": ["A", "B", "C", "C-no-binding"],
+  "fresh_comparator": "B-fresh",
+  "synthetic_token_prefix": "CP_SYNTH_",
+  "rules": {
+    "labels_location": "outer runner only; never inside bundle, candidate, before, or evidence",
+    "validator_inputs": "assess receives bundle, evidence, scanner and mode only; no case_id or expected verdict",
+    "shared_inputs": "within each trial A/B/C/C-no-binding receive independent deep copies of the identical evidence and the identical current candidate, scope and scanner",
+    "layers": "fresh contains only ten complete same-scope trials (four valid and six unacceptable candidates); two evidence-completeness faults and four delivery faults are separate. A/B on six evidence-fault cases are simplified aggregators of supplied results, not a fixed-scope CI rerun",
+    "B_fresh": "all cases also recollect scan/syntax/function evidence on the current candidate with the intended full scope, then assess mode B; use its own new-input oracle, not old delivered-evidence UNKNOWN labels, and show delivery cases separately",
+    "repeat_interpretation": "repeated runs measure execution stability; they are not independent case families or a larger statistical sample",
+    "live_credentials": false,
+    "arbitrary_repository_tests": false,
+    "online_verification": false,
+    "tool_claim": "A/B are explicitly constructed comparisons, not claims about default commercial or open-source products"
+  },
+  "cases": [
+    {"id": "good_basic", "layer": "fresh", "fixture": "basic", "mutation": "none", "expected_C": "PASS", "oracle_fact": "required environment read; preserved controlled behavior; unchanged original index"},
+    {"id": "good_format", "layer": "fresh", "fixture": "format", "mutation": "none", "expected_C": "PASS", "oracle_fact": "single-quoted spaced assignment and comments retain semantics after supported rewrite"},
+    {"id": "good_order", "layer": "fresh", "fixture": "order", "mutation": "none", "expected_C": "PASS", "oracle_fact": "function precedes module assignment; separate non-secret configuration remains unchanged"},
+    {"id": "constant_zero_alert", "layer": "fresh", "fixture": "basic", "mutation": "constant", "expected_C": "FAIL", "oracle_fact": "no synthetic token remains, but injected environment value is not used and missing environment does not fail closed"},
+    {"id": "fallback_retained", "layer": "fresh", "fixture": "basic", "mutation": "fallback", "expected_C": "FAIL", "oracle_fact": "old synthetic token remains in fallback and absent environment silently falls back"},
+    {"id": "syntax_broken", "layer": "fresh", "fixture": "basic", "mutation": "syntax", "expected_C": "FAIL", "oracle_fact": "candidate cannot parse as Python"},
+    {"id": "residual_other_file", "layer": "fresh", "fixture": "basic", "mutation": "residual", "expected_C": "FAIL", "oracle_fact": "old value remains in notes.txt within the same declared scope"},
+    {"id": "unrelated_change", "layer": "fresh", "fixture": "basic", "mutation": "unrelated", "expected_C": "FAIL", "oracle_fact": "notes.txt changed beyond the authorized assignment rewrite"},
+    {"id": "scope_omission", "layer": "evidence_completeness", "fixture": "basic", "mutation": "scope_omission", "expected_C": "UNKNOWN", "oracle_fact": "valid candidate but delivered evidence omits notes.txt; this is incomplete evidence, not a bad patch"},
+    {"id": "function_not_checked", "layer": "evidence_completeness", "fixture": "basic", "mutation": "missing_function", "expected_C": "UNKNOWN", "oracle_fact": "valid candidate but the controlled functional obligation was not executed"},
+    {"id": "index_residual_local_pass", "layer": "fresh", "fixture": "basic", "mutation": "index_residual", "expected_C": "PASS", "oracle_fact": "worktree is already environment-based while the selected index retains the old value; copy PASS must preserve index residual risk"},
+    {"id": "wrong_environment_name", "layer": "fresh", "fixture": "basic", "mutation": "wrong_environment", "expected_C": "FAIL", "oracle_fact": "candidate reads an unintended environment variable and fails the controlled positive functional probe"},
+    {"id": "stale_pass_replay", "layer": "delivery", "fixture": "basic", "mutation": "stale", "expected_C": "UNKNOWN", "oracle_fact": "evidence was collected before a later behavior-breaking edit; current object binding differs"},
+    {"id": "cross_object_evidence", "layer": "delivery", "fixture": "basic", "mutation": "cross_object", "expected_C": "UNKNOWN", "oracle_fact": "otherwise successful evidence comes from a separate frozen object; target candidate itself is valid"},
+    {"id": "cross_scope_evidence", "layer": "delivery", "fixture": "basic", "mutation": "cross_scope", "expected_C": "UNKNOWN", "oracle_fact": "a scan check from a narrower declared scope is spliced into otherwise complete evidence"},
+    {"id": "cross_rule_evidence", "layer": "delivery", "fixture": "basic", "mutation": "cross_rule", "expected_C": "UNKNOWN", "oracle_fact": "a scan check from another configuration digest is spliced into otherwise complete evidence"}
+  ],
+  "metrics": {
+    "primary": ["per-case verdict matrix", "expected_C agreement with independent oracle", "incorrect PASS count on FAIL cases", "incorrect PASS count on UNKNOWN evidence cases", "PASS retention on valid cases", "original-index and worktree unchanged"],
+    "secondary": ["per-case elapsed seconds", "repeated-run stability", "B-fresh outcomes on delivery faults", "one valid fixture: 3 independent fresh collect+assess samples per A/B/C with rotated order, mean/range/sample variance and mean C-B"],
+    "excluded_claims": ["real-world secret detection precision or recall", "SOTA", "population confidence intervals from 16 hand-designed cases", "improvement over product defaults", "cloud credential validity or revocation"]
+  },
+  "result_schema": {
+    "run": ["protocol_sha256", "runner_sha256", "source_sha256", "frozen_inputs_unchanged", "git_head", "python_version", "gitleaks_version", "gitleaks_exe_sha256", "config_sha256", "started_at", "completed_at", "repeats", "trials", "summary", "overhead"],
+    "trial": ["case_id", "layer", "repeat", "object_relative_path", "expected_C", "oracle", "reports", "C_matches_oracle", "remaining_risks_match_oracle", "B_fresh_expected", "B_fresh_matches_own_oracle", "original_unchanged", "elapsed_seconds", "error"],
+    "report": ["verdict", "obligations", "applicability"]
+  }
+}
