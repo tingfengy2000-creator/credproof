@@ -1,18 +1,29 @@
 {
+  "revision": "2026-09-30 presentation and manuscript refinement; no new performance experiment",
+  "checked_at": "2026-09-30T03:48:51.452963+00:00",
   "files": {
     "credproof-manuscript-candidate.docx": {
-      "bytes": 320339,
-      "sha256": "cb7fef91cffafde25b9dec19c14a0dd152baf393c82abfde501c1438c4b2fb8f"
+      "bytes": 307331,
+      "sha256": "ae43d9613e6b7a04721bbe708b2a009c08b0d5ef119da722a0a98cab8f2c087f"
     },
     "credproof-manuscript-candidate.pdf": {
-      "bytes": 477654,
-      "sha256": "5d4ae6bda917112fa7f5279c4fa47461cf5154551069738df1248df9bd974e45"
+      "bytes": 458843,
+      "sha256": "c7778a7660385a0b6bdb37f6a5bb01185d90ed8ad5c1535eb15e294d595b20dc"
     }
   },
-  "render_engine": "WPS Office 12.1.0.28485 COM export, then pypdfium2 1.5 scale",
-  "page_count": 10,
+  "render_engine": "WPS Office 12.1.0.28485 COM export + pypdfium2 1.5 scale",
+  "packaged_renderer_probe": {
+    "status": "UNAVAILABLE",
+    "error": "FileNotFoundError: LibreOffice soffice.exe was not found on PATH",
+    "authorized_fallback": "existing WPS COM export; no software installation"
+  },
+  "page_count": 11,
   "all_a4": true,
   "dimensions_points": [
+    [
+      595.3,
+      841.9
+    ],
     [
       595.3,
       841.9
@@ -66,83 +77,125 @@
         "page": 1,
         "image": "working/render-final/page-01.png",
         "status": "CHECKED",
-        "note": "封面名称准确，日期待填，无学校导师身份"
+        "note": "官方封面名称准确、日期待填"
       },
       {
         "page": 2,
         "image": "working/render-final/page-02.png",
         "status": "CHECKED",
-        "note": "保留官方填写说明原五条"
+        "note": "官方填写说明完整保留"
       },
       {
         "page": 3,
         "image": "working/render-final/page-03.png",
         "status": "CHECKED",
-        "note": "目录页码与摘要均完整"
+        "note": "目录11页页码和371字摘要完整"
       },
       {
         "page": 4,
         "image": "working/render-final/page-04.png",
         "status": "CHECKED",
-        "note": "应用场景及相关工作可读"
+        "note": "价值在前且三特点统一"
       },
       {
         "page": 5,
         "image": "working/render-final/page-05.png",
         "status": "CHECKED",
-        "note": "机制图05框改为满足完成条件即结束任务；已重新核看第5页，图文无截断"
+        "note": "机制图清晰并有真实失败反馈返回路径"
       },
       {
         "page": 6,
         "image": "working/render-final/page-06.png",
         "status": "CHECKED",
-        "note": "缓存拒绝与三分完整性声明可读"
+        "note": "修改、完成与对象复检说明完整"
       },
       {
         "page": 7,
         "image": "working/render-final/page-07.png",
         "status": "CHECKED",
-        "note": "A/B/C六列完整表在同页，6/8未改成8/8"
+        "note": "历史A/B/C完整表同页、分子分母未变"
       },
       {
         "page": 8,
         "image": "working/render-final/page-08.png",
         "status": "CHECKED",
-        "note": "真实h03回放截图保留FAIL/PASS与回放标记"
+        "note": "h01与h03独立故事；新版真实REPLAY截图与图注完整"
       },
       {
         "page": 9,
         "image": "working/render-final/page-09.png",
         "status": "CHECKED",
-        "note": "同轮开销、创新边界与总结完整"
+        "note": "h07正常保留独立段落、集中适用边界与特点说明"
       },
       {
         "page": 10,
         "image": "working/render-final/page-10.png",
         "status": "CHECKED",
-        "note": "AI实质参与披露及参考文献左对齐"
+        "note": "其余特点、总结与AI实质参与披露完整"
+      },
+      {
+        "page": 11,
+        "image": "working/render-final/page-11.png",
+        "status": "CHECKED",
+        "note": "五项参考文献完整，无孤立标题或截断"
       }
     ],
-    "issues_remaining": [],
-    "wording_revision": {
-      "changed_png_pages": [
-        "page-05.png"
-      ],
-      "other_nine_page_png_bytes_unchanged": true,
-      "pdf_extracted_body_text_unchanged": true,
-      "after": "满足完成条件即结束任务",
-      "before": "必要检查完成即结束任务"
-    }
+    "issues_remaining": []
   },
   "text_checks": {
     "historical_run": "20260929t095000z-holdout8",
     "source": "b4cb91ef67ae2d14d6cc37f9e18cf6c23e36e8ea",
+    "historical_comparison_table": [
+      [
+        "方法",
+        "问题修复",
+        "正常通过",
+        "对象通过",
+        "任务完成",
+        "误修改"
+      ],
+      [
+        "A 固定程序",
+        "3/4",
+        "4/4",
+        "7/8",
+        "7/8",
+        "0/4"
+      ],
+      [
+        "B 一次生成",
+        "1/4",
+        "4/4",
+        "5/8",
+        "4/8",
+        "0/4"
+      ],
+      [
+        "C 反馈模型",
+        "4/4",
+        "4/4",
+        "8/8",
+        "6/8",
+        "0/4"
+      ]
+    ],
     "c_repair": "4/4",
     "c_task_complete": "6/8",
+    "abstract_characters": 371,
     "AI_disclosed": true,
-    "integrity_states_present": true,
     "extracted_text": "working/final-extracted-text.txt",
     "main_markdown_internal_links_broken": []
+  },
+  "assets": {
+    "assets/mechanism.png": {
+      "sha256": "b14b73d072c144ae870e1a02185632f7640d6e1e13f4dc7d708d557b30269fb8"
+    },
+    "assets/mechanism.svg": {
+      "sha256": "f190083a4dec5d2abe9ca9fa8450ef373cb83ba6ec49562b30aad59535264d2a"
+    },
+    "assets/showcase-h03.png": {
+      "sha256": "6516fc3dabfa2d88db9835b80c7dffd830ce6f9c1e1f20b9ad39d40ff33a467c"
+    }
   },
   "official_template_original_unchanged": true,
   "publication_fields_pending": [
@@ -151,5 +204,9 @@
     "AI_assistance_and_eligibility_confirmation"
   ],
   "candidate_status": "Review candidate, not submitted and not signed",
-  "no_business_or_model_execution": true
+  "no_business_or_model_execution": true,
+  "notes": [
+    "The final PNGs were opened and inspected. After the final wrap adjustment, pages 8 and 9 were re-opened; all other page image bytes matched the earlier inspected rendering.",
+    "Known historical performance only; new UI checks or rechecks do not replace those results."
+  ]
 }

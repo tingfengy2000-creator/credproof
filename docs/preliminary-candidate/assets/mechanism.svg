@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1030" viewBox="0 0 1500 1030"><rect width="100%" height="100%" fill="#f5f8fa"/>
-<text x="52" y="69" font-family="Microsoft YaHei,sans-serif" font-size="39" font-weight="700" fill="#233f52">密证 CredProof｜证据驱动的受控修复</text>
-<text x="54" y="112" font-family="Microsoft YaHei,sans-serif" font-size="24" font-weight="400" fill="#627c8d">已适配的 Python 工具 · 合成凭据 · 本地模拟认证服务</text>
+<text x="52" y="69" font-family="Microsoft YaHei,sans-serif" font-size="39" font-weight="700" fill="#233f52">密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统</text>
+<text x="54" y="112" font-family="Microsoft YaHei,sans-serif" font-size="24" font-weight="400" fill="#627c8d">本地模型生成候选 · 程序验收安全与业务 · 对应材料导出复检</text>
 <rect x="52" y="156" width="428" height="213" rx="18" fill="white" stroke="#cbdde1" stroke-width="2"/>
 <text x="76" y="194" font-family="Microsoft YaHei,sans-serif" font-size="18" font-weight="700" fill="#087e78">01 / TRUSTED INPUT</text>
 <text x="76" y="237" font-family="Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#233f52">固定任务边界</text>
@@ -15,18 +15,18 @@
 <text x="560" y="351" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">当前证据不足 → 拒绝自动修改</text>
 <rect x="1020" y="156" width="428" height="213" rx="18" fill="white" stroke="#cbdde1" stroke-width="2"/>
 <text x="1044" y="194" font-family="Microsoft YaHei,sans-serif" font-size="18" font-weight="700" fill="#087e78">03 / LOCAL MODEL</text>
-<text x="1044" y="237" font-family="Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#233f52">提出候选补丁</text>
-<text x="1044" y="283" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">Qwen3-Coder + 受限工具</text>
-<text x="1044" y="317" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">模型选择假设、触发与改法</text>
+<text x="1044" y="237" font-family="Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#233f52">证据驱动候选生成</text>
+<text x="1044" y="283" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">读取代码与脱敏运行观察</text>
+<text x="1044" y="317" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">提出假设、触发与候选补丁</text>
 <text x="1044" y="351" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">最多 12 次调用 / 3 份候选</text>
 <path d="M480 264 L527 264" fill="none" stroke="#278a82" stroke-width="4"/>
 <path d="M964 264 L1011 264" fill="none" stroke="#278a82" stroke-width="4"/>
 <rect x="52" y="505" width="428" height="213" rx="18" fill="white" stroke="#cbdde1" stroke-width="2"/>
 <text x="76" y="543" font-family="Microsoft YaHei,sans-serif" font-size="18" font-weight="700" fill="#087e78">06 / RECHECK</text>
-<text x="76" y="586" font-family="Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#233f52">材料导出与重新检查</text>
+<text x="76" y="586" font-family="Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#233f52">对应材料导出与复检</text>
 <text x="76" y="632" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">原件、候选、规则、轨迹清单</text>
-<text x="76" y="666" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">对象变化 → 旧结论不再适用</text>
-<text x="76" y="700" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">重新执行检查，不信保存的 PASS</text>
+<text x="76" y="666" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">对象变化 → 重新核对与检查</text>
+<text x="76" y="700" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">旧报告适用性 / 当前独立判决</text>
 <rect x="536" y="505" width="428" height="213" rx="18" fill="white" stroke="#cbdde1" stroke-width="2"/>
 <text x="560" y="543" font-family="Microsoft YaHei,sans-serif" font-size="18" font-weight="700" fill="#087e78">05 / EXECUTOR</text>
 <text x="560" y="586" font-family="Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#233f52">判决与任务状态分离</text>
@@ -35,17 +35,20 @@
 <text x="560" y="700" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">保留拒绝、失败与预算耗尽</text>
 <rect x="1020" y="505" width="428" height="213" rx="18" fill="white" stroke="#cbdde1" stroke-width="2"/>
 <text x="1044" y="543" font-family="Microsoft YaHei,sans-serif" font-size="18" font-weight="700" fill="#087e78">04 / SANDBOX</text>
-<text x="1044" y="586" font-family="Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#233f52">验证安全与业务行为</text>
-<text x="1044" y="632" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">禁止外网与任意命令</text>
-<text x="1044" y="666" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">检测泄露 + 功能 + 修改边界</text>
+<text x="1044" y="586" font-family="Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#233f52">验收安全与业务行为</text>
+<text x="1044" y="632" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">隔离运行候选副本</text>
+<text x="1044" y="666" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">检查泄露、业务与修改边界</text>
 <text x="1044" y="700" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="400" fill="#233f52">失败证据回传，模型可调整</text>
 <path d="M1234 369 L1234 496" fill="none" stroke="#278a82" stroke-width="4"/>
 <path d="M1012 613 h-44" stroke="#278a82" stroke-width="4"/>
 <path d="M528 613 h-44" stroke="#278a82" stroke-width="4"/>
-<text x="1028" y="453" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="700" fill="#087e78">失败反馈 ↗ 有限调整</text>
+<path d="M1448 610 H1478 V264 H1450" fill="none" stroke="#278a82" stroke-width="3"/>
+<path d="M1450 264 l12 -7 v14 z" fill="#278a82"/>
+<text x="1040" y="453" font-family="Microsoft YaHei,sans-serif" font-size="23" font-weight="700" fill="#087e78">失败后调整</text>
 <rect x="52" y="769" width="1396" height="182" rx="16" fill="#173346"/>
-<text x="80" y="819" font-family="Microsoft YaHei,sans-serif" font-size="27" font-weight="700" fill="#ffffff">界面同时显示三件事</text>
-<text x="80" y="868" font-family="Microsoft YaHei,sans-serif" font-size="29" font-weight="700" fill="#a9e2d6">模型说了什么  ≠  程序确认了什么  ≠  任务是否完成</text>
-<text x="80" y="914" font-family="Microsoft YaHei,sans-serif" font-size="22" font-weight="400" fill="#d5e3ed">旧报告适用性 / 历史材料完整性 / 本次复检判决分别展示；普通哈希不是第三方认证。</text>
-<text x="54" y="1000" font-family="Microsoft YaHei,sans-serif" font-size="22" font-weight="400" fill="#617b8c">原仓库默认只读；现场推理与真实历史回放明确区分。</text>
+<text x="80" y="813" font-family="Microsoft YaHei,sans-serif" font-size="27" font-weight="700" fill="#ffffff">三个作品特点</text>
+<text x="80" y="852" font-family="Microsoft YaHei,sans-serif" font-size="26" font-weight="700" fill="#a9e2d6">证据驱动的候选生成与反馈调整</text>
+<text x="80" y="891" font-family="Microsoft YaHei,sans-serif" font-size="26" font-weight="700" fill="#a9e2d6">程序控制的修改权限与安全/业务验收</text>
+<text x="80" y="930" font-family="Microsoft YaHei,sans-serif" font-size="26" font-weight="700" fill="#a9e2d6">对应修复对象的材料导出与复检</text>
+<text x="54" y="1000" font-family="Microsoft YaHei,sans-serif" font-size="22" font-weight="400" fill="#617b8c">工作台分别展示模型判断、程序确认与任务状态，保留候选差异和验证回执。</text>
 </svg>

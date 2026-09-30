@@ -1,6 +1,8 @@
-# 单 Agent 工作台前端
+# 密证 CredProof：作品展示与受控修复工作台
 
-本目录是无构建步骤的静态单页：`index.html`、`styles.css`、`app.js`。沿用既有原型的海军蓝与青绿色视觉；不依赖 React、CDN、网络字体或第三方脚本。后端以同源标准库 HTTP 服务托管此目录，并实现 `/api/agent`。打开 HTML 文件只能看到真实的连接错误/未执行状态，不会载入模拟结果。
+本目录是无构建步骤的静态单页：`index.html`、`styles.css`、`app.js`。深蓝、青蓝与紫色的作品首页展示三个特点、主流程与典型案例，下方工作台呈现真实修复依据。原生 SVG 与 CSS 提供图形层次，不依赖 React、CDN、网络字体或第三方脚本。后端以同源标准库 HTTP 服务托管此目录，并实现 `/api/agent`。打开 HTML 文件只能看到真实的连接错误/未执行状态，不会载入模拟结果。
+
+当前候选版 `0.2.0-preliminary.2` 的推荐顺序为：首页 → h01 有限修复增量 → h03 失败候选与反馈调整 → h07 正常保留 → 材料复检。所有精选案例标注历史回放，现场分析必须单独发起。原始 JSON、模型长文和研发历史收进展开区域；内容与判决来源不改变。实际截图与交互检查见 [展示检查](../../docs/preliminary-candidate/presentation-checks.md)。
 
 本目录没有模型、候选执行、文件上传、任意网络地址或任意命令输入。原工作区 `E:\比赛\密证_CredProof` 仅作只读参考，未修改。
 
@@ -81,15 +83,15 @@ type RunView = {
 
 代码视图支持方向键、Home/End，按钮和菜单可键盘操作，有跳至主区域链接及状态播报。遵循 reduced-motion；长代码在自身容器滚动，移动窄屏按单列重排。没有装饰性统计、虚构成功率或定时自动重跑。
 
-当前已执行 `node --check agent_pilot/ui/app.js` 静态语法校验；HTML ID 唯一，静态脚本 ID 引用全部存在，无外部资源。`python -m unittest agent_pilot.tests.test_web -v` 的 9 项 HTTP 测试通过，子进程和材料包 API 在这些测试中明确使用 mock，未启动模型。另实际执行过只读运行设施观察，返回 ready=true；它不运行候选、隔离探针或模型。真实 API 联调与浏览器操作验证由整合阶段执行；这些检查不冒充真实模型实验或浏览器实测。
+本版已执行 `node --check agent_pilot/ui/app.js`；Web、对象绑定和真实历史展示的 20 项必要回归通过。浏览器实际检查首页、三例切换、补丁展开、返回新任务，以及一次 h07 确定性复检和材料下载。该复检得到 13 条件 PASS、历史材料 INTACT、旧报告适用；它不调用模型，也不改变历史实验成绩。原始记录、界面截图和检查范围见 [本版展示检查](../../docs/preliminary-candidate/presentation-checks.md)。
 
 ## 启动本机后端
 
 ```text
-python -m agent_pilot.web --port 8765
+python -m agent_pilot.launch --demo --port 8765
 ```
 
-浏览器打开 `http://127.0.0.1:8765/`。后端仅绑定该 IPv4 回环地址，使用标准库，不需要安装 Web 框架。需要展示既有运行时，由可信操作者在启动时显式追加 `--history <当前仓库 runs 下的 case/C-agent 目录>`，可重复提供；HTTP 请求不能提交路径。
+浏览器打开 `http://127.0.0.1:8765/`。后端仅绑定该 IPv4 回环地址，使用标准库，不需要安装 Web 框架。当前命令加载三个明确标注的精选回放。高级 `agent_pilot.web` 入口需要展示额外既有运行时，由可信操作者在启动时显式追加 `--history <当前仓库 runs 下的 case/C-agent 目录>`，可重复提供；HTTP 请求不能提交路径。
 
 新建任务只接受登记的 case_id，使用固定 argv 通过 WSL 的 user/network namespace 启动现有 `agent_pilot.offline_run --reliability --agent-only`。启动网页本身不运行模型；只有点击开始且设施可用才创建独立的 `runs/ui/live-...` 记录。原始 supervisor stdout、stderr、退出码保留在该私有目录，不直接发送到浏览器。
 

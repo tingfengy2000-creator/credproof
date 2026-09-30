@@ -2,13 +2,14 @@
 
 候选文件为 `credproof-manuscript-candidate.docx` 和同名 PDF。它们保留官方填写说明页，正文匿名；提交日期待填。正式上传的队长字段、文件命名及参赛资格由队伍本人确认，当前文件名仅用于候选材料管理。
 
-正文来源 `manuscript.md`，摘要与展示口径见 `summary.md`。图 1 是 `assets/mechanism.png`；图 2 是真实浏览器截图 `assets/h03-replay.png`，展示历史记录回放，未模拟新推理。原官方报告模板与 SHA256 来源见 `template-requirements.md`。构建使用 `assets/official-template.docx`，这是原 DOC 经 WPS 转换后保留的参考副本；原始 `.doc` 未改动。
+正文来源 `manuscript.md`，摘要与展示口径见 `summary.md`。本次为 2026-09-30 展示与文稿优化：统一作品价值和三个特点，分开呈现 h01 候选修复、h03 反馈调整、h07 正常保留，历史性能表不变。图 1 是 `assets/mechanism.png`；图 2 使用本轮真实浏览器截图 `assets/showcase-h03.png`，展示历史记录回放，未模拟新推理。旧截图和已发布 ZIP 保持原样。原官方报告模板与 SHA256 来源见 `template-requirements.md`。构建使用 `assets/official-template.docx`，这是原 DOC 经 WPS 转换后保留的参考副本；原始 `.doc` 未改动。
 
 在项目根目录，以配备 python-docx、lxml、pypdf、pypdfium2、Pillow 的 Python 执行。当前已验证的解释器为 Codex bundled runtime，文档转换使用本机已安装的 WPS Office 12.1.0.28485 COM 接口 `kwps.Application`。
 
 ```powershell
 $reportPython = 'C:\Users\Administrator\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\python.exe'
-& $reportPython docs/preliminary-candidate/build-report.py --mechanism docs/preliminary-candidate/assets/mechanism.png --trace docs/preliminary-candidate/assets/h03-replay.png
+& $reportPython docs/preliminary-candidate/draw-mechanism.py
+& $reportPython docs/preliminary-candidate/build-report.py --mechanism docs/preliminary-candidate/assets/mechanism.png --trace docs/preliminary-candidate/assets/showcase-h03.png
 & docs/preliminary-candidate/export-report.ps1
 & $reportPython docs/preliminary-candidate/finalize-report.py
 ```

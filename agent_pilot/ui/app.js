@@ -108,6 +108,9 @@ function renderScope() {
   $('rule-list').innerHTML = rules.length ? rules.map(rule => `<li>${escape(text(rule))}</li>`).join('')
     : '<li class="placeholder-line">服务端尚未提供本任务规则。</li>';
   $('model-label').textContent = state.bootstrap?.runtime.model_label || '尚未取得运行信息';
+  const ready = state.bootstrap?.runtime.ready;
+  $('runtime-status').textContent = state.error ? '状态未确认' : ready === true ? '设施已就绪' : ready === false ? '尚未就绪' : '待检查';
+  $('runtime-status').className = `badge ${!state.error && ready === true ? 'pass' : 'neutral'}`;
   const reasons = array(state.bootstrap?.runtime.reasons);
   $('runtime-reason').textContent = reasons.length ? reasons.map(text).join('；')
     : state.bootstrap?.runtime.ready === true ? '服务端报告运行设施就绪。任务仍须经过实际执行和验收。' : '运行设施尚未就绪，不能发起任务。';
@@ -124,6 +127,8 @@ function renderScope() {
 function renderActions() {
   const run = state.run;
   const status = run?.status;
+  $('mode-label').textContent = state.replay ? 'REPLAY · 历史回放' : run?.mode === 'LIVE' ? 'LIVE · 本次任务' : '尚未执行';
+  $('mode-label').className = `mode-label ${state.replay ? 'replay' : run?.mode === 'LIVE' ? 'live' : ''}`;
   const finishedLabel = !activeStatuses.has(status) && taskNames[run?.task_status]
     ? taskNames[run.task_status] : statusNames[status];
   const caption = !run ? selectedCase() ? '已选择案例，尚未执行' : '等待选择'
@@ -151,6 +156,9 @@ function renderDecisions() {
   const run = state.run;
   const diagnosis = run?.diagnosis;
   const modelText = diagnosis?.model_suspicion ?? run?.model?.diagnosis;
+  const leaking = diagnosis?.initially_leaking ?? run?.model?.initially_leaking;
+  $('model-summary').textContent = leaking === true ? '模型提出了初始泄露疑点' : leaking === false
+    ? '模型判断未观察到初始泄露' : modelText ? '模型已给出诊断意见' : '尚无模型判断';
   $('diagnosis').textContent = modelText == null || modelText === '' ? '尚未取得模型的最终诊断。'
     : typeof modelText === 'boolean' ? `模型${modelText ? '怀疑存在' : '未提出'}初始泄露；这不是程序判决。` : text(modelText);
   $('model-status').textContent = run?.model?.status || (modelText != null ? '已返回诊断' : '未分析');
@@ -247,7 +255,7 @@ function renderValidation() {
     const validation = recheck.validation ?? recheck;
     const prior = recheck.prior_report_applicable === true ? '服务端确认先前报告适用于当前材料'
       : recheck.prior_report_applicable === false ? '先前报告不适用于当前材料' : '先前报告适用性未知';
-    $('recheck-result').innerHTML = `<div class="recheck-heading"><div><span class="eyebrow">FRESH RECHECK</span><h3>独立复检记录</h3></div>${badge(verdictNames[validation.verdict] ? `${verdictNames[validation.verdict]} · ${validation.verdict}` : recheck.status || '尚无复检判决', tone(validation.verdict))}</div><p>${escape(displayTime(recheck.checked_at ?? validation.checked_at ?? validation.checked_at_utc))} · 固定程序重新验收，不调用模型。</p><p>${escape(prior)}。适用性不替代新验收判决。</p>${recheck.candidate_sha256 ? `<p class="recheck-identity">candidate sha256 ${escape(recheck.candidate_sha256)}</p>` : ''}<p>${escape(array(validation.reasons).map(text).join('；') || '')}</p><div>${checksMarkup(validation.checks)}</div>`;
+    $('recheck-result').innerHTML = `<div class="recheck-heading"><div><span class="eyebrow">FRESH RECHECK</span><h3>独立复检记录</h3></div>${badge(verdictNames[validation.verdict] ? `${verdictNames[validation.verdict]} · ${validation.verdict}` : recheck.status || '尚无复检判决', tone(validation.verdict))}</div><p>${escape(displayTime(recheck.checked_at ?? validation.checked_at ?? validation.checked_at_utc))} · 固定程序重新验收，不调用模型。</p><p>${escape(prior)}。适用性不替代新验收判决。</p>${recheck.candidate_sha256 ? `<p class="recheck-identity">candidate sha256 ${escape(recheck.candidate_sha256)}</p>` : ''}<p>${escape(array(validation.reasons).map(text).join('；') || '')}</p><details class="technical-details"><summary>查看逐项复检依据（${array(validation.checks).length} 条记录）</summary><div>${checksMarkup(validation.checks)}</div></details>`;
   }
   if (recheck) {
     const integrity = recheck.historical_evidence_integrity;
@@ -265,12 +273,20 @@ function renderValidation() {
 
 function renderStories() {
   const demos = array(state.bootstrap?.demonstrations);
-  $('demo-cards').innerHTML = demos.map((item, i) => `<button class="demo-card ${state.run?.id === item.run_id ? 'selected' : ''}" data-demo="${escape(item.run_id)}" ${state.busy || isRunning() ? 'disabled' : ''}><span class="demo-number">0${i + 1} / ${escape(item.case_id.toUpperCase())}</span><strong>${escape(item.title)}</strong><span>${escape(item.subtitle)}</span><small>打开真实历史回放 →</small></button>`).join('') || '<p>以 --demo 启动可打开精选历史；现场任务使用下方操作区。</p>';
+  const lenses = { h01: ['i-code', '结构覆盖 · 跨函数传递'], h03: ['i-shield', '反馈调整 · 两份候选'], h07: ['i-check', '正常验证 · 保持原代码'] };
+  $('demo-cards').innerHTML = demos.map((item, i) => {
+    const [icon, lens] = lenses[item.case_id] || ['i-code', '实际记录 · 独立证据'];
+    return `<button class="demo-card ${state.run?.id === item.run_id ? 'selected' : ''}" data-demo="${escape(item.run_id)}" aria-pressed="${state.run?.id === item.run_id}" ${state.busy || isRunning() ? 'disabled' : ''}><span class="demo-card-head"><span class="demo-symbol"><svg class="icon"><use href="#${icon}"/></svg></span><span class="demo-number">0${i + 1} / ${escape(item.case_id.toUpperCase())} · REPLAY</span></span><span class="demo-lens">${escape(lens)}</span><strong>${escape(item.title)}</strong><span class="demo-subtitle">${escape(item.subtitle)}</span><span class="demo-card-foot"><small>查看真实历史回放</small><svg class="icon"><use href="#i-arrow"/></svg></span></button>`;
+  }).join('') || '<div class="gallery-empty">尚未加载精选历史记录。可在服务端启用演示记录，或使用下方工作区选择已审查案例。</div>';
   const story = state.run?.presentation;
   $('story-panel').hidden = !story;
   if (!story) return;
   const stages = array(story.stages);
-  $('story-panel').innerHTML = `<div class="story-intro"><div><span class="eyebrow">${escape(story.case_id.toUpperCase())} / REPLAY</span><h2>${escape(story.title)}</h2><p>${escape(story.phenomenon)}</p></div><div class="story-conclusion"><span class="small-label">这份记录说明什么</span><p>${escape(story.explanation)}</p></div></div><div class="stage-list">${stages.map(stage => `<details class="stage"><summary><strong>${escape(stage.candidate_id)}</strong>${badge(stage.validation.verdict, tone(stage.validation.verdict))}<span>${escape(JSON.stringify(stage.validation.trial_counts || {}))}</span><span>查看实际补丁差异</span></summary><p>${escape(array(stage.validation.reasons).join('；'))} ${escape(array(stage.validation.leak_channels).join('、'))}</p><pre>${escape(stage.diff)}</pre></details>`).join('') || '<p>这份记录没有提交补丁：保持原代码。</p>'}</div><div class="story-foot"><span>同批固定流程：${escape(story.fixed_comparison.verdict)} · ${escape(taskNames[story.fixed_comparison.task_status] || story.fixed_comparison.task_status)}</span><span>批次 ${escape(story.batch)} · ${escape(story.source_commit.slice(0, 7))}</span></div>`;
+  $('story-panel').innerHTML = `<div class="story-intro"><div><span class="eyebrow">${escape(story.case_id.toUpperCase())} / RECORDED REPLAY</span><h2>${escape(story.title)}</h2><p>${escape(story.phenomenon)}</p></div><div class="story-conclusion"><span class="small-label">这份实际记录说明什么</span><p>${escape(story.explanation)}</p></div></div><div class="stage-list">${stages.map((stage, index) => {
+    const verdict = stage.validation?.verdict;
+    const counts = Object.entries(stage.validation?.trial_counts || {}).map(([name, value]) => `${verdictNames[name] || name} ${value}`).join(' · ');
+    return `<details class="stage ${tone(verdict)}-stage"><summary><span class="stage-order">0${index + 1}</span><span class="stage-heading"><strong>候选 ${index + 1}</strong><small>${escape(stage.candidate_id)}</small></span>${badge(`${verdictNames[verdict] || '未知'} · ${verdict || 'UNKNOWN'}`, tone(verdict))}<span class="stage-count">${escape(counts)}</span><span class="stage-expand">展开实际补丁差异 ＋</span></summary><p>${escape(array(stage.validation?.reasons).join('；'))} ${escape(array(stage.validation?.leak_channels).join('、'))}</p><pre>${escape(stage.diff)}</pre></details>`;
+  }).join('') || '<p class="story-preserved">这份记录未提交补丁，验证后保留原代码。</p>'}</div><div class="story-foot"><span>同批固定流程（A-fixed）：${escape(story.fixed_comparison?.verdict || 'UNKNOWN')} · ${escape(taskNames[story.fixed_comparison?.task_status] || story.fixed_comparison?.task_status || '任务状态未知')}</span><span>历史验证结果，与本次复检分别保留</span></div><details class="story-provenance"><summary>查看历史来源与版本</summary><p>批次 ${escape(story.batch)} · 版本 ${escape(story.source_commit || '未提供')}<br>${escape(story.provenance || '')}</p></details>`;
 }
 
 function render() { renderConnection(); renderScope(); renderActions(); renderDecisions(); renderCode(); renderEvidence(); renderValidation(); renderStories(); }
@@ -330,7 +346,9 @@ $('refresh').addEventListener('click', () => busyAction(async () => {
 $('demo-cards').addEventListener('click', event => {
   const button = event.target.closest('[data-demo]');
   if (!button || button.disabled) return;
-  busyAction(async () => { clearPoll(); acceptRun(await request(runPath(button.dataset.demo)), true); state.view = 'diff'; announce('精选真实历史回放，不是现场模型推理。'); });
+  busyAction(async () => { clearPoll(); acceptRun(await request(runPath(button.dataset.demo)), true); state.view = 'diff'; announce('精选真实历史回放，不是现场模型推理。'); }).then(() => {
+    if (state.run && !state.error) $('workbench').scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+  });
 });
 $('case-select').addEventListener('change', event => {
   if (state.busy || isRunning()) return;

@@ -1,0 +1,28 @@
+{
+  "checked_at": "2026-09-30T03:39:01.211Z",
+  "url": "http://127.0.0.1:8776/",
+  "mode": "historical replay plus one real deterministic H07 recheck",
+  "new_model_inference": false,
+  "observations": [
+    "Home name, three features and mechanism visible",
+    "H01 A FAIL and C PASS with real patch diff",
+    "H03 first FAIL 11/2 and second PASS 13 with both patch diffs",
+    "H07 unchanged, repair authorization false and empty diff",
+    "Fresh H07 recheck PASS; prior applicable; integrity INTACT",
+    "Recheck details expand to trial_13",
+    "Evidence export download acknowledged",
+    "Return to new task removes replay result; no task started"
+  ],
+  "console_warnings_or_errors": [],
+  "screenshots": [
+    "showcase-home.png",
+    "showcase-overview.png",
+    "showcase-cases.png",
+    "showcase-h01.png",
+    "showcase-h03.png",
+    "showcase-h03-diffs.png",
+    "showcase-h07.png",
+    "showcase-recheck.png"
+  ],
+  "video_created": false
+}

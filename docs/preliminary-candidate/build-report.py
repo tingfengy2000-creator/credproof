@@ -229,13 +229,15 @@ def build(args):
             add_figure(doc, args.mechanism, "图 1 运行证据约束下的候选修复与验收流程")
         if line.startswith("### 2.4"):
             add_figure(doc, args.overview, "图 2 真实工作台中的证据与独立任务状态")
-        if line.startswith("### 3.4"):
+        if line.startswith("### 3.5"):
             number = 3 if args.overview else 2
-            add_figure(doc, args.trace, f"图 {number} 历史 h03 候选与反馈记录 真实记录回放")
+            add_figure(doc, args.trace, f"图 {number} h03 两次候选与真实验证反馈 历史记录回放")
         if line.startswith("## "):
             heading(doc, line[3:], 1)
         elif line.startswith("### "):
-            heading(doc, line[4:], 2)
+            section_heading = heading(doc, line[4:], 2)
+            if line.startswith("### 3.5"):
+                section_heading.paragraph_format.page_break_before = True
         elif line.startswith("|"):
             group = []
             while i < len(lines) and lines[i].strip().startswith("|"):

@@ -1,0 +1,35 @@
+{
+  "checked_at": "2026-09-30T03:29:14.713819+00:00",
+  "base_commit": "9528bc9dc2fdb3c055ecad05a273e031c7cb388e",
+  "new_model_inference": false,
+  "commands": [
+    {
+      "name": "ui-syntax",
+      "command": [
+        "node",
+        "--check",
+        "agent_pilot/ui/app.js"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "web-regression",
+      "command": [
+        "python",
+        "-B",
+        "-m",
+        "unittest",
+        "agent_pilot.tests.test_web",
+        "agent_pilot.tests.test_web_material_binding",
+        "agent_pilot.tests.test_presentation",
+        "-v"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "ui_sha256": {
+    "index.html": "6082a10d9812003520483cebfdb4bc15cb93821ff347cc5a59b15c136ef4857a",
+    "styles.css": "8d2de39810fae65ef0db352b3cbdcda3158cc1945932f480aa62447568a4d1fc",
+    "app.js": "4e95b5883781bdcb4c809ea57cd5906ade1d2347c668299f96cb17050fe6432f"
+  }
+}

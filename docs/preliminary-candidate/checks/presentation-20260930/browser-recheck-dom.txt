@@ -1,0 +1,289 @@
+- link "跳到验证工作区":
+  - /url: "#workbench"
+- banner:
+  - link "密证 CredProof 首页":
+    - /url: "#top"
+    - strong:
+      - text: 密证
+      - emphasis: CredProof
+    - generic: AI TOOL SECURITY
+  - navigation "页内导航":
+    - link "系统机制":
+      - /url: "#mechanism"
+    - link "典型案例":
+      - /url: "#cases"
+    - link "验证工作区":
+      - /url: "#workbench"
+  - generic: 本机服务已连接
+- main:
+  - region "密证 CredProof ——面向 AI 工具的凭据泄露验证与受控修复系统":
+    - generic: CREDENTIAL SECURITY / AI TOOLS
+    - heading "密证 CredProof ——面向 AI 工具的凭据泄露验证与受控修复系统" [level=1]:
+      - text: 密证
+      - emphasis: CredProof
+      - generic: ——面向 AI 工具的凭据泄露验证与受控修复系统
+    - paragraph: 系统结合本地大模型补丁生成与程序控制的安全验收，针对凭据泄露问题给出候选修复，并检查泄露是否消除、必要业务行为是否保持，支持材料导出与复检。
+    - generic: 本地模型
+    - generic: 运行不调用付费 API
+    - generic: 材料可复检
+    - link "探索典型案例":
+      - /url: "#cases"
+      - text: 探索典型案例
+    - link "进入验证工作区 ↗":
+      - /url: "#workbench"
+      - text: 进入验证工作区
+      - generic: ↗
+    - paragraph:
+      - text: 本地模型生成 · 程序独立判定 · 对应对象复检
+    - figure "机制示意：代码与观测进入受控修复，由程序验收并导出复检材料":
+      - img "受控修复与验证机制示意":
+        - generic: CONTROLLED
+        - generic: 代码与观测
+        - generic: 建立可检验的疑点
+        - generic: 候选补丁
+        - generic: 本地模型提出修改
+        - generic: 程序验收
+        - generic: 检查泄露与业务行为
+        - generic: 材料复检
+        - generic: 结论对应具体修复对象
+      - generic: 机制示意 · 不代表当前任务结果
+  - region "系统三个特点":
+    - article:
+      - generic: 01 / GENERATE
+      - heading "证据驱动的候选生成与反馈调整" [level=2]
+      - paragraph: 将疑点转化为可检验的假设，让执行反馈参与后续修改。
+    - article:
+      - generic: 02 / VERIFY
+      - heading "程序控制的修改权限与安全/业务验收" [level=2]
+      - paragraph: 按实际证据授权修改，分别检查泄露消除与必要业务行为。
+    - article:
+      - generic: 03 / RECHECK
+      - heading "对应修复对象的材料导出与复检" [level=2]
+      - paragraph: 将代码、检查与材料身份关联，保留可以再次核对的记录。
+  - region "系统工作过程":
+    - generic: HOW IT WORKS
+    - strong: 从疑点到证据
+    - generic: "01"
+    - heading "发现疑点" [level=3]
+    - paragraph: 读取受限代码与执行观测
+    - generic: "02"
+    - heading "生成候选" [level=3]
+    - paragraph: 程序授权修改，模型提出补丁
+    - generic: "03"
+    - heading "验证复检" [level=3]
+    - paragraph: 检查具体对象，导出对应材料
+  - region "典型案例演示":
+    - generic: REAL CASES / RECORDED EVIDENCE
+    - heading "三个案例，看见受控修复" [level=2]
+    - paragraph:
+      - generic: REPLAY
+      - text: 典型案例均为真实历史回放
+    - button "01 / H01 · REPLAY 结构覆盖 · 跨函数传递 跨函数的日志泄露 模型补丁补足有限规则的结构盲点 查看真实历史回放":
+      - generic: 01 / H01 · REPLAY
+      - generic: 结构覆盖 · 跨函数传递
+      - strong: 跨函数的日志泄露
+      - generic: 模型补丁补足有限规则的结构盲点
+      - generic: 查看真实历史回放
+    - button "02 / H03 · REPLAY 反馈调整 · 两份候选 看似脱敏，仍在泄露 真实拒绝 → 反馈 → 调整 查看真实历史回放":
+      - generic: 02 / H03 · REPLAY
+      - generic: 反馈调整 · 两份候选
+      - strong: 看似脱敏，仍在泄露
+      - generic: 真实拒绝 → 反馈 → 调整
+      - generic: 查看真实历史回放
+    - button "03 / H07 · REPLAY 正常验证 · 保持原代码 正确脱敏，保持不变 合法认证用途与禁止通道分开 查看真实历史回放" [pressed]:
+      - generic: 03 / H07 · REPLAY
+      - generic: 正常验证 · 保持原代码
+      - strong: 正确脱敏，保持不变
+      - generic: 合法认证用途与禁止通道分开
+      - generic: 查看真实历史回放
+  - generic: VERIFICATION WORKSPACE
+  - heading "让每个结论，都能对应证据。" [level=2]
+  - paragraph: 选择已审查案例，查看候选、程序判决与对应的复检材料。
+  - generic: REPLAY · 历史回放
+  - strong: 历史回放
+  - text: replay-29a267afda3fa2879f2d4afd · 回放记录时间 2026/9/29 17:48:09。这是已保存记录，不是本次实时执行。
+  - button "返回新任务"
+  - generic: H07 / RECORDED REPLAY
+  - heading "正确脱敏，保持不变" [level=2]
+  - paragraph: 凭据用于授权的本地认证；输出通道已正确脱敏，必要检查没有观察到泄露。
+  - generic: 这份实际记录说明什么
+  - paragraph: 保留原代码，完成限定条件下的检查。没有观察到泄露不等于任意输入、任意项目都安全。
+  - paragraph: 这份记录未提交补丁，验证后保留原代码。
+  - generic: 同批固定流程（A-fixed）：PASS · 保留原代码完成
+  - generic: 历史验证结果，与本次复检分别保留
+  - generic "查看历史来源与版本"
+  - region "任务操作":
+    - generic: 回放 · 保留原代码完成
+    - generic: 读取已保存的实际运行材料
+    - button "刷新任务状态":
+      - generic: 刷新
+    - button "开始分析与修复" [disabled]:
+      - generic: 开始分析与修复
+  - complementary:
+    - generic: 01 / TASK SCOPE
+    - heading "本次任务" [level=2]
+    - generic: 白名单
+    - generic: 已审查案例
+    - combobox "已审查案例":
+      - option "受限任务 P01"
+      - option "受限任务 P02"
+      - option "受限任务 P03"
+      - option "受限任务 P04"
+      - option "受限任务 P05"
+      - option "受限任务 P06"
+      - option "受限任务 H01"
+      - option "受限任务 H02"
+      - option "受限任务 H03"
+      - option "受限任务 H04"
+      - option "受限任务 H05"
+      - option "受限任务 H06"
+      - option "受限任务 H07" [selected]
+      - option "受限任务 H08"
+    - paragraph: 已审查的本地合成 Python 工具；风险与修复结论以实际运行证据为准。
+    - strong: tool.py
+    - generic: 候选仅在隔离副本内运行
+    - generic: 受限文件
+    - generic "安全与功能规则 查看约束":
+      - text: 安全与功能规则
+      - generic: 查看约束
+    - generic: 运行环境
+    - generic: 设施已就绪
+    - strong: qwen3-coder:30b · 本地服务
+    - paragraph: 服务端报告运行设施就绪。任务仍须经过实际执行和验收。
+    - generic "SAVED RUNS 更多历史记录 +":
+      - generic: SAVED RUNS
+      - heading "更多历史记录" [level=2]
+      - text: +
+    - option "选择一份历史运行…" [selected]
+    - option "H01 · 2026-09-29T09:45:16.497334+00:00"
+    - option "H03 · 2026-09-29T09:46:29.447280+00:00"
+    - option "H07 · 2026-09-29T09:48:09.819542+00:00"
+    - paragraph: 结论只覆盖本次受限任务及实际执行的检查，不代表任意项目或真实凭据已安全。
+  - region "模型判断与程序结论":
+    - article:
+      - generic: MODEL HYPOTHESIS
+      - heading "模型怀疑" [level=2]
+      - generic: EXECUTOR_COMPLETED
+      - paragraph: 模型判断未观察到初始泄露
+      - generic "查看模型诊断原文"
+      - generic "模型原始疑点与提案 拒绝 0 项"
+      - generic: 假设、原始提案和文字结论均不构成程序确认。
+    - article:
+      - generic: PROGRAM VERDICT
+      - heading "程序确认" [level=2]
+      - generic: 通过 · PASS
+      - paragraph: 受限验收通过
+      - paragraph: 服务端未附加判决原因；查看下方实际检查。
+      - text: 原始风险确认
+      - strong: 未观察到泄露
+      - text: 修复授权
+      - strong: 否
+      - generic: 验收记录时间 · 2026/9/29 17:48:09
+  - generic: 02 / SOURCE & CANDIDATE
+  - heading "代码与候选差异" [level=2]
+  - tablist "代码视图":
+    - tab "原始代码"
+    - tab "候选差异" [selected]
+    - tab "候选代码"
+  - code: tool.py
+  - generic: 服务端实际差异
+  - code: sha256 3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7
+  - tabpanel "候选差异":
+    - generic: 服务端返回空差异：没有记录到代码变化。
+  - text: 代码和工具输出作为不可信数据展示，不会在浏览器中执行。页面不接受任意代码上传。
+  - generic "03 / EXECUTION EVIDENCE 实际执行证据 5 条已取得 +":
+    - generic: 03 / EXECUTION EVIDENCE
+    - heading "实际执行证据" [level=2]
+    - generic: 5 条已取得
+    - text: +
+  - text: › › › › ›
+  - generic: 04 / ACCEPTANCE
+  - heading "安全、功能与边界检查" [level=2]
+  - button "重新验收":
+    - text: 重新验收
+  - strong: 受限 Python / 修改仅限候选文件
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: 必要条件中的禁止通道凭据检测
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: 正常功能、授权调用及异常契约
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: 13 项必要条件完整执行
+  - paragraph: 13/13
+  - generic: 通过 · PASS
+  - paragraph: 仅覆盖登记的合成任务与固定检查协议；不表示任意真实项目安全。 模型回答与程序判决独立；任务结束不等于验收通过。
+  - button "导出证据包":
+    - text: 导出证据包
+  - generic: FRESH RECHECK
+  - heading "独立复检记录" [level=3]
+  - generic: 通过 · PASS
+  - paragraph: 2026/9/30 11:31:14 · 固定程序重新验收，不调用模型。
+  - paragraph: 服务端确认先前报告适用于当前材料。适用性不替代新验收判决。
+  - paragraph: candidate sha256 3a103d2ff1340b9dc5913f345365f93431d6394096e91a09ab7f355bfb9c49c7
+  - paragraph
+  - generic "查看逐项复检依据（14 条记录）" [active]
+  - strong: source_profile
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_01
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_02
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_03
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_04
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_05
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_06
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_07
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_08
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_09
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_10
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_11
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_12
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: trial_13
+  - paragraph
+  - generic: 通过 · PASS
+  - strong: 历史材料完整性：INTACT
+  - text: 缺失：无已报告缺失
+  - text: 变化：无已报告变化
+  - text: 旧报告适用性、历史证据完整性与本次复检判决分别显示。
+  - region "任务运行状态":
+    - generic: 任务状态
+    - strong: 保留原代码完成
+    - generic: 模型调用
+    - strong: "5"
+    - generic: 工具调用
+    - strong: "5"
+    - generic: 未知 / 不完整
+    - strong: "0"
+  - generic "运行身份与记录时间"
+  - text: 密证 CredProof
+  - generic: ·
+  - text: 凭据泄露验证与受控修复
+  - text: 发现疑点
+  - text: 生成候选
+  - text: 验证复检
+- status: 已下载服务端导出的实际证据包。

@@ -1,8 +1,10 @@
 # 密证 CredProof：初赛候选阅读与运行入口
 
-**作品名称：密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统。候选版本：`0.2.0-preliminary.1`。**
+**作品名称：密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统。候选版本：`0.2.0-preliminary.2`。**
 
-本目录整理可演示、可阅读、可复检的候选材料。模型提出诊断与补丁，程序根据实际泄露证据决定能否修改，用固定条件检查功能和凭据通道。结论限于预先审查的小型 Python 合成工具；当前不是比赛终版，也不表示资格、原创声明或外部验收已通过。
+系统结合本地大模型补丁生成与程序控制的安全验收，针对凭据泄露问题给出候选修复，并检查泄露是否消除、必要业务行为是否保持，支持材料导出与复检。
+
+从作品首页开始，先了解三个特点和主机制，再依次查看 **h01 有限修复增量 → h03 失败候选与反馈调整 → h07 正常保留 → 材料复检**。精选案例展示真实过程，完整批次结果保留全部八例。本版更新展示与材料，未新增模型实验或案例集；已验证环境仍是 Windows + WSL，适用场景为已登记、已适配业务接口的受控 Python 工具。当前材料供初赛打磨，身份、声明及参赛规则仍待本人确认。
 
 ## 1. 先读这些材料
 
@@ -12,11 +14,13 @@
 | 摘要与一页说明 | [summary.md](summary.md) |
 | 机制图 | [PNG](assets/mechanism.png)、[SVG](assets/mechanism.svg) |
 | 三分钟讲解 | [demo-script.md](demo-script.md)：h01、h03、h07 均为真实历史回放 |
+| 一页展示顺序、60 秒提纲与录屏分镜 | [presentation-guide.md](presentation-guide.md)：页面区域、点击顺序和关键话 |
+| 本版展示与交付检查 | [presentation-checks.md](presentation-checks.md)：界面、叙事、材料与旧档保护 |
 | 答辩准备 | [qa.md](qa.md) |
 | 官方模板、匿名和待确认事项 | [template-requirements.md](template-requirements.md) |
 | 报告构建与版式处理 | [build-instructions.md](build-instructions.md) |
-| 本轮固定预算发布检查 | [checks.md](checks.md)：一次 h01 现场任务、三份独立复检材料、对象变化拒绝复用 |
-| 本轮材料完整性检查 | [命令及退出码](checks/bundle-integrity/20260929T135515Z/command-log.json)、[完整材料复检](checks/bundle-integrity/20260929T135515Z/intact-recheck.json)、[缺可选轨迹复检](checks/bundle-integrity/20260929T135515Z/missing-optional-trace-recheck.json) |
+| 上版固定预算发布检查（2026-09-29） | [checks.md](checks.md)：一次 h01 现场任务、三份独立复检材料、对象变化拒绝复用 |
+| 上版材料完整性检查（2026-09-29） | [命令及退出码](checks/bundle-integrity/20260929T135515Z/command-log.json)、[完整材料复检](checks/bundle-integrity/20260929T135515Z/intact-recheck.json)、[缺可选轨迹复检](checks/bundle-integrity/20260929T135515Z/missing-optional-trace-recheck.json) |
 
 Word/PDF 是候选文稿产物；最终提交仍需队伍确认身份与贡献、提交日期、匿名属性、文件命名和大小。内部研发记录包含机器路径及历史来源，不应直接把整个研发包当成匿名参赛报告。
 

@@ -1,0 +1,57 @@
+{
+  "checked_at": "2026-09-30T03:40:45.359922+00:00",
+  "commands": [
+    {
+      "name": "ui-final-syntax",
+      "command": [
+        "node",
+        "--check",
+        "agent_pilot/ui/app.js"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "core-unchanged",
+      "command": [
+        "git",
+        "diff",
+        "--quiet",
+        "9528bc9dc2fdb3c055ecad05a273e031c7cb388e",
+        "--",
+        "agent_pilot",
+        ":!agent_pilot/ui"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "historical-results-unchanged",
+      "command": [
+        "git",
+        "diff",
+        "--quiet",
+        "9528bc9dc2fdb3c055ecad05a273e031c7cb388e",
+        "--",
+        "experiments",
+        "docs/preliminary-candidate/materials"
+      ],
+      "exit_code": 0
+    }
+  ],
+  "change_after_web_tests": "Only wrapped fresh-recheck check rows in an expandable details element; browser opened the 14 rows and verified trial_13 and integrity; no verdict or backend change.",
+  "ui_final_sha256": {
+    "index.html": "6082a10d9812003520483cebfdb4bc15cb93821ff347cc5a59b15c136ef4857a",
+    "styles.css": "8d2de39810fae65ef0db352b3cbdcda3158cc1945932f480aa62447568a4d1fc",
+    "app.js": "7bf685b2d1270272ac570c2a691efcc45fefb8e1b7b90da053d0c87a6c34f990"
+  },
+  "fresh_recheck_copy_sha256": "f3500170f624b827732d7456e6e826b366d276aeacf52fe80e1442424c738419",
+  "screenshots": {
+    "showcase-cases.png": "5be1f0343f7037e42b8513489ca62e364f941e4b1faf81a865412cf405adf824",
+    "showcase-h01.png": "61031dd178c69848f0d8a004ebf9eb4e010274d10c21a9d685ca2d101d4ed8b3",
+    "showcase-h03-diffs.png": "ccbd1440a66120de3331a2cc76fa498b2bef950ff24e477d1af4e70a8264b8a5",
+    "showcase-h03.png": "6516fc3dabfa2d88db9835b80c7dffd830ce6f9c1e1f20b9ad39d40ff33a467c",
+    "showcase-h07.png": "2522e2f0de72e99a843f1c7471dfa9e866477598bc698e347f2b68aa7c9126f1",
+    "showcase-home.png": "f58f8f3b3e7072a04623295ba2f9474cec550e946ee678016725fe80c4863787",
+    "showcase-overview.png": "6807e0e5898d1b51f0f74269393bde704eb9bdc07381f4dfb25dc106df44840b",
+    "showcase-recheck.png": "b6517cbee6025c468f40b8f8d3967affc4ad188b5474d90e450a6ab9e976a24d"
+  }
+}
