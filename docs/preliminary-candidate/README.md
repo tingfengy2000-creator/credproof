@@ -1,6 +1,6 @@
 # 密证 CredProof：初赛候选阅读与运行入口
 
-**作品名称：密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统。候选版本：`0.2.0-preliminary.2`。**
+**作品名称：密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统。候选版本：`0.2.0-preliminary.3`。**
 
 系统结合本地大模型补丁生成与程序控制的安全验收，针对凭据泄露问题给出候选修复，并检查泄露是否消除、必要业务行为是否保持，支持材料导出与复检。
 
@@ -15,7 +15,8 @@
 | 机制图 | [PNG](assets/mechanism.png)、[SVG](assets/mechanism.svg) |
 | 三分钟讲解 | [demo-script.md](demo-script.md)：h01、h03、h07 均为真实历史回放 |
 | 一页展示顺序、60 秒提纲与录屏分镜 | [presentation-guide.md](presentation-guide.md)：页面区域、点击顺序和关键话 |
-| 本版展示与交付检查 | [presentation-checks.md](presentation-checks.md)：界面、叙事、材料与旧档保护 |
+| 本版视觉与操作检查 | [premium-checks.md](premium-checks.md)：深色展示界面、实际状态来源、截图与定向回归 |
+| 前版展示与交付检查（preliminary.2） | [presentation-checks.md](presentation-checks.md)：界面、叙事、材料与旧档保护 |
 | 答辩准备 | [qa.md](qa.md) |
 | 官方模板、匿名和待确认事项 | [template-requirements.md](template-requirements.md) |
 | 报告构建与版式处理 | [build-instructions.md](build-instructions.md) |
@@ -143,7 +144,7 @@ Pop-Location
 - `historical_evidence_integrity`：manifest 列明的 `original.py`、`report.json`、`trace/**` 是否完整且未变；状态为 INTACT、DEGRADED 或 UNKNOWN，并列出缺失、变化和不可读文件。它不证明未声明的历史事件齐全，也不是数字签名。
 - `validation`：重读当前候选后，固定裁判的真实复检结论。
 
-本轮定向回归的 19 项单测使用明确标注的虚构转录；另做了两次真正隔离复检，各 13 项 PASS。第二次只在新副本删除一项可选轨迹，得到 DEGRADED、旧报告仍适用、当前复检仍 PASS。这说明材料缺失会被报告，并未把历史可审查性和候选行为混为一个结论。[全部命令与退出码](checks/bundle-integrity/20260929T135515Z/command-log.json)可复核；[此前启动记录失败](checks/bundle-integrity/20260929T135237Z/command-log.json)也保留，该次未开始候选执行。
+preliminary.1 阶段的 19 项定向单测使用明确标注的虚构转录；另做了两次真正隔离复检，各 13 项 PASS。第二次只在新副本删除一项可选轨迹，得到 DEGRADED、旧报告仍适用、当前复检仍 PASS。这说明材料缺失会被报告，并未把历史可审查性和候选行为混为一个结论。[全部命令与退出码](checks/bundle-integrity/20260929T135515Z/command-log.json)可复核；[此前启动记录失败](checks/bundle-integrity/20260929T135237Z/command-log.json)也保留，该次未开始候选执行。
 
 ## 7. 候选打包与待确认事项
 

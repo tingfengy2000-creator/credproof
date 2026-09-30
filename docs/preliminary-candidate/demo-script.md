@@ -2,17 +2,19 @@
 
 **作品名称：密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统。**
 
+候选版本 `0.2.0-preliminary.3`。首页短句：**发现泄露，修复有据。**
+
 演示主线：**证据确认与授权 → 模型候选与反馈调整 → 程序验收 → 对应对象复检**。三个案例来自同一冻结轮次 `20260929t095000z-holdout8`，始终保留 **REPLAY／历史回放** 标识。60 秒版本、区域导航和截图分镜见 [展示指南](presentation-guide.md)。
 
 ## 0—20 秒：从作品首页开始
 
-**画面与点击：** 首页完整作品名和三个特点，点击“探索典型案例”。
+**画面与点击：** 首页“发现泄露，修复有据。”、完整作品名和三个特点，点击“探索典型案例”。
 
 **讲述：** “这是密证。AI 工具即使没有硬编码密钥，也可能把运行时凭据写进日志或返回值。我们先用真实证据确认问题并控制修改权限，再让模型提出候选，由程序检查安全和业务行为。接下来展示三份历史记录，最后看对应对象的材料复检。”
 
 ## 20—65 秒：h01，辅助函数里的日志泄露
 
-**画面与点击：** 点击 **H01「跨函数的日志泄露」**，看“程序确认”和“实际执行证据”；展开 candidate-1 的实际补丁差异，指向同批固定流程结果及“安全、功能与边界检查”。
+**画面与点击：** 点击 **H01「跨函数的日志泄露」**的“查看案例与证据”，先看“五项证据状态”：泄露确认、候选产生、安全验收、业务保持、材料复检；再看“程序确认”和“实际执行证据”，展开“候选 1”的实际补丁差异，指向同批固定流程结果及“安全、功能与边界检查”。
 
 **讲述：** “凭据经参数传给辅助函数，既用于允许的认证，也进入日志。程序先确认了泄露。本项目的固定启发式 A 没覆盖这个参数日志路径，最终仍失败；有反馈 Agent C 改掉日志中的凭据，保留认证调用，通过十三个固定条件。这里，模型补足了有限规则的一个结构盲点。”
 
@@ -20,7 +22,7 @@
 
 ## 65—120 秒：h03，看似脱敏的候选为什么失败
 
-**画面与点击：** 点击 **H03「看似脱敏，仍在泄露」**；展开 candidate-1（FAIL）与 candidate-2（PASS）的实际差异。同批 A 的 PASS 保持可见。
+**画面与点击：** 点击 **H03「看似脱敏，仍在泄露」**；展开“候选 1”（FAIL）与“候选 2”（PASS）的实际差异。同批 A 的 PASS 保持可见。
 
 **讲述：** “第一份补丁加了脱敏标记，但真实值仍跟在后面，所以程序继续判日志泄露。失败回执实际进入下一轮请求，第二份补丁改为固定错误信息，才通过检查。两份代码、失败回执和下一轮输入都能对应起来。A 在这一例首份补丁已经成功，这里展示的是一次真实的反馈修正过程。”
 
@@ -52,4 +54,4 @@
 - 检查录屏账户、窗口标题和机器路径，保持证据值脱敏；不改写原始证据。材料变化时旧报告可能不适用，UNKNOWN／FAIL 必须保留。开源、AI 辅助开发及参赛许可依文稿披露。
 - 三分钟是本项目讲解目标，不是运行时保证或官方时长要求。本文件与分镜是录制计划，不代表已经制作视频。
 
-原始依据：[完整轮次](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/results.json)、[h01](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/result.json)、[h03](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/result.json)、[h07](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/result.json)、[已有检查与复检材料](checks.md)、[完整结果及边界](manuscript.md)。
+原始依据：[完整轮次](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/results.json)、[h01](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/result.json)、[h03](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/result.json)、[h07](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/result.json)、[preliminary.1 复检材料](checks.md)、[preliminary.2 展示检查](presentation-checks.md)、[preliminary.3 本版检查](premium-checks.md)、[完整结果及边界](manuscript.md)。

@@ -2,7 +2,7 @@
 const API = '/api/agent';
 const $ = id => document.getElementById(id);
 const state = { bootstrap: null, caseId: '', run: null, view: 'source', busy: false,
-  error: '', stale: false, replay: false, epoch: 0, timer: null };
+  error: '', stale: false, replay: false, epoch: 0, timer: null, demoRuns: {} };
 const activeStatuses = new Set(['QUEUED', 'RUNNING']);
 const statusNames = { QUEUED: '等待执行', RUNNING: '执行中', COMPLETED: '任务结束',
   STOPPED: '已停止', ERROR: '执行异常' };
@@ -271,12 +271,58 @@ function renderValidation() {
   $('updated-at').textContent = run ? `最近取得的状态 · ${displayTime(run.updated_at)}` : '状态按请求刷新，不是实时监控。';
 }
 
+function renderResultStates() {
+  const run = state.run;
+  const invalid = state.stale || ['CHANGED', 'UNAVAILABLE'].includes(run?.material_binding?.status);
+  const checks = Array.isArray(run?.validation?.checks) ? run.validation.checks : [];
+  const check = id => checks.find(item => item.id === id);
+  const security = check('credential-channels'), boundary = check('source-boundary'), behavior = check('behavior');
+  const status = item => item?.status ?? item?.verdict;
+  const confirmed = run?.diagnosis?.confirmed;
+  const rows = [
+    { label: '泄露确认', icon: 'i-shield', value: !run ? '尚未确认' : confirmationNames[confirmed] || '确认未知', style: confirmed === 'CONFIRMED_LEAK' ? 'fail' : 'neutral', detail: !run ? '等待程序观察，不采用模型文字作为结论。' : confirmed === 'CONFIRMED_LEAK' ? '原始对象的程序证据；不代表当前候选仍泄露。' : '依据程序诊断；未观察到不等于任意输入均安全。' },
+    { label: '候选产生', icon: 'i-code', value: '尚无候选记录', style: 'neutral', detail: '候选文件存在，不等于已经提出修改。' },
+    { label: '安全验收', icon: 'i-lock', value: '尚未执行', style: 'neutral', detail: '分别读取禁止通道与源代码边界检查。' },
+    { label: '业务保持', icon: 'i-check', value: '尚未执行', style: 'neutral', detail: '读取必要业务行为的实际检查。' },
+    { label: '材料复检', icon: 'i-refresh', value: '尚未复检', style: 'neutral', detail: '取得任务材料后，可发起独立程序复检。' }
+  ];
+  if (run) {
+    const stages = array(run.presentation?.stages);
+    const changed = typeof run.source_sha256 === 'string' && typeof run.candidate_sha256 === 'string' && run.source_sha256 !== run.candidate_sha256;
+    const same = typeof run.source_sha256 === 'string' && run.source_sha256 === run.candidate_sha256;
+    if (stages.length) Object.assign(rows[1], { value: `${stages.length} 份候选记录`, detail: '来自实际候选阶段；候选数量不等于验收通过。' });
+    else if (changed) Object.assign(rows[1], { value: '已选中修改候选', detail: '当前候选与原始代码的内容身份不同。' });
+    else if (same) Object.assign(rows[1], { value: '当前保持原代码', detail: '选中对象与原始代码相同，不计为新补丁。' });
+    if (run.validation) {
+      const safetyStates = [status(security), status(boundary)];
+      const safety = safetyStates.includes('FAIL') ? 'FAIL' : safetyStates.every(value => value === 'PASS') ? 'PASS' : 'UNKNOWN';
+      Object.assign(rows[2], { value: safety === 'PASS' ? '两项检查通过' : safety === 'FAIL' ? '存在未通过项' : '检查不完整', style: tone(safety), detail: `禁止通道 ${status(security) || '未提供'} · 源边界 ${status(boundary) || '未提供'}` });
+      Object.assign(rows[3], { value: verdictNames[status(behavior)] ? `${verdictNames[status(behavior)]} · ${status(behavior)}` : '检查未提供', style: tone(status(behavior)), detail: '仅对应必要行为检查，不从整体判决反推。' });
+    }
+    if (run.recheck) {
+      const result = run.recheck.validation ?? run.recheck;
+      Object.assign(rows[4], { value: verdictNames[result.verdict] ? `复检${verdictNames[result.verdict]}` : '复检判决未知', style: tone(result.verdict), detail: `旧报告适用性：${run.recheck.prior_report_applicable === true ? '适用' : run.recheck.prior_report_applicable === false ? '不适用' : '未知'}；本次复检独立显示。` });
+    } else if (run.historical_recheck) Object.assign(rows[4], { value: '旧复检不再适用', style: 'unknown', detail: '历史记录保留，不能作为当前对象的通过证据。' });
+    else if (run.validation && !isRunning()) Object.assign(rows[4], { value: '可发起 · 未复检', detail: '原有验收不是新复检；下方可重新验收或导出材料。' });
+  }
+  if (invalid) rows.forEach(row => Object.assign(row, { value: '需重新确认', style: 'unknown', detail: '材料变化或状态请求失效，不沿用旧结论。' }));
+  $('result-context').textContent = run ? `${run.mode === 'REPLAY' ? 'REPLAY 历史验收' : 'LIVE 本次任务'} · 复检结果单独记录` : '尚未执行 · 分项状态独立呈现';
+  $('result-states').innerHTML = rows.map((row, index) => `<article class="result-state ${row.style}" data-result-index="${index}"><div class="result-state-label"><span>${row.label}</span><svg class="icon"><use href="#${row.icon}"/></svg></div><strong>${escape(row.value)}</strong><p>${escape(row.detail)}</p></article>`).join('');
+}
+
 function renderStories() {
   const demos = array(state.bootstrap?.demonstrations);
   const lenses = { h01: ['i-code', '结构覆盖 · 跨函数传递'], h03: ['i-shield', '反馈调整 · 两份候选'], h07: ['i-check', '正常验证 · 保持原代码'] };
   $('demo-cards').innerHTML = demos.map((item, i) => {
     const [icon, lens] = lenses[item.case_id] || ['i-code', '实际记录 · 独立证据'];
-    return `<button class="demo-card ${state.run?.id === item.run_id ? 'selected' : ''}" data-demo="${escape(item.run_id)}" aria-pressed="${state.run?.id === item.run_id}" ${state.busy || isRunning() ? 'disabled' : ''}><span class="demo-card-head"><span class="demo-symbol"><svg class="icon"><use href="#${icon}"/></svg></span><span class="demo-number">0${i + 1} / ${escape(item.case_id.toUpperCase())} · REPLAY</span></span><span class="demo-lens">${escape(lens)}</span><strong>${escape(item.title)}</strong><span class="demo-subtitle">${escape(item.subtitle)}</span><span class="demo-card-foot"><small>查看真实历史回放</small><svg class="icon"><use href="#i-arrow"/></svg></span></button>`;
+    const record = state.run?.id === item.run_id ? state.run : state.demoRuns[item.run_id];
+    const readable = record?.presentation && record.validation && !['CHANGED', 'UNAVAILABLE'].includes(record.material_binding?.status) && !state.error;
+    const verdict = readable ? record.validation.verdict : null;
+    const stages = readable ? array(record.presentation.stages) : [];
+    const stageText = stages.length ? `候选验收 ${stages.map(stage => stage.validation?.verdict || 'UNKNOWN').join(' → ')}` : readable ? taskNames[record.task_status] || '任务状态未知' : '记录未读取或当前材料不可用';
+    const fixed = readable ? record.presentation.fixed_comparison : null;
+    const comparison = fixed ? `同批 A：${fixed.verdict || 'UNKNOWN'} / ${taskNames[fixed.task_status] || '任务状态未知'}` : 'A / C 结论分别保留，等待读取实际记录。';
+    return `<button class="demo-card ${state.run?.id === item.run_id ? 'selected' : ''}" data-demo="${escape(item.run_id)}" aria-pressed="${state.run?.id === item.run_id}" ${state.busy || isRunning() ? 'disabled' : ''}><span class="demo-card-head"><span class="demo-symbol"><svg class="icon"><use href="#${icon}"/></svg></span><span class="demo-number">0${i + 1} / ${escape(item.case_id.toUpperCase())} · REPLAY</span></span><span class="demo-lens">${escape(lens)}</span><strong>${escape(item.title)}</strong><span class="demo-subtitle">${escape(item.subtitle)}</span><span class="demo-fact"><span class="demo-fact-label">C · 实际历史结论</span><span class="demo-fact-main">${badge(verdict || '未确认', tone(verdict))}${escape(stageText)}</span><span class="demo-comparison">${escape(comparison)}</span></span><span class="demo-card-foot"><small>查看案例与证据</small><svg class="icon"><use href="#i-arrow"/></svg></span></button>`;
   }).join('') || '<div class="gallery-empty">尚未加载精选历史记录。可在服务端启用演示记录，或使用下方工作区选择已审查案例。</div>';
   const story = state.run?.presentation;
   $('story-panel').hidden = !story;
@@ -289,7 +335,7 @@ function renderStories() {
   }).join('') || '<p class="story-preserved">这份记录未提交补丁，验证后保留原代码。</p>'}</div><div class="story-foot"><span>同批固定流程（A-fixed）：${escape(story.fixed_comparison?.verdict || 'UNKNOWN')} · ${escape(taskNames[story.fixed_comparison?.task_status] || story.fixed_comparison?.task_status || '任务状态未知')}</span><span>历史验证结果，与本次复检分别保留</span></div><details class="story-provenance"><summary>查看历史来源与版本</summary><p>批次 ${escape(story.batch)} · 版本 ${escape(story.source_commit || '未提供')}<br>${escape(story.provenance || '')}</p></details>`;
 }
 
-function render() { renderConnection(); renderScope(); renderActions(); renderDecisions(); renderCode(); renderEvidence(); renderValidation(); renderStories(); }
+function render() { renderConnection(); renderScope(); renderActions(); renderDecisions(); renderCode(); renderEvidence(); renderValidation(); renderResultStates(); renderStories(); }
 function clearPoll() { if (state.timer) window.clearTimeout(state.timer); state.timer = null; }
 function schedulePoll() {
   clearPoll();
@@ -313,6 +359,11 @@ async function loadBootstrap() {
   const data = validateBootstrap(await request(`${API}/bootstrap`));
   state.bootstrap = data;
   if (!data.cases.some(item => item.id === state.caseId)) state.caseId = data.cases[0]?.id || '';
+  state.demoRuns = {};
+  await Promise.allSettled(array(data.demonstrations).map(async item => {
+    const record = validateRun(await request(runPath(item.run_id)));
+    if (record.mode === 'REPLAY') state.demoRuns[item.run_id] = record;
+  }));
 }
 
 async function busyAction(action) {

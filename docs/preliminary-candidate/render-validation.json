@@ -1,14 +1,14 @@
 {
-  "revision": "2026-09-30 presentation and manuscript refinement; no new performance experiment",
-  "checked_at": "2026-09-30T03:48:51.452963+00:00",
+  "revision": "0.2.0-preliminary.3 visual refinement: cover name wrap and real dark-UI h03 screenshot; no text/table changes or new performance experiment",
+  "checked_at": "2026-09-30T10:24:33.194937+00:00",
   "files": {
     "credproof-manuscript-candidate.docx": {
-      "bytes": 307331,
-      "sha256": "ae43d9613e6b7a04721bbe708b2a009c08b0d5ef119da722a0a98cab8f2c087f"
+      "bytes": 307346,
+      "sha256": "908b4d38537c0b1c60cd6e868a880d8eb84489f416fcd41b5cf6e3c823a70686"
     },
     "credproof-manuscript-candidate.pdf": {
-      "bytes": 458843,
-      "sha256": "c7778a7660385a0b6bdb37f6a5bb01185d90ed8ad5c1535eb15e294d595b20dc"
+      "bytes": 462171,
+      "sha256": "2e0630129445af6c2fd9ba9ffe296de78ad76b014267947dedc241e629c0e170"
     }
   },
   "render_engine": "WPS Office 12.1.0.28485 COM export + pypdfium2 1.5 scale",
@@ -77,7 +77,7 @@
         "page": 1,
         "image": "working/render-final/page-01.png",
         "status": "CHECKED",
-        "note": "官方封面名称准确、日期待填"
+        "note": "已实际核看封面；品牌与完整长名称有意分行，保留官方白底、字段与日期待填"
       },
       {
         "page": 2,
@@ -119,7 +119,7 @@
         "page": 8,
         "image": "working/render-final/page-08.png",
         "status": "CHECKED",
-        "note": "h01与h03独立故事；新版真实REPLAY截图与图注完整"
+        "note": "新版premium-h03真实深色截图保留历史REPLAY、候选1 FAIL 11/2、候选2 PASS13、A PASS及图注"
       },
       {
         "page": 9,
@@ -193,8 +193,8 @@
     "assets/mechanism.svg": {
       "sha256": "f190083a4dec5d2abe9ca9fa8450ef373cb83ba6ec49562b30aad59535264d2a"
     },
-    "assets/showcase-h03.png": {
-      "sha256": "6516fc3dabfa2d88db9835b80c7dffd830ce6f9c1e1f20b9ad39d40ff33a467c"
+    "assets/premium-h03.png": {
+      "sha256": "b40ef3ab3570ecbe6411c83c52d6f3279ae378f7b4da21ee0aa412654ed39675"
     }
   },
   "official_template_original_unchanged": true,
@@ -206,7 +206,20 @@
   "candidate_status": "Review candidate, not submitted and not signed",
   "no_business_or_model_execution": true,
   "notes": [
-    "The final PNGs were opened and inspected. After the final wrap adjustment, pages 8 and 9 were re-opened; all other page image bytes matched the earlier inspected rendering.",
-    "Known historical performance only; new UI checks or rechecks do not replace those results."
-  ]
+    "All 11 final page PNGs were opened and visually inspected in this revision.",
+    "Official print-oriented white cover and Songti 12pt/1.5 body are intentionally distinct from the dark UI shown in the real screenshot.",
+    "Only cover wrapping and screenshot changed. No model/candidate/business experiment was run; historical performance is unchanged."
+  ],
+  "preservation_checks": {
+    "manuscript_summary_qa_bytes_unchanged": true,
+    "non_cover_pdf_page_text_unchanged": true,
+    "cover_text_unchanged_ignoring_whitespace": true,
+    "historical_table_exact_match": true,
+    "changed_rendered_pages": [
+      "page-01.png",
+      "page-08.png"
+    ],
+    "all_other_rendered_page_bytes_unchanged": true,
+    "source_baseline_head": "3a0d73500a030590668083765df2232da16a4312"
+  }
 }

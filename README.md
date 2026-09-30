@@ -2,7 +2,7 @@
 
 系统结合本地大模型补丁生成与程序控制的安全验收，针对凭据泄露问题给出候选修复，并检查泄露是否消除、必要业务行为是否保持，支持材料导出与复检。
 
-当前版本 **`0.2.0-preliminary.2`**：从作品首页进入 h01、h03、h07 三个精选案例，依次查看问题、实际证据、补丁差异和复检结果。[初赛候选入口](docs/preliminary-candidate/README.md)集中提供作品说明书、摘要、机制图和启动方式；[一页展示顺序与录屏分镜](docs/preliminary-candidate/presentation-guide.md)可直接用于排练。
+当前版本 **`0.2.0-preliminary.3`**：从深色作品首页进入 h01、h03、h07 三个精选案例，依次查看问题、实际证据、补丁差异和复检结果。[初赛候选入口](docs/preliminary-candidate/README.md)集中提供作品说明书、摘要、机制图和启动方式；[一页展示顺序与录屏分镜](docs/preliminary-candidate/presentation-guide.md)可直接用于排练。
 
 三个特点：**证据驱动的候选生成与反馈调整；程序控制的修改权限与安全/业务验收；对应修复对象的材料导出与复检。**
 

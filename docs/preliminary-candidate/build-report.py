@@ -162,6 +162,10 @@ def build(args):
     for i, value in [(12, "作品名称：" + TITLE), (14, "提交日期：待填")]:
         p = paragraphs[i]
         p.clear()
+        if i == 12:
+            # Preserve the official field and full name; make the brand and
+            # descriptor deliberate lines instead of an accidental short tail.
+            value = value.replace("CredProof——", "CredProof——\n", 1)
         font(p.add_run(value), "黑体", 16, True)
         p.paragraph_format.line_spacing = 1.5
     for p in paragraphs[17:22]:
@@ -270,7 +274,7 @@ def build(args):
     receipt = {"source": str(reference), "source_sha256": hashlib.sha256(reference.read_bytes()).hexdigest(),
                "manuscript_sha256": hashlib.sha256((HERE / "manuscript.md").read_bytes()).hexdigest(),
                "output": str(args.output), "assets": {key: str(getattr(args, key)) if getattr(args, key) else None for key in ("mechanism", "overview", "trace")},
-               "historical_result_run": "20260929t095000z-holdout8", "not_final_render_qa": True}
+               "historical_result_run": "20260929t095000z-holdout8", "presentation_version": "0.2.0-preliminary.3", "not_final_render_qa": True}
     (HERE / "working").mkdir(exist_ok=True)
     (HERE / "working/build-receipt.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(receipt, ensure_ascii=False))
