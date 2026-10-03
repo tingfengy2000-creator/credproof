@@ -1,15 +1,27 @@
-# 一页可核对的技术贡献
+# 贡献与证据映射
 
-**密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统。** 本项目把本地模型候选、程序实施的修改权限和对象对应材料串成可操作流程；增量是限定任务上的工程设计与实现，不把开源 Agent 接入、反馈循环、哈希或普通状态控制称为新算法。
+本表把“主张”限制在已经实现和已记录的范围内。开源模型、Agent 框架、推理服务、隔离工具和上游组件均按来源归属，不计为本项目原创算法。
 
-| 自行实现内容 | 解决的问题与机制 | 代码位置与函数 | 案例依据 |
-|---|---|---|---|
-| 证据驱动的候选生成与反馈调整 | 固定程序先执行公开诊断；模型读取代码、选工具、生成候选，实际失败回执进入下一请求 | `agent_pilot/reliability.py`：`GovernedSession.initialize`、`run_method`；`model_client.py`：`LocalAgentClient.run` | h01 修好本项目固定启发式未覆盖的参数日志；h03 第一补丁仍保留真实值，第二补丁改变日志内容后通过 |
-| 程序控制的修改权限与安全/业务验收 | 当前副本与禁止通道必须有确认泄露，才允许修改；检查业务行为及修改边界，执行器决定完成 | `reliability.py`：`authority`、`submit`、`check`；`judge.py`：`validate_source`、`judge_trial`；`isolation.py`：`run_isolated` | h07 原代码保留；外部 Twine 的前两份候选被预先固定边界拒绝，第三份通过 |
-| 对应修复对象的材料导出与复检 | 导出检查当前对象与材料绑定；复检区分旧报告适用性、历史材料完整性和新结果 | `web.py`：`_material`、`_require_current_material`；`bundle.py`：`recheck_bundle`、`_historical_integrity` | 对象变化定向回归；h01/h03/h07 可移交材料；Twine 独立适配器 `external_twine.py`：`export`、`recheck` |
+| 具体困难 | 本项目设计 | 自行实现的部分 | 相比明确基线多做的一步 | 案例与证据 | 适用边界 |
+|---|---|---|---|---|---|
+| 模型提出的修复可能只处理表面文本，不能说明问题是否真的消失 | 先执行受控触发，再把脱敏证据和失败回执反馈到候选生成 | `agent_pilot/reliability.py` 的 `GovernedSession.initialize`、`run_method`；`model_client.py` 的本地会话记录 | 相比一次性模型修复，允许在当前候选的真实检查结果返回后再调整一次 | h03 候选1保留真实值，失败回执进入下一请求，候选2改为固定安全错误信息并通过；`materials/h03/trace` | 只证明一次真实反馈调整，不证明普遍优于一次性模型 |
+| 模型建议不能自行获得写入和“通过”权限；安全修复也可能破坏业务行为 | 当前副本、允许范围、禁止通道和必要业务条件由执行侧固定 | `reliability.py` 的 `authority`、`submit`、`check`；`judge.py` 的 `validate_source`、`judge_trial`；`isolation.py` 的 `run_isolated` | 相比“模型说已修复”或仅复扫，程序同时检查泄露、认证调用、成功响应、拒绝、服务异常和修改边界 | h01 认证保持而参数日志被修好；h07 无证据时原对象保持；Twine 前两候选被边界拒绝、第三候选通过七项条件 | 只覆盖固定的受控 Python 接口和检查矩阵，不能替代通用语义等价证明 |
+| 绿色报告可能对应错误副本，后来修改后仍被沿用 | 导出和复检绑定原件、当前候选、规则及记录，重新执行必要检查 | `agent_pilot/web.py` 的 `_material`、`_require_current_material`；`agent_pilot/bundle.py` 的 `recheck_bundle`、`_historical_integrity` | 相比保存一个 PASS 字段，重新核对对象适用性、历史完整性和当前结果，并在变化后拒绝旧缓存复用 | 对象变化定向回归；h01/h03/h07 与 Twine 均有可移交材料和独立复检入口 | 普通哈希只检测相对清单的变化，不是第三方认证或不可伪造证明 |
 
-**清楚区分三个故事。** h01 仅支持相对本项目固定启发式的有限候选增量。h03 支持一次真实反馈调整；同例固定流程直接成功。Twine 是已知历史问题的窄组件接入，修复轮廓预先限制，不能用作普遍自主修复或领先证明。固定初始测试由程序提供，不全部归因于 Agent 自主发现。
+## 三类角色的边界
 
-**完整批次不改口径。** `20260929t095000z-holdout8` 的 A/B/C 问题例修复为 3/4、1/4、4/4；对象通过为 7/8、5/8、8/8；完整任务为 7/8、4/8、6/8。外部结果单列，不拼接成整体全通过。具体出处见 [说明书测试章节](manuscript.md)。
+- **人工**：确认授权范围、输入输出契约、禁止输出通道、必要业务条件和最终参赛/发布决定。
+- **固定程序**：生成初始受控证据，校验工具协议、路径和权限，执行隔离运行，判定安全与业务条件，绑定材料并控制任务结束。
+- **本地模型**：阅读已授权代码和脱敏观察，提出触发假设，选择结构化工具并生成候选补丁；不能修改裁判、需求或隔离设施，也不能直接指定 PASS。
 
-**来源归属。** Qwen3-Coder 是现成预训练模型；Qwen-Agent 提供 Assistant/工具循环；Ollama 提供本地推理；bubblewrap、Linux namespaces/seccomp 提供隔离基础。本项目负责受限工具、证据门槛、裁判、完成控制、对象绑定、材料复检、工作台及限定适配。Twine 原配置逻辑和许可证保留。ChatGPT/Codex 实质参与设计、主要代码、调试、测试组织及材料生成；成员贡献、AI 辅助参赛范围和原创声明由参赛者与导师/组委会确认，未代签、未提交。
+## 证据索引
+
+| 主张 | 代码 | 记录 |
+|---|---|---|
+| h01 有限修复增量 | `agent_pilot/reliability.py`、`agent_pilot/judge.py` | `experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/result.json`、`docs/preliminary-candidate/materials/h01/` |
+| h03 反馈调整 | `agent_pilot/reliability.py`、`agent_pilot/model_client.py` | `.../comparison/h03/C-agent/result.json`、`candidate-1.py`、`candidate-2.py`、`model/model-06-request.json` |
+| h07 无证据不改 | `agent_pilot/reliability.py`、`agent_pilot/judge.py` | `.../comparison/h07/C-agent/result.json`、`docs/preliminary-candidate/materials/h07/` |
+| Twine 外部组件 | `agent_pilot/external_twine.py` | `docs/external-scenario/twine/README.md`、`docs/external-scenario/twine-material-20261003/` |
+| 对象绑定和复检 | `agent_pilot/web.py`、`agent_pilot/bundle.py` | `agent_pilot/tests/test_web_material_binding.py`、`agent_pilot/tests/test_bundle.py`、`docs/preliminary-candidate/delivery-receipts/preliminary-4/` |
+
+原八例完整口径仍以 `manuscript.md` 第三章为准：问题例合格修复 A/B/C 为 3/4、1/4、4/4；最终对象通过为 7/8、5/8、8/8；完整任务为 7/8、4/8、6/8。精选案例不替代完整批次，Twine 不并入分母。

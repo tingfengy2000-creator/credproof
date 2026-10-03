@@ -1,12 +1,14 @@
 # 密证 CredProof：初赛候选阅读与运行入口
 
-**作品名称：密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统。候选版本：`0.2.0-preliminary.4`。**
+**作品名称：密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统。候选版本：`0.2.0-preliminary.5`。**
 
 系统结合本地大模型补丁生成与程序控制的安全验收，针对凭据泄露问题给出候选修复，并检查泄露是否消除、必要业务行为是否保持，支持材料导出与复检。
 
+**一句话记忆点：让 AI 提出修复，让程序决定是否接受，让开发者能够复查。**
+
 从作品首页开始，先了解三个特点和主机制，再依次查看 **h01 有限修复增量 → h03 失败候选与反馈调整 → h07 正常保留 → 材料复检**。精选案例展示真实过程，完整批次结果保留全部八例。本版接入一个 Twine 历史问题组件，分离三种运行入口并提供真实演示视频；外部结果单列，历史八例统计不变；已验证环境仍是 Windows + WSL，适用场景为已登记、已适配业务接口的受控 Python 工具。当前材料供初赛打磨，身份、声明及参赛规则仍待本人确认。
 
-本版新增入口：[三种模式与停止方式](startup-modes.md) · [外部 Twine 场景](../external-scenario/twine/README.md) · [一页贡献映射](contribution-map.md) · [源码讲解与追问](source-walkthrough.md) · [实录视频](video/README.md) · [本版检查](external-delivery-checks.md)。
+本版新增入口：[价值与创新主张](value-and-innovation.md) · [证据索引](evidence-index.md) · [三种模式与停止方式](startup-modes.md) · [外部 Twine 场景](../external-scenario/twine/README.md) · [一页贡献映射](contribution-map.md) · [源码讲解与追问](source-walkthrough.md) · [开发者体验包](experience-packet/README.md) · [实录视频](video/README.md) · [本版检查](external-delivery-checks.md)。
 
 ## 1. 先读这些材料
 
@@ -163,3 +165,7 @@ preliminary.1 阶段的 19 项定向单测使用明确标注的虚构转录；�
 ## preliminary.4 固定交付收据
 
 [包外实际检查](delivery-receipts/preliminary-4/README.md)保存候选包 SHA256、固定源码提交及真实解压命令。交付收据单独提交，不改变已验证 ZIP。
+
+## preliminary.5 价值与创新证据重构
+
+本版只更新初赛表达和材料组织，不新增模型任务、案例集或产品功能。新增[价值与创新主张](value-and-innovation.md)、[证据索引](evidence-index.md)和[开发者体验包](experience-packet/README.md)，并同步说明书、摘要、讲稿、问答和贡献映射。原八例完整统计、Twine 单外部场景、历史视频和 preliminary.4 包均保持原记录；待执行的真人体验没有被写成已完成用户研究。

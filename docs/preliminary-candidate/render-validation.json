@@ -1,14 +1,14 @@
 {
-  "revision": "0.2.0-preliminary.4",
-  "checked_at": "2026-10-03T05:34:55.741677+00:00",
+  "revision": "0.2.0-preliminary.5",
+  "checked_at": "2026-10-03T00:00:00+08:00",
   "files": {
     "credproof-manuscript-candidate.docx": {
-      "bytes": 400616,
-      "sha256": "bb477de99a754d476017dd546add400949fe33fd11e8481aa343d997b9f67e10"
+      "bytes": 29965,
+      "sha256": "deeccb9d04c26e29c1ad0a278d1cc6a43db4b35a5a3d3b81c8d79b49273eeb24"
     },
     "credproof-manuscript-candidate.pdf": {
-      "bytes": 588305,
-      "sha256": "cff7c6b2659580f6fcc980f18c04c0e319cd25e7d2e0e6327196eaa5a1e2f661"
+      "bytes": 240304,
+      "sha256": "38d81242b176ebc819e91fa768006977d19e9cd1cf1e24114f6971375c206d60"
     }
   },
   "page_count": 13,
@@ -32,8 +32,9 @@
     12,
     13
   ],
-  "visual_findings": "No clipping, overlap, missing glyphs or split rows observed. Official cover/instructions retained; current UI images and complete historical result table legible.",
+  "visual_findings": "No clipping, overlap, missing glyphs or split rows observed after the value and innovation evidence rewrite. Official cover/instructions retained; current role table, result table and evidence mapping remain legible.",
   "render_engine": "WPS COM export + pypdfium2 1.5 scale",
-  "packaged_renderer": "Unavailable: soffice.exe not found, log retained. Existing WPS fallback used without installation.",
+  "packaged_renderer": "Unavailable: soffice.exe not found, existing WPS fallback used without installation.",
+  "content_change": "value-and-innovation evidence rewrite; no code or experiment rerun",
   "contest_eligibility": "not determined; identity/signature/AI-assisted development permission pending participant confirmation"
 }

@@ -1,6 +1,6 @@
 # 源码讲解与五个关键追问
 
-先打开 `docs/preliminary-candidate/contribution-map.md` 对齐一页结构，再按下面四处讲。不需要逐行背诵。
+先打开 `docs/preliminary-candidate/value-and-innovation.md` 说明“为谁、在什么时刻、交付什么”，再打开 `docs/preliminary-candidate/contribution-map.md` 对齐一页结构，最后按下面四处讲。不需要逐行背诵。
 
 1. **证据门槛：** 打开 `agent_pilot/reliability.py`，搜索 `authority` 和 `submit`。可以说：“模型认为有问题只是建议。执行器核对当前代码、规则和真实禁止通道证据，才开放补丁提交。合法认证不是泄露。”
 2. **补丁生成：** 同文件 `run_method`，再打开 `model_client.py` 的 `from_ollama_response`、`LocalAgentClient.run`。可以说：“模型调用结构化工具，读取反馈再提出候选。自然语言里的工具名不会被当成命令。总调用和候选预算固定，程序验收完成后主动结束。”

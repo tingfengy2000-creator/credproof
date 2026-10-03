@@ -61,7 +61,15 @@
 
 所有历史效果统一使用 `20260929t095000z-holdout8` / `b4cb91ef67ae2d14d6cc37f9e18cf6c23e36e8ea`，不得混入新客户端 h05/h06 的复测。本轮已完成有限运行检查与候选 PDF 体积、匿名元数据、目录页码、截图及版式核验，分别见 checks.md 和 render-validation.json；队伍仍须核实正式提交要求，这些本地检查不代表外部验收或参赛资格已通过。
 
-## preliminary.4 增强对应表
+## preliminary.5 增强对应表
+
+| 要求 | 本版处理 | 证据 |
+|---|---|---|
+| 让评委先理解使用者、问题时刻和交付结果 | 新增价值与创新主张，摘要和报告第一章改为问题—用户—结果叙事 | `value-and-innovation.md`、`manuscript.md` |
+| 创新主张必须能回到代码和案例 | 贡献映射改为困难—设计—代码—案例—边界表，另有证据索引 | `contribution-map.md`、`evidence-index.md` |
+| 不编造用户收益 | 提供可交给 2—3 位未参与开发者执行的体验包，明确未招募、未执行、无真人结果 | `experience-packet/` |
+| 保留完整统计与失败 | 说明书继续保留 A/B/C 完整八例口径；Twine 单独报告 | `manuscript.md` 第三章、`docs/external-scenario/twine/README.md` |
+| 材料与程序一致 | 仅重建 DOCX/PDF 并做 13 页逐页渲染检查，未重跑模型性能实验 | `render-validation.json` |
 
 | 要求 | 本轮实现 | 可核对材料 | 待确认项 |
 |---|---|---|---|
