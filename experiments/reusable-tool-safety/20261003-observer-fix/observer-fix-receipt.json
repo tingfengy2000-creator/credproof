@@ -1,0 +1,26 @@
+{
+  "schema": "credproof.safety.observer-fix/v1",
+  "date": "2026-10-03",
+  "change": "capture DEBUG-level Python logging and run pytest with -s; reject unimplemented multi-boundary config",
+  "commands": [
+    "python -m unittest tests.test_reusable_tool_safety -v",
+    "python scripts/run-reusable-safety-demo.py --output _runs/astra-observation-review/demo"
+  ],
+  "results": {
+    "unit_tests": "13 passed",
+    "vulnerable": "FAIL",
+    "fixed": "PASS",
+    "reintroduced_file_bypass": "FAIL"
+  },
+  "new_observation": "vulnerable report credential_leaks includes logs because logging.info output is captured; this corrects the previous blind spot",
+  "historical_records_unchanged": true,
+  "model_replay": false,
+  "paid_api_used": false,
+  "runtime": "WSL Ubuntu-24.04 + reviewed bubblewrap; synthetic material only",
+  "external_case": {
+    "before": "FAIL",
+    "after": "PASS",
+    "upstream_pytest": "114 passed",
+    "model_replay": false
+  }
+}

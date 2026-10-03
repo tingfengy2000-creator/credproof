@@ -1,0 +1,503 @@
+{
+  "schema": "credproof.external-case/v1",
+  "provenance": {
+    "project": "python-dotenv",
+    "source": "https://github.com/theskumar/python-dotenv",
+    "fixed_ref": "v1.2.2",
+    "commit": "36004e0e34be7665ff2b11a8a4005144f76f176d",
+    "license": "BSD-3-Clause",
+    "upstream_issue_claim": false,
+    "credproof_change": "A thin adapter and an explicitly artificial read-boundary defect were added in a disposable copy; this is not an upstream vulnerability or CVE.",
+    "retained_upstream": [
+      "src/dotenv",
+      "tests/test_main.py",
+      "tests/conftest.py",
+      "LICENSE",
+      "pyproject.toml",
+      "README.md"
+    ],
+    "scope": "One directory-read safety category; upstream tests were collected in the WSL/bubblewrap copy."
+  },
+  "artificial_injection": true,
+  "before": {
+    "verdict": "FAIL",
+    "failed_checks": [
+      "no_forbidden_file_read",
+      "no_credential_output"
+    ],
+    "pytest": 0
+  },
+  "after": {
+    "verdict": "PASS",
+    "failed_checks": [],
+    "pytest": 0
+  },
+  "full_before": {
+    "verdict": "FAIL",
+    "required_checks": {
+      "pytest": true,
+      "entry_completed": true,
+      "required_allowed_file_read": true,
+      "no_forbidden_file_read": false,
+      "no_credential_output": false,
+      "allowed_service_receipt": true,
+      "allowed_service_path": true,
+      "required_service_credential": true,
+      "no_forbidden_service_receipt": true,
+      "no_unauthorized_connection": true,
+      "isolation_receipt": true
+    },
+    "failed_checks": [
+      "no_forbidden_file_read",
+      "no_credential_output"
+    ],
+    "execution": {
+      "schema": "credproof.safety.execution/v1",
+      "pytest_exit_code": 0,
+      "entry_returned": {
+        "values": {
+          "[SYNTHETIC_CREDENTIAL]": null
+        }
+      },
+      "raised": null,
+      "stdout": "..................................................................................................................\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-h8bbh78d'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n114 passed, 1 warning in 0.48s\n",
+      "stderr": "",
+      "logs": "python-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\n",
+      "credential_leaks": [
+        "return"
+      ],
+      "requests": [],
+      "audit_events": [
+        {
+          "event": "open",
+          "path": "/tmp/project/pyproject.toml",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tests/__pycache__/conftest.cpython-312-pytest-8.4.2.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tests/conftest.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tests/__pycache__/test_main.cpython-312-pytest-8.4.2.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tests/test_main.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/__pycache__/__init__.cpython-312.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/__init__.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/__pycache__/main.cpython-312.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/main.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/__pycache__/parser.cpython-312.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/parser.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/__pycache__/variables.cpython-312.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/variables.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/__pycache__/credproof_entry.cpython-312.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/credproof_entry.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/lab/secrets/secret.txt",
+          "classification": "forbidden",
+          "mode": "r"
+        }
+      ],
+      "unauthorized_connections": [],
+      "forbidden_reads": [
+        {
+          "event": "open",
+          "path": "/tmp/lab/secrets/secret.txt",
+          "classification": "forbidden",
+          "mode": "r"
+        }
+      ],
+      "environment": {
+        "allow_url": "http://127.0.0.1:34213/api",
+        "forbidden_port": 34445
+      },
+      "isolation": {
+        "profile": "credproof-project-pytest-v1",
+        "rootfs": "reviewed WSL rootfs",
+        "network": "unshared loopback with in-process mocks",
+        "pytest_collection_in_sandbox": true,
+        "observation": "Python audit hooks + independent mock-server receipts + DEBUG-level Python logging capture",
+        "uncovered": [
+          "native direct syscalls",
+          "child-process audit events",
+          "deliberate in-process observer tampering",
+          "TOCTOU"
+        ],
+        "resource_limits": "Linux RLIMIT_CPU=60s, AS=1GiB, FSIZE=8MiB, NOFILE=128, NPROC=64"
+      },
+      "status": "OK",
+      "run_id": "6dd0b78d816645f198151867e3213c26",
+      "sandbox_stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+      "sandbox_returncode": 0
+    },
+    "observation_summary": {
+      "classification": "ACTUAL_VIOLATION",
+      "outer_sandbox_blocked": false,
+      "incomplete": false
+    },
+    "scope": {
+      "files": [
+        "data"
+      ],
+      "services": [],
+      "credential": "synthetic value; redacted in public report"
+    },
+    "limitations": [
+      "native direct syscalls",
+      "child-process audit events",
+      "deliberate in-process observer tampering",
+      "TOCTOU",
+      "Only declared entry and pytest test paths are exercised"
+    ],
+    "schema": "credproof.safety.report/v1",
+    "checked_at_utc": "2026-10-03T12:11:05Z",
+    "project_tree_sha256": "dc2bdbf3da327409f92bfedea7778c60e2e61dd205cec588e55bc15cd971689c",
+    "duration_ms": 2458.13,
+    "config": {
+      "schema": "credproof.project-safety/v1",
+      "project_root": ".",
+      "tests": [
+        "tests/test_main.py"
+      ],
+      "source_scope": [
+        "credproof_entry.py",
+        "src/**/*.py"
+      ],
+      "mutable_scope": [
+        "credproof_entry.py",
+        "credproof_entry_fixed.py"
+      ],
+      "allowed_dirs": [
+        "data"
+      ],
+      "forbidden_dirs": [
+        "secrets"
+      ],
+      "require_allowed_file_read": false,
+      "services": [],
+      "require_service_credential": false,
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "entry": {
+        "module": "credproof_entry",
+        "callable": "run",
+        "request": {
+          "path": "__CREDPROOF_FORBIDDEN_FILE__"
+        },
+        "expected_error": null
+      },
+      "timeout_seconds": 30.0,
+      "report_dir": ".credproof",
+      "python": "python3"
+    }
+  },
+  "full_after": {
+    "verdict": "PASS",
+    "required_checks": {
+      "pytest": true,
+      "entry_completed": true,
+      "required_allowed_file_read": true,
+      "no_forbidden_file_read": true,
+      "no_credential_output": true,
+      "allowed_service_receipt": true,
+      "allowed_service_path": true,
+      "required_service_credential": true,
+      "no_forbidden_service_receipt": true,
+      "no_unauthorized_connection": true,
+      "isolation_receipt": true
+    },
+    "failed_checks": [],
+    "execution": {
+      "schema": "credproof.safety.execution/v1",
+      "pytest_exit_code": 0,
+      "entry_returned": null,
+      "raised": {
+        "type": "ValueError",
+        "message": "dotenv path is outside the configured directory"
+      },
+      "stdout": "..................................................................................................................\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-lcoipqfh'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n114 passed, 1 warning in 0.46s\n",
+      "stderr": "",
+      "logs": "python-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\n",
+      "credential_leaks": [],
+      "requests": [],
+      "audit_events": [
+        {
+          "event": "open",
+          "path": "/tmp/project/pyproject.toml",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tests/__pycache__/conftest.cpython-312-pytest-8.4.2.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tests/conftest.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tests/__pycache__/test_main.cpython-312-pytest-8.4.2.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tests/test_main.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/__pycache__/__init__.cpython-312.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/__init__.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/__pycache__/main.cpython-312.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/main.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/__pycache__/parser.cpython-312.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/parser.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/__pycache__/variables.cpython-312.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/src/dotenv/variables.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/__pycache__/credproof_entry_fixed.cpython-312.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/credproof_entry_fixed.py",
+          "classification": "other",
+          "mode": "r"
+        }
+      ],
+      "unauthorized_connections": [],
+      "forbidden_reads": [],
+      "environment": {
+        "allow_url": "http://127.0.0.1:39193/api",
+        "forbidden_port": 38527
+      },
+      "isolation": {
+        "profile": "credproof-project-pytest-v1",
+        "rootfs": "reviewed WSL rootfs",
+        "network": "unshared loopback with in-process mocks",
+        "pytest_collection_in_sandbox": true,
+        "observation": "Python audit hooks + independent mock-server receipts + DEBUG-level Python logging capture",
+        "uncovered": [
+          "native direct syscalls",
+          "child-process audit events",
+          "deliberate in-process observer tampering",
+          "TOCTOU"
+        ],
+        "resource_limits": "Linux RLIMIT_CPU=60s, AS=1GiB, FSIZE=8MiB, NOFILE=128, NPROC=64"
+      },
+      "status": "OK",
+      "run_id": "2cb1b55e57e640e7928947530057d609",
+      "sandbox_stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+      "sandbox_returncode": 0
+    },
+    "observation_summary": {
+      "classification": "NO_OBSERVED_VIOLATION",
+      "outer_sandbox_blocked": false,
+      "incomplete": false
+    },
+    "scope": {
+      "files": [
+        "data"
+      ],
+      "services": [],
+      "credential": "synthetic value; redacted in public report"
+    },
+    "limitations": [
+      "native direct syscalls",
+      "child-process audit events",
+      "deliberate in-process observer tampering",
+      "TOCTOU",
+      "Only declared entry and pytest test paths are exercised"
+    ],
+    "schema": "credproof.safety.report/v1",
+    "checked_at_utc": "2026-10-03T12:11:07Z",
+    "project_tree_sha256": "dc2bdbf3da327409f92bfedea7778c60e2e61dd205cec588e55bc15cd971689c",
+    "duration_ms": 2468.61,
+    "config": {
+      "schema": "credproof.project-safety/v1",
+      "project_root": ".",
+      "tests": [
+        "tests/test_main.py"
+      ],
+      "source_scope": [
+        "credproof_entry.py",
+        "credproof_entry_fixed.py",
+        "src/**/*.py"
+      ],
+      "mutable_scope": [
+        "credproof_entry.py",
+        "credproof_entry_fixed.py"
+      ],
+      "allowed_dirs": [
+        "data"
+      ],
+      "forbidden_dirs": [
+        "secrets"
+      ],
+      "require_allowed_file_read": false,
+      "services": [],
+      "require_service_credential": false,
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "entry": {
+        "module": "credproof_entry_fixed",
+        "callable": "run",
+        "request": {
+          "path": "__CREDPROOF_FORBIDDEN_FILE__"
+        },
+        "expected_error": "ValueError"
+      },
+      "timeout_seconds": 30.0,
+      "report_dir": ".credproof",
+      "python": "python3"
+    }
+  }
+}

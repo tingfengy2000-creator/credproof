@@ -138,6 +138,8 @@ def load_config(path: str | Path, *, project_root: str | Path | None = None) -> 
     forbidden = tuple(_relative(x, "files.forbidden_dirs") for x in _strings(files.get("forbidden_dirs", ["secrets"]), "files.forbidden_dirs"))
     if set(allowed) & set(forbidden):
         raise ValueError("Allowed and forbidden directories overlap")
+    if len(allowed) != 1 or len(forbidden) != 1:
+        raise ValueError("v1 supports exactly one allowed and one forbidden lab directory")
     network = raw.get("network", {})
     require_allowed_file_read = files.get("require_allowed_file_read", False)
     if not isinstance(require_allowed_file_read, bool):
@@ -145,6 +147,8 @@ def load_config(path: str | Path, *, project_root: str | Path | None = None) -> 
     service_items = network.get("allowed_services", [])
     if not isinstance(service_items, list) or any(not isinstance(item, dict) for item in service_items):
         raise ValueError("network.allowed_services must be a list of tables")
+    if len(service_items) > 1:
+        raise ValueError("v1 supports exactly one isolated HTTP mock service")
     services = []
     for item in service_items:
         scheme, host, port = item.get("scheme"), item.get("host"), item.get("port")

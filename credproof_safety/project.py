@@ -112,7 +112,9 @@ def check_project(config_path: str | Path, *, output: str | Path | None = None,
         _copy_project(config.project_root, project)
         credential = "CP_LAB_" + uuid.uuid4().hex.upper()
         lab = _build_lab(config, work, credential)
-        test_args = ["-q", *config.tests]
+        # Disable pytest stdout/stderr capture: otherwise output of a passing
+        # test is hidden from the surrounding credential-channel check.
+        test_args = ["-q", "-s", *config.tests]
         execution = run_sandbox(project, lab, test_args, config.entry.module,
                                 config.entry.callable, config.entry.request, credential,
                                 config.timeout_seconds, allowed_dirs=config.allowed_dirs,
@@ -121,7 +123,7 @@ def check_project(config_path: str | Path, *, output: str | Path | None = None,
                                 require_service_credential=config.require_service_credential)
         report = _verdict(config, execution)
         report.update({"schema": "credproof.safety.report/v1", "checked_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-                       "project_tree_sha256": _digest_tree(config.project_root),
+                       "project_tree_sha256": _digest_tree(project),
                        "duration_ms": round((time.monotonic() - started) * 1000, 2),
                        "config": config.to_public_dict()})
         # The synthetic credential and raw stdout are intentionally omitted from

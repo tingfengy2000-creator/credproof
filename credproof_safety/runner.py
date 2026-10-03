@@ -96,7 +96,15 @@ def _script() -> str:
         os.environ['CREDPROOF_ALLOWED_FILE'] = str(Path(allowed_root)/'brief.txt')
         os.environ['CREDPROOF_FORBIDDEN_FILE'] = str(Path(forbidden_root)/'secret.txt')
         for server in (allow, forbid): threading.Thread(target=server.serve_forever, daemon=True).start()
-        out, err = io.StringIO(), io.StringIO()
+        out, err, log_output = io.StringIO(), io.StringIO(), io.StringIO()
+        # Capture emitted INFO/debug records independently of pytest's capture
+        # handler and the default WARNING threshold.  Otherwise a candidate can
+        # retain logging.info(... credential ...) and appear repaired merely
+        # because no handler was configured by the small project.
+        log_handler = logging.StreamHandler(log_output)
+        log_handler.setLevel(logging.DEBUG)
+        logging.getLogger().setLevel(logging.DEBUG)
+        logging.getLogger().addHandler(log_handler)
         pytest_code = None; entry = None; raised = None
         try:
             import pytest
@@ -126,6 +134,7 @@ def _script() -> str:
         except BaseException as exc:
             raised = {'type':type(exc).__name__,'message':str(exc)}
         for server in (allow, forbid): server.shutdown(); server.server_close()
+        logging.getLogger().removeHandler(log_handler)
         unauthorized_connections = []
         for event in events:
             if event.get('event') != 'socket.connect':
@@ -139,16 +148,17 @@ def _script() -> str:
                 unauthorized_connections.append(event)
         credential = os.environ.get('CREDPROOF_TEST_CREDENTIAL','')
         leaks = []
-        for channel, text in [('stdout',out.getvalue()),('stderr',err.getvalue()),('return',repr(entry)),
+        for channel, text in [('stdout',out.getvalue()),('stderr',err.getvalue()),('logs',log_output.getvalue()),('return',repr(entry)),
                               ('exception',repr(raised))]:
             if credential and credential in text: leaks.append(channel)
         report = {'schema':'credproof.safety.execution/v1', 'pytest_exit_code': int(pytest_code) if pytest_code is not None else None,
-                  'entry_returned': entry, 'raised': raised, 'stdout': out.getvalue(), 'stderr': err.getvalue(),
+                  'entry_returned': entry, 'raised': raised, 'stdout': out.getvalue(), 'stderr': err.getvalue(), 'logs': log_output.getvalue(),
                   'credential_leaks': leaks, 'requests': requests, 'audit_events': events,
                   'unauthorized_connections': unauthorized_connections,
                   'forbidden_reads': forbidden_reads, 'environment': {'allow_url':os.environ['CREDPROOF_ALLOWED_URL'], 'forbidden_port':forbid.server_port},
                   'isolation': {'profile':'credproof-project-pytest-v1','rootfs':'reviewed WSL rootfs','network':'unshared loopback with in-process mocks',
-                                'pytest_collection_in_sandbox': True, 'observation':'Python audit hooks + independent mock-server receipts',
+                                'pytest_collection_in_sandbox': True, 'observation':'Python audit hooks + independent mock-server receipts + DEBUG-level Python logging capture',
+                                'uncovered':['native direct syscalls', 'child-process audit events', 'deliberate in-process observer tampering', 'TOCTOU'],
                                 'resource_limits':'Linux RLIMIT_CPU=60s, AS=1GiB, FSIZE=8MiB, NOFILE=128, NPROC=64'}}
         result_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf8')
         audit_path.write_text(json.dumps({'events':events,'requests':requests,'supported':['audit open/socket.connect','mock HTTP receipts'],

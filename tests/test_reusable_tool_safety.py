@@ -65,6 +65,16 @@ class ReusableSafetyRegressionTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "overlap"):
             self._config_with('forbidden_dirs = ["secrets"]', 'forbidden_dirs = ["data"]')
 
+    def test_v1_rejects_unimplemented_multiple_boundaries(self):
+        with self.assertRaisesRegex(ValueError, "exactly one allowed"):
+            self._config_with('allowed_dirs = ["data"]', 'allowed_dirs = ["data", "cache"]')
+        with self.assertRaisesRegex(ValueError, "exactly one isolated"):
+            text = template(self.root).replace(
+                'path_prefix = "/api"',
+                'path_prefix = "/api" },\n  { scheme = "http", host = "127.0.0.1", port = 0, path_prefix = "/v2"')
+            self.config_path.write_text(text, encoding="utf-8")
+            load_config(self.config_path)
+
     def test_noninteger_port_and_nonidentifier_entry_are_rejected(self):
         for before, after in (
             ('port = 0', 'port = true'),
