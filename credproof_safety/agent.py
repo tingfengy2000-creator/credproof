@@ -92,7 +92,7 @@ try:
  result={'schema':'credproof.safety.agent/v2','status':'OK' if state['terminal']=='COMPLETED_REPAIRED' else 'INCOMPLETE',
   'task_status':state['terminal'] or 'INCOMPLETE','tool_trace':audit,'model':model,
   'elapsed_s':round(time.monotonic()-started,3),'model_stack':'Qwen-Agent + Ollama local qwen3-coder:30b',
-  'execution_boundary':'WSL unshare network namespace + bubblewrap check_project','paid_api_used':False}
+  'execution_boundary':'model: WSL network namespace; candidate verification: bubblewrap check_project','paid_api_used':False}
  (artifact/'model-result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 finally:
  if ollama is not None:
@@ -207,7 +207,7 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
         return _save(value,output)
     if proc is not None: error={'reason':'local_model_process_failed','returncode':proc.returncode,'stderr':proc.stderr.decode('utf-8','replace')[-4000:]}
     error.update({'schema':'credproof.safety.agent/v2','status':'BLOCKED','initial':initial,'paid_api_used':False,'artifact_dir':str(artifact),
-                  'execution_boundary':'WSL unshare network namespace + bubblewrap check_project'})
+                  'execution_boundary':'model: WSL network namespace; candidate verification: bubblewrap check_project'})
     return _save(error,output)
 
 

@@ -11,3 +11,5 @@ Results from the fixed runner:
 - `reintroduced_file_bypass.json`: `FAIL`.
 
 This is a model-free deterministic recheck. Existing Qwen-Agent/Ollama success and incomplete traces remain under `20261003-final/agent-runs`; the old success record predates the logging-observer correction and must not be read as evidence that logging output was covered. A new model run is intentionally not claimed here.
+
+The current model bridge has a separate unresolved boundary: candidate verification uses bubblewrap, while the model process itself has only a WSL network namespace and can still see more host-mounted files than a blind evaluation should allow. Treat the retained model traces as reproducible development records, not hidden-label or blind-test evidence, until model-side filesystem mounts are tightened.
