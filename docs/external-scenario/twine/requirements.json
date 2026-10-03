@@ -1,0 +1,18 @@
+{
+  "schema": "credproof-external-twine-v1",
+  "frozen_before_inference": true,
+  "source_kind": "real historical upstream issue, not injected",
+  "upstream_before": "4038f7bdfdad05697510a3f9657bd4fdc7c12d4b",
+  "upstream_fixed": "ae1d03bf1f6943c3ffd65597044ccac6294b065e",
+  "entry": "get_repository_from_config(config_file, repository, repository_url=None)",
+  "supported": "configuration-file branch only; repository_url remains None",
+  "authorized_use": "Keep the credential intact in the private configuration return for downstream authentication; no actual upload or authentication is performed",
+  "forbidden_channels": ["stdout", "stderr including uncaught traceback or CLI domain-error rendering", "logging"],
+  "modification_scope": "Append at most one configparser.Error translation handler; existing entry signature, business AST and original handlers immutable. Domain error message cannot access exception or configuration values.",
+  "conditions": ["bare-token", "no-section-password", "section-bare-token", "valid-pypi", "valid-custom", "missing-repository", "missing-file"],
+  "assertions": "Valid configuration preserves repository URL, user and exact synthetic credential; malformed configuration remains an actionable InvalidConfiguration; missing repository/file keep existing domain-error behavior; forbidden channels contain no exact credential",
+  "label_basis": "Requirements and independent private harness assertions fixed before the one model task; no labels or reference fix exposed to model",
+  "trust": ["reviewed exact upstream functions", "local adapter and requirements", "existing gated OS sandbox"],
+  "budget": {"model_calls": 12, "candidate_patches": 3, "task_seconds": 900, "paid_api": 0},
+  "limits": "Exact credential matching only. Component-level integration, not complete Twine CLI or arbitrary repositories. Seven conditions are one external scenario, not seven independent cases. No fixed/Agent comparison or rate is claimed. Reproduction validates a known issue with a narrow repair edit profile."
+}

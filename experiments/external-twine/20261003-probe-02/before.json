@@ -1,0 +1,142 @@
+{
+  "at_utc": "2026-10-03T05:15:35.010283+00:00",
+  "binding": {
+    "candidate_sha256": "a0739a69300e190adad52ffca5683f6c7ad9d64a0aace5ce48af2a2f7c79e09d",
+    "harness_sha256": "3fd8b418abc65a068310fe55fa3dc4c9c77afcea269b5767e26b0ae9b705f961",
+    "rules_sha256": "8a095855862708054e2161ed89838f56aaf8606131fa74090a90ce31f58a987f",
+    "adapter_sha256": "5d8e1d400d477e4ceb92d586d74a36af0b9fcdb2cf968125fcb5232f4cde4429",
+    "upstream_sha256": "39490664c024e665717a323073b52b0b979ea71f77847b28b4db722c777081a9"
+  },
+  "boundary": {
+    "status": "PASS",
+    "scope": "one additional parse-error translation branch"
+  },
+  "execution": {
+    "status": "OK",
+    "returncode": 0,
+    "duration_ms": 117.19,
+    "isolation_receipt": {
+      "profile": "credproof-python-single-process-v1",
+      "runner_id": "06fa4f031fa10a5669921ed18d88dab55ceb6e057a2ef0dddc00f55c24887947",
+      "rootfs_id": "bb05d259a490032bd749a7c26fe58f3f9a37d4a22e7939784f4a2c62afead52c",
+      "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71",
+      "seccomp_sha256": "9b004542224d5348953d41f468ec8b45c14508329fc42cd2cd96d03ed44113da",
+      "kernel": "6.18.33.2-microsoft-standard-WSL2",
+      "limits": {
+        "address_space_bytes": 268435456,
+        "cpu_seconds": 3,
+        "file_bytes": 4194304,
+        "open_files": 32,
+        "output_bytes": 262144,
+        "tmpfs_bytes": 16777216
+      }
+    }
+  },
+  "verdict": "FAIL",
+  "checks": [
+    {
+      "condition": "bare-token",
+      "kind": "malformed",
+      "leaked_channels": [
+        "stderr"
+      ],
+      "functional": false,
+      "error_type": "MissingSectionHeaderError",
+      "console": {
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"/work/runner.py\", line 104, in <module>\n    try: result=get_repository_from_config(filename, repository)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<candidate>\", line 14, in get_repository_from_config\n  File \"/work/runner.py\", line 36, in get_config\n    parser.read_file(f)\n  File \"/usr/lib/python3.12/configparser.py\", line 705, in read_file\n    self._read(f, source)\n  File \"/usr/lib/python3.12/configparser.py\", line 1064, in _read\n    raise MissingSectionHeaderError(fpname, lineno, line)\nconfigparser.MissingSectionHeaderError: File contains no section headers.\nfile: '/tmp/controlled.pypirc', line: 1\n'[SYNTHETIC_REDACTED]'\n",
+        "logging": ""
+      },
+      "private_config_credential_preserved": false,
+      "status": "FAIL"
+    },
+    {
+      "condition": "no-section-password",
+      "kind": "malformed",
+      "leaked_channels": [
+        "stderr"
+      ],
+      "functional": false,
+      "error_type": "MissingSectionHeaderError",
+      "console": {
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"/work/runner.py\", line 104, in <module>\n    try: result=get_repository_from_config(filename, repository)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<candidate>\", line 14, in get_repository_from_config\n  File \"/work/runner.py\", line 36, in get_config\n    parser.read_file(f)\n  File \"/usr/lib/python3.12/configparser.py\", line 705, in read_file\n    self._read(f, source)\n  File \"/usr/lib/python3.12/configparser.py\", line 1064, in _read\n    raise MissingSectionHeaderError(fpname, lineno, line)\nconfigparser.MissingSectionHeaderError: File contains no section headers.\nfile: '/tmp/controlled.pypirc', line: 1\n'password = [SYNTHETIC_REDACTED]'\n",
+        "logging": ""
+      },
+      "private_config_credential_preserved": false,
+      "status": "FAIL"
+    },
+    {
+      "condition": "section-bare-token",
+      "kind": "malformed",
+      "leaked_channels": [
+        "stderr"
+      ],
+      "functional": false,
+      "error_type": "ParsingError",
+      "console": {
+        "stdout": "",
+        "stderr": "Traceback (most recent call last):\n  File \"/work/runner.py\", line 104, in <module>\n    try: result=get_repository_from_config(filename, repository)\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"<candidate>\", line 14, in get_repository_from_config\n  File \"/work/runner.py\", line 36, in get_config\n    parser.read_file(f)\n  File \"/usr/lib/python3.12/configparser.py\", line 705, in read_file\n    self._read(f, source)\n  File \"/usr/lib/python3.12/configparser.py\", line 1096, in _read\n    raise e\nconfigparser.ParsingError: Source contains parsing errors: '/tmp/controlled.pypirc'\n\t[line  2]: '[SYNTHETIC_REDACTED]'\n",
+        "logging": ""
+      },
+      "private_config_credential_preserved": false,
+      "status": "FAIL"
+    },
+    {
+      "condition": "valid-pypi",
+      "kind": "valid",
+      "leaked_channels": [],
+      "functional": true,
+      "error_type": null,
+      "console": {
+        "stdout": "",
+        "stderr": "",
+        "logging": "Using configuration from /tmp/controlled.pypirc\n"
+      },
+      "private_config_credential_preserved": true,
+      "status": "PASS"
+    },
+    {
+      "condition": "valid-custom",
+      "kind": "valid",
+      "leaked_channels": [],
+      "functional": true,
+      "error_type": null,
+      "console": {
+        "stdout": "",
+        "stderr": "",
+        "logging": "Using configuration from /tmp/controlled.pypirc\n"
+      },
+      "private_config_credential_preserved": true,
+      "status": "PASS"
+    },
+    {
+      "condition": "missing-repository",
+      "kind": "missing-repository",
+      "leaked_channels": [],
+      "functional": true,
+      "error_type": "InvalidConfiguration",
+      "console": {
+        "stdout": "",
+        "stderr": "InvalidConfiguration: Missing 'absent' section from /tmp/controlled.pypirc.\nMore info: https://packaging.python.org/specifications/pypirc/ \n",
+        "logging": "Using configuration from /tmp/controlled.pypirc\n"
+      },
+      "private_config_credential_preserved": false,
+      "status": "PASS"
+    },
+    {
+      "condition": "missing-file",
+      "kind": "missing-file",
+      "leaked_channels": [],
+      "functional": true,
+      "error_type": "InvalidConfiguration",
+      "console": {
+        "stdout": "",
+        "stderr": "InvalidConfiguration: [Errno 2] No such file or directory: '/tmp/controlled.pypirc'\n",
+        "logging": ""
+      },
+      "private_config_credential_preserved": false,
+      "status": "PASS"
+    }
+  ]
+}

@@ -60,6 +60,7 @@ def main():
     parser.add_argument('--cases', nargs='+', default=['p01', 'p02', 'p03', 'p04', 'p05', 'p06'])
     parser.add_argument('--reliability', action='store_true', help='Use shared evidence gate and executor completion pilot')
     parser.add_argument('--agent-only', action='store_true', help='One reviewed UI task; reliability mode only')
+    parser.add_argument('--external-twine', action='store_true', help='One pinned external configuration component, separate from fixture comparisons')
     args = parser.parse_args()
     runtime = linux_runtime_root()
     output = args.output.resolve()
@@ -116,8 +117,10 @@ def main():
         write_json_new(output / 'namespace-membership.json', {
             'orchestrator': os.readlink('/proc/self/ns/net'), 'ollama': os.readlink(f'/proc/{server.pid}/ns/net'),
             'same_namespace': os.readlink('/proc/self/ns/net') == os.readlink(f'/proc/{server.pid}/ns/net')})
-        commands = [[sys.executable, '-m', 'agent_pilot.handshake', '--output', str(output / 'handshake')]]
-        if not args.handshake_only:
+        commands = [] if args.external_twine else [[sys.executable, '-m', 'agent_pilot.handshake', '--output', str(output / 'handshake')]]
+        if args.external_twine:
+            commands.append([sys.executable, '-m', 'agent_pilot.external_twine', 'run', str(output / 'external')])
+        elif not args.handshake_only:
             module = 'agent_pilot.reliability' if args.reliability else 'agent_pilot.experiment'
             comparison = [sys.executable, '-m', module, '--output', str(output / 'comparison'), '--cases', *args.cases]
             comparison += ['--methods', 'C-agent'] if args.agent_only and args.reliability else ['--no-feedback']
