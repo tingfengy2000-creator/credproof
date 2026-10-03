@@ -158,7 +158,7 @@ def _script() -> str:
                   'forbidden_reads': forbidden_reads, 'environment': {'allow_url':os.environ['CREDPROOF_ALLOWED_URL'], 'forbidden_port':forbid.server_port},
                   'isolation': {'profile':'credproof-project-pytest-v1','rootfs':'reviewed WSL rootfs','network':'unshared loopback with in-process mocks',
                                 'pytest_collection_in_sandbox': True, 'observation':'Python audit hooks + independent mock-server receipts + DEBUG-level Python logging capture',
-                                'uncovered':['native direct syscalls', 'child-process audit events', 'deliberate in-process observer tampering', 'TOCTOU'],
+                                'uncovered':['native direct syscalls', 'child-process audit events', 'deliberate in-process observer tampering', 'logger handlers with propagate=False or private sinks', 'TOCTOU'],
                                 'resource_limits':'Linux RLIMIT_CPU=60s, AS=1GiB, FSIZE=8MiB, NOFILE=128, NPROC=64'}}
         result_path.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf8')
         audit_path.write_text(json.dumps({'events':events,'requests':requests,'supported':['audit open/socket.connect','mock HTTP receipts'],

@@ -51,8 +51,8 @@ loopback 模拟服务。缺少 WSL/bubblewrap/pytest 时返回 `UNKNOWN` 或 `BL
 
 每次报告都区分 `ACTUAL_VIOLATION`、`OUTER_SANDBOX_BLOCKED` 和 `INCOMPLETE`。
 目前的观测面是 Python `open`/`socket.connect` audit 事件及独立 mock HTTP 服务的
-请求回执；原生扩展直接系统调用、TOCTOU、Windows 内核审计和完整 DNS/SSRF 语义
-仍列为未覆盖。项目自身的外部符号链接会被拒绝；实验目录中的越界符号链接仅在
+请求回执，并额外捕获可传播到根 logger 的 DEBUG 级 Python 日志；原生扩展直接系统调用、
+私有 logger sink、TOCTOU、Windows 内核审计和完整 DNS/SSRF 语义仍列为未覆盖。项目自身的外部符号链接会被拒绝；实验目录中的越界符号链接仅在
 宿主能够创建时纳入实验。`read then discard` 仍算读取违规。
 
 ## 外部项目接入

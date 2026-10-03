@@ -2,7 +2,7 @@
 
 This append-only batch follows the original reusable-tool-safety records. It does not replace the prior deterministic or local-model traces.
 
-The runner now captures DEBUG-level Python logging in a separate `logs` channel and invokes pytest with `-s`, so a credential emitted by `logging.info` cannot be hidden by pytest capture or a missing default handler. The current configuration parser also rejects multiple allowed/forbidden directories or multiple services because v1 only implements one of each.
+The runner now captures DEBUG-level Python logging in a separate `logs` channel and invokes pytest with `-s`, so a credential emitted by a normally propagating `logging.info` call cannot be hidden by pytest capture or a missing default handler. Private logger sinks (`propagate=False`), native direct writes, and child-process logs remain outside this observation boundary. The current configuration parser also rejects multiple allowed/forbidden directories or multiple services because v1 only implements one of each.
 
 Results from the fixed runner:
 
