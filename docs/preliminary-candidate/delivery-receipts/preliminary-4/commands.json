@@ -1,0 +1,90 @@
+[
+  {
+    "name": "manifest",
+    "argv": [
+      "E:\\cp-p4-clean-env\\Scripts\\python.exe",
+      "-B",
+      "scripts/verify-review.py",
+      "--root",
+      "E:\\cp-p4-final-995ecefd0b4b"
+    ],
+    "cwd": "E:\\cp-p4-final-995ecefd0b4b",
+    "exit_code": 0,
+    "elapsed_s": 7.285287380218506
+  },
+  {
+    "name": "new-boundary-tests",
+    "argv": [
+      "E:\\cp-p4-clean-env\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "unittest",
+      "agent_pilot.tests.test_delivery_modes",
+      "agent_pilot.tests.test_external_twine",
+      "-v"
+    ],
+    "cwd": "E:\\cp-p4-final-995ecefd0b4b",
+    "exit_code": 0,
+    "elapsed_s": 0.19243335723876953
+  },
+  {
+    "name": "preflight",
+    "argv": [
+      "E:\\cp-p4-clean-env\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "agent_pilot.preflight"
+    ],
+    "cwd": "E:\\cp-p4-final-995ecefd0b4b",
+    "exit_code": 0,
+    "elapsed_s": 3.5731024742126465
+  },
+  {
+    "name": "external-recheck",
+    "argv": [
+      "E:\\cp-p4-clean-env\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "agent_pilot.external_twine",
+      "recheck",
+      "."
+    ],
+    "cwd": "E:\\cp-p4-final-995ecefd0b4b\\docs\\external-scenario\\twine-material-20261003",
+    "exit_code": 0,
+    "elapsed_s": 0.4624302387237549
+  },
+  {
+    "name": "exported-h07-recheck",
+    "argv": [
+      "E:\\cp-p4-clean-env\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "agent_pilot.bundle",
+      "recheck",
+      "--bundle",
+      ".",
+      "--output",
+      "E:\\CredProof-local-runtime\\review-packages\\preliminary-candidate-4\\validation\\h07-fresh-recheck.json"
+    ],
+    "cwd": "E:\\CredProof-local-runtime\\review-packages\\preliminary-candidate-4\\validation\\h07-exported",
+    "exit_code": 0,
+    "elapsed_s": 3.4771673679351807
+  },
+  {
+    "name": "view-server",
+    "argv": [
+      "E:\\cp-p4-clean-env\\Scripts\\python.exe",
+      "-B",
+      "-m",
+      "agent_pilot.launch",
+      "--demo",
+      "--mode",
+      "view",
+      "--port",
+      "8787"
+    ],
+    "startup": "PASS",
+    "stop": "owned child terminated by check harness",
+    "exit_code": 1
+  }
+]
