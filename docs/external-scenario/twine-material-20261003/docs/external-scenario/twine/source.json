@@ -1,0 +1,16 @@
+{
+  "scope": "Exact-source configuration component, not full CLI, no upload or network",
+  "before": "4038f7bdfdad05697510a3f9657bd4fdc7c12d4b",
+  "selection": [
+    "pypa/twine: selected, public fix, stdlib configuration component",
+    "urllib3: not selected, networking scope unnecessary",
+    "simonw/llm: not selected, broader plugin/dependency surface"
+  ],
+  "fixed": "ae1d03bf1f6943c3ffd65597044ccac6294b065e",
+  "issue": "https://github.com/pypa/twine/issues/1233",
+  "merged_at": "2025-04-11T21:35:47Z",
+  "url": "https://github.com/pypa/twine/pull/1240",
+  "body": "This catches any configparser exceptions when parsing the user's pypirc file. Without this the user would see an uncontrolled exception trace, which in turn could sometimes leak sensitive configuration fields.\r\n\r\nThe \"fix\" here is to mask the configparser exception entirely with twine's own `InvalidConfiguration` exception. This avoids the leakage risk, but it also means that the errors we return to users are slightly less specific in terms of where their invalid syntax is. We offset that by including a link to the pypirc docs.\r\n\r\nFixes #1233.",
+  "title": "bugfix: utils: catch configparser.Error",
+  "license": "Apache-2.0"
+}

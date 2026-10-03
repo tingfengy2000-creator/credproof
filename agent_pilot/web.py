@@ -247,7 +247,10 @@ class Run:
 
 
 class Application:
-    def __init__(self, root=ROOT, histories=()):
+    def __init__(self, root=ROOT, histories=(), access_mode='live'):
+        if access_mode not in ('view', 'recheck', 'live'):
+            raise ValueError('Unsupported launch mode')
+        self.access_mode = access_mode
         self.root = Path(root).absolute()
         self.cases = registry(self.root)
         self.runs_root = confined(self.root / 'runs/ui', self.root)
@@ -262,10 +265,16 @@ class Application:
             self.add_history(entry)
 
     def runtime(self, force=False):
+        if self.access_mode == 'view':
+            return {'ready': False, 'isolation_ready': False, 'model_ready': False,
+                    'model_label': '历史查看：不启动模型，不检查 WSL',
+                    'reasons': ['查看作品模式：动态操作关闭。重新验收请用 start-recheck.cmd；现场修复请用 start-live.cmd。']}
         if force or self._runtime is None or time.monotonic() - self._runtime_at > 5:
             self._runtime = runtime_observation(self.root)
             self._runtime_at = time.monotonic()
         data = dict(self._runtime)
+        if self.access_mode == 'recheck':
+            data.update(ready=False, reasons=['重新验收模式：只执行隔离检查，不启动模型。'] + data.get('reasons', []))
         if self.operation.locked():
             data.update(ready=False, reasons=[*data.get('reasons', []), 'another_local_operation_is_running'])
         return data
@@ -291,13 +300,15 @@ class Application:
                            'description': '已审查的本地合成 Python 工具；风险与修复结论以实际运行证据为准。',
                            'source_code': text_file(path), 'source_sha256': sha(text_file(path)),
                            'rules': PUBLIC_RULES} for key, path in self.cases.items()],
-                'runtime': self.runtime(),
+                'runtime': self.runtime(), 'access_mode': self.access_mode,
                 'demonstrations': getattr(self, 'demonstrations', []),
                 'history': [{'id': run.id, 'case_id': run.case_id, 'created_at': run.started_at,
                              'label': f'{run.case_id.upper()} · {run.started_at or "未提供时间"}'}
                             for run in saved_runs if run.status not in ('QUEUED', 'RUNNING')]}
 
     def start(self, case):
+        if self.access_mode != 'live':
+            raise Problem(409, '当前入口未启用现场修复。请使用 start-live.cmd。')
         if case not in self.cases:
             raise Problem(400, '案例不在服务端登记范围内。')
         if not self.runtime(force=True)['ready']:
@@ -554,6 +565,8 @@ class Application:
         return run.bundle
 
     def recheck(self, identifier):
+        if self.access_mode == 'view':
+            raise Problem(409, '历史查看入口不执行代码。请使用 start-recheck.cmd。')
         run = self.get(identifier)
         if not self.operation.acquire(blocking=False):
             raise Problem(409, '另一任务或复检正在执行。')

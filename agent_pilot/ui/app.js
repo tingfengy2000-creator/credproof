@@ -141,7 +141,7 @@ function renderActions() {
   $('start').querySelector('span').textContent = isRunning() ? '任务执行中' : '开始分析与修复';
   $('refresh').disabled = state.busy;
   const changed = ['CHANGED', 'UNAVAILABLE'].includes(run?.material_binding?.status);
-  $('recheck').disabled = state.busy || isRunning() || !run || !run.validation || state.stale || changed;
+  $('recheck').disabled = state.bootstrap?.access_mode === 'view' || state.busy || isRunning() || !run || !run.validation || state.stale || changed;
   $('export').disabled = state.busy || isRunning() || !run || state.stale || changed;
   $('material-warning').hidden = !changed;
   $('material-warning').textContent = changed ? '材料已变化或不可读取：历史结果不适用于当前对象。请返回新任务重新验收；旧包仍对应旧对象。' : '';

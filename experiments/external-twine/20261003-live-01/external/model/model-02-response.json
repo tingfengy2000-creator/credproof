@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-232",
+  "object": "chat.completion",
+  "created": 1791004566,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Based on the evidence and code inspection, I can see that the function `get_repository_from_config` is not handling configuration parsing errors properly. It's leaking sensitive information through stderr when encountering malformed configurations like `MissingSectionHeaderError` or `ParsingError`. The fix needs to catch these specific exceptions and re-raise them as `InvalidConfiguration` with safe messages.\n\nLet me implement a patch that adds error translation for configuration parsing issues while preserving all existing functionality.",
+        "tool_calls": [
+          {
+            "id": "call_lg6e5oe2",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "submit_patch",
+              "arguments": "{\"code\":\"def get_repository_from_config(\\n    config_file: str,\\n    repository: str,\\n    repository_url: Optional[str] = None,\\n) -\\u003e RepositoryConfig:\\n    \\\"\\\"\\\"Get repository config command-line values or the .pypirc file.\\\"\\\"\\\"\\n    # Prefer CLI `repository_url` over `repository` or .pypirc\\n    if repository_url:\\n        _validate_repository_url(repository_url)\\n        return _config_from_repository_url(repository_url)\\n\\n    try:\\n        config = get_config(config_file)[repository]\\n    except OSError as exc:\\n        raise exceptions.InvalidConfiguration(str(exc))\\n    except KeyError:\\n        raise exceptions.InvalidConfiguration(\\n            f\\\"Missing '{repository}' section from {config_file}.\\\\n\\\"\\n            f\\\"More info: https://packaging.python.org/specifications/pypirc/ \\\"\\n        )\\n    except configparser.MissingSectionHeaderError:\\n        raise exceptions.InvalidConfiguration(\\n            f\\\"Invalid config file {config_file}. \\\"\\n            f\\\"File contains no section headers.\\\"\\n        )\\n    except configparser.ParsingError:\\n        raise exceptions.InvalidConfiguration(\\n            f\\\"Invalid config file {config_file}. \\\"\\n            f\\\"Source contains parsing errors.\\\"\\n        )\\n\\n    config[\\\"repository\\\"] = normalize_repository_url(cast(str, config[\\\"repository\\\"]))\\n    return config\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2947,
+    "prompt_tokens_details": {
+      "cached_tokens": 667
+    },
+    "completion_tokens": 368,
+    "total_tokens": 3315
+  }
+}
