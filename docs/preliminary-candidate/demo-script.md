@@ -2,7 +2,7 @@
 
 **作品名称：密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统。**
 
-候选版本 `0.2.0-preliminary.3`。首页短句：**发现泄露，修复有据。**
+候选版本 `0.2.0-preliminary.4`。首页短句：**发现泄露，修复有据。**
 
 演示主线：**证据确认与授权 → 模型候选与反馈调整 → 程序验收 → 对应对象复检**。三个案例来自同一冻结轮次 `20260929t095000z-holdout8`，始终保留 **REPLAY／历史回放** 标识。60 秒版本、区域导航和截图分镜见 [展示指南](presentation-guide.md)。
 
@@ -52,6 +52,10 @@
 - 三例精选不代表总体成功率。A/B/C 的问题修复分别是 **3/4、1/4、4/4**，完整任务分别是 **7/8、4/8、6/8**。后续 h05/h06 协议复测不补进原批分母；对象 PASS 不替代任务完成。
 - A 是项目有限启发式，不代表成熟扫描器。结论仅限已登记受控 Python 工具和固定条件，未发现泄露不等于全程序安全；不声称凭据已全局撤销。页面按人工操作刷新，不是实时监控。
 - 检查录屏账户、窗口标题和机器路径，保持证据值脱敏；不改写原始证据。材料变化时旧报告可能不适用，UNKNOWN／FAIL 必须保留。开源、AI 辅助开发及参赛许可依文稿披露。
-- 三分钟是本项目讲解目标，不是运行时保证或官方时长要求。本文件与分镜是录制计划，不代表已经制作视频。
+- 三分钟是本项目讲解目标，不是运行时保证或官方时长要求。本版已生成 180 秒和 60 秒字幕实录剪辑，见 video 目录；无配音。前三例为回放，复检段为本次新执行。
 
 原始依据：[完整轮次](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/results.json)、[h01](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h01/C-agent/result.json)、[h03](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h03/C-agent/result.json)、[h07](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/h07/C-agent/result.json)、[preliminary.1 复检材料](checks.md)、[preliminary.2 展示检查](presentation-checks.md)、[preliminary.3 本版检查](premium-checks.md)、[完整结果及边界](manuscript.md)。
+
+## 外部接入补充（答辩时展开，不挤入主线）
+
+“我们还接入了 Twine 一个有公开修复记录的配置读取问题，保留原业务组件和许可。一次本地模型任务中，两份越界候选被拒绝，第三份通过七项固定条件，并完成材料移交复检。这是窄组件接入，不是任意开源仓库支持，也没有混入原八例成绩。”

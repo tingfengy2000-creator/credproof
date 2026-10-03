@@ -10,3 +10,7 @@
 - **本轮无 Qwen 推理、预训练、微调或真实凭据验证**。配置只识别明确的合成标记，实验衡量验收机制，不能据此证明真实秘密检测召回率。
 
 已有 V2 模拟原型与设计保留；其依赖和材料不属于本轮 CLI 核心的运行依赖。
+
+## preliminary.4 外部组件
+
+PyPA Twine 配置读取组件：Apache License 2.0。固定来源及许可证位于 docs/external-scenario/twine/upstream-before 与 upstream-fixed；PR #1240 与前后提交见 source.json。保留上游版权及归属；本项目新增受限组件适配、裁判和材料交付，不声称上游逻辑自行研发。视频制作工具 Pillow 11.3.0、imageio-ffmpeg 0.6.0 仅用于离线素材编码，不随程序分发模型或编码器二进制。

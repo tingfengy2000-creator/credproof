@@ -1,225 +1,39 @@
 {
-  "revision": "0.2.0-preliminary.3 visual refinement: cover name wrap and real dark-UI h03 screenshot; no text/table changes or new performance experiment",
-  "checked_at": "2026-09-30T10:24:33.194937+00:00",
+  "revision": "0.2.0-preliminary.4",
+  "checked_at": "2026-10-03T05:34:55.741677+00:00",
   "files": {
     "credproof-manuscript-candidate.docx": {
-      "bytes": 307346,
-      "sha256": "908b4d38537c0b1c60cd6e868a880d8eb84489f416fcd41b5cf6e3c823a70686"
+      "bytes": 400616,
+      "sha256": "bb477de99a754d476017dd546add400949fe33fd11e8481aa343d997b9f67e10"
     },
     "credproof-manuscript-candidate.pdf": {
-      "bytes": 462171,
-      "sha256": "2e0630129445af6c2fd9ba9ffe296de78ad76b014267947dedc241e629c0e170"
+      "bytes": 588305,
+      "sha256": "cff7c6b2659580f6fcc980f18c04c0e319cd25e7d2e0e6327196eaa5a1e2f661"
     }
   },
-  "render_engine": "WPS Office 12.1.0.28485 COM export + pypdfium2 1.5 scale",
-  "packaged_renderer_probe": {
-    "status": "UNAVAILABLE",
-    "error": "FileNotFoundError: LibreOffice soffice.exe was not found on PATH",
-    "authorized_fallback": "existing WPS COM export; no software installation"
-  },
-  "page_count": 11,
+  "page_count": 13,
   "all_a4": true,
-  "dimensions_points": [
-    [
-      595.3,
-      841.9
-    ],
-    [
-      595.3,
-      841.9
-    ],
-    [
-      595.3,
-      841.9
-    ],
-    [
-      595.3,
-      841.9
-    ],
-    [
-      595.3,
-      841.9
-    ],
-    [
-      595.3,
-      841.9
-    ],
-    [
-      595.3,
-      841.9
-    ],
-    [
-      595.3,
-      841.9
-    ],
-    [
-      595.3,
-      841.9
-    ],
-    [
-      595.3,
-      841.9
-    ],
-    [
-      595.3,
-      841.9
-    ]
-  ],
   "pdf_below_10_000_000_bytes": true,
   "pdf_author": null,
   "docx_author_fields_absent": true,
-  "docx_custom_metadata_absent": true,
-  "visual_review": {
-    "reviewer": "Codex visual self-review, not independent human review",
-    "complete": true,
-    "pages": [
-      {
-        "page": 1,
-        "image": "working/render-final/page-01.png",
-        "status": "CHECKED",
-        "note": "已实际核看封面；品牌与完整长名称有意分行，保留官方白底、字段与日期待填"
-      },
-      {
-        "page": 2,
-        "image": "working/render-final/page-02.png",
-        "status": "CHECKED",
-        "note": "官方填写说明完整保留"
-      },
-      {
-        "page": 3,
-        "image": "working/render-final/page-03.png",
-        "status": "CHECKED",
-        "note": "目录11页页码和371字摘要完整"
-      },
-      {
-        "page": 4,
-        "image": "working/render-final/page-04.png",
-        "status": "CHECKED",
-        "note": "价值在前且三特点统一"
-      },
-      {
-        "page": 5,
-        "image": "working/render-final/page-05.png",
-        "status": "CHECKED",
-        "note": "机制图清晰并有真实失败反馈返回路径"
-      },
-      {
-        "page": 6,
-        "image": "working/render-final/page-06.png",
-        "status": "CHECKED",
-        "note": "修改、完成与对象复检说明完整"
-      },
-      {
-        "page": 7,
-        "image": "working/render-final/page-07.png",
-        "status": "CHECKED",
-        "note": "历史A/B/C完整表同页、分子分母未变"
-      },
-      {
-        "page": 8,
-        "image": "working/render-final/page-08.png",
-        "status": "CHECKED",
-        "note": "新版premium-h03真实深色截图保留历史REPLAY、候选1 FAIL 11/2、候选2 PASS13、A PASS及图注"
-      },
-      {
-        "page": 9,
-        "image": "working/render-final/page-09.png",
-        "status": "CHECKED",
-        "note": "h07正常保留独立段落、集中适用边界与特点说明"
-      },
-      {
-        "page": 10,
-        "image": "working/render-final/page-10.png",
-        "status": "CHECKED",
-        "note": "其余特点、总结与AI实质参与披露完整"
-      },
-      {
-        "page": 11,
-        "image": "working/render-final/page-11.png",
-        "status": "CHECKED",
-        "note": "五项参考文献完整，无孤立标题或截断"
-      }
-    ],
-    "issues_remaining": []
-  },
-  "text_checks": {
-    "historical_run": "20260929t095000z-holdout8",
-    "source": "b4cb91ef67ae2d14d6cc37f9e18cf6c23e36e8ea",
-    "historical_comparison_table": [
-      [
-        "方法",
-        "问题修复",
-        "正常通过",
-        "对象通过",
-        "任务完成",
-        "误修改"
-      ],
-      [
-        "A 固定程序",
-        "3/4",
-        "4/4",
-        "7/8",
-        "7/8",
-        "0/4"
-      ],
-      [
-        "B 一次生成",
-        "1/4",
-        "4/4",
-        "5/8",
-        "4/8",
-        "0/4"
-      ],
-      [
-        "C 反馈模型",
-        "4/4",
-        "4/4",
-        "8/8",
-        "6/8",
-        "0/4"
-      ]
-    ],
-    "c_repair": "4/4",
-    "c_task_complete": "6/8",
-    "abstract_characters": 371,
-    "AI_disclosed": true,
-    "extracted_text": "working/final-extracted-text.txt",
-    "main_markdown_internal_links_broken": []
-  },
-  "assets": {
-    "assets/mechanism.png": {
-      "sha256": "b14b73d072c144ae870e1a02185632f7640d6e1e13f4dc7d708d557b30269fb8"
-    },
-    "assets/mechanism.svg": {
-      "sha256": "f190083a4dec5d2abe9ca9fa8450ef373cb83ba6ec49562b30aad59535264d2a"
-    },
-    "assets/premium-h03.png": {
-      "sha256": "b40ef3ab3570ecbe6411c83c52d6f3279ae378f7b4da21ee0aa412654ed39675"
-    }
-  },
-  "official_template_original_unchanged": true,
-  "publication_fields_pending": [
-    "submission_date",
-    "captain_filename_confirmation",
-    "AI_assistance_and_eligibility_confirmation"
+  "visual_review_completed": true,
+  "pages_individually_inspected": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
   ],
-  "candidate_status": "Review candidate, not submitted and not signed",
-  "no_business_or_model_execution": true,
-  "notes": [
-    "All 11 final page PNGs were opened and visually inspected in this revision.",
-    "Official print-oriented white cover and Songti 12pt/1.5 body are intentionally distinct from the dark UI shown in the real screenshot.",
-    "Only cover wrapping and screenshot changed. No model/candidate/business experiment was run; historical performance is unchanged."
-  ],
-  "preservation_checks": {
-    "manuscript_summary_qa_bytes_unchanged": true,
-    "non_cover_pdf_page_text_unchanged": true,
-    "cover_text_unchanged_ignoring_whitespace": true,
-    "historical_table_exact_match": true,
-    "changed_rendered_pages": [
-      "page-01.png",
-      "page-08.png"
-    ],
-    "all_other_rendered_page_bytes_unchanged": true,
-    "source_baseline_head": "3a0d73500a030590668083765df2232da16a4312"
-  }
+  "visual_findings": "No clipping, overlap, missing glyphs or split rows observed. Official cover/instructions retained; current UI images and complete historical result table legible.",
+  "render_engine": "WPS COM export + pypdfium2 1.5 scale",
+  "packaged_renderer": "Unavailable: soffice.exe not found, log retained. Existing WPS fallback used without installation.",
+  "contest_eligibility": "not determined; identity/signature/AI-assisted development permission pending participant confirmation"
 }

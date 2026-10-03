@@ -60,3 +60,11 @@
 | `template-requirements.md` | 内部制作核查，不属于匿名报告正文；其中原件路径、待确认项和规则说明不直接复制进参赛正文。 |
 
 所有历史效果统一使用 `20260929t095000z-holdout8` / `b4cb91ef67ae2d14d6cc37f9e18cf6c23e36e8ea`，不得混入新客户端 h05/h06 的复测。本轮已完成有限运行检查与候选 PDF 体积、匿名元数据、目录页码、截图及版式核验，分别见 checks.md 和 render-validation.json；队伍仍须核实正式提交要求，这些本地检查不代表外部验收或参赛资格已通过。
+
+## preliminary.4 增强对应表
+
+| 要求 | 本轮实现 | 可核对材料 | 待确认项 |
+|---|---|---|---|
+| 防御性与授权范围 | 固定 Twine 历史组件、合成凭据、无公网执行 | docs/external-scenario/twine，network-before/after.json | 正式参赛适用范围由本人确认 |
+| 真实与可运行 | 三种入口分开，真实模型单次记录，独立复检 | startup-modes、external-delivery-checks、实录视频 | 不替代外部验收 |
+| 匿名与来源 | 正文不填身份；上游许可和 AI 贡献另列 | DOCX/PDF 元数据检查、THIRD_PARTY_NOTICES | 队长字段、签名和 AI 辅助许可待本人/导师核实 |

@@ -123,6 +123,10 @@ def table(doc, lines):
     t.alignment = WD_TABLE_ALIGNMENT.CENTER
     t.autofit = False
     widths = [3.05] + [2.5] * (len(rows[0]) - 1)
+    if len(rows[0]) == 3:
+        widths = [3.5, 6.7, 5.1]
+    for column, width in zip(t.columns, widths):
+        column.width = Cm(width)
     for i, vals in enumerate(rows):
         cells = t.rows[0].cells if i == 0 else t.add_row().cells
         for j, value in enumerate(vals):
@@ -236,12 +240,12 @@ def build(args):
         if line.startswith("### 3.5"):
             number = 3 if args.overview else 2
             add_figure(doc, args.trace, f"图 {number} h03 两次候选与真实验证反馈 历史记录回放")
+        if line.startswith("### 3.8"):
+            add_figure(doc, args.recheck, "图 4 当前对象的实际复检记录 不调用模型")
         if line.startswith("## "):
             heading(doc, line[3:], 1)
         elif line.startswith("### "):
             section_heading = heading(doc, line[4:], 2)
-            if line.startswith("### 3.5"):
-                section_heading.paragraph_format.page_break_before = True
         elif line.startswith("|"):
             group = []
             while i < len(lines) and lines[i].strip().startswith("|"):
@@ -274,7 +278,7 @@ def build(args):
     receipt = {"source": str(reference), "source_sha256": hashlib.sha256(reference.read_bytes()).hexdigest(),
                "manuscript_sha256": hashlib.sha256((HERE / "manuscript.md").read_bytes()).hexdigest(),
                "output": str(args.output), "assets": {key: str(getattr(args, key)) if getattr(args, key) else None for key in ("mechanism", "overview", "trace")},
-               "historical_result_run": "20260929t095000z-holdout8", "presentation_version": "0.2.0-preliminary.3", "not_final_render_qa": True}
+               "historical_result_run": "20260929t095000z-holdout8", "presentation_version": "0.2.0-preliminary.4", "not_final_render_qa": True}
     (HERE / "working").mkdir(exist_ok=True)
     (HERE / "working/build-receipt.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(receipt, ensure_ascii=False))
@@ -286,4 +290,5 @@ if __name__ == "__main__":
     parser.add_argument("--mechanism", type=Path)
     parser.add_argument("--overview", type=Path)
     parser.add_argument("--trace", type=Path)
+    parser.add_argument("--recheck", type=Path)
     build(parser.parse_args())

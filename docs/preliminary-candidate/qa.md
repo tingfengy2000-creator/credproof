@@ -61,3 +61,6 @@ ChatGPT/Codex 实质参与方案、主要代码生成修改、调试、试验组
 先提升工具协议稳定性和证据阅读体验，再适配更多已授权组件，扩大日志、异常和嵌套数据等结构覆盖。邀请不同作者构造新案例，以新冻结版本独立评估；保留现有案例作回归，并完善材料复检与协作交接。
 
 统一证据：[完整八例原始结果](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/results.json)、[事实审计](../local-agent/tool-call-revision/evidence-audit.md)、[来源和贡献](../local-agent/reliability/source-attribution.md)、[本次模板要求核查](template-requirements.md)。
+
+
+本版外部接入、三种入口与五个源码追问见 [源码讲解](source-walkthrough.md) 和 [贡献对应表](contribution-map.md)。Twine 只作为窄组件接入证据，不并入历史八例结果。

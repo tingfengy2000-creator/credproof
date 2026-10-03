@@ -1,0 +1,178 @@
+{
+  "capture_kind": "actual CUA browser PNG frame sequence around 2 fps, edited into captioned video; not continuous desktop/audio capture",
+  "source_commit": "1d697a16fcba2ad393e5755abec5a61c1724089c",
+  "same_source_for_both_edits": true,
+  "source_frames": 340,
+  "capture_manifest_sha256": "38c8537aea820b7c1607652e6859716830dbc6acf1616f8f3de5ada5a9c25298",
+  "source_frames_retained_locally": true,
+  "audio": "none; subtitles only",
+  "time_policy": "inter-segment setup gaps omitted; inference is historical replay; the recheck click and response are new actual execution without acceleration",
+  "outputs": [
+    {
+      "file": "credproof-demo-3min.mp4",
+      "bytes": 1389999,
+      "sha256": "a950193a0f9b4211859ab0202342d9fd2970d703d687658c697d0bf936afae58",
+      "duration_s": 180,
+      "fps": 10,
+      "resolution": [
+        1600,
+        900
+      ],
+      "segments": [
+        [
+          "01-introduction",
+          0,
+          16
+        ],
+        [
+          "02-three-stories",
+          0,
+          16
+        ],
+        [
+          "03-h01-increment",
+          0,
+          24
+        ],
+        [
+          "04-h03-rejected",
+          0,
+          30
+        ],
+        [
+          "05-h03-corrected",
+          0,
+          24
+        ],
+        [
+          "06-h07-unchanged",
+          0,
+          18
+        ],
+        [
+          "07a-recheck-click",
+          0,
+          10
+        ],
+        [
+          "07b-recheck-result",
+          0,
+          32
+        ],
+        [
+          "08-close",
+          0,
+          10
+        ]
+      ],
+      "command": [
+        "E:\\CredProof-local-runtime\\video-tools-p4\\Lib\\site-packages\\imageio_ffmpeg\\binaries\\ffmpeg-win-x86_64-v7.1.exe",
+        "-hide_banner",
+        "-loglevel",
+        "warning",
+        "-f",
+        "rawvideo",
+        "-pix_fmt",
+        "rgb24",
+        "-s",
+        "1600x900",
+        "-r",
+        "10",
+        "-i",
+        "-",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "fast",
+        "-crf",
+        "20",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "docs\\preliminary-candidate\\video\\credproof-demo-3min.mp4"
+      ],
+      "exit_code": 0,
+      "stderr": ""
+    },
+    {
+      "file": "credproof-demo-1min.mp4",
+      "bytes": 631981,
+      "sha256": "db9130e0644a300daf07da10a446b2f739bd86c5117fc11cdea24adb8c6b7a67",
+      "duration_s": 60,
+      "fps": 10,
+      "resolution": [
+        1600,
+        900
+      ],
+      "segments": [
+        [
+          "01-introduction",
+          0,
+          6
+        ],
+        [
+          "03-h01-increment",
+          2,
+          8
+        ],
+        [
+          "04-h03-rejected",
+          2,
+          10
+        ],
+        [
+          "05-h03-corrected",
+          2,
+          8
+        ],
+        [
+          "06-h07-unchanged",
+          2,
+          8
+        ],
+        [
+          "07a-recheck-click",
+          0,
+          10
+        ],
+        [
+          "07b-recheck-result",
+          2,
+          10
+        ]
+      ],
+      "command": [
+        "E:\\CredProof-local-runtime\\video-tools-p4\\Lib\\site-packages\\imageio_ffmpeg\\binaries\\ffmpeg-win-x86_64-v7.1.exe",
+        "-hide_banner",
+        "-loglevel",
+        "warning",
+        "-f",
+        "rawvideo",
+        "-pix_fmt",
+        "rgb24",
+        "-s",
+        "1600x900",
+        "-r",
+        "10",
+        "-i",
+        "-",
+        "-an",
+        "-c:v",
+        "libx264",
+        "-preset",
+        "fast",
+        "-crf",
+        "20",
+        "-pix_fmt",
+        "yuv420p",
+        "-movflags",
+        "+faststart",
+        "docs\\preliminary-candidate\\video\\credproof-demo-1min.mp4"
+      ],
+      "exit_code": 0,
+      "stderr": ""
+    }
+  ]
+}
