@@ -2,6 +2,8 @@
 
 系统结合本地大模型补丁生成与程序控制的安全验收，针对凭据泄露问题给出候选修复，并检查泄露是否消除、必要业务行为是否保持，支持材料导出与复检。
 
+独立开发分支 `feat/reusable-tool-safety` 增加了一个面向小型授权 Python 工具的共同入口：在 WSL/bubblewrap 副本中收集 pytest 和配置入口，观察目录越界读取、未授权 loopback HTTP 访问及合成凭据输出，并可导出以后重复运行的 pytest 回归断言。完整命令、外部 python-dotenv 接入和已覆盖边界见 [可复用工具安全开发说明](docs/reusable-tool-safety/README.md)。
+
 当前版本 **`0.2.0-preliminary.5`**：从深色作品首页进入 h01、h03、h07 三个精选案例，依次查看问题、实际证据、补丁差异和复检结果。[初赛候选入口](docs/preliminary-candidate/README.md)集中提供作品说明书、摘要、机制图和启动方式；[一页展示顺序与录屏分镜](docs/preliminary-candidate/presentation-guide.md)可直接用于排练。
 
 本版为材料与文案更新，未新增实验或修复能力。[价值主张](docs/preliminary-candidate/value-and-innovation.md)及[证据索引](docs/preliminary-candidate/evidence-index.md)解释为谁解决什么；[开发者体验包](docs/preliminary-candidate/experience-packet/README.md)待真人执行。

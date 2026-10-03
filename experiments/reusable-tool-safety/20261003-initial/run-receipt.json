@@ -1,0 +1,20 @@
+{
+  "schema": "credproof.safety.run-receipt/v1",
+  "date": "2026-10-03",
+  "commands": [
+    "python -m credproof_safety check --config examples/material_assistant/credproof.toml --output _runs/material-vulnerable.json",
+    "python -m credproof_safety check --config examples/material_assistant_fixed/credproof.toml --output _runs/material-fixed.json",
+    "python scripts/run-reusable-safety-demo.py --output _runs/reusable-demo3",
+    "python scripts/run-external-dotenv-case.py --output _runs/external-dotenv-final"
+  ],
+  "runtime": {
+    "host": "Windows 11 + WSL2 Ubuntu-24.04",
+    "kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "python": "3.12.3 in reviewed WSL runtime",
+    "pytest": "8.4.2",
+    "isolation": "existing CredProof rootfs + bubblewrap 0.9.0 package; network unshared with loopback mocks"
+  },
+  "model_used": false,
+  "synthetic_only": true,
+  "external_case": "python-dotenv v1.2.2 commit 36004e0e34be7665ff2b11a8a4005144f76f176d"
+}

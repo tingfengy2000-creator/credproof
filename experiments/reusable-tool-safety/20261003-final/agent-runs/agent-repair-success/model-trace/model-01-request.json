@@ -1,0 +1,75 @@
+{
+  "model": "qwen3-coder:30b",
+  "messages": [
+    {
+      "role": "system",
+      "content": "Repair the authorised Python tool using native tool calls only. Read the source and evidence, submit a minimal patch, then verify it. Preserve tests and business behaviour. Never change the contract or checks. Stop after the trusted executor reports completion."
+    },
+    {
+      "role": "user",
+      "content": "Inspect the source and controlled evidence; propose and verify a safe repair."
+    }
+  ],
+  "stream": false,
+  "temperature": 0.2,
+  "top_p": 0.8,
+  "max_tokens": 4096,
+  "seed": 0,
+  "tools": [
+    {
+      "type": "function",
+      "function": {
+        "name": "read_code",
+        "description": "Read only the configured entry source.",
+        "parameters": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "get_evidence",
+        "description": "Read redacted controlled observations.",
+        "parameters": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "submit_patch",
+        "description": "Submit one bounded source candidate.",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "code": {
+              "type": "string",
+              "maxLength": 65536
+            }
+          },
+          "required": [
+            "code"
+          ]
+        }
+      }
+    },
+    {
+      "type": "function",
+      "function": {
+        "name": "verify_patch",
+        "description": "Run trusted tests and observations.",
+        "parameters": {
+          "type": "object",
+          "properties": {},
+          "required": []
+        }
+      }
+    }
+  ]
+}

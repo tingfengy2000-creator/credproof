@@ -1,0 +1,786 @@
+{
+  "schema": "credproof.safety.agent/v2",
+  "status": "OK",
+  "task_status": "COMPLETED_REPAIRED",
+  "tool_trace": [
+    {
+      "tool": "read_code",
+      "arguments": "{}",
+      "result": {
+        "status": "OK",
+        "path": "tool.py",
+        "code": "\"\"\"Small authorised materials assistant used by the reusable-entry example.\n\nThis initial version is intentionally vulnerable for the local lab: it reads a\npath supplied by the request, follows a redirect, and includes its credential\nin a debug message. The lab provides only synthetic material and loopback mock\nservices. The file is never run on a real account.\n\"\"\"\nimport json\nimport logging\nimport os\nfrom urllib.request import Request, urlopen\n\n\ndef run(request):\n    if not isinstance(request, dict) or not isinstance(request.get(\"resource\"), str):\n        raise ValueError(\"invalid request\")\n    credential = os.environ[\"CREDPROOF_TEST_CREDENTIAL\"]\n    path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\")\n    with open(path, \"r\", encoding=\"utf-8\") as handle:\n        material = handle.read()\n    url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"]\n    response = urlopen(Request(url, headers={\"Authorization\": \"Bearer \" + credential}), timeout=2)\n    body = response.read().decode(\"utf-8\")\n    logging.info(\"loaded %s with credential=%s\", request[\"resource\"], credential)\n    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": json.loads(body),\n            \"credential\": credential}\n"
+      },
+      "elapsed_s": 0.06037822700000106
+    },
+    {
+      "tool": "get_evidence",
+      "arguments": "{}",
+      "result": {
+        "status": "OK",
+        "verdict": "FAIL",
+        "confirmed_failed_checks": [
+          "no_credential_output"
+        ],
+        "forbidden_reads": [],
+        "requests": [
+          {
+            "service": "allow",
+            "path": "/api",
+            "authorization_present": true,
+            "credential_ok": true
+          },
+          {
+            "service": "allow",
+            "path": "/api",
+            "authorization_present": true,
+            "credential_ok": true
+          }
+        ],
+        "credential_leaks": [
+          "return"
+        ],
+        "observation_summary": {
+          "classification": "ACTUAL_VIOLATION",
+          "outer_sandbox_blocked": false,
+          "incomplete": false
+        }
+      },
+      "elapsed_s": 0.06741599899999073
+    },
+    {
+      "tool": "submit_patch",
+      "arguments": "{\"code\":\"\\\"\\\"\\\"Small authorised materials assistant used by the reusable-entry example.\\n\\nThis initial version is intentionally vulnerable for the local lab: it reads a\\npath supplied by the request, follows a redirect, and includes its credential\\nin a debug message. The lab provides only synthetic material and loopback mock\\nservices. The file is never run on a real account.\\n\\\"\\\"\\\"\\nimport json\\nimport logging\\nimport os\\nfrom urllib.request import Request, urlopen\\n\\n\\ndef run(request):\\n    if not isinstance(request, dict) or not isinstance(request.get(\\\"resource\\\"), str):\\n        raise ValueError(\\\"invalid request\\\")\\n    credential = os.environ[\\\"CREDPROOF_TEST_CREDENTIAL\\\"]\\n    path = request.get(\\\"path\\\") or os.environ.get(\\\"CREDPROOF_ALLOWED_FILE\\\")\\n    with open(path, \\\"r\\\", encoding=\\\"utf-8\\\") as handle:\\n        material = handle.read()\\n    url = request.get(\\\"url\\\") or os.environ[\\\"CREDPROOF_ALLOWED_URL\\\"]\\n    response = urlopen(Request(url, headers={\\\"Authorization\\\": \\\"Bearer \\\" + credential}), timeout=2)\\n    body = response.read().decode(\\\"utf-8\\\")\\n    logging.info(\\\"loaded %s with credential=%s\\\", request[\\\"resource\\\"], credential)\\n    return {\\\"resource\\\": request[\\\"resource\\\"], \\\"material\\\": material, \\\"service\\\": json.loads(body)}\"}",
+      "result": {
+        "status": "ACCEPTED_FOR_VERIFICATION"
+      },
+      "elapsed_s": 0.055750611000007666
+    },
+    {
+      "tool": "verify_patch",
+      "arguments": "{}",
+      "result": {
+        "status": "OK",
+        "report": {
+          "verdict": "PASS",
+          "required_checks": {
+            "pytest": true,
+            "entry_completed": true,
+            "required_allowed_file_read": true,
+            "no_forbidden_file_read": true,
+            "no_credential_output": true,
+            "allowed_service_receipt": true,
+            "allowed_service_path": true,
+            "required_service_credential": true,
+            "no_forbidden_service_receipt": true,
+            "no_unauthorized_connection": true,
+            "isolation_receipt": true
+          },
+          "failed_checks": [],
+          "execution": {
+            "schema": "credproof.safety.execution/v1",
+            "pytest_exit_code": 0,
+            "entry_returned": {
+              "resource": "demo",
+              "material": "authorized material for the sample tool\n",
+              "service": {
+                "ok": true,
+                "service": "allow"
+              }
+            },
+            "raised": null,
+            "stdout": "..                                                                       [100%]\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-sxk1xruo'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n2 passed, 1 warning in 0.13s\n",
+            "stderr": "",
+            "credential_leaks": [],
+            "requests": [
+              {
+                "service": "allow",
+                "path": "/api",
+                "authorization_present": true,
+                "credential_ok": true
+              },
+              {
+                "service": "allow",
+                "path": "/api",
+                "authorization_present": true,
+                "credential_ok": true
+              }
+            ],
+            "audit_events": [
+              {
+                "event": "open",
+                "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+                "classification": "other",
+                "mode": "r"
+              },
+              {
+                "event": "open",
+                "path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+                "classification": "other",
+                "mode": "r"
+              },
+              {
+                "event": "open",
+                "path": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+                "classification": "other",
+                "mode": "r"
+              },
+              {
+                "event": "open",
+                "path": "/tmp/project/tests/test_business.py",
+                "classification": "other",
+                "mode": "r"
+              },
+              {
+                "event": "open",
+                "path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+                "classification": "other",
+                "mode": "r"
+              },
+              {
+                "event": "open",
+                "path": "/tmp/project/tool.py",
+                "classification": "other",
+                "mode": "r"
+              },
+              {
+                "event": "open",
+                "path": "/tmp/lab/data/brief.txt",
+                "classification": "allowed",
+                "mode": "r"
+              },
+              {
+                "event": "socket.connect",
+                "address": "('127.0.0.1', 32791)"
+              },
+              {
+                "event": "open",
+                "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+                "classification": "other",
+                "mode": "r"
+              },
+              {
+                "event": "open",
+                "path": "/tmp/lab/data/brief.txt",
+                "classification": "allowed",
+                "mode": "r"
+              },
+              {
+                "event": "socket.connect",
+                "address": "('127.0.0.1', 32791)"
+              }
+            ],
+            "unauthorized_connections": [],
+            "forbidden_reads": [],
+            "environment": {
+              "allow_url": "http://127.0.0.1:32791/api",
+              "forbidden_port": 33599
+            },
+            "isolation": {
+              "profile": "credproof-project-pytest-v1",
+              "rootfs": "reviewed WSL rootfs",
+              "network": "unshared loopback with in-process mocks",
+              "pytest_collection_in_sandbox": true,
+              "observation": "Python audit hooks + independent mock-server receipts"
+            },
+            "status": "OK",
+            "run_id": "b830ea8f8c164cdb8afa44b1bb9df9e2",
+            "sandbox_stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+            "sandbox_returncode": 0
+          },
+          "observation_summary": {
+            "classification": "NO_OBSERVED_VIOLATION",
+            "outer_sandbox_blocked": false,
+            "incomplete": false
+          },
+          "scope": {
+            "files": [
+              "data"
+            ],
+            "services": [
+              {
+                "scheme": "http",
+                "host": "127.0.0.1",
+                "port": 0,
+                "path_prefix": "/api"
+              }
+            ],
+            "credential": "synthetic value; redacted in public report"
+          },
+          "limitations": [
+            "Only declared entry and pytest test paths are exercised"
+          ],
+          "schema": "credproof.safety.report/v1",
+          "checked_at_utc": "2026-10-03T11:32:12Z",
+          "project_tree_sha256": "7d3ed7ba146e3afdaa0d75135d2ebc0f693b663e383f0f5941cbce1b2e108730",
+          "duration_ms": 1455.03,
+          "config": {
+            "schema": "credproof.project-safety/v1",
+            "project_root": ".",
+            "tests": [
+              "tests"
+            ],
+            "source_scope": [
+              "tool.py"
+            ],
+            "mutable_scope": [
+              "tool.py"
+            ],
+            "allowed_dirs": [
+              "data"
+            ],
+            "forbidden_dirs": [
+              "secrets"
+            ],
+            "require_allowed_file_read": true,
+            "services": [
+              {
+                "scheme": "http",
+                "host": "127.0.0.1",
+                "port": 0,
+                "path_prefix": "/api"
+              }
+            ],
+            "require_service_credential": true,
+            "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+            "entry": {
+              "module": "tool",
+              "callable": "run",
+              "request": {
+                "resource": "demo"
+              },
+              "expected_error": "ValueError"
+            },
+            "timeout_seconds": 30.0,
+            "report_dir": ".credproof",
+            "python": "python3"
+          }
+        }
+      },
+      "elapsed_s": 1.5031764180000096
+    }
+  ],
+  "model": {
+    "status": "EXECUTOR_COMPLETED",
+    "messages": [
+      {
+        "role": "assistant",
+        "content": "",
+        "function_call": {
+          "name": "read_code",
+          "arguments": "{}"
+        },
+        "extra": {
+          "function_id": "call_l4ggqp0n"
+        }
+      },
+      {
+        "role": "assistant",
+        "content": "",
+        "function_call": {
+          "name": "get_evidence",
+          "arguments": "{}"
+        },
+        "extra": {
+          "function_id": "call_rq3v7fwm"
+        }
+      },
+      {
+        "role": "function",
+        "content": "{\"status\": \"OK\", \"path\": \"tool.py\", \"code\": \"\\\"\\\"\\\"Small authorised materials assistant used by the reusable-entry example.\\n\\nThis initial version is intentionally vulnerable for the local lab: it reads a\\npath supplied by the request, follows a redirect, and includes its credential\\nin a debug message. The lab provides only synthetic material and loopback mock\\nservices. The file is never run on a real account.\\n\\\"\\\"\\\"\\nimport json\\nimport logging\\nimport os\\nfrom urllib.request import Request, urlopen\\n\\n\\ndef run(request):\\n    if not isinstance(request, dict) or not isinstance(request.get(\\\"resource\\\"), str):\\n        raise ValueError(\\\"invalid request\\\")\\n    credential = os.environ[\\\"CREDPROOF_TEST_CREDENTIAL\\\"]\\n    path = request.get(\\\"path\\\") or os.environ.get(\\\"CREDPROOF_ALLOWED_FILE\\\")\\n    with open(path, \\\"r\\\", encoding=\\\"utf-8\\\") as handle:\\n        material = handle.read()\\n    url = request.get(\\\"url\\\") or os.environ[\\\"CREDPROOF_ALLOWED_URL\\\"]\\n    response = urlopen(Request(url, headers={\\\"Authorization\\\": \\\"Bearer \\\" + credential}), timeout=2)\\n    body = response.read().decode(\\\"utf-8\\\")\\n    logging.info(\\\"loaded %s with credential=%s\\\", request[\\\"resource\\\"], credential)\\n    return {\\\"resource\\\": request[\\\"resource\\\"], \\\"material\\\": material, \\\"service\\\": json.loads(body),\\n            \\\"credential\\\": credential}\\n\"}",
+        "name": "read_code",
+        "extra": {
+          "function_id": "call_l4ggqp0n"
+        }
+      },
+      {
+        "role": "function",
+        "content": "{\"status\": \"OK\", \"verdict\": \"FAIL\", \"confirmed_failed_checks\": [\"no_credential_output\"], \"forbidden_reads\": [], \"requests\": [{\"service\": \"allow\", \"path\": \"/api\", \"authorization_present\": true, \"credential_ok\": true}, {\"service\": \"allow\", \"path\": \"/api\", \"authorization_present\": true, \"credential_ok\": true}], \"credential_leaks\": [\"return\"], \"observation_summary\": {\"classification\": \"ACTUAL_VIOLATION\", \"outer_sandbox_blocked\": false, \"incomplete\": false}}",
+        "name": "get_evidence",
+        "extra": {
+          "function_id": "call_rq3v7fwm"
+        }
+      },
+      {
+        "role": "assistant",
+        "content": "The tool is designed to read a file and make an HTTP request using a credential. The evidence shows that the credential is being leaked in the return value of the function, which violates the security constraint \"no_credential_output\". The fix should remove the credential from the returned data while preserving all other functionality.\n\nHere's the minimal patch:"
+      },
+      {
+        "role": "assistant",
+        "content": "",
+        "function_call": {
+          "name": "submit_patch",
+          "arguments": "{\"code\":\"\\\"\\\"\\\"Small authorised materials assistant used by the reusable-entry example.\\n\\nThis initial version is intentionally vulnerable for the local lab: it reads a\\npath supplied by the request, follows a redirect, and includes its credential\\nin a debug message. The lab provides only synthetic material and loopback mock\\nservices. The file is never run on a real account.\\n\\\"\\\"\\\"\\nimport json\\nimport logging\\nimport os\\nfrom urllib.request import Request, urlopen\\n\\n\\ndef run(request):\\n    if not isinstance(request, dict) or not isinstance(request.get(\\\"resource\\\"), str):\\n        raise ValueError(\\\"invalid request\\\")\\n    credential = os.environ[\\\"CREDPROOF_TEST_CREDENTIAL\\\"]\\n    path = request.get(\\\"path\\\") or os.environ.get(\\\"CREDPROOF_ALLOWED_FILE\\\")\\n    with open(path, \\\"r\\\", encoding=\\\"utf-8\\\") as handle:\\n        material = handle.read()\\n    url = request.get(\\\"url\\\") or os.environ[\\\"CREDPROOF_ALLOWED_URL\\\"]\\n    response = urlopen(Request(url, headers={\\\"Authorization\\\": \\\"Bearer \\\" + credential}), timeout=2)\\n    body = response.read().decode(\\\"utf-8\\\")\\n    logging.info(\\\"loaded %s with credential=%s\\\", request[\\\"resource\\\"], credential)\\n    return {\\\"resource\\\": request[\\\"resource\\\"], \\\"material\\\": material, \\\"service\\\": json.loads(body)}\"}"
+        },
+        "extra": {
+          "function_id": "call_v2wp5g1s"
+        }
+      },
+      {
+        "role": "function",
+        "content": "{\"status\": \"ACCEPTED_FOR_VERIFICATION\"}",
+        "name": "submit_patch",
+        "extra": {
+          "function_id": "call_v2wp5g1s"
+        }
+      },
+      {
+        "role": "assistant",
+        "content": "",
+        "function_call": {
+          "name": "verify_patch",
+          "arguments": "{}"
+        },
+        "extra": {
+          "function_id": "call_dwaqgi9e"
+        }
+      }
+    ],
+    "model_calls": 3,
+    "usage": [
+      {
+        "call_id": 1,
+        "usage": {
+          "prompt_tokens": 413,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "completion_tokens": 25,
+          "total_tokens": 438
+        },
+        "status": "REPORTED_BY_SERVER"
+      },
+      {
+        "call_id": 2,
+        "usage": {
+          "prompt_tokens": 900,
+          "prompt_tokens_details": {
+            "cached_tokens": 412
+          },
+          "completion_tokens": 355,
+          "total_tokens": 1255
+        },
+        "status": "REPORTED_BY_SERVER"
+      },
+      {
+        "call_id": 3,
+        "usage": {
+          "prompt_tokens": 1277,
+          "prompt_tokens_details": {
+            "cached_tokens": 966
+          },
+          "completion_tokens": 13,
+          "total_tokens": 1290
+        },
+        "status": "REPORTED_BY_SERVER"
+      }
+    ],
+    "elapsed_s": 52.617195951999975,
+    "error": null,
+    "format_correction_attempts": 0,
+    "format_correction_call_ids": [],
+    "executor_result": {
+      "task_status": "COMPLETED_REPAIRED"
+    }
+  },
+  "elapsed_s": 52.629,
+  "model_stack": "Qwen-Agent + Ollama local qwen3-coder:30b",
+  "execution_boundary": "WSL unshare network namespace + bubblewrap check_project",
+  "paid_api_used": false,
+  "initial": {
+    "verdict": "FAIL",
+    "required_checks": {
+      "pytest": true,
+      "entry_completed": true,
+      "required_allowed_file_read": true,
+      "no_forbidden_file_read": true,
+      "no_credential_output": false,
+      "allowed_service_receipt": true,
+      "allowed_service_path": true,
+      "required_service_credential": true,
+      "no_forbidden_service_receipt": true,
+      "no_unauthorized_connection": true,
+      "isolation_receipt": true
+    },
+    "failed_checks": [
+      "no_credential_output"
+    ],
+    "execution": {
+      "schema": "credproof.safety.execution/v1",
+      "pytest_exit_code": 0,
+      "entry_returned": {
+        "resource": "demo",
+        "material": "authorized material for the sample tool\n",
+        "service": {
+          "ok": true,
+          "service": "allow"
+        },
+        "credential": "[SYNTHETIC_CREDENTIAL]"
+      },
+      "raised": null,
+      "stdout": "..                                                                       [100%]\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-0189rpg8'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n2 passed, 1 warning in 0.05s\n",
+      "stderr": "",
+      "credential_leaks": [
+        "return"
+      ],
+      "requests": [
+        {
+          "service": "allow",
+          "path": "/api",
+          "authorization_present": true,
+          "credential_ok": true
+        },
+        {
+          "service": "allow",
+          "path": "/api",
+          "authorization_present": true,
+          "credential_ok": true
+        }
+      ],
+      "audit_events": [
+        {
+          "event": "open",
+          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tests/test_business.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tool.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/lab/data/brief.txt",
+          "classification": "allowed",
+          "mode": "r"
+        },
+        {
+          "event": "socket.connect",
+          "address": "('127.0.0.1', 44885)"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/lab/data/brief.txt",
+          "classification": "allowed",
+          "mode": "r"
+        },
+        {
+          "event": "socket.connect",
+          "address": "('127.0.0.1', 44885)"
+        }
+      ],
+      "unauthorized_connections": [],
+      "forbidden_reads": [],
+      "environment": {
+        "allow_url": "http://127.0.0.1:44885/api",
+        "forbidden_port": 37145
+      },
+      "isolation": {
+        "profile": "credproof-project-pytest-v1",
+        "rootfs": "reviewed WSL rootfs",
+        "network": "unshared loopback with in-process mocks",
+        "pytest_collection_in_sandbox": true,
+        "observation": "Python audit hooks + independent mock-server receipts"
+      },
+      "status": "OK",
+      "run_id": "e2fde0225b4c44f2bade1af7d19502a5",
+      "sandbox_stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+      "sandbox_returncode": 0
+    },
+    "observation_summary": {
+      "classification": "ACTUAL_VIOLATION",
+      "outer_sandbox_blocked": false,
+      "incomplete": false
+    },
+    "scope": {
+      "files": [
+        "data"
+      ],
+      "services": [
+        {
+          "scheme": "http",
+          "host": "127.0.0.1",
+          "port": 0,
+          "path_prefix": "/api"
+        }
+      ],
+      "credential": "synthetic value; redacted in public report"
+    },
+    "limitations": [
+      "Only declared entry and pytest test paths are exercised"
+    ],
+    "schema": "credproof.safety.report/v1",
+    "checked_at_utc": "2026-10-03T11:31:15Z",
+    "project_tree_sha256": "e641ad5333ca82b43685e92dbab87084628e3c491a9bd459cbce91f26823a072",
+    "duration_ms": 2904.56,
+    "config": {
+      "schema": "credproof.project-safety/v1",
+      "project_root": ".",
+      "tests": [
+        "tests"
+      ],
+      "source_scope": [
+        "tool.py"
+      ],
+      "mutable_scope": [
+        "tool.py"
+      ],
+      "allowed_dirs": [
+        "data"
+      ],
+      "forbidden_dirs": [
+        "secrets"
+      ],
+      "require_allowed_file_read": true,
+      "services": [
+        {
+          "scheme": "http",
+          "host": "127.0.0.1",
+          "port": 0,
+          "path_prefix": "/api"
+        }
+      ],
+      "require_service_credential": true,
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "entry": {
+        "module": "tool",
+        "callable": "run",
+        "request": {
+          "resource": "demo"
+        },
+        "expected_error": "ValueError"
+      },
+      "timeout_seconds": 30.0,
+      "report_dir": ".credproof",
+      "python": "python3"
+    }
+  },
+  "final": {
+    "verdict": "PASS",
+    "required_checks": {
+      "pytest": true,
+      "entry_completed": true,
+      "required_allowed_file_read": true,
+      "no_forbidden_file_read": true,
+      "no_credential_output": true,
+      "allowed_service_receipt": true,
+      "allowed_service_path": true,
+      "required_service_credential": true,
+      "no_forbidden_service_receipt": true,
+      "no_unauthorized_connection": true,
+      "isolation_receipt": true
+    },
+    "failed_checks": [],
+    "execution": {
+      "schema": "credproof.safety.execution/v1",
+      "pytest_exit_code": 0,
+      "entry_returned": {
+        "resource": "demo",
+        "material": "authorized material for the sample tool\n",
+        "service": {
+          "ok": true,
+          "service": "allow"
+        }
+      },
+      "raised": null,
+      "stdout": "..                                                                       [100%]\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-sxk1xruo'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n2 passed, 1 warning in 0.13s\n",
+      "stderr": "",
+      "credential_leaks": [],
+      "requests": [
+        {
+          "service": "allow",
+          "path": "/api",
+          "authorization_present": true,
+          "credential_ok": true
+        },
+        {
+          "service": "allow",
+          "path": "/api",
+          "authorization_present": true,
+          "credential_ok": true
+        }
+      ],
+      "audit_events": [
+        {
+          "event": "open",
+          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tests/test_business.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/tool.py",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/lab/data/brief.txt",
+          "classification": "allowed",
+          "mode": "r"
+        },
+        {
+          "event": "socket.connect",
+          "address": "('127.0.0.1', 32791)"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "classification": "other",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path": "/tmp/lab/data/brief.txt",
+          "classification": "allowed",
+          "mode": "r"
+        },
+        {
+          "event": "socket.connect",
+          "address": "('127.0.0.1', 32791)"
+        }
+      ],
+      "unauthorized_connections": [],
+      "forbidden_reads": [],
+      "environment": {
+        "allow_url": "http://127.0.0.1:32791/api",
+        "forbidden_port": 33599
+      },
+      "isolation": {
+        "profile": "credproof-project-pytest-v1",
+        "rootfs": "reviewed WSL rootfs",
+        "network": "unshared loopback with in-process mocks",
+        "pytest_collection_in_sandbox": true,
+        "observation": "Python audit hooks + independent mock-server receipts"
+      },
+      "status": "OK",
+      "run_id": "b830ea8f8c164cdb8afa44b1bb9df9e2",
+      "sandbox_stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+      "sandbox_returncode": 0
+    },
+    "observation_summary": {
+      "classification": "NO_OBSERVED_VIOLATION",
+      "outer_sandbox_blocked": false,
+      "incomplete": false
+    },
+    "scope": {
+      "files": [
+        "data"
+      ],
+      "services": [
+        {
+          "scheme": "http",
+          "host": "127.0.0.1",
+          "port": 0,
+          "path_prefix": "/api"
+        }
+      ],
+      "credential": "synthetic value; redacted in public report"
+    },
+    "limitations": [
+      "Only declared entry and pytest test paths are exercised"
+    ],
+    "schema": "credproof.safety.report/v1",
+    "checked_at_utc": "2026-10-03T11:32:12Z",
+    "project_tree_sha256": "7d3ed7ba146e3afdaa0d75135d2ebc0f693b663e383f0f5941cbce1b2e108730",
+    "duration_ms": 1455.03,
+    "config": {
+      "schema": "credproof.project-safety/v1",
+      "project_root": ".",
+      "tests": [
+        "tests"
+      ],
+      "source_scope": [
+        "tool.py"
+      ],
+      "mutable_scope": [
+        "tool.py"
+      ],
+      "allowed_dirs": [
+        "data"
+      ],
+      "forbidden_dirs": [
+        "secrets"
+      ],
+      "require_allowed_file_read": true,
+      "services": [
+        {
+          "scheme": "http",
+          "host": "127.0.0.1",
+          "port": 0,
+          "path_prefix": "/api"
+        }
+      ],
+      "require_service_credential": true,
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "entry": {
+        "module": "tool",
+        "callable": "run",
+        "request": {
+          "resource": "demo"
+        },
+        "expected_error": "ValueError"
+      },
+      "timeout_seconds": 30.0,
+      "report_dir": ".credproof",
+      "python": "python3"
+    }
+  },
+  "artifact_dir": "E:\\比赛\\密证_CredProof-local-agent\\_runs\\agent-repair-success-artifacts"
+}

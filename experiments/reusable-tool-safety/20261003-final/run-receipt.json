@@ -1,0 +1,15 @@
+{
+  "date": "2026-10-03",
+  "commands": [
+    "python scripts/run-reusable-safety-demo.py --output _runs/reusable-demo8",
+    "python scripts/run-external-dotenv-case.py --output _runs/external-dotenv-final6"
+  ],
+  "exit_codes": [
+    0,
+    0
+  ],
+  "runtime": "WSL Ubuntu-24.04 + reviewed bubblewrap rootfs; pytest 8.4.2",
+  "model_used": false,
+  "paid_api_used": false,
+  "external_source_commit": "36004e0e34be7665ff2b11a8a4005144f76f176d"
+}

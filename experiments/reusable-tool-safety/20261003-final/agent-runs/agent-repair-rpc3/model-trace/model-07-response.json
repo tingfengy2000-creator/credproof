@@ -1,0 +1,36 @@
+{
+  "id": "chatcmpl-521",
+  "object": "chat.completion",
+  "created": 1791026936,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_td4raf0k",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "verify_patch",
+              "arguments": "{}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 5286,
+    "prompt_tokens_details": {
+      "cached_tokens": 5263
+    },
+    "completion_tokens": 13,
+    "total_tokens": 5299
+  }
+}

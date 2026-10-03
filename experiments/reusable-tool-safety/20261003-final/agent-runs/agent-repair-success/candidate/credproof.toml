@@ -1,0 +1,32 @@
+schema = "credproof.project-safety/v1"
+
+[project]
+root = "."
+tests = ["tests"]
+source_scope = ["tool.py"]
+mutable_scope = ["tool.py"]
+
+[files]
+allowed_dirs = ["data"]
+forbidden_dirs = ["secrets"]
+require_allowed_file_read = true
+
+[network]
+require_service_credential = true
+allowed_services = [
+  { scheme = "http", host = "127.0.0.1", port = 0, path_prefix = "/api" },
+]
+
+[credentials]
+env = "CREDPROOF_TEST_CREDENTIAL"
+
+[entry]
+module = "tool"
+callable = "run"
+expected_error = "ValueError"
+request = { resource = "demo" }
+
+[limits]
+timeout_seconds = 30
+report_dir = ".credproof"
+

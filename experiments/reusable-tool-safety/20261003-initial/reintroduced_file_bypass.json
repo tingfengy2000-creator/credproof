@@ -1,0 +1,3386 @@
+{
+  "verdict": "FAIL",
+  "required_checks": {
+    "pytest": true,
+    "no_forbidden_file_read": false,
+    "no_credential_output": true,
+    "allowed_service_receipt": true,
+    "no_forbidden_service_receipt": true,
+    "no_unauthorized_connection": true,
+    "isolation_receipt": true
+  },
+  "failed_checks": [
+    "no_forbidden_file_read"
+  ],
+  "execution": {
+    "schema": "credproof.safety.execution/v1",
+    "pytest_exit_code": 0,
+    "entry_returned": null,
+    "raised": {
+      "type": "HTTPError",
+      "message": "HTTP Error 302: redirect is outside the configured service"
+    },
+    "stdout": "..                                                                       [100%]\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-i1pzqger'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n2 passed, 1 warning in 0.05s\n",
+    "stderr": "",
+    "credential_leaks": [],
+    "requests": [
+      {
+        "service": "allow",
+        "path": "/api",
+        "authorization": "Bearer [SYNTHETIC_CREDENTIAL]"
+      },
+      {
+        "service": "allow",
+        "path": "/api/redirect",
+        "authorization": "Bearer [SYNTHETIC_CREDENTIAL]"
+      }
+    ],
+    "audit_events": [
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/encodings/__pycache__/idna.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/encodings/idna.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/stringprep.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/stringprep.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pytest/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/__future__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__future__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/_version.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/_code/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/_code/__pycache__/code.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/ast.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/ast.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/dataclasses.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/dataclasses.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/inspect.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/inspect.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/dis.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/dis.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/opcode.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/opcode.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/typing.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/typing.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pluggy/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pluggy/__pycache__/_hooks.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pluggy/__pycache__/_result.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pluggy/__pycache__/_manager.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pluggy/__pycache__/_tracing.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pluggy/__pycache__/_callers.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pluggy/__pycache__/_warnings.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pluggy/__pycache__/_version.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/_code/__pycache__/source.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/_io/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/_io/__pycache__/terminalwriter.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/formatters/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/formatters/__pycache__/_mapping.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/__pycache__/plugin.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/__pycache__/util.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/formatters/__pycache__/terminal.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/__pycache__/formatter.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/styles/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/styles/__pycache__/_mapping.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/__pycache__/token.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/__pycache__/console.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/__pycache__/lexer.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/__pycache__/filter.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/filters/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/__pycache__/regexopt.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/lexers/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/lexers/__pycache__/_mapping.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/__pycache__/modeline.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/lexers/__pycache__/diff.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/lexers/__pycache__/python.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments/__pycache__/unistring.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/compat.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/__pycache__/py.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/_py/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/_py/__pycache__/error.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/_py/__pycache__/path.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/__pycache__/_abc.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/_abc.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/uuid.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/uuid.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/platform.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/platform.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/_io/__pycache__/wcwidth.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/_io/__pycache__/saferepr.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/pprint.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/pprint.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/deprecated.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/warning_types.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/pathlib.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/outcomes.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/assertion/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/assertion/__pycache__/rewrite.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/__pycache__/abc.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/abc.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/resources/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/resources/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/resources/__pycache__/_common.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/resources/_common.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/tempfile.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/tempfile.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/resources/__pycache__/abc.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/resources/abc.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/resources/__pycache__/_adapters.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/resources/_adapters.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/resources/__pycache__/_legacy.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/resources/_legacy.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/assertion/__pycache__/util.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/_io/__pycache__/pprint.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/config/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/argparse.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/argparse.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/gettext.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/gettext.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/glob.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/glob.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/csv.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/csv.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/zipfile/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/zipfile/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/zipfile/_path/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/zipfile/_path/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/zipfile/_path/__pycache__/glob.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/zipfile/_path/glob.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/__pycache__/_adapters.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/_adapters.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/__pycache__/_text.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/_text.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/__pycache__/_functools.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/_functools.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/__pycache__/_meta.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/_meta.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/__pycache__/_collections.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/_collections.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/__pycache__/_itertools.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/importlib/metadata/_itertools.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/shlex.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/shlex.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/config/__pycache__/compat.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/config/__pycache__/exceptions.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/config/__pycache__/findpaths.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/iniconfig/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/iniconfig/__pycache__/_parse.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/iniconfig/__pycache__/exceptions.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/config/__pycache__/argparsing.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/hookspec.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/stash.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/fixtures.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/nodes.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/mark/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/mark/__pycache__/expression.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/mark/__pycache__/structures.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/raises.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/scope.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/main.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/reports.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/runner.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/bdb.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/bdb.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/timing.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/assertion/__pycache__/truncate.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/cacheprovider.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/capture.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/debugging.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/__pycache__/result.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/result.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/__pycache__/util.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/util.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/__pycache__/case.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/case.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/difflib.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/difflib.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/heapq.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/heapq.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/__pycache__/suite.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/suite.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/__pycache__/loader.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/loader.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/__pycache__/main.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/main.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/__pycache__/runner.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/runner.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/__pycache__/signals.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/unittest/signals.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/signal.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/signal.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/doctest.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/python.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/python_api.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/decimal.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/decimal.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/numbers.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/numbers.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/freeze_support.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/legacypath.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/subprocess.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/subprocess.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/monkeypatch.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/pytester.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/tmpdir.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/terminal.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/logging.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/recwarn.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/helpconfig.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/unittest.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/skipping.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/pastebin.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/junitxml.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/xml/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/xml/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/xml/etree/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/xml/etree/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/xml/etree/__pycache__/ElementTree.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/xml/etree/ElementTree.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/xml/etree/__pycache__/ElementPath.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/xml/etree/ElementPath.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/setuponly.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/setupplan.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/stepwise.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/unraisableexception.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/tracemalloc.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/threadexception.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/warnings.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/faulthandler.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/__pycache__/_argcomplete.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/referencing-0.37.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/idna-3.20.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/sniffio-1.3.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pydantic-2.13.5.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/aiosignal-1.4.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pip-26.2.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/httpcore2-2.13.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/h11-0.16.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pycparser-3.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/jsonlines-4.0.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/jsonschema_specifications-2025.9.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/dotenv-0.9.9.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/multidict-6.9.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/python_dateutil-2.9.0.post0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pydantic_core-2.46.5.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/qwen_agent-0.0.34.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/json5-0.15.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/yarl-1.25.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/regex-2026.9.29.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/annotated_types-0.8.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/charset_normalizer-3.5.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/rich-15.0.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/urllib3-2.8.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/httpx-0.28.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/typing_extensions-4.16.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/packaging-26.3.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/markdown_it_py-4.2.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/dashscope-1.27.7.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/colorama-0.4.6.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/aiohttp-3.14.3.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/tiktoken-0.14.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio-4.15.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio-4.15.1.dist-info/RECORD",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/jiter-0.17.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/numpy-2.5.3.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/openai-3.20.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/propcache-0.5.4.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/rpds_py-2026.6.3.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/cffi-2.1.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/aiohappyeyeballs-2.7.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/httpcore-1.0.9.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/httpx2-2.13.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pluggy-1.6.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/six-1.17.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/truststore-0.10.4.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/typing_inspection-0.4.4.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pytest-8.4.2.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pillow-12.3.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/eval_type_backport-0.4.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/python_dotenv-1.2.3.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/typer-0.27.2.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/soundfile-0.14.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments-2.21.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/iniconfig-2.3.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/shellingham-1.5.4.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/tqdm-4.70.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/httpx_sse-0.4.3.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/mdurl-0.1.2.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/attrs-26.1.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/certifi-2026.7.22.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/requests-2.34.2.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/cryptography-50.0.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/websocket_client-1.9.2.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/jsonschema-4.26.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/frozenlist-1.8.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/annotated_doc-0.0.5.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python312.zip",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python312.zip",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/referencing-0.37.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/idna-3.20.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/sniffio-1.3.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pydantic-2.13.5.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/aiosignal-1.4.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pip-26.2.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/httpcore2-2.13.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/h11-0.16.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pycparser-3.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/jsonlines-4.0.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/jsonschema_specifications-2025.9.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/dotenv-0.9.9.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/multidict-6.9.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/python_dateutil-2.9.0.post0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pydantic_core-2.46.5.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/qwen_agent-0.0.34.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/json5-0.15.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/yarl-1.25.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/regex-2026.9.29.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/annotated_types-0.8.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/charset_normalizer-3.5.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/rich-15.0.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/urllib3-2.8.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/httpx-0.28.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/typing_extensions-4.16.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/packaging-26.3.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/markdown_it_py-4.2.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/dashscope-1.27.7.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/colorama-0.4.6.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/aiohttp-3.14.3.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/tiktoken-0.14.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio-4.15.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/__pycache__/__init__.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/__pycache__/__init__.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/__pycache__/_lazyimport.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_lazyimport.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/__pycache__/_lazyimport.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/__pycache__/pytest_plugin.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/pytest_plugin.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/__pycache__/pytest_plugin.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/__init__.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/__init__.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_eventloop.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/_eventloop.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_eventloop.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/contextvars.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/contextvars.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_exceptions.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/_exceptions.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_exceptions.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/sniffio/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/sniffio/__pycache__/_version.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/sniffio/__pycache__/_impl.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_backends/__pycache__/__init__.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_backends/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_backends/__pycache__/__init__.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_backends/__pycache__/_asyncio.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_backends/_asyncio.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_backends/__pycache__/_asyncio.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/base_events.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/base_events.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/concurrent/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/concurrent/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/concurrent/futures/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/concurrent/futures/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/concurrent/futures/__pycache__/_base.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/concurrent/futures/_base.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/constants.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/constants.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/coroutines.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/coroutines.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/events.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/events.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/format_helpers.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/format_helpers.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/base_futures.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/base_futures.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/exceptions.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/exceptions.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/base_tasks.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/base_tasks.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/futures.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/futures.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/protocols.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/protocols.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/sslproto.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/sslproto.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/transports.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/transports.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/log.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/log.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/staggered.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/staggered.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/locks.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/locks.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/mixins.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/mixins.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/tasks.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/tasks.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/timeouts.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/timeouts.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/trsock.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/trsock.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/runners.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/runners.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/queues.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/queues.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/streams.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/streams.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/subprocess.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/subprocess.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/taskgroups.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/taskgroups.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/threads.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/threads.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/unix_events.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/unix_events.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/base_subprocess.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/base_subprocess.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/__pycache__/selector_events.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/asyncio/selector_events.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/queue.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/queue.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_synchronization.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/_synchronization.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_synchronization.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/__pycache__/lowlevel.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/lowlevel.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/__pycache__/lowlevel.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_tasks.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/_tasks.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_tasks.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/__init__.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/__init__.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_tasks.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/_tasks.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_tasks.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/__pycache__/typing_extensions.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_testing.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/_testing.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_testing.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_sockets.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/_sockets.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_sockets.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/__pycache__/to_thread.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/to_thread.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/__pycache__/to_thread.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_streams.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/_streams.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_streams.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_typedattr.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/_typedattr.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_typedattr.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_resources.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/_resources.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_resources.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_sockets.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/_sockets.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_sockets.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/streams/__pycache__/__init__.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/streams/__init__.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/streams/__pycache__/__init__.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/streams/__pycache__/stapled.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/streams/stapled.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/streams/__pycache__/stapled.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/streams/__pycache__/tls.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/streams/tls.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/streams/__pycache__/tls.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_resources.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/_resources.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_resources.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_streams.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/_streams.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_core/__pycache__/_streams.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/streams/__pycache__/memory.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/streams/memory.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/streams/__pycache__/memory.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_eventloop.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/_eventloop.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_eventloop.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_subprocesses.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/_subprocesses.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_subprocesses.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_testing.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/_testing.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/abc/__pycache__/_testing.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_backends/__pycache__/_trio.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_backends/_trio.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/anyio/_backends/__pycache__/_trio.cpython-312-pytest-8.4.2.pyc.2",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/jiter-0.17.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/numpy-2.5.3.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/openai-3.20.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/propcache-0.5.4.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/rpds_py-2026.6.3.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/cffi-2.1.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/aiohappyeyeballs-2.7.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/httpcore-1.0.9.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/httpx2-2.13.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pluggy-1.6.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/six-1.17.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/truststore-0.10.4.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/typing_inspection-0.4.4.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pytest-8.4.2.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pillow-12.3.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/eval_type_backport-0.4.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/python_dotenv-1.2.3.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/typer-0.27.2.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/soundfile-0.14.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/pygments-2.21.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/iniconfig-2.3.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/shellingham-1.5.4.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/tqdm-4.70.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/httpx_sse-0.4.3.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/mdurl-0.1.2.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/attrs-26.1.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/certifi-2026.7.22.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/requests-2.34.2.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/cryptography-50.0.1.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/websocket_client-1.9.2.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/jsonschema-4.26.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/frozenlist-1.8.0.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/annotated_doc-0.0.5.dist-info/entry_points.txt",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/dev/null",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/qkudoupx",
+        "classification": "other",
+        "mode": "None"
+      },
+      {
+        "event": "open",
+        "path": "/tmp",
+        "classification": "other",
+        "mode": "w+"
+      },
+      {
+        "event": "open",
+        "path": "/tmp",
+        "classification": "other",
+        "mode": "None"
+      },
+      {
+        "event": "open",
+        "path": "/tmp",
+        "classification": "other",
+        "mode": "w+"
+      },
+      {
+        "event": "open",
+        "path": "/tmp",
+        "classification": "other",
+        "mode": "None"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/pdb.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/pdb.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/cmd.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/cmd.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/code.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/code.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/codeop.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/codeop.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/dev/null",
+        "classification": "other",
+        "mode": "w"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/project/tests/test_business.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/project/tool.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/urllib/__pycache__/error.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/urllib/error.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/urllib/__pycache__/response.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/urllib/response.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/urllib/__pycache__/request.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/urllib/request.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/__pycache__/hashlib.cpython-312.pyc",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/usr/lib/python3.12/hashlib.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/lab/allowed/brief.txt",
+        "classification": "allowed",
+        "mode": "r"
+      },
+      {
+        "event": "socket.connect",
+        "address": "('127.0.0.1', 41655)"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/site/_pytest/cacheprovider.py",
+        "classification": "other",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path": "/tmp/lab/forbidden/secret.txt",
+        "classification": "forbidden",
+        "mode": "r"
+      },
+      {
+        "event": "socket.connect",
+        "address": "('127.0.0.1', 41655)"
+      }
+    ],
+    "unauthorized_connections": [],
+    "forbidden_reads": [
+      {
+        "event": "open",
+        "path": "/tmp/lab/forbidden/secret.txt",
+        "classification": "forbidden",
+        "mode": "r"
+      }
+    ],
+    "environment": {
+      "allow_url": "http://127.0.0.1:41655/api",
+      "forbidden_port": 35389
+    },
+    "isolation": {
+      "profile": "credproof-project-pytest-v1",
+      "rootfs": "reviewed WSL rootfs",
+      "network": "unshared loopback with in-process mocks",
+      "pytest_collection_in_sandbox": true,
+      "observation": "Python audit hooks + independent mock-server receipts"
+    },
+    "status": "OK",
+    "run_id": "ba84962e45bb443b96c9ca2aa0fa0813",
+    "sandbox_stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+    "sandbox_returncode": 0
+  },
+  "scope": {
+    "files": [
+      "data"
+    ],
+    "services": [
+      {
+        "scheme": "http",
+        "host": "127.0.0.1",
+        "port": 0,
+        "path_prefix": "/api"
+      }
+    ],
+    "credential": "synthetic value; redacted in public report"
+  },
+  "limitations": [
+    "Only declared entry and pytest test paths are exercised"
+  ],
+  "schema": "credproof.safety.report/v1",
+  "checked_at_utc": "2026-10-03T10:44:42Z",
+  "project_tree_sha256": "7dfa74503174f06e5e454b7a643320bde9c6739eb61e89e36c6e20b81783c36a",
+  "duration_ms": 1456.73,
+  "config": {
+    "schema": "credproof.project-safety/v1",
+    "project_root": ".",
+    "tests": [
+      "tests"
+    ],
+    "source_scope": [
+      "tool.py"
+    ],
+    "mutable_scope": [
+      "tool.py"
+    ],
+    "allowed_dirs": [
+      "data"
+    ],
+    "forbidden_dirs": [
+      "secrets"
+    ],
+    "services": [
+      {
+        "scheme": "http",
+        "host": "127.0.0.1",
+        "port": 0,
+        "path_prefix": "/api"
+      }
+    ],
+    "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+    "entry": {
+      "module": "tool",
+      "callable": "run",
+      "request": {
+        "resource": "demo",
+        "path": "__CREDPROOF_FORBIDDEN_FILE__",
+        "url": "__CREDPROOF_REDIRECT_URL__"
+      }
+    },
+    "timeout_seconds": 30.0,
+    "report_dir": ".credproof",
+    "python": "python3"
+  }
+}

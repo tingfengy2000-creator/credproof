@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "credproof-safety"
+version = "0.3.0.dev1"
+description = "Controlled safety checks for authorised Python tools"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+project-tests = ["pytest>=8.0", "requests>=2.31"]
+agent = ["qwen-agent==0.0.34", "ollama==0.6.0"]
+
+[project.scripts]
+credproof-safety = "credproof_safety.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["credproof*", "credproof_safety*"]

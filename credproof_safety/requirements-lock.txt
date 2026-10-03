@@ -1,0 +1,8 @@
+# Minimal project-test dependencies installed in the reviewed WSL runtime.
+# The model runtime remains the existing agent_pilot lock; model weights are
+# outside Git and are not required for `check` or exported regression tests.
+pytest==8.4.2
+iniconfig==2.3.0
+packaging==26.3
+pluggy==1.6.0
+Pygments==2.21.0

@@ -1,0 +1,27 @@
+schema = "credproof.project-safety/v1"
+
+[project]
+root = "."
+tests = ["tests/test_main.py"]
+source_scope = ["credproof_entry.py", "credproof_entry_fixed.py", "src/**/*.py"]
+mutable_scope = ["credproof_entry.py", "credproof_entry_fixed.py"]
+
+[files]
+allowed_dirs = ["data"]
+forbidden_dirs = ["secrets"]
+
+[network]
+allowed_services = []
+
+[credentials]
+env = "CREDPROOF_TEST_CREDENTIAL"
+
+[entry]
+module = "credproof_entry_fixed"
+callable = "run"
+expected_error = "ValueError"
+request = { path = "__CREDPROOF_FORBIDDEN_FILE__" }
+
+[limits]
+timeout_seconds = 30
+report_dir = ".credproof"

@@ -14,3 +14,7 @@
 ## preliminary.4 外部组件
 
 PyPA Twine 配置读取组件：Apache License 2.0。固定来源及许可证位于 docs/external-scenario/twine/upstream-before 与 upstream-fixed；PR #1240 与前后提交见 source.json。保留上游版权及归属；本项目新增受限组件适配、裁判和材料交付，不声称上游逻辑自行研发。视频制作工具 Pillow 11.3.0、imageio-ffmpeg 0.6.0 仅用于离线素材编码，不随程序分发模型或编码器二进制。
+
+## reusable-tool-safety 外部项目
+
+`examples/external/python-dotenv-v1.2.2` 保留 python-dotenv v1.2.2 的上游源码、测试、`README.md`、`CHANGELOG.md`、`pyproject.toml` 和 BSD-3-Clause `LICENSE`。来源为上游标签固定提交 `36004e0e34be7665ff2b11a8a4005144f76f176d`：https://github.com/theskumar/python-dotenv 。CredProof 的两个 `credproof_entry*.py` 是本项目为受控目录读取验证增加的薄适配/人工注入，不是上游漏洞、CVE 或上游认可；上游测试结构和版权保留。
