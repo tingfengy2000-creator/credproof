@@ -289,9 +289,22 @@ class Application:
         if original is None or row.get('method') != 'C-agent':
             raise ValueError('History lacks a frozen original or matching method')
         identifier = 'replay-' + hashlib.sha256(str(method).encode()).hexdigest()[:24]
-        timestamp = datetime.fromtimestamp((method / 'result.json').stat().st_mtime, timezone.utc).isoformat()
+        # Archives/copies change mtime: use recorded task events, never file time.
+        started = finished = None
+        events = text_file(confined(method / 'model/events.jsonl', self.root / 'runs'), 2 * 1024 * 1024)
+        if events:
+            try:
+                for line in events.splitlines():
+                    event = json.loads(line)
+                    stamp = event.get('at_utc')
+                    if isinstance(stamp, str):
+                        datetime.fromisoformat(stamp)
+                        if event.get('event') == 'task_started': started = stamp
+                        if event.get('event') == 'task_finished': finished = stamp
+            except (ValueError, TypeError, AttributeError):
+                started = finished = None
         self.runs[identifier] = Run(identifier, case, method, method, original, mode='REPLAY',
-                                    status='COMPLETED', started_at=timestamp, updated_at=timestamp)
+                                    status='COMPLETED', started_at=started, updated_at=finished)
 
     def bootstrap(self):
         with self.mutex:

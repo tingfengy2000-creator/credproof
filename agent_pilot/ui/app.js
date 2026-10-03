@@ -176,7 +176,7 @@ function renderDecisions() {
   $('verdict-description').textContent = ({ PASS: '受限验收通过', FAIL: '受限验收未通过', UNKNOWN: '现有证据不足以判定' }[verdict]) || '等待真实检查结果';
   $('verdict-reasons').textContent = array(validation?.reasons).map(text).join('；')
     || (validation ? '服务端未附加判决原因；查看下方实际检查。' : '缺少证据时，页面不会显示通过。');
-  $('checked-at').textContent = validation ? `验收记录时间 · ${displayTime(validation.checked_at ?? validation.checked_at_utc ?? run.updated_at)}` : '尚未取得验收时间';
+    $('checked-at').textContent = validation ? `${run.mode === 'REPLAY' ? '历史任务结束时间' : '任务记录时间'} · ${displayTime(validation.checked_at ?? validation.checked_at_utc ?? run.updated_at)}` : '尚未取得验收时间';
   const confirmations = [];
   if (diagnosis && Object.hasOwn(diagnosis, 'confirmed')) confirmations.push(['原始风险确认', diagnosis.confirmed]);
   if (diagnosis && Object.hasOwn(diagnosis, 'repair_authorized')) confirmations.push(['修复授权', diagnosis.repair_authorized]);
