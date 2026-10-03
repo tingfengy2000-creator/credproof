@@ -37,9 +37,9 @@
       <div class="hero-kicker"><span></span> CREDENTIAL SECURITY / AI TOOLS</div>
       <p class="hero-tagline">发现泄露，修复有据。</p>
       <h1 id="product-title"><span class="hero-name">密证 <em>CredProof</em></span><span class="hero-product">——面向 AI 工具的凭据泄露验证与受控修复系统</span></h1>
-      <p class="hero-description">系统结合本地大模型补丁生成与程序控制的安全验收，针对凭据泄露问题给出候选修复，并检查泄露是否消除、必要业务行为是否保持，支持材料导出与复检。</p>
+      <p class="hero-description">面向自有或授权 Python 工具的开发者：当凭据进入日志或异常输出，帮助你把已确认的泄露转化为经过安全与业务检查、能够交付复查的候选修复。</p>
       <div class="hero-capabilities"><span>本地模型</span><span>运行不调用付费 API</span><span>材料可复检</span></div><div class="hero-actions"><a class="button hero-primary" href="#cases">探索典型案例 <svg class="icon"><use href="#i-arrow"/></svg></a><a class="button hero-secondary" href="#workbench">进入验证工作区 <span>↗</span></a></div>
-      <p class="hero-boundary"><svg class="icon"><use href="#i-lock"/></svg>本地模型生成 · 程序独立判定 · 对应对象复检</p>
+      <p class="hero-boundary"><svg class="icon"><use href="#i-lock"/></svg>让 AI 提出修复，让程序决定是否接受，让开发者能够复查。</p>
     </div>
     <figure class="hero-visual" aria-label="机制示意：代码与观测进入受控修复，由程序验收并导出复检材料">
       <svg viewBox="0 0 470 350" role="img" aria-labelledby="mechanism-art-title" xmlns="http://www.w3.org/2000/svg">
@@ -63,13 +63,13 @@
     </figure>
   </section>
   <section class="feature-grid" aria-label="系统三个特点">
-    <article class="feature"><span class="feature-icon"><svg class="icon"><use href="#i-spark"/></svg></span><div><span class="feature-number">01 / GENERATE</span><h2>证据驱动的候选生成与反馈调整</h2><p>将疑点转化为可检验的假设，让执行反馈参与后续修改。</p></div></article>
-    <article class="feature"><span class="feature-icon"><svg class="icon"><use href="#i-shield"/></svg></span><div><span class="feature-number">02 / VERIFY</span><h2>程序控制的修改权限与安全/业务验收</h2><p>按实际证据授权修改，分别检查泄露消除与必要业务行为。</p></div></article>
-    <article class="feature"><span class="feature-icon"><svg class="icon"><use href="#i-download"/></svg></span><div><span class="feature-number">03 / RECHECK</span><h2>对应修复对象的材料导出与复检</h2><p>将代码、检查与材料身份关联，保留可以再次核对的记录。</p></div></article>
+    <article class="feature"><span class="feature-icon"><svg class="icon"><use href="#i-spark"/></svg></span><div><span class="feature-number">01 / GENERATE</span><h2>证据驱动的候选生成与反馈调整</h2><p>程序先提供执行证据，模型生成候选；真实失败回执支持后续调整。</p></div></article>
+    <article class="feature"><span class="feature-icon"><svg class="icon"><use href="#i-shield"/></svg></span><div><span class="feature-number">02 / VERIFY</span><h2>程序控制的修改权限与安全/业务验收</h2><p>模型可以提出修改，但不能自行批准修改。条件由人工固定，结果由程序计算。</p></div></article>
+    <article class="feature"><span class="feature-icon"><svg class="icon"><use href="#i-download"/></svg></span><div><span class="feature-number">03 / RECHECK</span><h2>对应修复对象的材料导出与复检</h2><p>交付的不只是一份补丁，还有对应副本、条件和可再次执行的验收依据。</p></div></article>
   </section>
   <section id="mechanism" class="mechanism-rail" aria-label="系统工作过程">
     <div class="mechanism-label"><span class="eyebrow">HOW IT WORKS</span><strong>从疑点到证据</strong></div>
-    <div class="mechanism-step"><span>01</span><div><h3>发现疑点</h3><p>读取受限代码与执行观测</p></div></div><svg class="icon flow-arrow"><use href="#i-arrow"/></svg>
+    <div class="mechanism-step"><span>01</span><div><h3>确认泄露</h3><p>人工固定条件，程序生成证据</p></div></div><svg class="icon flow-arrow"><use href="#i-arrow"/></svg>
     <div class="mechanism-step"><span>02</span><div><h3>生成候选</h3><p>程序授权修改，模型提出补丁</p></div></div><svg class="icon flow-arrow"><use href="#i-arrow"/></svg>
     <div class="mechanism-step"><span>03</span><div><h3>验证复检</h3><p>检查具体对象，导出对应材料</p></div></div>
   </section>

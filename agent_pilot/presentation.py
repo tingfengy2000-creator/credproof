@@ -7,13 +7,13 @@ import shutil
 
 BATCH = 'experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison'
 STORIES = (
-    {'case_id': 'h01', 'title': '跨函数的日志泄露', 'subtitle': '模型补丁补足有限规则的结构盲点',
+    {'case_id': 'h01', 'title': '跨函数的日志泄露', 'subtitle': '本项目规则遗漏参数日志，模型补丁保留认证并修复',
      'phenomenon': '凭据由环境变量读入，经函数参数传递后进入调试日志；源码中没有硬编码密钥。',
      'explanation': '本项目固定启发式未完成这处修改；模型候选消除日志中的凭据，并保留授权认证和必要业务行为。这是该合成案例上的有限增量。'},
-    {'case_id': 'h03', 'title': '看似脱敏，仍在泄露', 'subtitle': '真实拒绝 → 反馈 → 调整',
+    {'case_id': 'h03', 'title': '看似脱敏，仍在泄露', 'subtitle': '脱敏标记出现了，凭据却没有消失',
      'phenomenon': '模拟认证服务的异常信息经字典包装进入日志。第一份补丁只插入 [REDACTED] 标记，真实值仍在后面。',
      'explanation': '执行器按合成凭据的实际值匹配：第一份候选有 2 项日志泄露反例；第二份改为固定安全摘要，13 项条件通过。失败原因不是出现 credential 一词。固定流程在本例也直接通过。'},
-    {'case_id': 'h07', 'title': '正确脱敏，保持不变', 'subtitle': '合法认证用途与禁止通道分开',
+    {'case_id': 'h07', 'title': '正确脱敏，保持不变', 'subtitle': '未确认泄露，不因模型怀疑而自动修改',
      'phenomenon': '凭据用于授权的本地认证；输出通道已正确脱敏，必要检查没有观察到泄露。',
      'explanation': '保留原代码，完成限定条件下的检查。没有观察到泄露不等于任意输入、任意项目都安全。'},
 )
