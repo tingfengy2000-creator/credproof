@@ -1,0 +1,28 @@
+{
+  "schema": "credproof-review-delivery-receipt/v1",
+  "version": "0.3.0-dev.2",
+  "branch": "feat/reusable-tool-safety",
+  "tag": "v0.3.0-dev.2",
+  "source_commit": "d2c3d2d7545fc05244b03bb9992f984aff3781ee",
+  "package_filename": "credproof-0.3.0-dev.2-20261003-d2c3d2d7545f.zip",
+  "package_size_bytes": 13836780,
+  "package_sha256": "5aabed73dde21a3b1a0086902df9eab25658246a715cbe71e9a85cb074bc2c59",
+  "manifest_sha256": "60f5abdd0afcce4c36e394676524658b740fe425411fc13e84c6104eb812fa08",
+  "metadata_sha256": "4623513853a2428a5fd211c2d4ab433dbcbbe44b1fbba83103b5ddd2408dba0b",
+  "source_commit_is_fixed": true,
+  "package_commit_relation": "The ZIP is a source snapshot of source_commit; this receipt is added in a later delivery commit and is not included in the ZIP.",
+  "clean_directory_validation": {
+    "directory": "_runs/clean-review-dev2-01",
+    "unit_tests": "25 passed",
+    "targeted_isolated": "vulnerable FAIL; fixed PASS; allowed_file_redirect PASS; custom_credential_env PASS; reintroduced_file_bypass FAIL; unrelated_change PASS; saved_model_candidate_recheck FAIL on no_credential_output",
+    "exported_external": "fixed direct exported assertion PASS; reintroduced defect FAIL; unrelated change PASS",
+    "model_started": false,
+    "runtime_root": "/home/tingfeng/credproof-agent-runtime"
+  },
+  "push_attempt": {
+    "status": "blocked_by_network",
+    "command": "git push origin feat/reusable-tool-safety",
+    "error": "Failed to connect to github.com:443 after 21093 ms"
+  },
+  "anonymous_access": "pending successful GitHub push"
+}
