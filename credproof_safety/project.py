@@ -12,6 +12,7 @@ import uuid
 
 from .config import SafetyConfig, load_config
 from .runner import run_sandbox
+from agent_pilot.runtime_config import runtime_temp_root
 
 
 def _digest_tree(root: Path) -> str:
@@ -56,11 +57,51 @@ def _build_lab(config: SafetyConfig, root: Path, credential: str) -> Path:
     return lab
 
 
+_REQUIRED_EXECUTION_FIELDS = {
+    "schema": str,
+    "pytest_exit_code": (int, type(None)),
+    "entry_returned": object,
+    "raised": (dict, type(None)),
+    "forbidden_reads": list,
+    "out_of_scope_reads": list,
+    "audit_events": list,
+    "credential_leaks": list,
+    "requests": list,
+    "unauthorized_connections": list,
+    "isolation": dict,
+}
+
+
+def _execution_observation_error(execution: dict) -> str | None:
+    """Fail closed when a required observation is absent or malformed."""
+    missing = [name for name in _REQUIRED_EXECUTION_FIELDS if name not in execution]
+    if missing:
+        return "missing_required_observation:" + ",".join(missing)
+    if execution.get("schema") != "credproof.safety.execution/v1":
+        return "unsupported_execution_schema"
+    for name, expected in _REQUIRED_EXECUTION_FIELDS.items():
+        if expected is object:
+            continue
+        if not isinstance(execution.get(name), expected):
+            return "invalid_observation_type:" + name
+    if execution.get("pytest_exit_code") is None:
+        return "pytest_observation_incomplete"
+    isolation = execution["isolation"]
+    if isolation.get("pytest_collection_in_sandbox") is not True:
+        return "isolation_observation_incomplete"
+    return None
+
+
 def _verdict(config: SafetyConfig, execution: dict) -> dict:
     if execution.get("status") != "OK":
         return {"verdict": "UNKNOWN", "reason": "sandbox_execution_incomplete", "execution": execution,
                 "observation_summary": {"classification": "OUTER_SANDBOX_BLOCKED" if execution.get("status") == "BLOCKED" else "INCOMPLETE",
                                          "outer_sandbox_blocked": execution.get("status") == "BLOCKED", "incomplete": True}}
+    observation_error = _execution_observation_error(execution)
+    if observation_error:
+        return {"verdict": "UNKNOWN", "reason": observation_error, "execution": execution,
+                "observation_summary": {"classification": "INCOMPLETE", "outer_sandbox_blocked": False,
+                                         "incomplete": True, "missing_or_invalid": observation_error}}
     required = {
         "pytest": execution.get("pytest_exit_code") == 0,
         "entry_completed": ((execution.get("raised") is None and execution.get("entry_returned") is not None) or
@@ -69,6 +110,7 @@ def _verdict(config: SafetyConfig, execution: dict) -> dict:
         "required_allowed_file_read": (not config.require_allowed_file_read) or any(
             x.get("classification") == "allowed" for x in execution.get("audit_events", [])),
         "no_forbidden_file_read": not bool(execution.get("forbidden_reads")),
+        "no_out_of_scope_file_read": not bool(execution.get("out_of_scope_reads")),
         "no_credential_output": not bool(execution.get("credential_leaks")),
         "allowed_service_receipt": (not config.services) or any(x.get("service") == "allow" for x in execution.get("requests", [])),
         "allowed_service_path": (not config.services) or all(
@@ -83,7 +125,7 @@ def _verdict(config: SafetyConfig, execution: dict) -> dict:
         "isolation_receipt": execution.get("isolation", {}).get("pytest_collection_in_sandbox") is True,
     }
     failed = [name for name, value in required.items() if not value]
-    observed_violation = bool(execution.get("forbidden_reads") or execution.get("unauthorized_connections") or
+    observed_violation = bool(execution.get("forbidden_reads") or execution.get("out_of_scope_reads") or execution.get("unauthorized_connections") or
                               any(x.get("service") == "forbidden" for x in execution.get("requests", [])) or
                               execution.get("credential_leaks"))
     return {"verdict": "PASS" if not failed else "FAIL", "required_checks": required,
@@ -104,7 +146,7 @@ def check_project(config_path: str | Path, *, output: str | Path | None = None,
     if not config.matches_source(module_relative):
         raise ValueError("entry module is outside project.source_scope")
     started = time.monotonic()
-    temp_root = Path(os.environ.get("CREDPROOF_RUNTIME_TEMP", "E:/CredProof-local-runtime/credproof-runs"))
+    temp_root = runtime_temp_root()
     temp_root.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="credproof-project-", dir=temp_root) as temporary:
         work = Path(temporary)
@@ -120,7 +162,8 @@ def check_project(config_path: str | Path, *, output: str | Path | None = None,
                                 config.timeout_seconds, allowed_dirs=config.allowed_dirs,
                                 forbidden_dirs=config.forbidden_dirs,
                                 service_path_prefix=config.services[0].path_prefix if config.services else "/",
-                                require_service_credential=config.require_service_credential)
+                                require_service_credential=config.require_service_credential,
+                                credential_env=config.credential_env)
         report = _verdict(config, execution)
         report.update({"schema": "credproof.safety.report/v1", "checked_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                        "project_tree_sha256": _digest_tree(project),
@@ -165,7 +208,12 @@ def test_credproof_safety_regression():
     if os.environ.get("CREDPROOF_INNER") == "1":
         pytest.skip("CredProof executes the project test suite in its outer sandbox")
     from credproof_safety import check_project
-    root = Path(os.environ.get("CREDPROOF_PROJECT_ROOT", Path(__file__).resolve().parents[1]))
+    configured_root = os.environ.get("CREDPROOF_PROJECT_ROOT")
+    if configured_root:
+        root = Path(configured_root)
+    else:
+        root = next((candidate for candidate in (Path(__file__).resolve().parent, *Path(__file__).resolve().parents)
+                     if (candidate / "credproof.toml").is_file()), Path(__file__).resolve().parents[1])
     report = check_project(root / "credproof.toml", project_root=root)
     assert report["verdict"] == "PASS", report
 '''

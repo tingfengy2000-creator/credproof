@@ -38,10 +38,12 @@ class ReusableSafetyRegressionTests(unittest.TestCase):
     def _complete_execution(self):
         return {
             "status": "OK",
+            "schema": "credproof.safety.execution/v1",
             "pytest_exit_code": 0,
             "entry_returned": {"resource": "demo"},
             "raised": None,
             "forbidden_reads": [],
+            "out_of_scope_reads": [],
             "audit_events": [{"classification": "allowed", "event": "open"}],
             "credential_leaks": [],
             "requests": [{"service": "allow", "path": "/api", "credential_ok": True}],
@@ -101,6 +103,23 @@ class ReusableSafetyRegressionTests(unittest.TestCase):
         result = _verdict(config, execution)
         self.assertNotEqual("PASS", result["verdict"])
 
+    def test_missing_observation_lists_are_unknown_not_empty(self):
+        config = load_config(self.config_path)
+        for field in ("credential_leaks", "forbidden_reads", "unauthorized_connections"):
+            execution = self._complete_execution()
+            del execution[field]
+            result = _verdict(config, execution)
+            self.assertEqual("UNKNOWN", result["verdict"], field)
+            self.assertTrue(result["observation_summary"]["incomplete"])
+
+    def test_invalid_observation_type_is_unknown(self):
+        config = load_config(self.config_path)
+        execution = self._complete_execution()
+        execution["forbidden_reads"] = {}
+        result = _verdict(config, execution)
+        self.assertEqual("UNKNOWN", result["verdict"])
+        self.assertIn("invalid_observation_type", result["reason"])
+
     def test_pass_requires_business_and_security_checks(self):
         config = load_config(self.config_path)
         execution = self._complete_execution()
@@ -108,6 +127,7 @@ class ReusableSafetyRegressionTests(unittest.TestCase):
         for field, value, failed_check in (
             ("pytest_exit_code", 1, "pytest"),
             ("forbidden_reads", ["/tmp/lab/forbidden/secret.txt"], "no_forbidden_file_read"),
+            ("out_of_scope_reads", [{"path": "/tmp/lab/escape"}], "no_out_of_scope_file_read"),
             ("credential_leaks", ["return"], "no_credential_output"),
             ("unauthorized_connections", ["forbidden socket"], "no_unauthorized_connection"),
             ("requests", [], "allowed_service_receipt"),

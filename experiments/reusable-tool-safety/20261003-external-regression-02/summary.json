@@ -1,0 +1,19 @@
+{
+  "schema": "credproof.safety.exported-regression/v1",
+  "project": "examples/external/reusable-consumer-fixture",
+  "results": {
+    "external_fixed": {
+      "returncode": 0,
+      "pass": true
+    },
+    "reintroduced_defect": {
+      "returncode": 1,
+      "pass": false
+    },
+    "unrelated_change": {
+      "returncode": 0,
+      "pass": true
+    }
+  },
+  "claim": "The exported check was executed in a separate synthetic consumer fixture; no model or real credential was used."
+}

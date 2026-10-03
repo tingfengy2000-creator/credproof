@@ -30,7 +30,11 @@ def test_file_and_service_boundaries_reject_alternate_inputs():
         forbidden_file,
         str(allowed.parent / ".." / "secrets" / "secret.txt"),
         str(allowed.parent / "link-to-forbidden.txt"),
+        # The executor must normalize before filtering: from the project cwd
+        # this escapes through /tmp/project/../lab/secrets.
+        str(Path.cwd() / ".." / "lab" / "secrets" / "secret.txt"),
     ]
+    accepted = []
     for path in candidates:
         try:
             tool.run({"resource": "boundary", "path": path,
@@ -38,7 +42,8 @@ def test_file_and_service_boundaries_reject_alternate_inputs():
         except ValueError:
             pass
         else:
-            raise AssertionError(f"outside file was accepted: {path}")
+            accepted.append(path)
+    assert not accepted, f"outside files were accepted: {accepted}"
     try:
         tool.run({"resource": "boundary", "path": str(allowed), "url": forbidden_url})
     except ValueError:

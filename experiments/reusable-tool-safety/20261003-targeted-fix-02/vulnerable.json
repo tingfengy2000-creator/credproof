@@ -1,0 +1,60 @@
+{
+  "verdict": "UNKNOWN",
+  "reason": "sandbox_execution_incomplete",
+  "execution": {
+    "status": "BLOCKED",
+    "reason": "missing WSL isolation material: ~/credproof-agent-runtime/isolation/tools/usr/bin/bwrap"
+  },
+  "observation_summary": {
+    "classification": "OUTER_SANDBOX_BLOCKED",
+    "outer_sandbox_blocked": true,
+    "incomplete": true
+  },
+  "schema": "credproof.safety.report/v1",
+  "checked_at_utc": "2026-10-03T13:39:47Z",
+  "project_tree_sha256": "45154edfec0f04a03ded69e0c44c5edc0435c623f6ec47f842d60392a565aa54",
+  "duration_ms": 73.64,
+  "config": {
+    "schema": "credproof.project-safety/v1",
+    "project_root": ".",
+    "tests": [
+      "tests"
+    ],
+    "source_scope": [
+      "tool.py"
+    ],
+    "mutable_scope": [
+      "tool.py"
+    ],
+    "allowed_dirs": [
+      "data"
+    ],
+    "forbidden_dirs": [
+      "secrets"
+    ],
+    "require_allowed_file_read": true,
+    "services": [
+      {
+        "scheme": "http",
+        "host": "127.0.0.1",
+        "port": 0,
+        "path_prefix": "/api"
+      }
+    ],
+    "require_service_credential": true,
+    "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+    "entry": {
+      "module": "tool",
+      "callable": "run",
+      "request": {
+        "resource": "demo",
+        "path": "__CREDPROOF_FORBIDDEN_FILE__",
+        "url": "__CREDPROOF_REDIRECT_URL__"
+      },
+      "expected_error": "ValueError"
+    },
+    "timeout_seconds": 30.0,
+    "report_dir": ".credproof",
+    "python": "python3"
+  }
+}

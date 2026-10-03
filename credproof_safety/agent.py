@@ -20,14 +20,19 @@ import uuid
 
 from .config import load_config
 from .project import check_project
+from agent_pilot.runtime_config import load_config as load_runtime_config
+from agent_pilot.runtime_config import runtime_paths, runtime_temp_root, wsl_prefix
 
-_WSL = ("wsl.exe", "-d", "Ubuntu-24.04", "--exec")
-_RUNTIME = "/home/tingfeng/credproof-agent-runtime"
+
+def _runtime_settings() -> tuple[list[str], dict[str, str]]:
+    config = load_runtime_config()
+    return [*wsl_prefix(config), "--exec"], runtime_paths(config)
 
 _MODEL_SCRIPT = r'''
 import json, os, pathlib, shutil, subprocess, sys, time, urllib.request, uuid
 from pathlib import Path
 repo, artifact = map(Path, sys.argv[1:])
+runtime = os.environ['CREDPROOF_RUNTIME_ROOT']
 sys.path.insert(0, str(repo))
 from agent_pilot.tools import StrictTool
 from agent_pilot.model_client import LocalAgentClient
@@ -68,7 +73,7 @@ work = Path('/tmp/credproof-agent-model-' + str(os.getpid())); work.mkdir(parent
 subprocess.run(['/usr/sbin/ip', 'link', 'set', 'lo', 'up'], check=True,
                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 env = {'PATH':'/usr/bin:/bin:/usr/lib/wsl/lib','HOME':str(work/'home'),
- 'OLLAMA_HOST':'127.0.0.1:11435','OLLAMA_MODELS':'/home/tingfeng/credproof-agent-runtime/models',
+ 'OLLAMA_HOST':'127.0.0.1:11435','OLLAMA_MODELS':runtime + '/models',
  'OLLAMA_NO_CLOUD':'1','OLLAMA_CONTEXT_LENGTH':'16384','OLLAMA_NUM_PARALLEL':'1',
  'OLLAMA_MAX_LOADED_MODELS':'1','OLLAMA_KEEP_ALIVE':'-1','OLLAMA_FLASH_ATTENTION':'1',
  'OLLAMA_KV_CACHE_TYPE':'q8_0','HTTP_PROXY':'','HTTPS_PROXY':'','ALL_PROXY':'','LANG':'C.UTF-8'}
@@ -79,7 +84,7 @@ def api(path):
 try:
  try: api('/api/version')
  except Exception:
-  ollama=subprocess.Popen(['/home/tingfeng/credproof-agent-runtime/ollama/bin/ollama','serve'],env=env,cwd='/home/tingfeng/credproof-agent-runtime',stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,start_new_session=True)
+  ollama=subprocess.Popen([runtime + '/ollama/bin/ollama','serve'],env=env,cwd=runtime,stdout=subprocess.DEVNULL,stderr=subprocess.DEVNULL,start_new_session=True)
   for _ in range(45):
    try: api('/api/version'); break
    except Exception: time.sleep(1)
@@ -92,7 +97,9 @@ try:
  result={'schema':'credproof.safety.agent/v2','status':'OK' if state['terminal']=='COMPLETED_REPAIRED' else 'INCOMPLETE',
   'task_status':state['terminal'] or 'INCOMPLETE','tool_trace':audit,'model':model,
   'elapsed_s':round(time.monotonic()-started,3),'model_stack':'Qwen-Agent + Ollama local qwen3-coder:30b',
-  'execution_boundary':'model: WSL network namespace; candidate verification: bubblewrap check_project','paid_api_used':False}
+  'execution_boundary':'model: WSL network namespace; candidate verification: bubblewrap check_project',
+  'budgets':{'max_model_calls':12,'max_candidates':3,'max_format_corrections':1,'executor_tool_call_cap':12},
+  'paid_api_used':False}
  (artifact/'model-result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
 finally:
  if ollama is not None:
@@ -130,7 +137,7 @@ def _artifact_dir(output: str | Path | None) -> tuple[Path, Path | None]:
         if artifact.exists():
             raise ValueError("Refuse to overwrite existing repair artifacts")
     else:
-        root = Path(os.environ.get('CREDPROOF_RUNTIME_TEMP', 'E:/CredProof-local-runtime/credproof-runs'))
+        root = runtime_temp_root()
         root.mkdir(parents=True, exist_ok=True)
         artifact, result = root / ('agent-repair-' + uuid.uuid4().hex), None
     artifact.mkdir(parents=True, exist_ok=False)
@@ -159,8 +166,17 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
     rpc = artifact / 'rpc'; rpc.mkdir()
     history = artifact / 'verification-history'; history.mkdir()
     stop = threading.Event(); handled: set[str] = set(); current = initial; patch_no = 0; verify_no = 0
+    tool_call_count = 0; immutable_digest = None
+    def candidate_immutable_digest():
+        rows = []
+        for path in sorted(candidate.rglob('*')):
+            if path.is_file() and path != module_file:
+                rows.append((path.relative_to(candidate).as_posix(), path.read_bytes()))
+        import hashlib
+        return hashlib.sha256(b''.join(name.encode() + b'\0' + value for name, value in rows)).hexdigest()
+    immutable_digest = candidate_immutable_digest()
     def serve():
-        nonlocal current, patch_no, verify_no
+        nonlocal current, patch_no, verify_no, tool_call_count
         while not stop.is_set():
             for req in sorted(rpc.glob('request-*.json')):
                 ident = req.stem.removeprefix('request-')
@@ -169,26 +185,38 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
                 try: data=json.loads(req.read_text(encoding='utf-8')); name=data.get('tool'); args=data.get('arguments',{})
                 except Exception: name,args='__invalid__',{}
                 try:
-                    if name == 'read_code': value={'status':'OK','path':module_rel.as_posix(),'code':module_file.read_text(encoding='utf-8')}
+                    tool_call_count += 1
+                    if tool_call_count > 12:
+                        value={'status':'REJECTED','reason':'tool_call_budget_exhausted','tool_call_count':tool_call_count}
+                    elif name == 'read_code': value={'status':'OK','path':module_rel.as_posix(),'code':module_file.read_text(encoding='utf-8')}
                     elif name == 'get_evidence':
                         execution=current.get('execution',{}); value={'status':'OK','verdict':current.get('verdict'),
                           'confirmed_failed_checks':current.get('failed_checks',[]),'forbidden_reads':execution.get('forbidden_reads',[]),
+                          'out_of_scope_reads':execution.get('out_of_scope_reads',[]),
                           'requests':execution.get('requests',[]),'credential_leaks':execution.get('credential_leaks',[]),
+                          'access_summary':execution.get('access_summary',{}),
                           'observation_summary':current.get('observation_summary',{})}
                     elif name == 'submit_patch':
                         code=args.get('code') if isinstance(args,dict) else None
-                        if not isinstance(code,str) or len(code.encode())>65536: value={'status':'REJECTED','reason':'candidate_size_or_type'}
+                        if current.get('observation_summary', {}).get('classification') != 'ACTUAL_VIOLATION':
+                            value={'status':'REJECTED','reason':'no_current_confirmed_violation'}
+                        elif patch_no >= 3:
+                            value={'status':'REJECTED','reason':'candidate_budget_exhausted'}
+                        elif not isinstance(code,str) or len(code.encode())>65536: value={'status':'REJECTED','reason':'candidate_size_or_type'}
                         else:
                             patch_no += 1
                             value={'status':'ACCEPTED_FOR_VERIFICATION','candidate':patch_no}
                             module_file.write_text(code,encoding='utf-8')
                             (history / ('candidate-%02d.py' % patch_no)).write_text(code, encoding='utf-8')
                     elif name == 'verify_patch':
-                        verify_no += 1
-                        current=check_project(candidate_config, project_root=candidate)
-                        (history / ('verification-%02d.json' % verify_no)).write_text(
-                            json.dumps(current, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-                        value={'status':'OK','report':current}
+                        if candidate_immutable_digest() != immutable_digest:
+                            value={'status':'REJECTED','reason':'immutable_candidate_material_changed'}
+                        else:
+                            verify_no += 1
+                            current=check_project(candidate_config, project_root=candidate)
+                            (history / ('verification-%02d.json' % verify_no)).write_text(
+                                json.dumps(current, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+                            value={'status':'OK','report':current}
                     else: value={'status':'REJECTED','reason':'unknown_tool'}
                 except Exception as exc: value={'status':'REJECTED','reason':'executor_error','detail':type(exc).__name__}
                 _write_response(rpc / ('response-' + ident + '.json'), value)
@@ -196,7 +224,8 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
     thread=threading.Thread(target=serve,daemon=True); thread.start()
     encoded_script = __import__('base64').b64encode(_MODEL_SCRIPT.encode()).decode()
     repo=Path(__file__).resolve().parents[1]; env={k:v for k,v in os.environ.items() if not k.startswith(('CREDPROOF_','OLLAMA_')) and not k.endswith('_API_KEY')}
-    command=[*_WSL,'/usr/bin/env','CREDPROOF_RUNTIME_ROOT='+_RUNTIME,'unshare','--user','--map-root-user','--net','--fork',_RUNTIME+'/venv/bin/python','-c',
+    wsl, paths = _runtime_settings()
+    command=[*wsl,'/usr/bin/env','CREDPROOF_RUNTIME_ROOT='+paths['root'],'unshare','--user','--map-root-user','--net','--fork',paths['python'],'-c',
       'import base64;exec(compile(base64.b64decode('+repr(encoded_script)+'),"<credproof-agent>","exec"))',_wsl_path(repo),_wsl_path(artifact)]
     try: proc=subprocess.run(command,env=env,capture_output=True,timeout=960)
     except (OSError,subprocess.TimeoutExpired) as exc: proc=None; error={'reason':'local_wsl_model_runtime_unavailable','detail':type(exc).__name__}

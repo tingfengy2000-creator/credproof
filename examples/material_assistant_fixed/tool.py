@@ -36,7 +36,8 @@ def run(request):
         raise ValueError("resource or service is outside the configured allowlist")
     with open(path, "r", encoding="utf-8") as handle:
         material = handle.read()
-    credential = os.environ["CREDPROOF_TEST_CREDENTIAL"]
+    credential_env = os.environ.get("CREDPROOF_CREDENTIAL_ENV", "CREDPROOF_TEST_CREDENTIAL")
+    credential = os.environ[credential_env]
     response = build_opener(_NoRedirect()).open(
         Request(url, headers={"Authorization": "Bearer " + credential}), timeout=2)
     body = response.read().decode("utf-8")

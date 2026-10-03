@@ -1,4 +1,4 @@
-# CredProof reusable-tool-safety（0.3.0-dev.1）
+# CredProof reusable-tool-safety（0.3.0-dev.2）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -8,7 +8,7 @@
 ## 已实现的共同入口
 
 源码包可用 `python -m pip install .` 安装；本轮在独立临时 Python 3.14 venv 中用
-`setuptools` 构建 wheel `credproof_safety-0.3.0.dev1-py3-none-any.whl`，源码目录
+`setuptools` 构建 wheel `credproof_safety-0.3.0.dev2-py3-none-any.whl`，源码目录
 本身也可直接运行 `python -m credproof_safety`。模型权重和 Ollama 不随 wheel 进入
 安装包。
 
@@ -104,3 +104,70 @@ DEBUG 级 Python 日志通道，并以 `pytest -s` 避免测试输出掩盖泄�
 Shell、自动安装脚本、真实凭据、公网目标、云端撤销、多语言或通用 SSRF 证明。开发
 者仍需人工确认允许目录、服务、入口、必要业务测试和修改范围。Windows 本机原始
 路径、Windows 内核审计和跨机器部署尚未作全平台承诺。
+
+## 2026-10-03 `feat/reusable-tool-safety` 定向修订
+
+本轮只修观测、判定和可复查运行链，不扩大凭据、文件、网络类别。修订后的关键位置如下：
+
+| 要求 | 实现位置 | 依据 |
+| --- | --- | --- |
+| 访问路径先规范化再分类 | `credproof_safety/runner.py` 的 `_script()` / `audit()` | `reintroduced_file_bypass.json` 捕获了 `/tmp/project/../lab/secrets/secret.txt`、相对路径和符号链接解析后的禁止目录尝试 |
+| 观测字段缺失不得伪造 PASS | `credproof_safety/project.py` 的 `_execution_observation_error()` / `_verdict()` | `tests/test_reusable_tool_safety.py` 覆盖缺少 `credential_leaks`、`forbidden_reads`、`unauthorized_connections` 及错误类型，结果为 `UNKNOWN` |
+| 凭据环境名真正生效 | `credproof_safety/runner.py` 的 `credential_env` 与 `check_project()` 传递 | `custom_credential_env.json` 使用 `CUSTOM_SYNTHETIC_CREDENTIAL` 并真实得到 `PASS` |
+| 允许文件与跳转独立观察 | `examples/material_assistant_fixed/credproof-allowed-file-redirect.toml` | `allowed_file_redirect.json` 中只记录允许服务的 `/api/redirect`，禁止服务没有请求回执，结果为 `PASS` |
+| Agent 权限和候选预算由执行器约束 | `credproof_safety/agent.py` 的 `serve()` | 最多 12 个执行器工具请求、3 个候选；当前对象无确认违规或不可变材料变化时拒绝提交 |
+| WSL、隔离设施和临时目录集中配置 | `agent_pilot/runtime_config.py` 的 `runtime_paths()` / `runtime_temp_root()`，以及 runner/agent 调用处 | 不再把作者用户名或 E 盘临时目录写死；本机实际运行使用 `CREDPROOF_RUNTIME_ROOT=/home/tingfeng/credproof-agent-runtime` |
+
+### 可复查命令和逐例结果
+
+单元和配置回归（不需要模型或 GPU）：
+
+```powershell
+python -m unittest tests.test_reusable_tool_safety agent_pilot.tests.test_runtime_config -v
+```
+
+真实隔离回归（需要已准备的 WSL Ubuntu-24.04、bubblewrap、审核过的 rootfs 和 Python site-packages；不启动模型）：
+
+```powershell
+$env:CREDPROOF_RUNTIME_ROOT='/home/tingfeng/credproof-agent-runtime'
+python scripts/run-targeted-safety-regressions.py `
+  --output experiments/reusable-tool-safety/20261003-targeted-fix-07
+```
+
+对应结果保存在 [`experiments/reusable-tool-safety/20261003-targeted-fix-07`](../../experiments/reusable-tool-safety/20261003-targeted-fix-07/)：
+
+| 案例 | 结果 | 解释 |
+| --- | --- | --- |
+| `vulnerable` | `FAIL` | 凭据输出、禁止文件和重定向后的禁止服务均被确认 |
+| `fixed` | `PASS` | 业务测试、允许文件、允许服务和凭据通道均有证据 |
+| `allowed_file_redirect` | `PASS` | 允许文件单独执行；重定向响应被拒绝，禁止 mock 服务无回执 |
+| `custom_credential_env` | `PASS` | 非默认 `CUSTOM_SYNTHETIC_CREDENTIAL` 被注入、读取并在服务回执中核对 |
+| `reintroduced_file_bypass` | `FAIL` | 重新引入文件越界后，含直接路径、`data/../secrets`、符号链接及 `/tmp/project/../lab` 的尝试均被记录 |
+| `unrelated_change` | `PASS` | 仅增加无关说明文件，不因项目树哈希变化而失败 |
+| `saved_model_candidate_recheck` | `FAIL` | 旧模型候选重新观测仍有 `logging.info` 凭据泄露；旧报告未改写 |
+
+`20261003-targeted-fix-02` 保留了未配置本机运行时而得到 `OUTER_SANDBOX_BLOCKED/UNKNOWN` 的失败记录；`-03` 至 `-06` 保留了修正过程中的真实复测记录。它们不拼接成更漂亮的结果。`saved_model_candidate_recheck` 是旧材料的新观测，不是新的模型调用。
+
+报告中的 `access_summary` 将文件/连接划分为访问尝试、服务回执和凭据出现的成功证据；Python audit hook 本身是“尝试”观察，不能单独证明内核级读取成功。应用拒绝由 pytest/入口异常证据支持。native syscall、子进程、私有 logger sink、TOCTOU 和 Windows 内核审计仍未覆盖。
+
+### 运行配置和公开边界
+
+仓库只提交 `config/runtime.example.json`。本机若不是 WSL 默认用户或运行根目录不同，应复制为未跟踪的 `config/local-runtime.json`，或通过 `CREDPROOF_CONFIG` / `CREDPROOF_RUNTIME_ROOT` 指定已准备的设施；模型权重、虚拟环境和真实凭据不进入仓库。缺少隔离设施时程序返回 `UNKNOWN`，不会在宿主机降级执行不可信项目。
+
+本轮记录的是合成凭据、授权本地 mock 服务和受控 Python 工具。它证明的是上述限定场景的执行链修正，不是通用文件审计、SSRF 防护、第三方认证或盲测结论。
+
+### 外部项目导出回归
+
+`examples/external/reusable-consumer-fixture` 是独立于 CredProof 包布局的合成消费者项目，包含
+`credproof.toml`、业务代码、业务测试和由 `export_regression_tests()` 生成的
+`tests/credproof-regression/test_credproof_safety.py`。命令：
+
+```powershell
+$env:CREDPROOF_RUNTIME_ROOT='/home/tingfeng/credproof-agent-runtime'
+python scripts/run-exported-regression-check.py `
+  --output experiments/reusable-tool-safety/20261003-external-regression-02
+```
+
+该验证直接调用导出的 pytest 断言函数，因为当前 Windows 环境没有安装 host pytest；它仍真实调用
+`check_project()`、WSL/bubblewrap 和 mock 服务，不启动模型。固定消费者通过，临时重新引入文件缺陷失败，
+仅增加无关文件仍通过。记录在 [`experiments/reusable-tool-safety/20261003-external-regression-02`](../../experiments/reusable-tool-safety/20261003-external-regression-02/)；这不等同于另一台机器的跨平台验证。

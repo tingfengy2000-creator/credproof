@@ -38,6 +38,17 @@ class RuntimeConfigTests(unittest.TestCase):
             self.assertEqual(value['runtime_root'], '/opt/inherited-runtime')
             self.assertEqual(value['wsl_user'], '')
 
+    def test_runtime_paths_are_derived_without_author_specific_segments(self):
+        value = {**runtime_config.DEFAULTS, 'runtime_root': '/opt/review-runtime'}
+        paths = runtime_config.runtime_paths(value)
+        self.assertEqual('/opt/review-runtime/isolation/rootfs', paths['rootfs'])
+        self.assertEqual('/opt/review-runtime/venv/bin/python', paths['python'])
+        self.assertNotIn('tingfeng', '\n'.join(paths.values()))
+
+    def test_runtime_temp_override_is_explicit(self):
+        with patch.dict(os.environ, {'CREDPROOF_RUNTIME_TEMP': str(self.root / 'runs')}):
+            self.assertEqual(self.root / 'runs', runtime_config.runtime_temp_root())
+
     def test_invalid_config_fails_closed_before_any_wsl_call(self):
         for override in ({'shell': 'anything'}, {'runtime_root': 'relative/path'},
                          {'runtime_root': '/tmp/a\ncommand'}, {'wsl_distribution': '--exec'},

@@ -16,6 +16,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from credproof_safety.project import check_project
+from agent_pilot.runtime_config import runtime_temp_root
 
 
 def main() -> int:
@@ -26,7 +27,8 @@ def main() -> int:
         raise SystemExit("refuse to overwrite output")
     args.output.mkdir(parents=True)
     root = Path(__file__).resolve().parents[1]
-    with tempfile.TemporaryDirectory(prefix="credproof-demo-", dir="E:/CredProof-local-runtime/credproof-runs") as tmp:
+    runtime_temp_root().mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="credproof-demo-", dir=runtime_temp_root()) as tmp:
         tmp = Path(tmp)
         vulnerable = tmp / "vulnerable"; fixed = tmp / "fixed"; regression = tmp / "regression"
         shutil.copytree(root / "examples/material_assistant", vulnerable)

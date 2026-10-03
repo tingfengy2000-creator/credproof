@@ -9,12 +9,14 @@ import textwrap
 import uuid
 import shutil
 
+from agent_pilot.runtime_config import load_config as load_runtime_config
+from agent_pilot.runtime_config import runtime_paths, runtime_temp_root, wsl_prefix
 
-RUNTIME = "/home/tingfeng/credproof-agent-runtime/isolation"
-ROOTFS = RUNTIME + "/rootfs"
-BWRAP = RUNTIME + "/tools/usr/bin/bwrap"
-VENV_SITE = "/home/tingfeng/credproof-agent-runtime/venv/lib/python3.12/site-packages"
-WSL = ("wsl.exe", "-d", "Ubuntu-24.04", "--exec")
+
+def _runtime_settings() -> tuple[list[str], dict[str, str]]:
+    """Load the operator-approved WSL/runtime paths from one source."""
+    config = load_runtime_config()
+    return [*wsl_prefix(config), "--exec"], runtime_paths(config)
 
 
 def _wsl_path(path: Path) -> str:
@@ -57,28 +59,41 @@ def _script() -> str:
         forbidden_root = os.environ['CREDPROOF_FORBIDDEN_ROOT']
         events = []
         forbidden_reads = []
+        out_of_scope_reads = []
+        def normalise(path):
+            raw = path.decode('utf8','replace') if isinstance(path, bytes) else str(path)
+            try: resolved = str(Path(raw).resolve())
+            except Exception: resolved = raw
+            return raw, resolved
         def inside(path, root):
-            try: target = str(Path(path).resolve())
-            except Exception: target = str(path)
-            return target == root or target.startswith(root + '/')
+            return path == root or path.startswith(root + '/')
         def audit(event, args):
             if event == 'open' and args and isinstance(args[0], (str, bytes)):
-                p = args[0].decode('utf8','replace') if isinstance(args[0],bytes) else str(args[0])
-                if not (p == '/tmp/project' or p.startswith('/tmp/project/') or
-                        p == '/tmp/lab' or p.startswith('/tmp/lab/')):
+                raw, p = normalise(args[0])
+                raw_in_scope = (raw == '/tmp/project' or raw.startswith('/tmp/project/') or
+                                raw == '/tmp/lab' or raw.startswith('/tmp/lab/'))
+                resolved_in_scope = (p == '/tmp/project' or p.startswith('/tmp/project/') or
+                                     p == '/tmp/lab' or p.startswith('/tmp/lab/'))
+                if not raw_in_scope and not resolved_in_scope:
                     return
                 c = 'forbidden' if inside(p, forbidden_root) else ('allowed' if inside(p, allowed_root) else 'other')
-                row = {'event':'open','path':p,'classification':c,'mode':str(args[1]) if len(args)>1 else ''}
+                row = {'event':'open','path_raw':raw,'path':p,'resolved_path':p,
+                       'classification':c,'observation':'access_attempt',
+                       'mode':str(args[1]) if len(args)>1 else ''}
                 events.append(row)
                 if c == 'forbidden': forbidden_reads.append(row)
+                if raw_in_scope and not resolved_in_scope:
+                    row['classification'] = 'out_of_scope'
+                    out_of_scope_reads.append(row)
             elif event == 'socket.connect' and len(args)>1:
-                events.append({'event':'socket.connect','address':repr(args[1])})
+                events.append({'event':'socket.connect','address':repr(args[1]),'observation':'connection_attempt'})
         sys.addaudithook(audit)
         requests = []
         class Handler(BaseHTTPRequestHandler):
             def do_GET(self):
                 auth = self.headers.get('Authorization','')
-                credential = os.environ.get('CREDPROOF_TEST_CREDENTIAL','')
+                credential_env = os.environ.get('CREDPROOF_CREDENTIAL_ENV','CREDPROOF_TEST_CREDENTIAL')
+                credential = os.environ.get(credential_env,'')
                 requests.append({'service': self.server.service_name, 'path': self.path,
                                  'authorization_present': bool(auth),
                                  'credential_ok': auth == ('Bearer ' + credential)})
@@ -146,7 +161,8 @@ def _script() -> str:
                 unauthorized_connections.append(event)
             elif "127.0.0.1" in text or "localhost" in text or "(" in text:
                 unauthorized_connections.append(event)
-        credential = os.environ.get('CREDPROOF_TEST_CREDENTIAL','')
+        credential_env = os.environ.get('CREDPROOF_CREDENTIAL_ENV','CREDPROOF_TEST_CREDENTIAL')
+        credential = os.environ.get(credential_env,'')
         leaks = []
         for channel, text in [('stdout',out.getvalue()),('stderr',err.getvalue()),('logs',log_output.getvalue()),('return',repr(entry)),
                               ('exception',repr(raised))]:
@@ -155,7 +171,15 @@ def _script() -> str:
                   'entry_returned': entry, 'raised': raised, 'stdout': out.getvalue(), 'stderr': err.getvalue(), 'logs': log_output.getvalue(),
                   'credential_leaks': leaks, 'requests': requests, 'audit_events': events,
                   'unauthorized_connections': unauthorized_connections,
-                  'forbidden_reads': forbidden_reads, 'environment': {'allow_url':os.environ['CREDPROOF_ALLOWED_URL'], 'forbidden_port':forbid.server_port},
+                  'forbidden_reads': forbidden_reads, 'out_of_scope_reads': out_of_scope_reads,
+                  'credential_env': credential_env,
+                  'access_summary': {'file_attempts': sum(1 for x in events if x.get('event') == 'open'),
+                                     'forbidden_file_attempts': len(forbidden_reads),
+                                     'out_of_scope_file_attempts': len(out_of_scope_reads),
+                                     'connection_attempts': sum(1 for x in events if x.get('event') == 'socket.connect'),
+                                     'forbidden_service_receipts': sum(1 for x in requests if x.get('service') == 'forbidden'),
+                                     'credential_success_evidence': bool(leaks or any(x.get('credential_ok') is True for x in requests))},
+                  'environment': {'allow_url':os.environ['CREDPROOF_ALLOWED_URL'], 'forbidden_port':forbid.server_port},
                   'isolation': {'profile':'credproof-project-pytest-v1','rootfs':'reviewed WSL rootfs','network':'unshared loopback with in-process mocks',
                                 'pytest_collection_in_sandbox': True, 'observation':'Python audit hooks + independent mock-server receipts + DEBUG-level Python logging capture',
                                 'uncovered':['native direct syscalls', 'child-process audit events', 'deliberate in-process observer tampering', 'logger handlers with propagate=False or private sinks', 'TOCTOU'],
@@ -167,9 +191,13 @@ def _script() -> str:
 
 
 def available() -> tuple[bool, str]:
-    for p, flag in ((BWRAP, "-x"), (ROOTFS, "-d"), (VENV_SITE, "-d")):
+    try:
+        wsl, paths = _runtime_settings()
+    except (OSError, ValueError) as exc:
+        return False, f"runtime configuration unavailable: {type(exc).__name__}"
+    for p, flag in ((paths['bubblewrap'], "-x"), (paths['rootfs'], "-d"), (paths['site_packages'], "-d")):
         try:
-            probe = subprocess.run([*WSL, "test", flag, p], capture_output=True, timeout=5)
+            probe = subprocess.run([*wsl, "test", flag, p], capture_output=True, timeout=5)
         except (OSError, subprocess.TimeoutExpired):
             return False, "WSL isolation runtime is unavailable"
         if probe.returncode != 0:
@@ -181,36 +209,38 @@ def run_sandbox(project: Path, lab: Path, test_args: list[str], entry_module: st
                 entry_callable: str, entry_request: dict, credential: str,
                 timeout: float = 30.0, *, allowed_dirs: tuple[str, ...] = ('allowed',),
                 forbidden_dirs: tuple[str, ...] = ('forbidden',),
-                service_path_prefix: str = '/', require_service_credential: bool = False) -> dict:
+                service_path_prefix: str = '/', require_service_credential: bool = False,
+                credential_env: str = 'CREDPROOF_TEST_CREDENTIAL') -> dict:
     ok, reason = available()
     if not ok:
         return {"status": "BLOCKED", "reason": reason}
+    wsl, paths = _runtime_settings()
     project = project.resolve(strict=True); lab = lab.resolve(strict=True)
     run_id = uuid.uuid4().hex
     # WSL can bind ordinary E: workspace paths reliably; some Windows profile
     # temp providers expose a transient RPC path that cannot be mounted. Keep
     # this disposable directory outside the candidate source and let operators
     # override it explicitly for another local drive.
-    temp_root = Path(os.environ.get("CREDPROOF_RUNTIME_TEMP", "E:/CredProof-local-runtime/credproof-runs"))
+    temp_root = runtime_temp_root()
     temp_root.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="credproof-run-", dir=temp_root) as host_tmp:
         host_tmp = Path(host_tmp)
         result = host_tmp / "result"; result.mkdir()
         script = host_tmp / "runner.py"; script.write_text(_script(), encoding="utf-8")
-        command = [str(BWRAP), "--unshare-all", "--die-with-parent", "--new-session", "--cap-drop", "ALL",
+        command = [paths['bubblewrap'], "--unshare-all", "--die-with-parent", "--new-session", "--cap-drop", "ALL",
                    "--clearenv", "--setenv", "PATH", "/usr/bin:/bin", "--setenv", "HOME", "/nonexistent",
                    "--setenv", "LANG", "C.UTF-8", "--setenv", "TMPDIR", "/tmp",
-                   "--ro-bind", ROOTFS, "/", "--proc", "/proc", "--dev", "/dev", "--remount-ro", "/dev",
+                   "--ro-bind", paths['rootfs'], "/", "--proc", "/proc", "--dev", "/dev", "--remount-ro", "/dev",
                    "--tmpfs", "/tmp", "--dir", "/tmp/project", "--dir", "/tmp/lab", "--dir", "/tmp/result",
                    "--dir", "/tmp/site", "--ro-bind", _wsl_path(project), "/tmp/project",
                    "--ro-bind", _wsl_path(lab), "/tmp/lab", "--bind", _wsl_path(result), "/tmp/result",
                    "--ro-bind", _wsl_path(script), "/tmp/runner.py", "--ro-bind", _wsl_path(host_tmp / "env.json"), "/tmp/env.json",
-                   "--ro-bind", VENV_SITE, "/tmp/site",
+                   "--ro-bind", paths['site_packages'], "/tmp/site",
                    "--chdir", "/tmp/project", "--", "/usr/bin/python3", "-I", "/tmp/runner.py"]
         env = {
             "CREDPROOF_TEST_ARGS": json.dumps(test_args), "CREDPROOF_ENTRY_MODULE": entry_module,
             "CREDPROOF_ENTRY_CALLABLE": entry_callable, "CREDPROOF_ENTRY_REQUEST": json.dumps(entry_request),
-            "CREDPROOF_TEST_CREDENTIAL": credential, "CREDPROOF_INNER": "1",
+            "CREDPROOF_CREDENTIAL_ENV": credential_env, credential_env: credential, "CREDPROOF_INNER": "1",
             "CREDPROOF_ALLOWED_ROOT": "/tmp/lab/" + allowed_dirs[0].replace('\\', '/'),
             "CREDPROOF_FORBIDDEN_ROOT": "/tmp/lab/" + forbidden_dirs[0].replace('\\', '/'),
             "CREDPROOF_SERVICE_PATH_PREFIX": service_path_prefix,
@@ -228,7 +258,7 @@ def run_sandbox(project: Path, lab: Path, test_args: list[str], entry_module: st
             # Keep Windows system variables needed by wsl.exe. Candidate code
             # still receives an empty environment because bwrap uses --clearenv
             # and only imports the explicit JSON values above.
-            proc = subprocess.run([*WSL, *command], capture_output=True, timeout=timeout + 5,
+            proc = subprocess.run([*wsl, *command], capture_output=True, timeout=timeout + 5,
                                   env=host_env)
         except subprocess.TimeoutExpired:
             return {"status": "TIMEOUT", "run_id": run_id, "reason": "sandbox_wall_timeout"}
@@ -244,7 +274,7 @@ def run_sandbox(project: Path, lab: Path, test_args: list[str], entry_module: st
         stderr = decode_stream(proc.stderr)
         if not payload_path.is_file():
             if os.environ.get("CREDPROOF_KEEP_TEMP") == "1":
-                keep = Path("E:/CredProof-local-runtime/last-failed-reusable")
+                keep = runtime_temp_root().parent / "last-failed-reusable"
                 if keep.exists(): shutil.rmtree(keep, ignore_errors=True)
                 keep.mkdir(parents=True)
                 shutil.copytree(project, keep / "project")
@@ -254,7 +284,7 @@ def run_sandbox(project: Path, lab: Path, test_args: list[str], entry_module: st
                 shutil.copy2(host_tmp / "env.json", keep / "env.json")
             return {"status": "PROCESS_ERROR", "run_id": run_id, "returncode": proc.returncode,
                     "stdout": stdout[-4000:], "stderr": stderr[-4000:],
-                    "command": [str(x) for x in [*WSL, *command]]}
+                    "command": [str(x) for x in [*wsl, *command]]}
         payload = json.loads(payload_path.read_text(encoding="utf-8"))
         payload.update({"status": "OK" if proc.returncode == 0 else "PROCESS_ERROR", "run_id": run_id,
                         "sandbox_stderr": stderr[-4000:], "sandbox_returncode": proc.returncode})

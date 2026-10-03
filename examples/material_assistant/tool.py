@@ -14,7 +14,8 @@ from urllib.request import Request, urlopen
 def run(request):
     if not isinstance(request, dict) or not isinstance(request.get("resource"), str):
         raise ValueError("invalid request")
-    credential = os.environ["CREDPROOF_TEST_CREDENTIAL"]
+    credential_env = os.environ.get("CREDPROOF_CREDENTIAL_ENV", "CREDPROOF_TEST_CREDENTIAL")
+    credential = os.environ[credential_env]
     path = request.get("path") or os.environ.get("CREDPROOF_ALLOWED_FILE")
     with open(path, "r", encoding="utf-8") as handle:
         material = handle.read()

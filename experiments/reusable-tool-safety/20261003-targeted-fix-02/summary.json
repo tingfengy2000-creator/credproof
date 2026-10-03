@@ -1,0 +1,68 @@
+{
+  "schema": "credproof.safety.targeted-regressions/v1",
+  "cases": {
+    "vulnerable": {
+      "verdict": "UNKNOWN",
+      "failed_checks": [],
+      "reason": "sandbox_execution_incomplete",
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "classification": "OUTER_SANDBOX_BLOCKED",
+      "pytest_exit_code": null
+    },
+    "fixed": {
+      "verdict": "UNKNOWN",
+      "failed_checks": [],
+      "reason": "sandbox_execution_incomplete",
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "classification": "OUTER_SANDBOX_BLOCKED",
+      "pytest_exit_code": null
+    },
+    "allowed_file_redirect": {
+      "verdict": "UNKNOWN",
+      "failed_checks": [],
+      "reason": "sandbox_execution_incomplete",
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "classification": "OUTER_SANDBOX_BLOCKED",
+      "pytest_exit_code": null
+    },
+    "custom_credential_env": {
+      "verdict": "UNKNOWN",
+      "failed_checks": [],
+      "reason": "sandbox_execution_incomplete",
+      "credential_env": "CUSTOM_SYNTHETIC_CREDENTIAL",
+      "classification": "OUTER_SANDBOX_BLOCKED",
+      "pytest_exit_code": null
+    },
+    "reintroduced_file_bypass": {
+      "verdict": "UNKNOWN",
+      "failed_checks": [],
+      "reason": "sandbox_execution_incomplete",
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "classification": "OUTER_SANDBOX_BLOCKED",
+      "pytest_exit_code": null
+    },
+    "unrelated_change": {
+      "verdict": "UNKNOWN",
+      "failed_checks": [],
+      "reason": "sandbox_execution_incomplete",
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "classification": "OUTER_SANDBOX_BLOCKED",
+      "pytest_exit_code": null
+    },
+    "saved_model_candidate_recheck": {
+      "verdict": "UNKNOWN",
+      "failed_checks": [],
+      "reason": "sandbox_execution_incomplete",
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "classification": "OUTER_SANDBOX_BLOCKED",
+      "pytest_exit_code": null
+    }
+  },
+  "claim": "Controlled synthetic and saved-candidate recheck; not a generalisation rate or upstream vulnerability claim.",
+  "notes": [
+    "allowed_file_redirect uses an allowed file and a redirect response whose destination is the forbidden mock service",
+    "custom_credential_env exercises credentials.env=CUSTOM_SYNTHETIC_CREDENTIAL",
+    "saved_model_candidate_recheck is a fresh observation of an old artifact; historical reports are unchanged",
+    "unrelated_change must remain PASS despite a project tree hash change"
+  ]
+}

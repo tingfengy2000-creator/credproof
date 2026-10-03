@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import re
+import tempfile
 
 DEFAULTS = {'wsl_distribution': 'Ubuntu-24.04', 'wsl_user': '',
             'runtime_root': '~/credproof-agent-runtime'}
@@ -57,3 +58,39 @@ def wsl_prefix(config=None):
     if value['wsl_user']:
         result += ['-u', value['wsl_user']]
     return result
+
+
+def runtime_paths(config=None):
+    """Return all Linux-side reviewed runtime paths from the shared config.
+
+    Callers must pass these paths to WSL rather than embedding the operator's
+    home directory in an execution module.  The returned values are Linux
+    strings because they are consumed by ``wsl.exe`` and bubblewrap.
+    """
+    value = config if config is not None else load_config()
+    root = validate_runtime_root(value['runtime_root']).rstrip('/')
+    return {
+        'root': root,
+        'isolation': root + '/isolation',
+        'rootfs': root + '/isolation/rootfs',
+        'bubblewrap': root + '/isolation/tools/usr/bin/bwrap',
+        'venv': root + '/venv',
+        'python': root + '/venv/bin/python',
+        'site_packages': root + '/venv/lib/python3.12/site-packages',
+        'ollama': root + '/ollama/bin/ollama',
+        'models': root + '/models',
+    }
+
+
+def runtime_temp_root() -> Path:
+    """Return the disposable Windows-side run directory.
+
+    ``CREDPROOF_RUNTIME_TEMP`` is the only operator override.  A normal
+    system temp directory is the portable default and avoids embedding a
+    developer-specific drive path in the safety executor.
+    """
+    configured = os.environ.get('CREDPROOF_RUNTIME_TEMP')
+    path = Path(configured) if configured else Path(tempfile.gettempdir()) / 'credproof-runs'
+    if path.is_absolute() and any(c in str(path) for c in '\x00\r\n'):
+        raise ValueError('CREDPROOF_RUNTIME_TEMP contains a control character')
+    return path
