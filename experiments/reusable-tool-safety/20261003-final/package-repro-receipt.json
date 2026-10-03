@@ -1,0 +1,16 @@
+{
+  "package": "credproof-safety-0.3.0-dev.1-987106b.zip",
+  "sha256": "889d1ab744b34aa8a9f7b611111b65205c1dbef140ca61484b82040f39f4e9d9",
+  "size_bytes": 13720995,
+  "extraction_dir": "E:/CredProof-local-runtime/repro-check-987106b",
+  "commands": [
+    "python -m unittest discover -s tests -p test_reusable_tool_safety.py",
+    "python -m credproof_safety check --config examples/material_assistant_fixed/credproof.toml --output repro-fixed.json"
+  ],
+  "exit_codes": [
+    0,
+    0
+  ],
+  "fixed_report_verdict": "PASS",
+  "verified_from_git_commit": "987106beb6f13e383815cef01c20cd5c81adec20"
+}
