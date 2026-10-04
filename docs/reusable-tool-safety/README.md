@@ -1,4 +1,4 @@
-# CredProof reusable-tool-safety（0.3.0-dev.5）
+# CredProof reusable-tool-safety（0.3.0-dev.6）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -8,7 +8,7 @@
 ## 已实现的共同入口
 
 源码包可用 `python -m pip install .` 安装；本轮在独立临时 Python 3.14 venv 中用
-`setuptools` 构建 wheel `credproof_safety-0.3.0.dev5-py3-none-any.whl`，源码目录
+`setuptools` 构建 wheel `credproof_safety-0.3.0.dev6-py3-none-any.whl`，源码目录
 本身也可直接运行 `python -m credproof_safety`。模型权重和 Ollama 不随 wheel 进入
 安装包。
 
@@ -99,9 +99,9 @@ python scripts/run-external-dotenv-case.py `
 才会得到 `before=FAIL`、`after=PASS`、`reintroduced_defect=FAIL`、
 `unrelated_change=PASS`；缺少隔离材料时四项均应记录为 `UNKNOWN`，不能把环境阻断
 写成代码通过。2026-10-04 的定向复测通过集中配置把 `~/credproof-agent-runtime`
-解析为 WSL 内的绝对路径，真实完成了 114 个上游 pytest 测试（每个副本退出码 0），
+解析为 WSL 内的绝对路径，真实完成了 117 个上游 pytest 测试（每个副本退出码 0），
 并取得上述四项判定。逐例记录保存在
-`experiments/reusable-tool-safety/20261004-external-dotenv-v4/summary.json`；它仍只证明
+`experiments/reusable-tool-safety/20261004-external-dotenv-v5/summary.json`；它仍只证明
 一个外部项目、一个目录边界类别和人工注入缺陷，不是上游漏洞或泛化率结论。
 
 资料助手的历史记录仍保存在 `experiments/reusable-tool-safety/20261003-final/`；
@@ -109,11 +109,12 @@ python scripts/run-external-dotenv-case.py `
 WSL、bubblewrap、rootfs、Q4_K_M 模型和完整 Ollama digest 只在对应运行收据中记录；
 权重不进入 Git。
 
-外部 `python-dotenv` 副本还保留了一次真实本地 Agent 运行：
-`experiments/reusable-tool-safety/20261004-external-dotenv-agent-v1/summary.json`。
-它确实完成了代码读取、违规证据读取和候选提交，但程序因入口业务行为未保持而判定
-`FAIL`，随后因输入预算结束为 `INCOMPLETE`。这条轨迹不能与不调用模型的
-`20261004-external-dotenv-v4` 检查结果拼成 Agent 成功；它用于证明程序验收会拒绝
+外部 `python-dotenv` 副本还保留了两次真实本地 Agent 运行：
+`experiments/reusable-tool-safety/20261004-external-dotenv-agent-v1/summary.json` 和
+`20261004-external-dotenv-agent-v2/summary.json`。v1 的候选因入口业务行为未保持而
+被判定 `FAIL`；v2 在收紧可读材料和反馈大小后，模型仍重复提交只检查文件存在性的补丁，
+三次验收均未通过目录边界与凭据输出检查，最终以候选预算耗尽结束。它们不能与不调用模型的
+`20261004-external-dotenv-v5` 检查结果拼成 Agent 成功；这些记录用于证明程序验收会拒绝
 不合格补丁，并明确当前外部自动修复仍是待改进项。
 
 `20261003-observer-fix/` 是后续的定向观测修正批次：执行器新增独立的
@@ -214,3 +215,5 @@ python scripts/run-exported-regression-check.py `
 该验证直接调用导出的 pytest 断言函数，因为当前 Windows 环境没有安装 host pytest；它仍真实调用
 `check_project()`、WSL/bubblewrap 和 mock 服务，不启动模型。固定消费者通过，临时重新引入文件缺陷失败，
 仅增加无关文件仍通过。记录在 [`experiments/reusable-tool-safety/20261003-external-regression-02`](../../experiments/reusable-tool-safety/20261003-external-regression-02/)；这不等同于另一台机器的跨平台验证。
+
+

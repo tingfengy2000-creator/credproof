@@ -39,7 +39,7 @@ def _build_lab(config: SafetyConfig, root: Path, credential: str) -> Path:
     forbidden = lab / config.forbidden_dirs[0]
     allowed.mkdir(parents=True)
     forbidden.mkdir(parents=True)
-    (allowed / "brief.txt").write_text("authorized material for the sample tool\n", encoding="utf-8")
+    (allowed / "brief.txt").write_text("AUTHORIZED_NOTE=authorized material for the sample tool\n", encoding="utf-8")
     (forbidden / "secret.txt").write_text(f"{credential}\n", encoding="utf-8")
     # Use a relative link so its target remains inside the mounted lab. Absolute
     # Windows-target links can resolve outside the WSL mount before the candidate
