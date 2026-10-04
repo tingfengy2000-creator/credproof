@@ -1,4 +1,4 @@
-# CredProof reusable-tool-safety（0.3.0-dev.4）
+# CredProof reusable-tool-safety（0.3.0-dev.5）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -8,7 +8,7 @@
 ## 已实现的共同入口
 
 源码包可用 `python -m pip install .` 安装；本轮在独立临时 Python 3.14 venv 中用
-`setuptools` 构建 wheel `credproof_safety-0.3.0.dev4-py3-none-any.whl`，源码目录
+`setuptools` 构建 wheel `credproof_safety-0.3.0.dev5-py3-none-any.whl`，源码目录
 本身也可直接运行 `python -m credproof_safety`。模型权重和 Ollama 不随 wheel 进入
 安装包。
 
@@ -108,6 +108,13 @@ python scripts/run-external-dotenv-case.py `
 模型成功与不完整轨迹在同目录的 `agent-runs/` 下分开保存，不能拼成总体成功率。
 WSL、bubblewrap、rootfs、Q4_K_M 模型和完整 Ollama digest 只在对应运行收据中记录；
 权重不进入 Git。
+
+外部 `python-dotenv` 副本还保留了一次真实本地 Agent 运行：
+`experiments/reusable-tool-safety/20261004-external-dotenv-agent-v1/summary.json`。
+它确实完成了代码读取、违规证据读取和候选提交，但程序因入口业务行为未保持而判定
+`FAIL`，随后因输入预算结束为 `INCOMPLETE`。这条轨迹不能与不调用模型的
+`20261004-external-dotenv-v4` 检查结果拼成 Agent 成功；它用于证明程序验收会拒绝
+不合格补丁，并明确当前外部自动修复仍是待改进项。
 
 `20261003-observer-fix/` 是后续的定向观测修正批次：执行器新增独立的
 DEBUG 级 Python 日志通道，并以 `pytest -s` 避免测试输出掩盖泄露。该批次的
