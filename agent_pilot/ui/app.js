@@ -1,7 +1,7 @@
 /* Same-origin presentation only. No candidate execution, verdict generation or local fixtures. */
 const API = '/api/agent';
 const $ = id => document.getElementById(id);
-const state = { bootstrap: null, caseId: '', run: null, view: 'source', busy: false,
+const state = { bootstrap: null, projectModes: null, caseId: '', run: null, view: 'source', busy: false,
   error: '', stale: false, replay: false, epoch: 0, timer: null, demoRuns: {} };
 const activeStatuses = new Set(['QUEUED', 'RUNNING']);
 const statusNames = { QUEUED: '等待执行', RUNNING: '执行中', COMPLETED: '任务结束',
@@ -93,6 +93,24 @@ function renderConnection() {
     ? `${state.error}${state.stale ? ' 下方是上次取得的记录，尚未确认当前状态。' : ''}` : '';
   document.body.classList.toggle('is-busy', state.busy || isRunning());
   document.body.classList.toggle('is-stale', state.stale);
+}
+
+function renderProjectModes() {
+  const data = state.projectModes;
+  const target = $('project-modes');
+  if (!target) return;
+  if (!data) {
+    target.innerHTML = '<div class="project-mode-loading">接入入口暂不可用；页面不会猜测或替代命令。</div>';
+    return;
+  }
+  target.innerHTML = array(data.modes).map((mode, index) => `<article class="project-mode-card"><div class="project-mode-index">0${index + 1}</div><div class="project-mode-copy"><div class="project-mode-title"><strong>${escape(mode.label)}</strong>${mode.requires_model ? '<span class="project-mode-chip model">需要本地模型</span>' : '<span class="project-mode-chip">无需模型</span>'}</div><p>${escape(mode.description)}</p><code>${escape(mode.command)}</code></div></article>`).join('');
+  const external = data.external_example || {};
+  $('external-case-name').textContent = external.name || '外部项目案例';
+  const status = external.status || 'NOT_RUN';
+  const statusLabel = { PASS: '实测通过', FAIL: '实测失败', UNKNOWN: '环境阻断 · UNKNOWN', NOT_RUN: '尚未运行' }[status] || status;
+  $('external-case-status').textContent = statusLabel;
+  $('external-case-status').className = `badge ${status === 'PASS' ? 'pass' : status === 'FAIL' ? 'fail' : 'neutral'}`;
+  $('external-case-detail').textContent = `${external.scope || ''} ${external.status_detail || ''}`;
 }
 
 function renderScope() {
@@ -336,7 +354,7 @@ function renderStories() {
   }).join('') || '<p class="story-preserved">这份记录未提交补丁，验证后保留原代码。</p>'}</div><div class="story-foot"><span>同批固定流程（A-fixed）：${escape(story.fixed_comparison?.verdict || 'UNKNOWN')} · ${escape(taskNames[story.fixed_comparison?.task_status] || story.fixed_comparison?.task_status || '任务状态未知')}</span><span>历史验证结果，与本次复检分别保留</span></div><details class="story-provenance"><summary>查看历史来源与版本</summary><p>批次 ${escape(story.batch)} · 版本 ${escape(story.source_commit || '未提供')}<br>${escape(story.provenance || '')}</p></details>`;
 }
 
-function render() { renderConnection(); renderScope(); renderActions(); renderDecisions(); renderCode(); renderEvidence(); renderValidation(); renderResultStates(); renderStories(); }
+function render() { renderConnection(); renderProjectModes(); renderScope(); renderActions(); renderDecisions(); renderCode(); renderEvidence(); renderValidation(); renderResultStates(); renderStories(); }
 function clearPoll() { if (state.timer) window.clearTimeout(state.timer); state.timer = null; }
 function schedulePoll() {
   clearPoll();
@@ -359,6 +377,8 @@ function schedulePoll() {
 async function loadBootstrap() {
   const data = validateBootstrap(await request(`${API}/bootstrap`));
   state.bootstrap = data;
+  try { state.projectModes = await request('/api/project/modes'); }
+  catch { state.projectModes = null; }
   if (!data.cases.some(item => item.id === state.caseId)) state.caseId = data.cases[0]?.id || '';
   state.demoRuns = {};
   await Promise.allSettled(array(data.demonstrations).map(async item => {

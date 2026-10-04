@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "credproof-safety"
-version = "0.3.0.dev3"
+version = "0.3.0.dev4"
 description = "Controlled safety checks for authorised Python tools"
 requires-python = ">=3.11"
 dependencies = []
@@ -18,3 +18,4 @@ credproof-safety = "credproof_safety.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["credproof*", "credproof_safety*", "agent_pilot*"]
+

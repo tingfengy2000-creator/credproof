@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import re
+import subprocess
 import tempfile
 
 DEFAULTS = {'wsl_distribution': 'Ubuntu-24.04', 'wsl_user': '',
@@ -79,6 +80,48 @@ def runtime_paths(config=None):
         'site_packages': root + '/venv/lib/python3.12/site-packages',
         'ollama': root + '/ollama/bin/ollama',
         'models': root + '/models',
+    }
+
+
+def execution_runtime_paths(config=None):
+    """Return runtime paths resolved inside the selected WSL distribution.
+
+    ``runtime_root`` intentionally defaults to ``~/credproof-agent-runtime`` so
+    the repository does not contain an operator-specific home directory.  WSL
+    does not expand ``~`` for argv passed directly to ``--exec``; resolve it
+    once with the selected Linux interpreter before paths reach ``test`` or
+    bubblewrap.  No shell is involved and the configured value remains
+    validated by :func:`load_config`.
+    """
+    value = config if config is not None else load_config()
+    paths = runtime_paths(value)
+    root = paths['root']
+    if root.startswith('~/'):
+        try:
+            result = subprocess.run(
+                [*wsl_prefix(value), '--exec', 'python3', '-c',
+                 'import os,sys; print(os.path.expanduser(sys.argv[1]))', root],
+                capture_output=True, timeout=10, check=False)
+        except (OSError, subprocess.TimeoutExpired) as exc:
+            raise ValueError('Unable to resolve runtime_root inside WSL') from exc
+        raw = result.stdout
+        if b'\x00' in raw[:64]:
+            text = raw.decode('utf-16le', errors='replace')
+        else:
+            text = raw.decode('utf-8', errors='replace')
+        root = text.strip()
+        if result.returncode != 0 or not root.startswith('/') or any(c in root for c in '\x00\r\n'):
+            raise ValueError('WSL runtime_root resolution failed')
+    return {
+        'root': root.rstrip('/'),
+        'isolation': root.rstrip('/') + '/isolation',
+        'rootfs': root.rstrip('/') + '/isolation/rootfs',
+        'bubblewrap': root.rstrip('/') + '/isolation/tools/usr/bin/bwrap',
+        'venv': root.rstrip('/') + '/venv',
+        'python': root.rstrip('/') + '/venv/bin/python',
+        'site_packages': root.rstrip('/') + '/venv/lib/python3.12/site-packages',
+        'ollama': root.rstrip('/') + '/ollama/bin/ollama',
+        'models': root.rstrip('/') + '/models',
     }
 
 

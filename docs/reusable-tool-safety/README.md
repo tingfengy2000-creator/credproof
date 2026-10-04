@@ -1,4 +1,4 @@
-# CredProof reusable-tool-safety（0.3.0-dev.3）
+# CredProof reusable-tool-safety（0.3.0-dev.4）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -8,7 +8,7 @@
 ## 已实现的共同入口
 
 源码包可用 `python -m pip install .` 安装；本轮在独立临时 Python 3.14 venv 中用
-`setuptools` 构建 wheel `credproof_safety-0.3.0.dev3-py3-none-any.whl`，源码目录
+`setuptools` 构建 wheel `credproof_safety-0.3.0.dev4-py3-none-any.whl`，源码目录
 本身也可直接运行 `python -m credproof_safety`。模型权重和 Ollama 不随 wheel 进入
 安装包。
 
@@ -96,12 +96,13 @@ python scripts/run-external-dotenv-case.py `
 ```
 
 只有在已准备的 WSL、bubblewrap、审核过的 rootfs 和 Python site-packages 存在时，
-才会得到 `before=FAIL`、`fixed=PASS`、`reintroduced-defect=FAIL`、
-`unrelated-change=PASS`；缺少隔离材料时四项均应记录为 `UNKNOWN`，不能把环境阻断
-写成代码通过。上游测试数量和适配成本只在实际运行记录存在时引用，不由软件测试项数
-冒充漏洞数量。当前环境阻断记录保存在
-`experiments/reusable-tool-safety/20261004-external-dotenv-v2/summary.json`，其中明确
-记录了仓库外临时副本和缺失的 bwrap 材料。
+才会得到 `before=FAIL`、`after=PASS`、`reintroduced_defect=FAIL`、
+`unrelated_change=PASS`；缺少隔离材料时四项均应记录为 `UNKNOWN`，不能把环境阻断
+写成代码通过。2026-10-04 的定向复测通过集中配置把 `~/credproof-agent-runtime`
+解析为 WSL 内的绝对路径，真实完成了 114 个上游 pytest 测试（每个副本退出码 0），
+并取得上述四项判定。逐例记录保存在
+`experiments/reusable-tool-safety/20261004-external-dotenv-v4/summary.json`；它仍只证明
+一个外部项目、一个目录边界类别和人工注入缺陷，不是上游漏洞或泛化率结论。
 
 资料助手的历史记录仍保存在 `experiments/reusable-tool-safety/20261003-final/`；
 模型成功与不完整轨迹在同目录的 `agent-runs/` 下分开保存，不能拼成总体成功率。
@@ -151,7 +152,7 @@ Shell、自动安装脚本、真实凭据、公网目标、云端撤销、多语
 | 凭据环境名真正生效 | `credproof_safety/runner.py` 的 `credential_env` 与 `check_project()` 传递 | `custom_credential_env.json` 使用 `CUSTOM_SYNTHETIC_CREDENTIAL` 并真实得到 `PASS` |
 | 允许文件与跳转独立观察 | `examples/material_assistant_fixed/credproof-allowed-file-redirect.toml` | `allowed_file_redirect.json` 中只记录允许服务的 `/api/redirect`，禁止服务没有请求回执，结果为 `PASS` |
 | Agent 权限和候选预算由执行器约束 | `credproof_safety/agent.py` 的 `serve()` | 最多 12 个执行器工具请求、3 个候选；当前对象无确认违规或不可变材料变化时拒绝提交 |
-| WSL、隔离设施和临时目录集中配置 | `agent_pilot/runtime_config.py` 的 `runtime_paths()` / `runtime_temp_root()`，以及 runner/agent 调用处 | 不再把作者用户名或 E 盘临时目录写死；本机实际运行使用 `CREDPROOF_RUNTIME_ROOT=/home/tingfeng/credproof-agent-runtime` |
+| WSL、隔离设施和临时目录集中配置 | `agent_pilot/runtime_config.py` 的 `runtime_paths()` / `execution_runtime_paths()` / `runtime_temp_root()`，以及 runner/agent 调用处 | 不再把作者用户名或 E 盘临时目录写死；Windows→WSL 执行前会在目标发行版内解析 `~`，本机实际运行使用配置的 `~/credproof-agent-runtime` |
 
 ### 可复查命令和逐例结果
 

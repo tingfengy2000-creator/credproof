@@ -10,13 +10,13 @@ import uuid
 import shutil
 
 from agent_pilot.runtime_config import load_config as load_runtime_config
-from agent_pilot.runtime_config import runtime_paths, runtime_temp_root, wsl_prefix
+from agent_pilot.runtime_config import execution_runtime_paths, runtime_temp_root, wsl_prefix
 
 
 def _runtime_settings() -> tuple[list[str], dict[str, str]]:
     """Load the operator-approved WSL/runtime paths from one source."""
     config = load_runtime_config()
-    return [*wsl_prefix(config), "--exec"], runtime_paths(config)
+    return [*wsl_prefix(config), "--exec"], execution_runtime_paths(config)
 
 
 def _wsl_path(path: Path) -> str:

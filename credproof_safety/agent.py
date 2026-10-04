@@ -21,12 +21,12 @@ import uuid
 from .config import load_config
 from .project import check_project
 from agent_pilot.runtime_config import load_config as load_runtime_config
-from agent_pilot.runtime_config import runtime_paths, runtime_temp_root, wsl_prefix
+from agent_pilot.runtime_config import execution_runtime_paths, runtime_temp_root, wsl_prefix
 
 
 def _runtime_settings() -> tuple[list[str], dict[str, str]]:
     config = load_runtime_config()
-    return [*wsl_prefix(config), "--exec"], runtime_paths(config)
+    return [*wsl_prefix(config), "--exec"], execution_runtime_paths(config)
 
 _MODEL_SCRIPT = r'''
 import json, os, pathlib, shutil, subprocess, sys, time, urllib.request, uuid

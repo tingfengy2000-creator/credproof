@@ -93,6 +93,18 @@ class WebTests(unittest.TestCase):
         self.assertIn('no-store', headers['Cache-Control'])
         self.assertIn("frame-ancestors 'none'", headers['Content-Security-Policy'])
 
+    def test_project_modes_are_read_only_and_do_not_accept_paths(self):
+        status, value, headers = self.call('GET', '/api/project/modes')
+        self.assertEqual(status, 200)
+        self.assertEqual(value['schema'], 'credproof.project-modes/v1')
+        self.assertEqual([item['id'] for item in value['modes']], ['connect', 'check', 'repair', 'export'])
+        self.assertIn('credproof.toml', value['modes'][1]['command'])
+        self.assertTrue(value['modes'][2]['requires_model'])
+        self.assertNotIn(str(self.root), json.dumps(value))
+        self.assertIn('no-store', headers['Cache-Control'])
+        status, _, _ = self.call('GET', '/api/project/modes?path=../outside')
+        self.assertEqual(status, 400)
+
     def test_host_origin_body_and_path_restrictions_never_launch(self):
         with patch.object(web.subprocess, 'Popen') as child:
             for headers in ({'Host': f'evil.example:{self.port}'},

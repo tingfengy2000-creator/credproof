@@ -319,6 +319,50 @@ class Application:
                              'label': f'{run.case_id.upper()} · {run.started_at or "未提供时间"}'}
                             for run in saved_runs if run.status not in ('QUEUED', 'RUNNING')]}
 
+    def project_modes(self):
+        """Describe the real CLI project workflow without accepting paths or commands."""
+        external = {
+            'name': 'python-dotenv v1.2.2',
+            'path': 'examples/external/python-dotenv-v1.2.2',
+            'source': 'https://github.com/theskumar/python-dotenv',
+            'fixed_ref': 'v1.2.2',
+            'scope': '人工注入的目录越界适配；不是上游漏洞或 CVE。',
+            'status': 'NOT_RUN',
+            'status_detail': '请用外部案例脚本在声明的 WSL 隔离环境运行。',
+        }
+        summary = self.root / 'experiments/reusable-tool-safety/20261004-external-dotenv-v4/summary.json'
+        try:
+            record = read_json(summary, 1024 * 1024)
+            cases = record.get('cases', {})
+            verdicts = {key: value.get('verdict') for key, value in cases.items() if isinstance(value, dict)}
+            external['status'] = 'PASS' if verdicts and all(value in {'PASS', 'FAIL'} for value in verdicts.values()) else 'UNKNOWN'
+            external['status_detail'] = '四个一次性副本已记录：before / after / reintroduced_defect / unrelated_change。'
+            external['case_verdicts'] = verdicts
+        except (OSError, ValueError, TypeError, KeyError):
+            pass
+        return {
+            'schema': 'credproof.project-modes/v1',
+            'runtime': self.runtime(),
+            'modes': [
+                {'id': 'connect', 'label': '接入项目', 'requires_model': False,
+                 'command': 'python -m credproof_safety init --project . --write',
+                 'description': '在项目根目录生成配置模板；默认不覆盖已有 credproof.toml。'},
+                {'id': 'check', 'label': '只做检查', 'requires_model': False,
+                 'command': 'python -m credproof_safety check --config credproof.toml --output .credproof/report.json',
+                 'description': '在受控副本运行 pytest、文件边界、网络边界和凭据观察。'},
+                {'id': 'repair', 'label': '请求修复', 'requires_model': True,
+                 'command': 'python -m credproof_safety repair --config credproof.toml --output .credproof/repair.json',
+                 'description': '仅在当前副本有对应违规证据时请求本地模型提出候选补丁。'},
+                {'id': 'export', 'label': '导出测试', 'requires_model': False,
+                 'command': 'python -m credproof_safety export-tests --config credproof.toml --output tests/credproof-regression',
+                 'description': '导出不依赖模型、不信任旧 PASS 的 pytest 回归入口。'},
+            ],
+            'external_example': external,
+            'boundaries': ['只接受项目内配置，不接受浏览器上传路径或任意命令。',
+                           '缺少隔离材料时返回 UNKNOWN，不降级到宿主机执行。',
+                           '现场修复需要模型；日常 check 与导出测试不需要模型。'],
+        }
+
     def start(self, case):
         if self.access_mode != 'live':
             raise Problem(409, '当前入口未启用现场修复。请使用 start-live.cmd。')
@@ -698,6 +742,8 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_json(200, app.runtime())
         if self.command == 'GET' and path == '/api/agent/bootstrap':
             return self.send_json(200, app.bootstrap())
+        if self.command == 'GET' and path == '/api/project/modes':
+            return self.send_json(200, app.project_modes())
         if self.command == 'POST' and path == '/api/agent/runs':
             data = self.body()
             if set(data) != {'case_id'} or not isinstance(data['case_id'], str):

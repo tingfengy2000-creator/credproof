@@ -45,6 +45,22 @@ class RuntimeConfigTests(unittest.TestCase):
         self.assertEqual('/opt/review-runtime/venv/bin/python', paths['python'])
         self.assertNotIn('tingfeng', '\n'.join(paths.values()))
 
+    def test_execution_runtime_paths_resolve_tilde_inside_wsl(self):
+        value = {**runtime_config.DEFAULTS, 'runtime_root': '~/credproof-agent-runtime'}
+        response = types.SimpleNamespace(returncode=0, stdout=b'/home/reviewer/credproof-agent-runtime\n')
+        with patch.object(runtime_config.subprocess, 'run', return_value=response) as child:
+            paths = runtime_config.execution_runtime_paths(value)
+        self.assertEqual(paths['bubblewrap'], '/home/reviewer/credproof-agent-runtime/isolation/tools/usr/bin/bwrap')
+        self.assertNotIn('~', '\n'.join(paths.values()))
+        self.assertIn('python3', child.call_args.args[0])
+
+    def test_execution_runtime_paths_fail_closed_when_wsl_resolution_fails(self):
+        value = {**runtime_config.DEFAULTS, 'runtime_root': '~/credproof-agent-runtime'}
+        response = types.SimpleNamespace(returncode=1, stdout=b'')
+        with patch.object(runtime_config.subprocess, 'run', return_value=response):
+            with self.assertRaises(ValueError):
+                runtime_config.execution_runtime_paths(value)
+
     def test_runtime_temp_override_is_explicit(self):
         with patch.dict(os.environ, {'CREDPROOF_RUNTIME_TEMP': str(self.root / 'runs')}):
             self.assertEqual(self.root / 'runs', runtime_config.runtime_temp_root())
