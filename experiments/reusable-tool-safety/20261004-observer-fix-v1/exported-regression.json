@@ -1,0 +1,11 @@
+{
+  "schema": "credproof.safety.exported-regression/v1",
+  "execution_mode": "normal_pytest_subprocess_in_disposable_short_path_copies",
+  "model_called": false,
+  "results": {
+    "external_fixed": {"returncode": 0, "pytest_tests": 1, "pytest_failures": 0, "pytest_errors": 0, "pytest_skipped": 0, "pass": true},
+    "reintroduced_defect": {"returncode": 1, "pytest_tests": 1, "pytest_failures": 1, "pytest_errors": 0, "pytest_skipped": 0, "pass": false},
+    "unrelated_change": {"returncode": 0, "pytest_tests": 1, "pytest_failures": 0, "pytest_errors": 0, "pytest_skipped": 0, "pass": true}
+  },
+  "claim": "The exported test was discovered and executed by pytest; the assertion then reran the current object through check_project. This is a synthetic consumer integration check, not cross-machine validation."
+}

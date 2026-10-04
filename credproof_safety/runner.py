@@ -34,6 +34,92 @@ def _script() -> str:
         from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
         from pathlib import Path
         import traceback
+
+        class CredProofPytestObserver:
+            """Trusted pytest plugin; records execution without parsing output text."""
+            def __init__(self, required_paths):
+                self.required_paths = [str(Path(x).as_posix()).rstrip('/') or '.' for x in required_paths]
+                self.node_paths = {}
+                self.path_stats = {path: {'collected': 0, 'executed': 0, 'passed': 0,
+                                          'skipped': 0, 'failed': 0, 'setup_failed': 0}
+                                   for path in self.required_paths}
+                self.collection_finished = False
+                self.session_exitstatus = None
+
+            @staticmethod
+            def _relative(path):
+                try:
+                    return Path(path).resolve().relative_to(Path('/tmp/project')).as_posix()
+                except (OSError, ValueError):
+                    return None
+
+            def _bucket(self, relative):
+                for required in self.required_paths:
+                    if relative == required or relative.startswith(required.rstrip('/') + '/'):
+                        return self.path_stats[required]
+                return None
+
+            def pytest_collection_finish(self, session):
+                self.collection_finished = True
+                for item in session.items:
+                    relative = self._relative(getattr(item, 'path', ''))
+                    if relative is not None:
+                        self.node_paths[item.nodeid] = relative
+                        bucket = self._bucket(relative)
+                        if bucket is not None:
+                            bucket['collected'] += 1
+
+            def pytest_runtest_logreport(self, report):
+                relative = self.node_paths.get(report.nodeid)
+                if relative is None:
+                    return
+                bucket = self._bucket(relative)
+                if bucket is None:
+                    return
+                if report.when == 'setup' and report.failed:
+                    bucket['setup_failed'] += 1
+                # A normal pytest skip is reported during setup and therefore
+                # has no call-phase report. Record it explicitly so a zero
+                # exit code cannot be mistaken for an executed business test.
+                if report.skipped:
+                    bucket['skipped'] += 1
+                    if report.when == 'call' and getattr(report, 'wasxfail', False):
+                        bucket['executed'] += 1
+                    return
+                if report.when != 'call':
+                    return
+                if report.passed:
+                    bucket['executed'] += 1
+                    bucket['passed'] += 1
+                elif report.failed:
+                    bucket['executed'] += 1
+                    bucket['failed'] += 1
+
+            def pytest_sessionfinish(self, session, exitstatus):
+                self.session_exitstatus = int(exitstatus)
+
+            def snapshot(self):
+                missing = [path for path, stats in self.path_stats.items() if stats['collected'] == 0]
+                not_executed = [path for path, stats in self.path_stats.items()
+                                if stats['collected'] > 0 and stats['executed'] == 0]
+                return {
+                    'schema': 'credproof.pytest-observation/v1',
+                    'collection_finished': self.collection_finished,
+                    'session_exitstatus': self.session_exitstatus,
+                    'required_paths': self.path_stats,
+                    'missing_required_paths': missing,
+                    'not_executed_required_paths': not_executed,
+                    'required_tests_completed': bool(self.collection_finished and not missing and not not_executed),
+                    'all_required_skipped': bool(not missing and
+                                                 all(stats['collected'] > 0 and stats['executed'] == 0 and
+                                                     stats['skipped'] >= stats['collected']
+                                                     for stats in self.path_stats.values())),
+                    'collected': sum(stats['collected'] for stats in self.path_stats.values()),
+                    'executed': sum(stats['executed'] for stats in self.path_stats.values()),
+                    'passed': sum(stats['passed'] for stats in self.path_stats.values()),
+                    'skipped': sum(stats['skipped'] for stats in self.path_stats.values()),
+                    'failed': sum(stats['failed'] + stats['setup_failed'] for stats in self.path_stats.values()),
+                }
         boot = json.loads(Path('/tmp/env.json').read_text(encoding='utf8'))
         os.environ.update(boot)
         # Upstream tests may spawn the reviewed interpreter once (for example,
@@ -121,29 +207,30 @@ def _script() -> str:
         logging.getLogger().setLevel(logging.DEBUG)
         logging.getLogger().addHandler(log_handler)
         pytest_code = None; entry = None; raised = None
+        pytest_observer = CredProofPytestObserver(json.loads(os.environ['CREDPROOF_REQUIRED_TESTS']))
         try:
             import pytest
             args = json.loads(os.environ['CREDPROOF_TEST_ARGS'])
             with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
-                pytest_code = pytest.main(args)
+                pytest_code = pytest.main(args, plugins=[pytest_observer])
         except BaseException as exc:
             raised = {'type': type(exc).__name__, 'message': str(exc)}
         try:
-            module = importlib.import_module(os.environ['CREDPROOF_ENTRY_MODULE'])
-            fn = getattr(module, os.environ['CREDPROOF_ENTRY_CALLABLE'])
-            request = json.loads(os.environ['CREDPROOF_ENTRY_REQUEST'])
-            def resolve(value):
-                if isinstance(value, str):
-                    return {"__CREDPROOF_ALLOWED_FILE__": os.environ['CREDPROOF_ALLOWED_FILE'],
-                            "__CREDPROOF_FORBIDDEN_FILE__": os.environ['CREDPROOF_FORBIDDEN_FILE'],
-                            "__CREDPROOF_ALLOWED_URL__": os.environ['CREDPROOF_ALLOWED_URL'],
-                            "__CREDPROOF_REDIRECT_URL__": os.environ['CREDPROOF_REDIRECT_URL'],
-                            "__CREDPROOF_FORBIDDEN_URL__": os.environ['CREDPROOF_FORBIDDEN_URL']}.get(value, value)
-                if isinstance(value, dict): return {k: resolve(v) for k,v in value.items()}
-                if isinstance(value, list): return [resolve(v) for v in value]
-                return value
-            request = resolve(request)
             with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
+                module = importlib.import_module(os.environ['CREDPROOF_ENTRY_MODULE'])
+                fn = getattr(module, os.environ['CREDPROOF_ENTRY_CALLABLE'])
+                request = json.loads(os.environ['CREDPROOF_ENTRY_REQUEST'])
+                def resolve(value):
+                    if isinstance(value, str):
+                        return {"__CREDPROOF_ALLOWED_FILE__": os.environ['CREDPROOF_ALLOWED_FILE'],
+                                "__CREDPROOF_FORBIDDEN_FILE__": os.environ['CREDPROOF_FORBIDDEN_FILE'],
+                                "__CREDPROOF_ALLOWED_URL__": os.environ['CREDPROOF_ALLOWED_URL'],
+                                "__CREDPROOF_REDIRECT_URL__": os.environ['CREDPROOF_REDIRECT_URL'],
+                                "__CREDPROOF_FORBIDDEN_URL__": os.environ['CREDPROOF_FORBIDDEN_URL']}.get(value, value)
+                    if isinstance(value, dict): return {k: resolve(v) for k,v in value.items()}
+                    if isinstance(value, list): return [resolve(v) for v in value]
+                    return value
+                request = resolve(request)
                 try: entry = fn(request)
                 except BaseException as exc: raised = {'type':type(exc).__name__,'message':str(exc)}
         except BaseException as exc:
@@ -168,6 +255,7 @@ def _script() -> str:
                               ('exception',repr(raised))]:
             if credential and credential in text: leaks.append(channel)
         report = {'schema':'credproof.safety.execution/v1', 'pytest_exit_code': int(pytest_code) if pytest_code is not None else None,
+                  'pytest_observation': pytest_observer.snapshot(),
                   'entry_returned': entry, 'raised': raised, 'stdout': out.getvalue(), 'stderr': err.getvalue(), 'logs': log_output.getvalue(),
                   'credential_leaks': leaks, 'requests': requests, 'audit_events': events,
                   'unauthorized_connections': unauthorized_connections,
@@ -238,7 +326,7 @@ def run_sandbox(project: Path, lab: Path, test_args: list[str], entry_module: st
                    "--ro-bind", paths['site_packages'], "/tmp/site",
                    "--chdir", "/tmp/project", "--", "/usr/bin/python3", "-I", "/tmp/runner.py"]
         env = {
-            "CREDPROOF_TEST_ARGS": json.dumps(test_args), "CREDPROOF_ENTRY_MODULE": entry_module,
+            "CREDPROOF_TEST_ARGS": json.dumps(test_args), "CREDPROOF_REQUIRED_TESTS": json.dumps([str(x) for x in test_args[2:]]), "CREDPROOF_ENTRY_MODULE": entry_module,
             "CREDPROOF_ENTRY_CALLABLE": entry_callable, "CREDPROOF_ENTRY_REQUEST": json.dumps(entry_request),
             "CREDPROOF_CREDENTIAL_ENV": credential_env, credential_env: credential, "CREDPROOF_INNER": "1",
             "CREDPROOF_ALLOWED_ROOT": "/tmp/lab/" + allowed_dirs[0].replace('\\', '/'),

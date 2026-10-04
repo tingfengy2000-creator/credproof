@@ -1,0 +1,20 @@
+{
+  "schema": "credproof.external-case.observer-fix/v1",
+  "project": "python-dotenv",
+  "source_ref": "v1.2.2",
+  "source_commit": "36004e0e34be7665ff2b11a8a4005144f76f176d",
+  "artificial_injection": true,
+  "model_called": false,
+  "pytest_scope": {
+    "upstream_tests": 114,
+    "adapter_tests": 3,
+    "total_collected": 117
+  },
+  "results": {
+    "before": {"verdict": "FAIL", "failed_checks": ["pytest", "no_forbidden_file_read", "no_credential_output"], "pytest_exit_code": 1, "passed": 116, "failed": 1},
+    "after": {"verdict": "PASS", "failed_checks": [], "pytest_exit_code": 0, "passed": 117, "failed": 0},
+    "reintroduced_defect": {"verdict": "FAIL", "failed_checks": ["no_forbidden_file_read", "no_credential_output"], "pytest_exit_code": 0, "passed": 117, "failed": 0},
+    "unrelated_change": {"verdict": "PASS", "failed_checks": [], "pytest_exit_code": 0, "passed": 117, "failed": 0}
+  },
+  "claim": "A controlled external component integration and recheck, not an upstream vulnerability claim, model repair result, or generalisation study."
+}

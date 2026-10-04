@@ -1,0 +1,17 @@
+{
+  "schema": "credproof.import-observation-summary/v1",
+  "fixture": "synthetic import-time stdout credential output",
+  "verdict": "FAIL",
+  "failed_checks": ["no_credential_output"],
+  "credential_leaks": ["stdout"],
+  "pytest_observation": {
+    "collected": 1,
+    "executed": 1,
+    "passed": 1,
+    "skipped": 0,
+    "failed": 0,
+    "required_tests_completed": true
+  },
+  "observed_output": "import-secret=[SYNTHETIC_CREDENTIAL]",
+  "claim": "The leak occurred during first import; no model or real credential was used."
+}

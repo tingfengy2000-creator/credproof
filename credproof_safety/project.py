@@ -60,6 +60,7 @@ def _build_lab(config: SafetyConfig, root: Path, credential: str) -> Path:
 _REQUIRED_EXECUTION_FIELDS = {
     "schema": str,
     "pytest_exit_code": (int, type(None)),
+    "pytest_observation": dict,
     "entry_returned": object,
     "raised": (dict, type(None)),
     "forbidden_reads": list,
@@ -86,6 +87,13 @@ def _execution_observation_error(execution: dict) -> str | None:
             return "invalid_observation_type:" + name
     if execution.get("pytest_exit_code") is None:
         return "pytest_observation_incomplete"
+    pytest_observation = execution["pytest_observation"]
+    if pytest_observation.get("schema") != "credproof.pytest-observation/v1":
+        return "unsupported_pytest_observation_schema"
+    if pytest_observation.get("required_tests_completed") is not True:
+        return "required_tests_not_executed"
+    if pytest_observation.get("all_required_skipped") is True:
+        return "required_tests_all_skipped"
     isolation = execution["isolation"]
     if isolation.get("pytest_collection_in_sandbox") is not True:
         return "isolation_observation_incomplete"

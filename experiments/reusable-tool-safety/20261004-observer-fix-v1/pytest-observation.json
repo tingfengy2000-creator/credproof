@@ -1,0 +1,48 @@
+{
+  "schema": "credproof.observer-fix-summary/v1",
+  "normal": {
+    "verdict": "PASS",
+    "pytest_exit_code": 0,
+    "pytest_observation": {
+      "collected": 1,
+      "executed": 1,
+      "passed": 1,
+      "skipped": 0,
+      "failed": 0,
+      "required_tests_completed": true,
+      "all_required_skipped": false
+    }
+  },
+  "all_skipped": {
+    "verdict": "UNKNOWN",
+    "reason": "required_tests_not_executed",
+    "pytest_exit_code": 0,
+    "pytest_observation": {
+      "collected": 1,
+      "executed": 0,
+      "passed": 0,
+      "skipped": 1,
+      "failed": 0,
+      "required_tests_completed": false,
+      "all_required_skipped": true
+    }
+  },
+  "missing_required_path": {
+    "verdict": "UNKNOWN",
+    "reason": "required_tests_not_executed",
+    "pytest_exit_code": 4,
+    "pytest_observation": {
+      "required_paths": {
+        "tests/missing_test.py": {
+          "collected": 0,
+          "executed": 0,
+          "passed": 0,
+          "skipped": 0,
+          "failed": 0
+        }
+      },
+      "missing_required_paths": ["tests/missing_test.py"],
+      "required_tests_completed": false
+    }
+  }
+}

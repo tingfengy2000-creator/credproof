@@ -195,8 +195,8 @@ def template(project_root: Path) -> str:
 [project]
 root = "."
 tests = ["tests"]
-source_scope = ["**/*.py"]
-mutable_scope = ["**/*.py"]
+source_scope = ["*.py", "**/*.py"]
+mutable_scope = ["*.py", "**/*.py"]
 
 [files]
 allowed_dirs = ["data"]

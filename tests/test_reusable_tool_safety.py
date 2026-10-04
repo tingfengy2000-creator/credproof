@@ -40,6 +40,11 @@ class ReusableSafetyRegressionTests(unittest.TestCase):
             "status": "OK",
             "schema": "credproof.safety.execution/v1",
             "pytest_exit_code": 0,
+            "pytest_observation": {
+                "schema": "credproof.pytest-observation/v1",
+                "required_tests_completed": True,
+                "all_required_skipped": False,
+            },
             "entry_returned": {"resource": "demo"},
             "raised": None,
             "forbidden_reads": [],
@@ -102,6 +107,21 @@ class ReusableSafetyRegressionTests(unittest.TestCase):
         del execution["isolation"]
         result = _verdict(config, execution)
         self.assertNotEqual("PASS", result["verdict"])
+
+    def test_missing_or_skipped_required_pytest_is_unknown(self):
+        config = load_config(self.config_path)
+        missing = self._complete_execution()
+        del missing["pytest_observation"]
+        self.assertEqual("UNKNOWN", _verdict(config, missing)["verdict"])
+        skipped = self._complete_execution()
+        skipped["pytest_observation"] = {
+            "schema": "credproof.pytest-observation/v1",
+            "required_tests_completed": False,
+            "all_required_skipped": True,
+        }
+        result = _verdict(config, skipped)
+        self.assertEqual("UNKNOWN", result["verdict"])
+        self.assertIn("required_tests_not_executed", result["reason"])
 
     def test_missing_observation_lists_are_unknown_not_empty(self):
         config = load_config(self.config_path)
@@ -168,7 +188,10 @@ class ReusableSafetyRegressionTests(unittest.TestCase):
         with redirect_stdout(io.StringIO()):
             exit_code = main(["init", "--project", str(self.root), "--config", str(destination), "--write"])
         self.assertEqual(0, exit_code)
-        self.assertEqual(self.root.resolve(), load_config(destination).project_root.resolve())
+        config = load_config(destination)
+        self.assertEqual(self.root.resolve(), config.project_root.resolve())
+        self.assertTrue(config.matches_source("tool.py"))
+        self.assertTrue(config.matches_source("pkg/tool.py"))
 
     def test_export_refuses_overwrite(self):
         destination = self.root / "regression"

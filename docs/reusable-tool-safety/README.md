@@ -1,4 +1,4 @@
-# CredProof reusable-tool-safety（0.3.0-dev.7）
+# CredProof reusable-tool-safety（0.3.0-dev.8）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -8,7 +8,7 @@
 ## 已实现的共同入口
 
 源码包可用 `python -m pip install .` 安装；本轮在独立临时 Python 3.14 venv 中用
-`setuptools` 构建 wheel `credproof_safety-0.3.0.dev7-py3-none-any.whl`，源码目录
+`setuptools` 构建 wheel `credproof_safety-0.3.0.dev8-py3-none-any.whl`，源码目录
 本身也可直接运行 `python -m credproof_safety`。模型权重和 Ollama 不随 wheel 进入
 安装包。
 
@@ -105,8 +105,9 @@ python scripts/run-external-dotenv-case.py `
 才会得到 `before=FAIL`、`after=PASS`、`reintroduced_defect=FAIL`、
 `unrelated_change=PASS`；缺少隔离材料时四项均应记录为 `UNKNOWN`，不能把环境阻断
 写成代码通过。2026-10-04 的定向复测通过集中配置把 `~/credproof-agent-runtime`
-解析为 WSL 内的绝对路径，真实完成了 117 个上游 pytest 测试（每个副本退出码 0），
-并取得上述四项判定。逐例记录保存在
+解析为 WSL 内的绝对路径，真实完成了 117 个 pytest 测试（固定副本退出码 0），
+并取得上述四项判定。该批次共收集 117 项测试，其中 114 项来自上游 `test_main.py`、3 项为本项目适配测试，
+不是 117 项上游测试；注入版实际为 116 passed、1 failed、pytest 退出码 1。逐例记录保存在
 `experiments/reusable-tool-safety/20261004-external-dotenv-v5/summary.json`；它仍只证明
 一个外部项目、一个目录边界类别和人工注入缺陷，不是上游漏洞或泛化率结论。
 
@@ -215,11 +216,25 @@ python scripts/run-targeted-safety-regressions.py `
 ```powershell
 $env:CREDPROOF_RUNTIME_ROOT='/home/tingfeng/credproof-agent-runtime'
 python scripts/run-exported-regression-check.py `
-  --output experiments/reusable-tool-safety/20261003-external-regression-02
+  --output experiments/reusable-tool-safety/20261004-external-regression-v3
 ```
 
-该验证直接调用导出的 pytest 断言函数，因为当前 Windows 环境没有安装 host pytest；它仍真实调用
-`check_project()`、WSL/bubblewrap 和 mock 服务，不启动模型。固定消费者通过，临时重新引入文件缺陷失败，
-仅增加无关文件仍通过。记录在 [`experiments/reusable-tool-safety/20261003-external-regression-02`](../../experiments/reusable-tool-safety/20261003-external-regression-02/)；这不等同于另一台机器的跨平台验证。
+该验证在独立短路径副本中通过正常 `python -m pytest` 发现并执行导出的测试，随后由导出断言调用
+`check_project()`、WSL/bubblewrap 和 mock 服务，不启动模型。当前记录显示：固定消费者退出 0 且 1/1
+通过；重新引入文件缺陷退出 1 且 1/1 失败；仅增加无关文件退出 0 且 1/1 通过。脱敏记录在
+[`20261004-observer-fix-v1/exported-regression.json`](../../experiments/reusable-tool-safety/20261004-observer-fix-v1/exported-regression.json)；
+这不等同于另一台机器的跨平台验证。
+
+## 2026-10-04 外部评审定向修正
+
+本版针对固定源码评审发现的三个缺口做了有限修正：
+
+| 缺口 | 实现 | 证据 |
+| --- | --- | --- |
+| pytest 退出 0 但必要业务测试没有实际执行 | `credproof_safety/runner.py` 的可信 `CredProofPytestObserver` 记录收集、执行、通过、跳过、失败及缺失路径；`project.py` 在 `required_tests_completed` 不满足时返回 `UNKNOWN` | `experiments/reusable-tool-safety/20261004-observer-fix-v1/pytest-observation.json`：实际通过 1/1、全跳过和缺失路径均为 `UNKNOWN`；递归保护 skip 未被算作业务通过 |
+| 入口导入阶段输出凭据漏检 | `runner.py` 将模块导入、入口查找、请求解析和调用放入明确的 stdout/stderr 捕获范围 | `experiments/reusable-tool-safety/20261004-observer-fix-v1/import-output.json`：仅在首次导入输出合成凭据时，报告 `credential_leaks=["stdout"]` 并为 `FAIL` |
+| 默认 init 的根目录入口被 `**/*.py` 排除 | `credproof_safety/config.py` 模板显式同时包含 `*.py` 与 `**/*.py` | `tests/test_reusable_tool_safety.py` 覆盖根目录 `tool.py` 与嵌套 `pkg/tool.py` 的匹配 |
+
+上述证据来自真实隔离运行或固定协议回归，没有调用模型，也没有把旧模型轨迹改写成新结果。全跳过、缺失测试和隔离阻断仍按 `UNKNOWN` 处理，不能因 pytest 进程退出 0 就放行。
 
 
