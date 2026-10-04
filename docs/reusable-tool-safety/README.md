@@ -1,4 +1,4 @@
-# CredProof reusable-tool-safety（0.3.0-dev.6）
+# CredProof reusable-tool-safety（0.3.0-dev.7）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -8,9 +8,15 @@
 ## 已实现的共同入口
 
 源码包可用 `python -m pip install .` 安装；本轮在独立临时 Python 3.14 venv 中用
-`setuptools` 构建 wheel `credproof_safety-0.3.0.dev6-py3-none-any.whl`，源码目录
+`setuptools` 构建 wheel `credproof_safety-0.3.0.dev7-py3-none-any.whl`，源码目录
 本身也可直接运行 `python -m credproof_safety`。模型权重和 Ollama 不随 wheel 进入
 安装包。
+
+本地 Agent 测试必须使用 Python 3.12 的项目虚拟环境。Windows 可先运行
+`scripts\setup-local-agent.cmd`；它按 `agent_pilot/requirements-lock.txt` 安装
+`qwen-agent==0.0.34` 及其显式依赖（包括 `soundfile`、`tqdm`、`python-dateutil`），
+再下载并校验 Gitleaks 8.28.0。直接使用系统 Python 可能出现 `qwen_agent` 可见但
+`soundfile` 缺失，或把 Gitleaks 测试错误地显示为跳过。
 
 ```powershell
 # 只预览，不覆盖已有配置

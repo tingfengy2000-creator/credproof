@@ -18,6 +18,18 @@ python -m agent_pilot.launch --demo --mode view
 
 打开 `http://127.0.0.1:8765/`。h01、h03、h07 均标为 **REPLAY**，不会因打开页面而调用模型。现场运行是单独操作，要求已准备的本地模型和可信隔离设施；材料复检需要隔离设施，但不需要 GPU 或模型。只读环境检查使用 `python -m agent_pilot.preflight`，配置和首次准备边界见候选说明。
 
+现场 Agent 不应使用系统 Python 直接启动。Windows 首次准备运行
+`scripts\setup-local-agent.cmd`，它会在 `.venv` 中安装锁定的
+`agent_pilot\requirements-lock.txt`，确认 `qwen-agent==0.0.34` 可导入，并下载固定的
+Gitleaks 8.28.0（官方 checksum 校验）。之后使用 `check-runtime.cmd` 或
+`start-live.cmd`；它们会优先选择 `.venv\Scripts\python.exe`。完整测试示例：
+
+```powershell
+$env:CREDPROOF_GITLEAKS = (Resolve-Path .tools/gitleaks-8.28.0/gitleaks.exe).Path
+.venv\Scripts\python.exe -m unittest discover -s tests -v
+.venv\Scripts\python.exe -m unittest discover -s agent_pilot/tests -v
+```
+
 本轮文稿统一引用同一冻结批次的八个合成案例，不把后续已知案例复测拼入成绩。模型可能误判，固定流程也能解决多项案例；本作品不宣称通用漏洞修复、任意项目支持或 Agent 全面领先。
 
 前版接入 [Twine 历史配置泄露组件接入](docs/external-scenario/twine/README.md)、[三种启动入口](docs/preliminary-candidate/startup-modes.md)、[一页贡献与代码对应](docs/preliminary-candidate/contribution-map.md)、[真实演示视频](docs/preliminary-candidate/video/README.md)及 [源码讲解](docs/preliminary-candidate/source-walkthrough.md)。外部结果单列，原八例完整统计不变。
