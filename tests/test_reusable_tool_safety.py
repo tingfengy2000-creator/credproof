@@ -5,7 +5,7 @@ execution receipts are kept separately in experiments/reusable-tool-safety.
 """
 from __future__ import annotations
 
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 import io
 import json
 import os
@@ -154,6 +154,14 @@ class ReusableSafetyRegressionTests(unittest.TestCase):
         self.assertEqual(0, exit_code)
         self.assertEqual("refuse_to_overwrite", json.loads(out.getvalue())["action"])
         self.assertEqual(original, self.config_path.read_bytes())
+
+    def test_init_refuses_configuration_outside_project(self):
+        outside = self.root.parent / "credproof-outside.toml"
+        output = io.StringIO()
+        with redirect_stderr(output):
+            exit_code = main(["init", "--project", str(self.root), "--config", str(outside)])
+        self.assertEqual(4, exit_code)
+        self.assertIn("inside the selected project", output.getvalue())
 
     def test_explicit_init_write_creates_valid_config(self):
         destination = self.root / "new.toml"

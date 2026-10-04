@@ -1,4 +1,4 @@
-# CredProof reusable-tool-safety（0.3.0-dev.2）
+# CredProof reusable-tool-safety（0.3.0-dev.3）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -8,7 +8,7 @@
 ## 已实现的共同入口
 
 源码包可用 `python -m pip install .` 安装；本轮在独立临时 Python 3.14 venv 中用
-`setuptools` 构建 wheel `credproof_safety-0.3.0.dev2-py3-none-any.whl`，源码目录
+`setuptools` 构建 wheel `credproof_safety-0.3.0.dev3-py3-none-any.whl`，源码目录
 本身也可直接运行 `python -m credproof_safety`。模型权重和 Ollama 不随 wheel 进入
 安装包。
 
@@ -39,6 +39,29 @@ loopback 模拟服务。缺少 WSL/bubblewrap/pytest 时返回 `UNKNOWN` 或 `BL
 所有安全检查和业务测试都通过时才可能 PASS。规则由配置和程序验收器固定，模型不能修改规则、删除测试
 或自行宣布通过。
 
+## 接入自己的项目
+
+开发者不需要改写入口为 CredProof 专用函数，也不需要复制一套裁判。最小流程是：
+
+1. 在项目根目录执行 `python -m credproof_safety init --project .` 预览配置；确认后用
+   `--write` 只创建不存在的 `credproof.toml`。
+2. 填写项目测试路径、入口模块和函数、允许/禁止目录、允许的 loopback 服务、合成凭据
+   环境变量、必要业务测试及 `mutable_scope`；真实秘密不写入配置。
+3. 用 `python -m credproof_safety check --config credproof.toml --output .credproof/report.json`
+   做不加载模型的检查。结果只有 `PASS`、`FAIL` 或因隔离/观察不足得到 `UNKNOWN`。
+4. 需要修改时才运行 `repair`；模型只能提出候选，程序保留修改范围、重新执行测试和
+   观察，不能由模型写入规则或宣布通过。
+5. 用 `export-tests` 把模型无关的 pytest 断言放回项目，后续每次代码修改都重新读取当前
+   对象并执行检查，不信任保存的旧报告。
+
+初始化、检查、修复和导出都拒绝覆盖已有目标。pytest 收集、导入、`conftest.py` 和插件
+加载均在受控副本中执行；未知项目缺少隔离材料时不会降级到宿主机运行。项目仍需人工
+提供可信入口、允许目录/服务和必要业务测试，这些前置规则不由模型猜测。
+
+`examples/ci/credproof-safety.yml.example` 是一个只允许手动触发、要求预先配置受控
+self-hosted runner 的 CI 示例，不会自动启用，也不会把 GitHub 托管 runner 当作已验证
+隔离环境。
+
 ## 真实受控结果
 
 `scripts/run-reusable-safety-demo.py` 在三个 disposable 副本中运行同一流程：
@@ -57,21 +80,33 @@ loopback 模拟服务。缺少 WSL/bubblewrap/pytest 时返回 `UNKNOWN` 或 `BL
 
 ## 外部项目接入
 
-`examples/external/python-dotenv-v1.2.2` 保留了上游 `src/dotenv`、`tests/test_main.py`、
-`tests/conftest.py`、`LICENSE`、`pyproject.toml` 和 `README.md`，固定提交为
-`36004e0e34be7665ff2b11a8a4005144f76f176d`，BSD-3-Clause。原始上游测试在隔离副本中
-得到 **114 passed**。`credproof_entry.py` 是明确标注的人工注入目录读取缺陷，
-不是上游漏洞或 CVE；`credproof_entry_fixed.py` 仅增加授权目录约束并保留 dotenv
-解析。对应的 before/after 命令见 `README-credproof.md` 和
-`scripts/run-external-dotenv-case.py`。
+`examples/external/python-dotenv-v1.2.2` 是随评审包保存的上游快照，保留
+`src/dotenv`、`tests/test_main.py`、`tests/conftest.py`、`LICENSE`、`pyproject.toml`
+和 `README.md`，固定提交为 `36004e0e34be7665ff2b11a8a4005144f76f176d`，许可证为
+BSD-3-Clause。`credproof_entry.py` 是明确标注的人工注入目录读取缺陷，不是上游漏洞、
+CVE 或企业部署证据；`credproof_entry_fixed.py` 只增加授权目录约束并保留 dotenv 解析。
 
-本轮固定记录位于 `experiments/reusable-tool-safety/20261003-final/`：资料助手为
-`vulnerable=FAIL`、`fixed=PASS`、重新引入文件缺陷再次 `FAIL`；外部
-python-dotenv 为人工注入版本 `FAIL`、修复适配 `PASS`，上游 pytest 为 114 passed。
-本地模型的成功与不完整轨迹分别位于 `agent-runs/agent-repair-success` 和
-`agent-runs/agent-repair-rpc3`，两者不合并为总体成功率。
-WSL、bubblewrap、rootfs、Q4_K_M 模型和完整 Ollama digest 记录在同目录的
-`runtime-receipt.json`；权重不进入 Git。
+`scripts/run-external-dotenv-case.py` 会先把快照复制到操作系统临时目录，再从这个
+仓库外的副本运行 before、fixed、reintroduced-defect 和 unrelated-change 四个结果，
+不会直接把仓库内的 fixture 当作被测项目。命令为：
+
+```powershell
+python scripts/run-external-dotenv-case.py `
+  --output experiments/reusable-tool-safety/external-dotenv-current
+```
+
+只有在已准备的 WSL、bubblewrap、审核过的 rootfs 和 Python site-packages 存在时，
+才会得到 `before=FAIL`、`fixed=PASS`、`reintroduced-defect=FAIL`、
+`unrelated-change=PASS`；缺少隔离材料时四项均应记录为 `UNKNOWN`，不能把环境阻断
+写成代码通过。上游测试数量和适配成本只在实际运行记录存在时引用，不由软件测试项数
+冒充漏洞数量。当前环境阻断记录保存在
+`experiments/reusable-tool-safety/20261004-external-dotenv-v2/summary.json`，其中明确
+记录了仓库外临时副本和缺失的 bwrap 材料。
+
+资料助手的历史记录仍保存在 `experiments/reusable-tool-safety/20261003-final/`；
+模型成功与不完整轨迹在同目录的 `agent-runs/` 下分开保存，不能拼成总体成功率。
+WSL、bubblewrap、rootfs、Q4_K_M 模型和完整 Ollama digest 只在对应运行收据中记录；
+权重不进入 Git。
 
 `20261003-observer-fix/` 是后续的定向观测修正批次：执行器新增独立的
 DEBUG 级 Python 日志通道，并以 `pytest -s` 避免测试输出掩盖泄露。该批次的

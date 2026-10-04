@@ -1,0 +1,30 @@
+# Example only. Save as a workflow in a reviewed, self-hosted runner after
+# installing the required WSL/bubblewrap/rootfs profile. This file is not
+# enabled by CredProof and never runs against an arbitrary pull request.
+name: credproof-safety-example
+
+on:
+  workflow_dispatch:
+
+jobs:
+  controlled-safety-check:
+    runs-on: [self-hosted, credproof-safety-isolated]
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install the reviewed package
+        run: python -m pip install .
+      - name: Preview project configuration
+        run: python -m credproof_safety init --project .
+      - name: Run the model-free safety check
+        shell: pwsh
+        env:
+          CREDPROOF_RUNTIME_ROOT: /home/credproof/credproof-agent-runtime
+        run: >-
+          python -m credproof_safety check
+          --config credproof.toml
+          --output .credproof/report.json
+
+# The runner must be configured before this example is used. Do not replace
+# the reviewed isolation profile with a host-shell executor.

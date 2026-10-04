@@ -35,6 +35,8 @@ def main(argv=None) -> int:
         if args.command == "init":
             root = args.project.resolve(strict=True)
             cfg = (args.config or root / "credproof.toml").resolve()
+            if not cfg.parent.is_relative_to(root):
+                raise ValueError("--config must stay inside the selected project")
             if args.write and not cfg.exists():
                 cfg.write_text(template(root), encoding="utf-8", newline="\n")
                 result = {"status": "CREATED", "path": str(cfg)}

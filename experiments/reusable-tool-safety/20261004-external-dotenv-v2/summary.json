@@ -1,0 +1,269 @@
+{
+  "schema": "credproof.external-case/v2",
+  "provenance": {
+    "project": "python-dotenv",
+    "source": "https://github.com/theskumar/python-dotenv",
+    "fixed_ref": "v1.2.2",
+    "commit": "36004e0e34be7665ff2b11a8a4005144f76f176d",
+    "license": "BSD-3-Clause",
+    "upstream_issue_claim": false,
+    "credproof_change": "A thin adapter and an explicitly artificial read-boundary defect were added in a disposable copy; this is not an upstream vulnerability or CVE.",
+    "retained_upstream": [
+      "src/dotenv",
+      "tests/test_main.py",
+      "tests/conftest.py",
+      "LICENSE",
+      "pyproject.toml",
+      "README.md"
+    ],
+    "scope": "One directory-read safety category; upstream tests were collected in the WSL/bubblewrap copy."
+  },
+  "artificial_injection": true,
+  "project_source": "tracked external fixture staged to a disposable directory outside the CredProof repository",
+  "repository_root_for_relation": "密证_CredProof-local-agent",
+  "cases": {
+    "before": {
+      "verdict": "UNKNOWN",
+      "failed_checks": [],
+      "pytest": null
+    },
+    "after": {
+      "verdict": "UNKNOWN",
+      "failed_checks": [],
+      "pytest": null
+    },
+    "reintroduced_defect": {
+      "verdict": "UNKNOWN",
+      "failed_checks": [],
+      "pytest": null
+    },
+    "unrelated_change": {
+      "verdict": "UNKNOWN",
+      "failed_checks": [],
+      "pytest": null
+    }
+  },
+  "full_before": {
+    "verdict": "UNKNOWN",
+    "reason": "sandbox_execution_incomplete",
+    "execution": {
+      "status": "BLOCKED",
+      "reason": "missing WSL isolation material: ~/credproof-agent-runtime/isolation/tools/usr/bin/bwrap"
+    },
+    "observation_summary": {
+      "classification": "OUTER_SANDBOX_BLOCKED",
+      "outer_sandbox_blocked": true,
+      "incomplete": true
+    },
+    "schema": "credproof.safety.report/v1",
+    "checked_at_utc": "2026-10-04T03:22:36Z",
+    "project_tree_sha256": "dc2bdbf3da327409f92bfedea7778c60e2e61dd205cec588e55bc15cd971689c",
+    "duration_ms": 210.85,
+    "config": {
+      "schema": "credproof.project-safety/v1",
+      "project_root": ".",
+      "tests": [
+        "tests/test_main.py"
+      ],
+      "source_scope": [
+        "credproof_entry.py",
+        "src/**/*.py"
+      ],
+      "mutable_scope": [
+        "credproof_entry.py",
+        "credproof_entry_fixed.py"
+      ],
+      "allowed_dirs": [
+        "data"
+      ],
+      "forbidden_dirs": [
+        "secrets"
+      ],
+      "require_allowed_file_read": false,
+      "services": [],
+      "require_service_credential": false,
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "entry": {
+        "module": "credproof_entry",
+        "callable": "run",
+        "request": {
+          "path": "__CREDPROOF_FORBIDDEN_FILE__"
+        },
+        "expected_error": null
+      },
+      "timeout_seconds": 30.0,
+      "report_dir": ".credproof",
+      "python": "python3"
+    }
+  },
+  "full_after": {
+    "verdict": "UNKNOWN",
+    "reason": "sandbox_execution_incomplete",
+    "execution": {
+      "status": "BLOCKED",
+      "reason": "missing WSL isolation material: ~/credproof-agent-runtime/isolation/tools/usr/bin/bwrap"
+    },
+    "observation_summary": {
+      "classification": "OUTER_SANDBOX_BLOCKED",
+      "outer_sandbox_blocked": true,
+      "incomplete": true
+    },
+    "schema": "credproof.safety.report/v1",
+    "checked_at_utc": "2026-10-04T03:22:36Z",
+    "project_tree_sha256": "dc2bdbf3da327409f92bfedea7778c60e2e61dd205cec588e55bc15cd971689c",
+    "duration_ms": 136.42,
+    "config": {
+      "schema": "credproof.project-safety/v1",
+      "project_root": ".",
+      "tests": [
+        "tests/test_main.py"
+      ],
+      "source_scope": [
+        "credproof_entry.py",
+        "credproof_entry_fixed.py",
+        "src/**/*.py"
+      ],
+      "mutable_scope": [
+        "credproof_entry.py",
+        "credproof_entry_fixed.py"
+      ],
+      "allowed_dirs": [
+        "data"
+      ],
+      "forbidden_dirs": [
+        "secrets"
+      ],
+      "require_allowed_file_read": false,
+      "services": [],
+      "require_service_credential": false,
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "entry": {
+        "module": "credproof_entry_fixed",
+        "callable": "run",
+        "request": {
+          "path": "__CREDPROOF_FORBIDDEN_FILE__"
+        },
+        "expected_error": "ValueError"
+      },
+      "timeout_seconds": 30.0,
+      "report_dir": ".credproof",
+      "python": "python3"
+    }
+  },
+  "full_reintroduced_defect": {
+    "verdict": "UNKNOWN",
+    "reason": "sandbox_execution_incomplete",
+    "execution": {
+      "status": "BLOCKED",
+      "reason": "missing WSL isolation material: ~/credproof-agent-runtime/isolation/tools/usr/bin/bwrap"
+    },
+    "observation_summary": {
+      "classification": "OUTER_SANDBOX_BLOCKED",
+      "outer_sandbox_blocked": true,
+      "incomplete": true
+    },
+    "schema": "credproof.safety.report/v1",
+    "checked_at_utc": "2026-10-04T03:22:36Z",
+    "project_tree_sha256": "0830f90ce06efc0f37c17c51e7598667583e4906a7b5d460fe8c609ef1da48af",
+    "duration_ms": 195.75,
+    "config": {
+      "schema": "credproof.project-safety/v1",
+      "project_root": ".",
+      "tests": [
+        "tests/test_main.py"
+      ],
+      "source_scope": [
+        "credproof_entry.py",
+        "credproof_entry_fixed.py",
+        "src/**/*.py"
+      ],
+      "mutable_scope": [
+        "credproof_entry.py",
+        "credproof_entry_fixed.py"
+      ],
+      "allowed_dirs": [
+        "data"
+      ],
+      "forbidden_dirs": [
+        "secrets"
+      ],
+      "require_allowed_file_read": false,
+      "services": [],
+      "require_service_credential": false,
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "entry": {
+        "module": "credproof_entry_fixed",
+        "callable": "run",
+        "request": {
+          "path": "__CREDPROOF_FORBIDDEN_FILE__"
+        },
+        "expected_error": "ValueError"
+      },
+      "timeout_seconds": 30.0,
+      "report_dir": ".credproof",
+      "python": "python3"
+    }
+  },
+  "full_unrelated_change": {
+    "verdict": "UNKNOWN",
+    "reason": "sandbox_execution_incomplete",
+    "execution": {
+      "status": "BLOCKED",
+      "reason": "missing WSL isolation material: ~/credproof-agent-runtime/isolation/tools/usr/bin/bwrap"
+    },
+    "observation_summary": {
+      "classification": "OUTER_SANDBOX_BLOCKED",
+      "outer_sandbox_blocked": true,
+      "incomplete": true
+    },
+    "schema": "credproof.safety.report/v1",
+    "checked_at_utc": "2026-10-04T03:22:36Z",
+    "project_tree_sha256": "3b400588303fc2c59e17c9d40e5ebccb99eaaaddb0e23b433f13625566302984",
+    "duration_ms": 207.87,
+    "config": {
+      "schema": "credproof.project-safety/v1",
+      "project_root": ".",
+      "tests": [
+        "tests/test_main.py"
+      ],
+      "source_scope": [
+        "credproof_entry.py",
+        "credproof_entry_fixed.py",
+        "src/**/*.py"
+      ],
+      "mutable_scope": [
+        "credproof_entry.py",
+        "credproof_entry_fixed.py"
+      ],
+      "allowed_dirs": [
+        "data"
+      ],
+      "forbidden_dirs": [
+        "secrets"
+      ],
+      "require_allowed_file_read": false,
+      "services": [],
+      "require_service_credential": false,
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "entry": {
+        "module": "credproof_entry_fixed",
+        "callable": "run",
+        "request": {
+          "path": "__CREDPROOF_FORBIDDEN_FILE__"
+        },
+        "expected_error": "ValueError"
+      },
+      "timeout_seconds": 30.0,
+      "report_dir": ".credproof",
+      "python": "python3"
+    }
+  },
+  "staging": {
+    "source_is_tracked_fixture": true,
+    "checked_copy_outside_repository": true,
+    "source_tree_sha256": "dc2bdbf3da327409f92bfedea7778c60e2e61dd205cec588e55bc15cd971689c",
+    "checked_tree_sha256": "dc2bdbf3da327409f92bfedea7778c60e2e61dd205cec588e55bc15cd971689c",
+    "regression_is_disposable_copy": true,
+    "unrelated_change_is_disposable_copy": true
+  }
+}
