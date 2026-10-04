@@ -1,0 +1,446 @@
+{
+  "schema": "credproof.pytest-observer-regression/v1",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "python_implementation": "CPython",
+  "pytest": "8.4.2",
+  "command": [
+    "E:\\比赛\\密证_CredProof-local-agent\\.venv\\Scripts\\python.exe",
+    "scripts/run-pytest-observer-regressions.py",
+    "--output",
+    "_runs\\pytest-observer-regressions-v5"
+  ],
+  "model_called": false,
+  "results_derived_from": "each case/report.json execution.pytest_observation",
+  "cases": {
+    "normal_pass": {
+      "verdict": "PASS",
+      "reason": null,
+      "pytest_exit_code": 0,
+      "pytest_observation": {
+        "schema": "credproof.pytest-observation/v1",
+        "collection_finished": true,
+        "session_exitstatus": 0,
+        "required_paths": {
+          "tests": {
+            "collected": 1,
+            "executed": 1,
+            "passed": 1,
+            "skipped": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "required_cases": 1,
+            "optional_cases": 0
+          }
+        },
+        "missing_required_paths": [],
+        "not_executed_required_paths": [],
+        "required_tests_completed": true,
+        "required_tests_passed": true,
+        "required_case_count": 1,
+        "required_unmet_cases": [],
+        "missing_required_cases": [],
+        "not_executed_required_cases": [],
+        "cases": {
+          "tests/test_required.py::test_smoke": {
+            "path": "tests/test_required.py",
+            "required": true,
+            "collected": 1,
+            "executed": 1,
+            "passed": 1,
+            "skipped": 0,
+            "xfail": 0,
+            "xpass": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "phases": {
+              "setup": "passed",
+              "call": "passed",
+              "teardown": "passed"
+            }
+          }
+        },
+        "all_required_skipped": false,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    "partial_required_skip": {
+      "verdict": "UNKNOWN",
+      "reason": "required_tests_not_executed",
+      "pytest_exit_code": 0,
+      "pytest_observation": {
+        "schema": "credproof.pytest-observation/v1",
+        "collection_finished": true,
+        "session_exitstatus": 0,
+        "required_paths": {
+          "tests": {
+            "collected": 2,
+            "executed": 1,
+            "passed": 1,
+            "skipped": 1,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "required_cases": 2,
+            "optional_cases": 0
+          }
+        },
+        "missing_required_paths": [],
+        "not_executed_required_paths": [],
+        "required_tests_completed": false,
+        "required_tests_passed": false,
+        "required_case_count": 2,
+        "required_unmet_cases": [
+          "tests/test_required.py::test_business"
+        ],
+        "missing_required_cases": [],
+        "not_executed_required_cases": [
+          "tests/test_required.py::test_business"
+        ],
+        "cases": {
+          "tests/test_required.py::test_smoke": {
+            "path": "tests/test_required.py",
+            "required": true,
+            "collected": 1,
+            "executed": 1,
+            "passed": 1,
+            "skipped": 0,
+            "xfail": 0,
+            "xpass": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "phases": {
+              "setup": "passed",
+              "call": "passed",
+              "teardown": "passed"
+            }
+          },
+          "tests/test_required.py::test_business": {
+            "path": "tests/test_required.py",
+            "required": true,
+            "collected": 1,
+            "executed": 0,
+            "passed": 0,
+            "skipped": 1,
+            "xfail": 0,
+            "xpass": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "phases": {
+              "setup": "skipped",
+              "teardown": "passed"
+            }
+          }
+        },
+        "all_required_skipped": false,
+        "collected": 2,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 1,
+        "failed": 0
+      }
+    },
+    "all_required_skip": {
+      "verdict": "UNKNOWN",
+      "reason": "required_tests_not_executed",
+      "pytest_exit_code": 0,
+      "pytest_observation": {
+        "schema": "credproof.pytest-observation/v1",
+        "collection_finished": true,
+        "session_exitstatus": 0,
+        "required_paths": {
+          "tests": {
+            "collected": 1,
+            "executed": 0,
+            "passed": 0,
+            "skipped": 1,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "required_cases": 1,
+            "optional_cases": 0
+          }
+        },
+        "missing_required_paths": [],
+        "not_executed_required_paths": [
+          "tests"
+        ],
+        "required_tests_completed": false,
+        "required_tests_passed": false,
+        "required_case_count": 1,
+        "required_unmet_cases": [
+          "tests/test_required.py::test_business"
+        ],
+        "missing_required_cases": [],
+        "not_executed_required_cases": [
+          "tests/test_required.py::test_business"
+        ],
+        "cases": {
+          "tests/test_required.py::test_business": {
+            "path": "tests/test_required.py",
+            "required": true,
+            "collected": 1,
+            "executed": 0,
+            "passed": 0,
+            "skipped": 1,
+            "xfail": 0,
+            "xpass": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "phases": {
+              "setup": "skipped",
+              "teardown": "passed"
+            }
+          }
+        },
+        "all_required_skipped": true,
+        "collected": 1,
+        "executed": 0,
+        "passed": 0,
+        "skipped": 1,
+        "failed": 0
+      }
+    },
+    "required_xfail": {
+      "verdict": "FAIL",
+      "reason": null,
+      "pytest_exit_code": 0,
+      "pytest_observation": {
+        "schema": "credproof.pytest-observation/v1",
+        "collection_finished": true,
+        "session_exitstatus": 0,
+        "required_paths": {
+          "tests": {
+            "collected": 1,
+            "executed": 1,
+            "passed": 0,
+            "skipped": 1,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "required_cases": 1,
+            "optional_cases": 0
+          }
+        },
+        "missing_required_paths": [],
+        "not_executed_required_paths": [],
+        "required_tests_completed": true,
+        "required_tests_passed": false,
+        "required_case_count": 1,
+        "required_unmet_cases": [
+          "tests/test_required.py::test_business"
+        ],
+        "missing_required_cases": [],
+        "not_executed_required_cases": [],
+        "cases": {
+          "tests/test_required.py::test_business": {
+            "path": "tests/test_required.py",
+            "required": true,
+            "collected": 1,
+            "executed": 1,
+            "passed": 0,
+            "skipped": 1,
+            "xfail": 1,
+            "xpass": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "phases": {
+              "setup": "passed",
+              "call": "skipped",
+              "teardown": "passed"
+            }
+          }
+        },
+        "all_required_skipped": false,
+        "collected": 1,
+        "executed": 1,
+        "passed": 0,
+        "skipped": 1,
+        "failed": 0
+      }
+    },
+    "missing_required": {
+      "verdict": "UNKNOWN",
+      "reason": "required_tests_not_executed",
+      "pytest_exit_code": 4,
+      "pytest_observation": {
+        "schema": "credproof.pytest-observation/v1",
+        "collection_finished": true,
+        "session_exitstatus": 4,
+        "required_paths": {
+          "tests/missing_test.py": {
+            "collected": 0,
+            "executed": 0,
+            "passed": 0,
+            "skipped": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "required_cases": 0,
+            "optional_cases": 0
+          }
+        },
+        "missing_required_paths": [
+          "tests/missing_test.py"
+        ],
+        "not_executed_required_paths": [],
+        "required_tests_completed": false,
+        "required_tests_passed": false,
+        "required_case_count": 0,
+        "required_unmet_cases": [],
+        "missing_required_cases": [],
+        "not_executed_required_cases": [],
+        "cases": {},
+        "all_required_skipped": false,
+        "collected": 0,
+        "executed": 0,
+        "passed": 0,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    "required_assertion_failure": {
+      "verdict": "FAIL",
+      "reason": null,
+      "pytest_exit_code": 1,
+      "pytest_observation": {
+        "schema": "credproof.pytest-observation/v1",
+        "collection_finished": true,
+        "session_exitstatus": 1,
+        "required_paths": {
+          "tests": {
+            "collected": 1,
+            "executed": 1,
+            "passed": 0,
+            "skipped": 0,
+            "failed": 1,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "required_cases": 1,
+            "optional_cases": 0
+          }
+        },
+        "missing_required_paths": [],
+        "not_executed_required_paths": [],
+        "required_tests_completed": true,
+        "required_tests_passed": false,
+        "required_case_count": 1,
+        "required_unmet_cases": [
+          "tests/test_required.py::test_business"
+        ],
+        "missing_required_cases": [],
+        "not_executed_required_cases": [],
+        "cases": {
+          "tests/test_required.py::test_business": {
+            "path": "tests/test_required.py",
+            "required": true,
+            "collected": 1,
+            "executed": 1,
+            "passed": 0,
+            "skipped": 0,
+            "xfail": 0,
+            "xpass": 0,
+            "failed": 1,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "phases": {
+              "setup": "passed",
+              "call": "failed",
+              "teardown": "passed"
+            }
+          }
+        },
+        "all_required_skipped": false,
+        "collected": 1,
+        "executed": 1,
+        "passed": 0,
+        "skipped": 0,
+        "failed": 1
+      }
+    },
+    "optional_skip": {
+      "verdict": "PASS",
+      "reason": null,
+      "pytest_exit_code": 0,
+      "pytest_observation": {
+        "schema": "credproof.pytest-observation/v1",
+        "collection_finished": true,
+        "session_exitstatus": 0,
+        "required_paths": {
+          "tests": {
+            "collected": 2,
+            "executed": 1,
+            "passed": 1,
+            "skipped": 1,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "required_cases": 1,
+            "optional_cases": 1
+          }
+        },
+        "missing_required_paths": [],
+        "not_executed_required_paths": [],
+        "required_tests_completed": true,
+        "required_tests_passed": true,
+        "required_case_count": 1,
+        "required_unmet_cases": [],
+        "missing_required_cases": [],
+        "not_executed_required_cases": [],
+        "cases": {
+          "tests/test_optional.py::test_optional": {
+            "path": "tests/test_optional.py",
+            "required": false,
+            "collected": 1,
+            "executed": 0,
+            "passed": 0,
+            "skipped": 1,
+            "xfail": 0,
+            "xpass": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "phases": {
+              "setup": "skipped",
+              "teardown": "passed"
+            }
+          },
+          "tests/test_required.py::test_business": {
+            "path": "tests/test_required.py",
+            "required": true,
+            "collected": 1,
+            "executed": 1,
+            "passed": 1,
+            "skipped": 0,
+            "xfail": 0,
+            "xpass": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "phases": {
+              "setup": "passed",
+              "call": "passed",
+              "teardown": "passed"
+            }
+          }
+        },
+        "all_required_skipped": false,
+        "collected": 2,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 1,
+        "failed": 0
+      }
+    }
+  },
+  "claim": "Protocol regression using real pytest plugin callbacks and the actual verdict function; synthetic fixtures only."
+}

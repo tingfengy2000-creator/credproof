@@ -1,0 +1,29 @@
+schema = "credproof.project-safety/v1"
+
+[project]
+root = "."
+tests = ["tests"]
+optional_tests = []
+source_scope = ["*.py", "**/*.py"]
+mutable_scope = ["*.py", "**/*.py"]
+
+[files]
+allowed_dirs = ["data"]
+forbidden_dirs = ["secrets"]
+require_allowed_file_read = false
+
+[network]
+require_service_credential = false
+allowed_services = []
+
+[credentials]
+env = "CREDPROOF_TEST_CREDENTIAL"
+
+[entry]
+module = "tool"
+callable = "run"
+request = { resource = "observer-regression" }
+
+[limits]
+timeout_seconds = 30
+report_dir = ".credproof"

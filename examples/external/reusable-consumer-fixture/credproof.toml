@@ -3,6 +3,7 @@ schema = "credproof.project-safety/v1"
 [project]
 root = "."
 tests = ["tests"]
+optional_tests = ["tests/credproof-regression"]
 source_scope = ["tool.py"]
 mutable_scope = ["tool.py"]
 

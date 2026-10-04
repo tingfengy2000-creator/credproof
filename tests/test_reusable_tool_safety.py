@@ -43,6 +43,7 @@ class ReusableSafetyRegressionTests(unittest.TestCase):
             "pytest_observation": {
                 "schema": "credproof.pytest-observation/v1",
                 "required_tests_completed": True,
+                "required_tests_passed": True,
                 "all_required_skipped": False,
             },
             "entry_returned": {"resource": "demo"},
@@ -122,6 +123,14 @@ class ReusableSafetyRegressionTests(unittest.TestCase):
         result = _verdict(config, skipped)
         self.assertEqual("UNKNOWN", result["verdict"])
         self.assertIn("required_tests_not_executed", result["reason"])
+
+    def test_required_pytest_case_failure_cannot_pass_on_zero_exit(self):
+        config = load_config(self.config_path)
+        execution = self._complete_execution()
+        execution["pytest_observation"]["required_tests_passed"] = False
+        result = _verdict(config, execution)
+        self.assertEqual("FAIL", result["verdict"])
+        self.assertIn("required_pytest_tests", result["failed_checks"])
 
     def test_missing_observation_lists_are_unknown_not_empty(self):
         config = load_config(self.config_path)

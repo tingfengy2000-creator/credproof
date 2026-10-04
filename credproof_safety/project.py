@@ -112,6 +112,7 @@ def _verdict(config: SafetyConfig, execution: dict) -> dict:
                                          "incomplete": True, "missing_or_invalid": observation_error}}
     required = {
         "pytest": execution.get("pytest_exit_code") == 0,
+        "required_pytest_tests": execution.get("pytest_observation", {}).get("required_tests_passed") is True,
         "entry_completed": ((execution.get("raised") is None and execution.get("entry_returned") is not None) or
                             (config.entry.expected_error and
                              (execution.get("raised") or {}).get("type") == config.entry.expected_error)),
@@ -171,7 +172,8 @@ def check_project(config_path: str | Path, *, output: str | Path | None = None,
                                 forbidden_dirs=config.forbidden_dirs,
                                 service_path_prefix=config.services[0].path_prefix if config.services else "/",
                                 require_service_credential=config.require_service_credential,
-                                credential_env=config.credential_env)
+                                credential_env=config.credential_env,
+                                optional_tests=config.optional_tests)
         report = _verdict(config, execution)
         report.update({"schema": "credproof.safety.report/v1", "checked_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                        "project_tree_sha256": _digest_tree(project),
@@ -231,6 +233,7 @@ def test_credproof_safety_regression():
         "Install the `credproof-safety` package and keep `credproof.toml` in the project root.\n"
         "Run `python -m credproof_safety check --config credproof.toml` before pytest.\n"
         "The generated test reruns the same model-free check; it does not trust a saved PASS, a web page, or a case ID.\n"
+        "Declare the generated `tests/credproof-regression` path in `project.optional_tests`; its inner recursion guard is a wrapper check, not a business test.\n"
         "The check uses an isolated WSL/bubblewrap lab and synthetic credential/service material.\n",
         encoding="utf-8")
     return destination

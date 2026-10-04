@@ -45,16 +45,25 @@ def run_case(root: Path, *, mutate=None, repo_root: Path) -> dict:
     try:
         process = subprocess.run(command, cwd=root, env=env, capture_output=True,
                                  text=True, timeout=180)
+        counts = _junit_counts(junit)
+        if not counts.get('available'):
+            verification_status = 'ENVIRONMENT_FAILURE'
+        elif counts.get('tests') != 1 or counts.get('skipped', 0) or counts.get('errors', 0):
+            verification_status = 'INCOMPLETE_OR_SKIPPED'
+        elif process.returncode != 0:
+            verification_status = 'TEST_FAILURE'
+        else:
+            verification_status = 'PASS'
         return {'execution_mode': 'pytest_subprocess', 'command': command,
                 'cwd_relative': root.name, 'returncode': process.returncode,
                 'stdout': process.stdout, 'stderr': process.stderr,
-                'test_counts': _junit_counts(junit),
-                'pass': process.returncode == 0}
+                'test_counts': counts, 'verification_status': verification_status,
+                'pass': verification_status == 'PASS'}
     except subprocess.TimeoutExpired as exc:
         return {'execution_mode': 'pytest_subprocess', 'command': command,
                 'cwd_relative': root.name, 'returncode': None,
                 'stdout': (exc.stdout or ''), 'stderr': (exc.stderr or ''),
-                'test_counts': _junit_counts(junit), 'pass': False,
+                'test_counts': _junit_counts(junit), 'verification_status': 'ENVIRONMENT_FAILURE', 'pass': False,
                 'exception_type': 'TimeoutExpired'}
 
 
@@ -93,6 +102,7 @@ def main() -> int:
     summary = {'schema': 'credproof.safety.exported-regression/v1',
                'project': 'examples/external/reusable-consumer-fixture',
                'results': {name: {'returncode': row['returncode'], 'pass': row['pass'],
+                                  'verification_status': row.get('verification_status'),
                                   'test_counts': row.get('test_counts')}
                            for name, row in results.items()},
                'claim': 'The exported check was executed in a separate synthetic consumer fixture; no model or real credential was used.'}

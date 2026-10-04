@@ -37,12 +37,16 @@ def _script() -> str:
 
         class CredProofPytestObserver:
             """Trusted pytest plugin; records execution without parsing output text."""
-            def __init__(self, required_paths):
+            def __init__(self, required_paths, optional_paths):
                 self.required_paths = [str(Path(x).as_posix()).rstrip('/') or '.' for x in required_paths]
+                self.optional_paths = [str(Path(x).as_posix()).rstrip('/') or '.' for x in optional_paths]
                 self.node_paths = {}
                 self.path_stats = {path: {'collected': 0, 'executed': 0, 'passed': 0,
-                                          'skipped': 0, 'failed': 0, 'setup_failed': 0}
+                                          'skipped': 0, 'failed': 0, 'setup_failed': 0,
+                                          'teardown_failed': 0, 'required_cases': 0,
+                                          'optional_cases': 0}
                                    for path in self.required_paths}
+                self.cases = {}
                 self.collection_finished = False
                 self.session_exitstatus = None
 
@@ -59,6 +63,11 @@ def _script() -> str:
                         return self.path_stats[required]
                 return None
 
+            def _optional(self, relative):
+                return any(relative == optional or
+                           relative.startswith(optional.rstrip('/') + '/')
+                           for optional in self.optional_paths)
+
             def pytest_collection_finish(self, session):
                 self.collection_finished = True
                 for item in session.items:
@@ -68,6 +77,15 @@ def _script() -> str:
                         bucket = self._bucket(relative)
                         if bucket is not None:
                             bucket['collected'] += 1
+                            optional = self._optional(relative)
+                            bucket['optional_cases' if optional else 'required_cases'] += 1
+                            self.cases[item.nodeid] = {
+                                'path': relative, 'required': not optional,
+                                'collected': 1, 'executed': 0, 'passed': 0,
+                                'skipped': 0, 'xfail': 0, 'xpass': 0,
+                                'failed': 0, 'setup_failed': 0,
+                                'teardown_failed': 0, 'phases': {},
+                            }
 
             def pytest_runtest_logreport(self, report):
                 relative = self.node_paths.get(report.nodeid)
@@ -76,44 +94,84 @@ def _script() -> str:
                 bucket = self._bucket(relative)
                 if bucket is None:
                     return
+                case = self.cases.get(report.nodeid)
+                if case is None:
+                    return
+                case['phases'][report.when] = report.outcome
                 if report.when == 'setup' and report.failed:
                     bucket['setup_failed'] += 1
+                    case['setup_failed'] += 1
                 # A normal pytest skip is reported during setup and therefore
                 # has no call-phase report. Record it explicitly so a zero
                 # exit code cannot be mistaken for an executed business test.
                 if report.skipped:
                     bucket['skipped'] += 1
+                    case['skipped'] += 1
                     if report.when == 'call' and getattr(report, 'wasxfail', False):
                         bucket['executed'] += 1
+                        case['executed'] += 1
+                        case['xfail'] += 1
+                    return
+                if report.when == 'teardown' and report.failed:
+                    bucket['teardown_failed'] += 1
+                    case['teardown_failed'] += 1
                     return
                 if report.when != 'call':
                     return
                 if report.passed:
                     bucket['executed'] += 1
                     bucket['passed'] += 1
+                    case['executed'] += 1
+                    if getattr(report, 'wasxfail', False):
+                        case['xpass'] += 1
+                    else:
+                        case['passed'] += 1
                 elif report.failed:
                     bucket['executed'] += 1
                     bucket['failed'] += 1
+                    case['executed'] += 1
+                    if getattr(report, 'wasxfail', False):
+                        case['xpass'] += 1
+                    else:
+                        case['failed'] += 1
 
             def pytest_sessionfinish(self, session, exitstatus):
                 self.session_exitstatus = int(exitstatus)
 
             def snapshot(self):
                 missing = [path for path, stats in self.path_stats.items() if stats['collected'] == 0]
-                not_executed = [path for path, stats in self.path_stats.items()
-                                if stats['collected'] > 0 and stats['executed'] == 0]
+                required_cases = [case for case in self.cases.values() if case['required']]
+                missing_case_paths = [nodeid for nodeid, case in self.cases.items()
+                                      if case['required'] and case['collected'] == 0]
+                not_executed_cases = [nodeid for nodeid, case in self.cases.items()
+                                      if case['required'] and case['executed'] == 0]
+                unmet_cases = [nodeid for nodeid, case in self.cases.items()
+                               if case['required'] and (case['passed'] != 1 or case['skipped'] or
+                                                        case['xfail'] or case['xpass'] or case['failed'] or
+                                                        case['setup_failed'] or case['teardown_failed'])]
+                required_complete = bool(self.collection_finished and required_cases and
+                                         not missing and not missing_case_paths and not not_executed_cases)
+                required_passed = bool(required_complete and not unmet_cases)
                 return {
                     'schema': 'credproof.pytest-observation/v1',
                     'collection_finished': self.collection_finished,
                     'session_exitstatus': self.session_exitstatus,
                     'required_paths': self.path_stats,
                     'missing_required_paths': missing,
-                    'not_executed_required_paths': not_executed,
-                    'required_tests_completed': bool(self.collection_finished and not missing and not not_executed),
+                    'not_executed_required_paths': [path for path, stats in self.path_stats.items()
+                                                    if stats['required_cases'] > 0 and
+                                                    stats['executed'] == 0],
+                    'required_tests_completed': required_complete,
+                    'required_tests_passed': required_passed,
+                    'required_case_count': len(required_cases),
+                    'required_unmet_cases': unmet_cases,
+                    'missing_required_cases': missing_case_paths,
+                    'not_executed_required_cases': not_executed_cases,
+                    'cases': self.cases,
                     'all_required_skipped': bool(not missing and
-                                                 all(stats['collected'] > 0 and stats['executed'] == 0 and
-                                                     stats['skipped'] >= stats['collected']
-                                                     for stats in self.path_stats.values())),
+                                                 required_cases and
+                                                 all(case['executed'] == 0 and case['skipped'] > 0
+                                                     for case in required_cases)),
                     'collected': sum(stats['collected'] for stats in self.path_stats.values()),
                     'executed': sum(stats['executed'] for stats in self.path_stats.values()),
                     'passed': sum(stats['passed'] for stats in self.path_stats.values()),
@@ -207,7 +265,8 @@ def _script() -> str:
         logging.getLogger().setLevel(logging.DEBUG)
         logging.getLogger().addHandler(log_handler)
         pytest_code = None; entry = None; raised = None
-        pytest_observer = CredProofPytestObserver(json.loads(os.environ['CREDPROOF_REQUIRED_TESTS']))
+        pytest_observer = CredProofPytestObserver(json.loads(os.environ['CREDPROOF_REQUIRED_TESTS']),
+                                                  json.loads(os.environ.get('CREDPROOF_OPTIONAL_TESTS', '[]')))
         try:
             import pytest
             args = json.loads(os.environ['CREDPROOF_TEST_ARGS'])
@@ -298,7 +357,8 @@ def run_sandbox(project: Path, lab: Path, test_args: list[str], entry_module: st
                 timeout: float = 30.0, *, allowed_dirs: tuple[str, ...] = ('allowed',),
                 forbidden_dirs: tuple[str, ...] = ('forbidden',),
                 service_path_prefix: str = '/', require_service_credential: bool = False,
-                credential_env: str = 'CREDPROOF_TEST_CREDENTIAL') -> dict:
+                credential_env: str = 'CREDPROOF_TEST_CREDENTIAL',
+                optional_tests: tuple[str, ...] = ()) -> dict:
     ok, reason = available()
     if not ok:
         return {"status": "BLOCKED", "reason": reason}
@@ -326,7 +386,8 @@ def run_sandbox(project: Path, lab: Path, test_args: list[str], entry_module: st
                    "--ro-bind", paths['site_packages'], "/tmp/site",
                    "--chdir", "/tmp/project", "--", "/usr/bin/python3", "-I", "/tmp/runner.py"]
         env = {
-            "CREDPROOF_TEST_ARGS": json.dumps(test_args), "CREDPROOF_REQUIRED_TESTS": json.dumps([str(x) for x in test_args[2:]]), "CREDPROOF_ENTRY_MODULE": entry_module,
+            "CREDPROOF_TEST_ARGS": json.dumps(test_args), "CREDPROOF_REQUIRED_TESTS": json.dumps([str(x) for x in test_args[2:]]),
+            "CREDPROOF_OPTIONAL_TESTS": json.dumps([str(x) for x in optional_tests]), "CREDPROOF_ENTRY_MODULE": entry_module,
             "CREDPROOF_ENTRY_CALLABLE": entry_callable, "CREDPROOF_ENTRY_REQUEST": json.dumps(entry_request),
             "CREDPROOF_CREDENTIAL_ENV": credential_env, credential_env: credential, "CREDPROOF_INNER": "1",
             "CREDPROOF_ALLOWED_ROOT": "/tmp/lab/" + allowed_dirs[0].replace('\\', '/'),

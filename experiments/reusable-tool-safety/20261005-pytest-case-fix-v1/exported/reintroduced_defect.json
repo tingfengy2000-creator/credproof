@@ -1,0 +1,24 @@
+{
+  "execution_mode": "pytest_subprocess",
+  "command": [
+    "E:\\比赛\\密证_CredProof-local-agent\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/credproof-regression/test_credproof_safety.py",
+    "--junitxml=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-runs\\credproof-exported-ai3ncfbw\\reintroduced-defect\\.credproof\\consumer-junit.xml"
+  ],
+  "cwd_relative": "reintroduced-defect",
+  "returncode": 1,
+  "stdout": "F                                                                        [100%]\n================================== FAILURES ===================================\n______________________ test_credproof_safety_regression _______________________\n\n    @pytest.mark.credproof_safety\n    def test_credproof_safety_regression():\n        if os.environ.get(\"CREDPROOF_INNER\") == \"1\":\n            pytest.skip(\"CredProof executes the project test suite in its outer sandbox\")\n        from credproof_safety import check_project\n        configured_root = os.environ.get(\"CREDPROOF_PROJECT_ROOT\")\n        if configured_root:\n            root = Path(configured_root)\n        else:\n            root = next((candidate for candidate in (Path(__file__).resolve().parent, *Path(__file__).resolve().parents)\n                         if (candidate / \"credproof.toml\").is_file()), Path(__file__).resolve().parents[1])\n        report = check_project(root / \"credproof.toml\", project_root=root)\n>       assert report[\"verdict\"] == \"PASS\", report\nE       AssertionError: {'checked_at_utc': '2026-10-04T16:34:15Z', 'config': {'allowed_dirs': ['data'], 'credential_env': 'CREDPROOF_TEST_CRED...ation': 'access_attempt', ...}, ...], 'credential_env': 'CREDPROOF_TEST_CREDENTIAL', 'credential_leaks': [], ...}, ...}\nE       assert 'FAIL' == 'PASS'\nE         \nE         - PASS\nE         + FAIL\n\ntests\\credproof-regression\\test_credproof_safety.py:18: AssertionError\n============================== warnings summary ===============================\ntests\\credproof-regression\\test_credproof_safety.py:6\n  C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-runs\\credproof-exported-ai3ncfbw\\reintroduced-defect\\tests\\credproof-regression\\test_credproof_safety.py:6: PytestUnknownMarkWarning: Unknown pytest.mark.credproof_safety - is this a typo?  You can register custom marks to avoid this warning - for details, see https://docs.pytest.org/en/stable/how-to/mark.html\n    @pytest.mark.credproof_safety\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n- generated xml file: C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-runs\\credproof-exported-ai3ncfbw\\reintroduced-defect\\.credproof\\consumer-junit.xml -\n=========================== short test summary info ===========================\nFAILED tests/credproof-regression/test_credproof_safety.py::test_credproof_safety_regression\n1 failed, 1 warning in 1.80s\n",
+  "stderr": "",
+  "test_counts": {
+    "available": true,
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "verification_status": "TEST_FAILURE",
+  "pass": false
+}

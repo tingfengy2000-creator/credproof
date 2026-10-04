@@ -37,6 +37,7 @@ class SafetyConfig:
     config_path: Path
     project_root: Path
     tests: tuple[str, ...]
+    optional_tests: tuple[str, ...]
     source_scope: tuple[str, ...]
     mutable_scope: tuple[str, ...]
     allowed_dirs: tuple[str, ...]
@@ -55,6 +56,7 @@ class SafetyConfig:
             "schema": "credproof.project-safety/v1",
             "project_root": ".",
             "tests": list(self.tests),
+            "optional_tests": list(self.optional_tests),
             "source_scope": list(self.source_scope),
             "mutable_scope": list(self.mutable_scope),
             "allowed_dirs": list(self.allowed_dirs),
@@ -129,6 +131,8 @@ def load_config(path: str | Path, *, project_root: str | Path | None = None) -> 
         raise ValueError("Configuration must belong to the selected project")
     project = raw.get("project", {})
     tests = tuple(_relative(x, "project.tests") for x in _strings(project.get("tests", ["tests"]), "project.tests"))
+    optional_tests = tuple(_relative(x, "project.optional_tests")
+                           for x in _strings(project.get("optional_tests", []), "project.optional_tests", allow_empty=True))
     source = tuple(_relative(x, "project.source_scope", glob=True)
                    for x in _strings(project.get("source_scope", ["**/*.py"]), "project.source_scope"))
     mutable = tuple(_relative(x, "project.mutable_scope", glob=True)
@@ -183,7 +187,7 @@ def load_config(path: str | Path, *, project_root: str | Path | None = None) -> 
     report_dir = limits.get("report_dir", raw.get("report_dir", ".credproof"))
     if not isinstance(report_dir, str) or Path(report_dir).is_absolute() or ".." in Path(report_dir).parts:
         raise ValueError("report_dir must stay inside the project")
-    return SafetyConfig(path, root, tests, source, mutable, allowed, forbidden,
+    return SafetyConfig(path, root, tests, optional_tests, source, mutable, allowed, forbidden,
                         require_allowed_file_read, tuple(services), require_service_credential, credential_env,
                         EntrySpec(entry["module"], entry["callable"], request, expected_error),
                         float(timeout), report_dir, str(raw.get("python", "python3")))
@@ -195,6 +199,7 @@ def template(project_root: Path) -> str:
 [project]
 root = "."
 tests = ["tests"]
+optional_tests = []
 source_scope = ["*.py", "**/*.py"]
 mutable_scope = ["*.py", "**/*.py"]
 
