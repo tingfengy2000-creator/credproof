@@ -172,6 +172,8 @@ preliminary.1 阶段的 19 项定向单测使用明确标注的虚构转录；�
 
 ## preliminary.6 增强初赛候选版整合
 
+本版的源码快照、候选包哈希和定向运行收据见 [`preliminary.6 交付收据`](delivery-receipts/preliminary-6/README.md)。
+
 本版把“体验示例—接入项目—执行检查—导出测试—后续复检”统一为同一条开发者路径。导出回归不仅看 pytest 退出码，还核对每个副本新生成的脱敏安全报告：固定副本必须实际 PASS，重新引入缺陷必须实际 FAIL 且包含 `no_forbidden_file_read`，无关文件变更必须仍 PASS。外部项目状态在页面上显示“已记录 · 含失败对照”时，不会被误读为整组通过。
 
 推荐先读[通俗讲解](plain-guide.md)，再按[三种启动入口](startup-modes.md)操作；技术细节和原始结果分别见[可复用安全入口](../reusable-tool-safety/README.md)与[本轮交付索引](../../docs/reusable-tool-safety/README.md#2026-10-05-必要-pytest-用例判定修正dev9)。说明书源文件、PDF、视频和历史记录均保留，旧候选版本不覆盖。
