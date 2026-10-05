@@ -10,6 +10,8 @@
 
 本版新增入口：[价值与创新主张](value-and-innovation.md) · [证据索引](evidence-index.md) · [三种模式与停止方式](startup-modes.md) · [外部 Twine 场景](../external-scenario/twine/README.md) · [一页贡献映射](contribution-map.md) · [源码讲解与追问](source-walkthrough.md) · [开发者体验包](experience-packet/README.md) · [实录视频](video/README.md) · [本版检查](external-delivery-checks.md)。
 
+增强候选包的源码提交、wheel、大小和 SHA-256 见[候选包收据](package-receipt-preliminary8.json)。源码包本身不放入 Git 历史；评审者可按收据中的固定提交和公开构建脚本重建。
+
 第一次使用请先读[增强候选版整合说明](enhanced-integration.md)，它把“登记项目—现场检查—导出测试—后续复检”压缩成一条可操作路径。
 
 ## 1. 先读这些材料
