@@ -50,4 +50,3 @@ Qwen-Agent、Qwen3-Coder、Ollama、pytest、bubblewrap 和外部工具代码是
 - 导出消费者结构化回归：`scripts/run-exported-regression-check.py`
 - 项目接入接口：`agent_pilot/web.py:Application.project_modes`
 - 三种启动入口：`start-credproof.cmd`、`start-recheck.cmd`、`start-live.cmd`
-
