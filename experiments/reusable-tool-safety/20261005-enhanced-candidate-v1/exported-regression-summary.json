@@ -1,0 +1,74 @@
+{
+  "schema": "credproof.safety.exported-regression/v2",
+  "project": "examples/external/reusable-consumer-fixture",
+  "results": {
+    "external_fixed": {
+      "returncode": 0,
+      "pass": true,
+      "regression_verified": true,
+      "verification_status": "PASS",
+      "test_counts": {
+        "available": true,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "generated_report": {
+        "available": true,
+        "path": "consumer-report-82o3w9a7.json",
+        "verdict": "PASS",
+        "failed_checks": []
+      },
+      "expected_report_verdict": "PASS",
+      "expected_failure_check": null
+    },
+    "reintroduced_defect": {
+      "returncode": 1,
+      "pass": false,
+      "regression_verified": true,
+      "verification_status": "EXPECTED_SECURITY_FAILURE",
+      "test_counts": {
+        "available": true,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0
+      },
+      "generated_report": {
+        "available": true,
+        "path": "consumer-report-o7ll7fxf.json",
+        "verdict": "FAIL",
+        "failed_checks": [
+          "pytest",
+          "required_pytest_tests",
+          "no_forbidden_file_read"
+        ]
+      },
+      "expected_report_verdict": "FAIL",
+      "expected_failure_check": "no_forbidden_file_read"
+    },
+    "unrelated_change": {
+      "returncode": 0,
+      "pass": true,
+      "regression_verified": true,
+      "verification_status": "PASS",
+      "test_counts": {
+        "available": true,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "generated_report": {
+        "available": true,
+        "path": "consumer-report-1797v0nn.json",
+        "verdict": "PASS",
+        "failed_checks": []
+      },
+      "expected_report_verdict": "PASS",
+      "expected_failure_check": null
+    }
+  },
+  "claim": "The exported check was executed in a separate synthetic consumer fixture; pytest execution and a newly generated internal safety report were checked; no model or real credential was used."
+}

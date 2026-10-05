@@ -1,4 +1,4 @@
-# CredProof reusable-tool-safety（0.3.0-dev.9）
+# CredProof reusable-tool-safety（0.3.0-dev.10）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -8,7 +8,7 @@
 ## 已实现的共同入口
 
 源码包可用 `python -m pip install .` 安装；本轮在独立临时 Python 3.14 venv 中用
-`setuptools` 构建 wheel `credproof_safety-0.3.0.dev9-py3-none-any.whl`，源码目录
+`setuptools` 构建 wheel `credproof_safety-0.3.0.dev10-py3-none-any.whl`，源码目录
 本身也可直接运行 `python -m credproof_safety`。模型权重和 Ollama 不随 wheel 进入
 安装包。
 
@@ -236,6 +236,31 @@ python scripts/run-exported-regression-check.py `
 | 默认 init 的根目录入口被 `**/*.py` 排除 | `credproof_safety/config.py` 模板显式同时包含 `*.py` 与 `**/*.py` | `tests/test_reusable_tool_safety.py` 覆盖根目录 `tool.py` 与嵌套 `pkg/tool.py` 的匹配 |
 
 上述证据来自真实隔离运行或固定协议回归，没有调用模型，也没有把旧模型轨迹改写成新结果。全跳过、缺失测试和隔离阻断仍按 `UNKNOWN` 处理，不能因 pytest 进程退出 0 就放行。
+
+## 2026-10-05 增强候选整合（dev.10）
+
+本版把三类安全检查、项目接入和持续复检放在同一条操作路径中：开发者先用
+`init` 写配置，再用 `check` 在隔离副本检查凭据输出、目录越界和未授权服务，必要时由
+`repair` 提出候选，最后用 `export-tests` 把同一检查放回项目。页面的“体验示例”只读取
+已有回放；“接入我的项目”只展示固定命令，不接受任意路径、任意命令或远程目标。
+
+导出回归现在同时核对三件事：目标 pytest 是否实际收集并执行、Junit 计数是否完整、
+该副本本次新生成的脱敏 `credproof.safety.report/v1` 是否符合预期。固定副本必须是
+`PASS`；无关文件变更仍为 `PASS`；重新引入目录缺陷必须是 pytest 真实失败、报告为
+`FAIL` 且包含 `no_forbidden_file_read`。环境阻断、报告缺失/结构不对、skip 或收集错误
+均为未验证，不会因为 `pass=false` 就被记成“成功发现缺陷”。外部消费者为示例注册了
+`credproof_safety` pytest 标记，消除了标记警告但不屏蔽真实断言错误。
+
+相应实现位于 `scripts/run-exported-regression-check.py`、
+`credproof_safety/project.py:export_regression_tests` 和
+`examples/external/reusable-consumer-fixture/pytest.ini`。本版没有重新调用模型，
+也没有把外部人工固定版本写成 Agent 自动修复成功。
+
+本次增强候选整合的可复查记录见
+[`20261005-enhanced-candidate-v1`](../../experiments/reusable-tool-safety/20261005-enhanced-candidate-v1/)。其中
+`exported-regression-summary.json` 同时记录 pytest/JUnit 计数和该副本新生成的内部报告：固定与无关变更副本为
+`PASS`，重新引入目录缺陷的副本为预期 `FAIL`，但整个回归命令以 0 退出表示“预期回归已观测并核对”，不是把三个输入都宣称通过。
+该目录还保存 33 个核心单元测试、98 个 Agent/runtime 测试、三类安全演示、外部 python-dotenv 受控记录以及本机 loopback 启动 smoke 结果。
 
 
 

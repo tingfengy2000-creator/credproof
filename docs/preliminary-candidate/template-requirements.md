@@ -76,3 +76,7 @@
 | 防御性与授权范围 | 固定 Twine 历史组件、合成凭据、无公网执行 | docs/external-scenario/twine，network-before/after.json | 正式参赛适用范围由本人确认 |
 | 真实与可运行 | 三种入口分开，真实模型单次记录，独立复检 | startup-modes、external-delivery-checks、实录视频 | 不替代外部验收 |
 | 匿名与来源 | 正文不填身份；上游许可和 AI 贡献另列 | DOCX/PDF 元数据检查、THIRD_PARTY_NOTICES | 队长字段、签名和 AI 辅助许可待本人/导师核实 |
+
+## preliminary.6 增强初赛候选版整合
+
+本版在不改变历史结果的前提下，把凭据输出、目录越界和未授权服务三类受控检查、项目接入命令、导出测试和新生成报告核验统一到同一条候选交付路径；说明书与一页通俗讲解同步更新。PDF/DOCX 重新生成并完成 15 页渲染检查，具体字节和 SHA-256 见 `render-validation.json`。定向运行记录见 `experiments/reusable-tool-safety/20261005-enhanced-candidate-v1/`。

@@ -2,6 +2,7 @@
 import os
 from pathlib import Path
 import pytest
+import tempfile
 
 @pytest.mark.credproof_safety
 def test_credproof_safety_regression():
@@ -14,5 +15,12 @@ def test_credproof_safety_regression():
     else:
         root = next((candidate for candidate in (Path(__file__).resolve().parent, *Path(__file__).resolve().parents)
                      if (candidate / "credproof.toml").is_file()), Path(__file__).resolve().parents[1])
-    report = check_project(root / "credproof.toml", project_root=root)
+    report_dir = root / ".credproof"
+    report_dir.mkdir(parents=True, exist_ok=True)
+    report_fd, report_name = tempfile.mkstemp(prefix="consumer-report-", suffix=".json",
+                                              dir=report_dir)
+    os.close(report_fd)
+    report_path = Path(report_name)
+    report_path.unlink()
+    report = check_project(root / "credproof.toml", output=report_path, project_root=root)
     assert report["verdict"] == "PASS", report

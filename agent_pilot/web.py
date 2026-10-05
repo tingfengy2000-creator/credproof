@@ -330,13 +330,22 @@ class Application:
             'status': 'NOT_RUN',
             'status_detail': '请用外部案例脚本在声明的 WSL 隔离环境运行。',
         }
-        summary = self.root / 'experiments/reusable-tool-safety/20261004-external-dotenv-v4/summary.json'
+        summaries = [
+            self.root / 'experiments/reusable-tool-safety/20261004-external-dotenv-v5/summary.json',
+            self.root / 'experiments/reusable-tool-safety/20261004-external-dotenv-v4/summary.json',
+        ]
         try:
+            summary = next((path for path in summaries if path.is_file()), None)
+            if summary is None:
+                raise FileNotFoundError('external summary is not available')
             record = read_json(summary, 1024 * 1024)
             cases = record.get('cases', {})
             verdicts = {key: value.get('verdict') for key, value in cases.items() if isinstance(value, dict)}
-            external['status'] = 'PASS' if verdicts and all(value in {'PASS', 'FAIL'} for value in verdicts.values()) else 'UNKNOWN'
-            external['status_detail'] = '四个一次性副本已记录：before / after / reintroduced_defect / unrelated_change。'
+            if verdicts and all(value in {'PASS', 'FAIL'} for value in verdicts.values()):
+                external['status'] = 'PASS' if all(value == 'PASS' for value in verdicts.values()) else 'RECORDED'
+            else:
+                external['status'] = 'UNKNOWN'
+            external['status_detail'] = '四个一次性副本已记录：before / after / reintroduced_defect / unrelated_change；含失败对照时显示为已记录，不把整组案例显示成通过。'
             external['case_verdicts'] = verdicts
         except (OSError, ValueError, TypeError, KeyError):
             pass

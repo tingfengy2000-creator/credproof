@@ -211,6 +211,7 @@ def export_regression_tests(config_path: str | Path, destination: str | Path) ->
     test = '''"""CredProof reusable safety regression; generated from a reviewed project config."""
 import os
 from pathlib import Path
+import tempfile
 import pytest
 
 @pytest.mark.credproof_safety
@@ -224,7 +225,14 @@ def test_credproof_safety_regression():
     else:
         root = next((candidate for candidate in (Path(__file__).resolve().parent, *Path(__file__).resolve().parents)
                      if (candidate / "credproof.toml").is_file()), Path(__file__).resolve().parents[1])
-    report = check_project(root / "credproof.toml", project_root=root)
+    report_dir = root / ".credproof"
+    report_dir.mkdir(parents=True, exist_ok=True)
+    report_fd, report_name = tempfile.mkstemp(prefix="consumer-report-", suffix=".json",
+                                              dir=report_dir)
+    os.close(report_fd)
+    report_path = Path(report_name)
+    report_path.unlink()
+    report = check_project(root / "credproof.toml", output=report_path, project_root=root)
     assert report["verdict"] == "PASS", report
 '''
     (destination / "test_credproof_safety.py").write_text(test, encoding="utf-8")
@@ -234,6 +242,8 @@ def test_credproof_safety_regression():
         "Run `python -m credproof_safety check --config credproof.toml` before pytest.\n"
         "The generated test reruns the same model-free check; it does not trust a saved PASS, a web page, or a case ID.\n"
         "Declare the generated `tests/credproof-regression` path in `project.optional_tests`; its inner recursion guard is a wrapper check, not a business test.\n"
+        "Register the `credproof_safety` pytest marker in the consumer project's pytest.ini or pyproject.toml.\n"
+        "Each run writes a newly generated redacted safety report under `.credproof/consumer-report-*.json`; consumers may inspect it separately from pytest's exit code.\n"
         "The check uses an isolated WSL/bubblewrap lab and synthetic credential/service material.\n",
         encoding="utf-8")
     return destination

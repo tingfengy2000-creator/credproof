@@ -1,0 +1,33 @@
+{
+  "execution_mode": "pytest_subprocess",
+  "command": [
+    "E:\\比赛\\密证_CredProof-local-agent\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/credproof-regression/test_credproof_safety.py",
+    "--junitxml=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-runs\\credproof-exported-xpmctimw\\fixed\\.credproof\\consumer-junit.xml"
+  ],
+  "cwd_relative": "fixed",
+  "returncode": 0,
+  "stdout": ".                                                                        [100%]\n- generated xml file: C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-runs\\credproof-exported-xpmctimw\\fixed\\.credproof\\consumer-junit.xml -\n1 passed in 1.68s\n",
+  "stderr": "",
+  "test_counts": {
+    "available": true,
+    "tests": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "generated_report": {
+    "available": true,
+    "path": "consumer-report-82o3w9a7.json",
+    "verdict": "PASS",
+    "failed_checks": []
+  },
+  "expected_report_verdict": "PASS",
+  "expected_failure_check": null,
+  "verification_status": "PASS",
+  "regression_verified": true,
+  "pass": true
+}

@@ -107,7 +107,7 @@ function renderProjectModes() {
   const external = data.external_example || {};
   $('external-case-name').textContent = external.name || '外部项目案例';
   const status = external.status || 'NOT_RUN';
-  const statusLabel = { PASS: '实测通过', FAIL: '实测失败', UNKNOWN: '环境阻断 · UNKNOWN', NOT_RUN: '尚未运行' }[status] || status;
+  const statusLabel = { PASS: '实测通过', FAIL: '实测失败', RECORDED: '已记录 · 含失败对照', UNKNOWN: '环境阻断 · UNKNOWN', NOT_RUN: '尚未运行' }[status] || status;
   $('external-case-status').textContent = statusLabel;
   $('external-case-status').className = `badge ${status === 'PASS' ? 'pass' : status === 'FAIL' ? 'fail' : 'neutral'}`;
   $('external-case-detail').textContent = `${external.scope || ''} ${external.status_detail || ''}`;
