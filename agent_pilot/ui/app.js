@@ -2,7 +2,7 @@
 const API = '/api/agent';
 const $ = id => document.getElementById(id);
 const state = { bootstrap: null, projectModes: null, caseId: '', run: null, view: 'source', busy: false,
-  error: '', stale: false, replay: false, epoch: 0, timer: null, demoRuns: {} };
+  error: '', stale: false, replay: false, epoch: 0, timer: null, demoRuns: {}, project: null };
 const activeStatuses = new Set(['QUEUED', 'RUNNING']);
 const statusNames = { QUEUED: '等待执行', RUNNING: '执行中', COMPLETED: '任务结束',
   STOPPED: '已停止', ERROR: '执行异常' };
@@ -111,6 +111,30 @@ function renderProjectModes() {
   $('external-case-status').textContent = statusLabel;
   $('external-case-status').className = `badge ${status === 'PASS' ? 'pass' : status === 'FAIL' ? 'fail' : 'neutral'}`;
   $('external-case-detail').textContent = `${external.scope || ''} ${external.status_detail || ''}`;
+  const projects = array(data.projects);
+  const selected = $('project-select').value;
+  $('project-select').innerHTML = projects.map(item => `<option value="${escape(item.id)}">${escape(item.label)}</option>`).join('') || '<option value="">未授权项目；使用 --demo 或 --project-config 启动</option>';
+  if (projects.some(p => p.id === selected)) $('project-select').value = selected;
+  $('project-open').disabled = state.busy || !projects.length;
+  $('project-check').disabled = state.busy || !state.project || state.bootstrap?.access_mode === 'view';
+  $('project-export').disabled = state.busy || !state.project;
+  $('project-current').hidden = !state.project;
+  const p = state.project;
+  if (!p) return;
+  const cfg = p.config || {};
+  const r = p.last_report;
+  $('project-current-context').textContent = `${p.label} · ${p.patch_origin} · 对象 ${p.object_sha256?.slice(0, 16)} · ${r ? `上次检查 ${displayTime(r.checked_at_utc)} / ${p.last_report_applicable ? '适用于当前对象' : '旧对象结果，需重新检查'}` : '尚未执行'} · 非实时监控`;
+  $('project-current-scope').innerHTML = `<article class="project-mode-card"><div><strong>本次允许范围</strong><p>源码 ${escape(array(cfg.source_scope).join(', '))} · 业务测试 ${escape(array(cfg.tests).join(', '))}</p><p>允许目录 ${escape(array(cfg.allowed_dirs).join(', '))} · 禁止目录 ${escape(array(cfg.forbidden_dirs).join(', '))}</p><p>允许服务 ${escape(text(cfg.services))} · 凭据变量 ${escape(cfg.credential_env)}</p></div></article>`;
+  const groups = [ ['业务检查', ['pytest', 'required_pytest_tests', 'entry_completed']], ['不泄密', ['no_credential_output']], ['不乱读', ['no_forbidden_file_read', 'no_out_of_scope_file_read', 'required_allowed_file_read']], ['不乱连', ['allowed_service_receipt', 'allowed_service_path', 'no_forbidden_service_receipt', 'no_unauthorized_connection']] ];
+  $('project-current-checks').innerHTML = groups.map(([label, keys]) => {
+    const complete = r && p.last_report_applicable && keys.every(k => typeof r.required_checks?.[k] === 'boolean');
+    const v = !complete ? 'UNKNOWN' : keys.every(k => r.required_checks[k]) ? 'PASS' : 'FAIL';
+    return `<article class="project-mode-card"><div><strong>${label} ${badge(`${verdictNames[v]} · ${v}`, tone(v))}</strong><p>${escape(keys.filter(k => r?.required_checks?.[k] === false).join(', ') || (complete ? '对应检查已完成' : '未执行、未覆盖或旧结果不适用'))}</p></div></article>`;
+  }).join('');
+  const ex = r?.execution || {};
+  $('project-current-code').textContent = p.source_code || '';
+  $('project-current-diff').textContent = p.diff || '没有预置修复差异；当前页面不生成模型补丁。';
+  $('project-current-raw').textContent = text({report: r, evidence_note: 'audit_events 是访问尝试；requests 是本地服务回执；凭据匹配支持确认受控输出。不能把尝试单独当作成功读取。', pytest: ex.pytest_observation});
 }
 
 function renderScope() {
@@ -456,6 +480,21 @@ $('export').addEventListener('click', () => busyAction(async () => {
   window.setTimeout(() => URL.revokeObjectURL(url), 1000);
   announce('已下载服务端导出的实际证据包。');
 }));
+$('project-open').addEventListener('click', () => busyAction(async () => {
+  state.project = await request('/api/project/select', { project_id: $('project-select').value });
+  announce('已读取启动时登记的配置；尚未执行新的安全检查。');
+}));
+$('project-check').addEventListener('click', () => busyAction(async () => {
+  state.project = await request('/api/project/check', { project_id: state.project.id });
+  announce(`新的隔离检查结束：${state.project.last_report?.verdict || 'UNKNOWN'}。没有调用模型。`);
+}));
+$('project-export').addEventListener('click', () => busyAction(async () => {
+  const response = await responseChecked(await fetch('/api/project/export', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({project_id:state.project.id}), cache: 'no-store' }));
+  const url = URL.createObjectURL(await response.blob()); const a = document.createElement('a');
+  a.href = url; a.download = 'credproof-exported-tests.zip'; a.click(); window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+  announce('已导出同一后端的安全测试。放回项目后执行 pytest 会重新检查当前版本。');
+}));
+$('project-select').addEventListener('change', () => { state.project = null; render(); });
 document.querySelectorAll('[data-code-view]').forEach(button => {
   button.addEventListener('click', () => { state.view = button.dataset.codeView; renderCode(); });
   button.addEventListener('keydown', event => {

@@ -1,10 +1,10 @@
 # 密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统
 
-系统结合本地大模型补丁生成与程序控制的安全验收，针对凭据泄露问题给出候选修复，并检查泄露是否消除、必要业务行为是否保持，支持材料导出与复检。
+系统检查工具是否把凭据写入输出、读取规定目录之外的文件或请求未授权服务，并用必要业务测试确认正常任务仍然成立；本地大模型只在已确认的问题上提出候选修复，程序负责验收、导出和复检。
 
 独立开发分支 `feat/reusable-tool-safety` 增加了一个面向小型授权 Python 工具的共同入口：在 WSL/bubblewrap 副本中收集 pytest 和配置入口，观察目录越界读取、未授权 loopback HTTP 访问及合成凭据输出，并可导出以后重复运行的 pytest 回归断言。完整命令、外部 python-dotenv 接入和已覆盖边界见 [可复用工具安全开发说明](docs/reusable-tool-safety/README.md)。
 
-当前增强初赛候选版 **`0.2.0-preliminary.6`**：从深色作品首页进入 h01、h03、h07 三个精选案例，依次查看问题、实际证据、补丁差异和复检结果；项目接入、导出测试和后续复检沿用同一套后端规则。[初赛候选入口](docs/preliminary-candidate/README.md)集中提供说明书、摘要、机制图、启动方式和通俗讲解；[一页展示顺序与录屏分镜](docs/preliminary-candidate/presentation-guide.md)可直接用于排练。
+当前增强初赛候选版 **`0.2.0-preliminary.7`**：从深色作品首页进入 h01、h03、h07 三个精选案例，或在启动时登记的合成项目上查看范围、执行无模型检查和导出回归测试；页面显示凭据、文件、网络、业务四类结果和对象适用性。[初赛候选入口](docs/preliminary-candidate/README.md)集中提供说明书、摘要、机制图、启动方式和通俗讲解；[一页展示顺序与录屏分镜](docs/preliminary-candidate/presentation-guide.md)可直接用于排练。
 
 本版是已有能力的整合交付，未新增漏洞类别、模型实验或通用平台功能；导出回归新增对“实际生成安全报告”的结构化核对。[价值主张](docs/preliminary-candidate/value-and-innovation.md)、[通俗讲解](docs/preliminary-candidate/plain-guide.md)及[证据索引](docs/preliminary-candidate/evidence-index.md)解释为谁解决什么；[开发者体验包](docs/preliminary-candidate/experience-packet/README.md)仍待真人执行。
 

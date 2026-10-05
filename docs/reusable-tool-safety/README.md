@@ -1,4 +1,4 @@
-# CredProof reusable-tool-safety（0.3.0-dev.10）
+# CredProof reusable-tool-safety（0.3.0-dev.11）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -261,6 +261,8 @@ python scripts/run-exported-regression-check.py `
 `exported-regression-summary.json` 同时记录 pytest/JUnit 计数和该副本新生成的内部报告：固定与无关变更副本为
 `PASS`，重新引入目录缺陷的副本为预期 `FAIL`，但整个回归命令以 0 退出表示“预期回归已观测并核对”，不是把三个输入都宣称通过。
 该目录还保存 33 个核心单元测试、98 个 Agent/runtime 测试、三类安全演示、外部 python-dotenv 受控记录以及本机 loopback 启动 smoke 结果。
+
+页面中的项目接入现已提供一个薄的真实操作层：`agent_pilot/project_workspace.py` 登记启动参数中的项目配置，`Application.project_modes` 展示项目范围，`/api/project/select` 只读读取配置，`/api/project/check` 调用同一 `check_project()` 进入隔离副本，`/api/project/export` 生成同一判定器的可重复 pytest 测试。接口只接受登记的 `project_id`，不接受网页路径、命令或远程目标；缺少隔离设施时保留 `UNKNOWN`。
 
 
 

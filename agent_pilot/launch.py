@@ -1,5 +1,6 @@
 """Start the candidate single page; real inference remains a separate explicit action."""
 import argparse
+from pathlib import Path
 from .web import Application, Server
 from .presentation import install_demonstrations
 
@@ -8,10 +9,15 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--port', type=int, default=8765)
     parser.add_argument('--demo', action='store_true', help='Open curated real history, clearly labelled REPLAY')
+    parser.add_argument('--workspace', type=Path, help='Candidate source/material directory (installed wheel may use an extracted package)')
+    parser.add_argument('--project-config', type=Path, help='Local operator explicitly authorizes one adapted project config; not accepted through HTTP')
     parser.add_argument('--mode', choices=['view', 'recheck', 'live'], default='view',
                         help='view: history only; recheck: isolation, no model; live: local model required')
     args = parser.parse_args()
-    app = Application(access_mode=args.mode)
+    options = {'access_mode': args.mode, 'project_config': args.project_config, 'project_examples': args.demo}
+    if args.workspace:
+        options['root'] = args.workspace.resolve(strict=True)
+    app = Application(**options)
     if args.demo:
         install_demonstrations(app)
     with Server(('127.0.0.1', args.port), app) as server:

@@ -247,7 +247,7 @@ class Run:
 
 
 class Application:
-    def __init__(self, root=ROOT, histories=(), access_mode='live'):
+    def __init__(self, root=ROOT, histories=(), access_mode='live', project_config=None, project_examples=False):
         if access_mode not in ('view', 'recheck', 'live'):
             raise ValueError('Unsupported launch mode')
         self.access_mode = access_mode
@@ -261,6 +261,8 @@ class Application:
         self.operation = threading.Lock()
         self._runtime = None
         self._runtime_at = 0.0
+        from .project_workspace import ProjectWorkspace
+        self.project_workspace = ProjectWorkspace(self.root, config_path=project_config, examples=project_examples)
         for entry in histories:
             self.add_history(entry)
 
@@ -351,6 +353,7 @@ class Application:
             pass
         return {
             'schema': 'credproof.project-modes/v1',
+            'projects': self.project_workspace.list(),
             'runtime': self.runtime(),
             'modes': [
                 {'id': 'connect', 'label': '接入项目', 'requires_model': False,
@@ -371,6 +374,19 @@ class Application:
                            '缺少隔离材料时返回 UNKNOWN，不降级到宿主机执行。',
                            '现场修复需要模型；日常 check 与导出测试不需要模型。'],
         }
+
+    def check_selected_project(self, identifier):
+        if self.access_mode == 'view':
+            raise Problem(409, '查看模式不执行代码；请用重新验收入口。')
+        if identifier not in self.project_workspace.projects:
+            raise Problem(400, '只能检查启动时登记的项目。')
+        if not self.operation.acquire(blocking=False):
+            raise Problem(409, '另一任务或复检正在执行。')
+        try:
+            # check_project itself refuses execution if isolation is absent.
+            return self.project_workspace.check(identifier)
+        finally:
+            self.operation.release()
 
     def start(self, case):
         if self.access_mode != 'live':
@@ -753,6 +769,21 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_json(200, app.bootstrap())
         if self.command == 'GET' and path == '/api/project/modes':
             return self.send_json(200, app.project_modes())
+        if self.command == 'POST' and path in ('/api/project/select', '/api/project/check', '/api/project/export'):
+            data = self.body()
+            if set(data) != {'project_id'} or not isinstance(data['project_id'], str) or data['project_id'] not in app.project_workspace.projects:
+                raise Problem(400, '只接受启动时授权的 project_id，不接受路径、命令或判决。')
+            key = data['project_id']
+            if path == '/api/project/select':
+                return self.send_json(200, app.project_workspace.describe(key))
+            if path == '/api/project/check':
+                return self.send_json(200, app.check_selected_project(key))
+            archive = app.project_workspace.export(key)
+            payload = archive.read_bytes()
+            self.write_headers(200, 'application/zip', len(payload),
+                               [('Content-Disposition', 'attachment; filename="credproof-exported-tests.zip"')])
+            self.wfile.write(payload)
+            return
         if self.command == 'POST' and path == '/api/agent/runs':
             data = self.body()
             if set(data) != {'case_id'} or not isinstance(data['case_id'], str):

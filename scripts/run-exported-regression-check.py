@@ -46,7 +46,7 @@ def _read_generated_report(root: Path) -> dict:
     if verdict not in {'PASS', 'FAIL', 'UNKNOWN'} or not isinstance(failed_checks, list):
         return {'available': False, 'reason': 'generated_report_shape'}
     return {'available': True, 'path': reports[0].name, 'verdict': verdict,
-            'failed_checks': [str(item) for item in failed_checks]}
+            'failed_checks': [str(item) for item in failed_checks], 'content': report}
 
 
 def run_case(root: Path, *, mutate=None, repo_root: Path,
@@ -66,6 +66,7 @@ def run_case(root: Path, *, mutate=None, repo_root: Path,
                                  text=True, timeout=180)
         counts = _junit_counts(junit)
         report = _read_generated_report(root)
+        junit_xml = junit.read_text(encoding='utf-8') if junit.is_file() else None
         complete_test = (counts.get('available') is True and counts.get('tests') == 1
                          and counts.get('skipped', 0) == 0 and counts.get('errors', 0) == 0)
         report_matches = (report.get('available') is True and report.get('verdict') == expected_verdict
@@ -97,6 +98,7 @@ def run_case(root: Path, *, mutate=None, repo_root: Path,
                 'cwd_relative': root.name, 'returncode': process.returncode,
                 'stdout': process.stdout, 'stderr': process.stderr,
                 'test_counts': counts, 'generated_report': report,
+                'junit_xml': junit_xml,
                 'expected_report_verdict': expected_verdict,
                 'expected_failure_check': expected_failure_check,
                 'verification_status': verification_status,
@@ -107,6 +109,7 @@ def run_case(root: Path, *, mutate=None, repo_root: Path,
                 'cwd_relative': root.name, 'returncode': None,
                 'stdout': (exc.stdout or ''), 'stderr': (exc.stderr or ''),
                 'test_counts': _junit_counts(junit), 'generated_report': _read_generated_report(root),
+                'junit_xml': junit.read_text(encoding='utf-8') if junit.is_file() else None,
                 'expected_report_verdict': expected_verdict,
                 'expected_failure_check': expected_failure_check,
                 'verification_status': 'ENVIRONMENT_FAILURE', 'regression_verified': False, 'pass': False,
@@ -153,7 +156,8 @@ def main() -> int:
                                   'regression_verified': row.get('regression_verified'),
                                   'verification_status': row.get('verification_status'),
                                   'test_counts': row.get('test_counts'),
-                                  'generated_report': row.get('generated_report'),
+                                  'generated_report': {key: value for key, value in (row.get('generated_report') or {}).items()
+                                                       if key != 'content'},
                                   'expected_report_verdict': row.get('expected_report_verdict'),
                                   'expected_failure_check': row.get('expected_failure_check')}
                            for name, row in results.items()},
