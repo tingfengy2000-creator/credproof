@@ -2,7 +2,9 @@
 
 本目录提供 `credproof-demo-3min.mp4`（180 秒）和从同一批原始画面剪出的 `credproof-demo-1min.mp4`（60 秒）。均为字幕版，无配音。
 
-`0.2.0-preliminary.7` 沿用这两段已生成的真实素材：其中 h01、h03、h07 明确标为历史回放，重新验收段是固定程序的新执行。项目接入本轮新增的“查看范围 / 现场检查 / 导出测试”没有伪造加入旧视频；本轮对应的实际接口检查保存在 `experiments/reusable-tool-safety/20261005-enhanced-candidate-v2/`，现场展示时按 `startup-modes.md` 的项目入口补充操作。视频不宣称包含本轮新增页面操作。
+`0.2.0-preliminary.8` 沿用这两段已生成的真实素材：其中 h01、h03、h07 明确标为历史回放，重新验收段是固定程序的新执行。项目接入本轮新增的“查看范围 / 现场检查 / 导出测试”没有伪造加入旧视频；本轮对应的实际接口检查保存在 `experiments/reusable-tool-safety/20261005-enhanced-candidate-v2/`，现场展示时按 `startup-modes.md` 的项目入口补充操作。视频不宣称包含本轮新增页面操作。
+
+本版另生成了两段包含本轮真实项目操作画面的剪辑：`credproof-demo-3min-preliminary8.mp4`（180 秒）和 `credproof-demo-1min-preliminary8.mp4`（60 秒）。画面来自本轮浏览器中实际打开的首页、问题版本检查、预置修复版本检查和导出入口；问题版本的 FAIL、修复版本的 PASS 以及导出提示均来自本机服务。它们是用于评委讲解的静态帧停留剪辑，不是连续高帧率桌面录屏；没有加入模型响应或预设判决。帧清单在 `preliminary8-capture/capture.json`，编码和哈希在 `preliminary8-video-receipt.json`。
 
 画面由实际浏览器页面约每 0.5 秒采集一帧，再编码为视频；属于低帧率界面实录剪辑，不是伪造页面、连续桌面高帧率录屏或新一轮模型推理。页面内容没有重绘或替换，只在画面外增加标题和字幕。不同镜头之间的操作准备间隔已剪去；同一镜头内按记录时间采样，没有把模型等待伪造成快速推理。
 

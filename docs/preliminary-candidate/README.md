@@ -1,6 +1,6 @@
 # 密证 CredProof：初赛候选阅读与运行入口
 
-**作品名称：密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统。增强初赛候选版本：`0.2.0-preliminary.7`。**
+**作品名称：密证 CredProof——面向 AI 与 Python 工具的安全行为验证与受控修复系统。增强初赛候选版本：`0.2.0-preliminary.8`。**
 
 系统结合本地大模型补丁生成与程序控制的安全验收，针对凭据泄露问题给出候选修复，并检查泄露是否消除、必要业务行为是否保持，支持材料导出与复检。
 
@@ -9,6 +9,8 @@
 从作品首页开始，先了解三个特点和主机制，再依次查看 **h01 有限修复增量 → h03 失败候选与反馈调整 → h07 正常保留 → 材料复检**。精选案例展示真实过程，完整批次结果保留全部八例。本版接入一个 Twine 历史问题组件，分离三种运行入口并提供真实演示视频；外部结果单列，历史八例统计不变；已验证环境仍是 Windows + WSL，适用场景为已登记、已适配业务接口的受控 Python 工具。当前材料供初赛打磨，身份、声明及参赛规则仍待本人确认。
 
 本版新增入口：[价值与创新主张](value-and-innovation.md) · [证据索引](evidence-index.md) · [三种模式与停止方式](startup-modes.md) · [外部 Twine 场景](../external-scenario/twine/README.md) · [一页贡献映射](contribution-map.md) · [源码讲解与追问](source-walkthrough.md) · [开发者体验包](experience-packet/README.md) · [实录视频](video/README.md) · [本版检查](external-delivery-checks.md)。
+
+第一次使用请先读[增强候选版整合说明](enhanced-integration.md)，它把“登记项目—现场检查—导出测试—后续复检”压缩成一条可操作路径。
 
 ## 1. 先读这些材料
 
@@ -170,9 +172,9 @@ preliminary.1 阶段的 19 项定向单测使用明确标注的虚构转录；�
 
 本版只更新初赛表达和材料组织，不新增模型任务、案例集或产品功能。新增[价值与创新主张](value-and-innovation.md)、[证据索引](evidence-index.md)和[开发者体验包](experience-packet/README.md)，并同步说明书、摘要、讲稿、问答和贡献映射。原八例完整统计、Twine 单外部场景、历史视频和 preliminary.4 包均保持原记录；待执行的真人体验没有被写成已完成用户研究。
 
-## preliminary.6 增强初赛候选版整合
+## preliminary.7 增强初赛候选版整合
 
-本版的源码快照、候选包哈希和定向运行收据见 [`preliminary.6 交付收据`](delivery-receipts/preliminary-6/README.md)。
+本版的源码快照、候选包哈希和定向运行收据见 [`preliminary.7 交付收据`](delivery-receipts/preliminary-8/README.md)。
 
 本版把“体验示例—接入项目—执行检查—导出测试—后续复检”统一为同一条开发者路径。导出回归不仅看 pytest 退出码，还核对每个副本新生成的脱敏安全报告：固定副本必须实际 PASS，重新引入缺陷必须实际 FAIL 且包含 `no_forbidden_file_read`，无关文件变更必须仍 PASS。外部项目状态在页面上显示“已记录 · 含失败对照”时，不会被误读为整组通过。
 

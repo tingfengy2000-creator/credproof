@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="dark">
   <meta name="referrer" content="no-referrer">
-  <title>密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统</title>
+  <title>密证 CredProof——面向 AI 与 Python 工具的安全行为验证与受控修复系统</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./app.js" type="module"></script>
 </head>
@@ -36,7 +36,7 @@
     <div class="hero-copy">
       <div class="hero-kicker"><span></span> CREDENTIAL SECURITY / AI TOOLS</div>
       <p class="hero-tagline">工具不泄密、不乱读、不乱连。</p>
-      <h1 id="product-title"><span class="hero-name">密证 <em>CredProof</em></span><span class="hero-product">——面向 AI 工具的凭据泄露验证与受控修复系统</span></h1>
+      <h1 id="product-title"><span class="hero-name">密证 <em>CredProof</em></span><span class="hero-product">——面向 AI 与 Python 工具的安全行为验证与受控修复系统</span></h1>
       <p class="hero-description">工具能正常运行，不代表只做了被允许的事。检查密钥输出、目录之外的文件读取和未授权服务请求；同时验收必要业务行为，把可再次运行的安全检查留在项目里。</p>
       <div class="hero-capabilities"><span>本地模型</span><span>运行不调用付费 API</span><span>材料可复检</span></div><div class="hero-actions"><a class="button hero-primary" href="#cases">探索典型案例 <svg class="icon"><use href="#i-arrow"/></svg></a><a class="button hero-secondary" href="#workbench">进入验证工作区 <span>↗</span></a></div>
       <p class="hero-boundary"><svg class="icon"><use href="#i-lock"/></svg>程序检查是否合格，Agent 提出候选，开发者可以持续复检。</p>
@@ -82,7 +82,7 @@
       <article class="project-entry-main">
         <div class="project-entry-intro"><span class="project-entry-orb"><svg class="icon"><use href="#i-code"/></svg></span><div><strong>四步接入，结果留在项目里</strong><p>配置文件由开发者确认目录、服务、凭据环境变量和必要业务检查；浏览器只展示入口，不接受任意代码或路径。</p></div></div>
         <div id="project-modes" class="project-modes"><div class="project-mode-loading">正在读取接入入口…</div></div>
-        <div class="project-mode-card"><label for="project-select">体验示例 / 启动时授权项目</label><select id="project-select"><option value="">尚未登记</option></select><button id="project-open" class="button">查看范围</button><button id="project-check" class="button">现场检查 · 无模型</button><button id="project-export" class="button">导出安全测试</button></div>
+        <div class="project-mode-card project-project-controls"><div class="project-project-select"><label for="project-select">体验示例 / 启动时授权项目</label><select id="project-select"><option value="">尚未登记</option></select></div><div class="project-project-actions"><button id="project-open" class="button">查看范围</button><button id="project-check" class="button">现场检查 · 无模型</button><button id="project-export" class="button">导出安全测试</button></div></div>
         <section id="project-current" hidden><p id="project-current-context"></p><div id="project-current-scope" class="project-modes"></div><div id="project-current-checks" class="project-modes"></div><details><summary>代码、预置修改差异与原始报告</summary><pre id="project-current-code"></pre><pre id="project-current-diff"></pre><pre id="project-current-raw"></pre></details></section>
       </article>
       <aside class="project-entry-side">
@@ -134,7 +134,7 @@
       <details class="technical-details"><summary>运行身份与记录时间</summary><div id="run-details" class="run-details"><span id="task-identity">未创建任务</span><span id="updated-at">状态按请求刷新，不是实时监控。</span></div></details>
     </div>
   </div>
-  <footer class="footer"><span>密证 CredProof <i>·</i> 凭据泄露验证与受控修复</span><span>发现疑点 <svg class="icon"><use href="#i-arrow"/></svg> 生成候选 <svg class="icon"><use href="#i-arrow"/></svg> 验证复检</span></footer>
+  <footer class="footer"><span>密证 CredProof <i>·</i> 不泄密、不乱读、不乱连</span><span>发现疑点 <svg class="icon"><use href="#i-arrow"/></svg> 生成候选 <svg class="icon"><use href="#i-arrow"/></svg> 验证复检</span></footer>
 </main>
 <div id="announcement" class="sr-only" role="status" aria-live="polite"></div>
 </body>

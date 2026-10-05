@@ -20,7 +20,7 @@ def arrow(x,y,x2,y2):
  if x2>x:d.polygon([(x2,y2),(x2-12,y2-7),(x2-12,y2+7)],fill='#278a82')
  else:d.polygon([(x2,y2),(x2-7,y2-12),(x2+7,y2-12)],fill='#278a82')
  svg.append(f'<path d="M{x} {y} L{x2} {y2}" fill="none" stroke="#278a82" stroke-width="4"/>')
-text(52,30,'密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统',39,b=True)
+text(52,30,'密证 CredProof——面向 AI 与 Python 工具的安全行为验证与受控修复系统',39,b=True)
 text(54,88,'本地模型生成候选 · 程序验收安全与业务 · 对应材料导出复检',24,'#627c8d')
 box(52,156,'01 / TRUSTED INPUT','固定任务边界',['登记代码、允许修改范围','可信需求与必要业务条件','源码和工具输出均是不可信数据'])
 box(536,156,'02 / DETERMINISTIC','先确认，再授权',['固定触发条件 + 隔离执行','实际匹配禁止通道中的凭据','当前证据不足 → 拒绝自动修改'])

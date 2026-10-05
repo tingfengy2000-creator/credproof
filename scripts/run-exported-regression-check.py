@@ -22,12 +22,20 @@ def _junit_counts(path: Path) -> dict:
     suites = [root] if root.tag.endswith('testsuite') else list(root.iter('testsuite'))
     def total(name):
         return sum(int(s.attrib.get(name, 0)) for s in suites)
+    tests = total("tests")
+    failures = total("failures")
+    errors = total("errors")
+    skipped = total("skipped")
     return {
         "available": True,
-        "tests": total("tests"),
-        "failures": total("failures"),
-        "errors": total("errors"),
-        "skipped": total("skipped"),
+        "tests": tests,
+        "failures": failures,
+        "errors": errors,
+        "skipped": skipped,
+        # pytest's JUnit writer does not promise a `passed` attribute.  With
+        # errors/skips/failures separated, this is the number of explicit
+        # successful test cases rather than a return-code guess.
+        "passed": max(0, tests - failures - errors - skipped),
     }
 
 
@@ -67,8 +75,20 @@ def run_case(root: Path, *, mutate=None, repo_root: Path,
         counts = _junit_counts(junit)
         report = _read_generated_report(root)
         junit_xml = junit.read_text(encoding='utf-8') if junit.is_file() else None
+        # A return code is not enough: a skipped wrapper or collection error can
+        # also produce a misleading subprocess result.  The exported target
+        # must be exactly one collected, non-skipped test, with an explicit
+        # pass for the healthy copies or an explicit assertion failure for the
+        # reintroduced defect.
         complete_test = (counts.get('available') is True and counts.get('tests') == 1
-                         and counts.get('skipped', 0) == 0 and counts.get('errors', 0) == 0)
+                         and counts.get('skipped', 0) == 0 and counts.get('errors', 0) == 0
+                         and counts.get('failures', 0) + counts.get('passed', 0) == 1)
+        expected_assertion_failure = (expected_verdict == 'FAIL'
+                                      and counts.get('failures', 0) == 1
+                                      and counts.get('passed', 0) == 0)
+        expected_assertion_pass = (expected_verdict == 'PASS'
+                                   and counts.get('passed', 0) == 1
+                                   and counts.get('failures', 0) == 0)
         report_matches = (report.get('available') is True and report.get('verdict') == expected_verdict
                           and (expected_failure_check is None or expected_failure_check in report.get('failed_checks', [])))
         if not complete_test:
@@ -80,10 +100,10 @@ def run_case(root: Path, *, mutate=None, repo_root: Path,
         elif not report_matches:
             verification_status = 'REPORT_MISMATCH'
             verified = False
-        elif expected_verdict == 'PASS' and process.returncode == 0:
+        elif expected_verdict == 'PASS' and process.returncode == 0 and expected_assertion_pass:
             verification_status = 'PASS'
             verified = True
-        elif expected_verdict == 'FAIL' and process.returncode != 0:
+        elif expected_verdict == 'FAIL' and process.returncode != 0 and expected_assertion_failure:
             verification_status = 'EXPECTED_SECURITY_FAILURE'
             verified = True
         elif expected_verdict == 'PASS':

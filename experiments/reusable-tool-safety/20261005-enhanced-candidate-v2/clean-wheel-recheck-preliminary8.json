@@ -1,0 +1,29 @@
+{
+  "schema": "credproof.safety.clean-wheel-recheck/v1",
+  "package": "credproof_safety-0.3.0.dev12-py3-none-any.whl",
+  "python": "3.12.14",
+  "pytest": "9.1.1",
+  "source_import": "site-packages/credproof_safety/__init__.py",
+  "commands": [
+    {
+      "command": "python -m credproof_safety check --config credproof.toml --output .credproof/report.json",
+      "exit_code": 0,
+      "result": "PASS report generated"
+    },
+    {
+      "command": "python -m credproof_safety export-tests --config credproof.toml --output tests/credproof-regression",
+      "exit_code": 0,
+      "result": "EXPORTED"
+    },
+    {
+      "command": "python -m pytest -q tests/credproof-regression --junitxml .credproof/consumer-junit.xml",
+      "exit_code": 0,
+      "result": "1 passed"
+    }
+  ],
+  "workspace": "fresh consumer copy with pre-existing exported wrapper omitted",
+  "model_called": false,
+  "network_target": "local mock only",
+  "isolation": "same prepared WSL/bubblewrap runtime; no host fallback",
+  "note": "The installed import was checked from a directory outside the repository; this is an install-path check, not cross-machine validation."
+}

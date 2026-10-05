@@ -15,16 +15,24 @@ from .runner import run_sandbox
 from agent_pilot.runtime_config import runtime_temp_root
 
 
+_IGNORED_PROJECT_NAMES = {".git", ".venv", "__pycache__", ".credproof"}
+
+
 def _digest_tree(root: Path) -> str:
     rows = []
     for path in sorted(root.rglob("*")):
+        # Identity must describe the same reviewable tree that is copied into
+        # the disposable checker.  Local VCS, caches and previous reports are
+        # deliberately outside the object being accepted.
+        if any(part in _IGNORED_PROJECT_NAMES for part in path.relative_to(root).parts):
+            continue
         if path.is_file() and not path.is_symlink():
             rows.append((path.relative_to(root).as_posix(), hashlib.sha256(path.read_bytes()).hexdigest()))
     return hashlib.sha256(json.dumps(rows, ensure_ascii=False).encode()).hexdigest()
 
 
 def _copy_project(root: Path, destination: Path) -> None:
-    ignored = shutil.ignore_patterns(".git", ".venv", "__pycache__", ".credproof", "*.pyc")
+    ignored = shutil.ignore_patterns(*_IGNORED_PROJECT_NAMES, "*.pyc")
     shutil.copytree(root, destination, symlinks=True, ignore=ignored)
     for path in destination.rglob("*"):
         if path.is_symlink():

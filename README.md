@@ -4,7 +4,7 @@
 
 独立开发分支 `feat/reusable-tool-safety` 增加了一个面向小型授权 Python 工具的共同入口：在 WSL/bubblewrap 副本中收集 pytest 和配置入口，观察目录越界读取、未授权 loopback HTTP 访问及合成凭据输出，并可导出以后重复运行的 pytest 回归断言。完整命令、外部 python-dotenv 接入和已覆盖边界见 [可复用工具安全开发说明](docs/reusable-tool-safety/README.md)。
 
-当前增强初赛候选版 **`0.2.0-preliminary.7`**：从深色作品首页进入 h01、h03、h07 三个精选案例，或在启动时登记的合成项目上查看范围、执行无模型检查和导出回归测试；页面显示凭据、文件、网络、业务四类结果和对象适用性。[初赛候选入口](docs/preliminary-candidate/README.md)集中提供说明书、摘要、机制图、启动方式和通俗讲解；[一页展示顺序与录屏分镜](docs/preliminary-candidate/presentation-guide.md)可直接用于排练。
+当前增强初赛候选版 **`0.2.0-preliminary.8`**：从深色作品首页进入 h01、h03、h07 三个精选案例，或在启动时登记的合成项目上查看范围、执行无模型检查和导出回归测试；页面显示凭据、文件、网络、业务四类结果和对象适用性。[初赛候选入口](docs/preliminary-candidate/README.md)集中提供说明书、摘要、机制图、启动方式和通俗讲解；[一页展示顺序与录屏分镜](docs/preliminary-candidate/presentation-guide.md)可直接用于排练。
 
 本版是已有能力的整合交付，未新增漏洞类别、模型实验或通用平台功能；导出回归新增对“实际生成安全报告”的结构化核对。[价值主张](docs/preliminary-candidate/value-and-innovation.md)、[通俗讲解](docs/preliminary-candidate/plain-guide.md)及[证据索引](docs/preliminary-candidate/evidence-index.md)解释为谁解决什么；[开发者体验包](docs/preliminary-candidate/experience-packet/README.md)仍待真人执行。
 

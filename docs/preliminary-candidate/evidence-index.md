@@ -47,3 +47,7 @@
 ## 完整口径及已知方法
 
 [八例完整记录](../../experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison/results.json) · [已有官方资料与原论文核查](../preliminary/01_related_work_and_template.md) · [方法代码](../../agent_pilot/reliability.py)。A/B/C 问题修复 3/4、1/4、4/4；完整任务 7/8、4/8、6/8。未完成、原始疑点和失败都保留。扫描器已有能力不写成缺陷，规范 CI 与本方法有重合；未对现成修复 Agent 作产品排名。
+
+## 增强候选版项目接入现场记录
+
+本轮没有新模型任务。页面在启动时登记的两个合成项目上调用同一后端：问题版本 [返回 FAIL](../../experiments/reusable-tool-safety/20261005-enhanced-candidate-v2/project-entry-check-preliminary8.json)，人工预置修复示例 [返回 PASS](../../experiments/reusable-tool-safety/20261005-enhanced-candidate-v2/project-entry-check-preliminary8.json)。导出响应的 [字节与 SHA-256 收据](../../experiments/reusable-tool-safety/20261005-enhanced-candidate-v2/project-entry-export-preliminary8.json)对应 2,226 字节 ZIP；导出测试的 [逐副本结构化记录](../../experiments/reusable-tool-safety/20261005-enhanced-candidate-v2/exported-regression-v6/summary.json)要求固定/无关副本各有一个真实通过目标，缺陷副本有一个真实断言失败并生成 FAIL 报告。

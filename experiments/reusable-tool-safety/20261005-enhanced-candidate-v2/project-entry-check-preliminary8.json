@@ -1,0 +1,51 @@
+{
+  "endpoint": "http://127.0.0.1:18771",
+  "modes_status": 200,
+  "registered_projects": [
+    {
+      "id": "assistant-original",
+      "label": "资料助手 · 问题版本",
+      "patch_origin": "本项目合成样例"
+    },
+    {
+      "id": "assistant-fixed",
+      "label": "资料助手 · 预置修复示例",
+      "patch_origin": "人工预置修复；不是现场模型生成"
+    }
+  ],
+  "checks": [
+    {
+      "project_id": "assistant-original",
+      "select_status": 200,
+      "check_status": 200,
+      "label": "资料助手 · 问题版本",
+      "patch_origin": "本项目合成样例",
+      "object_sha256": "45154edfec0f04a03ded69e0c44c5edc0435c623f6ec47f842d60392a565aa54",
+      "verdict": "FAIL",
+      "failed_checks": [
+        "pytest",
+        "required_pytest_tests",
+        "no_forbidden_file_read",
+        "no_credential_output",
+        "no_forbidden_service_receipt",
+        "no_unauthorized_connection"
+      ],
+      "applicable": true,
+      "operation": "NEW_ISOLATED_CHECK_NO_MODEL",
+      "checked_at_utc": "2026-10-05T15:42:15Z"
+    },
+    {
+      "project_id": "assistant-fixed",
+      "select_status": 200,
+      "check_status": 200,
+      "label": "资料助手 · 预置修复示例",
+      "patch_origin": "人工预置修复；不是现场模型生成",
+      "object_sha256": "51e5dcc651de45fd78fced21dbb627882379ef100a6d88f92c70b4888f1f0820",
+      "verdict": "PASS",
+      "failed_checks": [],
+      "applicable": true,
+      "operation": "NEW_ISOLATED_CHECK_NO_MODEL",
+      "checked_at_utc": "2026-10-05T15:42:17Z"
+    }
+  ]
+}
