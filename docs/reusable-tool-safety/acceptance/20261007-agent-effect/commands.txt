@@ -1,0 +1,7 @@
+# Frozen run commands
+
+Source freeze: git rev-parse HEAD -> e90a472 (before model run)
+Hardware: nvidia-smi -> NVIDIA GeForce RTX 5090, 32607 MiB, 3511 MiB, 610.88
+Model/runtime: WSL Ubuntu-24.04; Ollama 0.34.4; qwen3-coder:30b manifest SHA-256 06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca
+Run: .venv\Scripts\python.exe -m credproof_safety repair --config examples\material_assistant\credproof.toml --output docs\reusable-tool-safety\acceptance\20261007-agent-effect\repair.json
+Exit: 3; run-start.txt and run-command-result.txt are published here. Raw repair.json, CLI stdout/stderr and full artifact are preserved outside the repository. Public redacted copies are under evidence/.

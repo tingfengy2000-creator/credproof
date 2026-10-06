@@ -364,3 +364,8 @@ python scripts/run-exported-regression-check.py `
 固定副本 1/1 `PASS`，重新引入缺陷 1/1 `TEST_FAILURE`，无关变更 1/1 `PASS`。
 
 本版的原始记录由脚本自动生成；它们支持受控合成场景的判定修正，不构成模型盲测或跨平台结论。
+
+
+## 2026-10-07 受限 Agent 效果复测
+
+对登记任务 p01 只进行了一次冻结的有限模型运行。新的 get_evidence 已列出真实入口和业务测试，但模型仍有两次猜路径，随后在提交候选前触发一次 FAIL 验收，并在第4次请求达到120秒单请求超时；独立统计为4次模型尝试、3份usage、6次工具请求、0个接受候选、1次FAIL验收。没有模型修复PASS、候选导出或新目录复检，状态继续为 `NOT_READY_FOR_HANDOFF`。完整脱敏轨迹见 [`acceptance/20261007-agent-effect/`](acceptance/20261007-agent-effect/)。

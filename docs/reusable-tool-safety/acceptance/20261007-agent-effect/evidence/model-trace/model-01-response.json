@@ -1,0 +1,54 @@
+{
+  "id": "chatcmpl-979",
+  "object": "chat.completion",
+  "created": 1791302750,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "",
+        "tool_calls": [
+          {
+            "id": "call_k0kpreve",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "get_evidence",
+              "arguments": "{}"
+            }
+          },
+          {
+            "id": "call_h51nma4c",
+            "index": 1,
+            "type": "function",
+            "function": {
+              "name": "read_code",
+              "arguments": "{\"path\":\"src/main.py\"}"
+            }
+          },
+          {
+            "id": "call_wn1rg773",
+            "index": 2,
+            "type": "function",
+            "function": {
+              "name": "read_code",
+              "arguments": "{\"path\":\"tests/test_main.py\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 592,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "completion_tokens": 60,
+    "total_tokens": 652
+  }
+}
