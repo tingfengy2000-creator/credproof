@@ -11,7 +11,7 @@
 3. 最后看 [h03 历史反馈过程](evidence-index.md#h03-脱敏前缀不等于移除秘密)：第一候选被真实证据拒绝，第二候选通过。
 4. 需要复查时运行 [启动模式](startup-modes.md) 和导出材料自带的复检入口。
 
-正式正文见 [说明书](manuscript.md)，PDF 与可编辑文件见 [PDF](credproof-manuscript-candidate.pdf) 与 [DOCX](credproof-manuscript-candidate.docx)。主展示案例是精选演示，不替代完整批次统计；失败和未完成任务仍保存在 [证据索引](evidence-index.md) 与历史目录。
+正式正文见 [说明书](manuscript.md)，PDF 与可编辑文件见 [PDF](credproof-manuscript-candidate.pdf) 与 [DOCX](credproof-manuscript-candidate.docx)。本版候选包和校验值见 [preliminary.9 交付收据](delivery-receipts/preliminary-9/README.md)。主展示案例是精选演示，不替代完整批次统计；失败和未完成任务仍保存在 [证据索引](evidence-index.md) 与历史目录。
 
 ## 当前交付边界
 
