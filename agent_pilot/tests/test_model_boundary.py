@@ -7,6 +7,9 @@ against accidentally reverting to the old whole-checkout launcher.
 from pathlib import Path
 import unittest
 
+from credproof_safety.agent import _model_feedback
+from credproof_safety.config import load_config
+
 
 SOURCE = Path(__file__).resolve().parents[2] / "credproof_safety" / "agent.py"
 
@@ -36,6 +39,14 @@ class ModelBoundaryContractTests(unittest.TestCase):
         self.assertIn("native_requests()", text)
         self.assertIn("native_response(ident, value)", text)
         self.assertIn("model_boundary", text)
+
+    def test_feedback_exposes_declared_business_files_and_contract(self):
+        config = load_config(Path(__file__).resolve().parents[2] / "examples/material_assistant/credproof.toml")
+        feedback = _model_feedback({"verdict": "FAIL", "execution": {}}, config)
+        self.assertIn("tool.py", feedback["readable_paths"])
+        self.assertIn("tests/test_business.py", feedback["readable_paths"])
+        self.assertEqual(feedback["repair_guidance"]["entry_path"], "tool.py")
+        self.assertIn("allowed mock service", feedback["repair_guidance"]["normal_case"])
 
 
 if __name__ == "__main__":
