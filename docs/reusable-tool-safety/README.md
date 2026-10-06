@@ -1,13 +1,13 @@
-## 清洁安装与需求验收（dev15）
+## 清洁安装与需求验收（dev16）
 
 本版先完成清洁安装链路和可复核需求表，再决定是否交接 5060。入口文件是 [`requirements-acceptance.md`](requirements-acceptance.md) 与机器可读的 [`requirements-acceptance.json`](requirements-acceptance.json)。
 
 - 清洁安装证据：[`acceptance/20261006-final/`](acceptance/20261006-final/)；包括 wheel、site-packages 导入来源、CLI before/fixed、浏览器实际操作、导出消费者 pytest/JUnit 和环境预检。
 - 清洁安装发现的 wheel 静态资源缺口已在 `pyproject.toml` 修复，细节见 [`packaging-gap.md`](packaging-gap.md)。
-- 页面操作记录见 [`page-flow.md`](page-flow.md)。
+- 无模型项目检查与导出记录见 [`page-flow.md`](page-flow.md)；模型现场入口的真实 HTTP 记录见 [`acceptance/20261006-page-live-boundary/`](acceptance/20261006-page-live-boundary/)。
 - 当前状态：程序检查、导出链以及一次真实模型边界运行均有可读证据；本次模型任务本身按预算以 `INCOMPLETE` 结束，不能写成自动修复成功。
 
-# CredProof reusable-tool-safety（0.3.0-dev.15）
+# CredProof reusable-tool-safety（0.3.0-dev.16）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -161,7 +161,7 @@ GPU 驱动只读目录和 `/work`、`/rpc` 受控目录。模型进程没有仓�
 这仍不是公平盲测或通用隔离证明：模型运行只覆盖一个授权合成项目，本次三份候选都被可信验收判 `FAIL`，
 任务按预算 `INCOMPLETE` 结束。
 
-旧的 `agent_pilot.offline_run` 历史比较入口现在默认 fail-closed；它只保留历史记录，不再启动模型。现场模型入口统一走 `credproof_safety repair` 的白名单启动器，避免把旧的 WSL-only 网络隔离误当成模型进程完整隔离。
+旧的 `agent_pilot.offline_run` 历史比较入口现在默认 fail-closed；它只保留历史记录，不再启动模型。页面的登记案例 `p01` 通过 `agent_pilot/web.py:launch_command` → `credproof_safety.web_repair` → `credproof_safety.agent.request_repair` 进入同一个白名单模型启动器，项目身份固定为 `assistant-original`，页面不会接受任意路径或命令。现场任务的真实终态仍由程序报告；本轮记录为 `INCOMPLETE` + `FAIL`，没有用历史回放替代，也没有把失败改写为修复成功。p02–p06 仍明确为历史回放入口。
 
 ## 当前边界
 

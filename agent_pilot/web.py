@@ -1,7 +1,9 @@
 """Loopback-only, standard-library UI bridge for one reviewed local Agent task.
 
 HTTP callers select registry IDs, never paths, commands, code or verdicts.
-Raw supervisor streams remain private; candidate execution belongs to offline_run.
+Raw supervisor streams remain private; live repair is delegated to the reviewed
+``credproof_safety.agent`` boundary launcher and adapted into the UI record
+shape.  Historical records remain replay-only.
 """
 from __future__ import annotations
 
@@ -25,6 +27,7 @@ import zipfile
 
 from .runtime_config import load_config, validate_runtime_root, wsl_prefix
 from .preflight import observe as observe_runtime
+from credproof_safety.config import load_config as load_safety_config
 
 ROOT = Path(__file__).resolve().parents[1]
 ID = re.compile(r'[a-z][a-z0-9_-]{1,63}\Z')
@@ -119,6 +122,23 @@ def linux_path(path):
     return '/mnt/' + path.drive[0].lower() + '/' + '/'.join(path.parts[1:])
 
 
+LIVE_PROJECTS = {
+    # The page exposes only registered case IDs.  p01 is the one live project
+    # adapter currently approved for this boundary; the other historical IDs
+    # remain readable but are not silently routed to another source tree.
+    'p01': ('assistant-original', Path('examples/material_assistant/credproof.toml')),
+}
+
+
+def live_project(root, case_id):
+    entry = LIVE_PROJECTS.get(case_id)
+    if entry is None:
+        raise ValueError('该登记案例尚未接入新的现场修复边界')
+    project_id, relative = entry
+    config = confined(Path(root) / relative, Path(root))
+    return project_id, config
+
+
 def launch_command(root, case_id, output):
     config = load_config(root)
     observed = runtime_observation(root)
@@ -128,12 +148,13 @@ def launch_command(root, case_id, output):
             or not runtime.startswith('/')):
         raise ValueError('Read-only preflight did not establish available runtime files')
     validate_runtime_root(runtime)
-    command = ['/usr/bin/env', 'CREDPROOF_RUNTIME_ROOT=' + runtime,
-               'unshare', '--user', '--map-root-user', '--net', '--fork', runtime + '/venv/bin/python',
-               '-m', 'agent_pilot.offline_run', '--reliability', '--agent-only',
-               '--cases', case_id, '--output', linux_path(output)]
-    if os.name == 'nt':
-        command = [*wsl_prefix(config), '--cd', linux_path(root), '--exec', *command]
+    project_id, project_config = live_project(root, case_id)
+    # request_repair owns the reviewed model boundary.  Invoke it in a
+    # separate host interpreter so it can open the WSL/bubblewrap boundary;
+    # never run the legacy offline_run or a caller-provided command here.
+    command = [sys.executable, '-m', 'credproof_safety.web_repair',
+               '--project-id', project_id, '--case-id', case_id,
+               '--config', str(project_config), '--output', str(Path(output).absolute())]
     return command
 
 
@@ -312,9 +333,11 @@ class Application:
         with self.mutex:
             saved_runs = list(self.runs.values())
         return {'cases': [{'id': key, 'title': '受限任务 ' + key.upper(),
-                           'description': '已审查的本地合成 Python 工具；风险与修复结论以实际运行证据为准。',
+                           'description': ('已审查的本地合成 Python 工具；风险与修复结论以实际运行证据为准。'
+                                           + (' 当前现场修复映射到“资料助手”固定项目。' if key in LIVE_PROJECTS
+                                              else ' 当前仅提供历史记录查看，现场修复尚未接入新边界。')),
                            'source_code': text_file(path), 'source_sha256': sha(text_file(path)),
-                           'rules': PUBLIC_RULES} for key, path in self.cases.items()],
+                           'rules': PUBLIC_RULES, 'live_supported': key in LIVE_PROJECTS} for key, path in self.cases.items()],
                 'runtime': self.runtime(), 'access_mode': self.access_mode,
                 'demonstrations': getattr(self, 'demonstrations', []),
                 'history': [{'id': run.id, 'case_id': run.case_id, 'created_at': run.started_at,
@@ -393,6 +416,8 @@ class Application:
             raise Problem(409, '当前入口未启用现场修复。请使用 start-live.cmd。')
         if case not in self.cases:
             raise Problem(400, '案例不在服务端登记范围内。')
+        if case not in LIVE_PROJECTS:
+            raise Problem(409, '该登记案例仍只支持历史回放；新的现场修复边界尚未为它建立适配。')
         if not self.runtime(force=True)['ready']:
             raise Problem(409, '运行设施未就绪或另一操作正在执行；未启动新任务。')
         if not self.operation.acquire(blocking=False):
@@ -402,14 +427,22 @@ class Application:
             identifier = 'live-' + uuid.uuid4().hex
             folder = confined(self.runs_root / identifier, self.runs_root)
             folder.mkdir(exist_ok=False)
+            _, project_config = live_project(self.root, case)
             source = text_file(self.cases[case])
+            if project_config.is_file():
+                project_cfg = load_safety_config(project_config)
+                project_entry = project_cfg.project_root / (project_cfg.entry.module.replace('.', '/') + '.py')
+                source = text_file(project_entry) or source
             (folder / 'requested-original.py').write_text(source, encoding='utf-8', newline='\n')
             run = Run(identifier, case, folder, folder / 'output/comparison' / case / 'C-agent',
                       source, started_at=now(), updated_at=now())
             with self.mutex:
                 self.runs[identifier] = run
             save_json(folder / 'request.json', {'id': identifier, 'case_id': case,
-                      'source_sha256': sha(source), 'started_at': run.started_at, 'execution': 'real-local-model-inference'})
+                      'project_id': LIVE_PROJECTS[case][0], 'project_config': str(project_config.relative_to(self.root)),
+                      'source_sha256': sha(source), 'started_at': run.started_at,
+                      'execution': 'real-local-model-inference',
+                      'launcher': 'credproof_safety.agent.request_repair'})
             thread = threading.Thread(target=self._worker, args=(run,), daemon=True)
             thread.start()
             worker_started = True
@@ -614,6 +647,10 @@ class Application:
                   'material_binding': material, 'recheck_applicability': applicable,
                   'historical_recheck': historical_recheck,
                   'stop_reason': task.get('reason') or run.error,
+                  'project': {'id': (row or {}).get('project_id'),
+                              'config': (row or {}).get('project_config'),
+                              'adapter': (row or {}).get('web_adapter'),
+                              'model_boundary': (row or {}).get('model_boundary')},
                   'remaining_uncertainty': notes,
                   'process': {'exit_code': run.exit_code, 'raw_streams_retained_locally': run.mode == 'LIVE'},
                   'limitations': ['仅覆盖登记的合成任务与固定检查协议；不表示任意真实项目安全。',

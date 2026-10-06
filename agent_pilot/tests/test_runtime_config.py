@@ -105,13 +105,15 @@ class RuntimeConfigTests(unittest.TestCase):
         self.assertEqual(stub.handle.call_args.args[1], hashlib.sha256(before).hexdigest())
         self.assertEqual(isolation.RUNNER.read_bytes(), before)
 
-    def test_launch_requires_preflight_and_passes_absolute_root_with_separate_argv(self):
+    def test_launch_requires_preflight_and_uses_registered_boundary_adapter(self):
         observation = {'ready': True, 'isolation_ready': True, 'model_ready': True,
                        'runtime_root': '/home/test user/dedicated-runtime'}
         with patch.object(web, 'runtime_observation', return_value=observation):
             argv = web.launch_command(self.root, 'p01', self.root / 'output')
-        self.assertIn('CREDPROOF_RUNTIME_ROOT=/home/test user/dedicated-runtime', argv)
-        self.assertIn('/home/test user/dedicated-runtime/venv/bin/python', argv)
+        self.assertIn('credproof_safety.web_repair', argv)
+        self.assertEqual(argv[argv.index('--case-id') + 1], 'p01')
+        self.assertEqual(argv[argv.index('--project-id') + 1], 'assistant-original')
+        self.assertIn('examples\\material_assistant\\credproof.toml', argv[argv.index('--config') + 1])
         self.assertNotIn('tingfeng', argv)
         self.assertNotIn('sh', argv)
         with patch.object(web, 'runtime_observation', return_value={**observation, 'isolation_ready': False}):

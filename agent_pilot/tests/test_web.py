@@ -163,8 +163,9 @@ class WebTests(unittest.TestCase):
             self.assertEqual((run.folder / 'supervisor-stdout.txt').read_bytes(), b'TEST MOCK supervisor stdout\n')
             self.assertEqual((run.folder / 'supervisor-stderr.txt').read_bytes(), b'TEST MOCK supervisor stderr\n')
             argv = child.call_args.args[0]
-            self.assertIn('--agent-only', argv)
-            self.assertEqual(argv[argv.index('--cases') + 1], 'p01')
+            self.assertIn('credproof_safety.web_repair', argv)
+            self.assertEqual(argv[argv.index('--case-id') + 1], 'p01')
+            self.assertEqual(argv[argv.index('--project-id') + 1], 'assistant-original')
             self.assertNotIn('shell', child.call_args.kwargs)
 
     def test_replay_keeps_model_suspicion_separate_and_redacts_values(self):

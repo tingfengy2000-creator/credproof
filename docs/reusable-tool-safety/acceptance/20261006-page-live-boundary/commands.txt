@@ -1,0 +1,6 @@
+Environment: Windows host, RTX 5090; .venv; WSL/bubblewrap runtime ready.
+Command: .venv\Scripts\python.exe _runs\page-http-run.py
+HTTP: POST /api/agent/runs with registered case_id=p01; then GET /api/agent/runs/<id> until terminal.
+Result: HTTP 202 accepted, supervisor exit 0, page status COMPLETED, task INCOMPLETE, final verifier FAIL.
+Model calls: 6; native tool calls: 7; candidates: 3; no paid API.
+Ollama log reported CPU compute for this run; host GPU is recorded only as the execution machine, not as measured inference acceleration.

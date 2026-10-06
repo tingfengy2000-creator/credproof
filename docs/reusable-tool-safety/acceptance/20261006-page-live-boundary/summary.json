@@ -1,0 +1,45 @@
+{
+  "schema": "credproof.page-live-boundary/v1",
+  "run_id": "live-<run-id>",
+  "case_id": "p01",
+  "project_id": "assistant-original",
+  "project_config": "examples\\material_assistant\\credproof.toml",
+  "launcher": "credproof_safety.agent.request_repair",
+  "started_at": "2026-10-06T07:40:39.822182+00:00",
+  "process_exit_code": 0,
+  "page_status": "COMPLETED",
+  "task_status": "INCOMPLETE",
+  "final_verdict": "FAIL",
+  "model_status": "STOPPED_LIMIT",
+  "model_calls": 6,
+  "tool_calls": 7,
+  "candidate_count": 3,
+  "source_changed": true,
+  "paid_api_used": false,
+  "model_boundary_status": "VERIFIED_FOR_THIS_RUN",
+  "boundary_checks": {
+    "loopback_only": true,
+    "external_denied": true,
+    "host_sentinel_hidden": true,
+    "model_code_readonly": true
+  },
+  "inference_device": "CPU reported by Ollama in this run; host was the RTX 5090 development machine; no GPU performance claim.",
+  "budgets": {
+    "max_model_calls": 12,
+    "max_candidates": 3,
+    "max_format_corrections": 1
+  },
+  "commands": [
+    ".venv\\Scripts\\python.exe _runs/page-http-run.py",
+    "HTTP POST /api/agent/runs {\"case_id\":\"p01\"}",
+    "HTTP GET /api/agent/runs/<run-id> until status COMPLETED"
+  ],
+  "evidence": [
+    "request.json",
+    "launch.json",
+    "process-result.json",
+    "page-live-record.json",
+    "page-live-repair.json"
+  ],
+  "interpretation": "页面通过新边界启动并取得真实模型/工具/可信验收记录；本次任务以 INCOMPLETE + FAIL 结束，保留失败，不称修复成功。"
+}

@@ -1,6 +1,6 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.15",
+  "candidate_version": "0.3.0-dev.16",
   "tested_source_commit": "see GitHub review commit; source and evidence commits are consecutive",
   "generated_at": "2026-10-06",
   "status_summary": {
@@ -200,16 +200,19 @@
         "agent_pilot/project_workspace.py",
         "agent_pilot/web.py:renderProjectModes/project check APIs"
       ],
-      "setup": "清洁安装 dev14 wheel；recheck UI 端口 18773；浏览器真实点击查看范围→现场检查·无模型→导出",
-      "acceptance": "页面显示总体 PASS、对象摘要、检查时间、适用性和业务/不泄密/不乱读/不乱连四项 PASS；导出状态提示可见",
+      "setup": "5090主机上通过单页 HTTP POST /api/agent/runs 真实启动登记案例 p01；适配器调用 credproof_safety.agent.request_repair，保留旧案例回放。",
+      "acceptance": "HTTP 202 接收；新边界实际工具调用与可信验收记录写入 runs/ui；页面显示 project_id、模型边界、任务终态；本次任务 INCOMPLETE + FAIL 原样呈现。",
       "commands": [
         "python -m agent_pilot.launch --project-config external-project/credproof-fixed.toml --mode recheck --port 18773"
       ],
       "evidence": [
-        "acceptance/20261006-final/page-flow.md"
+        "acceptance/20261006-page-live-boundary/summary.json",
+        "acceptance/20261006-page-live-boundary/page-live-record.json",
+        "agent_pilot/tests/test_web.py",
+        "credproof_safety/tests/test_web_repair.py"
       ],
       "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
-      "gaps": "本轮只验证 recheck/no-model；未启动 live Agent",
+      "gaps": "当前仅 p01 映射到资料助手固定项目；p02-p06 仍只允许历史回放，不能把它们的旧 fixtures 冒充新边界现场任务。",
       "file_digests": [
         {
           "path": "agent_pilot/project_workspace.py",
@@ -230,19 +233,22 @@
         "agent_pilot/tools.py:dispatch",
         "agent_pilot/tests/test_reliability.py"
       ],
-      "setup": "当前单元测试与历史 Agent 轨迹；本轮未运行新的模型推理",
-      "acceptance": "无证据拒绝 submit；路径越界、源对象/规则漂移撤销权限；候选最多3份、工具调用最多12次",
+      "setup": "5090主机上通过页面真实任务 p01；同一运行保留原始请求、7次 native 工具调用、3份候选、可信 FAIL 验收和 INCOMPLETE 终态；另有确定性协议/单元回归。",
+      "acceptance": "候选授权、边界与预算由执行器实施；模型只提交候选；可信验收 FAIL 不被模型文字覆盖；任务在预算/停止条件下结束。修复效果单独记录。",
       "commands": [
         "python -m pytest -q agent_pilot/tests/test_reliability.py agent_pilot/tests/test_runtime_config.py"
       ],
       "evidence": [
         "credproof_safety/agent.py",
-        "agent_pilot/tests/test_model_boundary.py",
+        "credproof_safety/web_repair.py",
+        "acceptance/20261006-page-live-boundary/summary.json",
+        "acceptance/20261006-page-live-boundary/page-live-record.json",
         "acceptance/20261006-model-boundary/model-run-summary.json",
-        "acceptance/20261006-model-boundary/model-run.raw.json"
+        "agent_pilot/tests/test_model_boundary.py",
+        "credproof_safety/tests/test_web_repair.py"
       ],
       "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
-      "gaps": "本轮有一次真实模型边界内运行；三份候选均由可信验收判FAIL，不能据此声称修复成功或泛化",
+      "gaps": "授权/工具往返/可信判决与停止处理已有一次真实页面证据；本次3份候选均未通过，仍无模型修复效果的成功证据，不能写成Agent修复成功。",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
@@ -255,6 +261,40 @@
         {
           "path": "agent_pilot/tests/test_reliability.py",
           "sha256": "49820730a900248d8234b81cecef6b92b746a8ebd5cf8ba28ee4c537027a8197"
+        }
+      ],
+      "subitems": [
+        {
+          "id": "candidate_authorization_boundary",
+          "status": "IMPLEMENTED_VERIFIED",
+          "evidence": [
+            "acceptance/20261006-page-live-boundary/page-live-record.json",
+            "credproof_safety/agent.py"
+          ]
+        },
+        {
+          "id": "native_tool_roundtrip",
+          "status": "IMPLEMENTED_VERIFIED",
+          "evidence": [
+            "acceptance/20261006-page-live-boundary/summary.json",
+            "acceptance/20261006-model-boundary/model-events.raw.jsonl"
+          ]
+        },
+        {
+          "id": "trusted_verdict_and_stop",
+          "status": "IMPLEMENTED_VERIFIED",
+          "evidence": [
+            "acceptance/20261006-page-live-boundary/summary.json",
+            "acceptance/20261006-page-live-boundary/page-live-record.json"
+          ]
+        },
+        {
+          "id": "model_repair_effect",
+          "status": "IMPLEMENTED_UNVERIFIED",
+          "evidence": [
+            "acceptance/20261006-page-live-boundary/page-live-record.json"
+          ],
+          "reason": "本次真实模型运行终态为 INCOMPLETE，最终可信验收 FAIL。"
         }
       ]
     },
@@ -367,18 +407,19 @@
         "credproof_safety/agent.py:_MODEL_BOUNDARY_BOOTSTRAP",
         "agent_pilot/tests/test_model_boundary.py"
       ],
-      "setup": "本轮 preflight 为只读 saved probe；model_executed=false、network_probe_performed=false；未做新 live inference",
-      "acceptance": "需有独立模型进程挂载白名单/权限探针和出网限制证据；当前未满足",
+      "setup": "5090主机上由页面 p01 真实任务进入同一模型进程边界；本次动态探针与推理结果均从现场 artifact 导出并脱敏。",
+      "acceptance": "模型进程只有 lo；外部连接失败；宿主哨兵不可见；代码只读；Ollama继承同一 namespace；本次推理真实完成到预算终止。",
       "commands": [
         "python -m agent_pilot.preflight"
       ],
       "evidence": [
+        "acceptance/20261006-page-live-boundary/summary.json",
+        "acceptance/20261006-page-live-boundary/page-live-record.json",
         "acceptance/20261006-model-boundary/model-boundary-probe.raw.json",
-        "acceptance/20261006-model-boundary/model-boundary-plan.raw.json",
-        "acceptance/20261006-model-boundary/model-run-summary.json"
+        "acceptance/20261006-model-boundary/service-boundary.raw.json"
       ],
       "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
-      "gaps": "一次授权合成项目运行；不等同通用沙箱或内核级审计",
+      "gaps": "一次授权合成项目运行；不等同通用沙箱、内核级审计或跨机器验证。",
       "file_digests": [
         {
           "path": "agent_pilot/offline_run.py",
@@ -398,18 +439,18 @@
         "agent_pilot/offline_run.py",
         "agent_pilot/model_client.py"
       ],
-      "setup": "本轮清洁安装与页面 recheck 未调用模型；preflight 只验证模型文件存在性/哈希",
-      "acceptance": "只能确认配置为本地 Ollama、无付费回退；本轮没有新推理轨迹",
+      "setup": "5090主机上通过页面任务使用本地 Ollama qwen3-coder:30b；没有 API key 或云端回退，运行收据保留。",
+      "acceptance": "页面任务实际取得 6 次模型调用、7 次 native 工具调用；付费API标记为 false；Ollama日志记录本次计算设备为 CPU。",
       "commands": [
         "python -m agent_pilot.preflight"
       ],
       "evidence": [
-        "acceptance/20261006-model-boundary/model-run.raw.json",
-        "acceptance/20261006-model-boundary/ollama-stderr.raw.log",
-        "acceptance/20261006-model-boundary/model-run-summary.json"
+        "acceptance/20261006-page-live-boundary/summary.json",
+        "acceptance/20261006-page-live-boundary/commands.txt",
+        "acceptance/20261006-model-boundary/ollama-stderr.raw.log"
       ],
       "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
-      "gaps": "本次运行探测为CPU，未测量GPU性能；作品运行未调用付费API",
+      "gaps": "本次运行未取得 GPU 推理性能证据；仅说明在 RTX 5090 开发机上完成本地运行，不能把 CPU 记录改写为 GPU 加速。",
       "file_digests": [
         {
           "path": "agent_pilot/offline_run.py",
