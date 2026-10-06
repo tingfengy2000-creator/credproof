@@ -27,7 +27,7 @@
         "acceptance/20261006-final/logs/init-stdout.txt",
         "tests/test_reusable_tool_safety.py"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "只支持当前配置模式；配置仍需开发者确认",
       "file_digests": [
         {
@@ -59,7 +59,7 @@
         "acceptance/20261006-final/fixed-report.json",
         "acceptance/20261006-final/import-origin-sanitized.txt"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "这是一个授权外部快照和人工注入适配，不是上游漏洞或企业部署",
       "file_digests": [
         {
@@ -87,7 +87,7 @@
         "acceptance/20261006-final/fixed-report.json",
         "experiments/reusable-tool-safety/20261003-observer-fix-v1/import-output.json"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "不覆盖原生扩展、私有 logger sink 或所有子进程通道",
       "file_digests": [
         {
@@ -118,7 +118,7 @@
         "acceptance/20261006-final/consumer/reintroduced-defect-consumer-junit.xml",
         "acceptance/20261006-final/fixed-report.json"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "Python audit 观察尝试并结合受控入口证据；不等同 Windows 内核审计",
       "file_digests": [
         {
@@ -148,7 +148,7 @@
         "experiments/reusable-tool-safety/20261003-targeted-fix-07/allowed_file_redirect.json",
         "experiments/reusable-tool-safety/20261003-targeted-fix-07/reintroduced_file_bypass.json"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "不宣称公网 SSRF、DNS、原生 syscall 或 Windows 内核网络审计",
       "file_digests": [
         {
@@ -179,7 +179,7 @@
         "_runs/current-pytest-observer/",
         "agent_pilot/tests/test_runtime_config.py"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "只对声明的必要用例语义负责；递归包装 skip 由执行侧区分",
       "file_digests": [
         {
@@ -208,7 +208,7 @@
       "evidence": [
         "acceptance/20261006-final/page-flow.md"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "本轮只验证 recheck/no-model；未启动 live Agent",
       "file_digests": [
         {
@@ -240,7 +240,7 @@
         "agent_pilot/tests/test_reliability.py",
         "experiments/reusable-tool-safety/20261004-external-dotenv-agent-v2/summary.json"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "本轮没有新的模型修复；不能把程序 gate 通过写成 Agent 修复成功",
       "file_digests": [
         {
@@ -275,7 +275,7 @@
         "agent_pilot/tests/test_web_material_binding.py",
         "acceptance/20261006-final/page-flow.md"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "哈希是完整性绑定，不是密码学证明或第三方认证",
       "file_digests": [
         {
@@ -310,7 +310,7 @@
         "acceptance/20261006-final/exported-tests/",
         "acceptance/20261006-final/summary.json"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "受控 WSL/bubblewrap 依赖需在消费者机器准备",
       "file_digests": [
         {
@@ -345,7 +345,7 @@
         "acceptance/20261006-final/preflight-summary.json",
         "acceptance/20261006-final/page-flow.md"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "跨机器、非 WSL 环境未承诺",
       "file_digests": [
         {
@@ -376,7 +376,7 @@
         "acceptance/20261006-final/preflight-summary.json",
         "docs/reusable-tool-safety/README.md#agent-边界"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "候选 bubblewrap 隔离不等于模型进程全文件系统隔离；在该证据补齐前禁止外部交接/现场模型运行",
       "file_digests": [
         {
@@ -406,7 +406,7 @@
         "acceptance/20261006-final/preflight-summary.json",
         "agent_pilot/model_client.py"
       ],
-      "source_commit": "ebb5afa",
+      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "新模型调用和离线出网限制未在本轮重跑",
       "file_digests": [
         {

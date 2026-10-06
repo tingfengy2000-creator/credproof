@@ -1,6 +1,6 @@
 # CredProof 需求—实现—证据验收表（dev14）
 
-本表对应源码提交 `ebb5afa`（证据提交完成后在交付收据补充完整 SHA）。它用于外部复查，不表示模型边界或参赛资格已验收。
+本表对应源码提交 `ebb5afad0eec6536670f812d4fac3fc136c9f4ab`；验收资料随后在提交中固化，交付收据记录 ZIP 与 wheel 的校验关系。它用于外部复查，不表示模型边界或参赛资格已验收。
 
 状态含义：`IMPLEMENTED_VERIFIED` 表示本轮有实际命令和材料；`IMPLEMENTED_UNVERIFIED` 表示代码/历史测试存在但本轮缺少新实测；`FAILED_OR_BLOCKED` 表示交接前必须补齐或保持禁用。
 
