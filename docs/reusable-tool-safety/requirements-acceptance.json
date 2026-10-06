@@ -1,12 +1,12 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.14",
-  "tested_source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
+  "candidate_version": "0.3.0-dev.15",
+  "tested_source_commit": "see GitHub review commit; source and evidence commits are consecutive",
   "generated_at": "2026-10-06",
   "status_summary": {
-    "verified": 10,
-    "unverified": 2,
-    "blocked": 1,
+    "verified": 12,
+    "unverified": 1,
+    "blocked": 0,
     "excluded": 0
   },
   "requirements": [
@@ -236,12 +236,13 @@
         "python -m pytest -q agent_pilot/tests/test_reliability.py agent_pilot/tests/test_runtime_config.py"
       ],
       "evidence": [
-        "_runs/current-final-agent-boundary-tests/pytest.txt",
-        "agent_pilot/tests/test_reliability.py",
-        "experiments/reusable-tool-safety/20261004-external-dotenv-agent-v2/summary.json"
+        "credproof_safety/agent.py",
+        "agent_pilot/tests/test_model_boundary.py",
+        "acceptance/20261006-model-boundary/model-run-summary.json",
+        "acceptance/20261006-model-boundary/model-run.raw.json"
       ],
       "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
-      "gaps": "本轮没有新的模型修复；不能把程序 gate 通过写成 Agent 修复成功",
+      "gaps": "本轮有一次真实模型边界内运行；三份候选均由可信验收判FAIL，不能据此声称修复成功或泛化",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
@@ -361,11 +362,10 @@
     {
       "id": "R12",
       "name": "模型进程文件系统/网络边界独立证明",
-      "status": "FAILED_OR_BLOCKED",
+      "status": "IMPLEMENTED_VERIFIED",
       "implementation": [
-        "agent_pilot/offline_run.py:local model namespace",
-        "agent_pilot/runtime_config.py",
-        "preflight saved probe"
+        "credproof_safety/agent.py:_MODEL_BOUNDARY_BOOTSTRAP",
+        "agent_pilot/tests/test_model_boundary.py"
       ],
       "setup": "本轮 preflight 为只读 saved probe；model_executed=false、network_probe_performed=false；未做新 live inference",
       "acceptance": "需有独立模型进程挂载白名单/权限探针和出网限制证据；当前未满足",
@@ -373,11 +373,12 @@
         "python -m agent_pilot.preflight"
       ],
       "evidence": [
-        "acceptance/20261006-final/preflight-summary.json",
-        "docs/reusable-tool-safety/README.md#agent-边界"
+        "acceptance/20261006-model-boundary/model-boundary-probe.raw.json",
+        "acceptance/20261006-model-boundary/model-boundary-plan.raw.json",
+        "acceptance/20261006-model-boundary/model-run-summary.json"
       ],
       "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
-      "gaps": "候选 bubblewrap 隔离不等于模型进程全文件系统隔离；在该证据补齐前禁止外部交接/现场模型运行",
+      "gaps": "一次授权合成项目运行；不等同通用沙箱或内核级审计",
       "file_digests": [
         {
           "path": "agent_pilot/offline_run.py",
@@ -392,7 +393,7 @@
     {
       "id": "R13",
       "name": "模型本地/零付费API运行",
-      "status": "IMPLEMENTED_UNVERIFIED",
+      "status": "IMPLEMENTED_VERIFIED",
       "implementation": [
         "agent_pilot/offline_run.py",
         "agent_pilot/model_client.py"
@@ -403,11 +404,12 @@
         "python -m agent_pilot.preflight"
       ],
       "evidence": [
-        "acceptance/20261006-final/preflight-summary.json",
-        "agent_pilot/model_client.py"
+        "acceptance/20261006-model-boundary/model-run.raw.json",
+        "acceptance/20261006-model-boundary/ollama-stderr.raw.log",
+        "acceptance/20261006-model-boundary/model-run-summary.json"
       ],
       "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
-      "gaps": "新模型调用和离线出网限制未在本轮重跑",
+      "gaps": "本次运行探测为CPU，未测量GPU性能；作品运行未调用付费API",
       "file_digests": [
         {
           "path": "agent_pilot/offline_run.py",

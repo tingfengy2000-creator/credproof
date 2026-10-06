@@ -1,6 +1,6 @@
-# CredProof 需求—实现—证据验收表（dev14）
+# CredProof 需求—实现—证据验收表（dev15）
 
-本表对应源码提交 `ebb5afad0eec6536670f812d4fac3fc136c9f4ab`；验收资料随后在提交中固化，交付收据记录 ZIP 与 wheel 的校验关系。它用于外部复查，不表示模型边界或参赛资格已验收。
+本表对应本版源码提交（完整 SHA 在 GitHub 评审入口及后续交付收据中固定）；验收资料随后在提交中固化。它用于外部复查，不表示模型修复成功或参赛资格已验收。
 
 状态含义：`IMPLEMENTED_VERIFIED` 表示本轮有实际命令和材料；`IMPLEMENTED_UNVERIFIED` 表示代码/历史测试存在但本轮缺少新实测；`FAILED_OR_BLOCKED` 表示交接前必须补齐或保持禁用。
 
@@ -12,13 +12,13 @@
 | R04 | 文件边界 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:audit path normalization；credproof_safety/project.py:_verdict`；acceptance/20261006-final/consumer/fixed-consumer-junit.xml；acceptance/20261006-final/consumer/reintroduced-defect-consumer-junit.xml；acceptance/20261006-final/fixed-report.json | Python audit 观察尝试并结合受控入口证据；不等同 Windows 内核审计 |
 | R05 | 网络边界 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:mock services/socket audit；credproof_safety/project.py:_verdict`；experiments/reusable-tool-safety/20261003-targeted-fix-07/allowed_file_redirect.json；experiments/reusable-tool-safety/20261003-targeted-fix-07/reintroduced_file_bypass.json | 不宣称公网 SSRF、DNS、原生 syscall 或 Windows 内核网络审计 |
 | R06 | 必要业务测试真实完成与通过 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:CredProofPytestObserver；credproof_safety/project.py:_verdict`；_runs/current-pytest-observer/；agent_pilot/tests/test_runtime_config.py | 只对声明的必要用例语义负责；递归包装 skip 由执行侧区分 |
-| R07 | 单页项目注册、检查、总体判决与分项 | `IMPLEMENTED_VERIFIED` | `agent_pilot/project_workspace.py；agent_pilot/web.py:renderProjectModes/project check APIs`；acceptance/20261006-final/page-flow.md | 本轮只验证 recheck/no-model；未启动 live Agent |
+| R07 | 单页项目注册、检查、总体判决与分项 | `IMPLEMENTED_VERIFIED` | `agent_pilot/project_workspace.py；agent_pilot/web.py:renderProjectModes/project check APIs`；acceptance/20261006-final/page-flow.md | 现场页面仍需显式配置当前白名单模型入口；旧 offline harness 默认阻断 |
 | R08 | 候选修复授权与修改边界 | `IMPLEMENTED_UNVERIFIED` | `credproof_safety/agent.py:serve；agent_pilot/tools.py:dispatch；agent_pilot/tests/test_reliability.py`；_runs/current-final-agent-boundary-tests/pytest.txt；agent_pilot/tests/test_reliability.py；experiments/reusable-tool-safety/20261004-external-dotenv-agent-v2/summary.json | 本轮没有新的模型修复；不能把程序 gate 通过写成 Agent 修复成功 |
 | R09 | 对象、报告适用性与复检 | `IMPLEMENTED_VERIFIED` | `agent_pilot/web.py:object/applicability checks；agent_pilot/tests/test_web_material_binding.py；agent_pilot/bundle.py`；agent_pilot/tests/test_web_material_binding.py；acceptance/20261006-final/page-flow.md | 哈希是完整性绑定，不是密码学证明或第三方认证 |
 | R10 | 导出与项目内复用 | `IMPLEMENTED_VERIFIED` | `credproof_safety/project.py:export_regression_tests；scripts/run-exported-regression-check.py`；acceptance/20261006-final/consumer/；acceptance/20261006-final/exported-tests/；acceptance/20261006-final/summary.json | 受控 WSL/bubblewrap 依赖需在消费者机器准备 |
 | R11 | 清洁安装、启动与隔离预检 | `IMPLEMENTED_VERIFIED` | `pyproject.toml package-data；agent_pilot/preflight.py；agent_pilot/launch.py`；acceptance/20261006-final/wheel-manifest.json；acceptance/20261006-final/import-origin-sanitized.txt；acceptance/20261006-final/preflight-summary.json；acceptance/20261006-final/page-flow.md | 跨机器、非 WSL 环境未承诺 |
-| R12 | 模型进程文件系统/网络边界独立证明 | `FAILED_OR_BLOCKED` | `agent_pilot/offline_run.py:local model namespace；agent_pilot/runtime_config.py；preflight saved probe`；acceptance/20261006-final/preflight-summary.json；docs/reusable-tool-safety/README.md#agent-边界 | 候选 bubblewrap 隔离不等于模型进程全文件系统隔离；在该证据补齐前禁止外部交接/现场模型运行 |
-| R13 | 模型本地/零付费API运行 | `IMPLEMENTED_UNVERIFIED` | `agent_pilot/offline_run.py；agent_pilot/model_client.py`；acceptance/20261006-final/preflight-summary.json；agent_pilot/model_client.py | 新模型调用和离线出网限制未在本轮重跑 |
+| R12 | 模型进程文件系统/网络边界独立证明 | `IMPLEMENTED_VERIFIED` | `credproof_safety/agent.py:_MODEL_BOUNDARY_BOOTSTRAP`；`acceptance/20261006-model-boundary/model-boundary-probe.raw.json`；`model-boundary-plan.raw.json`；`model-run-summary.json` | 只覆盖一次授权合成项目运行；不等同通用沙箱或内核级审计 |
+| R13 | 模型本地/零付费API运行 | `IMPLEMENTED_VERIFIED` | `acceptance/20261006-model-boundary/model-run.raw.json`；`ollama-stderr.raw.log`；`model-run-summary.json` | 本次运行探测为 CPU，未测量 GPU 性能；作品运行未调用付费 API |
 
 ## 本轮清洁安装链路
 
@@ -26,7 +26,9 @@
 
 ## 模型与隔离边界
 
-本轮未启动新的 Agent 推理。程序工具权限、候选预算和对象漂移 gate 有单元测试；候选副本可在既有 bubblewrap 中检查。模型进程本身没有独立的只挂载白名单与出网探针，preflight 也明确记录 `model_executed=false`、`network_probe_performed=false`。因此本轮交付状态为 `NOT_READY_FOR_HANDOFF`，不得把候选副本隔离描述成模型全进程隔离，也不得现场启用 live repair。
+本版有一次新的真实模型进程运行。模型进程自身使用独立 bubblewrap allowlist 和私有 network namespace；探针记录只有 `lo`、外网三地址均失败、宿主哨兵不可见、代码只读。模型通过 native WSL RPC 目录与可信执行器通信，公开副本仅保存脱敏请求/响应记录。运行中模型调用 11 次工具、提交 3 个候选，三次可信验收均为 `FAIL`，任务以 `INCOMPLETE` 结束；这不能写成自动修复成功。程序权限 gate 和候选预算仍由执行器管理，模型不能读取标签、历史结果或参考补丁。
+
+边界逐项记录位于 [`acceptance/20261006-model-boundary/`](acceptance/20261006-model-boundary/)。本版状态为“可供外部定向复验”：模型边界阻断已补齐，但 Agent 修复效果仍只按这一次有限运行如实记录。
 
 ## 排除项
 

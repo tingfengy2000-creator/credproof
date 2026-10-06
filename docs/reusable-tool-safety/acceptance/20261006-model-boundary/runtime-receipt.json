@@ -1,0 +1,15 @@
+{
+  "schema": "credproof.model-boundary-runtime/v1",
+  "wsl_distribution": "Ubuntu-24.04",
+  "python": "3.12.3 (reviewed WSL runtime)",
+  "bubblewrap": "0.9.0",
+  "ollama": "0.34.4",
+  "model": "qwen3-coder:30b",
+  "model_manifest": "registry.ollama.ai/library/qwen3-coder/30b",
+  "model_blob_sha256": "1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a",
+  "cloud": "OLLAMA_NO_CLOUD=true; local HTTP endpoint only",
+  "paid_api_used": false,
+  "gpu_observation": "Ollama process reported CPU inference in this boundary run; no performance claim",
+  "weights_in_git": false,
+  "network_scope": "bubblewrap private namespace; loopback service only"
+}

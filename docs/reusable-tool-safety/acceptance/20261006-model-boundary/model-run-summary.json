@@ -1,0 +1,103 @@
+{
+  "schema": "credproof.model-boundary-run-summary/v1",
+  "source": "report24-artifacts (one fresh run; synthetic authorized project)",
+  "status": "INCOMPLETE",
+  "task_status": "INCOMPLETE",
+  "model_stack": "Qwen-Agent + Ollama local qwen3-coder:30b",
+  "paid_api_used": false,
+  "elapsed_s": 464.889,
+  "budgets": {
+    "max_model_calls": 12,
+    "max_candidates": 3,
+    "max_format_corrections": 1,
+    "executor_tool_call_cap": 12
+  },
+  "tool_call_count": 11,
+  "tool_trace": [
+    {
+      "index": 1,
+      "tool": "get_evidence",
+      "executor_status": "OK",
+      "reason": null,
+      "verdict": null
+    },
+    {
+      "index": 2,
+      "tool": "read_code",
+      "executor_status": "REJECTED",
+      "reason": "path_not_in_entry_or_declared_tests",
+      "verdict": null
+    },
+    {
+      "index": 3,
+      "tool": "read_code",
+      "executor_status": "REJECTED",
+      "reason": "path_not_in_entry_or_declared_tests",
+      "verdict": null
+    },
+    {
+      "index": 4,
+      "tool": "read_code",
+      "executor_status": "OK",
+      "reason": null,
+      "verdict": null
+    },
+    {
+      "index": 5,
+      "tool": "submit_patch",
+      "executor_status": "ACCEPTED_FOR_VERIFICATION",
+      "reason": null,
+      "verdict": null
+    },
+    {
+      "index": 6,
+      "tool": "verify_patch",
+      "executor_status": "OK",
+      "reason": null,
+      "verdict": "FAIL"
+    },
+    {
+      "index": 7,
+      "tool": "read_code",
+      "executor_status": "OK",
+      "reason": null,
+      "verdict": null
+    },
+    {
+      "index": 8,
+      "tool": "submit_patch",
+      "executor_status": "ACCEPTED_FOR_VERIFICATION",
+      "reason": null,
+      "verdict": null
+    },
+    {
+      "index": 9,
+      "tool": "verify_patch",
+      "executor_status": "OK",
+      "reason": null,
+      "verdict": "FAIL"
+    },
+    {
+      "index": 10,
+      "tool": "submit_patch",
+      "executor_status": "ACCEPTED_FOR_VERIFICATION",
+      "reason": null,
+      "verdict": null
+    },
+    {
+      "index": 11,
+      "tool": "verify_patch",
+      "executor_status": "OK",
+      "reason": null,
+      "verdict": "FAIL"
+    }
+  ],
+  "interpretation": "真实模型在边界内完成工具调用；本次三份候选均由可信验收判FAIL，任务按预算结束，不能写成自动修复成功。",
+  "raw_records": [
+    "model-boundary-probe.raw.json",
+    "model-boundary-plan.raw.json",
+    "model-run.raw.json",
+    "model-events.raw.jsonl",
+    "ollama-stderr.raw.log"
+  ]
+}

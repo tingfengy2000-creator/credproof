@@ -1,0 +1,68 @@
+{
+  "schema": "credproof.model-boundary-probe/v1",
+  "pid": 2,
+  "mount_namespace": "mnt:[4026532235]",
+  "network_namespace": "net:[4026532240]",
+  "user_namespace": "user:[4026532305]",
+  "interfaces": [
+    "lo"
+  ],
+  "outside_connect_tests": [
+    {
+      "address": "1.1.1.1",
+      "port": 443,
+      "connected": false,
+      "errno": 101,
+      "reason": "OSError",
+      "elapsed_s": 0.0001
+    },
+    {
+      "address": "8.8.8.8",
+      "port": 443,
+      "connected": false,
+      "errno": 101,
+      "reason": "OSError",
+      "elapsed_s": 0.0
+    },
+    {
+      "address": "2606:4700:4700::1111",
+      "port": 443,
+      "connected": false,
+      "errno": null,
+      "reason": "OSError",
+      "elapsed_s": 0.0
+    }
+  ],
+  "host_sentinel_visible": false,
+  "model_code_writable": [],
+  "host_mounts": [
+    {
+      "mountpoint": "/work",
+      "filesystem": "9p",
+      "allowed": true
+    }
+  ],
+  "host_libs_visible": {
+    "libresolv.so.2": false,
+    "libdl.so.2": false,
+    "libpthread.so.0": false,
+    "libstdc++.so.6": false,
+    "libgcc_s.so.1": false
+  },
+  "mountinfo_has_windows_or_host_mount": false,
+  "mountinfo_excerpt": "551 547 8:48 /tmp/credproof-model-stage-n2g8kvgv /app ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n552 547 8:48 /runtime-host/venv/lib/python3.12/site-packages /deps ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n553 552 8:48 /runtime-host/venv/lib/python3.12/site-packages/_soundfile_data/libsndfile_x86_64.so /deps/_soundfile_data/libsndfile_x86_64.so ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n554 547 8:48 /runtime-host/ollama /runtime/ollama ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n555 547 8:48 /runtime-host/models/manifests/registry.ollama.ai/library/qwen3-coder/30b /runtime/models/manifests/registry.ollama.ai/library/qwen3-coder/30b ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n556 547 8:48 /runtime-host/models/blobs/sha256-24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318 /runtime/models/blobs/sha256-24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318 ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n557 547 8:48 /runtime-host/models/blobs/sha256-1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a /runtime/models/blobs/sha256-1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n558 547 8:48 /runtime-host/models/blobs/sha256-d18a5cc71b84bc4af394a31116bd3932b42241de70c77d2b76d69a314ec8aa12 /runtime/models/blobs/sha256-d18a5cc71b84bc4af394a31116bd3932b42241de70c77d2b76d69a314ec8aa12 ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n559 547 8:48 /runtime-host/models/blobs/sha256-69aa441ea44ff5e1e7b56cac4f471e71e8a5e2e3963c29684a9234d5d5e5f7aa /runtime/models/blobs/sha256-69aa441ea44ff5e1e7b56cac4f471e71e8a5e2e3963c29684a9234d5d5e5f7aa ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n560 547 0:57 / /gpu-libs ro,nosuid,nodev,noatime - overlay none rw,lowerdir=/gpu_lib_packaged:/gpu_lib_inbox,upperdir=/gpu_lib/rw/upper,workdir=/gpu_lib/rw/work,uuid=on\n629 547 0:73 /public-work/model-work /work rw,nosuid,nodev,noatime - 9p E:\\134 rw,aname=drvfs;path=E:\\;uid=1000;gid=1000;symlinkroot=/mnt/,cache=0x5,access=client,msize=65536,trans=fd,rfd=6,wfd=6\n630 547 8:48 /runtime-host/model-rpc-631d584e152a4943b67aa15099ce3db9 /rpc rw,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered",
+  "allowed_writable_roots": [
+    "/work",
+    "/rpc",
+    "/tmp",
+    "/run",
+    "/home"
+  ],
+  "readonly_roots": [
+    "/app",
+    "/deps",
+    "/runtime/ollama",
+    "/runtime/models",
+    "/"
+  ]
+}

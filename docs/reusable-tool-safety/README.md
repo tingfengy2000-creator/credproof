@@ -1,13 +1,13 @@
-## 清洁安装与需求验收（dev14）
+## 清洁安装与需求验收（dev15）
 
 本版先完成清洁安装链路和可复核需求表，再决定是否交接 5060。入口文件是 [`requirements-acceptance.md`](requirements-acceptance.md) 与机器可读的 [`requirements-acceptance.json`](requirements-acceptance.json)。
 
 - 清洁安装证据：[`acceptance/20261006-final/`](acceptance/20261006-final/)；包括 wheel、site-packages 导入来源、CLI before/fixed、浏览器实际操作、导出消费者 pytest/JUnit 和环境预检。
 - 清洁安装发现的 wheel 静态资源缺口已在 `pyproject.toml` 修复，细节见 [`packaging-gap.md`](packaging-gap.md)。
 - 页面操作记录见 [`page-flow.md`](page-flow.md)。
-- 当前状态：程序检查与导出链可供定向复查；模型进程白名单挂载和独立出网探针仍未完成，因此暂不进入外部交接或现场 `live repair`。
+- 当前状态：程序检查、导出链以及一次真实模型边界运行均有可读证据；本次模型任务本身按预算以 `INCOMPLETE` 结束，不能写成自动修复成功。
 
-# CredProof reusable-tool-safety（0.3.0-dev.14）
+# CredProof reusable-tool-safety（0.3.0-dev.15）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -153,10 +153,15 @@ DEBUG 级 Python 日志通道，并以 `pytest -s` 避免测试输出掩盖泄�
 模型调用和 3 个候选。工具调用必须是 Qwen-Agent/Ollama 的原生结构化调用；自然语言
 中的函数名或 JSON 不会被执行。模型提出候选，程序执行 pytest、文件/网络观测和
 修改范围检查，最终 verdict 由程序返回。作品本次运行不调用付费 API；模型权重在
-仓库外，且需要既有本地 Ollama/Qwen 运行时。候选的检查由 bubblewrap 副本完成；
-当前模型进程本身只验证了 WSL 独立网络命名空间，尚未完成只挂载白名单的文件系统隔离。
-因此模型轨迹不能被描述为公平盲测：继续运行时不得把仓库里的测试标签、历史结果或
-参考补丁交给模型，正式盲测需先补这层隔离。
+仓库外，且需要既有本地 Ollama/Qwen 运行时。候选的检查由 bubblewrap 副本完成；本版另用独立的 bubblewrap 模型进程配置，
+只挂载审核过的 Python 运行时、Qwen-Agent 依赖、Ollama 程序、固定 manifest/blob、
+GPU 驱动只读目录和 `/work`、`/rpc` 受控目录。模型进程没有仓库、候选历史、参考补丁、
+真实凭据或代理/API Key 环境；独立探针记录了只有 `lo`、三个外网地址均连接失败、宿主哨兵不可见、
+模型代码挂载只读。模型边界证据与一次真实调用轨迹见本页下方的 2026-10-06 记录。
+这仍不是公平盲测或通用隔离证明：模型运行只覆盖一个授权合成项目，本次三份候选都被可信验收判 `FAIL`，
+任务按预算 `INCOMPLETE` 结束。
+
+旧的 `agent_pilot.offline_run` 历史比较入口现在默认 fail-closed；它只保留历史记录，不再启动模型。现场模型入口统一走 `credproof_safety repair` 的白名单启动器，避免把旧的 WSL-only 网络隔离误当成模型进程完整隔离。
 
 ## 当前边界
 
@@ -215,6 +220,32 @@ python scripts/run-targeted-safety-regressions.py `
 仓库只提交 `config/runtime.example.json`。本机若不是 WSL 默认用户或运行根目录不同，应复制为未跟踪的 `config/local-runtime.json`，或通过 `CREDPROOF_CONFIG` / `CREDPROOF_RUNTIME_ROOT` 指定已准备的设施；模型权重、虚拟环境和真实凭据不进入仓库。缺少隔离设施时程序返回 `UNKNOWN`，不会在宿主机降级执行不可信项目。
 
 本轮记录的是合成凭据、授权本地 mock 服务和受控 Python 工具。它证明的是上述限定场景的执行链修正，不是通用文件审计、SSRF 防护、第三方认证或盲测结论。
+
+## 2026-10-06 模型进程边界实测
+
+本版首次在模型进程自身执行边界探针，并在同一边界内启动本地 Ollama/Qwen-Agent。启动器位于
+`credproof_safety/agent.py:_MODEL_BOUNDARY_BOOTSTRAP`；它使用 bubblewrap 的独立 user、PID、IPC、
+UTS、cgroup 和 network namespace，`--disable-userns`、`--cap-drop ALL`，把 rootfs 的 `usr/lib/lib64`
+运行时、三个 Agent 支持模块、依赖目录、Ollama 目录、固定模型 manifest 与四个固定 blob 逐项只读挂载；
+候选仓库、修复历史和完整交付目录没有挂载。模型只通过 `/rpc` 请求受信执行器，通过 `/work` 保存轨迹。
+
+探针来自真实运行中的模型进程，而不是候选副本回放：接口只有 `lo`；对 `1.1.1.1:443`、`8.8.8.8:443`
+和 IPv6 外部地址的连接均返回网络不可达；宿主哨兵不可见；`/app`、`/deps` 代码写入均被拒绝；
+挂载记录没有未授权 Windows/宿主目录。模型实际完成了 11 次结构化工具请求（含 3 个候选、3 次可信验收），
+Ollama 日志记录 `OLLAMA_NO_CLOUD=true`，本次未调用付费 API；由于本次边界运行探测到 CPU，不能把它写成 GPU
+性能结果。三份候选均被程序验收判 `FAIL`，最终状态是 `INCOMPLETE`，这项失败原样保留。
+
+逐项材料：[`acceptance/20261006-model-boundary/model-run-summary.json`](acceptance/20261006-model-boundary/model-run-summary.json)、
+[`model-boundary-probe.raw.json`](acceptance/20261006-model-boundary/model-boundary-probe.raw.json)、
+[`model-boundary-plan.raw.json`](acceptance/20261006-model-boundary/model-boundary-plan.raw.json)、
+[`integration-receipt.json`](acceptance/20261006-model-boundary/integration-receipt.json)、
+[`service-boundary.raw.json`](acceptance/20261006-model-boundary/service-boundary.raw.json)、
+[`live-generation.raw.json`](acceptance/20261006-model-boundary/live-generation.raw.json)、
+[`process-tree-after-inference.raw.json`](acceptance/20261006-model-boundary/process-tree-after-inference.raw.json)、
+[`model-run.raw.json`](acceptance/20261006-model-boundary/model-run.raw.json)、
+[`model-events.raw.jsonl`](acceptance/20261006-model-boundary/model-events.raw.jsonl)、
+[`ollama-stderr.raw.log`](acceptance/20261006-model-boundary/ollama-stderr.raw.log) 和文件清单 [`manifest.json`](acceptance/20261006-model-boundary/manifest.json)。
+这些记录使用合成凭据和授权副本；完整模型权重、真实凭据和虚拟环境仍不进入 Git。
 
 ### 外部项目导出回归
 

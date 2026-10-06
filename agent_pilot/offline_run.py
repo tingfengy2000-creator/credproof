@@ -62,6 +62,11 @@ def main():
     parser.add_argument('--agent-only', action='store_true', help='One reviewed UI task; reliability mode only')
     parser.add_argument('--external-twine', action='store_true', help='One pinned external configuration component, separate from fixture comparisons')
     args = parser.parse_args()
+    # This historical harness predates the model-process allowlist.  Refuse to
+    # run a live model through it, instead of silently claiming the old WSL
+    # network namespace is equivalent to the reviewed boundary.
+    if os.environ.get('CREDPROOF_MODEL_BOUNDARY_ACTIVE') != '1':
+        raise SystemExit('legacy offline_run is disabled; use credproof_safety repair with the model boundary launcher')
     runtime = linux_runtime_root()
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)

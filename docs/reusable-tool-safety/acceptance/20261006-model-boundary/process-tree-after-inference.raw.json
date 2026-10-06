@@ -1,0 +1,51 @@
+{
+  "processes": [
+    {
+      "pid": 1,
+      "command": "/runtime-host/isolation/tools/usr/bin/bwrap --unshare-all --unshare-user --unshare-cgroup-try --disable-userns --die-with-parent --new-session --clearenv --cap-drop ALL --tmpfs / --ro-bind /tmp/credproof-model-root-ghibbqa6/usr /usr --ro-bind /tmp/credproof-model-root-ghibbqa6/lib /lib --ro-bind /tmp/credproof-model-root-ghibbqa6/lib64 /lib64 --dir /app --ro-bind /tmp/credproof-model-stage-luu_2s4s /app --dir /deps --ro-bind /runtime-host/venv/lib/python3.12/site-packages /deps --ro-bind /runtime-host/venv/lib/python3.12/site-packages/_soundfile_data/libsndfile_x86_64.so /deps/_soundfile_data/libsndfile_x86_64.so --dir /runtime --ro-bind /runtime-host/ollama /runtime/ollama --dir /runtime/models --dir /runtime/models/manifests --dir /runtime/models/manifests/registry.ollama.ai --dir /runtime/models/manifests/registry.ollama.ai/library --dir /runtime/models/blobs --ro-bind /runtime-host/models/manifests/registry.ollama.ai/library/qwen3-coder/30b /runtime/models/manifests/registry.ollama.ai/library/qwen3-coder/30b --ro-bind /runtime-host/models/blobs/sha256-24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318 /runtime/models/blobs/sha256-24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318 --ro-bind /runtime-host/models/blobs/sha256-1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a /runtime/models/blobs/sha256-1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a --ro-bind /runtime-host/models/blobs/sha256-d18a5cc71b84bc4af394a31116bd3932b42241de70c77d2b76d69a314ec8aa12 /runtime/models/blobs/sha256-d18a5cc71b84bc4af394a31116bd3932b42241de70c77d2b76d69a314ec8aa12 --ro-bind /runtime-host/models/blobs/sha256-69aa441ea44ff5e1e7b56cac4f471e71e8a5e2e3963c29684a9234d5d5e5f7aa /runtime/models/blobs/sha256-69aa441ea44ff5e1e7b56cac4f471e71e8a5e2e3963c29684a9234d5d5e5f7aa --dir /gpu-libs --ro-bind /usr/lib/wsl/lib /gpu-libs --dev /dev --dev-bind /dev/dxg /dev/dxg --proc /proc --tmpfs /tmp --tmpfs /run --tmpfs /home --bind /mnt/e/比赛/密证_CredProof-local-agent/_runs/model-boundary-final-v1/model-work /work --bind /runtime-host/model-probe-rpc-95ea97a8d76245e0a2dc100b4569877f /rpc --chdir /work --setenv PATH /usr/bin:/bin:/usr/lib/wsl/lib --setenv PYTHONPATH /app:/deps --setenv HOME /home/model --setenv CREDPROOF_RUNTIME_ROOT /runtime --setenv CREDPROOF_HOST_SENTINEL /mnt/e/比赛/密证_CredProof-local-agent/_runs/model-boundary-final-v1/host-sentinel.txt --setenv OLLAMA_HOST 127.0.0.1:11435 --setenv CREDPROOF_BOUNDARY_ONLY 1 --setenv OLLAMA_MODELS /runtime/models --setenv OLLAMA_NO_CLOUD 1 --setenv OLLAMA_CONTEXT_LENGTH 16384 --setenv OLLAMA_NUM_PARALLEL 1 --setenv OLLAMA_MAX_LOADED_MODELS 1 --setenv OLLAMA_KEEP_ALIVE -1 --setenv OLLAMA_FLASH_ATTENTION 1 --setenv OLLAMA_KV_CACHE_TYPE q8_0 --setenv LD_LIBRARY_PATH /gpu-libs:/runtime/ollama/lib/ollama --setenv HTTP_PROXY  --setenv HTTPS_PROXY  --setenv ALL_PROXY  --setenv NO_PROXY 127.0.0.1,localhost --setenv LANG C.UTF-8 --remount-ro / /usr/bin/python3 /app/worker.py /app /work ",
+      "mount_namespace": "mnt:[4026532235]",
+      "network_namespace": "net:[4026532240]"
+    },
+    {
+      "pid": 2,
+      "command": "/usr/bin/python3 /app/worker.py /app /work ",
+      "mount_namespace": "mnt:[4026532235]",
+      "network_namespace": "net:[4026532240]"
+    },
+    {
+      "pid": 30,
+      "command": "/runtime/ollama/bin/ollama serve ",
+      "mount_namespace": "mnt:[4026532235]",
+      "network_namespace": "net:[4026532240]"
+    },
+    {
+      "pid": 106,
+      "command": "/runtime/ollama/lib/ollama/llama-server --model /runtime/models/blobs/sha256-1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a --port 49445 --host 127.0.0.1 --no-webui --offline -c 16384 -np 1 --log-verbosity 4 --no-log-prefix --no-log-timestamps --no-jinja --chat-template chatml --load-mode none --cache-type-k q8_0 --cache-type-v q8_0 --flash-attn on -b 1024 -ub 1024 --context-shift --keep 4 ",
+      "mount_namespace": "mnt:[4026532235]",
+      "network_namespace": "net:[4026532240]"
+    }
+  ],
+  "active_models": {
+    "models": [
+      {
+        "name": "qwen3-coder:30b",
+        "model": "qwen3-coder:30b",
+        "size": 19625169386,
+        "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3moe",
+          "families": [
+            "qwen3moe"
+          ],
+          "parameter_size": "30.5B",
+          "quantization_level": "Q4_K_M"
+        },
+        "expires_at": "2319-01-16T06:23:47.96383888Z",
+        "size_vram": 0,
+        "context_length": 16384
+      }
+    ]
+  }
+}

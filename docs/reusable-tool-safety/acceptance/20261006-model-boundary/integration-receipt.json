@@ -1,0 +1,30 @@
+{
+  "schema": "credproof.model-boundary-integration/v1",
+  "returncode": 0,
+  "host_python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "worker_sha256": "3e9b6bc286004f8c5a12f05c3760d341eadf1123b170732e919b4ce7e1c20a27",
+  "supervisor_sha256": "386468305a54300c8f22607d00bc9534a11a9b5d218a7b3934d0bca4e1e1f5fa",
+  "command": [
+    "wsl --exec env CREDPROOF_BOUNDARY_ONLY=1 <trusted-runtime-python>",
+    "<frozen-supervisor>",
+    "<runtime>",
+    "<minimal-stage>",
+    "<output>",
+    "<harmless-sentinel>",
+    "<native-rpc>"
+  ],
+  "paid_api_used": false,
+  "checks": {
+    "controller_only_loopback": true,
+    "controller_external_denied": true,
+    "host_sentinel_hidden": true,
+    "reviewed_code_readonly": true,
+    "no_unapproved_host_mount": true,
+    "service_inherits_namespaces": true,
+    "service_host_sentinel_hidden": true,
+    "service_external_denied": true,
+    "inference_real_completed": true,
+    "inference_children_same_boundary": true
+  },
+  "ready_for_external_boundary_review": true
+}
