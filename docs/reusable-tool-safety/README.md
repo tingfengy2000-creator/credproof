@@ -1,4 +1,4 @@
-# CredProof reusable-tool-safety（0.3.0-dev.13）
+# CredProof reusable-tool-safety（0.3.0-dev.14）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，

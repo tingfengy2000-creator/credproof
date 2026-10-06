@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "credproof-safety"
-version = "0.3.0.dev13"
+version = "0.3.0.dev14"
 description = "Controlled safety checks for authorised Python tools"
 requires-python = ">=3.11"
 dependencies = []
@@ -18,3 +18,19 @@ credproof-safety = "credproof_safety.cli:main"
 
 [tool.setuptools.packages.find]
 include = ["credproof*", "credproof_safety*", "agent_pilot*"]
+
+# The single-page workbench is part of the installed candidate.  The source
+# checkout can serve these files from agent_pilot/ui, but a clean wheel must
+# carry them explicitly because the directory is intentionally not a Python
+# package.  Reviewed synthetic fixtures remain package data for the same
+# reason; no model weights or local runtime files are included.
+[tool.setuptools.package-data]
+agent_pilot = [
+  "ui/*.html",
+  "ui/*.js",
+  "ui/*.css",
+  "ui/*.md",
+  "fixtures/**",
+  "holdout-v1/**",
+  "isolation-tests/**",
+]
