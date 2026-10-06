@@ -249,7 +249,7 @@
         "acceptance/20261006-live-correction/live-statistics-correction.json",
         "acceptance/20261006-live-correction/new-project-recheck.json"
       ],
-      "source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
+      "source_commit": "a7772787010d57372f029069be7127a44b88fef7",
       "gaps": "授权/工具往返/可信判决与停止处理已有一次真实页面证据；本次候选未通过且任务INCOMPLETE，仍无模型修复效果成功证据。",
       "file_digests": [
         {
@@ -322,7 +322,7 @@
         "credproof_safety/tests/test_project_bundle.py",
         "acceptance/20261006-live-correction/new-project-bundle/"
       ],
-      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
+      "source_commit": "a7772787010d57372f029069be7127a44b88fef7",
       "gaps": "哈希是完整性绑定，不是密码学证明或第三方认证",
       "file_digests": [
         {
@@ -392,7 +392,7 @@
         "acceptance/20261006-final/preflight-summary.json",
         "acceptance/20261006-final/page-flow.md"
       ],
-      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
+      "source_commit": "a7772787010d57372f029069be7127a44b88fef7",
       "gaps": "跨机器、非 WSL 环境未承诺",
       "file_digests": [
         {
@@ -446,7 +446,7 @@
         "agent_pilot/model_client.py"
       ],
       "setup": "5090主机上通过页面任务使用本地 Ollama qwen3-coder:30b；没有 API key 或云端回退，运行收据保留。",
-      "acceptance": "页面任务实际取得 6 次模型调用、7 次 native 工具调用；付费API标记为 false；Ollama日志记录本次计算设备为 CPU。",
+      "acceptance": "页面任务实际取得6次模型调用、5份usage响应、7次native工具请求；执行器实际接受1份候选并验收1次；付费API标记为false；Ollama日志记录本次计算设备为CPU。",
       "commands": [
         "python -m agent_pilot.preflight"
       ],
