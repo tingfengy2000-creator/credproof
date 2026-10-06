@@ -1,0 +1,31 @@
+{
+  "schema": "credproof.delivery-receipt/v2",
+  "version": "0.3.0-dev.16",
+  "source_commit": "41d06cd",
+  "tested_source_commit": "41d06cd",
+  "generated_at": "2026-10-06",
+  "status": "READY_FOR_EXTERNAL_FINAL_REVIEW_PENDING_EXTERNAL_REVIEW",
+  "wheel_manifest": "wheel-manifest.json",
+  "scope": "page live adapter, model boundary evidence, acceptance calibration; no feature expansion",
+  "source_file_sha256": {
+    "agent_pilot/web.py": "67263e93998ae2f220dfdc9e1a12b937307d46df572bb0fa2539825d7919c725",
+    "credproof_safety/web_repair.py": "faff7ebf4878f19edc81db34a0a9f079b049198a24d1a2224f10f067b446389c",
+    "credproof_safety/agent.py": "1e532eef90d5dbca6902b03cff1261f4c400f72dfa8ec9f336ae05971b307256",
+    "credproof_safety/project.py": "04c86113b6755572c326e6d5773e4e00eb40cc147b3d47e529020eeb92e39e7e",
+    "credproof_safety/runner.py": "ed2b2d4c53bdcd21e62e8eec8bf0dca788ac89ca24f3fb6e2916e4484de22f99",
+    "pyproject.toml": "66d71058d052dcac978f6bd8b2dcd5e3b03da6eb6aee92532574cc59b349a167",
+    "docs/reusable-tool-safety/requirements-acceptance.json": "1a58423c4a44cbfeb215a5e519e900af55c267078fc8edae91628b27ed41ab9e"
+  },
+  "tests": {
+    "agent_pilot_unittest": "102 passed",
+    "credproof_safety_unittest": "1 passed",
+    "page_live_http": "HTTP 202 -> supervisor 0 -> COMPLETED/INCOMPLETE/FAIL",
+    "clean_install_init": "exit 0"
+  },
+  "model_run": "acceptance/20261006-page-live-boundary/summary.json",
+  "known_blockers": [
+    "No model repair success in this run; final trusted verdict FAIL and task INCOMPLETE.",
+    "Only p01 has the new page live adapter; p02-p06 remain replay-only.",
+    "Ollama reported CPU compute on the RTX 5090 host; no GPU performance claim."
+  ]
+}

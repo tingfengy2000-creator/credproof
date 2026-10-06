@@ -1,0 +1,24 @@
+{
+  "schema": "credproof.release-wheel-manifest/v1",
+  "version": "0.3.0-dev.16",
+  "source_commit": "41d06cd",
+  "wheel": {
+    "filename": "credproof_safety-0.3.0.dev16-py3-none-any.whl",
+    "size_bytes": 325323,
+    "sha256": "43664b26a56c968d172c4b178b363ed46c77d3f74faa1643d7d81bc775f56934"
+  },
+  "clean_install": {
+    "venv": "_runs/clean-install-dev16/venv",
+    "python": "3.14 host clean venv",
+    "import_origin": "_runs/clean-install-dev16/import-origin-site-packages.txt",
+    "init": "_runs/clean-install-dev16/init-site-packages.txt"
+  },
+  "build_command": "python -m pip wheel . --no-deps --no-build-isolation -w _runs/wheel-dev16",
+  "excluded": [
+    "model weights",
+    "real credentials",
+    "virtual environment",
+    "rootfs",
+    "local binaries"
+  ]
+}
