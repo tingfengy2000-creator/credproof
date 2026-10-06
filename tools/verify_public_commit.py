@@ -6,6 +6,7 @@ import hashlib
 import json
 from pathlib import Path
 import subprocess
+import argparse
 from urllib.request import Request, urlopen
 
 
@@ -23,6 +24,9 @@ def digest(data: bytes) -> str:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
     commit = subprocess.run(["git", "rev-parse", "HEAD"], check=True,
                             stdout=subprocess.PIPE, text=True).stdout.strip()
     raw_base = f"https://raw.githubusercontent.com/{REPO}/{commit}/"
@@ -73,7 +77,7 @@ def main() -> int:
         "authorization_headers_sent": False,
         "cookies_sent": False,
     }
-    out = Path("docs/reusable-tool-safety/acceptance/20261006-live-correction/remote-verification-dev18.json")
+    out = args.output or Path("docs/reusable-tool-safety/acceptance/20261006-live-correction/remote-verification-dev18.json")
     out.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(result, ensure_ascii=False))
     return 0 if result["remote_branch_matches"] and result["commit_api"]["matches"] and result["all_bundle_bytes_match"] else 2
