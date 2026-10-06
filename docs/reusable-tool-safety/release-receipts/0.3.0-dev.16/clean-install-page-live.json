@@ -1,0 +1,20 @@
+{
+  "schema": "credproof.clean-wheel-page-live/v1",
+  "wheel": "credproof_safety-0.3.0.dev16-py3-none-any.whl",
+  "venv": "_runs/clean-install-dev16/venv",
+  "workspace": "repository passed explicitly to installed agent_pilot.launch/Application",
+  "http_start": 202,
+  "run_id": "live-cf640ba5052a437d974b369f146d2412",
+  "supervisor_exit_code": 0,
+  "page_status": "COMPLETED",
+  "task_status": "INCOMPLETE",
+  "final_verdict": "FAIL",
+  "model_status": "STOPPED_LIMIT",
+  "model_calls": 4,
+  "native_tool_calls": 5,
+  "candidate_count": 3,
+  "model_boundary": "VERIFIED_FOR_THIS_RUN",
+  "paid_api_used": false,
+  "command": "clean-install-dev16/venv/Scripts/python.exe clean-page-run.py",
+  "interpretation": "Installed wheel imports from site-packages and starts the same registered p01 page path. The actual model result remains INCOMPLETE + FAIL; this is a runtime compatibility check, not a repair success claim."
+}

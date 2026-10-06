@@ -20,7 +20,8 @@
     "agent_pilot_unittest": "102 passed",
     "credproof_safety_unittest": "1 passed",
     "page_live_http": "HTTP 202 -> supervisor 0 -> COMPLETED/INCOMPLETE/FAIL",
-    "clean_install_init": "exit 0"
+    "clean_install_init": "exit 0",
+    "clean_install_page_live": "installed wheel HTTP 202 -> supervisor 0 -> COMPLETED/INCOMPLETE/FAIL; 4 model calls, 5 native tools"
   },
   "model_run": "acceptance/20261006-page-live-boundary/summary.json",
   "known_blockers": [
@@ -28,5 +29,6 @@
     "Only p01 has the new page live adapter; p02-p06 remain replay-only.",
     "Ollama reported CPU compute on the RTX 5090 host; no GPU performance claim."
   ],
-  "note": "The immutable source snapshot is source_commit; the Git commit containing this receipt is reported by the delivery command and may be later than the source snapshot."
+  "note": "The immutable source snapshot is source_commit; the Git commit containing this receipt is reported by the delivery command and may be later than the source snapshot.",
+  "clean_install_page_live": "clean-install-page-live.json"
 }
