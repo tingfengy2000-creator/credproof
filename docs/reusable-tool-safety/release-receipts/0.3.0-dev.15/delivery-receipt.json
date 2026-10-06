@@ -1,0 +1,25 @@
+{
+  "schema": "credproof.review-delivery/v1",
+  "version": "0.3.0-dev.15",
+  "source_commit": "d050320",
+  "source_commit_note": "Full SHA is supplied by the GitHub branch after this source commit; this receipt is a follow-up delivery commit.",
+  "branch": "feat/reusable-tool-safety",
+  "status": "PUSHED_FOR_EXTERNAL_REVIEW",
+  "scope": [
+    "model-process bubblewrap mount allowlist",
+    "controller and Ollama namespace/output probes",
+    "one fresh bounded local inference",
+    "fail-closed historical offline harness",
+    "sanitized raw boundary and model records"
+  ],
+  "validation": {
+    "unit_and_regression": "python -m unittest agent_pilot.tests.test_model_boundary tests.test_reusable_tool_safety agent_pilot.tests.test_runtime_config -q: 33 passed",
+    "boundary_integration": "scripts/probe-model-boundary.py --output <local-run>: returncode 0; 10 boundary checks true",
+    "model_run": "11 native tool requests; 3 candidates; 3 trusted FAIL verifications; final INCOMPLETE",
+    "paid_api_used": false,
+    "gpu_performance_claim": false
+  },
+  "public_evidence": "docs/reusable-tool-safety/acceptance/20261006-model-boundary/",
+  "excluded": ["model weights", "virtual environments", "real credentials", "personal data", "local runtime directories"],
+  "external_review_statement": "The boundary evidence is available for external review. It is not a claim that automatic repair succeeded or that ChatGPT accepted the project."
+}
