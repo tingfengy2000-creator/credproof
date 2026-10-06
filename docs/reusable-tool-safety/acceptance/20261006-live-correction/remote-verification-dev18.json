@@ -1,0 +1,150 @@
+{
+  "schema": "credproof.github-anonymous-verification/v1",
+  "checked_at": "2026-10-06T14:31:43.289876+00:00",
+  "repository": "tingfengy2000-creator/credproof",
+  "commit": "dfd06648f4cee38251eac7c26b2bbebb8b522b5d",
+  "remote_branch_ref": "dfd06648f4cee38251eac7c26b2bbebb8b522b5d\trefs/heads/feat/reusable-tool-safety",
+  "remote_branch_matches": true,
+  "commit_api": {
+    "status": 200,
+    "content_type": "application/json; charset=utf-8",
+    "sha": "dfd06648f4cee38251eac7c26b2bbebb8b522b5d",
+    "matches": true
+  },
+  "fixed_paths": {
+    "docs/reusable-tool-safety/README.md": {
+      "status": 200,
+      "bytes": 29997,
+      "sha256": "e88be84093afd4df10b767b6c9c1944e3af29dcfc4d0d2df172f79255ff91698",
+      "content_type": "text/plain; charset=utf-8"
+    },
+    "credproof_safety/project_bundle.py": {
+      "status": 200,
+      "bytes": 11251,
+      "sha256": "0b37045ea5b893f07b49555d76995583c5a29d3ff77e5491751d2981e6b52d4a",
+      "content_type": "text/plain; charset=utf-8"
+    },
+    "agent_pilot/web.py": {
+      "status": 200,
+      "bytes": 49027,
+      "sha256": "f83780371b143d59591fb1cd5e8542b9b15cd8453c5c406f0b6c422367407d3e",
+      "content_type": "text/plain; charset=utf-8"
+    },
+    "agent_pilot/runtime_config.py": {
+      "status": 200,
+      "bytes": 6625,
+      "sha256": "bdd3325fc9604aefd2f357e015bb9e1dba05da5d58b0c3716b08d6ceb97300e5",
+      "content_type": "text/plain; charset=utf-8"
+    },
+    "docs/reusable-tool-safety/acceptance/20261006-live-correction/binding-regression-dev18.json": {
+      "status": 200,
+      "bytes": 1108,
+      "sha256": "d5e423ea1bbbbe4e88f7d7085e262aab6b90190d07013a0c7afe411abdad9933",
+      "content_type": "text/plain; charset=utf-8"
+    },
+    "docs/reusable-tool-safety/acceptance/20261006-live-correction/public-project-bundle-dev17/manifest.json": {
+      "status": 200,
+      "bytes": 2861,
+      "sha256": "9dce1273f94a4971d4c729a2ca4038d45102ba987d2f9b9b3958735cda7b3ce5",
+      "content_type": "text/plain; charset=utf-8"
+    },
+    "docs/reusable-tool-safety/acceptance/20261006-live-correction/public-project-bundle-dev17/publication.json": {
+      "status": 200,
+      "bytes": 1465,
+      "sha256": "7b136d4fe43e392a14c38f3a235789558c46c18a8a3b5e337d0b6b0a4186dae2",
+      "content_type": "text/plain; charset=utf-8"
+    },
+    "docs/reusable-tool-safety/acceptance/20261006-live-correction/public-project-bundle-dev17/project/tool.py": {
+      "status": 200,
+      "bytes": 2090,
+      "sha256": "fbdcf41db9834b3507326f9f15846e41274a563b58b5e27fbddab13e8c6570a7",
+      "content_type": "text/plain; charset=utf-8"
+    },
+    "docs/reusable-tool-safety/acceptance/20261006-live-correction/public-project-recheck-dev17.json": {
+      "status": 200,
+      "bytes": 14619,
+      "sha256": "02662d835d6b82e5b4cd7e2a35b31a76dee4f9d97e88ed0d1f1f6479724417a1",
+      "content_type": "text/plain; charset=utf-8"
+    }
+  },
+  "bundle_manifest_path": "docs/reusable-tool-safety/acceptance/20261006-live-correction/public-project-bundle-dev17/manifest.json",
+  "bundle_schema": "credproof.project-public-bundle/v1",
+  "bundle_checks": {
+    "candidate.py": {
+      "status": 200,
+      "expected_sha256": "fbdcf41db9834b3507326f9f15846e41274a563b58b5e27fbddab13e8c6570a7",
+      "actual_sha256": "fbdcf41db9834b3507326f9f15846e41274a563b58b5e27fbddab13e8c6570a7",
+      "bytes": 2090,
+      "content_type": "text/plain; charset=utf-8",
+      "matches": true
+    },
+    "configuration.json": {
+      "status": 200,
+      "expected_sha256": "ed915d079c6021cbd2b957efaf1b7500c74e8503144be5923960b14ffd10894b",
+      "actual_sha256": "ed915d079c6021cbd2b957efaf1b7500c74e8503144be5923960b14ffd10894b",
+      "bytes": 248,
+      "content_type": "text/plain; charset=utf-8",
+      "matches": true
+    },
+    "original.py": {
+      "status": 200,
+      "expected_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "actual_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "bytes": 1324,
+      "content_type": "text/plain; charset=utf-8",
+      "matches": true
+    },
+    "project/README.md": {
+      "status": 200,
+      "expected_sha256": "f445ce2942d2284777dfb554cba4630af17c9fbb2bc7b8d2475afcb9dff3ea6c",
+      "actual_sha256": "f445ce2942d2284777dfb554cba4630af17c9fbb2bc7b8d2475afcb9dff3ea6c",
+      "bytes": 1149,
+      "content_type": "text/plain; charset=utf-8",
+      "matches": true
+    },
+    "project/credproof.toml": {
+      "status": 200,
+      "expected_sha256": "1b3255a7f5533aaefac25045cab71b4fca110dcc7adf76687adbdd38db350341",
+      "actual_sha256": "1b3255a7f5533aaefac25045cab71b4fca110dcc7adf76687adbdd38db350341",
+      "bytes": 658,
+      "content_type": "text/plain; charset=utf-8",
+      "matches": true
+    },
+    "project/tests/test_business.py": {
+      "status": 200,
+      "expected_sha256": "18db0091dc53ddb93aa9226334f6916629853e590906bf140bb35b588bd8a9d0",
+      "actual_sha256": "18db0091dc53ddb93aa9226334f6916629853e590906bf140bb35b588bd8a9d0",
+      "bytes": 1516,
+      "content_type": "text/plain; charset=utf-8",
+      "matches": true
+    },
+    "project/tool.py": {
+      "status": 200,
+      "expected_sha256": "fbdcf41db9834b3507326f9f15846e41274a563b58b5e27fbddab13e8c6570a7",
+      "actual_sha256": "fbdcf41db9834b3507326f9f15846e41274a563b58b5e27fbddab13e8c6570a7",
+      "bytes": 2090,
+      "content_type": "text/plain; charset=utf-8",
+      "matches": true
+    },
+    "publication.json": {
+      "status": 200,
+      "expected_sha256": "7b136d4fe43e392a14c38f3a235789558c46c18a8a3b5e337d0b6b0a4186dae2",
+      "actual_sha256": "7b136d4fe43e392a14c38f3a235789558c46c18a8a3b5e337d0b6b0a4186dae2",
+      "bytes": 1465,
+      "content_type": "text/plain; charset=utf-8",
+      "matches": true
+    },
+    "report.json": {
+      "status": 200,
+      "expected_sha256": "72a8ca740809b997f6f30c9f346872b3f68b083232e4f071de10b4dc82010590",
+      "actual_sha256": "72a8ca740809b997f6f30c9f346872b3f68b083232e4f071de10b4dc82010590",
+      "bytes": 40608,
+      "content_type": "text/plain; charset=utf-8",
+      "matches": true
+    }
+  },
+  "all_bundle_bytes_match": true,
+  "readme_contains_dev18": true,
+  "authorization_headers_sent": false,
+  "cookies_sent": false
+}
