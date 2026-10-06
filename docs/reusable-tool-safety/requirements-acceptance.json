@@ -472,5 +472,11 @@
     "new model/case expansion"
   ],
   "interpretation": "Detection, program gate, human repair validation and fresh Agent repair are reported separately.",
-  "current_review_receipt_commit": "2160b2c23a2e34a721c96b231ab61cb1eda76831"
+  "current_review_receipt_commit": "2160b2c23a2e34a721c96b231ab61cb1eda76831",
+  "handoff_status": "NOT_READY_FOR_HANDOFF",
+  "handoff_blockers": [
+    "R08 model_repair_effect remains IMPLEMENTED_UNVERIFIED; no trusted PASS in current model runs.",
+    "Live page adapter is currently registered p01 only; p02-p06 remain replay-only.",
+    "No GPU performance evidence; 5060 handoff intentionally not started."
+  ]
 }

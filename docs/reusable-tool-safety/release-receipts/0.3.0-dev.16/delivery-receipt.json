@@ -4,7 +4,7 @@
   "source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
   "tested_source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
   "generated_at": "2026-10-06",
-  "status": "READY_FOR_EXTERNAL_FINAL_REVIEW_PENDING_EXTERNAL_REVIEW",
+  "status": "NOT_READY_FOR_HANDOFF",
   "wheel_manifest": "wheel-manifest.json",
   "scope": "page live adapter, model boundary evidence, acceptance calibration; no feature expansion",
   "source_file_sha256": {
@@ -30,5 +30,10 @@
     "Ollama reported CPU compute on the RTX 5090 host; no GPU performance claim."
   ],
   "note": "The immutable source snapshot is source_commit; the Git commit containing this receipt is reported by the delivery command and may be later than the source snapshot.",
-  "clean_install_page_live": "clean-install-page-live.json"
+  "clean_install_page_live": "clean-install-page-live.json",
+  "handoff_blockers": [
+    "模型修复效果仍无可信 PASS：5090 页面任务与清洁 wheel 页面任务均以 INCOMPLETE + FAIL 结束；不得声称 Agent 自动修复成功。",
+    "新边界现场适配目前只覆盖登记案例 p01；p02-p06 明确保持历史回放。",
+    "本轮 Ollama 报告 CPU 计算，未形成 GPU 性能证据；5060 交接未开始。"
+  ]
 }
