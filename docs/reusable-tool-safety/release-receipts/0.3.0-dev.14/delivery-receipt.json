@@ -1,0 +1,57 @@
+{
+  "schema": "credproof.delivery-receipt/v2",
+  "version": "0.3.0-dev.14",
+  "branch": "feat/reusable-tool-safety",
+  "status": "NOT_READY_FOR_HANDOFF",
+  "source_snapshot_commit": "dfcb37a4472f82bc2f081fa11b5727da39c4c183",
+  "implementation_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
+  "evidence_commit": "dfcb37a4472f82bc2f081fa11b5727da39c4c183",
+  "repository": "https://github.com/tingfengy2000-creator/credproof",
+  "generated_at": "2026-10-06T12:42:03.996217+08:00",
+  "artifacts": {
+    "wheel": {
+      "filename": "credproof_safety-0.3.0.dev14-py3-none-any.whl",
+      "size": 314903,
+      "sha256": "4ca4ebe4f25235463f5f40950c45366a1f2c709ac98f47f5096fbdba750c3ada"
+    },
+    "review_zip": {
+      "filename": "credproof-0.3.0-dev.14-20261006-dfcb37a4472f.zip",
+      "size": 17693048,
+      "sha256": "89cf0f0452e73a792792d36ab0cbb5c3d2ce77eeb7bb49031c6a728e7c5f3e59"
+    },
+    "manifest": {
+      "filename": "manifest.json",
+      "size": 1889873,
+      "sha256": "72564b92c269939e12471a33826ffeada91114697f34de8bf759d39fb79b9b22"
+    },
+    "sha256sums": {
+      "filename": "sha256sums.txt",
+      "size": 195,
+      "sha256": "5afc0af6b99f7b313e98a05f3afa2bf40b380455e27cb6264ade374b29b1da89"
+    }
+  },
+  "acceptance_entry": "docs/reusable-tool-safety/requirements-acceptance.md",
+  "clean_acceptance": "docs/reusable-tool-safety/acceptance/20261006-final/",
+  "validation": {
+    "project_tests": "33 passed",
+    "agent_pilot_tests": "99 passed, 1 warning",
+    "preflight": "ready=true; isolation_ready=true; model_ready=true (saved probe only)",
+    "clean_install": "site-packages import; init 0; vulnerable FAIL; fixed PASS; export 0",
+    "consumer_pytest": "fixed 1/1 pass; reintroduced-defect 1/1 fail; unrelated 1/1 pass; fixed second 1/1 pass with second report",
+    "browser": "fresh wheel page at 127.0.0.1:18773; scope -> no-model check -> export observed"
+  },
+  "blockers": [
+    "No fresh model inference in this round.",
+    "Model process filesystem mount allowlist and independent outbound-network probe are not complete; candidate bubblewrap does not prove whole model-process isolation.",
+    "Do not begin 5060 handoff or live repair until this boundary evidence is independently reviewed and explicitly approved."
+  ],
+  "exclusions": [
+    "model weights",
+    "virtual environments",
+    "real credentials",
+    "personal data",
+    "local WSL rootfs/bubblewrap binaries",
+    "untracked runtime caches"
+  ],
+  "notes": "review ZIP is a source/evidence snapshot, not a Git object or Release attachment; SHA files are external receipt metadata."
+}
