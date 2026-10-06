@@ -24,4 +24,6 @@ The repository-wide `unittest discover -s agent_pilot` command was also attempte
 
 `model-run-summary.json` is the compact interpretation of the raw run. The model made 11 native tool requests: two rejected path reads, four accepted tool responses, three candidate submissions, and three trusted `FAIL` verifications. It reached the three-candidate limit and ended `INCOMPLETE`; it did not receive permission to declare success. `model-run.raw.json` and `model-events.raw.jsonl` preserve the complete sanitized trace. `ollama-stderr.raw.log` records `OLLAMA_NO_CLOUD=true` and the local server. This run reported CPU inference; it is not a GPU speed result.
 
+`boundary-attempt-log.json` records the earlier finite boundary bring-up failures and the final successful integration run; no failed attempt was removed from the local development record.
+
 The boundary evidence closes the previous handoff blocker for this limited run. It does not prove a general sandbox, kernel-level audit, or automatic repair success. Historical Agent failures and prior deterministic checks remain in their original versioned directories.

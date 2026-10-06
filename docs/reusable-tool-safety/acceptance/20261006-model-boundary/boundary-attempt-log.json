@@ -1,0 +1,592 @@
+{
+  "schema": "credproof.model-boundary-attempts/v1",
+  "attempts": [
+    {
+      "attempt": 2,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "bwrap: --disable-userns requires --unshare-user",
+      "probe_reached": false
+    },
+    {
+      "attempt": 3,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "bwrap: Can't mkdir /app: Read-only file system",
+      "probe_reached": false
+    },
+    {
+      "attempt": 4,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "bwrap: Can't mkdir /usr/lib/wsl: Read-only file system",
+      "probe_reached": false
+    },
+    {
+      "attempt": 5,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "Traceback (most recent call last):",
+      "probe_reached": false
+    },
+    {
+      "attempt": 6,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "bwrap: Can't create file at /lib/x86_64-linux-gnu/libgcc_s.so.1: Read-only file system",
+      "probe_reached": false
+    },
+    {
+      "attempt": 7,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "Traceback (most recent call last):",
+      "probe_reached": false
+    },
+    {
+      "attempt": 8,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "Traceback (most recent call last):",
+      "probe_reached": false
+    },
+    {
+      "attempt": 9,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "Traceback (most recent call last):",
+      "probe_reached": false
+    },
+    {
+      "attempt": 10,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "Traceback (most recent call last):",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": true
+    },
+    {
+      "attempt": 11,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "Traceback (most recent call last):",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 12,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "Traceback (most recent call last):",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 13,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "Traceback (most recent call last):",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 14,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "Traceback (most recent call last):",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 15,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "Traceback (most recent call last):",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 16,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "unknown",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 17,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 18,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 19,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0002
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 20,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 21,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0003
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 22,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "unknown",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 23,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": 24,
+      "status": "FAILED_BOUNDARY_OR_RUNTIME",
+      "error_class": "unknown",
+      "probe_reached": true,
+      "network_interfaces": [
+        "lo"
+      ],
+      "external_connections": [
+        {
+          "address": "1.1.1.1",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0001
+        },
+        {
+          "address": "8.8.8.8",
+          "port": 443,
+          "connected": false,
+          "errno": 101,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        },
+        {
+          "address": "2606:4700:4700::1111",
+          "port": 443,
+          "connected": false,
+          "errno": null,
+          "reason": "OSError",
+          "elapsed_s": 0.0
+        }
+      ],
+      "host_mount_check": false
+    },
+    {
+      "attempt": "final-boundary-integration",
+      "status": "PASSED_BOUNDARY_AND_REAL_INFERENCE",
+      "evidence": "acceptance/20261006-model-boundary/integration-receipt.json"
+    }
+  ]
+}
