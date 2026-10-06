@@ -123,14 +123,22 @@ function renderProjectModes() {
   if (!p) return;
   const cfg = p.config || {};
   const r = p.last_report;
-  $('project-current-context').textContent = `${p.label} · ${p.patch_origin} · 对象 ${p.object_sha256?.slice(0, 16)} · ${r ? `上次检查 ${displayTime(r.checked_at_utc)} / ${p.last_report_applicable ? '适用于当前对象' : '旧对象结果，需重新检查'}` : '尚未执行'} · 非实时监控`;
+  const applicable = Boolean(r && p.last_report_applicable);
+  const overall = applicable && Object.hasOwn(verdictNames, r.verdict) ? r.verdict : 'UNKNOWN';
+  const overallNote = !r ? '尚未检查' : !applicable ? '旧对象结果，需重新检查' : overall === 'PASS' ? '全部必要条件已满足' : overall === 'FAIL' ? '存在明确未满足条件' : '必要材料不足或状态未知';
+  $('project-current-verdict').innerHTML = `<article class="project-overall project-overall-${tone(overall)}"><div><span class="project-overall-kicker">后台总体判决</span><strong>${escape(verdictNames[overall])}</strong><span class="project-overall-code">${escape(overall)}</span></div><p>${escape(overallNote)} · 类别卡片只解释局部检查，不能替代总体判决。</p></article>`;
+  $('project-current-context').textContent = `${p.label} · ${p.patch_origin} · 对象 ${p.object_sha256?.slice(0, 16)} · ${r ? `上次检查 ${displayTime(r.checked_at_utc)} / ${applicable ? '适用于当前对象' : '旧对象结果，需重新检查'}` : '尚未执行'} · 非实时监控`;
   $('project-current-scope').innerHTML = `<article class="project-mode-card"><div><strong>本次允许范围</strong><p>源码 ${escape(array(cfg.source_scope).join(', '))} · 业务测试 ${escape(array(cfg.tests).join(', '))}</p><p>允许目录 ${escape(array(cfg.allowed_dirs).join(', '))} · 禁止目录 ${escape(array(cfg.forbidden_dirs).join(', '))}</p><p>允许服务 ${escape(text(cfg.services))} · 凭据变量 ${escape(cfg.credential_env)}</p></div></article>`;
-  const groups = [ ['业务检查', ['pytest', 'required_pytest_tests', 'entry_completed']], ['不泄密', ['no_credential_output']], ['不乱读', ['no_forbidden_file_read', 'no_out_of_scope_file_read', 'required_allowed_file_read']], ['不乱连', ['allowed_service_receipt', 'allowed_service_path', 'no_forbidden_service_receipt', 'no_unauthorized_connection']] ];
-  $('project-current-checks').innerHTML = groups.map(([label, keys]) => {
-    const complete = r && p.last_report_applicable && keys.every(k => typeof r.required_checks?.[k] === 'boolean');
+  const groups = [ ['业务与认证', ['pytest', 'required_pytest_tests', 'entry_completed', 'required_service_credential']], ['不泄密', ['no_credential_output']], ['不乱读', ['no_forbidden_file_read', 'no_out_of_scope_file_read', 'required_allowed_file_read']], ['不乱连', ['allowed_service_receipt', 'allowed_service_path', 'no_forbidden_service_receipt', 'no_unauthorized_connection']] ];
+  const grouped = new Set(groups.flatMap(([, keys]) => keys));
+  const cards = groups.map(([label, keys]) => {
+    const complete = applicable && keys.every(k => typeof r?.required_checks?.[k] === 'boolean');
     const v = !complete ? 'UNKNOWN' : keys.every(k => r.required_checks[k]) ? 'PASS' : 'FAIL';
-    return `<article class="project-mode-card"><div><strong>${label} ${badge(`${verdictNames[v]} · ${v}`, tone(v))}</strong><p>${escape(keys.filter(k => r?.required_checks?.[k] === false).join(', ') || (complete ? '对应检查已完成' : '未执行、未覆盖或旧结果不适用'))}</p></div></article>`;
-  }).join('');
+    return `<article class="project-mode-card"><div><strong>${label} ${badge(`${verdictNames[v]} · ${v}`, tone(v))}</strong><p>${escape(keys.filter(k => r?.required_checks?.[k] === false).join(', ') || (complete ? '对应检查已完成' : '未执行、未覆盖或旧对象结果不适用'))}</p></div></article>`;
+  });
+  const fallback = applicable && r?.required_checks ? Object.entries(r.required_checks).filter(([key, value]) => value === false && !grouped.has(key)).map(([key]) => key) : [];
+  if (fallback.length) cards.push(`<article class="project-mode-card project-mode-fallback"><div><strong>其他未通过条件 ${badge('FAIL', 'fail')}</strong><p>${escape(fallback.join(', '))}</p></div></article>`);
+  $('project-current-checks').innerHTML = cards.join('');
   const ex = r?.execution || {};
   $('project-current-code').textContent = p.source_code || '';
   $('project-current-diff').textContent = p.diff || '没有预置修复差异；当前页面不生成模型补丁。';

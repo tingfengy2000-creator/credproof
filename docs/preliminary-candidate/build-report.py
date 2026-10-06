@@ -278,7 +278,7 @@ def build(args):
     receipt = {"source": str(reference), "source_sha256": hashlib.sha256(reference.read_bytes()).hexdigest(),
                "manuscript_sha256": hashlib.sha256((HERE / "manuscript.md").read_bytes()).hexdigest(),
                "output": str(args.output), "assets": {key: str(getattr(args, key)) if getattr(args, key) else None for key in ("mechanism", "overview", "trace")},
-               "historical_result_run": "20260929t095000z-holdout8", "presentation_version": "0.2.0-preliminary.8", "not_final_render_qa": True}
+               "historical_result_run": "20260929t095000z-holdout8", "presentation_version": "0.2.0-preliminary.9", "not_final_render_qa": True}
     (HERE / "working").mkdir(exist_ok=True)
     (HERE / "working/build-receipt.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(receipt, ensure_ascii=False))

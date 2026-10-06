@@ -1,4 +1,4 @@
-# CredProof reusable-tool-safety（0.3.0-dev.12）
+# CredProof reusable-tool-safety（0.3.0-dev.13）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -8,7 +8,7 @@
 ## 已实现的共同入口
 
 源码包可用 `python -m pip install .` 安装；本轮在独立 Python 3.12 venv 中用
-`setuptools` 构建 wheel `credproof_safety-0.3.0.dev12-py3-none-any.whl`，源码目录
+`setuptools` 构建 wheel `credproof_safety-0.3.0.dev13-py3-none-any.whl`，源码目录
 本身也可直接运行 `python -m credproof_safety`。模型权重和 Ollama 不随 wheel 进入
 安装包。
 
