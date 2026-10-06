@@ -1,0 +1,79 @@
+{
+  "schema": "credproof.installed-origin-verification/v1",
+  "version": "0.3.0-dev.18",
+  "model_invoked": false,
+  "historical_runs_used": false,
+  "repo_source_on_sys_path": false,
+  "commands": [
+    {
+      "argv": [
+        "E:\\比赛\\密证_CredProof-local-agent\\.venv\\Scripts\\python.exe",
+        "-m",
+        "venv",
+        "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-dev18-origin\\venv"
+      ],
+      "cwd": "repo",
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "Actual environment location may have moved due to redirects, links or junctions.\n  Requested location: \"C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-dev18-origin\\venv\\Scripts\\python.exe\"\n  Actual location:    \"C:\\Users\\Administrator\\AppData\\Local\\Temp\\credproof-dev18-origin\\venv\\Scripts\\python.exe\"\n"
+    },
+    {
+      "argv": [
+        "E:\\比赛\\密证_CredProof-local-agent\\.venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "wheel",
+        ".",
+        "--no-deps",
+        "--no-build-isolation",
+        "-w",
+        "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-dev18-origin\\wheel"
+      ],
+      "cwd": "repo",
+      "returncode": 0,
+      "stdout": "Processing e:\\比赛\\密证_credproof-local-agent\n  Preparing metadata (pyproject.toml): started\n  Preparing metadata (pyproject.toml): finished with status 'done'\nBuilding wheels for collected packages: credproof-safety\n  Building wheel for credproof-safety (pyproject.toml): started\n  Building wheel for credproof-safety (pyproject.toml): finished with status 'done'\n  Created wheel for credproof-safety: filename=credproof_safety-0.3.0.dev18-py3-none-any.whl size=333565 sha256=637a862feaa6cc2659fcaf54ad4d681cf885c7a8241806c6c045c441ae28cf62\n  Stored in directory: c:\\users\\administrator\\appdata\\local\\pip\\cache\\wheels\\b0\\fd\\ac\\e5c86c74097761a7090d526356e879631bc8856f79cd9ea165\nSuccessfully built credproof-safety\n",
+      "stderr": "\n[notice] A new release of pip is available: 25.0.1 -> 26.2.1\n[notice] To update, run: E:\\比赛\\密证_CredProof-local-agent\\.venv\\Scripts\\python.exe -m pip install --upgrade pip\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-dev18-origin\\venv\\Scripts\\python.exe",
+        "-m",
+        "pip",
+        "install",
+        "--no-deps",
+        "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-dev18-origin\\wheel\\credproof_safety-0.3.0.dev18-py3-none-any.whl"
+      ],
+      "cwd": "repo",
+      "returncode": 0,
+      "stdout": "Processing c:\\users\\admini~1\\appdata\\local\\temp\\credproof-dev18-origin\\wheel\\credproof_safety-0.3.0.dev18-py3-none-any.whl\nInstalling collected packages: credproof-safety\nSuccessfully installed credproof-safety-0.3.0.dev18\n",
+      "stderr": "\n[notice] A new release of pip is available: 25.0.1 -> 26.2.1\n[notice] To update, run: C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-dev18-origin\\venv\\Scripts\\python.exe -m pip install --upgrade pip\n"
+    },
+    {
+      "argv": [
+        "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-dev18-origin\\venv\\Scripts\\python.exe",
+        "-I",
+        "-m",
+        "credproof_safety.web_repair",
+        "--origin-only",
+        "--output",
+        "C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-dev18-origin\\origin"
+      ],
+      "cwd": "clean-workspace",
+      "returncode": 0,
+      "stdout": "{\"status\": \"ORIGIN_ONLY\"}\n",
+      "stderr": ""
+    }
+  ],
+  "wheel": "credproof_safety-0.3.0.dev18-py3-none-any.whl",
+  "origin_status": 0,
+  "receipt": {
+    "schema": "credproof.installed-origin/v1",
+    "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\credproof-dev18-origin\\venv\\Scripts\\python.exe",
+    "cwd": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\credproof-dev18-origin\\workspace",
+    "web_repair": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\credproof-dev18-origin\\venv\\Lib\\site-packages\\credproof_safety\\web_repair.py",
+    "agent": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\credproof-dev18-origin\\venv\\Lib\\site-packages\\credproof_safety\\agent.py",
+    "package_version": "0.3.0.dev18",
+    "isolated_import": "python -I -m credproof_safety.web_repair"
+  },
+  "paths_from_site_packages": true
+}

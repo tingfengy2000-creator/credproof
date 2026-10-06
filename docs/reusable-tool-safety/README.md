@@ -39,6 +39,10 @@
 `program_python`，路径不存在会明确报错，不回退旧包；始终使用 `python -I -m credproof_safety.web_repair`。
 无模型的解释器选择回归见 `agent_pilot/tests/test_runtime_config.py`。模型修复成功仍未验证，状态继续为
 `NOT_READY_FOR_HANDOFF`。
+新安装位置的 `python -I -m credproof_safety.web_repair --origin-only` 记录见
+[`installed-origin-dev18.json`](acceptance/20261006-live-correction/installed-origin-dev18.json)：
+wheel 为 `credproof_safety-0.3.0.dev18-py3-none-any.whl`，子进程的 `web_repair.py` 和 `agent.py`
+均来自该 venv 的 `site-packages`，工作目录与仓库分离，未启动模型。
 
 ## 已实现的共同入口
 
