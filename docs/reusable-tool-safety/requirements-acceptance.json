@@ -1,7 +1,7 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
   "candidate_version": "0.3.0-dev.16",
-  "tested_source_commit": "see GitHub review commit; source and evidence commits are consecutive",
+  "tested_source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
   "generated_at": "2026-10-06",
   "status_summary": {
     "verified": 12,
@@ -211,7 +211,7 @@
         "agent_pilot/tests/test_web.py",
         "credproof_safety/tests/test_web_repair.py"
       ],
-      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
+      "source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
       "gaps": "当前仅 p01 映射到资料助手固定项目；p02-p06 仍只允许历史回放，不能把它们的旧 fixtures 冒充新边界现场任务。",
       "file_digests": [
         {
@@ -247,7 +247,7 @@
         "agent_pilot/tests/test_model_boundary.py",
         "credproof_safety/tests/test_web_repair.py"
       ],
-      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
+      "source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
       "gaps": "授权/工具往返/可信判决与停止处理已有一次真实页面证据；本次3份候选均未通过，仍无模型修复效果的成功证据，不能写成Agent修复成功。",
       "file_digests": [
         {
@@ -418,7 +418,7 @@
         "acceptance/20261006-model-boundary/model-boundary-probe.raw.json",
         "acceptance/20261006-model-boundary/service-boundary.raw.json"
       ],
-      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
+      "source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
       "gaps": "一次授权合成项目运行；不等同通用沙箱、内核级审计或跨机器验证。",
       "file_digests": [
         {
@@ -449,7 +449,7 @@
         "acceptance/20261006-page-live-boundary/commands.txt",
         "acceptance/20261006-model-boundary/ollama-stderr.raw.log"
       ],
-      "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
+      "source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
       "gaps": "本次运行未取得 GPU 推理性能证据；仅说明在 RTX 5090 开发机上完成本地运行，不能把 CPU 记录改写为 GPU 加速。",
       "file_digests": [
         {
@@ -471,5 +471,6 @@
     "real credential revocation",
     "new model/case expansion"
   ],
-  "interpretation": "Detection, program gate, human repair validation and fresh Agent repair are reported separately."
+  "interpretation": "Detection, program gate, human repair validation and fresh Agent repair are reported separately.",
+  "current_review_receipt_commit": "2160b2c23a2e34a721c96b231ab61cb1eda76831"
 }
