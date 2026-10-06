@@ -14,9 +14,11 @@ from pathlib import Path
 import shutil
 import tempfile
 
+from .config import load_config
 from .project import check_project, _digest_tree
 
 SCHEMA = "credproof.project-bundle/v1"
+PUBLIC_SCHEMA = "credproof.project-public-bundle/v1"
 
 
 def _sha(data: bytes) -> str:
@@ -34,6 +36,89 @@ def _json(path: Path, value) -> None:
 def _files(root: Path) -> dict[str, str]:
     return {p.relative_to(root).as_posix(): _sha(p.read_bytes())
             for p in sorted(root.rglob("*")) if p.is_file() and p.name != "manifest.json"}
+
+
+def _normal_text(data: bytes) -> bytes:
+    """Normalize only for comparing a generated entry across newline styles."""
+    return data.replace(b"\r\n", b"\n").replace(b"\r", b"\n")
+
+
+def _newline_style(data: bytes) -> str:
+    if b"\r\n" in data:
+        return "CRLF"
+    if b"\r" in data:
+        return "CR"
+    return "LF"
+
+
+def _safe_relative(root: Path, name: str) -> Path:
+    if not isinstance(name, str) or not name or Path(name).is_absolute():
+        raise ValueError("invalid_manifest_path")
+    relative = Path(name)
+    if ".." in relative.parts:
+        raise ValueError("invalid_manifest_path")
+    raw_path = root / relative
+    if raw_path.is_symlink():
+        raise ValueError("manifest_symlink_unsupported")
+    path = raw_path.resolve()
+    if not path.is_relative_to(root.resolve()):
+        raise ValueError("invalid_manifest_path")
+    return path
+
+
+def _config_public(candidate: Path) -> tuple[Path, dict]:
+    config_path = candidate / "credproof.toml"
+    if not config_path.is_file():
+        raise ValueError("candidate_configuration_missing")
+    config = load_config(config_path, project_root=candidate)
+    return config_path, config.to_public_dict()
+
+
+def _bind_validation_object(row: dict, candidate: Path, current: bytes) -> dict:
+    """Verify that the recorded verdict belongs to the exact candidate object.
+
+    The live record is not trusted merely because it contains a verdict.  The
+    final validation tree, configuration and entry must agree with the actual
+    artifact before anything is copied into a public bundle.
+    """
+    final = row.get("final_validation")
+    if not isinstance(final, dict):
+        raise ValueError("final_validation_missing")
+    recorded_tree = final.get("project_tree_sha256")
+    if not isinstance(recorded_tree, str) or len(recorded_tree) != 64:
+        raise ValueError("final_validation_project_tree_missing")
+    actual_tree = _digest_tree(candidate)
+    if actual_tree != recorded_tree:
+        raise ValueError("final_validation_project_tree_mismatch")
+    config_path, config_public = _config_public(candidate)
+    recorded_config = final.get("config")
+    if not isinstance(recorded_config, dict) or recorded_config != config_public:
+        raise ValueError("final_validation_configuration_mismatch")
+    entry_rel = Path(config_public["entry"]["module"].replace(".", "/") + ".py")
+    entry = candidate / entry_rel
+    if not entry.is_file() or not entry.resolve().is_relative_to(candidate.resolve()):
+        raise ValueError("final_validation_entry_missing")
+    candidate_entry = entry.read_bytes()
+    normalized_equal = _normal_text(candidate_entry) == _normal_text(current)
+    if not normalized_equal:
+        raise ValueError("final_validation_entry_mismatch")
+    test_paths = [str(candidate / item) for item in config_public["tests"]]
+    if any(not Path(item).exists() for item in test_paths):
+        raise ValueError("final_validation_required_tests_missing")
+    return {
+        "validation_project_tree_sha256": recorded_tree,
+        "candidate_project_tree_sha256": actual_tree,
+        "config_path": "project/credproof.toml",
+        "config_sha256": _sha(config_path.read_bytes()),
+        "required_test_paths": list(config_public["tests"]),
+        "entry_path": (Path("project") / entry_rel).as_posix(),
+        "entry_source_sha256": _sha(current),
+        "entry_candidate_sha256": _sha(candidate_entry),
+        "entry_source_newline": _newline_style(current),
+        "entry_candidate_newline": _newline_style(candidate_entry),
+        "entry_newline_policy": "LF-normalized comparison only; project bytes remain unchanged",
+        "entry_normalized_equal": True,
+    }
 
 
 def _safe_copy_tree(source: Path, target: Path) -> None:
@@ -64,6 +149,7 @@ def export_project_bundle(method: str | Path, output: str | Path) -> dict:
         raise ValueError("candidate_project_missing")
     original = (method / "original.py").read_bytes()
     current = (method / "final-candidate.py").read_bytes()
+    binding = _bind_validation_object(row, candidate, current)
     output.mkdir(parents=True)
     project = output / "project"
     _safe_copy_tree(candidate, project)
@@ -82,13 +168,18 @@ def export_project_bundle(method: str | Path, output: str | Path) -> dict:
         pass
     public_row["exported_at"] = _now()
     public_row["project_tree_sha256"] = _digest_tree(candidate)
+    public_row["object_binding"] = binding
     public_row["artifact_material"] = "project/; raw model workspace is intentionally excluded"
     _json(output / "report.json", public_row)
     _json(output / "configuration.json", {"schema": SCHEMA, "project_config": "project/credproof.toml",
           "checker": "credproof_safety.check_project", "fresh_recheck": True,
           "trust": "trusted checker and operator; hashes detect changes, not authenticity"})
+    copied_tree = _digest_tree(project)
+    if copied_tree != binding["candidate_project_tree_sha256"]:
+        raise ValueError("copied_project_tree_mismatch")
     manifest = {"schema": SCHEMA, "created_at": _now(), "source_sha256": _sha(original),
                 "candidate_sha256": _sha(current), "project_tree_sha256": _digest_tree(project),
+                "object_binding": binding,
                 "files": _files(output), "execution_performed": False,
                 "trust": "trusted checker and operator; hashes are not signatures"}
     _json(output / "manifest.json", manifest)
@@ -105,10 +196,13 @@ def recheck_project_bundle(bundle: str | Path, output: str | Path) -> dict:
     try:
         manifest = json.loads((root / "manifest.json").read_text(encoding="utf-8"))
         report = json.loads((root / "report.json").read_text(encoding="utf-8"))
-        if manifest.get("schema") != SCHEMA:
+        if manifest.get("schema") not in {SCHEMA, PUBLIC_SCHEMA}:
             raise ValueError("unsupported_project_bundle_schema")
-        for name, digest in manifest.get("files", {}).items():
-            path = root / name
+        files = manifest.get("files")
+        if not isinstance(files, dict):
+            raise ValueError("manifest_files_missing")
+        for name, digest in files.items():
+            path = _safe_relative(root, name)
             if not path.is_file() or _sha(path.read_bytes()) != digest:
                 reasons.append("MATERIAL_CHANGED:" + name)
         project = root / "project"

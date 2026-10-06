@@ -1,25 +1,49 @@
-## 清洁安装与需求验收（dev17）
+## 清洁安装与需求验收（dev18）
 
 本版先完成清洁安装链路和可复核需求表，再决定是否交接 5060。入口文件是 [`requirements-acceptance.md`](requirements-acceptance.md) 与机器可读的 [`requirements-acceptance.json`](requirements-acceptance.json)。
 
 - 清洁安装证据：[`acceptance/20261006-final/`](acceptance/20261006-final/)；包括 wheel、site-packages 导入来源、CLI before/fixed、浏览器实际操作、导出消费者 pytest/JUnit 和环境预检。
 - 清洁安装发现的 wheel 静态资源缺口已在 `pyproject.toml` 修复，细节见 [`packaging-gap.md`](packaging-gap.md)。
 - 无模型项目检查与导出记录见 [`page-flow.md`](page-flow.md)；模型现场入口的真实 HTTP 记录见 [`acceptance/20261006-page-live-boundary/`](acceptance/20261006-page-live-boundary/)。
-- dev17 wheel、site-packages 导入和清洁安装现场入口收据见 [`acceptance/20261006-live-correction/`](acceptance/20261006-live-correction/)。旧 dev16 收据仍原样保留。
+- dev18 wheel、site-packages 导入和清洁安装现场入口收据见 [`acceptance/20261006-live-correction/`](acceptance/20261006-live-correction/)。旧 dev16/dev17 收据仍原样保留。
 - 当前状态：程序检查、导出链以及一次真实模型边界运行均有可读证据；本次模型任务本身按预算以 `INCOMPLETE` 结束，不能写成自动修复成功。
 - 本轮新增 [`acceptance/20261006-live-correction/`](acceptance/20261006-live-correction/)：保存的现场候选按新 `project-bundle/v1` 导出并在新目录复检，真实结果仍为 `FAIL`。页面批次实际接受 1 份候选、验收 1 次；清洁 wheel 批次接受 0 份候选，二者未合并统计。
 
-# CredProof reusable-tool-safety（0.3.0-dev.17）
+# CredProof reusable-tool-safety（0.3.0-dev.18）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
 使用一个版本化的 `credproof.toml` 和已有 pytest 测试。原初赛候选版仍在旧分支
 和旧提交中保留，本页只记录新开发分支。
 
+## dev18 定向收尾：项目 bundle 身份与可信启动器
+
+本版在不重跑模型的前提下关闭两类材料归属问题。`credproof_safety/project_bundle.py:export_project_bundle`
+在首次导出前同时核对候选副本的 `project_tree_sha256`、实际 `credproof.toml`、入口文件、必要测试
+和 `final_validation`；入口只允许显式的 LF/CRLF 语义比对，候选配置或测试变化不会沿用旧报告。
+复制到 bundle 后还会再次核对树摘要。`recheck_project_bundle` 同时接受旧的
+`project-bundle/v1` 和本次派生的 `project-public-bundle/v1`，并拒绝清单路径越界。
+
+公开取件材料 [`public-project-bundle-dev17/`](acceptance/20261006-live-correction/public-project-bundle-dev17/)
+由固定提交 `8c66d7916cfe406aa2d1b6f3d6e9f49a977d5564` 的 Git blob 重新取得，按 Git 字节发布，
+没有使用 Windows checkout 的换行转换。清单中的 `project/tool.py` 为
+`fbdcf41db9834b3507326f9f15846e41274a563b58b5e27fbddab13e8c6570a7`，旧本地 CRLF 清单仍在
+`new-project-bundle/` 中原样保留；`publication.json` 明确记录来源提交、来源验收树和公开树的关系。
+在当前隔离环境执行 [`public-project-recheck-dev17.json`](acceptance/20261006-live-correction/public-project-recheck-dev17.json)
+得到真实 `FAIL`（pytest 3 收集/执行，2 通过、1 失败），不是把缺材料或 UNKNOWN 当成检出。
+首次导出协议的无模型回归见 [`binding-regression-dev18.json`](acceptance/20261006-live-correction/binding-regression-dev18.json)：
+正常导出为 `EXPORTED`，候选/配置/必要测试在首次导出前变化均被拒绝，导出后变化返回 `UNKNOWN` 且旧报告不适用。
+
+页面子进程不再扫描 `_runs/clean-install-dev16/dev17` 等临时目录。`agent_pilot/web.py:launch_command`
+只接受环境变量 `CREDPROOF_INSTALLED_PYTHON` 或集中配置 `config/local-runtime.json` 的
+`program_python`，路径不存在会明确报错，不回退旧包；始终使用 `python -I -m credproof_safety.web_repair`。
+无模型的解释器选择回归见 `agent_pilot/tests/test_runtime_config.py`。模型修复成功仍未验证，状态继续为
+`NOT_READY_FOR_HANDOFF`。
+
 ## 已实现的共同入口
 
 源码包可用 `python -m pip install .` 安装；本轮在独立 Python 3.12 venv 中用
-`setuptools` 构建 wheel `credproof_safety-0.3.0.dev17-py3-none-any.whl`，源码目录
+`setuptools` 构建 wheel `credproof_safety-0.3.0.dev18-py3-none-any.whl`，源码目录
 本身也可直接运行 `python -m credproof_safety`。模型权重和 Ollama 不随 wheel 进入
 安装包。
 
@@ -219,7 +243,7 @@ python scripts/run-targeted-safety-regressions.py `
 
 ### 运行配置和公开边界
 
-仓库只提交 `config/runtime.example.json`。本机若不是 WSL 默认用户或运行根目录不同，应复制为未跟踪的 `config/local-runtime.json`，或通过 `CREDPROOF_CONFIG` / `CREDPROOF_RUNTIME_ROOT` 指定已准备的设施；模型权重、虚拟环境和真实凭据不进入仓库。缺少隔离设施时程序返回 `UNKNOWN`，不会在宿主机降级执行不可信项目。
+仓库只提交 `config/runtime.example.json`。本机若不是 WSL 默认用户或运行根目录不同，应复制为未跟踪的 `config/local-runtime.json`；现场页面还必须在该文件增加已核验安装解释器的绝对路径 `"program_python": "C:\\...\\python.exe"`，或通过 `CREDPROOF_INSTALLED_PYTHON` 明确指定。这两个入口都只接受存在的安装解释器，失效时直接报错，不会从历史 `_runs` 静默回退。也可通过 `CREDPROOF_CONFIG` / `CREDPROOF_RUNTIME_ROOT` 指定已准备的设施；模型权重、虚拟环境和真实凭据不进入仓库。缺少隔离设施时程序返回 `UNKNOWN`，不会在宿主机降级执行不可信项目。
 
 本轮记录的是合成凭据、授权本地 mock 服务和受控 Python 工具。它证明的是上述限定场景的执行链修正，不是通用文件审计、SSRF 防护、第三方认证或盲测结论。
 

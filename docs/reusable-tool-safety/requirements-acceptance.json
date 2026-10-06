@@ -1,6 +1,6 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.17",
+  "candidate_version": "0.3.0-dev.18",
   "tested_source_commit": "a7772787010d57372f029069be7127a44b88fef7",
   "generated_at": "2026-10-06",
   "status_summary": {
@@ -306,24 +306,24 @@
       "name": "对象、报告适用性与复检",
       "status": "IMPLEMENTED_VERIFIED",
       "implementation": [
+        "credproof_safety/project_bundle.py:export_project_bundle/recheck_project_bundle",
         "agent_pilot/web.py:object/applicability checks",
-        "agent_pilot/tests/test_web_material_binding.py",
-        "agent_pilot/bundle.py"
+        "credproof_safety/tests/test_project_bundle.py"
       ],
       "setup": "页面对象 digest 与当前副本；历史材料漂移测试",
-      "acceptance": "当前对象显示适用；对象/候选/规则/证据变化时旧材料拒绝复用；独立 check 重新执行",
+      "acceptance": "首次导出前绑定候选树、配置、入口与必要测试；固定 Git blob 派生的公开 bundle 清单逐项匹配，并在新目录复检得到真实 FAIL",
       "commands": [
         "python -m pytest -q agent_pilot/tests/test_web_material_binding.py agent_pilot/tests/test_web.py"
       ],
       "evidence": [
-        "agent_pilot/tests/test_web_material_binding.py",
-        "acceptance/20261006-final/page-flow.md",
-        "credproof_safety/project_bundle.py",
         "credproof_safety/tests/test_project_bundle.py",
-        "acceptance/20261006-live-correction/new-project-bundle/"
+        "acceptance/20261006-live-correction/new-project-bundle/",
+        "acceptance/20261006-live-correction/public-project-bundle-dev17/",
+        "acceptance/20261006-live-correction/public-project-recheck-dev17.json",
+        "acceptance/20261006-live-correction/binding-regression-dev18.json"
       ],
       "source_commit": "a7772787010d57372f029069be7127a44b88fef7",
-      "gaps": "哈希是完整性绑定，不是密码学证明或第三方认证",
+      "gaps": "公开派生 bundle 的换行映射是明确的材料发布规则；哈希是完整性绑定，不是密码学证明或第三方认证",
       "file_digests": [
         {
           "path": "agent_pilot/web.py",
@@ -377,10 +377,12 @@
       "implementation": [
         "pyproject.toml package-data",
         "agent_pilot/preflight.py",
-        "agent_pilot/launch.py"
+        "agent_pilot/launch.py",
+        "agent_pilot/runtime_config.py",
+        "agent_pilot/web.py:launch_command"
       ],
       "setup": "仓库外短路径 fresh venv；安装 dev14 wheel；预检 WSL Ubuntu-24.04/bubblewrap/rootfs",
-      "acceptance": "site-packages import origin；wheel 携带 agent_pilot/ui；preflight ready/isolation_ready/model_ready=true；页面 HTTP 之外完成真实按钮操作",
+      "acceptance": "现场启动只接受环境变量或 local-runtime.json 的 program_python；不存在时明确失败，不扫描历史 _runs；python -I 子进程路径规则保持",
       "commands": [
         "pip wheel . --no-deps --no-build-isolation",
         "pip install wheel",
@@ -390,10 +392,11 @@
         "acceptance/20261006-final/wheel-manifest.json",
         "acceptance/20261006-final/import-origin-sanitized.txt",
         "acceptance/20261006-final/preflight-summary.json",
-        "acceptance/20261006-final/page-flow.md"
+        "acceptance/20261006-final/page-flow.md",
+        "agent_pilot/tests/test_runtime_config.py"
       ],
       "source_commit": "a7772787010d57372f029069be7127a44b88fef7",
-      "gaps": "跨机器、非 WSL 环境未承诺",
+      "gaps": "跨机器、非 WSL 环境未承诺；运行者仍需配置已核验安装解释器",
       "file_digests": [
         {
           "path": "agent_pilot/preflight.py",
@@ -485,5 +488,5 @@
     "Live page adapter is currently registered p01 only; p02-p06 remain replay-only.",
     "No GPU performance evidence; 5060 handoff intentionally not started."
   ],
-  "version": "0.3.0-dev.17"
+  "version": "0.3.0-dev.18"
 }

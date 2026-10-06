@@ -1,0 +1,37 @@
+{
+  "schema": "credproof.project-bundle-binding-regression/v1",
+  "generated_at": "2026-10-06T14:22:56.508649+00:00",
+  "model_invoked": false,
+  "method": "ui/live-5b40351063da40b5b7cac58531e94df8/output/comparison/p01/C-agent",
+  "cases": [
+    {
+      "id": "normal_export",
+      "status": "EXPORTED",
+      "project_tree_sha256": "a412d29a0ad607abcc0e827548d49d19f2e1ffc1c42ab9c4827fc6f62eae4e3e"
+    },
+    {
+      "id": "candidate_changed_before_export",
+      "status": "REJECTED",
+      "error": "ValueError:final_validation_project_tree_mismatch"
+    },
+    {
+      "id": "configuration_changed_before_export",
+      "status": "REJECTED",
+      "error": "ValueError:final_validation_project_tree_mismatch"
+    },
+    {
+      "id": "required_tests_changed_before_export",
+      "status": "REJECTED",
+      "error": "ValueError:final_validation_project_tree_mismatch"
+    },
+    {
+      "id": "changed_after_export",
+      "status": "UNKNOWN",
+      "reasons": [
+        "MATERIAL_CHANGED:project/tool.py",
+        "PROJECT_OBJECT_CHANGED"
+      ],
+      "prior_report_applicable": false
+    }
+  ]
+}

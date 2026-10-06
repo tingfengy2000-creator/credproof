@@ -10,6 +10,7 @@ import tempfile
 
 DEFAULTS = {'wsl_distribution': 'Ubuntu-24.04', 'wsl_user': '',
             'runtime_root': '~/credproof-agent-runtime'}
+OPTIONAL_KEYS = {'program_python'}
 
 
 def validate_runtime_root(value):
@@ -29,7 +30,7 @@ def load_config(project_root=None):
         if not path.is_file() or path.stat().st_size > 16384:
             raise ValueError('Runtime configuration unavailable or oversized')
         override = json.loads(path.read_text(encoding='utf-8'))
-        if not isinstance(override, dict) or set(override) - set(DEFAULTS):
+        if not isinstance(override, dict) or set(override) - (set(DEFAULTS) | OPTIONAL_KEYS):
             raise ValueError('Unsupported runtime configuration keys')
         value.update(override)
     if (not isinstance(value['wsl_distribution'], str)
@@ -39,6 +40,12 @@ def load_config(project_root=None):
             or value['wsl_user'] and not re.fullmatch(r'[a-z_][a-z0-9_-]{0,63}\$?', value['wsl_user'])):
         raise ValueError('Invalid WSL user')
     value['runtime_root'] = validate_runtime_root(os.environ.get('CREDPROOF_RUNTIME_ROOT', value['runtime_root']))
+    if 'program_python' in value:
+        interpreter = value['program_python']
+        if not isinstance(interpreter, str) or not interpreter.strip():
+            raise ValueError('program_python must be a non-empty absolute path when configured')
+        if not Path(interpreter).expanduser().is_absolute():
+            raise ValueError('program_python must be an absolute path')
     return value
 
 

@@ -122,6 +122,33 @@ class RuntimeConfigTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 web.launch_command(self.root, 'p01', self.root / 'output')
 
+    def test_launch_does_not_search_historical_runs_or_fallback_invalid_interpreter(self):
+        observation = {'ready': True, 'isolation_ready': True, 'model_ready': True,
+                       'runtime_root': '/home/test/dedicated-runtime'}
+        old = self.root / '_runs/clean-install-dev16/venv/Scripts/python.exe'
+        old.parent.mkdir(parents=True)
+        old.write_bytes(b'old package placeholder')
+        with patch.object(web, 'runtime_observation', return_value=observation):
+            with self.assertRaisesRegex(ValueError, 'not configured'):
+                web.launch_command(self.root, 'p01', self.root / 'output')
+        with patch.object(web, 'runtime_observation', return_value=observation), \
+             patch.dict(os.environ, {'CREDPROOF_INSTALLED_PYTHON': str(self.root / 'missing-python.exe')}):
+            with self.assertRaisesRegex(ValueError, 'unavailable'):
+                web.launch_command(self.root, 'p01', self.root / 'output')
+
+    def test_launch_accepts_only_explicit_central_local_config(self):
+        configured = self.root / 'install/Scripts/python.exe'
+        configured.parent.mkdir(parents=True)
+        configured.write_bytes(b'installed interpreter placeholder')
+        (self.root / 'config/local-runtime.json').write_text(json.dumps({
+            'program_python': str(configured),
+        }))
+        observation = {'ready': True, 'isolation_ready': True, 'model_ready': True,
+                       'runtime_root': '/home/test/dedicated-runtime'}
+        with patch.object(web, 'runtime_observation', return_value=observation):
+            argv = web.launch_command(self.root, 'p01', self.root / 'output')
+        self.assertEqual(argv[0], str(configured))
+
 
 class ReadOnlyPreflightTests(unittest.TestCase):
     def setUp(self):

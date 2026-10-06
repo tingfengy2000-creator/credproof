@@ -152,14 +152,16 @@ def launch_command(root, case_id, output):
     # request_repair owns the reviewed model boundary.  Invoke it in a
     # separate host interpreter so it can open the WSL/bubblewrap boundary;
     # never run the legacy offline_run or a caller-provided command here.
-    installed = os.environ.get('CREDPROOF_INSTALLED_PYTHON')
-    interpreters = [Path(installed)] if installed else []
-    interpreters += [root / '_runs/clean-install-dev17-a/venv/Scripts/python.exe',
-                     root / '_runs/clean-install-dev17/venv/Scripts/python.exe',
-                     root / '_runs/clean-install-dev16/venv/Scripts/python.exe']
-    interpreter = next((p for p in interpreters if p.is_file()), None)
-    if interpreter is None:
-        raise ValueError('reviewed installed interpreter unavailable; refusing source-shadowed child')
+    # The child must come from one operator-selected, verified installation.
+    # Never search historical _runs directories: doing so can silently execute
+    # an older package and make a page result impossible to attribute.
+    configured = os.environ['CREDPROOF_INSTALLED_PYTHON'] if 'CREDPROOF_INSTALLED_PYTHON' in os.environ \
+        else config.get('program_python')
+    if not isinstance(configured, str) or not configured.strip():
+        raise ValueError('trusted installed interpreter is not configured')
+    interpreter = Path(configured).expanduser()
+    if not interpreter.is_absolute() or not interpreter.is_file():
+        raise ValueError('configured installed interpreter is unavailable; refusing source-shadowed child')
     command = [str(interpreter), '-I', '-m', 'credproof_safety.web_repair',
                '--project-id', project_id, '--case-id', case_id,
                '--config', str(project_config), '--output', str(Path(output).absolute())]
