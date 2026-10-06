@@ -5,6 +5,7 @@
 - 清洁安装证据：[`acceptance/20261006-final/`](acceptance/20261006-final/)；包括 wheel、site-packages 导入来源、CLI before/fixed、浏览器实际操作、导出消费者 pytest/JUnit 和环境预检。
 - 清洁安装发现的 wheel 静态资源缺口已在 `pyproject.toml` 修复，细节见 [`packaging-gap.md`](packaging-gap.md)。
 - 无模型项目检查与导出记录见 [`page-flow.md`](page-flow.md)；模型现场入口的真实 HTTP 记录见 [`acceptance/20261006-page-live-boundary/`](acceptance/20261006-page-live-boundary/)。
+- dev16 wheel、site-packages 导入和清洁安装现场入口收据见 [`release-receipts/0.3.0-dev.16/`](release-receipts/0.3.0-dev.16/)。
 - 当前状态：程序检查、导出链以及一次真实模型边界运行均有可读证据；本次模型任务本身按预算以 `INCOMPLETE` 结束，不能写成自动修复成功。
 
 # CredProof reusable-tool-safety（0.3.0-dev.16）
