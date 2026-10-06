@@ -29,7 +29,7 @@ class WebRepairAdapterTests(unittest.TestCase):
             row = web_repair._adapt(root / 'credproof.toml', output, 'assistant-original', 'p01', report)
             self.assertEqual(row['task']['task_status'], 'INCOMPLETE')
             self.assertEqual(row['final_validation']['verdict'], 'UNKNOWN')
-            self.assertEqual(row['initial_authority']['confirmed'], 'CONFIRMED_LEAK')
+            self.assertEqual(row['initial_authority']['confirmed'], 'CONFIRMED_VIOLATION')
             self.assertTrue((output / 'comparison/p01/C-agent/result.json').is_file())
             saved = json.loads((output / 'comparison/p01/C-agent/result.json').read_text(encoding='utf-8'))
             self.assertNotEqual(saved['final_validation']['verdict'], 'PASS')

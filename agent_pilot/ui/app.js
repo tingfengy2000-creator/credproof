@@ -9,7 +9,7 @@ const statusNames = { QUEUED: '等待执行', RUNNING: '执行中', COMPLETED: '
 const verdictNames = { PASS: '通过', FAIL: '未通过', UNKNOWN: '未知' };
 const taskNames = { COMPLETED_REPAIRED: '修复任务完成', COMPLETED_UNCHANGED: '保留原代码完成',
   INCOMPLETE: '任务未完成', UNKNOWN: '任务结果未知', FAILED: '任务失败' };
-const confirmationNames = { CONFIRMED_LEAK: '确认存在泄露', NO_LEAK_OBSERVED: '未观察到泄露', UNKNOWN: '未知' };
+const confirmationNames = { CONFIRMED_LEAK: '确认存在凭据泄露', CONFIRMED_VIOLATION: '确认存在边界违规', NO_LEAK_OBSERVED: '未观察到凭据泄露', UNKNOWN: '未知' };
 const checkNames = { security: '安全检查', safety: '安全检查', function: '功能检查',
   functionality: '功能检查', boundary: '边界检查', source: '源代码约束',
   syntax: '语法检查', coverage: '执行覆盖', isolation: '隔离执行',

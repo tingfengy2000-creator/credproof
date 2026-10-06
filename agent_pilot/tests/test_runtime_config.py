@@ -4,6 +4,7 @@ import json
 import os
 from pathlib import Path
 import platform
+import sys
 import tempfile
 import types
 import unittest
@@ -108,7 +109,8 @@ class RuntimeConfigTests(unittest.TestCase):
     def test_launch_requires_preflight_and_uses_registered_boundary_adapter(self):
         observation = {'ready': True, 'isolation_ready': True, 'model_ready': True,
                        'runtime_root': '/home/test user/dedicated-runtime'}
-        with patch.object(web, 'runtime_observation', return_value=observation):
+        with patch.object(web, 'runtime_observation', return_value=observation), \
+             patch.dict(os.environ, {'CREDPROOF_INSTALLED_PYTHON': sys.executable}):
             argv = web.launch_command(self.root, 'p01', self.root / 'output')
         self.assertIn('credproof_safety.web_repair', argv)
         self.assertEqual(argv[argv.index('--case-id') + 1], 'p01')

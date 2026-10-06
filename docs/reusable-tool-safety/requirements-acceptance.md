@@ -1,4 +1,4 @@
-# CredProof 需求—实现—证据验收表（dev16）
+# CredProof 需求—实现—证据验收表（dev17）
 
 本表对应本版源码提交（完整 SHA 在 GitHub 评审入口及后续交付收据中固定）；验收资料随后在提交中固化。它用于外部复查，不表示模型修复成功或参赛资格已验收。
 
@@ -13,8 +13,8 @@
 | R05 | 网络边界 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:mock services/socket audit；credproof_safety/project.py:_verdict`；experiments/reusable-tool-safety/20261003-targeted-fix-07/allowed_file_redirect.json；experiments/reusable-tool-safety/20261003-targeted-fix-07/reintroduced_file_bypass.json | 不宣称公网 SSRF、DNS、原生 syscall 或 Windows 内核网络审计 |
 | R06 | 必要业务测试真实完成与通过 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:CredProofPytestObserver；credproof_safety/project.py:_verdict`；_runs/current-pytest-observer/；agent_pilot/tests/test_runtime_config.py | 只对声明的必要用例语义负责；递归包装 skip 由执行侧区分 |
 | R07 | 单页项目注册、检查、总体判决与分项 | `IMPLEMENTED_VERIFIED` | `agent_pilot/project_workspace.py；agent_pilot/web.py；credproof_safety/web_repair.py`；`acceptance/20261006-final/page-flow.md`；`acceptance/20261006-page-live-boundary/summary.json` | 目前只有登记案例 p01 映射到资料助手固定项目；p02–p06 仍只提供历史回放 |
-| R08 | 候选修复授权与修改边界 | `IMPLEMENTED_UNVERIFIED` | `credproof_safety/agent.py:serve`；`credproof_safety/web_repair.py`；`acceptance/20261006-page-live-boundary/page-live-record.json`；`acceptance/20261006-model-boundary/model-events.raw.jsonl` | 授权、工具往返、可信判决和停止处理已有真实页面证据；本次 3 份候选均 FAIL，仍无模型修复成功证据 |
-| R09 | 对象、报告适用性与复检 | `IMPLEMENTED_VERIFIED` | `agent_pilot/web.py:object/applicability checks；agent_pilot/tests/test_web_material_binding.py；agent_pilot/bundle.py`；agent_pilot/tests/test_web_material_binding.py；acceptance/20261006-final/page-flow.md | 哈希是完整性绑定，不是密码学证明或第三方认证 |
+| R08 | 候选修复授权与修改边界 | `IMPLEMENTED_UNVERIFIED` | `credproof_safety/agent.py:serve`；`credproof_safety/web_repair.py:execution_summary`；`acceptance/20261006-page-live-boundary/page-live-record.json`；`acceptance/20261006-live-correction/live-statistics-correction.json` | 授权、工具往返、可信判决和停止处理已有真实页面证据；页面现场实际接受 1 份候选并验收 1 次，结果 FAIL/INCOMPLETE，仍无模型修复成功证据 |
+| R09 | 对象、报告适用性与复检 | `IMPLEMENTED_VERIFIED` | `agent_pilot/web.py:object/applicability checks；credproof_safety/project_bundle.py；credproof_safety/tests/test_project_bundle.py；acceptance/20261006-live-correction/new-project-bundle/；acceptance/20261006-live-correction/new-project-recheck.json` | 新项目任务按 `project-bundle/v1` 绑定当前项目和配置；历史 bundle schema 不被伪造兼容。哈希是完整性绑定，不是密码学证明或第三方认证 |
 | R10 | 导出与项目内复用 | `IMPLEMENTED_VERIFIED` | `credproof_safety/project.py:export_regression_tests；scripts/run-exported-regression-check.py`；acceptance/20261006-final/consumer/；acceptance/20261006-final/exported-tests/；acceptance/20261006-final/summary.json | 受控 WSL/bubblewrap 依赖需在消费者机器准备 |
 | R11 | 清洁安装、启动与隔离预检 | `IMPLEMENTED_VERIFIED` | `pyproject.toml package-data；agent_pilot/preflight.py；agent_pilot/launch.py`；acceptance/20261006-final/wheel-manifest.json；acceptance/20261006-final/import-origin-sanitized.txt；acceptance/20261006-final/preflight-summary.json；acceptance/20261006-final/page-flow.md | 跨机器、非 WSL 环境未承诺 |
 | R12 | 模型进程文件系统/网络边界独立证明 | `IMPLEMENTED_VERIFIED` | `credproof_safety/agent.py:_MODEL_BOUNDARY_BOOTSTRAP`；`acceptance/20261006-model-boundary/model-boundary-probe.raw.json`；`acceptance/20261006-page-live-boundary/page-live-record.json` | 只覆盖一次授权合成项目和一次页面任务；不等同通用沙箱或内核级审计 |
@@ -24,15 +24,15 @@
 
 `agent_pilot/web.py:launch_command` 不再调用默认阻断的 `agent_pilot.offline_run`。登记的 `p01` 由服务端固定映射到 `examples/material_assistant/credproof.toml`，页面启动的子进程运行 `credproof_safety.web_repair`，再由 `credproof_safety.agent.request_repair` 打开现有 WSL/bubblewrap 模型边界。适配器将项目身份、候选副本、最终可信报告和任务终态写回页面的 `C-agent` 记录；浏览器仍不能提交路径、命令、代码或判决。p02–p06 没有新的适配时，服务端明确返回“仅历史回放”，不把旧 fixtures 伪装成现场任务。
 
-5090 主机上的真实 HTTP 任务记录见 [`acceptance/20261006-page-live-boundary/`](acceptance/20261006-page-live-boundary/)。HTTP POST 返回 202，supervisor 退出码 0；模型实际调用 6 次、native 工具 7 次、提交 3 份候选，可信最终验收为 `FAIL`，任务为 `INCOMPLETE`。页面显示该项目与模型边界状态，未用历史回放替代本次任务。
+5090 主机上的真实 HTTP 任务记录见 [`acceptance/20261006-page-live-boundary/`](acceptance/20261006-page-live-boundary/)。HTTP POST 返回 202，supervisor 退出码 0；模型实际尝试 6 次、服务报告 usage 5 份、native 工具请求 7 次，执行器实际接受 1 份候选并验收 1 次，可信最终验收为 `FAIL`，任务为 `INCOMPLETE`。页面显示该项目与模型边界状态，未用历史回放替代本次任务。详见 [`acceptance/20261006-live-correction/live-statistics-correction.json`](acceptance/20261006-live-correction/live-statistics-correction.json)。
 
 ## 本轮清洁安装链路
 
-冻结源码后构建 `credproof_safety-0.3.0.dev14-py3-none-any.whl`，在仓库外短路径新建 venv，安装 wheel 与 pytest；导入路径指向 `site-packages`。外部 python-dotenv 副本依次执行 init、漏洞 check（FAIL）、修复 check（PASS）、导出。导出测试放入三个消费者副本，用正常 pytest 发现并执行：fixed `1 passed`，重新引入文件边界缺陷 `1 failed`，无关文件变化 `1 passed`；fixed 第二次执行仍退出0并生成第二份报告。页面在 `127.0.0.1:18773` 通过浏览器完成“查看范围→现场检查·无模型→导出安全测试”，可见总体 PASS、四项分项 PASS、对象/时间/适用性和导出提示。
+冻结源码后构建 `credproof_safety-0.3.0.dev17-py3-none-any.whl`，在仓库外短路径新建 venv，安装 wheel 与 pytest；导入路径指向 `site-packages`。外部 python-dotenv 副本依次执行 init、漏洞 check（FAIL）、修复 check（PASS）、导出。导出测试放入三个消费者副本，用正常 pytest 发现并执行：fixed `1 passed`，重新引入文件边界缺陷 `1 failed`，无关文件变化 `1 passed`；fixed 第二次执行仍退出0并生成第二份报告。页面在 `127.0.0.1:18773` 通过浏览器完成“查看范围→现场检查·无模型→导出安全测试”，可见总体 PASS、四项分项 PASS、对象/时间/适用性和导出提示。
 
 ## 模型与隔离边界
 
-本版有一次模型边界探针运行，以及一次从单页真实发起的模型任务。模型进程自身使用独立 bubblewrap allowlist 和私有 network namespace；页面任务的探针记录只有 `lo`、外网地址均失败、宿主哨兵不可见、代码只读，并确认 Ollama 继承同一 namespace。页面任务通过 native WSL RPC 与可信执行器通信，公开副本仅保存脱敏请求/响应记录。该次任务调用 6 次模型、7 次工具、提交 3 个候选，最终可信验收为 `FAIL`，任务以 `INCOMPLETE` 结束；这不能写成自动修复成功。程序权限 gate、候选预算和终止条件由执行器管理，模型不能读取标签、历史结果或参考补丁。Ollama 日志记录本次计算设备为 CPU；主机是 RTX 5090，仅作为运行环境记录，不作 GPU 性能结论。
+本版有一次模型边界探针运行，以及一次从单页真实发起的模型任务。模型进程自身使用独立 bubblewrap allowlist 和私有 network namespace；页面任务的探针记录只有 `lo`、外网地址均失败、宿主哨兵不可见、代码只读，并确认 Ollama 继承同一 namespace。页面任务通过 native WSL RPC 与可信执行器通信，公开副本仅保存脱敏请求/响应记录。该次任务调用 6 次模型、服务返回 5 份 usage、7 次工具请求，实际接受 1 个候选并验收 1 次，最终可信验收为 `FAIL`，任务以 `INCOMPLETE` 结束；这不能写成自动修复成功。程序权限 gate、候选预算和终止条件由执行器管理，模型不能读取标签、历史结果或参考补丁。Ollama 日志记录本次计算设备为 CPU；主机是 RTX 5090，仅作为运行环境记录，不作 GPU 性能结论。
 
 边界逐项记录位于 [`acceptance/20261006-model-boundary/`](acceptance/20261006-model-boundary/)，页面现场记录位于 [`acceptance/20261006-page-live-boundary/`](acceptance/20261006-page-live-boundary/)。本版状态为“可供外部定向复验”：模型进程边界和页面接线已有一次真实证据，但 Agent 修复效果仍只按失败的有限运行如实记录。
 

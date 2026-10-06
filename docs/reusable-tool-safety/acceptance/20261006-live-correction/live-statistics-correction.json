@@ -1,0 +1,116 @@
+{
+  "schema": "credproof.live-statistics-correction/v1",
+  "created_from_source": "preserved local run records; no model rerun",
+  "interpretation": "candidate cap is an upper bound; accepted candidates and verification counts come from executor history/RPC files. A generic boundary violation is not automatically called a credential leak.",
+  "runs": [
+    {
+      "run_id": "live-5b40351063da40b5b7cac58531e94df8",
+      "counts": {
+        "candidate_cap": 3,
+        "model_call_cap": 12,
+        "accepted_candidates": 1,
+        "candidate_history": [
+          {
+            "candidate": 1,
+            "sha256": "d13a5b249ee55fd426fa0ef9eaf0229d9bba62eb0719b52d3f424f6c2cefe0ce"
+          }
+        ],
+        "verifications": 1,
+        "verification_history": [
+          {
+            "file": "verification-01.json",
+            "verdict": "FAIL"
+          }
+        ],
+        "tool_requests": 7,
+        "tool_requests_by_name": {
+          "get_evidence": 1,
+          "read_code": 4,
+          "submit_patch": 1,
+          "verify_patch": 1
+        },
+        "tool_rejections": 2,
+        "rejected_requests": [
+          {
+            "tool": "read_code",
+            "reason": "path_not_in_entry_or_declared_tests"
+          },
+          {
+            "tool": "read_code",
+            "reason": "path_not_in_entry_or_declared_tests"
+          }
+        ],
+        "model_attempts": 6,
+        "saved_model_requests": 6,
+        "saved_model_responses": 5,
+        "model_responses_with_usage": 5,
+        "termination_reason": "MODEL_REQUEST_WALL_CLOCK_TIMEOUT",
+        "model_error": "Model request wall-clock timeout; server cancellation is unconfirmed",
+        "task_status": "INCOMPLETE",
+        "evidence_gaps": [],
+        "source": "host RPC acceptance + candidate/verification history; raw model request/response/usage"
+      },
+      "execution_kind": "real-local-model-inference",
+      "task_status": "INCOMPLETE",
+      "final_verdict": "FAIL",
+      "record_source": "preserved run; derived without model rerun"
+    },
+    {
+      "run_id": "live-cf640ba5052a437d974b369f146d2412",
+      "counts": {
+        "candidate_cap": 3,
+        "model_call_cap": 12,
+        "accepted_candidates": 0,
+        "candidate_history": [],
+        "verifications": 0,
+        "verification_history": [],
+        "tool_requests": 5,
+        "tool_requests_by_name": {
+          "get_evidence": 2,
+          "read_code": 3
+        },
+        "tool_rejections": 2,
+        "rejected_requests": [
+          {
+            "tool": "read_code",
+            "reason": "path_not_in_entry_or_declared_tests"
+          },
+          {
+            "tool": "read_code",
+            "reason": "path_not_in_entry_or_declared_tests"
+          }
+        ],
+        "model_attempts": 4,
+        "saved_model_requests": 4,
+        "saved_model_responses": 3,
+        "model_responses_with_usage": 3,
+        "termination_reason": "MODEL_REQUEST_WALL_CLOCK_TIMEOUT",
+        "model_error": "Model request wall-clock timeout; server cancellation is unconfirmed",
+        "task_status": "INCOMPLETE",
+        "evidence_gaps": [],
+        "source": "host RPC acceptance + candidate/verification history; raw model request/response/usage"
+      },
+      "execution_kind": "real-local-model-inference",
+      "task_status": "INCOMPLETE",
+      "final_verdict": "FAIL",
+      "record_source": "preserved run; derived without model rerun"
+    }
+  ],
+  "page_run_detail": {
+    "accepted_submit_patch": 1,
+    "verify_patch": 1,
+    "tool_requests": "get_evidence=1, read_code=4, submit_patch=1, verify_patch=1",
+    "model_attempts": 6,
+    "model_responses_with_usage": 5,
+    "termination": "MODEL_REQUEST_WALL_CLOCK_TIMEOUT",
+    "final": "FAIL; INCOMPLETE; candidate retained but not a repaired PASS"
+  },
+  "clean_wheel_run_note": "Separate clean-wheel run is retained; it produced no accepted candidate and no verification. It is not merged with the page run.",
+  "export_recheck": {
+    "schema": "credproof.project-bundle/v1",
+    "bundle": "new-project-bundle/",
+    "recheck": "new-project-recheck.json",
+    "actual": "FAIL; 3 required tests collected/executed, 2 passed and 1 failed; allowed service receipt and credential condition absent because candidate URL check rejected valid service URL",
+    "model_called": false
+  }
+}

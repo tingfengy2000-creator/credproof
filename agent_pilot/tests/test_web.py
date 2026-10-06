@@ -5,12 +5,14 @@ No local model, candidate, WSL command or isolation probe is executed here.
 import http.client
 import io
 import json
+import os
 from pathlib import Path
 import tempfile
 import threading
 import time
 import types
 import unittest
+import sys
 from unittest.mock import patch
 import zipfile
 
@@ -139,7 +141,8 @@ class WebTests(unittest.TestCase):
             def wait(self):
                 release.wait(2)
                 return 7
-        with patch.object(web.subprocess, 'Popen', side_effect=FakeChild) as child:
+        with patch.object(web.subprocess, 'Popen', side_effect=FakeChild) as child, \
+             patch.dict(os.environ, {'CREDPROOF_INSTALLED_PYTHON': sys.executable}):
             try:
                 status, value, _ = self.call('POST', '/api/agent/runs', {'case_id': 'p01'})
                 self.assertEqual(status, 202)

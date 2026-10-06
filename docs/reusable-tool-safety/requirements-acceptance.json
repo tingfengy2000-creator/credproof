@@ -1,7 +1,7 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.16",
-  "tested_source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
+  "candidate_version": "0.3.0-dev.17",
+  "tested_source_commit": "PENDING_LOCAL_COMMIT",
   "generated_at": "2026-10-06",
   "status_summary": {
     "verified": 12,
@@ -233,7 +233,7 @@
         "agent_pilot/tools.py:dispatch",
         "agent_pilot/tests/test_reliability.py"
       ],
-      "setup": "5090主机上通过页面真实任务 p01；同一运行保留原始请求、7次 native 工具调用、3份候选、可信 FAIL 验收和 INCOMPLETE 终态；另有确定性协议/单元回归。",
+      "setup": "5090主机上通过页面真实任务 p01；保存原始请求与工具轨迹。统计纠正为实际接受1份候选、验收1次；另有确定性协议/单元回归。",
       "acceptance": "候选授权、边界与预算由执行器实施；模型只提交候选；可信验收 FAIL 不被模型文字覆盖；任务在预算/停止条件下结束。修复效果单独记录。",
       "commands": [
         "python -m pytest -q agent_pilot/tests/test_reliability.py agent_pilot/tests/test_runtime_config.py"
@@ -245,10 +245,12 @@
         "acceptance/20261006-page-live-boundary/page-live-record.json",
         "acceptance/20261006-model-boundary/model-run-summary.json",
         "agent_pilot/tests/test_model_boundary.py",
-        "credproof_safety/tests/test_web_repair.py"
+        "credproof_safety/tests/test_web_repair.py",
+        "acceptance/20261006-live-correction/live-statistics-correction.json",
+        "acceptance/20261006-live-correction/new-project-recheck.json"
       ],
       "source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
-      "gaps": "授权/工具往返/可信判决与停止处理已有一次真实页面证据；本次3份候选均未通过，仍无模型修复效果的成功证据，不能写成Agent修复成功。",
+      "gaps": "授权/工具往返/可信判决与停止处理已有一次真实页面证据；本次候选未通过且任务INCOMPLETE，仍无模型修复效果成功证据。",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
@@ -294,9 +296,10 @@
           "evidence": [
             "acceptance/20261006-page-live-boundary/page-live-record.json"
           ],
-          "reason": "本次真实模型运行终态为 INCOMPLETE，最终可信验收 FAIL。"
+          "reason": "本次真实模型运行终态为 INCOMPLETE，最终可信验收 FAIL；候选仍包含未消除的输出语句，不能写成修复成功。"
         }
-      ]
+      ],
+      "notes": "页面现场实际接受1份候选并验收1次；结果FAIL/INCOMPLETE；无模型修复成功证据。"
     },
     {
       "id": "R09",
@@ -314,7 +317,10 @@
       ],
       "evidence": [
         "agent_pilot/tests/test_web_material_binding.py",
-        "acceptance/20261006-final/page-flow.md"
+        "acceptance/20261006-final/page-flow.md",
+        "credproof_safety/project_bundle.py",
+        "credproof_safety/tests/test_project_bundle.py",
+        "acceptance/20261006-live-correction/new-project-bundle/"
       ],
       "source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
       "gaps": "哈希是完整性绑定，不是密码学证明或第三方认证",
@@ -472,11 +478,12 @@
     "new model/case expansion"
   ],
   "interpretation": "Detection, program gate, human repair validation and fresh Agent repair are reported separately.",
-  "current_review_receipt_commit": "2160b2c23a2e34a721c96b231ab61cb1eda76831",
+  "current_review_receipt_commit": "PENDING_LOCAL_COMMIT",
   "handoff_status": "NOT_READY_FOR_HANDOFF",
   "handoff_blockers": [
     "R08 model_repair_effect remains IMPLEMENTED_UNVERIFIED; no trusted PASS in current model runs.",
     "Live page adapter is currently registered p01 only; p02-p06 remain replay-only.",
     "No GPU performance evidence; 5060 handoff intentionally not started."
-  ]
+  ],
+  "version": "0.3.0-dev.17"
 }

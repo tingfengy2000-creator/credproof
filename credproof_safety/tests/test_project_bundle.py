@@ -1,0 +1,49 @@
+import json
+from pathlib import Path
+import tempfile
+import unittest
+from unittest.mock import patch
+
+from credproof_safety import project_bundle
+
+
+class ProjectBundleProtocolTests(unittest.TestCase):
+    def make_material(self, root: Path, verdict='FAIL'):
+        candidate = root / 'artifacts' / 'candidate'
+        candidate.mkdir(parents=True)
+        (candidate / 'tool.py').write_text('def run(request):\n    return {"ok": True}\n', encoding='utf-8')
+        (candidate / 'credproof.toml').write_text(
+            'schema = "credproof.project-safety/v1"\n[project]\nroot = "."\ntests = ["tests"]\nsource_scope = ["tool.py"]\nmutable_scope = ["tool.py"]\n'
+            '[files]\nallowed_dirs = ["data"]\nforbidden_dirs = ["secrets"]\n[network]\n[credentials]\nenv = "CREDPROOF_TEST_CREDENTIAL"\n[entry]\nmodule = "tool"\ncallable = "run"\n', encoding='utf-8')
+        (candidate / 'tests').mkdir(); (candidate / 'data').mkdir(); (candidate / 'secrets').mkdir()
+        method = root / 'method'; method.mkdir()
+        (method / 'original.py').write_text('def run(request):\n    return {}\n', encoding='utf-8')
+        (method / 'final-candidate.py').write_text((candidate / 'tool.py').read_text(), encoding='utf-8')
+        (method / 'result.json').write_text(json.dumps({
+            'schema': 'credproof.web-live-record/v1', 'project_id': 'p', 'case_id': 'p01',
+            'artifact_dir': str(root / 'artifacts'), 'final_validation': {'verdict': verdict},
+            'task': {'task_status': 'INCOMPLETE'},
+        }), encoding='utf-8')
+        return method
+
+    def test_schema_is_separate_and_material_change_is_unknown(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); method = self.make_material(root)
+            bundle = root / 'bundle'; project_bundle.export_project_bundle(method, bundle)
+            self.assertEqual(json.loads((bundle / 'manifest.json').read_text())['schema'], project_bundle.SCHEMA)
+            (bundle / 'project/tool.py').write_text('def run(request):\n    return {"changed": True}\n', encoding='utf-8')
+            result = project_bundle.recheck_project_bundle(bundle, root / 'changed.json')
+            self.assertEqual(result['validation']['verdict'], 'UNKNOWN')
+            self.assertIn('PROJECT_OBJECT_CHANGED', result['prior_report_reasons'])
+
+    def test_current_fail_is_preserved_and_pass_protocol_is_explicit(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp); method = self.make_material(root, verdict='FAIL')
+            bundle = root / 'bundle'; project_bundle.export_project_bundle(method, bundle)
+            with patch.object(project_bundle, 'check_project', return_value={'verdict': 'FAIL', 'checks': [], 'reasons': ['business']}):
+                result = project_bundle.recheck_project_bundle(bundle, root / 'fresh.json')
+            self.assertEqual(result['validation']['verdict'], 'FAIL')
+
+
+if __name__ == '__main__':
+    unittest.main()

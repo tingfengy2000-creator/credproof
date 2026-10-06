@@ -1,0 +1,8 @@
+# Derived from preserved 5090 page run; no model rerun
+# adapter statistics: .venv/Scripts/python.exe <derived adapter>
+# page run: model attempts=6; usage responses=5; tools=7; accepted candidates=1; verifications=1; termination=MODEL_REQUEST_WALL_CLOCK_TIMEOUT
+# clean-wheel run: model attempts=4; usage responses=3; tools=5; accepted candidates=0; verifications=0; termination=MODEL_REQUEST_WALL_CLOCK_TIMEOUT
+# project export/recheck (model-free)
+# python -c "Application(...).export(...); Application(...).recheck(...)"
+# result: project-bundle/v1 recheck FAIL; 3 required collected/executed, 2 passed, 1 failed
+# installed-origin: python -I -m credproof_safety.web_repair --origin-only --output installed-origin

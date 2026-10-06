@@ -152,7 +152,15 @@ def launch_command(root, case_id, output):
     # request_repair owns the reviewed model boundary.  Invoke it in a
     # separate host interpreter so it can open the WSL/bubblewrap boundary;
     # never run the legacy offline_run or a caller-provided command here.
-    command = [sys.executable, '-m', 'credproof_safety.web_repair',
+    installed = os.environ.get('CREDPROOF_INSTALLED_PYTHON')
+    interpreters = [Path(installed)] if installed else []
+    interpreters += [root / '_runs/clean-install-dev17-a/venv/Scripts/python.exe',
+                     root / '_runs/clean-install-dev17/venv/Scripts/python.exe',
+                     root / '_runs/clean-install-dev16/venv/Scripts/python.exe']
+    interpreter = next((p for p in interpreters if p.is_file()), None)
+    if interpreter is None:
+        raise ValueError('reviewed installed interpreter unavailable; refusing source-shadowed child')
+    command = [str(interpreter), '-I', '-m', 'credproof_safety.web_repair',
                '--project-id', project_id, '--case-id', case_id,
                '--config', str(project_config), '--output', str(Path(output).absolute())]
     return command
@@ -441,7 +449,7 @@ class Application:
             save_json(folder / 'request.json', {'id': identifier, 'case_id': case,
                       'project_id': LIVE_PROJECTS[case][0], 'project_config': str(project_config.relative_to(self.root)),
                       'source_sha256': sha(source), 'started_at': run.started_at,
-                      'execution': 'real-local-model-inference',
+                      'execution': 'requested-local-model-task-not-yet-confirmed',
                       'launcher': 'credproof_safety.agent.request_repair'})
             thread = threading.Thread(target=self._worker, args=(run,), daemon=True)
             thread.start()
@@ -458,7 +466,14 @@ class Application:
             run.status, run.updated_at = 'RUNNING', now()
             save_json(run.folder / 'launch.json', {'argv': command, 'started_at': run.updated_at})
             with (run.folder / 'supervisor-stdout.txt').open('xb') as stdout, (run.folder / 'supervisor-stderr.txt').open('xb') as stderr:
-                process = subprocess.Popen(command, cwd=self.root, stdout=stdout, stderr=stderr, stdin=subprocess.DEVNULL)
+                # Data cwd is deliberately separate from the installed program.
+                # -I excludes cwd and PYTHONPATH from module search; the child
+                # emits its own origin receipt before invoking the model gate.
+                env = dict(os.environ)
+                env.pop('PYTHONPATH', None)
+                env.pop('PYTHONHOME', None)
+                process = subprocess.Popen(command, cwd=run.folder, env=env,
+                    stdout=stdout, stderr=stderr, stdin=subprocess.DEVNULL)
                 run.exit_code = process.wait()
             if run.exit_code == 0 and (run.method / 'result.json').is_file():
                 run.status = 'COMPLETED'
@@ -491,6 +506,24 @@ class Application:
         Imported bundle constants select the same runtime/trace files as export.
         This is identity checking, not execution or authentication of those files.
         """
+        row_path = confined(run.method / 'result.json', self.root / 'runs')
+        row = read_json(row_path) if row_path.is_file() else {}
+        if row.get('schema') == 'credproof.web-live-record/v1':
+            artifact = Path(row.get('artifact_dir', '')).resolve()
+            # Live runs keep artifacts below the run folder; replay records use
+            # the archived method directory as ``Run.folder``.  Both must stay
+            # inside the repository's runs tree, never an arbitrary report path.
+            if not artifact.is_dir() or not artifact.is_relative_to((self.root / 'runs').resolve()):
+                raise ValueError('new_project_artifact_outside_run')
+            paths = {'run/' + name: confined(run.method / name, self.root / 'runs')
+                     for name in ('original.py', 'final-candidate.py', 'result.json')}
+            candidate_root = artifact / 'candidate'
+            if not candidate_root.is_dir():
+                raise ValueError('new_project_candidate_missing')
+            for path in candidate_root.rglob('*'):
+                if path.is_file():
+                    paths['candidate/' + path.relative_to(candidate_root).as_posix()] = confined(path, self.root / 'runs')
+            return self._hash_material_paths(paths)
         from . import bundle
         method = confined(run.method, self.root / 'runs')
         package = Path(bundle.PACKAGE).absolute()
@@ -665,12 +698,18 @@ class Application:
         state = self._material_state(run)
         if state['status'] in ('CHANGED', 'UNAVAILABLE'):
             self._require_current_material(run)
+        row = read_json(run.method / 'result.json')
+        is_project = row.get('schema') == 'credproof.web-live-record/v1'
         if run.bundle is None:
             from .bundle import export_bundle
             parent = confined(self.runs_root / ('package-' + uuid.uuid4().hex), self.runs_root)
             try:
                 before = self._material_inputs(run)
-                export_bundle(run.method, parent)
+                if is_project:
+                    from credproof_safety.project_bundle import export_project_bundle
+                    export_project_bundle(run.method, parent)
+                else:
+                    export_bundle(run.method, parent)
                 after = self._material_inputs(run)
                 if before != after:
                     run.material_failure = 'CHANGED'
@@ -690,10 +729,15 @@ class Application:
         if not self.operation.acquire(blocking=False):
             raise Problem(409, '另一任务或复检正在执行。')
         try:
-            from .bundle import recheck_bundle
             material = self._material(run)
             output = confined(self.runs_root / ('recheck-' + uuid.uuid4().hex + '.json'), self.runs_root)
-            fresh = recheck_bundle(material, output)
+            row = read_json(run.method / 'result.json')
+            if row.get('schema') == 'credproof.web-live-record/v1':
+                from credproof_safety.project_bundle import recheck_project_bundle
+                fresh = recheck_project_bundle(material, output)
+            else:
+                from .bundle import recheck_bundle
+                fresh = recheck_bundle(material, output)
             binding = self._require_current_material(run)
             # The bundle is the authority for this result, never the old UI badge.
             run.recheck = {**fresh, 'validation': validation_view(fresh.get('validation'))}

@@ -1,14 +1,15 @@
-## 清洁安装与需求验收（dev16）
+## 清洁安装与需求验收（dev17）
 
 本版先完成清洁安装链路和可复核需求表，再决定是否交接 5060。入口文件是 [`requirements-acceptance.md`](requirements-acceptance.md) 与机器可读的 [`requirements-acceptance.json`](requirements-acceptance.json)。
 
 - 清洁安装证据：[`acceptance/20261006-final/`](acceptance/20261006-final/)；包括 wheel、site-packages 导入来源、CLI before/fixed、浏览器实际操作、导出消费者 pytest/JUnit 和环境预检。
 - 清洁安装发现的 wheel 静态资源缺口已在 `pyproject.toml` 修复，细节见 [`packaging-gap.md`](packaging-gap.md)。
 - 无模型项目检查与导出记录见 [`page-flow.md`](page-flow.md)；模型现场入口的真实 HTTP 记录见 [`acceptance/20261006-page-live-boundary/`](acceptance/20261006-page-live-boundary/)。
-- dev16 wheel、site-packages 导入和清洁安装现场入口收据见 [`release-receipts/0.3.0-dev.16/`](release-receipts/0.3.0-dev.16/)。
+- dev17 wheel、site-packages 导入和清洁安装现场入口收据见 [`acceptance/20261006-live-correction/`](acceptance/20261006-live-correction/)。旧 dev16 收据仍原样保留。
 - 当前状态：程序检查、导出链以及一次真实模型边界运行均有可读证据；本次模型任务本身按预算以 `INCOMPLETE` 结束，不能写成自动修复成功。
+- 本轮新增 [`acceptance/20261006-live-correction/`](acceptance/20261006-live-correction/)：保存的现场候选按新 `project-bundle/v1` 导出并在新目录复检，真实结果仍为 `FAIL`。页面批次实际接受 1 份候选、验收 1 次；清洁 wheel 批次接受 0 份候选，二者未合并统计。
 
-# CredProof reusable-tool-safety（0.3.0-dev.16）
+# CredProof reusable-tool-safety（0.3.0-dev.17）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -18,7 +19,7 @@
 ## 已实现的共同入口
 
 源码包可用 `python -m pip install .` 安装；本轮在独立 Python 3.12 venv 中用
-`setuptools` 构建 wheel `credproof_safety-0.3.0.dev14-py3-none-any.whl`，源码目录
+`setuptools` 构建 wheel `credproof_safety-0.3.0.dev17-py3-none-any.whl`，源码目录
 本身也可直接运行 `python -m credproof_safety`。模型权重和 Ollama 不随 wheel 进入
 安装包。
 
@@ -159,7 +160,7 @@ DEBUG 级 Python 日志通道，并以 `pytest -s` 避免测试输出掩盖泄�
 GPU 驱动只读目录和 `/work`、`/rpc` 受控目录。模型进程没有仓库、候选历史、参考补丁、
 真实凭据或代理/API Key 环境；独立探针记录了只有 `lo`、三个外网地址均连接失败、宿主哨兵不可见、
 模型代码挂载只读。模型边界证据与一次真实调用轨迹见本页下方的 2026-10-06 记录。
-这仍不是公平盲测或通用隔离证明：模型运行只覆盖一个授权合成项目，本次三份候选都被可信验收判 `FAIL`，
+这仍不是公平盲测或通用隔离证明：模型运行只覆盖一个授权合成项目；页面新现场记录实际接受一份候选并判 `FAIL`，
 任务按预算 `INCOMPLETE` 结束。
 
 旧的 `agent_pilot.offline_run` 历史比较入口现在默认 fail-closed；它只保留历史记录，不再启动模型。页面的登记案例 `p01` 通过 `agent_pilot/web.py:launch_command` → `credproof_safety.web_repair` → `credproof_safety.agent.request_repair` 进入同一个白名单模型启动器，项目身份固定为 `assistant-original`，页面不会接受任意路径或命令。现场任务的真实终态仍由程序报告；本轮记录为 `INCOMPLETE` + `FAIL`，没有用历史回放替代，也没有把失败改写为修复成功。p02–p06 仍明确为历史回放入口。
