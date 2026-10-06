@@ -1,0 +1,37 @@
+{
+  "base": "sanitized-temp/credproof-final-acceptance-20261006-dev14-final",
+  "wheel": "credproof_safety-0.3.0.dev14-py3-none-any.whl",
+  "install_exit": 0,
+  "pytest_install_exit": 0,
+  "origin_exit": 0,
+  "init_exit": 0,
+  "before_exit": 2,
+  "fixed_exit": 0,
+  "export_exit": 0,
+  "consumer": [
+    {
+      "name": "fixed",
+      "exit_code": 0,
+      "junit": "consumer-regression\\fixed\\consumer-junit.xml"
+    },
+    {
+      "name": "reintroduced-defect",
+      "exit_code": 1,
+      "junit": "consumer-regression\\reintroduced-defect\\consumer-junit.xml"
+    },
+    {
+      "name": "unrelated-change",
+      "exit_code": 0,
+      "junit": "consumer-regression\\unrelated-change\\consumer-junit.xml"
+    },
+    {
+      "name": "fixed-second",
+      "exit_code": 0,
+      "junit": "consumer-regression\\fixed\\consumer-junit-second.xml",
+      "report_count": 2
+    }
+  ],
+  "pytest_install_command": "python -m pip install pytest==8.4.2 (cached; exit 0)",
+  "pytest_version": "8.4.2",
+  "python_version": "3.12.14"
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="0" failures="1" skipped="0" tests="1" time="2.656" timestamp="2026-10-06T12:33:20.931195+08:00" hostname="DESKTOP-B5PNBNC"><testcase classname="test_credproof_safety" name="test_credproof_safety_regression" time="2.605"><failure message="AssertionError: {'checked_at_utc': '2026-10-06T04:33:23Z', 'config': {'allowed_dirs': ['data'], 'credential_env': 'CREDPROOF_TEST_CRED...'access_attempt', ...}, ...], 'credential_env': 'CREDPROOF_TEST_CREDENTIAL', 'credential_leaks': ['return'], ...}, ...}&#10;assert 'FAIL' == 'PASS'&#10;  &#10;  - PASS&#10;  + FAIL">@pytest.mark.credproof_safety
+    def test_credproof_safety_regression():
+        if os.environ.get("CREDPROOF_INNER") == "1":
+            pytest.skip("CredProof executes the project test suite in its outer sandbox")
+        from credproof_safety import check_project
+        configured_root = os.environ.get("CREDPROOF_PROJECT_ROOT")
+        if configured_root:
+            root = Path(configured_root)
+        else:
+            root = next((candidate for candidate in (Path(__file__).resolve().parent, *Path(__file__).resolve().parents)
+                         if (candidate / "credproof.toml").is_file()), Path(__file__).resolve().parents[1])
+        report_dir = root / ".credproof"
+        report_dir.mkdir(parents=True, exist_ok=True)
+        report_fd, report_name = tempfile.mkstemp(prefix="consumer-report-", suffix=".json",
+                                                  dir=report_dir)
+        os.close(report_fd)
+        report_path = Path(report_name)
+        report_path.unlink()
+        report = check_project(root / "credproof.toml", output=report_path, project_root=root)
+&gt;       assert report["verdict"] == "PASS", report
+E       AssertionError: {'checked_at_utc': '2026-10-06T04:33:23Z', 'config': {'allowed_dirs': ['data'], 'credential_env': 'CREDPROOF_TEST_CRED...'access_attempt', ...}, ...], 'credential_env': 'CREDPROOF_TEST_CREDENTIAL', 'credential_leaks': ['return'], ...}, ...}
+E       assert 'FAIL' == 'PASS'
+E         
+E         - PASS
+E         + FAIL
+
+test_credproof_safety.py:26: AssertionError</failure></testcase></testsuite></testsuites>

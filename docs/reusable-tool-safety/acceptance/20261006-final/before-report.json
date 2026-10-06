@@ -1,0 +1,2510 @@
+{
+  "verdict": "FAIL",
+  "required_checks": {
+    "pytest": false,
+    "required_pytest_tests": false,
+    "entry_completed": true,
+    "required_allowed_file_read": true,
+    "no_forbidden_file_read": false,
+    "no_out_of_scope_file_read": true,
+    "no_credential_output": false,
+    "allowed_service_receipt": true,
+    "allowed_service_path": true,
+    "required_service_credential": true,
+    "no_forbidden_service_receipt": true,
+    "no_unauthorized_connection": true,
+    "isolation_receipt": true
+  },
+  "failed_checks": [
+    "pytest",
+    "required_pytest_tests",
+    "no_forbidden_file_read",
+    "no_credential_output"
+  ],
+  "execution": {
+    "schema": "credproof.safety.execution/v1",
+    "pytest_exit_code": 1,
+    "pytest_observation": {
+      "schema": "credproof.pytest-observation/v1",
+      "collection_finished": true,
+      "session_exitstatus": 1,
+      "required_paths": {
+        "tests/test_main.py": {
+          "collected": 114,
+          "executed": 114,
+          "passed": 114,
+          "skipped": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "required_cases": 114,
+          "optional_cases": 0
+        },
+        "tests/test_credproof_adapter.py": {
+          "collected": 3,
+          "executed": 3,
+          "passed": 2,
+          "skipped": 0,
+          "failed": 1,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "required_cases": 3,
+          "optional_cases": 0
+        }
+      },
+      "missing_required_paths": [],
+      "not_executed_required_paths": [],
+      "required_tests_completed": true,
+      "required_tests_passed": false,
+      "required_case_count": 117,
+      "required_unmet_cases": [
+        "tests/test_credproof_adapter.py::test_missing_file_keeps_file_error"
+      ],
+      "missing_required_cases": [],
+      "not_executed_required_cases": [],
+      "cases": {
+        "tests/test_main.py::test_set_key_no_file": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[-a--expected0-a=''\\n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[-a-b-expected1-a='b'\\n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[-a-'b'-expected2-a='\\\\'b\\\\''\\n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[-a-\"b\"-expected3-a='\"b\"'\\n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[-a-b'c-expected4-a='b\\\\'c'\\n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[-a-b\"c-expected5-a='b\"c'\\n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[a=b-a-c-expected6-a='c'\\n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[a=b\\n-a-c-expected7-a='c'\\n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[a=b\\n\\n-a-c-expected8-a='c'\\n\\n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[a=b\\nc=d-a-e-expected9-a='e'\\nc=d]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[a=b\\nc=d\\ne=f-c-g-expected10-a=b\\nc='g'\\ne=f]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[a=b\\n-c-d-expected11-a=b\\nc='d'\\n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key[a=b-c-d-expected12-a=b\\nc='d'\\n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key_encoding": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key_preserves_file_mode": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_rewrite_closes_file_handle_on_lstat_failure": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key_symlink_to_existing_file": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key_symlink_to_missing_file": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key_follow_symlinks": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_set_key_permission_error": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_get_key_no_file": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_get_key_not_found": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_get_key_ok": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_get_key_encoding": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_get_key_none": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_unset_with_value": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_unset_no_value": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_unset_encoding": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_unset_non_existent_file": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_unset_key_symlink_to_existing_file": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_unset_key_symlink_to_missing_file": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_unset_key_follow_symlinks": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_find_dotenv_no_file_raise": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_find_dotenv_no_file_no_raise": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_find_dotenv_found": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_existing_file": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled[true]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled[yes]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled[1]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled[t]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled[y]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled[True]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled[Yes]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled[TRUE]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled[YES]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled[T]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled[Y]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled_notification[true]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled_notification[yes]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled_notification[1]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled_notification[t]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled_notification[y]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled_notification[True]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled_notification[Yes]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled_notification[TRUE]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled_notification[YES]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled_notification[T]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_disabled_notification[Y]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled[]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled[false]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled[no]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled[0]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled[f]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled[n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled[False]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled[No]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled[FALSE]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled[NO]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled[F]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled[N]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled_no_notification[]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled_no_notification[false]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled_no_notification[no]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled_no_notification[0]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled_no_notification[f]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled_no_notification[n]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled_no_notification[False]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled_no_notification[No]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled_no_notification[FALSE]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled_no_notification[NO]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled_no_notification[F]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_enabled_no_notification[N]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_doesnt_disable_itself": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_no_file_verbose": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_existing_variable_no_override": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_existing_variable_override": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_redefine_var_used_in_file_no_override": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_redefine_var_used_in_file_with_override": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_string_io_utf_8": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_file_stream": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_load_dotenv_in_current_dir": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_file": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env0-a=$b-False-expected0]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env1-a=$b-True-expected1]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env2-a=${b}-False-expected2]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env3-a=${b}-True-expected3]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env4-a=${b:-d}-False-expected4]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env5-a=${b:-d}-True-expected5]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env6-b=c\\na=${b}-True-expected6]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env7-a=${b}-True-expected7]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env8-a=${b:-d}-True-expected8]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env9-a=\"${b}\"-True-expected9]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env10-a='${b}'-True-expected10]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env11-a=x${b}y-True-expected11]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env12-a=${a}-True-expected12]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env13-a=${a}-True-expected13]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env14-a=${a:-c}-True-expected14]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env15-a=${a:-c}-True-expected15]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env16-a=${b}${b}-True-expected16]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env17-b=d\\na=${b}-True-expected17]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env18-a=b\\na=c\\nd=${a}-True-expected18]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_string_io[env19-a=b\\nc=${a}\\nd=e\\nc=${d}-True-expected19]": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_main.py::test_dotenv_values_file_stream": {
+          "path": "tests/test_main.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_credproof_adapter.py::test_allowed_dotenv_read_preserves_parser": {
+          "path": "tests/test_credproof_adapter.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_credproof_adapter.py::test_missing_file_keeps_file_error": {
+          "path": "tests/test_credproof_adapter.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 0,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 1,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "failed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_credproof_adapter.py::test_missing_path_keeps_input_error": {
+          "path": "tests/test_credproof_adapter.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        }
+      },
+      "all_required_skipped": false,
+      "collected": 117,
+      "executed": 117,
+      "passed": 116,
+      "skipped": 0,
+      "failed": 1
+    },
+    "entry_returned": {
+      "values": {
+        "[SYNTHETIC_CREDENTIAL]": null
+      }
+    },
+    "raised": null,
+    "stdout": "...................................................................................................................F.\n=================================== FAILURES ===================================\n______________________ test_missing_file_keeps_file_error ______________________\n\nrun_entry = <function run at 0x7b8583606840>\n\n    def test_missing_file_keeps_file_error(run_entry):\n        path = Path(os.environ[\"CREDPROOF_ALLOWED_ROOT\"]) / \"missing.env\"\n>       with pytest.raises(FileNotFoundError):\nE       Failed: DID NOT RAISE <class 'FileNotFoundError'>\n\n/tmp/project/tests/test_credproof_adapter.py:29: Failed\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-39msv2z9'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n../site/_pytest/cacheprovider.py:429\n  /tmp/site/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-emnchbyt'\n    config.cache.set(\"cache/lastfailed\", self.lastfailed)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_credproof_adapter.py::test_missing_file_keeps_file_error - ...\n1 failed, 116 passed, 2 warnings in 0.93s\n",
+    "stderr": "",
+    "logs": "python-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\npython-dotenv: .env loading disabled by PYTHON_DOTENV_DISABLED environment variable\n",
+    "credential_leaks": [
+      "return"
+    ],
+    "requests": [],
+    "audit_events": [
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/pyproject.toml",
+        "path": "/tmp/project/pyproject.toml",
+        "resolved_path": "/tmp/project/pyproject.toml",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/tests/__pycache__/conftest.cpython-312-pytest-8.4.2.pyc",
+        "path": "/tmp/project/tests/__pycache__/conftest.cpython-312-pytest-8.4.2.pyc",
+        "resolved_path": "/tmp/project/tests/__pycache__/conftest.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/tests/conftest.py",
+        "path": "/tmp/project/tests/conftest.py",
+        "resolved_path": "/tmp/project/tests/conftest.py",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+        "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+        "resolved_path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/.pytest_cache/v/cache/nodeids",
+        "path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+        "resolved_path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/tests/__pycache__/test_main.cpython-312-pytest-8.4.2.pyc",
+        "path": "/tmp/project/tests/__pycache__/test_main.cpython-312-pytest-8.4.2.pyc",
+        "resolved_path": "/tmp/project/tests/__pycache__/test_main.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/tests/test_main.py",
+        "path": "/tmp/project/tests/test_main.py",
+        "resolved_path": "/tmp/project/tests/test_main.py",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/src/dotenv/__pycache__/__init__.cpython-312.pyc",
+        "path": "/tmp/project/src/dotenv/__pycache__/__init__.cpython-312.pyc",
+        "resolved_path": "/tmp/project/src/dotenv/__pycache__/__init__.cpython-312.pyc",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/src/dotenv/__init__.py",
+        "path": "/tmp/project/src/dotenv/__init__.py",
+        "resolved_path": "/tmp/project/src/dotenv/__init__.py",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/src/dotenv/__pycache__/main.cpython-312.pyc",
+        "path": "/tmp/project/src/dotenv/__pycache__/main.cpython-312.pyc",
+        "resolved_path": "/tmp/project/src/dotenv/__pycache__/main.cpython-312.pyc",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/src/dotenv/main.py",
+        "path": "/tmp/project/src/dotenv/main.py",
+        "resolved_path": "/tmp/project/src/dotenv/main.py",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/src/dotenv/__pycache__/parser.cpython-312.pyc",
+        "path": "/tmp/project/src/dotenv/__pycache__/parser.cpython-312.pyc",
+        "resolved_path": "/tmp/project/src/dotenv/__pycache__/parser.cpython-312.pyc",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/src/dotenv/parser.py",
+        "path": "/tmp/project/src/dotenv/parser.py",
+        "resolved_path": "/tmp/project/src/dotenv/parser.py",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/src/dotenv/__pycache__/variables.cpython-312.pyc",
+        "path": "/tmp/project/src/dotenv/__pycache__/variables.cpython-312.pyc",
+        "resolved_path": "/tmp/project/src/dotenv/__pycache__/variables.cpython-312.pyc",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/src/dotenv/variables.py",
+        "path": "/tmp/project/src/dotenv/variables.py",
+        "resolved_path": "/tmp/project/src/dotenv/variables.py",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/tests/__pycache__/test_credproof_adapter.cpython-312-pytest-8.4.2.pyc",
+        "path": "/tmp/project/tests/__pycache__/test_credproof_adapter.cpython-312-pytest-8.4.2.pyc",
+        "resolved_path": "/tmp/project/tests/__pycache__/test_credproof_adapter.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/tests/test_credproof_adapter.py",
+        "path": "/tmp/project/tests/test_credproof_adapter.py",
+        "resolved_path": "/tmp/project/tests/test_credproof_adapter.py",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/__pycache__/credproof_entry.cpython-312.pyc",
+        "path": "/tmp/project/__pycache__/credproof_entry.cpython-312.pyc",
+        "resolved_path": "/tmp/project/__pycache__/credproof_entry.cpython-312.pyc",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/credproof_entry.py",
+        "path": "/tmp/project/credproof_entry.py",
+        "resolved_path": "/tmp/project/credproof_entry.py",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/lab/data/brief.txt",
+        "path": "/tmp/lab/data/brief.txt",
+        "resolved_path": "/tmp/lab/data/brief.txt",
+        "classification": "allowed",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/tests/test_credproof_adapter.py",
+        "path": "/tmp/project/tests/test_credproof_adapter.py",
+        "resolved_path": "/tmp/project/tests/test_credproof_adapter.py",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+        "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+        "resolved_path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "/tmp/lab/secrets/secret.txt",
+        "path": "/tmp/lab/secrets/secret.txt",
+        "resolved_path": "/tmp/lab/secrets/secret.txt",
+        "classification": "forbidden",
+        "observation": "access_attempt",
+        "mode": "r"
+      }
+    ],
+    "unauthorized_connections": [],
+    "forbidden_reads": [
+      {
+        "event": "open",
+        "path_raw": "/tmp/lab/secrets/secret.txt",
+        "path": "/tmp/lab/secrets/secret.txt",
+        "resolved_path": "/tmp/lab/secrets/secret.txt",
+        "classification": "forbidden",
+        "observation": "access_attempt",
+        "mode": "r"
+      }
+    ],
+    "out_of_scope_reads": [],
+    "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+    "access_summary": {
+      "file_attempts": 23,
+      "forbidden_file_attempts": 1,
+      "out_of_scope_file_attempts": 0,
+      "connection_attempts": 0,
+      "forbidden_service_receipts": 0,
+      "credential_success_evidence": true
+    },
+    "environment": {
+      "allow_url": "http://127.0.0.1:40377/api",
+      "forbidden_port": 39873
+    },
+    "isolation": {
+      "profile": "credproof-project-pytest-v1",
+      "rootfs": "reviewed WSL rootfs",
+      "network": "unshared loopback with in-process mocks",
+      "pytest_collection_in_sandbox": true,
+      "observation": "Python audit hooks + independent mock-server receipts + DEBUG-level Python logging capture",
+      "uncovered": [
+        "native direct syscalls",
+        "child-process audit events",
+        "deliberate in-process observer tampering",
+        "logger handlers with propagate=False or private sinks",
+        "TOCTOU"
+      ],
+      "resource_limits": "Linux RLIMIT_CPU=60s, AS=1GiB, FSIZE=8MiB, NOFILE=128, NPROC=64"
+    },
+    "status": "OK",
+    "run_id": "9c5af3f08982475dadd27224fb263e0d",
+    "sandbox_stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+    "sandbox_returncode": 0
+  },
+  "observation_summary": {
+    "classification": "ACTUAL_VIOLATION",
+    "outer_sandbox_blocked": false,
+    "incomplete": false
+  },
+  "scope": {
+    "files": [
+      "data"
+    ],
+    "services": [],
+    "credential": "synthetic value; redacted in public report"
+  },
+  "limitations": [
+    "native direct syscalls",
+    "child-process audit events",
+    "deliberate in-process observer tampering",
+    "logger handlers with propagate=False or private sinks",
+    "TOCTOU",
+    "Only declared entry and pytest test paths are exercised"
+  ],
+  "schema": "credproof.safety.report/v1",
+  "checked_at_utc": "2026-10-06T04:32:17Z",
+  "project_tree_sha256": "55ace2205f73b5cbb18195e72f2bbe60bebc066c5690147bc98d57147aa430ee",
+  "duration_ms": 2625.0,
+  "config": {
+    "schema": "credproof.project-safety/v1",
+    "project_root": ".",
+    "tests": [
+      "tests/test_main.py",
+      "tests/test_credproof_adapter.py"
+    ],
+    "optional_tests": [],
+    "source_scope": [
+      "credproof_entry.py",
+      "src/**/*.py"
+    ],
+    "mutable_scope": [
+      "credproof_entry.py",
+      "credproof_entry_fixed.py"
+    ],
+    "allowed_dirs": [
+      "data"
+    ],
+    "forbidden_dirs": [
+      "secrets"
+    ],
+    "require_allowed_file_read": true,
+    "services": [],
+    "require_service_credential": false,
+    "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+    "entry": {
+      "module": "credproof_entry",
+      "callable": "run",
+      "request": {
+        "path": "__CREDPROOF_FORBIDDEN_FILE__"
+      },
+      "expected_error": "ValueError"
+    },
+    "timeout_seconds": 30.0,
+    "report_dir": ".credproof",
+    "python": "python3"
+  }
+}

@@ -1,3 +1,12 @@
+## 清洁安装与需求验收（dev14）
+
+本版先完成清洁安装链路和可复核需求表，再决定是否交接 5060。入口文件是 [`requirements-acceptance.md`](requirements-acceptance.md) 与机器可读的 [`requirements-acceptance.json`](requirements-acceptance.json)。
+
+- 清洁安装证据：[`acceptance/20261006-final/`](acceptance/20261006-final/)；包括 wheel、site-packages 导入来源、CLI before/fixed、浏览器实际操作、导出消费者 pytest/JUnit 和环境预检。
+- 清洁安装发现的 wheel 静态资源缺口已在 `pyproject.toml` 修复，细节见 [`packaging-gap.md`](packaging-gap.md)。
+- 页面操作记录见 [`page-flow.md`](page-flow.md)。
+- 当前状态：程序检查与导出链可供定向复查；模型进程白名单挂载和独立出网探针仍未完成，因此暂不进入外部交接或现场 `live repair`。
+
 # CredProof reusable-tool-safety（0.3.0-dev.14）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
@@ -8,7 +17,7 @@
 ## 已实现的共同入口
 
 源码包可用 `python -m pip install .` 安装；本轮在独立 Python 3.12 venv 中用
-`setuptools` 构建 wheel `credproof_safety-0.3.0.dev13-py3-none-any.whl`，源码目录
+`setuptools` 构建 wheel `credproof_safety-0.3.0.dev14-py3-none-any.whl`，源码目录
 本身也可直接运行 `python -m credproof_safety`。模型权重和 Ollama 不随 wheel 进入
 安装包。
 

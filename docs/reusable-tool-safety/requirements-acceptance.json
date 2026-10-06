@@ -1,0 +1,432 @@
+{
+  "schema": "credproof.requirements-acceptance/v1",
+  "candidate_version": "0.3.0-dev.14",
+  "tested_source_commit": "ebb5afad0eec6536670f812d4fac3fc136c9f4ab",
+  "generated_at": "2026-10-06",
+  "status_summary": {
+    "verified": 10,
+    "unverified": 2,
+    "blocked": 1,
+    "excluded": 0
+  },
+  "requirements": [
+    {
+      "id": "R01",
+      "name": "项目初始化与配置",
+      "status": "IMPLEMENTED_VERIFIED",
+      "implementation": [
+        "credproof_safety/config.py:template/load_config",
+        "credproof_safety/cli.py:init"
+      ],
+      "setup": "清洁安装 wheel；仓库外 external-project；已有 credproof.toml",
+      "acceptance": "init 预览返回0，配置可加载；根目录/嵌套源码规则保持声明范围",
+      "commands": [
+        "python -m credproof_safety init --project . --config credproof.toml"
+      ],
+      "evidence": [
+        "acceptance/20261006-final/logs/init-stdout.txt",
+        "tests/test_reusable_tool_safety.py"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "只支持当前配置模式；配置仍需开发者确认",
+      "file_digests": [
+        {
+          "path": "credproof_safety/config.py",
+          "sha256": "983736e701579e1924b7d05b332f74899780cd778650c817ddfcfc32b1c5c436"
+        },
+        {
+          "path": "credproof_safety/cli.py",
+          "sha256": "dec34b608ab91eba5a76df16646a9743f093f6a5f0ee5a5c15880cb4ef3d42ec"
+        }
+      ]
+    },
+    {
+      "id": "R02",
+      "name": "授权外部项目与pytest复用",
+      "status": "IMPLEMENTED_VERIFIED",
+      "implementation": [
+        "credproof_safety/project.py:check_project",
+        "examples/external/python-dotenv-v1.2.2"
+      ],
+      "setup": "将已审查 python-dotenv 快照复制到仓库外，使用安装后的 site-packages 包",
+      "acceptance": "漏洞副本 FAIL、修复副本 PASS；不是仓库内 fixture 直接调用",
+      "commands": [
+        "python -m credproof_safety check --config credproof.toml",
+        "python -m credproof_safety check --config credproof-fixed.toml"
+      ],
+      "evidence": [
+        "acceptance/20261006-final/before-report.json",
+        "acceptance/20261006-final/fixed-report.json",
+        "acceptance/20261006-final/import-origin-sanitized.txt"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "这是一个授权外部快照和人工注入适配，不是上游漏洞或企业部署",
+      "file_digests": [
+        {
+          "path": "credproof_safety/project.py",
+          "sha256": "04c86113b6755572c326e6d5773e4e00eb40cc147b3d47e529020eeb92e39e7e"
+        }
+      ]
+    },
+    {
+      "id": "R03",
+      "name": "凭据输出观察",
+      "status": "IMPLEMENTED_VERIFIED",
+      "implementation": [
+        "credproof_safety/runner.py:output capture",
+        "credproof_safety/project.py:_verdict"
+      ],
+      "setup": "合成凭据 CREDPROOF_TEST_CREDENTIAL；外部 before 与 reintroduced 副本",
+      "acceptance": "credential_leaks 出现时 FAIL；fixed 报告 no_credential_output=true",
+      "commands": [
+        "run-external-dotenv-case.py（历史定向记录）",
+        "清洁安装 check before/fixed"
+      ],
+      "evidence": [
+        "acceptance/20261006-final/before-report.json",
+        "acceptance/20261006-final/fixed-report.json",
+        "experiments/reusable-tool-safety/20261003-observer-fix-v1/import-output.json"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "不覆盖原生扩展、私有 logger sink 或所有子进程通道",
+      "file_digests": [
+        {
+          "path": "credproof_safety/runner.py",
+          "sha256": "ed2b2d4c53bdcd21e62e8eec8bf0dca788ac89ca24f3fb6e2916e4484de22f99"
+        },
+        {
+          "path": "credproof_safety/project.py",
+          "sha256": "04c86113b6755572c326e6d5773e4e00eb40cc147b3d47e529020eeb92e39e7e"
+        }
+      ]
+    },
+    {
+      "id": "R04",
+      "name": "文件边界",
+      "status": "IMPLEMENTED_VERIFIED",
+      "implementation": [
+        "credproof_safety/runner.py:audit path normalization",
+        "credproof_safety/project.py:_verdict"
+      ],
+      "setup": "允许目录 data、禁止目录 secrets；重新引入 guard 缺陷",
+      "acceptance": "固定副本 PASS；reintroduced-defect FAIL 且报告 no_forbidden_file_read=false",
+      "commands": [
+        "python -m pytest -q test_credproof_safety.py --junitxml=consumer-junit.xml"
+      ],
+      "evidence": [
+        "acceptance/20261006-final/consumer/fixed-consumer-junit.xml",
+        "acceptance/20261006-final/consumer/reintroduced-defect-consumer-junit.xml",
+        "acceptance/20261006-final/fixed-report.json"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "Python audit 观察尝试并结合受控入口证据；不等同 Windows 内核审计",
+      "file_digests": [
+        {
+          "path": "credproof_safety/runner.py",
+          "sha256": "ed2b2d4c53bdcd21e62e8eec8bf0dca788ac89ca24f3fb6e2916e4484de22f99"
+        },
+        {
+          "path": "credproof_safety/project.py",
+          "sha256": "04c86113b6755572c326e6d5773e4e00eb40cc147b3d47e529020eeb92e39e7e"
+        }
+      ]
+    },
+    {
+      "id": "R05",
+      "name": "网络边界",
+      "status": "IMPLEMENTED_VERIFIED",
+      "implementation": [
+        "credproof_safety/runner.py:mock services/socket audit",
+        "credproof_safety/project.py:_verdict"
+      ],
+      "setup": "受控 loopback mock 与允许/禁止服务规则；现有 targeted regressions",
+      "acceptance": "允许服务回执保留；跳转或禁止服务请求被确认并 FAIL；当前外部 dotenv 案例网络为空规则",
+      "commands": [
+        "scripts/run-targeted-safety-regressions.py"
+      ],
+      "evidence": [
+        "experiments/reusable-tool-safety/20261003-targeted-fix-07/allowed_file_redirect.json",
+        "experiments/reusable-tool-safety/20261003-targeted-fix-07/reintroduced_file_bypass.json"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "不宣称公网 SSRF、DNS、原生 syscall 或 Windows 内核网络审计",
+      "file_digests": [
+        {
+          "path": "credproof_safety/runner.py",
+          "sha256": "ed2b2d4c53bdcd21e62e8eec8bf0dca788ac89ca24f3fb6e2916e4484de22f99"
+        },
+        {
+          "path": "credproof_safety/project.py",
+          "sha256": "04c86113b6755572c326e6d5773e4e00eb40cc147b3d47e529020eeb92e39e7e"
+        }
+      ]
+    },
+    {
+      "id": "R06",
+      "name": "必要业务测试真实完成与通过",
+      "status": "IMPLEMENTED_VERIFIED",
+      "implementation": [
+        "credproof_safety/runner.py:CredProofPytestObserver",
+        "credproof_safety/project.py:_verdict"
+      ],
+      "setup": "真实 pytest 插件与 pytest 8.4.2；正常、全 skip、部分 skip、xfail、缺失、断言失败、可选 skip",
+      "acceptance": "正常 PASS；必要 skip/缺失 UNKNOWN；必要 xfail/断言失败 FAIL；可选 skip 不吞掉必要通过",
+      "commands": [
+        "scripts/run-pytest-observer-regressions.py",
+        "pytest observer targeted tests"
+      ],
+      "evidence": [
+        "_runs/current-pytest-observer/",
+        "agent_pilot/tests/test_runtime_config.py"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "只对声明的必要用例语义负责；递归包装 skip 由执行侧区分",
+      "file_digests": [
+        {
+          "path": "credproof_safety/runner.py",
+          "sha256": "ed2b2d4c53bdcd21e62e8eec8bf0dca788ac89ca24f3fb6e2916e4484de22f99"
+        },
+        {
+          "path": "credproof_safety/project.py",
+          "sha256": "04c86113b6755572c326e6d5773e4e00eb40cc147b3d47e529020eeb92e39e7e"
+        }
+      ]
+    },
+    {
+      "id": "R07",
+      "name": "单页项目注册、检查、总体判决与分项",
+      "status": "IMPLEMENTED_VERIFIED",
+      "implementation": [
+        "agent_pilot/project_workspace.py",
+        "agent_pilot/web.py:renderProjectModes/project check APIs"
+      ],
+      "setup": "清洁安装 dev14 wheel；recheck UI 端口 18773；浏览器真实点击查看范围→现场检查·无模型→导出",
+      "acceptance": "页面显示总体 PASS、对象摘要、检查时间、适用性和业务/不泄密/不乱读/不乱连四项 PASS；导出状态提示可见",
+      "commands": [
+        "python -m agent_pilot.launch --project-config external-project/credproof-fixed.toml --mode recheck --port 18773"
+      ],
+      "evidence": [
+        "acceptance/20261006-final/page-flow.md"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "本轮只验证 recheck/no-model；未启动 live Agent",
+      "file_digests": [
+        {
+          "path": "agent_pilot/project_workspace.py",
+          "sha256": "6dbb0e11807325f82fa549c17865e8a604389d6eeae7b6a5f9097e5511e5ea6d"
+        },
+        {
+          "path": "agent_pilot/web.py",
+          "sha256": "033d4196a269fcd2d1a2d7759f54a90767d66b86406d9a17309ea55bb707e240"
+        }
+      ]
+    },
+    {
+      "id": "R08",
+      "name": "候选修复授权与修改边界",
+      "status": "IMPLEMENTED_UNVERIFIED",
+      "implementation": [
+        "credproof_safety/agent.py:serve",
+        "agent_pilot/tools.py:dispatch",
+        "agent_pilot/tests/test_reliability.py"
+      ],
+      "setup": "当前单元测试与历史 Agent 轨迹；本轮未运行新的模型推理",
+      "acceptance": "无证据拒绝 submit；路径越界、源对象/规则漂移撤销权限；候选最多3份、工具调用最多12次",
+      "commands": [
+        "python -m pytest -q agent_pilot/tests/test_reliability.py agent_pilot/tests/test_runtime_config.py"
+      ],
+      "evidence": [
+        "_runs/current-final-agent-boundary-tests/pytest.txt",
+        "agent_pilot/tests/test_reliability.py",
+        "experiments/reusable-tool-safety/20261004-external-dotenv-agent-v2/summary.json"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "本轮没有新的模型修复；不能把程序 gate 通过写成 Agent 修复成功",
+      "file_digests": [
+        {
+          "path": "credproof_safety/agent.py",
+          "sha256": "c2d8d60638557b077aaa0bee6da3f1acf4b46aef09537848eef04c1b992d1a40"
+        },
+        {
+          "path": "agent_pilot/tools.py",
+          "sha256": "d180137bf516a5b2d9a1725575b7c8bca9edd8f0157696e12ed6c009f6c43ff0"
+        },
+        {
+          "path": "agent_pilot/tests/test_reliability.py",
+          "sha256": "49820730a900248d8234b81cecef6b92b746a8ebd5cf8ba28ee4c537027a8197"
+        }
+      ]
+    },
+    {
+      "id": "R09",
+      "name": "对象、报告适用性与复检",
+      "status": "IMPLEMENTED_VERIFIED",
+      "implementation": [
+        "agent_pilot/web.py:object/applicability checks",
+        "agent_pilot/tests/test_web_material_binding.py",
+        "agent_pilot/bundle.py"
+      ],
+      "setup": "页面对象 digest 与当前副本；历史材料漂移测试",
+      "acceptance": "当前对象显示适用；对象/候选/规则/证据变化时旧材料拒绝复用；独立 check 重新执行",
+      "commands": [
+        "python -m pytest -q agent_pilot/tests/test_web_material_binding.py agent_pilot/tests/test_web.py"
+      ],
+      "evidence": [
+        "agent_pilot/tests/test_web_material_binding.py",
+        "acceptance/20261006-final/page-flow.md"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "哈希是完整性绑定，不是密码学证明或第三方认证",
+      "file_digests": [
+        {
+          "path": "agent_pilot/web.py",
+          "sha256": "033d4196a269fcd2d1a2d7759f54a90767d66b86406d9a17309ea55bb707e240"
+        },
+        {
+          "path": "agent_pilot/tests/test_web_material_binding.py",
+          "sha256": "3466fe85bc1abd361e3ac39afed8b659650155a4ee3ca71b4a25da82f7b5f983"
+        },
+        {
+          "path": "agent_pilot/bundle.py",
+          "sha256": "c00b3a1934914db1bb370248dd54cbd0efc0b4f955fdd6e53c04036833fec1e9"
+        }
+      ]
+    },
+    {
+      "id": "R10",
+      "name": "导出与项目内复用",
+      "status": "IMPLEMENTED_VERIFIED",
+      "implementation": [
+        "credproof_safety/project.py:export_regression_tests",
+        "scripts/run-exported-regression-check.py"
+      ],
+      "setup": "清洁安装包导出 pytest；仓库外 consumer copies；重复运行 fixed",
+      "acceptance": "fixed 1/1 PASS；reintroduced 1/1 FAIL；unrelated 1/1 PASS；fixed second 仍0且生成第2份报告",
+      "commands": [
+        "python -m pytest -q test_credproof_safety.py --junitxml=consumer-junit.xml"
+      ],
+      "evidence": [
+        "acceptance/20261006-final/consumer/",
+        "acceptance/20261006-final/exported-tests/",
+        "acceptance/20261006-final/summary.json"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "受控 WSL/bubblewrap 依赖需在消费者机器准备",
+      "file_digests": [
+        {
+          "path": "credproof_safety/project.py",
+          "sha256": "04c86113b6755572c326e6d5773e4e00eb40cc147b3d47e529020eeb92e39e7e"
+        },
+        {
+          "path": "scripts/run-exported-regression-check.py",
+          "sha256": "105b81831c2b741a34f5e5d18008afb9f13c5821f701efae1fa4c8c8ff58a1d5"
+        }
+      ]
+    },
+    {
+      "id": "R11",
+      "name": "清洁安装、启动与隔离预检",
+      "status": "IMPLEMENTED_VERIFIED",
+      "implementation": [
+        "pyproject.toml package-data",
+        "agent_pilot/preflight.py",
+        "agent_pilot/launch.py"
+      ],
+      "setup": "仓库外短路径 fresh venv；安装 dev14 wheel；预检 WSL Ubuntu-24.04/bubblewrap/rootfs",
+      "acceptance": "site-packages import origin；wheel 携带 agent_pilot/ui；preflight ready/isolation_ready/model_ready=true；页面 HTTP 之外完成真实按钮操作",
+      "commands": [
+        "pip wheel . --no-deps --no-build-isolation",
+        "pip install wheel",
+        "python -m agent_pilot.preflight"
+      ],
+      "evidence": [
+        "acceptance/20261006-final/wheel-manifest.json",
+        "acceptance/20261006-final/import-origin-sanitized.txt",
+        "acceptance/20261006-final/preflight-summary.json",
+        "acceptance/20261006-final/page-flow.md"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "跨机器、非 WSL 环境未承诺",
+      "file_digests": [
+        {
+          "path": "agent_pilot/preflight.py",
+          "sha256": "773df5cd388052bfc9bdd5c2255dde72e6a1b248d4d444e894ccc03b9fb3f1e8"
+        },
+        {
+          "path": "agent_pilot/launch.py",
+          "sha256": "0d2585621409ebb57ce919d07ae8ff2512780202731de206af1dd3149b2a57a9"
+        }
+      ]
+    },
+    {
+      "id": "R12",
+      "name": "模型进程文件系统/网络边界独立证明",
+      "status": "FAILED_OR_BLOCKED",
+      "implementation": [
+        "agent_pilot/offline_run.py:local model namespace",
+        "agent_pilot/runtime_config.py",
+        "preflight saved probe"
+      ],
+      "setup": "本轮 preflight 为只读 saved probe；model_executed=false、network_probe_performed=false；未做新 live inference",
+      "acceptance": "需有独立模型进程挂载白名单/权限探针和出网限制证据；当前未满足",
+      "commands": [
+        "python -m agent_pilot.preflight"
+      ],
+      "evidence": [
+        "acceptance/20261006-final/preflight-summary.json",
+        "docs/reusable-tool-safety/README.md#agent-边界"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "候选 bubblewrap 隔离不等于模型进程全文件系统隔离；在该证据补齐前禁止外部交接/现场模型运行",
+      "file_digests": [
+        {
+          "path": "agent_pilot/offline_run.py",
+          "sha256": "7dcf3d6b63aa26db51dee72b164b67f6269f0544b56e765d79637f5e10d99849"
+        },
+        {
+          "path": "agent_pilot/runtime_config.py",
+          "sha256": "77f0e09186e70b552b5ea2f6d81ebbaa90eb6f91f2901ce1719a7937c318e2a4"
+        }
+      ]
+    },
+    {
+      "id": "R13",
+      "name": "模型本地/零付费API运行",
+      "status": "IMPLEMENTED_UNVERIFIED",
+      "implementation": [
+        "agent_pilot/offline_run.py",
+        "agent_pilot/model_client.py"
+      ],
+      "setup": "本轮清洁安装与页面 recheck 未调用模型；preflight 只验证模型文件存在性/哈希",
+      "acceptance": "只能确认配置为本地 Ollama、无付费回退；本轮没有新推理轨迹",
+      "commands": [
+        "python -m agent_pilot.preflight"
+      ],
+      "evidence": [
+        "acceptance/20261006-final/preflight-summary.json",
+        "agent_pilot/model_client.py"
+      ],
+      "source_commit": "ebb5afa",
+      "gaps": "新模型调用和离线出网限制未在本轮重跑",
+      "file_digests": [
+        {
+          "path": "agent_pilot/offline_run.py",
+          "sha256": "7dcf3d6b63aa26db51dee72b164b67f6269f0544b56e765d79637f5e10d99849"
+        },
+        {
+          "path": "agent_pilot/model_client.py",
+          "sha256": "f156668fcd4b2db30b4d5b0bb8925891b0238871de50fe67f5d5f42a2cec2240"
+        }
+      ]
+    }
+  ],
+  "excluded_by_owner": [
+    "five-page platform",
+    "history scanning",
+    "multilingual repair",
+    "public network targets",
+    "real credential revocation",
+    "new model/case expansion"
+  ],
+  "interpretation": "Detection, program gate, human repair validation and fresh Agent repair are reported separately."
+}
