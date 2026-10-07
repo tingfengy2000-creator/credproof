@@ -24,7 +24,7 @@
       "assistant",
       "tool"
     ],
-    "reason": "base task plus latest verify pair; executor retains phase state and model can re-read declared files"
+    "reason": "base task plus paired current evidence/source/candidate/verify records; duplicate raw logs are compacted without changing status"
   },
   "full_reports": "retained separately; not placed in model-visible compact feedback",
   "stages": [

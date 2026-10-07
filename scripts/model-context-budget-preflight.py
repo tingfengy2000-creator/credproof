@@ -152,7 +152,7 @@ def main() -> None:
             "before_internal_messages": len(after_candidate),
             "after_wire_messages": len(after_candidate_payload["messages"]),
             "after_wire_roles": [item.get("role") for item in after_candidate_payload["messages"]],
-            "reason": "base task plus latest verify pair; executor retains phase state and model can re-read declared files",
+            "reason": "base task plus paired current evidence/source/candidate/verify records; duplicate raw logs are compacted without changing status",
         },
         "full_reports": "retained separately; not placed in model-visible compact feedback",
         "stages": stages,
