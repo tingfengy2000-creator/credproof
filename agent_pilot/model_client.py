@@ -185,6 +185,80 @@ def to_ollama_messages(messages: Sequence[Message | dict]) -> list[dict]:
     return result
 
 
+def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict]:
+    """Remove superseded raw tool payloads before a later repair turn.
+
+    The full request/response artifacts remain on disk.  Once a candidate has
+    been submitted, the current candidate source and the latest verification
+    report are the authoritative context; repeating the initial evidence and
+    the original entry source wastes the fixed 16K window.  Assistant/tool
+    call records and IDs stay paired so the native protocol remains valid.
+    """
+    copied = [item.model_dump() if isinstance(item, Message) else copy.deepcopy(item)
+              for item in messages]
+    has_candidate_phase = any(
+        isinstance(item, dict) and item.get('role') == 'assistant'
+        and isinstance(item.get('function_call'), dict)
+        and item['function_call'].get('name') in {'submit_patch', 'verify_patch'}
+        for item in copied
+    )
+    if not has_candidate_phase:
+        return copied
+    call_names = {}
+    call_positions = []
+    for item in copied:
+        if isinstance(item, dict) and item.get('role') == 'assistant':
+            call = item.get('function_call')
+            ident = item.get('extra', {}).get('function_id') if isinstance(item.get('extra'), dict) else None
+            if isinstance(call, dict) and isinstance(ident, str):
+                call_names[ident] = (call.get('name'), call.get('arguments'))
+                if call.get('name') in {'submit_patch', 'verify_patch'}:
+                    call_positions.append((len(call_positions), call.get('name'), item))
+    # Once a candidate phase has started, the executor's current response is
+    # sufficient for the next model request.  Retain the base task messages
+    # plus the latest submit/verify pair; the model can re-read declared files
+    # and the executor retains the phase/accepted-candidate state.
+    latest_name = call_positions[-1][1] if call_positions else None
+    retained_start = None
+    if latest_name in {'submit_patch', 'verify_patch'}:
+        for index in range(len(copied) - 1, 1, -1):
+            item = copied[index]
+            call = item.get('function_call') if isinstance(item, dict) else None
+            if isinstance(call, dict) and call.get('name') == latest_name:
+                retained_start = index
+                break
+    source_items = copied[retained_start:] if retained_start is not None else copied[2:]
+    compacted = copied[:2]
+    # Keep only the assistant tool call and its matching result after the
+    # retained start.  Any later plain assistant text is still task output and
+    # is retained for protocol fidelity.
+    for item in source_items:
+        if item.get('role') != 'function':
+            compacted.append(item)
+            continue
+        ident = item.get('extra', {}).get('function_id') if isinstance(item.get('extra'), dict) else None
+        name, arguments = call_names.get(ident, (None, None))
+        if name == 'get_evidence':
+            item['content'] = json.dumps({
+                'status': 'OK',
+                'evidence_superseded': True,
+                'note': 'Use the latest verify_patch report; complete evidence is saved in the artifact.',
+            }, ensure_ascii=False)
+        elif name == 'read_code':
+            try:
+                path = json.loads(arguments or '{}').get('path')
+            except (TypeError, ValueError):
+                path = None
+            if path == 'tool.py':
+                item['content'] = json.dumps({
+                    'status': 'OK', 'path': 'tool.py',
+                    'code_superseded_by_submitted_candidate': True,
+                    'note': 'The submitted candidate contains the current entry source; the original is saved in the artifact.',
+                }, ensure_ascii=False)
+        compacted.append(item)
+    return compacted
+
+
 def from_ollama_response(response: dict) -> list[Message]:
     """Keep native tool_calls and IDs; never infer a tool call from prose."""
     choices = response.get("choices")
@@ -258,7 +332,16 @@ class _LocalModel(TextChatAtOAI):
         permitted = {"temperature", "top_p", "max_tokens", "seed", "tools"}
         if set(generate_cfg) - permitted:
             raise ValueError(f"Unsupported generation fields: {sorted(set(generate_cfg) - permitted)}")
-        payload = {"model": MODEL, "messages": to_ollama_messages(messages),
+        compacted_messages = compact_messages_for_budget(messages)
+        if len(compacted_messages) != len(messages):
+            self.owner._journal.emit(
+                "conversation_compacted",
+                original_message_count=len(messages),
+                retained_message_count=len(compacted_messages),
+                retained_roles=[item.get("role") for item in compacted_messages],
+                reason="candidate_phase_replaced_superseded_tool_history",
+            )
+        payload = {"model": MODEL, "messages": to_ollama_messages(compacted_messages),
                    "stream": False, **generate_cfg}
         raw = self.owner._request(payload)
         decoded = from_ollama_response(raw)

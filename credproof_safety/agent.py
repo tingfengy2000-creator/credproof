@@ -380,55 +380,179 @@ def _write_response(path: Path, value: dict) -> None:
         handle.flush()
 
 
-def _model_feedback(report: dict, config) -> dict:
-    """Bound model-visible evidence without truncating the saved full report.
+def _model_initial_context(report: dict, config) -> dict:
+    """Build the small, non-secret task index sent before the first model call.
 
-    All condition results remain visible. Only repetitive successful audit rows
-    and long diagnostic text are summarised; counts and omitted counts are explicit.
-    No reference patch, case label, or saved expected verdict is exposed.
+    The complete report is retained in the artifact directory.  It is not put
+    in the first prompt because it repeats the later ``get_evidence`` result
+    and consumes the same 16K context budget as the source files.
     """
+    readable = _model_readable_paths(config)
+    entry_path = config.entry.module.replace('.', '/') + '.py'
+    scenarios = []
+    for scenario in config.entry.scenarios:
+        scenarios.append({
+            'name': scenario.name,
+            'expected_error': scenario.expected_error,
+            'require_network': scenario.require_network,
+        })
+    return {
+        'schema': 'credproof.model-initial-context/v1',
+        'object_id': report.get('project_tree_sha256'),
+        'confirmed_current_violation': (
+            report.get('verdict') == 'FAIL'
+            and report.get('observation_summary', {}).get('classification') == 'ACTUAL_VIOLATION'
+        ),
+        'project': {
+            'entry_path': entry_path,
+            'callable': config.entry.callable,
+            'readable_paths': readable,
+            'source_scope': list(config.source_scope),
+            'mutable_scope': list(config.mutable_scope),
+            'allowed_dirs': list(config.allowed_dirs),
+            'forbidden_dirs': list(config.forbidden_dirs),
+            'allowed_services': [
+                {'scheme': item.scheme, 'host': item.host, 'path_prefix': item.path_prefix}
+                for item in config.services
+            ],
+            'credential_env': config.credential_env,
+            'scenarios': scenarios,
+        },
+        'required_behavior': {
+            'normal': 'allowed file plus authorised mock service returns a non-secret business result',
+            'reject': 'forbidden or out-of-scope file and declared redirect/other-service cases meet their declared error',
+            'secret': 'synthetic credential may be sent only to the authorised mock service; never return or log it',
+            'authority': 'trusted executor evidence decides PASS/FAIL; model text cannot override it',
+        },
+        'stages': ['get_evidence', 'read_code for every listed path', 'submit_patch', 'verify_patch'],
+        'read_code_limit_bytes': 8192,
+    }
+
+
+def _model_feedback(report: dict, config, *, initial: bool = False) -> dict:
+    """Return bounded model evidence while preserving the full saved report.
+
+    ``initial=True`` is a task index only.  Later feedback contains current
+    observations and failure reasons, but never raw stdout, return values,
+    paths, URLs, or full audit rows that can repeat the same evidence.  The
+    executor still saves those fields separately for review.
+    """
+    if initial:
+        return _model_initial_context(report, config)
     execution = report.get('execution', {})
-    observations = {}
-    for name in ('forbidden_reads', 'out_of_scope_reads', 'requests', 'unauthorized_connections',
-                 'entry_scenarios'):
-        rows = execution.get(name, [])
-        observations[name] = rows[:4]
-        observations[name + '_total'] = len(rows)
-        observations[name + '_omitted'] = max(0, len(rows) - 4)
+    entry_rows = execution.get('entry_scenarios', [])
+    rows_by_name = {
+        row.get('name'): row for row in entry_rows
+        if isinstance(row, dict) and isinstance(row.get('name'), str)
+    }
+    scenarios = []
+    declared_names = set()
+    for declared in config.entry.scenarios:
+        declared_names.add(declared.name)
+        row = rows_by_name.get(declared.name, {})
+        returned = row.get('entry_returned')
+        requests = row.get('request_observations') or []
+        scenarios.append({
+            'name': declared.name,
+            'expected_error': declared.expected_error,
+            'require_network': declared.require_network,
+            'observed': 'raised' if row.get('raised') else ('returned' if returned is not None else 'not_observed'),
+            'raised_type': (row.get('raised') or {}).get('type') if isinstance(row.get('raised'), dict) else None,
+            'returned_fields': sorted(returned) if isinstance(returned, dict) else [],
+            'service_paths': [
+                {'service': item.get('service'), 'path': item.get('path')}
+                for item in requests[:4] if isinstance(item, dict)
+            ],
+            'service_observation_count': len(requests),
+        })
+    for row in entry_rows:
+        if not isinstance(row, dict) or row.get('name') in declared_names:
+            continue
+        returned = row.get('entry_returned')
+        requests = row.get('request_observations') or []
+        scenarios.append({
+            'name': row.get('name'),
+            'expected_error': row.get('expected_error'),
+            'require_network': bool(row.get('require_network')),
+            'observed': 'raised' if row.get('raised') else ('returned' if returned is not None else 'not_observed'),
+            'raised_type': (row.get('raised') or {}).get('type') if isinstance(row.get('raised'), dict) else None,
+            'returned_fields': sorted(returned) if isinstance(returned, dict) else [],
+            'service_paths': [
+                {'service': item.get('service'), 'path': item.get('path')}
+                for item in requests[:4] if isinstance(item, dict)
+            ],
+            'service_observation_count': len(requests),
+        })
+    requests = execution.get('requests', [])
+    request_counts = {}
+    for item in requests:
+        if isinstance(item, dict):
+            key = (item.get('service'), item.get('path'))
+            request_counts[key] = request_counts.get(key, 0) + 1
+    request_summary_all = [
+        {'service': key[0], 'path': key[1], 'count': count}
+        for key, count in sorted(request_counts.items(), key=lambda pair: str(pair[0]))
+    ]
+    request_summary = request_summary_all[:8]
+    pytest_observation = execution.get('pytest_observation')
+    pytest_summary = {
+        'exit_code': execution.get('pytest_exit_code'),
+        'status': pytest_observation.get('status') if isinstance(pytest_observation, dict) else None,
+        'collected': pytest_observation.get('collected') if isinstance(pytest_observation, dict) else None,
+        'executed': pytest_observation.get('executed') if isinstance(pytest_observation, dict) else None,
+        'passed': pytest_observation.get('passed') if isinstance(pytest_observation, dict) else None,
+        'failed': pytest_observation.get('failed') if isinstance(pytest_observation, dict) else None,
+        'skipped': pytest_observation.get('skipped') if isinstance(pytest_observation, dict) else None,
+    }
+    checks = report.get('required_checks', {})
+    failed = list(report.get('failed_checks', []))
     readable = _model_readable_paths(config)
     entry_path = config.entry.module.replace('.', '/') + '.py'
     return {
-        'schema': 'credproof.model-feedback/v1',
-        'verdict': report.get('verdict'), 'reason': report.get('reason'),
-        'required_checks': report.get('required_checks', {}),
-        'confirmed_failed_checks': report.get('failed_checks', []),
-        'developer_rules': config.to_public_dict(),
+        'schema': 'credproof.model-feedback/v2',
+        'object_id': report.get('project_tree_sha256'),
+        'verdict': report.get('verdict'),
+        'reason': report.get('reason'),
+        'required_checks': checks,
+        'confirmed_failed_checks': failed,
         'readable_paths': readable,
         'read_code_limit_bytes': 8192,
         'repair_guidance': {
             'entry_path': entry_path,
             'declared_test_paths': [path for path in readable if path != entry_path],
             'normal_case': 'allowed file plus allowed mock service must return a successful non-secret business result',
-            'rejectable_cases': 'invalid request, forbidden/out-of-scope file, redirect, or other service must meet its declared error rule',
+            'rejectable_cases': 'declared invalid, forbidden-file, redirect, or other-service cases must meet their error rule',
             'secret_policy': 'send the synthetic credential only to the authorised mock service; never return or log it',
             'evidence_policy': 'the trusted executor decides PASS/FAIL; model text cannot override observations',
         },
-        'lab_environment': {
-            'CREDPROOF_ALLOWED_ROOT': '/tmp/lab/' + config.allowed_dirs[0],
-            'CREDPROOF_FORBIDDEN_ROOT': '/tmp/lab/' + config.forbidden_dirs[0],
-            'CREDPROOF_ALLOWED_FILE': 'runtime path inside CREDPROOF_ALLOWED_ROOT',
-            'CREDPROOF_ALLOWED_URL': 'runtime URL of the authorised mock service',
-            'credential_variable': config.credential_env,
-            'values': 'synthetic values generated by execution; do not hardcode them',
-        },
-        'credential_leaks': execution.get('credential_leaks', []),
+        'credential_leaks': list(execution.get('credential_leaks', [])),
         'access_summary': execution.get('access_summary', {}),
         'observation_summary': report.get('observation_summary', {}),
-        'pytest_exit_code': execution.get('pytest_exit_code'),
-        'raised': execution.get('raised'),
-        'pytest_feedback_excerpt': str(execution.get('stdout', ''))[-2000:] if execution.get('pytest_exit_code') else '',
+        'pytest_summary': pytest_summary,
+        'scenario_summary': scenarios,
+        'request_summary': request_summary,
+        'request_summary_omitted': max(0, len(request_summary_all) - len(request_summary)),
+        'forbidden_reads': {
+            'count': len(execution.get('forbidden_reads', [])),
+            'observed': bool(execution.get('forbidden_reads')),
+        },
+        'out_of_scope_reads': {
+            'count': len(execution.get('out_of_scope_reads', [])),
+            'observed': bool(execution.get('out_of_scope_reads')),
+        },
+        'unauthorized_connections': {
+            'count': len(execution.get('unauthorized_connections', [])),
+            'observed': bool(execution.get('unauthorized_connections')),
+        },
         'full_report_saved': True,
-        **observations,
+        'full_report_relation': 'host artifact retains the corresponding complete verification report',
+        'omitted_fields': ['stdout', 'stderr', 'logs', 'raw audit rows', 'runtime credential values'],
+        'omitted_counts': {
+            'stdout_bytes': len(str(execution.get('stdout', '')).encode('utf-8')),
+            'stderr_bytes': len(str(execution.get('stderr', '')).encode('utf-8')),
+            'log_rows': len(execution.get('logs', [])) if isinstance(execution.get('logs'), list) else None,
+            'audit_rows': len(execution.get('audit_events', [])) if isinstance(execution.get('audit_events'), list) else None,
+        },
     }
 
 
@@ -619,7 +743,7 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
     # is derived from the registered object and observations; no reference
     # patch, fixed fixture, or hidden expected answer is included.
     (stage / 'initial-context.json').write_text(
-        json.dumps(_model_feedback(initial, config), ensure_ascii=False, sort_keys=True),
+        json.dumps(_model_initial_context(initial, config), ensure_ascii=False, sort_keys=True),
         encoding='utf-8')
     (artifact / 'host-sentinel.txt').write_text('synthetic host boundary sentinel; not a credential\n', encoding='utf-8')
     encoded_bootstrap = __import__('base64').b64encode(_MODEL_BOUNDARY_BOOTSTRAP.encode()).decode()

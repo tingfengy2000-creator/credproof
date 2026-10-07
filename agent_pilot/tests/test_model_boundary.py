@@ -5,9 +5,11 @@ contains the fresh boundary probe and the finite model trace; this file guards
 against accidentally reverting to the old whole-checkout launcher.
 """
 from pathlib import Path
+import json
 import unittest
 
-from credproof_safety.agent import _model_feedback, _phase_rejection
+from credproof_safety.agent import _model_feedback, _model_initial_context, _phase_rejection
+from agent_pilot.model_client import compact_messages_for_budget, to_ollama_messages
 from credproof_safety.config import load_config
 
 
@@ -51,6 +53,45 @@ class ModelBoundaryContractTests(unittest.TestCase):
         self.assertEqual(feedback["repair_guidance"]["entry_path"], "tool.py")
         self.assertIn("allowed mock service", feedback["repair_guidance"]["normal_case"])
 
+    def test_initial_context_is_an_index_without_raw_report_rows(self):
+        config = load_config(Path(__file__).resolve().parents[2] / "examples/material_assistant/credproof.toml")
+        initial = {
+            "verdict": "FAIL",
+            "observation_summary": {"classification": "ACTUAL_VIOLATION"},
+            "project_tree_sha256": "object-test",
+            "execution": {
+                "stdout": "[SYNTHETIC_CREDENTIAL] must not be copied",
+                "entry_scenarios": [{"entry_returned": {"credential": "[SYNTHETIC_CREDENTIAL]"}}],
+            },
+        }
+        context = _model_initial_context(initial, config)
+        self.assertEqual(context["object_id"], "object-test")
+        self.assertEqual(context["project"]["readable_paths"], ["tool.py", "tests/test_business.py"])
+        self.assertEqual([item["name"] for item in context["project"]["scenarios"]],
+                         ["normal_allowed_output", "allowed_file_redirect"])
+        self.assertNotIn("stdout", context)
+        self.assertNotIn("entry_returned", str(context))
+
+    def test_feedback_omits_raw_output_and_keeps_scenario_status(self):
+        config = load_config(Path(__file__).resolve().parents[2] / "examples/material_assistant/credproof.toml")
+        report = {
+            "verdict": "FAIL", "failed_checks": ["no_credential_output"],
+            "required_checks": {"no_credential_output": False},
+            "project_tree_sha256": "object-test", "execution": {
+                "stdout": "[SYNTHETIC_CREDENTIAL] raw should stay in artifact",
+                "credential_leaks": ["return"],
+                "entry_scenarios": [{"name": "normal_allowed_output", "expected_error": None,
+                                      "require_network": False,
+                                      "entry_returned": {"credential": "[SYNTHETIC_CREDENTIAL]"},
+                                      "request_observations": [{"service": "allow", "path": "/api"}]}],
+            },
+        }
+        feedback = _model_feedback(report, config)
+        self.assertEqual(feedback["object_id"], "object-test")
+        self.assertEqual(feedback["scenario_summary"][0]["observed"], "returned")
+        self.assertNotIn("[SYNTHETIC_CREDENTIAL]", json.dumps(feedback, ensure_ascii=False))
+        self.assertIn("stdout", feedback["omitted_fields"])
+
     def test_phase_protocol_never_verifies_without_candidate(self):
         required = {"tool.py", "tests/test_business.py"}
         self.assertEqual(
@@ -75,6 +116,26 @@ class ModelBoundaryContractTests(unittest.TestCase):
                              read_paths={"tool.py"}, required_read_paths=required,
                              accepted_candidates=0),
             "required_sources_not_read")
+
+    def test_budget_compaction_keeps_latest_native_pair_only(self):
+        messages = [
+            {"role": "system", "content": "system"},
+            {"role": "user", "content": "task"},
+            {"role": "assistant", "content": "", "function_call": {"name": "get_evidence", "arguments": "{}"},
+             "extra": {"function_id": "e"}},
+            {"role": "function", "content": "full evidence", "extra": {"function_id": "e"}},
+            {"role": "assistant", "content": "", "function_call": {"name": "submit_patch", "arguments": "{\"code\":\"x\"}"},
+             "extra": {"function_id": "s"}},
+            {"role": "function", "content": "accepted", "extra": {"function_id": "s"}},
+            {"role": "assistant", "content": "", "function_call": {"name": "verify_patch", "arguments": "{}"},
+             "extra": {"function_id": "v"}},
+            {"role": "function", "content": "failure evidence", "extra": {"function_id": "v"}},
+        ]
+        compacted = compact_messages_for_budget(messages)
+        self.assertEqual(len(compacted), 4)
+        wire = to_ollama_messages(compacted)
+        self.assertEqual([item["role"] for item in wire], ["system", "user", "assistant", "tool"])
+        self.assertEqual(wire[-1]["tool_call_id"], "v")
 
 
 if __name__ == "__main__":
