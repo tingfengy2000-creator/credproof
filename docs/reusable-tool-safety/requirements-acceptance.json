@@ -483,7 +483,7 @@
     "new model/case expansion"
   ],
   "interpretation": "本版关闭了压缩后最新读取丢失和重复阶段空转的工程缺口；协议重放与有限模型运行分别记录，模型修复效果仍未验证，5060交接尚未启动。",
-  "current_review_receipt_commit": "PENDING_COMMIT_AFTER_EVIDENCE",
+  "current_review_receipt_commit": "10861d2cbb5afe59c21c63f7dc8228f758308dc2",
   "handoff_status": "NOT_READY_FOR_HANDOFF",
   "handoff_blockers": [
     "一次正式5090模型运行在候选1 FAIL后因重复证据请求的保守上下文预算停止；没有当前模型修复PASS。",
@@ -497,6 +497,7 @@
     "note": "protocol replay passed; one bounded 5090 model run retained FAIL/STOPPED_LIMIT; no 5060 handoff",
     "formal_source_commit": "502072a1e20459bbf0e474ce0630c6cc22b6a842",
     "current_source_commit": "16498c6120a6bc6afa9d5b180c2f649b5ea048bd",
-    "evidence_path": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v4/"
+    "evidence_path": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v4/",
+    "evidence_commit": "10861d2cbb5afe59c21c63f7dc8228f758308dc2"
   }
 }
