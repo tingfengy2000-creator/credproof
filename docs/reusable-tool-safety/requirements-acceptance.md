@@ -85,3 +85,13 @@
 在当前 5090/CUDA0 边界内登记了同一 `assistant-original/p01` 的有限复测。v2 保留为发现工具预算停止缺口的原始记录；v3 在修正后实际运行 12 次模型请求、12 次工具请求、接受 1 个候选并由程序自动验收 1 次（`FAIL`），第 12 个工具结果用尽后任务以 `STOPPED_TOOL_BUDGET` 结束，没有继续消费新的模型请求。可信 PASS 为 0，没有导出或新目录 PASS。v3 结构化脱敏记录见 [`acceptance/20261007-return-redirect/context-budget-pilot-v3/`](acceptance/20261007-return-redirect/context-budget-pilot-v3/)。
 
 因此 R08 的工程调度与上下文保真有协议和一次真实运行依据，但“当前模型产生合格修复、同一候选导出并在新目录复检 PASS”仍是 `IMPLEMENTED_UNVERIFIED`，整体维持 `NOT_READY_FOR_HANDOFF`。这不是稳定成功率或泛化结论。
+
+## dev24：上下文最新读取保真（当前复审版）
+
+本版源码提交：`16498c6`（当前工程修正）；本次有限正式模型运行冻结源码：`502072a1e20459bbf0e474ce0630c6cc22b6a842`。`compact_messages_for_budget` 通过真实函数调用 ID 保留最新读取对、当前候选正文、程序自动验收失败和最新 `executor_state`；主机以 `(path, current_candidate_sha256, last_verified_candidate, last_verdict)` 控制重复读取，第三次无新信息返回 `no_progress_same_read`。已有读取/候选后再次请求证据返回 `evidence_already_current`。这些改动由 `agent_pilot/tests/test_model_boundary.py` 和完整 Agent 测试覆盖；测试环境实际 `115 passed, 1 warning`。
+
+v3 原始请求序列的无模型重放见 `acceptance/20261007-return-redirect/context-budget-pilot-v4/replay-summary.json` 及其 `payload-before.json`、`payload-after-read-05.json`、`payload-after-read-12.json`。8 个真实保存的入口读取均保持对应调用与返回、源码正文和主机计数，且请求摘要不再重复；预算预检四阶段均在 `14,848` 保守输入上限内。该重放不是模型成功或安全实验。
+
+在 `502072a...` 上只运行一次 `assistant-original/p01`：5090/CUDA0、qwen3-coder:30b、既有模型边界；5 次模型请求、5 份 usage、6 次工具请求、1 个接受候选、1 次 `program_auto_verify`，候选为 `FAIL`，无 `PASS`、导出或新目录复检。第5次模型又请求已经完成的 `get_evidence`，客户端保守预算拒绝下一请求；原始失败保留。随后 `16498c6` 增加了重复证据阶段拒绝，仅做协议/单元回归，没有重跑模型。公开脱敏请求、响应、预算、候选和边界收据在 `acceptance/20261007-return-redirect/context-budget-pilot-v4/public-evidence/`。
+
+因此 R08 的上下文保真、候选调度和重复阶段控制已有对应代码与协议证据；当前模型修复效果仍为 `IMPLEMENTED_UNVERIFIED`，整体 `NOT_READY_FOR_HANDOFF`。不把本轮的候选 FAIL、旧人工修复或历史 h03 拼成成功，5060 尚未启动。

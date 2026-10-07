@@ -1,0 +1,329 @@
+{
+  "schema": "credproof.context-sequencing-replay/v1",
+  "protocol_replay": true,
+  "model_run": "not_run",
+  "source_trace": "context-budget-pilot-v3/formal-p01-model-result.json and model-trace/model-05..12",
+  "pre_fix": {
+    "request": "model-05-request.json",
+    "omitted_latest_entry_read": true
+  },
+  "snapshots": [
+    {
+      "saved_read_number": 5,
+      "wire_sha256": "82624fa246cd9492eb98107d9f4292eb613d278374b9eb6c2f1b788a73d7b0c1",
+      "wire_bytes": 11430,
+      "wire_message_count": 7,
+      "paired_call_ids": [
+        "call_p5sdrx1p",
+        "call_qzr2imyp"
+      ],
+      "latest_state": {
+        "schema": "credproof.executor-state/v1",
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "1328b9c34b2022c1c20c591101015b9f5af2759901dc81b8e147a8c9418e833f",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "tool_calls_used": 5,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 7,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop"
+      },
+      "contains_current_entry_body": true
+    },
+    {
+      "saved_read_number": 6,
+      "wire_sha256": "720a0ad91a3819ce787f9369d44050d619bc447936a77f1d1749bd2452ca964e",
+      "wire_bytes": 11430,
+      "wire_message_count": 7,
+      "paired_call_ids": [
+        "call_p5sdrx1p",
+        "call_da722366"
+      ],
+      "latest_state": {
+        "schema": "credproof.executor-state/v1",
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "1328b9c34b2022c1c20c591101015b9f5af2759901dc81b8e147a8c9418e833f",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "tool_calls_used": 6,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 6,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop"
+      },
+      "contains_current_entry_body": true
+    },
+    {
+      "saved_read_number": 7,
+      "wire_sha256": "f96976f41814a52b111ee9f3efd837380e0229cc433a83bcbe0eef0cc977a4ab",
+      "wire_bytes": 11430,
+      "wire_message_count": 7,
+      "paired_call_ids": [
+        "call_p5sdrx1p",
+        "call_jwvlq215"
+      ],
+      "latest_state": {
+        "schema": "credproof.executor-state/v1",
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "1328b9c34b2022c1c20c591101015b9f5af2759901dc81b8e147a8c9418e833f",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "tool_calls_used": 7,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 5,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop"
+      },
+      "contains_current_entry_body": true
+    },
+    {
+      "saved_read_number": 8,
+      "wire_sha256": "7cdcf157daa29f06b78f1a9a919a1aee92dd0219aab283e55d1901f81712acfb",
+      "wire_bytes": 11430,
+      "wire_message_count": 7,
+      "paired_call_ids": [
+        "call_p5sdrx1p",
+        "call_lsf117mo"
+      ],
+      "latest_state": {
+        "schema": "credproof.executor-state/v1",
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "1328b9c34b2022c1c20c591101015b9f5af2759901dc81b8e147a8c9418e833f",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "tool_calls_used": 8,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 4,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop"
+      },
+      "contains_current_entry_body": true
+    },
+    {
+      "saved_read_number": 9,
+      "wire_sha256": "d6ae59ac94becf5890ee586541e55a2c727ead3fa9bb34582a12ea50b3d730c5",
+      "wire_bytes": 11430,
+      "wire_message_count": 7,
+      "paired_call_ids": [
+        "call_p5sdrx1p",
+        "call_nws6q2ib"
+      ],
+      "latest_state": {
+        "schema": "credproof.executor-state/v1",
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "1328b9c34b2022c1c20c591101015b9f5af2759901dc81b8e147a8c9418e833f",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "tool_calls_used": 9,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 3,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop"
+      },
+      "contains_current_entry_body": true
+    },
+    {
+      "saved_read_number": 10,
+      "wire_sha256": "98dfc4ef132ae0f0a4af63c21a836fde2d23b3e64ba40b28157e26f0a0505743",
+      "wire_bytes": 11432,
+      "wire_message_count": 7,
+      "paired_call_ids": [
+        "call_p5sdrx1p",
+        "call_ukg6hazz"
+      ],
+      "latest_state": {
+        "schema": "credproof.executor-state/v1",
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "1328b9c34b2022c1c20c591101015b9f5af2759901dc81b8e147a8c9418e833f",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "tool_calls_used": 10,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 2,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop"
+      },
+      "contains_current_entry_body": true
+    },
+    {
+      "saved_read_number": 11,
+      "wire_sha256": "fb0eab73520340b7ac8501b75fa14afed36df74e595176df15c2c43f497695ca",
+      "wire_bytes": 11432,
+      "wire_message_count": 7,
+      "paired_call_ids": [
+        "call_p5sdrx1p",
+        "call_fi4g3yuy"
+      ],
+      "latest_state": {
+        "schema": "credproof.executor-state/v1",
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "1328b9c34b2022c1c20c591101015b9f5af2759901dc81b8e147a8c9418e833f",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "tool_calls_used": 11,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 1,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop"
+      },
+      "contains_current_entry_body": true
+    },
+    {
+      "saved_read_number": 12,
+      "wire_sha256": "00d837535757944a19f993317f94c75fd83eab04d5f20c185a5c9594075a7fbe",
+      "wire_bytes": 11432,
+      "wire_message_count": 7,
+      "paired_call_ids": [
+        "call_p5sdrx1p",
+        "call_c8wq38k1"
+      ],
+      "latest_state": {
+        "schema": "credproof.executor-state/v1",
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "1328b9c34b2022c1c20c591101015b9f5af2759901dc81b8e147a8c9418e833f",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "tool_calls_used": 12,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 0,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop"
+      },
+      "contains_current_entry_body": true
+    }
+  ],
+  "assertions": {
+    "latest_read_pair_retained": true,
+    "paired_tool_ids": true,
+    "executor_state_changes_with_host_count": true,
+    "failed_verification_remains_non_ok": true,
+    "same_stale_payload_loop_removed": true,
+    "context_budget_not_bypassed": "wire bytes are recorded; live estimator remains authoritative"
+  },
+  "notes": [
+    "This replay does not execute a candidate and is not a model success.",
+    "All retained statuses and reasons come from saved host results; no result is synthesized.",
+    "Old duplicate reads may be dropped only after the newest full read and executor state are retained."
+  ]
+}

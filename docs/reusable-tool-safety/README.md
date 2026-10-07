@@ -404,3 +404,13 @@ python scripts/run-exported-regression-check.py `
 ## 当前 dev23 评审入口
 
 本轮上下文保真、候选自动验收和工具额度停止的代码在 `agent_pilot/model_client.py`、`credproof_safety/agent.py`；真实 v3 记录入口为 [`acceptance/20261007-return-redirect/context-budget-pilot-v3/`](acceptance/20261007-return-redirect/context-budget-pilot-v3/)。当前模型任务仍无可信 PASS，状态为 `NOT_READY_FOR_HANDOFF`。
+
+## dev24：压缩后最新读取保真与一次有限复测
+
+本轮只修复消息压缩在已有候选之后丢失最新 `read_code(tool.py)` 对、造成模型请求原地重复的问题。`agent_pilot/model_client.py:compact_messages_for_budget` 现在按真实 `function_id` 保留最新读取的完整调用/返回对，保留当前候选源码、必要测试、程序自动验收失败和主机最新 `executor_state`；只有与当前对象脱离的旧入口读取可以去重。旧的 `REJECTED`、`ERROR`、`UNKNOWN` 和失败原因不改写。候选提交后的验收仍由执行器自动调用，重复同一对象/读取状态达到阈值时由 `credproof_safety/agent.py:_read_progress_update` 产生明确的 `no_progress_same_read`，模型侧结束为 `STOPPED_NO_PROGRESS`。重复的 `get_evidence` 在已有读取或候选后也会被执行器拒绝为 `evidence_already_current`，避免再次占用上下文。
+
+先用 v3 原始请求、响应和工具结果做了不调用模型的真实消息重放。`payload-before.json` 是修复前保存的第5次请求，它没有最新入口读取；`payload-after-read-05.json` 和 `payload-after-read-12.json` 由当前转换器和真实 v3 工具结果生成。8个连续读取均保留最新调用ID与配对返回、当前 `tool.py` 正文、候选1的 `FAIL` 验收和 `tool_calls_used` 5→12 的最新状态；请求摘要不再相同，所有工具ID成对。该重放只验证协议，不执行候选，也不是模型修复成功。预算预检使用相同客户端序列化和工具定义，首请求、两份源码、自动验收失败以及失败后重新读取四个阶段均 `within_declared_budget=true`，最高保守上界 14,583/14,848。
+
+随后在源码提交 `502072a1e20459bbf0e474ce0630c6cc22b6a842` 上、同一 `assistant-original/p01`、qwen3-coder:30b、5090 CUDA0 和既有 bubblewrap 边界内只运行一次正式任务。实际为 **5次模型请求、5份服务usage、6次工具请求、1个接受候选、1次程序自动验收**；候选1仍为 `FAIL`（凭据仍出现在返回值，正常/跳转边界及必要业务未满足），没有可信 `PASS`、导出或新目录复检。模型在第5次请求后再次请求已完成的 `get_evidence`，后续请求被保守输入预算保护拒绝；这次失败原样保留，没有用重试覆盖。Ollama日志确认本次使用 `CUDA0 / NVIDIA GeForce RTX 5090`，模型边界探针仍为白名单挂载和 loopback-only 私有网络，付费 API 为 false。
+
+为避免相同阶段再次循环，当前源码随后在 `16498c6` 增加了 `evidence_already_current` 阶段拒绝；这项修正只做了协议/单元回归，没有再次调用模型。完整原始运行留在本机评审目录；公开脱敏证据在 [`acceptance/20261007-return-redirect/context-budget-pilot-v4/public-evidence/`](acceptance/20261007-return-redirect/context-budget-pilot-v4/public-evidence/)，包括真实请求/响应、预算、候选和边界收据。协议重放及摘要见 [`context-budget-pilot-v4/replay-summary.json`](acceptance/20261007-return-redirect/context-budget-pilot-v4/replay-summary.json)。本轮仍为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。

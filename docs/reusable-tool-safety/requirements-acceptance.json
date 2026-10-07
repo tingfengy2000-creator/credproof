@@ -1,7 +1,7 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.23",
-  "tested_source_commit": "a54dede",
+  "candidate_version": "0.3.0-dev.24",
+  "tested_source_commit": "16498c6120a6bc6afa9d5b180c2f649b5ea048bd",
   "generated_at": "2026-10-07",
   "status_summary": {
     "verified": 12,
@@ -229,24 +229,26 @@
       "name": "候选修复授权与修改边界",
       "status": "IMPLEMENTED_UNVERIFIED",
       "implementation": [
+        "credproof_safety/agent.py:_read_progress_update",
         "credproof_safety/agent.py:serve",
-        "agent_pilot/tools.py:dispatch",
-        "agent_pilot/tests/test_reliability.py"
-      ],
-      "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先完成首请求上下文、证据反馈压缩与可信阶段顺序预检，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
-      "acceptance": "上下文压缩协议回归112项通过；v3在5090真实运行接受1候选并程序自动验收FAIL，工具额度耗尽后可信停止；无PASS、无导出复检",
-      "commands": [
-        ".venv\\Scripts\\python.exe scripts/model-context-budget-preflight.py",
-        ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests",
-        ".venv\\Scripts\\python.exe -m credproof_safety repair --config examples/material_assistant/credproof.toml --output acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result.json"
-      ],
-      "evidence": [
-        "acceptance/20261007-return-redirect/context-budget-pilot/post-run-verification-candidate02-v1/public-evidence/post-run-verification-summary.json",
-        "acceptance/20261007-return-redirect/context-budget-pilot-v3/structured-redacted-v1/evidence.json",
+        "agent_pilot/model_client.py:compact_messages_for_budget",
         "agent_pilot/tests/test_model_boundary.py"
       ],
-      "source_commit": "e6507f36b93a0a3168717cf7f09f439b57786132",
-      "gaps": "仍无当前模型合格修复及同候选公开导出/新目录复检PASS",
+      "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先完成首请求上下文、证据反馈压缩与可信阶段顺序预检，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
+      "acceptance": "v3原始消息的真实无模型重放保留最新tool.py读取、配对ID、FAIL反馈和tool_calls_used状态；预算预检四阶段均在14848保守上限内。一次5090正式运行实际5次模型请求/5份usage/6次工具请求/1个接受候选/1次程序自动验收，候选FAIL，随后因重复get_evidence触发保守输入预算停止；没有模型PASS或导出复检。",
+      "commands": [
+        ".venv\\Scripts\\python.exe scripts/replay-context-sequencing.py",
+        ".venv\\Scripts\\python.exe scripts/model-context-budget-preflight.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v4/budget-preflight.json",
+        ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests"
+      ],
+      "evidence": [
+        "acceptance/20261007-return-redirect/context-budget-pilot-v4/replay-summary.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v4/budget-preflight.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v4/public-evidence/run-summary.json",
+        "agent_pilot/tests/test_model_boundary.py"
+      ],
+      "source_commit": "16498c6120a6bc6afa9d5b180c2f649b5ea048bd",
+      "gaps": "当前真实模型候选没有通过修订后的安全与业务条件；没有同一候选公开导出和新目录复检PASS。",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
@@ -290,15 +292,13 @@
           "id": "model_repair_effect",
           "status": "IMPLEMENTED_UNVERIFIED",
           "evidence": [
-            "acceptance/20261007-return-redirect/context-budget-pilot/README.md",
-            "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/run-summary.json",
-            "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/verification/verification-01.json",
-            "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/verification/candidate-02.py"
+            "acceptance/20261007-return-redirect/context-budget-pilot-v4/public-evidence/run-summary.json",
+            "acceptance/20261007-return-redirect/context-budget-pilot-v4/public-evidence/formal-p01-model-result.redacted.json"
           ],
-          "reason": "本轮真实运行有2份接受候选；候选1已验收为FAIL，候选2未验收即因模型请求预算耗尽结束，未取得修复PASS。"
+          "reason": "本轮唯一正式任务接受candidate-01并由程序自动验收为FAIL；第5次模型后再次请求已完成证据，客户端保守预算停止，未产生PASS。"
         }
       ],
-      "notes": "本轮正式 p01 独立计数：12次模型请求/12份usage/15次工具请求尝试（12次接受、3次上限拒绝）/2份接受候选/1次候选验收；候选1 FAIL、候选2 UNVERIFIED；未导出、未做新目录复检。旧页面批次与历史 Agent 结果不合并。"
+      "notes": "本轮协议重放、模型运行和后续阶段拒绝分别记录；模型权重与运行环境不入库，5060交接尚未启动。"
     },
     {
       "id": "R09",
@@ -482,19 +482,21 @@
     "real credential revocation",
     "new model/case expansion"
   ],
-  "interpretation": "检测、程序验收、上下文预算适配和模型修复效果分别报告。当前预算适配在一次正式运行中得到验证，但模型修复效果仍为未验证；5060交接尚未启动。",
-  "current_review_receipt_commit": "a54dede",
+  "interpretation": "本版关闭了压缩后最新读取丢失和重复阶段空转的工程缺口；协议重放与有限模型运行分别记录，模型修复效果仍未验证，5060交接尚未启动。",
+  "current_review_receipt_commit": "PENDING_COMMIT_AFTER_EVIDENCE",
   "handoff_status": "NOT_READY_FOR_HANDOFF",
   "handoff_blockers": [
-    "本轮12次模型请求后仍无在修订返回/跳转规则下通过的可信候选；候选1 FAIL，候选2未验收。",
-    "因为没有可信 PASS 候选，同一候选导出与新目录无模型复检尚未执行。"
+    "一次正式5090模型运行在候选1 FAIL后因重复证据请求的保守上下文预算停止；没有当前模型修复PASS。",
+    "因此没有同一模型候选的公开导出与新目录无模型复检PASS。"
   ],
-  "version": "0.3.0-dev.22",
+  "version": "0.3.0-dev.24",
   "latest_review_update": {
-    "run": "context-budget-pilot-v3",
-    "review_start_commit": "38269cca531ec4c687cb93a3761da8e50c7b2a31",
+    "run": "context-budget-pilot-v4",
+    "review_start_commit": "7461f9c387951f6e937b70da5d1d3d45162567d9",
     "status": "NOT_READY_FOR_HANDOFF",
-    "note": "source commit and evidence receipt are recorded after local commit; no 5060 handoff",
-    "source_commit": "a54dede"
+    "note": "protocol replay passed; one bounded 5090 model run retained FAIL/STOPPED_LIMIT; no 5060 handoff",
+    "formal_source_commit": "502072a1e20459bbf0e474ce0630c6cc22b6a842",
+    "current_source_commit": "16498c6120a6bc6afa9d5b180c2f649b5ea048bd",
+    "evidence_path": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v4/"
   }
 }

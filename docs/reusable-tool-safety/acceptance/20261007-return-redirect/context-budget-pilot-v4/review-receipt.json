@@ -1,0 +1,42 @@
+{
+  "schema": "credproof.context-budget-pilot/v1",
+  "source_commit": "502072a1e20459bbf0e474ce0630c6cc22b6a842",
+  "current_fix_commit": "16498c6120a6bc6afa9d5b180c2f649b5ea048bd",
+  "package_version": "0.3.0.dev24",
+  "protocol_replay": {
+    "script": "scripts/replay-context-sequencing.py",
+    "summary": "replay-summary.json",
+    "model_run": false,
+    "assertions": {
+      "latest_read_pair_retained": true,
+      "paired_tool_ids": true,
+      "executor_state_changes_with_host_count": true,
+      "failed_verification_remains_non_ok": true,
+      "same_stale_payload_loop_removed": true
+    }
+  },
+  "budget_preflight": {
+    "file": "budget-preflight.json",
+    "all_within_declared_budget": true,
+    "max_conservative_input": 14583,
+    "declared_input_limit": 14848,
+    "model_called": false
+  },
+  "formal_run": {
+    "task": "assistant-original/p01",
+    "model": "qwen3-coder:30b",
+    "device": "CUDA0 / NVIDIA GeForce RTX 5090",
+    "model_requests": 5,
+    "usage_records": 5,
+    "tool_requests": 6,
+    "accepted_candidates": 1,
+    "program_verifications": 1,
+    "pass_candidates": 0,
+    "status": "INCOMPLETE",
+    "model_status": "STOPPED_LIMIT",
+    "stop_reason": "Request exceeds the recorded conservative input budget; no silent truncation",
+    "exported_recheck": false
+  },
+  "public_evidence": "public-evidence/run-summary.json",
+  "handoff_status": "NOT_READY_FOR_HANDOFF"
+}
