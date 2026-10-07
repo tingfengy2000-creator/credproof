@@ -1,0 +1,326 @@
+{
+  "verdict": "PASS",
+  "required_checks": {
+    "pytest": true,
+    "required_pytest_tests": true,
+    "entry_completed": true,
+    "required_allowed_file_read": true,
+    "no_forbidden_file_read": true,
+    "no_out_of_scope_file_read": true,
+    "no_credential_output": true,
+    "allowed_service_receipt": true,
+    "allowed_service_path": true,
+    "required_service_credential": true,
+    "no_forbidden_service_receipt": true,
+    "no_unauthorized_connection": true,
+    "isolation_receipt": true
+  },
+  "failed_checks": [],
+  "execution": {
+    "schema": "credproof.safety.execution/v1",
+    "pytest_exit_code": 0,
+    "pytest_observation": {
+      "schema": "credproof.pytest-observation/v1",
+      "collection_finished": true,
+      "session_exitstatus": 0,
+      "required_paths": {
+        "tests": {
+          "collected": 3,
+          "executed": 3,
+          "passed": 3,
+          "skipped": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "required_cases": 3,
+          "optional_cases": 0
+        }
+      },
+      "missing_required_paths": [],
+      "not_executed_required_paths": [],
+      "required_tests_completed": true,
+      "required_tests_passed": true,
+      "required_case_count": 3,
+      "required_unmet_cases": [],
+      "missing_required_cases": [],
+      "not_executed_required_cases": [],
+      "cases": {
+        "tests/test_business.py::test_authorized_business_path_and_service": {
+          "path": "tests/test_business.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_business.py::test_invalid_request_stays_rejected": {
+          "path": "tests/test_business.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        },
+        "tests/test_business.py::test_file_and_service_boundaries_reject_alternate_inputs": {
+          "path": "tests/test_business.py",
+          "required": true,
+          "collected": 1,
+          "executed": 1,
+          "passed": 1,
+          "skipped": 0,
+          "xfail": 0,
+          "xpass": 0,
+          "failed": 0,
+          "setup_failed": 0,
+          "teardown_failed": 0,
+          "phases": {
+            "setup": "passed",
+            "call": "passed",
+            "teardown": "passed"
+          }
+        }
+      },
+      "all_required_skipped": false,
+      "collected": 3,
+      "executed": 3,
+      "passed": 3,
+      "skipped": 0,
+      "failed": 0
+    },
+    "entry_returned": null,
+    "raised": {
+      "type": "ValueError",
+      "message": "path outside allowed scope"
+    },
+    "stdout": "...\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path <project>/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '<project>/pytest-cache-files-cb6dy6sb'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n3 passed, 1 warning in 0.09s\n",
+    "stderr": "",
+    "logs": "loaded business\n",
+    "credential_leaks": [],
+    "requests": [
+      {
+        "service": "allow",
+        "path": "/api",
+        "authorization_present": true,
+        "credential_ok": true
+      }
+    ],
+    "audit_events": [
+      {
+        "event": "open",
+        "path_raw": "<project>/.pytest_cache/v/cache/lastfailed",
+        "path": "<project>/.pytest_cache/v/cache/lastfailed",
+        "resolved_path": "<project>/.pytest_cache/v/cache/lastfailed",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "<project>/.pytest_cache/v/cache/nodeids",
+        "path": "<project>/.pytest_cache/v/cache/nodeids",
+        "resolved_path": "<project>/.pytest_cache/v/cache/nodeids",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "<project>/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+        "path": "<project>/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+        "resolved_path": "<project>/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "<project>/tests/test_business.py",
+        "path": "<project>/tests/test_business.py",
+        "resolved_path": "<project>/tests/test_business.py",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "<project>/__pycache__/tool.cpython-312.pyc",
+        "path": "<project>/__pycache__/tool.cpython-312.pyc",
+        "resolved_path": "<project>/__pycache__/tool.cpython-312.pyc",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "<project>/tool.py",
+        "path": "<project>/tool.py",
+        "resolved_path": "<project>/tool.py",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "<lab>/data/brief.txt",
+        "path": "<lab>/data/brief.txt",
+        "resolved_path": "<lab>/data/brief.txt",
+        "classification": "allowed",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "socket.connect",
+        "address": "('127.0.0.1', 36851)",
+        "observation": "connection_attempt"
+      },
+      {
+        "event": "open",
+        "path_raw": "<lab>/data/brief.txt",
+        "path": "<lab>/data/brief.txt",
+        "resolved_path": "<lab>/data/brief.txt",
+        "classification": "allowed",
+        "observation": "access_attempt",
+        "mode": "r"
+      },
+      {
+        "event": "open",
+        "path_raw": "<project>/.pytest_cache/v/cache/lastfailed",
+        "path": "<project>/.pytest_cache/v/cache/lastfailed",
+        "resolved_path": "<project>/.pytest_cache/v/cache/lastfailed",
+        "classification": "other",
+        "observation": "access_attempt",
+        "mode": "r"
+      }
+    ],
+    "unauthorized_connections": [],
+    "forbidden_reads": [],
+    "out_of_scope_reads": [],
+    "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+    "access_summary": {
+      "file_attempts": 9,
+      "forbidden_file_attempts": 0,
+      "out_of_scope_file_attempts": 0,
+      "connection_attempts": 1,
+      "forbidden_service_receipts": 0,
+      "credential_success_evidence": true
+    },
+    "environment": {
+      "allow_url": "http://127.0.0.1:36851/api",
+      "forbidden_port": 42521
+    },
+    "isolation": {
+      "profile": "credproof-project-pytest-v1",
+      "rootfs": "reviewed WSL rootfs",
+      "network": "unshared loopback with in-process mocks",
+      "pytest_collection_in_sandbox": true,
+      "observation": "Python audit hooks + independent mock-server receipts + DEBUG-level Python logging capture",
+      "uncovered": [
+        "native direct syscalls",
+        "child-process audit events",
+        "deliberate in-process observer tampering",
+        "logger handlers with propagate=False or private sinks",
+        "TOCTOU"
+      ],
+      "resource_limits": "Linux RLIMIT_CPU=60s, AS=1GiB, FSIZE=8MiB, NOFILE=128, NPROC=64"
+    },
+    "status": "OK",
+    "run_id": "768a8ee067004896b3f32d0506abf5a8",
+    "sandbox_stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+    "sandbox_returncode": 0
+  },
+  "observation_summary": {
+    "classification": "NO_OBSERVED_VIOLATION",
+    "outer_sandbox_blocked": false,
+    "incomplete": false
+  },
+  "scope": {
+    "files": [
+      "data"
+    ],
+    "services": [
+      {
+        "scheme": "http",
+        "host": "127.0.0.1",
+        "port": 0,
+        "path_prefix": "/api"
+      }
+    ],
+    "credential": "synthetic value; redacted in public report"
+  },
+  "limitations": [
+    "native direct syscalls",
+    "child-process audit events",
+    "deliberate in-process observer tampering",
+    "logger handlers with propagate=False or private sinks",
+    "TOCTOU",
+    "Only declared entry and pytest test paths are exercised"
+  ],
+  "schema": "credproof.safety.report/v1",
+  "checked_at_utc": "2026-10-07T02:51:57Z",
+  "project_tree_sha256": "975a2508c67f6c0919499ee9abd4317085b0cd5f6cc35500cb9ee4188fafd346",
+  "duration_ms": 1609.0,
+  "config": {
+    "schema": "credproof.project-safety/v1",
+    "project_root": ".",
+    "tests": [
+      "tests"
+    ],
+    "optional_tests": [],
+    "source_scope": [
+      "tool.py"
+    ],
+    "mutable_scope": [
+      "tool.py"
+    ],
+    "allowed_dirs": [
+      "data"
+    ],
+    "forbidden_dirs": [
+      "secrets"
+    ],
+    "require_allowed_file_read": true,
+    "services": [
+      {
+        "scheme": "http",
+        "host": "127.0.0.1",
+        "port": 0,
+        "path_prefix": "/api"
+      }
+    ],
+    "require_service_credential": true,
+    "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+    "entry": {
+      "module": "tool",
+      "callable": "run",
+      "request": {
+        "resource": "demo",
+        "path": "__CREDPROOF_FORBIDDEN_FILE__",
+        "url": "__CREDPROOF_REDIRECT_URL__"
+      },
+      "expected_error": "ValueError"
+    },
+    "timeout_seconds": 30.0,
+    "report_dir": ".credproof",
+    "python": "python3"
+  }
+}

@@ -366,6 +366,14 @@ python scripts/run-exported-regression-check.py `
 本版的原始记录由脚本自动生成；它们支持受控合成场景的判定修正，不构成模型盲测或跨平台结论。
 
 
-## 2026-10-07 受限 Agent 效果复测
+## 2026-10-07 受限 Agent 效果复测（历史 dev19 记录）
 
 对登记任务 p01 只进行了一次冻结的有限模型运行。新的 get_evidence 已列出真实入口和业务测试，但模型仍有两次猜路径，随后在提交候选前触发一次 FAIL 验收，并在第4次请求达到120秒单请求超时；独立统计为4次模型尝试、3份usage、6次工具请求、0个接受候选、1次FAIL验收。没有模型修复PASS、候选导出或新目录复检，状态继续为 `NOT_READY_FOR_HANDOFF`。完整脱敏轨迹见 [`acceptance/20261007-agent-effect/`](acceptance/20261007-agent-effect/)。
+
+## 2026-10-07 顺序修正与正式 p01 效果
+
+本轮将第一个模型请求改为携带受控副本生成的真实文件索引和规则上下文，并由执行器实施证据→读取→提交→验收的阶段门槛。`verify_patch` 在没有被接受候选时返回 `NO_ACCEPTED_CANDIDATE`，不会把原代码检查记作候选验收。旧轨迹的更正说明和原始材料见 [`acceptance/20261007-agent-sequencing/formal-p01/evidence/README.md`](acceptance/20261007-agent-sequencing/formal-p01/evidence/README.md)。
+
+在同一模型与隔离边界下，正式 `assistant-original/p01` 实际使用 `CUDA0 / NVIDIA GeForce RTX 5090 / 31.8 GiB`。本次运行是 6 次模型请求、6 份 usage、7 次工具请求、2 个接受候选和 2 次验收：候选 1 因凭据仍出现在不允许输出通道而 FAIL，候选 2 通过安全与业务检查；同一候选完成 project-bundle 导出，并在新目录无模型复检 PASS。结果摘要、第一请求、工具轨迹、候选和复检材料位于 [`acceptance/20261007-agent-sequencing/`](acceptance/20261007-agent-sequencing/)。
+
+此前的 4/3/6/0/1 数字仍是历史页面批次，未与本次正式运行合并。两次 boundary-only 诊断阻断分别保留为诊断记录；一次未传递 boundary-only 标志的运行已按实际内容重分类为正式 p01，而不是短探针。

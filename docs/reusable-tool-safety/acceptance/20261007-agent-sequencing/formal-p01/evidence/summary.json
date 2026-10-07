@@ -1,0 +1,162 @@
+{
+  "schema": "credproof.agent-sequencing-run-summary/v1",
+  "source_commit": "7699c64703d545d70d8c1c487937bdb5f2fe5d73",
+  "registered_project": "assistant-original",
+  "case_id": "p01",
+  "execution_kind": "real-local-model-inference",
+  "model": "qwen3-coder:30b",
+  "model_manifest_sha256": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+  "host_gpu": "NVIDIA GeForce RTX 5090",
+  "gpu_backend": "CUDA0",
+  "gpu_total_gib": 31.8,
+  "budgets": {
+    "max_model_calls": 12,
+    "max_candidates": 3,
+    "max_format_corrections": 1,
+    "request_timeout_seconds": 120,
+    "task_wall_clock_seconds": 900,
+    "actual_run_budget_frozen_before_execution": true
+  },
+  "counts": {
+    "candidate_cap": 3,
+    "model_call_cap": 12,
+    "accepted_candidates": 2,
+    "candidate_history": [
+      {
+        "candidate": 2,
+        "sha256": "801e6cd535fa8122bf1f8a1f04814f1c3bcdfbabb2688eb03fd41e65b4d54a83"
+      },
+      {
+        "candidate": 1,
+        "sha256": "3fa573ccdcac4e66392acee927f5cf8120874d3c6b6ed4b0bad8ce3309133af5"
+      }
+    ],
+    "verifications": 2,
+    "verification_history": [
+      {
+        "file": "verification-01.json",
+        "verdict": "FAIL"
+      },
+      {
+        "file": "verification-02.json",
+        "verdict": "PASS"
+      }
+    ],
+    "tool_requests": 7,
+    "tool_requests_by_name": {
+      "get_evidence": 1,
+      "read_code": 2,
+      "submit_patch": 2,
+      "verify_patch": 2
+    },
+    "tool_rejections": 0,
+    "rejected_requests": [],
+    "model_attempts": 6,
+    "saved_model_requests": 6,
+    "saved_model_responses": 6,
+    "model_responses_with_usage": 6,
+    "termination_reason": "EXECUTOR_COMPLETED",
+    "model_error": null,
+    "task_status": "COMPLETED_REPAIRED",
+    "evidence_gaps": [],
+    "source": "host RPC acceptance + candidate/verification history; raw model request/response/usage"
+  },
+  "initial_request": {
+    "file": "evidence/model-work/model-01-request.json",
+    "contains_readable_paths": true,
+    "contains_entry_path": true,
+    "contains_reference_patch": false
+  },
+  "candidates": [
+    {
+      "file": "candidate-01.py",
+      "sha256": "3fa573ccdcac4e66392acee927f5cf8120874d3c6b6ed4b0bad8ce3309133af5",
+      "bytes": 1875
+    },
+    {
+      "file": "candidate-02.py",
+      "sha256": "801e6cd535fa8122bf1f8a1f04814f1c3bcdfbabb2688eb03fd41e65b4d54a83",
+      "bytes": 1844
+    }
+  ],
+  "verifications": [
+    {
+      "file": "verification-01.json",
+      "verdict": "FAIL",
+      "failed_checks": [
+        "no_credential_output"
+      ],
+      "pytest_exit_code": 0
+    },
+    {
+      "file": "verification-02.json",
+      "verdict": "PASS",
+      "failed_checks": [],
+      "pytest_exit_code": 0
+    }
+  ],
+  "termination": {
+    "status": "COMPLETED_REPAIRED",
+    "model_status": "EXECUTOR_COMPLETED",
+    "model_calls": 6,
+    "usage_count": 6,
+    "elapsed_s": 19.377
+  },
+  "bundle": {
+    "status": "EXPORTED",
+    "path": "project-bundle/",
+    "manifest_project_tree_sha256": "975a2508c67f6c0919499ee9abd4317085b0cd5f6cc35500cb9ee4188fafd346"
+  },
+  "new_directory_recheck": {
+    "status": "RECHECKED",
+    "verdict": "PASS",
+    "prior_report_applicable": true
+  },
+  "device_log_highlights": [
+    "time=2026-10-07T02:51:37.766Z level=INFO source=types.go:32 msg=\"inference compute\" id=0 filter_id=0 library=CUDA compute=12.0 name=CUDA0 description=\"NVIDIA GeForce RTX 5090\" libdirs=ollama,cuda_v12 driver=13.3 pci_id=0000:01:00.0 type=discrete total=\"31.8 GiB\" available=\"30.2 GiB\"",
+    "time=2026-10-07T02:51:38.352Z level=INFO source=sched.go:625 msg=\"gpu memory\" id=0 library=CUDA available=\"29.8 GiB\" free=\"30.2 GiB\" minimum=\"457.0 MiB\" overhead=\"0 B\"",
+    "cmn  common_param:   - CUDA0   : NVIDIA GeForce RTX 5090 (32606 MiB, 30927 MiB free)",
+    "common_memory_breakdown_print: |   - CUDA0 (RTX 5090)   | 32606 = 30927 + (18540 = 17524 +     816 +     200) +      -16860 |",
+    "llama_prepare_model_devices: using device CUDA0 (NVIDIA GeForce RTX 5090) (0000:01:00.0) - 30927 MiB free",
+    "load_tensors:        CUDA0 model buffer size = 17524.43 MiB",
+    "llama_kv_cache:      CUDA0 KV buffer size =   816.00 MiB",
+    "sched_reserve:      CUDA0 compute buffer size =   200.10 MiB",
+    "slot print_timing: id  0 | task 0 | prompt eval time =     355.15 ms /  2252 tokens (    0.16 ms per token,  6340.89 tokens per second)",
+    "slot print_timing: id  0 | task 0 |        eval time =      79.16 ms /    13 tokens (    6.60 ms per token,   151.60 tokens per second)",
+    "slot print_timing: id  0 | task 0 |       total time =     434.31 ms /  2265 tokens",
+    "slot print_timing: id  0 | task 16 | prompt eval time =     149.02 ms /  1656 tokens (    0.09 ms per token, 11112.60 tokens per second)",
+    "slot print_timing: id  0 | task 16 |        eval time =     235.23 ms /    46 tokens (    5.23 ms per token,   191.30 tokens per second)",
+    "slot print_timing: id  0 | task 16 |       total time =     384.25 ms /  1702 tokens",
+    "slot print_timing: id  0 | task 64 | prompt eval time =      81.17 ms /   852 tokens (    0.10 ms per token, 10497.01 tokens per second)",
+    "slot print_timing: id  0 | task 64 |        eval time =    2167.29 ms /   422 tokens (    5.15 ms per token,   194.25 tokens per second)",
+    "slot print_timing: id  0 | task 64 |       total time =    2248.46 ms /  1274 tokens",
+    "slot print_timing: id  0 | task 487 | prompt eval time =      63.49 ms /   451 tokens (    0.14 ms per token,  7103.26 tokens per second)",
+    "slot print_timing: id  0 | task 487 |        eval time =      71.15 ms /    13 tokens (    5.93 ms per token,   168.66 tokens per second)",
+    "slot print_timing: id  0 | task 487 |       total time =     134.64 ms /   464 tokens",
+    "slot print_timing: id  0 | task 501 | prompt eval time =      93.35 ms /   880 tokens (    0.11 ms per token,  9426.48 tokens per second)",
+    "slot print_timing: id  0 | task 501 |        eval time =    2569.16 ms /   478 tokens (    5.39 ms per token,   185.66 tokens per second)",
+    "slot print_timing: id  0 | task 501 |       total time =    2662.51 ms /  1358 tokens",
+    "slot print_timing: id  0 | task 980 | prompt eval time =      65.36 ms /   445 tokens (    0.15 ms per token,  6808.65 tokens per second)",
+    "slot print_timing: id  0 | task 980 |        eval time =      77.13 ms /    13 tokens (    6.43 ms per token,   155.58 tokens per second)",
+    "slot print_timing: id  0 | task 980 |       total time =     142.49 ms /   458 tokens"
+  ],
+  "probe_attempts": [
+    {
+      "path": "../gpu-probe-20261007-artifacts",
+      "classification": "BLOCKED_DIAGNOSTIC",
+      "reason": "bwrap could not create /usr/lib/wsl; no repair inference accepted"
+    },
+    {
+      "path": "../gpu-probe-20261007-b-artifacts",
+      "classification": "BLOCKED_DIAGNOSTIC",
+      "reason": "boundary probe correctly rejected unallowlisted driver mount before model service"
+    },
+    {
+      "path": "gpu-probe-20261007-c-artifacts",
+      "classification": "FORMAL_REPAIR_RUN",
+      "reason": "boundary-only flag was not propagated by the pre-run environment filter; this run is counted as the one formal p01 task, not as a short probe"
+    }
+  ],
+  "paid_api_used": false,
+  "no_5060": true
+}

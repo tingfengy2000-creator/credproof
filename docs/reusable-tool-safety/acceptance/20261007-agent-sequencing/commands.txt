@@ -1,0 +1,30 @@
+# Reproducibility record for 2026-10-07 agent sequencing run
+
+All commands below were executed from the repository worktree. The formal model task and dynamic boundary checks ran on the RTX 5090 host; no 5060 run was started. Synthetic credentials only.
+
+1. Protocol/regression checks (no model):
+   python -m pytest -q agent_pilot/tests/test_model_boundary.py credproof_safety/tests/test_web_repair.py credproof_safety/tests/test_project_bundle.py
+   result: exit 0, 11 passed
+
+2. Formal task (one registered run, frozen limits):
+   python -m credproof_safety.agent ... assistant-original/p01 ...
+   result: exit 0; task_status=COMPLETED_REPAIRED; model_calls=6; usage=6; tool_requests=7; accepted_candidates=2; verifications=2
+
+3. Candidate adaptation and project bundle:
+   Python adapter generated formal-p01/comparison/p01/C-agent from the saved host RPC result.
+   credproof_safety.project_bundle.export_project_bundle(...)
+   result: EXPORTED; project_tree_sha256=975a2508c67f6c0919499ee9abd4317085b0cd5f6cc35500cb9ee4188fafd346
+
+4. Fresh-directory no-model recheck:
+   credproof_safety.project_bundle.recheck_project_bundle(...)
+   result: RECHECKED; verdict=PASS; prior_report_applicable=true; pytest=3 passed
+
+5. Device evidence:
+   Ollama service log: evidence/model-work/ollama-stderr.txt
+   observed: inference compute CUDA0, NVIDIA GeForce RTX 5090, total 31.8 GiB; model buffer on CUDA0.
+
+Two earlier diagnostic blocks and the c-run reclassification are recorded under diagnostics/. They are not counted as extra repair attempts.
+
+6. Post-documentation clean-wheel recheck:
+   .\.venv\Scripts\python.exe -c "from credproof_safety.project_bundle import recheck_project_bundle; ..."
+   result: exit 0; recheck-rerun.json status=RECHECKED, verdict=PASS, pytest collected/executed/passed=3/3/3.

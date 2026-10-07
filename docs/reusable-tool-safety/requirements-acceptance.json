@@ -1,11 +1,11 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.19",
-  "tested_source_commit": "e90a472",
+  "candidate_version": "0.3.0-dev.20",
+  "tested_source_commit": "7699c64703d545d70d8c1c487937bdb5f2fe5d73",
   "generated_at": "2026-10-07",
   "status_summary": {
-    "verified": 12,
-    "unverified": 1,
+    "verified": 13,
+    "unverified": 0,
     "blocked": 0,
     "excluded": 0
   },
@@ -227,40 +227,37 @@
     {
       "id": "R08",
       "name": "候选修复授权与修改边界",
-      "status": "IMPLEMENTED_UNVERIFIED",
+      "status": "IMPLEMENTED_VERIFIED",
       "implementation": [
         "credproof_safety/agent.py:serve",
         "agent_pilot/tools.py:dispatch",
         "agent_pilot/tests/test_reliability.py"
       ],
-      "setup": "5090主机上冻结同一登记任务 p01 运行一次；上下文索引修正后保留完整模型轨迹、工具往返与失败验收。",
-      "acceptance": "本次真实运行4次模型尝试、3份usage、6次native工具请求、0个接受候选、1次可信验收；初始与最终均FAIL，任务INCOMPLETE，120秒单请求超时；执行器没有把模型文字或未提交验收当作PASS。",
+      "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先修正首请求上下文与可信阶段顺序，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
+      "acceptance": "正式运行首个模型请求已包含 tool.py 与 tests/test_business.py 索引；模型调用6次、服务usage 6份、native工具请求7次、接受候选2份、可信验收2次。候选1因 no_credential_output FAIL，候选2通过全部必要安全与业务检查，任务 COMPLETED_REPAIRED；同一候选已导出 project-bundle/v1 并在新目录无模型复检 PASS。",
       "commands": [
-        "python -m pytest -q agent_pilot/tests/test_reliability.py agent_pilot/tests/test_runtime_config.py"
+        ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests/test_model_boundary.py credproof_safety/tests/test_web_repair.py credproof_safety/tests/test_project_bundle.py",
+        "credproof_safety.agent.request_repair(config, output=...) for the registered assistant-original/p01 run",
+        "credproof_safety.project_bundle.export_project_bundle(method, project-bundle); recheck_project_bundle(project-bundle, new-directory-recheck.json)"
       ],
       "evidence": [
-        "credproof_safety/agent.py",
-        "credproof_safety/web_repair.py",
-        "acceptance/20261006-page-live-boundary/summary.json",
-        "acceptance/20261006-page-live-boundary/page-live-record.json",
-        "acceptance/20261006-model-boundary/model-run-summary.json",
+        "credproof_safety/agent.py:_model_readable_paths/_phase_rejection/serve",
         "agent_pilot/tests/test_model_boundary.py",
-        "credproof_safety/tests/test_web_repair.py",
-        "acceptance/20261006-live-correction/live-statistics-correction.json",
-        "acceptance/20261006-live-correction/new-project-recheck.json",
-        "acceptance/20261007-agent-effect/plan.json",
-        "acceptance/20261007-agent-effect/run-summary.json",
-        "acceptance/20261007-agent-effect/failure-diagnosis.md",
-        "acceptance/20261007-agent-effect/evidence/run-record.json",
-        "acceptance/20261007-agent-effect/evidence/model-trace/",
-        "acceptance/20261007-agent-effect/evidence/rpc/"
+        "acceptance/20261007-agent-sequencing/evidence/summary.json",
+        "acceptance/20261007-agent-sequencing/evidence/model-work/model-01-request.json",
+        "acceptance/20261007-agent-sequencing/evidence/model-trace/",
+        "acceptance/20261007-agent-sequencing/evidence/rpc/",
+        "acceptance/20261007-agent-sequencing/evidence/candidates/",
+        "acceptance/20261007-agent-sequencing/evidence/verifications/",
+        "acceptance/20261007-agent-sequencing/formal-p01/project-bundle/",
+        "acceptance/20261007-agent-sequencing/formal-p01/new-directory-recheck.json"
       ],
-      "source_commit": "e90a472",
-      "gaps": "上下文索引已补全，但当前模型在提交候选前超时；没有可信模型修复PASS、候选导出或新目录复检，继续保持IMPLEMENTED_UNVERIFIED。",
+      "source_commit": "7699c64703d545d70d8c1c487937bdb5f2fe5d73",
+      "gaps": "仅证明当前登记的资料助手 p01 在合成凭据、受控文件/loopback服务和声明测试条件下完成一次修复；不代表跨项目泛化、稳定成功率或生产级安全保证。p02-p06仍为历史回放。",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
-          "sha256": "c2d8d60638557b077aaa0bee6da3f1acf4b46aef09537848eef04c1b992d1a40"
+          "sha256": "a6d316da143175c9ddd1dca92ab79069228c81f29e5cbb9e323b417ff604f8c9"
         },
         {
           "path": "agent_pilot/tools.py",
@@ -298,14 +295,20 @@
         },
         {
           "id": "model_repair_effect",
-          "status": "IMPLEMENTED_UNVERIFIED",
+          "status": "IMPLEMENTED_VERIFIED",
           "evidence": [
-            "acceptance/20261006-page-live-boundary/page-live-record.json"
+            "acceptance/20261007-agent-sequencing/evidence/summary.json",
+            "acceptance/20261007-agent-sequencing/evidence/candidates/candidate-01.py",
+            "acceptance/20261007-agent-sequencing/evidence/candidates/candidate-02.py",
+            "acceptance/20261007-agent-sequencing/evidence/verifications/verification-01.json",
+            "acceptance/20261007-agent-sequencing/evidence/verifications/verification-02.json",
+            "acceptance/20261007-agent-sequencing/formal-p01/project-bundle/",
+            "acceptance/20261007-agent-sequencing/formal-p01/new-directory-recheck.json"
           ],
-          "reason": "本次真实模型运行终态为 INCOMPLETE，最终可信验收 FAIL；候选仍包含未消除的输出语句，不能写成修复成功。"
+          "reason": "在一个登记的合成 p01 任务上取得一次可信 PASS；范围仍受当前配置、测试和隔离环境限定。"
         }
       ],
-      "notes": "本次独立计数4/3/6/0/1；旧页面批次6/5/7/1/1不与本记录拼接。"
+      "notes": "本次正式 p01 独立计数：6次模型尝试/6份usage/7次工具请求/2份接受候选/2次验收（FAIL→PASS）；旧页面批次6/5/7/1/1与本次不合并。"
     },
     {
       "id": "R09",
@@ -487,13 +490,9 @@
     "real credential revocation",
     "new model/case expansion"
   ],
-  "interpretation": "Detection, program gate, human repair validation and fresh Agent repair are reported separately.",
-  "current_review_receipt_commit": "e90a472",
-  "handoff_status": "NOT_READY_FOR_HANDOFF",
-  "handoff_blockers": [
-    "R08 model_repair_effect remains IMPLEMENTED_UNVERIFIED; the frozen 20261007 p01 run produced no accepted candidate and no trusted PASS.",
-    "Live page adapter remains registered p01 only; p02-p06 remain replay-only.",
-    "No GPU performance evidence; 5060 handoff intentionally not started."
-  ],
-  "version": "0.3.0-dev.19"
+  "interpretation": "Detection, program gate, human repair validation and one bounded fresh Agent repair are reported separately. READY_FOR_EXTERNAL_FINAL_REVIEW applies only to the documented p01 scope; p02-p06 remain historical replay and 5060 handoff is intentionally not started.",
+  "current_review_receipt_commit": "7699c64703d545d70d8c1c487937bdb5f2fe5d73",
+  "handoff_status": "READY_FOR_EXTERNAL_FINAL_REVIEW",
+  "handoff_blockers": [],
+  "version": "0.3.0-dev.20"
 }

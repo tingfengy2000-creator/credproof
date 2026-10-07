@@ -1,4 +1,4 @@
-# CredProof 需求—实现—证据验收表（dev19）
+# CredProof 需求—实现—证据验收表（dev20）
 
 本表对应本版源码提交（完整 SHA 在 GitHub 评审入口及后续交付收据中固定）；验收资料随后在提交中固化。它用于外部复查，不表示模型修复成功或参赛资格已验收。
 
@@ -13,12 +13,12 @@
 | R05 | 网络边界 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:mock services/socket audit；credproof_safety/project.py:_verdict`；experiments/reusable-tool-safety/20261003-targeted-fix-07/allowed_file_redirect.json；experiments/reusable-tool-safety/20261003-targeted-fix-07/reintroduced_file_bypass.json | 不宣称公网 SSRF、DNS、原生 syscall 或 Windows 内核网络审计 |
 | R06 | 必要业务测试真实完成与通过 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:CredProofPytestObserver；credproof_safety/project.py:_verdict`；_runs/current-pytest-observer/；agent_pilot/tests/test_runtime_config.py | 只对声明的必要用例语义负责；递归包装 skip 由执行侧区分 |
 | R07 | 单页项目注册、检查、总体判决与分项 | `IMPLEMENTED_VERIFIED` | `agent_pilot/project_workspace.py；agent_pilot/web.py；credproof_safety/web_repair.py`；`acceptance/20261006-final/page-flow.md`；`acceptance/20261006-page-live-boundary/summary.json` | 目前只有登记案例 p01 映射到资料助手固定项目；p02–p06 仍只提供历史回放 |
-| R08 | 候选修复授权与修改边界 | `IMPLEMENTED_UNVERIFIED` | `credproof_safety/agent.py:serve`；`credproof_safety/web_repair.py:execution_summary`；`acceptance/20261006-page-live-boundary/page-live-record.json`；`acceptance/20261006-live-correction/live-statistics-correction.json`；`acceptance/20261007-agent-effect/run-summary.json` | 授权、工具往返、可信判决和停止处理已有真实证据；本次冻结 p01 运行实际为 4 次模型尝试、3 份 usage、6 次工具请求、0 个接受候选、1 次 FAIL 验收并以超时 INCOMPLETE 结束，仍无模型修复成功证据 |
+| R08 | 候选修复授权与修改边界 | `IMPLEMENTED_VERIFIED` | `credproof_safety/agent.py:_model_readable_paths/_phase_rejection/serve`; `acceptance/20261007-agent-sequencing/evidence/summary.json`; `acceptance/20261007-agent-sequencing/formal-p01/project-bundle/`; `acceptance/20261007-agent-sequencing/formal-p01/new-directory-recheck.json` | 本次 p01 在固定合成条件下完成一次 FAIL→PASS；不代表跨项目泛化、稳定成功率或生产级保证，p02–p06仍为历史回放 |
 | R09 | 对象、报告适用性与复检 | `IMPLEMENTED_VERIFIED` | `agent_pilot/web.py:object/applicability checks；credproof_safety/project_bundle.py；credproof_safety/tests/test_project_bundle.py；acceptance/20261006-live-correction/new-project-bundle/；acceptance/20261006-live-correction/public-project-bundle-dev17/；acceptance/20261006-live-correction/public-project-recheck-dev17.json` | 首次导出核对当前候选树、配置、入口和必要测试；公开派生 bundle 按固定 Git blob 字节生成并在新目录复检。旧历史 bundle 与 `project-public-bundle/v1` 分流；哈希是完整性绑定，不是密码学证明或第三方认证 |
 | R10 | 导出与项目内复用 | `IMPLEMENTED_VERIFIED` | `credproof_safety/project.py:export_regression_tests；scripts/run-exported-regression-check.py`；acceptance/20261006-final/consumer/；acceptance/20261006-final/exported-tests/；acceptance/20261006-final/summary.json | 受控 WSL/bubblewrap 依赖需在消费者机器准备 |
 | R11 | 清洁安装、启动与隔离预检 | `IMPLEMENTED_VERIFIED` | `pyproject.toml package-data；agent_pilot/preflight.py；agent_pilot/launch.py；agent_pilot/web.py:launch_command`；acceptance/20261006-final/wheel-manifest.json；acceptance/20261006-final/import-origin-sanitized.txt；acceptance/20261006-final/preflight-summary.json；acceptance/20261006-final/page-flow.md | 跨机器、非 WSL 环境未承诺；现场页面必须通过 `CREDPROOF_INSTALLED_PYTHON` 或 local-runtime 的 `program_python` 指定已核验安装解释器，不再回退历史 `_runs` |
 | R12 | 模型进程文件系统/网络边界独立证明 | `IMPLEMENTED_VERIFIED` | `credproof_safety/agent.py:_MODEL_BOUNDARY_BOOTSTRAP`；`acceptance/20261006-model-boundary/model-boundary-probe.raw.json`；`acceptance/20261006-page-live-boundary/page-live-record.json` | 只覆盖一次授权合成项目和一次页面任务；不等同通用沙箱或内核级审计 |
-| R13 | 模型本地/零付费API运行 | `IMPLEMENTED_VERIFIED` | `credproof_safety/web_repair.py`；`agent_pilot/model_client.py`；`acceptance/20261006-page-live-boundary/summary.json` | 本次页面任务由 Ollama 报告为 CPU；主机为 RTX 5090，但未测量 GPU 性能；作品运行未调用付费 API |
+| R13 | 模型本地/零付费API运行 | `IMPLEMENTED_VERIFIED` | `acceptance/20261007-agent-sequencing/evidence/model-work/ollama-stderr.txt`; `acceptance/20261007-agent-sequencing/evidence/summary.json` | 旧页面批次保留 CPU/0 VRAM 记录；本轮正式 p01 日志确认 CUDA0/RTX 5090/31.8 GiB；未调用付费 API |
 
 ## 本轮页面现场链路
 
@@ -43,3 +43,12 @@
 
 五页平台、历史扫描、多语言、真实凭据、公网目标、多 Agent 和新案例集不属于本轮必需交付；它们不计入未完成必需项。
 
+## 本轮 Agent 顺序与正式修复效果（dev20）
+
+本轮只修正当前 Agent 的执行顺序和本地推理运行条件，旧实验与旧结论保留。首个模型请求现在携带由受控副本生成的有限索引、入口、测试文件和规则上下文；宿主端按依赖阶段拒绝越序调用：必须先取得证据，再读取声明文件，随后才能提交候选，只有已有接受候选时才能验收。没有接受候选时，`verify_patch` 返回 `NO_ACCEPTED_CANDIDATE`，不会对原代码副本冒充候选验收。
+
+旧记录中的事实更正为：第1次响应在看到证据前同时提出了 `get_evidence` 和错误路径读取；第2次才读取真实 `tool.py` 与 `tests/test_business.py`；第3次验收的是原代码，因为此前没有接受候选；第4次在输入预算通过后由客户端等待 120 秒超时，原始记录没有服务端取消确认。
+
+经过受控 CUDA 环境修正后，正式登记的 `assistant-original/p01` 运行实际使用 `CUDA0 / NVIDIA GeForce RTX 5090 / 31.8 GiB`。运行预算冻结为最多 12 次模型请求、3 个候选、1 次格式纠正、120 秒单请求和 900 秒任务墙钟；本次实际为 6 次模型请求、6 份 usage、7 次工具请求、2 个被接受候选和 2 次候选验收。候选 1 因仍有 `no_credential_output` 证据而 FAIL，候选 2 通过全部安全与业务检查。该候选随后导出为当前 project-bundle，并在新目录无模型复检 PASS。
+
+这是一项固定合成任务的真实运行证据，不代表跨项目泛化、稳定成功率或所有风险类别均可自动修复。旧批次和 p02–p06 的历史回放不与本次结果合并；本轮不启动 5060 交接。

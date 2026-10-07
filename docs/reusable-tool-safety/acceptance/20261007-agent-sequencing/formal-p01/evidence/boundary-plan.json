@@ -1,0 +1,39 @@
+{
+  "schema": "credproof.model-boundary-plan/v1",
+  "allowlist": {
+    "rootfs": "<runtime>/isolation/rootfs",
+    "code": [
+      "agent_pilot/__init__.py",
+      "agent_pilot/model_client.py",
+      "agent_pilot/tools.py",
+      "initial-context.json",
+      "worker.py"
+    ],
+    "dependencies": "<runtime>/venv/lib/python3.12/site-packages",
+    "ollama": "<runtime>/ollama",
+    "model_files": [
+      "models/manifests/registry.ollama.ai/library/qwen3-coder/30b",
+      "models/blobs/sha256-24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318",
+      "models/blobs/sha256-1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a",
+      "models/blobs/sha256-d18a5cc71b84bc4af394a31116bd3932b42241de70c77d2b76d69a314ec8aa12",
+      "models/blobs/sha256-69aa441ea44ff5e1e7b56cac4f471e71e8a5e2e3963c29684a9234d5d5e5f7aa"
+    ],
+    "writable": [
+      "/work",
+      "/rpc",
+      "/tmp",
+      "/run",
+      "/home"
+    ],
+    "device": "/dev/dxg plus read-only WSL CUDA driver allowlist",
+    "network": "private bubblewrap namespace; loopback only",
+    "excluded": [
+      "checkout",
+      "repair artifact root",
+      "runtime service-home",
+      "host /mnt",
+      "model weights not in manifest",
+      "proxy and API key environment"
+    ]
+  }
+}
