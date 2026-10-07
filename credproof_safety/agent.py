@@ -125,7 +125,9 @@ def boundary_probe():
         filesystem = line.split(' - ', 1)[1].split()[0] if ' - ' in line else ''
         if filesystem in ('9p', 'drvfs'):
             host_mounts.append({'mountpoint': mountpoint, 'filesystem': filesystem,
-                                'allowed': mountpoint in ('/work', '/rpc')})
+                                'allowed': mountpoint in ('/work', '/rpc',
+                                                          '/usr/lib/wsl/lib',
+                                                          '/usr/lib/wsl/drivers')})
     evidence = {
         'schema': 'credproof.model-boundary-probe/v1',
         'pid': os.getpid(), 'mount_namespace': os.readlink('/proc/self/ns/mnt'),
@@ -277,12 +279,16 @@ try:
                  'libdl.so.2', 'libresolv.so.2', 'librt.so.1', 'libmvec.so.1'):
         shutil.copyfile('/lib/x86_64-linux-gnu/' + name,
                         system_root / 'lib/x86_64-linux-gnu' / name)
+    # The copied root is read-only after bubblewrap starts, so create the
+    # destination mount points before binding the reviewed WSL driver paths.
+    (system_root / 'usr/lib/wsl/lib').mkdir(parents=True, exist_ok=True)
+    (system_root / 'usr/lib/wsl/drivers').mkdir(parents=True, exist_ok=True)
     model_root = '/runtime/models'
     args = [str(bwrap), '--unshare-all', '--unshare-user', '--unshare-cgroup-try', '--disable-userns',
             '--die-with-parent', '--new-session', '--clearenv', '--cap-drop', 'ALL',
             '--tmpfs', '/', '--ro-bind', str(system_root / 'usr'), '/usr',
             '--ro-bind', str(system_root / 'lib'), '/lib', '--ro-bind', str(system_root / 'lib64'), '/lib64',
-            '--dir', '/usr/lib/wsl', '--ro-bind', '/usr/lib/wsl/lib', '/usr/lib/wsl/lib',
+            '--ro-bind', '/usr/lib/wsl/lib', '/usr/lib/wsl/lib',
             '--ro-bind', '/usr/lib/wsl/drivers', '/usr/lib/wsl/drivers',
             '--dir', '/app', '--ro-bind', str(stage), '/app', '--dir', '/deps',
             '--ro-bind', str(deps), '/deps', '--ro-bind', str(soundfile_native),
