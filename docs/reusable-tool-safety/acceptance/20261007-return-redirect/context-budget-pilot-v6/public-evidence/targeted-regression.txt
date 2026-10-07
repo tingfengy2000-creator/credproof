@@ -1,0 +1,4 @@
+command: .venv\Scripts\python.exe -m pytest -q agent_pilot/tests/test_model_boundary.py agent_pilot/test_model_client.py credproof_safety/tests/test_entry_scenarios.py credproof_safety/tests/test_project_bundle.py
+exit_code: 0
+result: 47 passed, 1 warning in 1.24s
+scope: current compactor/agent protocol, entry scenarios, project bundle regressions; no model call and no candidate execution
