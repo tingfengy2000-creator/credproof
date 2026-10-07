@@ -132,6 +132,39 @@ def _scenario_requirements(config: SafetyConfig, execution: dict) -> bool:
     return True
 
 
+def _scenario_observation_gap(config: SafetyConfig, execution: dict) -> str | None:
+    """Return an UNKNOWN reason when a declared scenario lacks evidence.
+
+    A redirect scenario that raises its declared exception before producing any
+    mock-service observation is not a confirmed pass or fail: the required
+    network stage was never observed.  Keep this separate from an observed
+    wrong outcome, which remains a deterministic FAIL.
+    """
+    rows = execution.get("entry_scenarios")
+    if not isinstance(rows, list):
+        return "entry_scenarios_missing"
+    by_name = {x.get("name"): x for x in rows if isinstance(x, dict)}
+    for spec in config.entry.scenarios:
+        row = by_name.get(spec.name)
+        if row is None:
+            return f"entry_scenario_missing:{spec.name}"
+        if spec.require_network:
+            observations = row.get("request_observations")
+            if not isinstance(observations, list):
+                return f"entry_scenario_observation_missing:{spec.name}"
+            # If the declared exception occurred without any request, the
+            # safety condition was not exercised.  A returned value or a
+            # wrong exception is handled as a concrete outcome by the normal
+            # scenario predicate below.
+            raised = row.get("raised")
+            returned = row.get("entry_returned")
+            if not observations and (
+                    (spec.expected_error is None and raised is None and returned is not None) or
+                    (isinstance(raised, dict) and raised.get("type") == spec.expected_error)):
+                return f"entry_scenario_not_reached:{spec.name}"
+    return None
+
+
 def _verdict(config: SafetyConfig, execution: dict) -> dict:
     if execution.get("status") != "OK":
         return {"verdict": "UNKNOWN", "reason": "sandbox_execution_incomplete", "execution": execution,
@@ -158,6 +191,12 @@ def _verdict(config: SafetyConfig, execution: dict) -> dict:
                 "execution": execution,
                 "observation_summary": {"classification": "INCOMPLETE", "outer_sandbox_blocked": False,
                                          "incomplete": True, "missing_or_invalid": "entry_scenarios"}}
+    scenario_gap = _scenario_observation_gap(config, execution)
+    if scenario_gap:
+        return {"verdict": "UNKNOWN", "reason": scenario_gap,
+                "execution": execution,
+                "observation_summary": {"classification": "INCOMPLETE", "outer_sandbox_blocked": False,
+                                         "incomplete": True, "missing_or_invalid": scenario_gap}}
     required = {
         "pytest": execution.get("pytest_exit_code") == 0,
         "required_pytest_tests": execution.get("pytest_observation", {}).get("required_tests_passed") is True,
