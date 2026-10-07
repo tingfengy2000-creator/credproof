@@ -28,7 +28,7 @@ ACCEPTANCE = ROOT / "docs/reusable-tool-safety/acceptance/20261007-return-redire
 INITIAL_FILE = ACCEPTANCE / "formal-p01-model-result.json"
 CANDIDATE_REPORT = ACCEPTANCE / "candidate02-report.json"
 CANDIDATE_FILE = ACCEPTANCE / "saved-candidate02-method" / "final-candidate.py"
-OUT = ACCEPTANCE / "20261007-context-budget-preflight.json"
+OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else ACCEPTANCE / "20261007-context-budget-preflight.json"
 
 
 def _system_prompt() -> str:
@@ -125,16 +125,44 @@ def main() -> None:
     reads_budget = _budget("after_evidence_and_two_source_reads", after_reads_payload, first_prefix)
 
     candidate_code = CANDIDATE_FILE.read_text(encoding="utf-8")
-    after_candidate = after_reads + [
+    candidate_sha = hashlib.sha256(candidate_code.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")).hexdigest()
+    after_candidate_auto = after_reads + [
         _assistant_calls(("submit_patch", {"code": candidate_code}, "call-preflight-submit"))[0],
-        _function("call-preflight-submit", {"status": "ACCEPTED_FOR_VERIFICATION", "candidate": 1}),
-        _assistant_calls(("verify_patch", {}, "call-preflight-verify"))[0],
-        _function("call-preflight-verify", {"status": "OK", "report": _model_feedback(candidate_report, config)}),
+        _function("call-preflight-submit", {
+            "status": "ACCEPTED_FOR_VERIFICATION", "candidate": 1,
+            "candidate_sha256": candidate_sha, "verification_action": "program_auto_verify",
+            "verification": {"status": "OK", "candidate": 1,
+                              "report": _model_feedback(candidate_report, config)},
+            "executor_state": {"schema": "credproof.executor-state/v1",
+                                "phase": "candidate_verified", "current_candidate": 1,
+                                "current_candidate_sha256": candidate_sha,
+                                "last_verified_candidate": 1,
+                                "last_verification_verdict": candidate_report.get("verdict"),
+                                "remaining_tool_calls": 8, "remaining_candidates": 2,
+                                "remaining_verifications": 2,
+                                "next_action": "review_verification_and_submit_new_candidate_or_stop"},
+        }),
     ]
+    after_candidate = after_candidate_auto + [
+        _assistant_calls(("read_code", {"path": "tool.py"}, "call-preflight-current-source"))[0],
+        _function("call-preflight-current-source", {
+            "status": "OK", "path": "tool.py", "code": candidate_code,
+            "executor_state": {"schema": "credproof.executor-state/v1",
+                                "phase": "candidate_verified", "current_candidate": 1,
+                                "current_candidate_sha256": candidate_sha,
+                                "last_verified_candidate": 1,
+                                "last_verification_verdict": candidate_report.get("verdict"),
+                                "remaining_tool_calls": 7, "remaining_candidates": 2,
+                                "remaining_verifications": 2,
+                                "next_action": "review_verification_and_submit_new_candidate_or_stop"},
+        }),
+    ]
+    after_candidate_auto_payload = _payload(after_candidate_auto, schemas)
     after_candidate_payload = _payload(after_candidate, schemas)
-    candidate_budget = _budget("after_candidate_failure_feedback", after_candidate_payload, first_prefix)
+    candidate_auto_budget = _budget("after_candidate_auto_verify", after_candidate_auto_payload, first_prefix)
+    candidate_budget = _budget("after_candidate_failure_and_current_read", after_candidate_payload, first_prefix)
 
-    stages = [first_budget, reads_budget, candidate_budget]
+    stages = [first_budget, reads_budget, candidate_auto_budget, candidate_budget]
     record = {
         "schema": "credproof.model-context-budget-preflight/v1",
         "protocol_preflight": True,

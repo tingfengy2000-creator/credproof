@@ -5,10 +5,11 @@ contains the fresh boundary probe and the finite model trace; this file guards
 against accidentally reverting to the old whole-checkout launcher.
 """
 from pathlib import Path
+import hashlib
 import json
 import unittest
 
-from credproof_safety.agent import _model_feedback, _model_initial_context, _phase_rejection
+from credproof_safety.agent import _model_feedback, _model_initial_context, _phase_rejection, _read_progress_update
 from agent_pilot.model_client import compact_messages_for_budget, to_ollama_messages
 from credproof_safety.config import load_config
 
@@ -117,6 +118,23 @@ class ModelBoundaryContractTests(unittest.TestCase):
                              accepted_candidates=0),
             "required_sources_not_read")
 
+    def test_same_read_progress_stops_after_real_repeats(self):
+        key = ("tool.py", "sha-current", 1, "FAIL")
+        previous = None
+        count = 0
+        blocked = False
+        for expected in (1, 2):
+            previous, count, blocked = _read_progress_update(key, previous, count)
+            self.assertEqual(count, expected)
+            self.assertFalse(blocked)
+        previous, count, blocked = _read_progress_update(key, previous, count)
+        self.assertEqual(count, 3)
+        self.assertTrue(blocked)
+        _, reset_count, reset_blocked = _read_progress_update(
+            ("tool.py", "sha-new", 2, "FAIL"), previous, count)
+        self.assertEqual(reset_count, 1)
+        self.assertFalse(reset_blocked)
+
     def test_budget_compaction_keeps_current_source_feedback_and_native_pairs(self):
         messages = [
             {"role": "system", "content": "system"},
@@ -142,11 +160,43 @@ class ModelBoundaryContractTests(unittest.TestCase):
         self.assertGreaterEqual(len(compacted), 8)
         payload = json.dumps(wire, ensure_ascii=False)
         self.assertIn('\\"code\\":\\"x\\"', payload)
+        # This read predates the accepted candidate, so it is stale and may
+        # be removed; the accepted submit pair remains the current source.
         self.assertNotIn('ORIGINAL = 1', payload)
         self.assertIn('\\"verdict\\":\\"FAIL\\"', payload)
         self.assertIn('\\"reason\\": \\"tool_call_budget_exhausted\\"', payload)
-        self.assertEqual(wire[-1]["role"], "tool")
-        self.assertEqual(wire[-1]["tool_call_id"], "rejected")
+        self.assertTrue(any(item.get("tool_call_id") == "rejected" for item in wire))
+        self.assertTrue(any(item.get("role") == "user" and
+                            "executor-context/v1" in item.get("content", "")
+                            for item in wire))
+
+    def test_latest_read_and_executor_state_survive_after_accepted_candidate(self):
+        messages = [
+            {"role": "system", "content": "system"}, {"role": "user", "content": "task"},
+            {"role": "assistant", "content": "", "function_call": {"name": "submit_patch", "arguments": json.dumps({"code": "CURRENT = 2"})}, "extra": {"function_id": "submit"}},
+            {"role": "function", "content": json.dumps({
+                "status": "ACCEPTED_FOR_VERIFICATION", "candidate": 1,
+                "candidate_sha256": hashlib.sha256(b"CURRENT = 2").hexdigest(), "verification_action": "program_auto_verify",
+                "verification": {"status": "OK", "report": {"verdict": "FAIL", "reason": "return_leak"}},
+                "executor_state": {"phase": "candidate_verified", "current_candidate": 1,
+                                    "remaining_tool_calls": 7, "next_action": "review_verification_and_submit_new_candidate_or_stop"},
+            }), "extra": {"function_id": "submit"}},
+            {"role": "assistant", "content": "", "function_call": {"name": "read_code", "arguments": '{"path":"tool.py"}'}, "extra": {"function_id": "fresh-read"}},
+            {"role": "function", "content": json.dumps({
+                "status": "OK", "path": "tool.py", "code": "CURRENT = 2",
+                "executor_state": {"phase": "candidate_verified", "current_candidate": 1,
+                                    "remaining_tool_calls": 6, "next_action": "review_verification_and_submit_new_candidate_or_stop"},
+            }), "extra": {"function_id": "fresh-read"}},
+        ]
+        wire = to_ollama_messages(compact_messages_for_budget(messages))
+        payload = json.dumps(wire, ensure_ascii=False)
+        self.assertIn('fresh-read', payload)
+        self.assertIn('CURRENT = 2', payload)
+        self.assertIn('remaining_tool_calls', payload)
+        self.assertIn('return_leak', payload)
+        ids = [call['id'] for item in wire for call in item.get('tool_calls', [])]
+        results = [item.get('tool_call_id') for item in wire if item.get('role') == 'tool']
+        self.assertEqual(ids, results)
 
     def test_compaction_does_not_keep_rejected_submit_as_current_candidate(self):
         messages = [
@@ -176,6 +226,10 @@ class ModelBoundaryContractTests(unittest.TestCase):
         self.assertIn("candidate_already_verified", text)
         self.assertIn("NO_CHANGE", text)
         self.assertIn("STOPPED_TOOL_BUDGET", text)
+        self.assertIn("no_progress_same_read", text)
+        self.assertIn("STOPPED_NO_PROGRESS", text)
+        self.assertIn("repeated_read_count", text)
+        self.assertIn("last_read_sha256", text)
         self.assertIn("remaining_tool_calls", text)
 
 

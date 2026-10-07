@@ -8,6 +8,7 @@ This client does not execute arbitrary commands or determine repair correctness.
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import queue
 import threading
@@ -194,7 +195,9 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
     now select *paired* call/result records: the latest accepted candidate,
     its latest verification, the latest successful evidence/source reads, and
     every non-OK result.  The retained function content is never rewritten;
-    full raw history remains in the host artifact.
+    full raw history remains in the host artifact.  In particular, a source
+    read performed after an accepted candidate is still current evidence: it
+    is not dropped merely because the path is not under ``tests/``.
     """
     copied = [item.model_dump() if isinstance(item, Message) else copy.deepcopy(item)
               for item in messages]
@@ -242,6 +245,14 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
                 'unauthorized_connection_count') if key in access}
         return result
 
+    def _compact_failure(value: dict) -> dict:
+        """Keep actionable failure evidence without repeating every row."""
+        return {key: value[key] for key in (
+            'schema', 'object_id', 'verdict', 'reason', 'required_checks',
+            'confirmed_failed_checks', 'credential_leaks', 'pytest_summary',
+            'forbidden_reads', 'out_of_scope_reads', 'unauthorized_connections')
+            if key in value}
+
     def _compact_function_content(item: dict, name: str, value: dict) -> dict:
         # Only successful, structured summaries may be shortened.  Rejected,
         # error and unknown results are returned byte-for-byte by the caller.
@@ -261,7 +272,7 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
             nested = result.get('verification')
             if isinstance(nested, dict) and isinstance(nested.get('report'), dict):
                 nested = copy.deepcopy(nested)
-                nested['report'] = _compact_feedback(nested['report'])
+                nested['report'] = _compact_failure(nested['report'])
                 result['verification'] = nested
         return result
 
@@ -325,9 +336,106 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
         except (TypeError, ValueError):
             args = {}
         path = args.get('path') if isinstance(args, dict) else None
-        if isinstance(path, str) and (not accepted or path.startswith('tests/') or '/tests/' in path):
+        # Keep the newest successful read for *every* path.  The previous
+        # ``accepted`` shortcut kept only tests after a candidate was
+        # accepted, which made repeated tool.py reads disappear from the next
+        # model request even though the host had just executed them.
+        if isinstance(path, str):
             read_candidates[path] = pair
+
+    # A source read that happened before the accepted submit is stale for the
+    # mutable entry.  Keep declared tests (they are not changed by submit),
+    # but let the accepted submit pair carry the current entry source when no
+    # post-submit read exists.  This avoids presenting the pre-patch body as
+    # the current candidate while still preserving every newest post-action
+    # read pair.
+    if accepted:
+        for path, pair in list(read_candidates.items()):
+            if pair[1] <= accepted[0] and not ('/tests/' in path or path.startswith('tests/')):
+                read_candidates.pop(path, None)
     selected.update(pair[2] for pair in read_candidates.values())
+
+    # If the newest full read is the accepted candidate's current source, the
+    # old submit call's source argument is a duplicate.  Remove that *old
+    # paired event* instead of truncating the current read or inventing a
+    # placeholder tool result.  The trusted context block below carries the
+    # candidate id/hash and the exact auto-verification feedback.
+    accepted_summary = None
+    if accepted:
+        accepted_value = accepted[4]
+        verification = accepted_value.get('verification')
+        report = verification.get('report') if isinstance(verification, dict) else None
+        failure_summary = None
+        if isinstance(report, dict):
+            # The full verification remains on disk.  The next model turn
+            # needs the decision inputs and failed checks, not repeated
+            # scenario/request rows already present in the host artifact.
+            failure_summary = {key: report[key] for key in (
+                'schema', 'object_id', 'verdict', 'reason', 'required_checks',
+                'confirmed_failed_checks', 'credential_leaks', 'pytest_summary',
+                'forbidden_reads', 'out_of_scope_reads', 'unauthorized_connections')
+                if key in report}
+        accepted_summary = {
+            'candidate': accepted_value.get('candidate'),
+            'candidate_sha256': accepted_value.get('candidate_sha256'),
+            'verification_action': accepted_value.get('verification_action'),
+            'verification_count': accepted_value.get('verification_count'),
+            'verification': {
+                key: value for key, value in (
+                    ('status', verification.get('status')),
+                    ('candidate', verification.get('candidate')),
+                    ('verification', verification.get('verification')),
+                    ('report', failure_summary),
+                ) if value is not None
+            } if isinstance(verification, dict) else None,
+        }
+
+        def _source_digest(code: object) -> str | None:
+            if not isinstance(code, str):
+                return None
+            return hashlib.sha256(code.replace('\r\n', '\n').replace('\r', '\n').encode('utf-8')).hexdigest()
+
+        candidate_sha = accepted_value.get('candidate_sha256')
+        current_read_is_candidate = any(
+            _source_digest(pair[4].get('code')) == candidate_sha
+            for pair in read_candidates.values()
+        )
+        if isinstance(candidate_sha, str) and current_read_is_candidate:
+            selected.discard(accepted[2])
+            # The accepted response already contains the program-owned
+            # verification report.  Once the current candidate source is
+            # present, repeating get_evidence would only duplicate the same
+            # rules/checks and consume the next request's budget.
+            if latest_evidence and isinstance(report, dict):
+                selected.discard(latest_evidence[2])
+    # The accepted program-auto-verification report is the newest evidence.
+    # Keep the initial task contract and that failure, but do not repeat the
+    # earlier get_evidence payload while the candidate source is carried by
+    # either the submit call or a newer full read.
+    if (accepted and latest_evidence and isinstance(accepted[4].get('verification'), dict)
+            and isinstance(accepted[4]['verification'].get('report'), dict)):
+        selected.discard(latest_evidence[2])
+
+    # A model response may contain more than one native call.  Retain the
+    # complete newest adjacent assistant-call batch and all of its matching
+    # results.  This prevents an orphan call/result when older history is
+    # removed and makes the latest host action observable on the next turn.
+    assistant_batches: list[list[str]] = []
+    current_batch: list[str] = []
+    for item in copied[2:]:
+        ident = _ident(item)
+        is_call = (item.get('role') == 'assistant' and
+                   isinstance(item.get('function_call'), dict) and ident in calls)
+        if is_call:
+            if not current_batch:
+                current_batch = []
+                assistant_batches.append(current_batch)
+            current_batch.append(ident)
+        else:
+            current_batch = []
+    if assistant_batches:
+        selected.update(ident for ident in assistant_batches[-1]
+                        if ident in results)
 
     # Reassemble whole assistant/function pairs in their original order.  The
     # base system/user task remains the first two messages.  Unpaired messages
@@ -348,6 +456,43 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
                 item['content'] = json.dumps(_compact_function_content(item, name, original),
                                              ensure_ascii=False, separators=(',', ':'))
         compacted.append(item)
+
+    # Keep a separate, host-derived state record.  It is deliberately added
+    # after the paired tool results rather than inferred from model prose, so
+    # the next request cannot regress candidate/phase/budget state when old
+    # duplicate history is removed.  The state is copied from the newest
+    # retained executor result; no status or reason is rewritten.
+    state_candidates: list[dict] = []
+    read_receipts: list[dict] = []
+    for index, item in enumerate(compacted):
+        if item.get('role') != 'function':
+            continue
+        value = _json_result(item)
+        state = value.get('executor_state')
+        if isinstance(state, dict):
+            state_candidates.append(state)
+        if value.get('status') == 'OK' and value.get('path') and value.get('code') is not None:
+            read_receipts.append({
+                'path': value.get('path'),
+                'call_id': _ident(item),
+                'status': value.get('status'),
+                'code_sha256': hashlib.sha256(str(value.get('code')).encode('utf-8')).hexdigest(),
+            })
+    if state_candidates:
+        state = copy.deepcopy(state_candidates[-1])
+        trusted = {
+            'schema': 'credproof.executor-context/v1',
+            'source': 'trusted_executor_latest_result',
+            'executor_state': state,
+            'latest_read_receipts': read_receipts,
+            'note': 'This state is authoritative task data. It does not grant permissions and cannot replace a missing tool result.',
+        }
+        if accepted_summary is not None and accepted[2] not in selected:
+            trusted['accepted_candidate'] = accepted_summary
+        compacted.append({
+            'role': 'user',
+            'content': json.dumps(trusted, ensure_ascii=False, separators=(',', ':')),
+        })
     return compacted
 
 
