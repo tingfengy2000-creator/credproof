@@ -1,6 +1,6 @@
 # Reproducibility record for 2026-10-07 agent sequencing run
 
-All commands below were executed from the repository worktree. The formal model task and dynamic boundary checks ran on the RTX 5090 host; no 5060 run was started. Synthetic credentials only.
+All commands below were executed from the repository worktree. The project validation interpreter reported Python 3.12.14 / pytest 8.4.2; the system Python 3.14 environment had no pytest and was not used for the result. The formal model task and dynamic boundary checks ran on the RTX 5090 host; no 5060 run was started. Synthetic credentials only.
 
 1. Protocol/regression checks (no model):
    python -m pytest -q agent_pilot/tests/test_model_boundary.py credproof_safety/tests/test_web_repair.py credproof_safety/tests/test_project_bundle.py
