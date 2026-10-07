@@ -22,6 +22,8 @@
 ## 读取证据
 
 - 上下文压缩与状态保持协议测试：[`../../../../../../agent_pilot/tests/test_model_boundary.py`](../../../../../../agent_pilot/tests/test_model_boundary.py)。
+- 可信验收完整脱敏结果：[`structured-redacted-v1/verification-01.redacted.json`](structured-redacted-v1/verification-01.redacted.json)。
+- 模型逐次请求/响应的字节哈希、预算、usage 和原生工具名索引：[`structured-redacted-v1/model-trace-index.json`](structured-redacted-v1/model-trace-index.json)。
 - 预检：[`../20261007-context-budget-preflight.json`](../20261007-context-budget-preflight.json)。
 - v2 发现工具额度停止问题的原始记录：[`../context-budget-pilot-v2/`](../context-budget-pilot-v2/)。
 - candidate-02 的独立事后核验：[`../context-budget-pilot/post-run-verification-candidate02-v1/public-evidence/post-run-verification-summary.json`](../context-budget-pilot/post-run-verification-candidate02-v1/public-evidence/post-run-verification-summary.json)。
