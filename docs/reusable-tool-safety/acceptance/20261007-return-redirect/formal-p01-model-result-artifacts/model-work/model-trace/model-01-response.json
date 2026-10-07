@@ -1,0 +1,54 @@
+{
+  "id": "chatcmpl-129",
+  "object": "chat.completion",
+  "created": 1791349022,
+  "model": "qwen3-coder:30b",
+  "system_fingerprint": "fp_ollama",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "I'll analyze the task and fix the Python tool to meet all requirements. Let me first read the evidence and then examine the source code.",
+        "tool_calls": [
+          {
+            "id": "call_one6yj1e",
+            "index": 0,
+            "type": "function",
+            "function": {
+              "name": "get_evidence",
+              "arguments": "{}"
+            }
+          },
+          {
+            "id": "call_2dftc134",
+            "index": 1,
+            "type": "function",
+            "function": {
+              "name": "read_code",
+              "arguments": "{\"path\":\"tool.py\"}"
+            }
+          },
+          {
+            "id": "call_59mdq32x",
+            "index": 2,
+            "type": "function",
+            "function": {
+              "name": "read_code",
+              "arguments": "{\"path\":\"tests/test_business.py\"}"
+            }
+          }
+        ]
+      },
+      "finish_reason": "tool_calls"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 2668,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "completion_tokens": 87,
+    "total_tokens": 2755
+  }
+}

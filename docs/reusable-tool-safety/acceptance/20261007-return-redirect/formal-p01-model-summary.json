@@ -1,0 +1,34 @@
+{
+  "schema": "credproof.formal-model-run-summary/v1",
+  "source_commit": "664bd844da5589acf21fa804321468e7f74d862a",
+  "execution_kind": "real-local-model-inference",
+  "host": "NVIDIA GeForce RTX 5090",
+  "compute_device": "CUDA0 (boundary probe and Ollama boundary record)",
+  "model_stack": "Qwen-Agent + Ollama local qwen3-coder:30b",
+  "paid_api_used": false,
+  "budgets": {
+    "max_model_calls": 12,
+    "max_candidates": 3,
+    "max_format_corrections": 1,
+    "executor_tool_call_cap": 12
+  },
+  "model_status": "STOPPED_LIMIT",
+  "model_calls": 1,
+  "usage_records": 1,
+  "tool_trace": [
+    "get_evidence",
+    "read_code",
+    "read_code"
+  ],
+  "accepted_candidates": 0,
+  "candidate_history": [],
+  "verifications": 0,
+  "task_status": "INCOMPLETE",
+  "initial_verdict": "FAIL",
+  "final_verdict": "FAIL",
+  "termination_reason": "Request exceeds the recorded conservative input budget; no silent truncation",
+  "termination_semantics": "The executor stopped after the first model call because the conservative input budget would be exceeded after returning the declared file contents; this is not a model timeout and no server cancellation was inferred.",
+  "model_boundary": "VERIFIED_FOR_THIS_RUN",
+  "replay": false,
+  "interpretation": "No candidate was submitted. This run is evidence of a bounded incomplete model task, not a repair success."
+}

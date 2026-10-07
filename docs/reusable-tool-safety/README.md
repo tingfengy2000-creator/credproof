@@ -9,7 +9,7 @@
 - 当前状态：程序检查、导出链以及一次真实模型边界运行均有可读证据；本次模型任务本身按预算以 `INCOMPLETE` 结束，不能写成自动修复成功。
 - 本轮新增 [`acceptance/20261006-live-correction/`](acceptance/20261006-live-correction/)：保存的现场候选按新 `project-bundle/v1` 导出并在新目录复检，真实结果仍为 `FAIL`。页面批次实际接受 1 份候选、验收 1 次；清洁 wheel 批次接受 0 份候选，二者未合并统计。
 
-# CredProof reusable-tool-safety（0.3.0-dev.18）
+# CredProof reusable-tool-safety（0.3.0-dev.21）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -377,3 +377,12 @@ python scripts/run-exported-regression-check.py `
 在同一模型与隔离边界下，正式 `assistant-original/p01` 实际使用 `CUDA0 / NVIDIA GeForce RTX 5090 / 31.8 GiB`。本次运行是 6 次模型请求、6 份 usage、7 次工具请求、2 个接受候选和 2 次验收：候选 1 因凭据仍出现在不允许输出通道而 FAIL，候选 2 通过安全与业务检查；同一候选完成 project-bundle 导出，并在新目录无模型复检 PASS。结果摘要、第一请求、工具轨迹、候选和复检材料位于 [`acceptance/20261007-agent-sequencing/`](acceptance/20261007-agent-sequencing/)。
 
 此前的 4/3/6/0/1 数字仍是历史页面批次，未与本次正式运行合并。两次 boundary-only 诊断阻断分别保留为诊断记录；一次未传递 boundary-only 标志的运行已按实际内容重分类为正式 p01，而不是短探针。
+
+
+## 当前 dev21：返回值与跳转场景已补齐，模型修复仍未成立
+
+本轮把原来未执行的两类条件写进同一份项目配置和可信检查：允许文件+允许服务的实际返回必须不含合成凭据；允许文件+`/api/redirect` 必须记录允许服务观测并得到声明的 `HTTPError`，没有请求证据为 `UNKNOWN`，实际收到禁止服务为 `FAIL`。原始版本与保存的 candidate-02 均按新规则真实 `FAIL`；candidate-02 的正常返回仍含合成凭据，并在跳转后收到禁止服务 `/secret`。逐场景 JSON 在 [`acceptance/20261007-return-redirect/`](acceptance/20261007-return-redirect/)。
+
+随后只执行一次冻结的正式本地模型任务。模型边界探针为 CUDA0/RTX 5090、白名单挂载和 loopback-only 私有网络；模型在 `get_evidence` 后读取了两个声明文件，但执行器在第 1 次模型请求后因保守输入预算将被超出而停止，未提交候选、未验收、未导出。它不是修复成功，也不是超时；完整请求、响应和边界收据见 [`formal-p01-model-result.json`](acceptance/20261007-return-redirect/formal-p01-model-result.json)、[`formal-p01-model-result-artifacts/`](acceptance/20261007-return-redirect/formal-p01-model-result-artifacts/) 和 [`formal-p01-model-summary.json`](acceptance/20261007-return-redirect/formal-p01-model-summary.json)。
+
+保存 candidate-02 的当前规则 bundle 已在新目录无模型复检为 `FAIL`；它只用于验证公开取件与失败依据，不充当 Agent 成功。旧 dev20 Git 字节派生包保持为旧单场景历史材料。当前状态为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。

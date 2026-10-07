@@ -1,0 +1,6 @@
+Environment: current project .venv; WSL/bubblewrap reviewed runtime on the RTX 5090 host
+
+.\.venv\Scripts\python.exe -m credproof_safety repair --config examples/material_assistant/credproof.toml --output docs/reusable-tool-safety/acceptance/20261007-return-redirect/formal-p01-model-result.json
+exit code: 3
+
+The result is INCOMPLETE/STOPPED_LIMIT after 1 model call, 1 usage record, and 3 native tool events (get_evidence, read_code, read_code). No candidate or verification was accepted.
