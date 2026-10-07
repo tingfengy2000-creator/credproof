@@ -264,7 +264,7 @@ def _script() -> str:
         log_handler.setLevel(logging.DEBUG)
         logging.getLogger().setLevel(logging.DEBUG)
         logging.getLogger().addHandler(log_handler)
-        pytest_code = None; entry = None; raised = None
+        pytest_code = None; entry = None; raised = None; entry_scenarios = []
         pytest_observer = CredProofPytestObserver(json.loads(os.environ['CREDPROOF_REQUIRED_TESTS']),
                                                   json.loads(os.environ.get('CREDPROOF_OPTIONAL_TESTS', '[]')))
         try:
@@ -278,7 +278,11 @@ def _script() -> str:
             with contextlib.redirect_stdout(out), contextlib.redirect_stderr(err):
                 module = importlib.import_module(os.environ['CREDPROOF_ENTRY_MODULE'])
                 fn = getattr(module, os.environ['CREDPROOF_ENTRY_CALLABLE'])
-                request = json.loads(os.environ['CREDPROOF_ENTRY_REQUEST'])
+                raw_scenarios = json.loads(os.environ.get('CREDPROOF_ENTRY_SCENARIOS', '[]'))
+                if not raw_scenarios:
+                    raw_scenarios = [{'name': 'primary',
+                                      'request': json.loads(os.environ['CREDPROOF_ENTRY_REQUEST']),
+                                      'expected_error': os.environ.get('CREDPROOF_ENTRY_EXPECTED_ERROR') or None}]
                 def resolve(value):
                     if isinstance(value, str):
                         return {"__CREDPROOF_ALLOWED_FILE__": os.environ['CREDPROOF_ALLOWED_FILE'],
@@ -289,9 +293,22 @@ def _script() -> str:
                     if isinstance(value, dict): return {k: resolve(v) for k,v in value.items()}
                     if isinstance(value, list): return [resolve(v) for v in value]
                     return value
-                request = resolve(request)
-                try: entry = fn(request)
-                except BaseException as exc: raised = {'type':type(exc).__name__,'message':str(exc)}
+                for scenario in raw_scenarios:
+                    request = resolve(scenario.get('request', {}))
+                    request_start = len(requests)
+                    scenario_row = {'name': scenario.get('name', 'primary'),
+                                    'expected_error': scenario.get('expected_error'),
+                                    'require_network': bool(scenario.get('require_network', False)),
+                                    'request': request, 'entry_returned': None, 'raised': None,
+                                    'request_observations': []}
+                    try: scenario_row['entry_returned'] = fn(request)
+                    except BaseException as exc:
+                        scenario_row['raised'] = {'type': type(exc).__name__, 'message': str(exc)}
+                    scenario_row['request_observations'] = requests[request_start:]
+                    entry_scenarios.append(scenario_row)
+                if entry_scenarios:
+                    entry = entry_scenarios[0].get('entry_returned')
+                    raised = entry_scenarios[0].get('raised')
         except BaseException as exc:
             raised = {'type':type(exc).__name__,'message':str(exc)}
         for server in (allow, forbid): server.shutdown(); server.server_close()
@@ -310,12 +327,14 @@ def _script() -> str:
         credential_env = os.environ.get('CREDPROOF_CREDENTIAL_ENV','CREDPROOF_TEST_CREDENTIAL')
         credential = os.environ.get(credential_env,'')
         leaks = []
-        for channel, text in [('stdout',out.getvalue()),('stderr',err.getvalue()),('logs',log_output.getvalue()),('return',repr(entry)),
+        for channel, text in [('stdout',out.getvalue()),('stderr',err.getvalue()),('logs',log_output.getvalue()),
+                              ('return',repr(entry_scenarios or entry)),
                               ('exception',repr(raised))]:
             if credential and credential in text: leaks.append(channel)
         report = {'schema':'credproof.safety.execution/v1', 'pytest_exit_code': int(pytest_code) if pytest_code is not None else None,
                   'pytest_observation': pytest_observer.snapshot(),
-                  'entry_returned': entry, 'raised': raised, 'stdout': out.getvalue(), 'stderr': err.getvalue(), 'logs': log_output.getvalue(),
+                  'entry_returned': entry, 'entry_scenarios': entry_scenarios,
+                  'raised': raised, 'stdout': out.getvalue(), 'stderr': err.getvalue(), 'logs': log_output.getvalue(),
                   'credential_leaks': leaks, 'requests': requests, 'audit_events': events,
                   'unauthorized_connections': unauthorized_connections,
                   'forbidden_reads': forbidden_reads, 'out_of_scope_reads': out_of_scope_reads,
@@ -358,6 +377,7 @@ def run_sandbox(project: Path, lab: Path, test_args: list[str], entry_module: st
                 forbidden_dirs: tuple[str, ...] = ('forbidden',),
                 service_path_prefix: str = '/', require_service_credential: bool = False,
                 credential_env: str = 'CREDPROOF_TEST_CREDENTIAL',
+                entry_scenarios: tuple[dict, ...] = (),
                 optional_tests: tuple[str, ...] = ()) -> dict:
     ok, reason = available()
     if not ok:
@@ -390,6 +410,8 @@ def run_sandbox(project: Path, lab: Path, test_args: list[str], entry_module: st
             "CREDPROOF_OPTIONAL_TESTS": json.dumps([str(x) for x in optional_tests]), "CREDPROOF_ENTRY_MODULE": entry_module,
             "CREDPROOF_ENTRY_CALLABLE": entry_callable, "CREDPROOF_ENTRY_REQUEST": json.dumps(entry_request),
             "CREDPROOF_CREDENTIAL_ENV": credential_env, credential_env: credential, "CREDPROOF_INNER": "1",
+            "CREDPROOF_ENTRY_SCENARIOS": json.dumps(list(entry_scenarios)),
+            "CREDPROOF_ENTRY_EXPECTED_ERROR": "",
             "CREDPROOF_ALLOWED_ROOT": "/tmp/lab/" + allowed_dirs[0].replace('\\', '/'),
             "CREDPROOF_FORBIDDEN_ROOT": "/tmp/lab/" + forbidden_dirs[0].replace('\\', '/'),
             "CREDPROOF_SERVICE_PATH_PREFIX": service_path_prefix,

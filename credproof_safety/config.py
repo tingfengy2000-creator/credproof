@@ -25,11 +25,20 @@ class ServiceRule:
 
 
 @dataclass(frozen=True)
+class EntryScenario:
+    name: str
+    request: dict = field(default_factory=dict)
+    expected_error: str | None = None
+    require_network: bool = False
+
+
+@dataclass(frozen=True)
 class EntrySpec:
     module: str
     callable: str
     request: dict = field(default_factory=dict)
     expected_error: str | None = None
+    scenarios: tuple[EntryScenario, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -66,7 +75,11 @@ class SafetyConfig:
             "require_service_credential": self.require_service_credential,
             "credential_env": self.credential_env,
             "entry": {"module": self.entry.module, "callable": self.entry.callable,
-                       "request": self.entry.request, "expected_error": self.entry.expected_error},
+                       "request": self.entry.request, "expected_error": self.entry.expected_error,
+                       "scenarios": [{"name": x.name, "request": x.request,
+                                      "expected_error": x.expected_error,
+                                      "require_network": x.require_network}
+                                     for x in self.entry.scenarios]},
             "timeout_seconds": self.timeout_seconds,
             "report_dir": self.report_dir,
             "python": self.python,
@@ -180,6 +193,31 @@ def load_config(path: str | Path, *, project_root: str | Path | None = None) -> 
     expected_error = entry.get("expected_error")
     if expected_error is not None and (not isinstance(expected_error, str) or not _IDENT.fullmatch(expected_error)):
         raise ValueError("entry.expected_error must be a simple exception name")
+    raw_scenarios = entry.get("scenarios")
+    if raw_scenarios is None:
+        scenarios = (EntryScenario("primary", request, expected_error),)
+    else:
+        if not isinstance(raw_scenarios, list) or not raw_scenarios:
+            raise ValueError("entry.scenarios must be a non-empty list")
+        scenarios_list = []
+        for item in raw_scenarios:
+            if not isinstance(item, dict):
+                raise ValueError("entry.scenarios entries must be tables")
+            name = item.get("name")
+            if not isinstance(name, str) or not re.fullmatch(r"[A-Za-z][A-Za-z0-9_-]{0,63}", name):
+                raise ValueError("entry.scenarios.name must be a simple identifier")
+            scenario_request = item.get("request", {})
+            if not isinstance(scenario_request, dict):
+                raise ValueError("entry.scenarios.request must be a JSON object")
+            scenario_error = item.get("expected_error")
+            if scenario_error is not None and (not isinstance(scenario_error, str) or
+                                                not _IDENT.fullmatch(scenario_error)):
+                raise ValueError("entry.scenarios.expected_error must be a simple exception name")
+            require_network = item.get("require_network", False)
+            if not isinstance(require_network, bool):
+                raise ValueError("entry.scenarios.require_network must be boolean")
+            scenarios_list.append(EntryScenario(name, scenario_request, scenario_error, require_network))
+        scenarios = tuple(scenarios_list)
     limits = raw.get("limits", {})
     timeout = limits.get("timeout_seconds", 30.0)
     if not isinstance(timeout, (int, float)) or not 0.2 <= timeout <= 120:
@@ -189,7 +227,7 @@ def load_config(path: str | Path, *, project_root: str | Path | None = None) -> 
         raise ValueError("report_dir must stay inside the project")
     return SafetyConfig(path, root, tests, optional_tests, source, mutable, allowed, forbidden,
                         require_allowed_file_read, tuple(services), require_service_credential, credential_env,
-                        EntrySpec(entry["module"], entry["callable"], request, expected_error),
+                        EntrySpec(entry["module"], entry["callable"], request, expected_error, scenarios),
                         float(timeout), report_dir, str(raw.get("python", "python3")))
 
 

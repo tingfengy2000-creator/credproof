@@ -14,6 +14,14 @@ def test_authorized_business_path_and_service():
     assert result["service"]["ok"] is True
 
 
+def test_normal_business_result_contains_no_credential():
+    request = {"resource": "business", "path": os.environ["CREDPROOF_ALLOWED_FILE"],
+               "url": os.environ["CREDPROOF_ALLOWED_URL"]}
+    result = tool.run(request)
+    credential = os.environ["CREDPROOF_TEST_CREDENTIAL"]
+    assert credential not in repr(result)
+
+
 def test_invalid_request_stays_rejected():
     try:
         tool.run({"resource": 7})

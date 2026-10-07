@@ -108,6 +108,30 @@ def _execution_observation_error(execution: dict) -> str | None:
     return None
 
 
+def _scenario_requirements(config: SafetyConfig, execution: dict) -> bool:
+    """Require every declared entry scenario to have its declared outcome."""
+    scenarios = execution.get("entry_scenarios")
+    if not isinstance(scenarios, list) or len(scenarios) != len(config.entry.scenarios):
+        return False
+    by_name = {x.get("name"): x for x in scenarios if isinstance(x, dict)}
+    for spec in config.entry.scenarios:
+        row = by_name.get(spec.name)
+        if row is None:
+            return False
+        raised = row.get("raised")
+        returned = row.get("entry_returned")
+        if spec.expected_error:
+            if not isinstance(raised, dict) or raised.get("type") != spec.expected_error:
+                return False
+        elif raised is not None or returned is None:
+            return False
+        if spec.require_network and not isinstance(row.get("request_observations"), list):
+            return False
+        if spec.require_network and not row.get("request_observations"):
+            return False
+    return True
+
+
 def _verdict(config: SafetyConfig, execution: dict) -> dict:
     if execution.get("status") != "OK":
         return {"verdict": "UNKNOWN", "reason": "sandbox_execution_incomplete", "execution": execution,
@@ -118,12 +142,29 @@ def _verdict(config: SafetyConfig, execution: dict) -> dict:
         return {"verdict": "UNKNOWN", "reason": observation_error, "execution": execution,
                 "observation_summary": {"classification": "INCOMPLETE", "outer_sandbox_blocked": False,
                                          "incomplete": True, "missing_or_invalid": observation_error}}
+    # Scenario rows are trusted execution evidence.  A missing or malformed
+    # row is an observation gap, not a failed business assertion; fail closed
+    # as UNKNOWN so a skipped redirect/normal-return check cannot look like a
+    # real FAIL or PASS.
+    if not isinstance(execution.get("entry_scenarios"), list) or \
+            len(execution.get("entry_scenarios", [])) != len(config.entry.scenarios):
+        return {"verdict": "UNKNOWN", "reason": "entry_scenario_observation_incomplete",
+                "execution": execution,
+                "observation_summary": {"classification": "INCOMPLETE", "outer_sandbox_blocked": False,
+                                         "incomplete": True, "missing_or_invalid": "entry_scenarios"}}
+    scenario_rows = {x.get("name"): x for x in execution["entry_scenarios"] if isinstance(x, dict)}
+    if any(spec.name not in scenario_rows for spec in config.entry.scenarios):
+        return {"verdict": "UNKNOWN", "reason": "entry_scenario_observation_incomplete",
+                "execution": execution,
+                "observation_summary": {"classification": "INCOMPLETE", "outer_sandbox_blocked": False,
+                                         "incomplete": True, "missing_or_invalid": "entry_scenarios"}}
     required = {
         "pytest": execution.get("pytest_exit_code") == 0,
         "required_pytest_tests": execution.get("pytest_observation", {}).get("required_tests_passed") is True,
         "entry_completed": ((execution.get("raised") is None and execution.get("entry_returned") is not None) or
                             (config.entry.expected_error and
                              (execution.get("raised") or {}).get("type") == config.entry.expected_error)),
+        "required_entry_scenarios": _scenario_requirements(config, execution),
         "required_allowed_file_read": (not config.require_allowed_file_read) or any(
             x.get("classification") == "allowed" for x in execution.get("audit_events", [])),
         "no_forbidden_file_read": not bool(execution.get("forbidden_reads")),
@@ -174,6 +215,10 @@ def check_project(config_path: str | Path, *, output: str | Path | None = None,
         # Disable pytest stdout/stderr capture: otherwise output of a passing
         # test is hidden from the surrounding credential-channel check.
         test_args = ["-q", "-s", *config.tests]
+        scenarios = tuple({"name": x.name, "request": x.request,
+                           "expected_error": x.expected_error,
+                           "require_network": x.require_network}
+                          for x in config.entry.scenarios)
         execution = run_sandbox(project, lab, test_args, config.entry.module,
                                 config.entry.callable, config.entry.request, credential,
                                 config.timeout_seconds, allowed_dirs=config.allowed_dirs,
@@ -181,6 +226,7 @@ def check_project(config_path: str | Path, *, output: str | Path | None = None,
                                 service_path_prefix=config.services[0].path_prefix if config.services else "/",
                                 require_service_credential=config.require_service_credential,
                                 credential_env=config.credential_env,
+                                entry_scenarios=scenarios,
                                 optional_tests=config.optional_tests)
         report = _verdict(config, execution)
         report.update({"schema": "credproof.safety.report/v1", "checked_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
