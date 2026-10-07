@@ -9,3 +9,6 @@
 - `candidate02.py` 是脱敏的历史候选源码，不是本轮人工修复。固定控制修复只作为本地协议对照，不计入模型成功。
 
 完整运行命令和原始退出码见 `command-results.json`；输入摘要见 `input-digests.json` 和 `frozen-plan.json`。
+
+
+- `fixed-control-report.json`：使用仓库中已审查的 `examples/material_assistant_fixed/tool.py`，在同一修订配置、同一隔离检查中得到 `PASS`；这是预置修复对照，不是模型候选，也不计入模型统计。它的 redirect 场景收到允许服务回执并抛出声明的 `HTTPError`，没有禁止服务回执。
