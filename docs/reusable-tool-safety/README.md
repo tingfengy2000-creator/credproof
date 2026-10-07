@@ -386,3 +386,8 @@ python scripts/run-exported-regression-check.py `
 随后只执行一次冻结的正式本地模型任务。模型边界探针为 CUDA0/RTX 5090、白名单挂载和 loopback-only 私有网络；模型在 `get_evidence` 后读取了两个声明文件，但执行器在第 1 次模型请求后因保守输入预算将被超出而停止，未提交候选、未验收、未导出。它不是修复成功，也不是超时；完整请求、响应和边界收据见 [`formal-p01-model-result.json`](acceptance/20261007-return-redirect/formal-p01-model-result.json)、[`formal-p01-model-result-artifacts/`](acceptance/20261007-return-redirect/formal-p01-model-result-artifacts/) 和 [`formal-p01-model-summary.json`](acceptance/20261007-return-redirect/formal-p01-model-summary.json)。
 
 保存 candidate-02 的当前规则 bundle 已在新目录无模型复检为 `FAIL`；它只用于验证公开取件与失败依据，不充当 Agent 成功。旧 dev20 Git 字节派生包保持为旧单场景历史材料。当前状态为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。
+
+
+### 修订失败候选的公开取件核对
+
+保存的 candidate-02 派生公开 bundle 位于 [`public-saved-candidate02-bundle-dev21/`](acceptance/20261007-return-redirect/public-saved-candidate02-bundle-dev21/)，对应 [`public-saved-candidate02-recheck-dev21.json`](acceptance/20261007-return-redirect/public-saved-candidate02-recheck-dev21.json)。该 bundle 从固定 Git 提交 `6aeebcf` 的 Git blob 取得；`project/tool.py` 为 1808 bytes、LF、SHA-256 `f7b017b6d8789dddc9231d89a3b0185713be9f869620262602e369b0b310a9a9`。字节收据 [`public-saved-candidate02-byte-verification-dev21.json`](acceptance/20261007-return-redirect/public-saved-candidate02-byte-verification-dev21.json) 的清单和 Git 源材料匹配均为 true。公开 bundle 的新目录复检仍为 `FAIL`，因为它是保存的失败候选；这项材料证明公开取件与复检链路，不证明模型修复成功。

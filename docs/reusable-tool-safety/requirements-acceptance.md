@@ -64,3 +64,6 @@
 ## dev21 正式任务结果
 
 返回值与跳转条件已由项目配置和可信执行器逐场景检查；原始版本、保存 candidate-02 均真实 `FAIL`。唯一一次新模型任务在 5090 的边界内取得 `get_evidence`、`read_code`、`read_code` 三个工具事件后，由保守输入预算停止，1 次模型请求/1 份 usage，0 个候选、0 次候选验收，任务 `INCOMPLETE`。停止原因是输入预算保护，不是服务端取消确认，也没有模型修复 PASS。保存 candidate-02 的 bundle 新目录复检仍为 `FAIL`。因此 R08 的修复效果继续为 `IMPLEMENTED_UNVERIFIED`，整体 `NOT_READY_FOR_HANDOFF`。
+
+
+公开 bundle 复核：保存 candidate-02 的 Git blob 派生 bundle `public-saved-candidate02-bundle-dev21` 字节清单匹配，`project/tool.py` 为 LF/1808 bytes/SHA-256 `f7b017b6d8789dddc9231d89a3b0185713be9f869620262602e369b0b310a9a9`；从该公开目录新目录复检仍 `FAIL`。旧 dev20 bundle 仍独立保留，不能与本版两场景结果混用。
