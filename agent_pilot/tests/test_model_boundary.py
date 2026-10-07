@@ -7,7 +7,7 @@ against accidentally reverting to the old whole-checkout launcher.
 from pathlib import Path
 import unittest
 
-from credproof_safety.agent import _model_feedback
+from credproof_safety.agent import _model_feedback, _phase_rejection
 from credproof_safety.config import load_config
 
 
@@ -25,6 +25,9 @@ class ModelBoundaryContractTests(unittest.TestCase):
         self.assertIn("'--bind', str(work_source), '/work'", text)
         self.assertIn("'--bind', str(rpc_source), '/rpc'", text)
         self.assertIn("'--dev-bind', '/dev/dxg', '/dev/dxg'", text)
+        self.assertIn("initial-context.json", text)
+        self.assertIn("'/usr/lib/wsl/drivers'", text)
+        self.assertIn("'OLLAMA_LLM_LIBRARY', 'cuda_v12'", text)
 
     def test_model_does_not_receive_checkout_or_artifact_root(self):
         text = SOURCE.read_text(encoding="utf-8")
@@ -47,6 +50,31 @@ class ModelBoundaryContractTests(unittest.TestCase):
         self.assertIn("tests/test_business.py", feedback["readable_paths"])
         self.assertEqual(feedback["repair_guidance"]["entry_path"], "tool.py")
         self.assertIn("allowed mock service", feedback["repair_guidance"]["normal_case"])
+
+    def test_phase_protocol_never_verifies_without_candidate(self):
+        required = {"tool.py", "tests/test_business.py"}
+        self.assertEqual(
+            _phase_rejection("verify_patch", evidence_ready=True,
+                             read_paths=required, required_read_paths=required,
+                             accepted_candidates=0),
+            "NO_ACCEPTED_CANDIDATE")
+        self.assertIsNone(
+            _phase_rejection("verify_patch", evidence_ready=True,
+                             read_paths=required, required_read_paths=required,
+                             accepted_candidates=1))
+
+    def test_phase_protocol_requires_evidence_and_all_declared_sources(self):
+        required = {"tool.py", "tests/test_business.py"}
+        self.assertEqual(
+            _phase_rejection("read_code", evidence_ready=False,
+                             read_paths=set(), required_read_paths=required,
+                             accepted_candidates=0),
+            "evidence_required_before_read_code")
+        self.assertEqual(
+            _phase_rejection("submit_patch", evidence_ready=True,
+                             read_paths={"tool.py"}, required_read_paths=required,
+                             accepted_candidates=0),
+            "required_sources_not_read")
 
 
 if __name__ == "__main__":

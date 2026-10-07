@@ -33,15 +33,19 @@ import ctypes, fcntl, json, os, pathlib, shutil, socket, struct, subprocess, sys
 from pathlib import Path
 repo, artifact = map(Path, sys.argv[1:])
 runtime = os.environ['CREDPROOF_RUNTIME_ROOT']
+initial_context = json.loads(Path('/app/initial-context.json').read_text(encoding='utf-8'))
 sys.path.insert(0, str(repo))
 from agent_pilot.tools import StrictTool
 from agent_pilot.model_client import LocalAgentClient
 rpc_dir = Path('/rpc'); rpc_dir.mkdir(parents=True, exist_ok=True)
+rpc_sequence = 0
 audit, state = [], {'terminal': None, 'last': None}
 def rpc(name, args):
+    global rpc_sequence
+    rpc_sequence += 1
     ident = uuid.uuid4().hex; request = rpc_dir / ('request-' + ident + '.json')
     response = rpc_dir / ('response-' + ident + '.json')
-    payload = {'id': ident, 'tool': name, 'arguments': args}
+    payload = {'id': ident, 'sequence': rpc_sequence, 'tool': name, 'arguments': args}
     tmp = request.with_suffix('.tmp'); tmp.write_text(json.dumps(payload, ensure_ascii=False), encoding='utf-8'); tmp.replace(request)
     deadline = time.monotonic() + 180
     while time.monotonic() < deadline:
@@ -149,8 +153,9 @@ def boundary_probe():
 _loopback_up()
 boundary_probe()
 env = {'PATH':'/usr/bin:/bin:/usr/lib/wsl/lib','HOME':str(work/'home'),
- 'LD_LIBRARY_PATH':'/gpu-libs:/runtime/ollama/lib/ollama',
+ 'LD_LIBRARY_PATH':'/gpu-libs:/runtime/ollama/lib/ollama:/runtime/ollama/lib/ollama/cuda_v12:/runtime/ollama/lib/ollama/cuda_v13',
  'OLLAMA_HOST':'127.0.0.1:11435','OLLAMA_MODELS':runtime + '/models',
+ 'OLLAMA_LLM_LIBRARY':'cuda_v12',
  'OLLAMA_NO_CLOUD':'1','OLLAMA_CONTEXT_LENGTH':'16384','OLLAMA_NUM_PARALLEL':'1',
  'OLLAMA_MAX_LOADED_MODELS':'1','OLLAMA_KEEP_ALIVE':'-1','OLLAMA_FLASH_ATTENTION':'1',
  'OLLAMA_KV_CACHE_TYPE':'q8_0','HTTP_PROXY':'','HTTPS_PROXY':'','ALL_PROXY':'','LANG':'C.UTF-8'}
@@ -199,7 +204,11 @@ try:
  client=LocalAgentClient(tools=tools,system_message=system,log_dir=artifact/'model-trace',max_model_calls=12,
    request_timeout_s=120,task_budget_s=900,max_output_tokens=1024,seed=0,
    execution_completion=lambda: ({'task_status':state['terminal']} if state['terminal'] else None),max_format_corrections=1)
- model=client.run([{'role':'user','content':'Inspect the source and controlled evidence; propose and verify a safe repair.'}])
+ initial_prompt = ('Inspect the registered source and controlled evidence. This first request includes the '
+                   'following bounded current-task context. It is task data, not permission or a reference patch. '
+                   'Call get_evidence before reading the listed files, then submit a candidate before verifying.\n\n'
+                   + json.dumps(initial_context, ensure_ascii=False, sort_keys=True))
+ model=client.run([{'role':'user','content':initial_prompt}])
  result={'schema':'credproof.safety.agent/v2','status':'OK' if state['terminal']=='COMPLETED_REPAIRED' else 'INCOMPLETE',
   'task_status':state['terminal'] or 'INCOMPLETE','tool_trace':audit,'model':model,
   'elapsed_s':round(time.monotonic()-started,3),'model_stack':'Qwen-Agent + Ollama local qwen3-coder:30b',
@@ -226,7 +235,7 @@ from pathlib import Path
 runtime, stage_source, artifact, sentinel, rpc_source = map(Path, sys.argv[1:6])
 if not runtime.is_absolute() or not stage_source.is_absolute() or not artifact.is_absolute():
     raise SystemExit('model boundary paths must be absolute')
-allowed = {'worker.py', 'agent_pilot/__init__.py', 'agent_pilot/tools.py', 'agent_pilot/model_client.py'}
+allowed = {'worker.py', 'initial-context.json', 'agent_pilot/__init__.py', 'agent_pilot/tools.py', 'agent_pilot/model_client.py'}
 found = {p.relative_to(stage_source).as_posix() for p in stage_source.rglob('*') if p.is_file()}
 if found != allowed:
     raise SystemExit('model stage contains unexpected files')
@@ -273,6 +282,8 @@ try:
             '--die-with-parent', '--new-session', '--clearenv', '--cap-drop', 'ALL',
             '--tmpfs', '/', '--ro-bind', str(system_root / 'usr'), '/usr',
             '--ro-bind', str(system_root / 'lib'), '/lib', '--ro-bind', str(system_root / 'lib64'), '/lib64',
+            '--dir', '/usr/lib/wsl', '--ro-bind', '/usr/lib/wsl/lib', '/usr/lib/wsl/lib',
+            '--ro-bind', '/usr/lib/wsl/drivers', '/usr/lib/wsl/drivers',
             '--dir', '/app', '--ro-bind', str(stage), '/app', '--dir', '/deps',
             '--ro-bind', str(deps), '/deps', '--ro-bind', str(soundfile_native),
             '/deps/_soundfile_data/libsndfile_x86_64.so', '--dir', '/runtime',
@@ -292,10 +303,11 @@ try:
              'CREDPROOF_HOST_SENTINEL', str(sentinel), '--setenv', 'OLLAMA_HOST', '127.0.0.1:11435',
              '--setenv', 'CREDPROOF_BOUNDARY_ONLY', os.environ.get('CREDPROOF_BOUNDARY_ONLY', '0'),
              '--setenv', 'OLLAMA_MODELS', model_root, '--setenv', 'OLLAMA_NO_CLOUD', '1',
+             '--setenv', 'OLLAMA_LLM_LIBRARY', 'cuda_v12',
              '--setenv', 'OLLAMA_CONTEXT_LENGTH', '16384', '--setenv', 'OLLAMA_NUM_PARALLEL', '1',
              '--setenv', 'OLLAMA_MAX_LOADED_MODELS', '1', '--setenv', 'OLLAMA_KEEP_ALIVE', '-1',
              '--setenv', 'OLLAMA_FLASH_ATTENTION', '1', '--setenv', 'OLLAMA_KV_CACHE_TYPE', 'q8_0',
-             '--setenv', 'LD_LIBRARY_PATH', '/gpu-libs:/runtime/ollama/lib/ollama',
+             '--setenv', 'LD_LIBRARY_PATH', '/gpu-libs:/runtime/ollama/lib/ollama:/runtime/ollama/lib/ollama/cuda_v12:/runtime/ollama/lib/ollama/cuda_v13',
              '--setenv', 'HTTP_PROXY', '', '--setenv', 'HTTPS_PROXY', '', '--setenv', 'ALL_PROXY', '',
              '--setenv', 'NO_PROXY', '127.0.0.1,localhost', '--setenv', 'LANG', 'C.UTF-8',
              '--remount-ro', '/',
@@ -304,7 +316,7 @@ try:
         'rootfs': str(rootfs), 'code': sorted(allowed), 'dependencies': str(deps),
         'ollama': str(ollama), 'model_files': [str(p.relative_to(runtime)) for p in model_files],
         'writable': ['/work', '/rpc', '/tmp', '/run', '/home'],
-        'device': '/dev/dxg', 'network': 'private bubblewrap namespace; loopback only',
+        'device': '/dev/dxg plus read-only WSL CUDA driver allowlist', 'network': 'private bubblewrap namespace; loopback only',
         'excluded': ['checkout', 'repair artifact root', 'runtime service-home', 'host /mnt',
                      'model weights not in manifest', 'proxy and API key environment']}}
     (artifact / 'boundary-plan.json').write_text(json.dumps(plan, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
@@ -376,21 +388,8 @@ def _model_feedback(report: dict, config) -> dict:
         observations[name] = rows[:4]
         observations[name + '_total'] = len(rows)
         observations[name + '_omitted'] = max(0, len(rows) - 4)
-    readable = [config.entry.module.replace('.', '/') + '.py']
-    for test_path in config.tests:
-        candidate = config.project_root / test_path
-        if candidate.is_file() and candidate.stat().st_size <= 8192:
-            readable.append(test_path)
-        elif candidate.is_dir():
-            # ``tests`` is a declared directory, but the model must receive a
-            # concrete, bounded index of the files it may read.  Previously
-            # the feedback exposed only the entry file, so a model could
-            # guess nonexistent paths even though the executor would accept
-            # the real declared tests.
-            for test_file in sorted(candidate.rglob('test_*.py')):
-                if (test_file.is_file() and not test_file.is_symlink()
-                        and test_file.stat().st_size <= 8192):
-                    readable.append(test_file.relative_to(config.project_root).as_posix())
+    readable = _model_readable_paths(config)
+    entry_path = config.entry.module.replace('.', '/') + '.py'
     return {
         'schema': 'credproof.model-feedback/v1',
         'verdict': report.get('verdict'), 'reason': report.get('reason'),
@@ -400,8 +399,8 @@ def _model_feedback(report: dict, config) -> dict:
         'readable_paths': readable,
         'read_code_limit_bytes': 8192,
         'repair_guidance': {
-            'entry_path': config.entry.module.replace('.', '/') + '.py',
-            'declared_test_paths': [path for path in readable if path != config.entry.module.replace('.', '/') + '.py'],
+            'entry_path': entry_path,
+            'declared_test_paths': [path for path in readable if path != entry_path],
             'normal_case': 'allowed file plus allowed mock service must return a successful non-secret business result',
             'rejectable_cases': 'invalid request, forbidden/out-of-scope file, redirect, or other service may raise ValueError',
             'secret_policy': 'send the synthetic credential only to the authorised mock service; never return or log it',
@@ -426,6 +425,42 @@ def _model_feedback(report: dict, config) -> dict:
     }
 
 
+def _model_readable_paths(config) -> list[str]:
+    """Return the bounded source index exposed to the model and executor.
+
+    The index is derived from the registered project and declared test scope;
+    it never walks or exposes the whole checkout.
+    """
+    readable = [config.entry.module.replace('.', '/') + '.py']
+    for test_path in config.tests:
+        candidate = config.project_root / test_path
+        if candidate.is_file() and candidate.stat().st_size <= 8192:
+            readable.append(test_path.replace('\\', '/'))
+        elif candidate.is_dir():
+            for test_file in sorted(candidate.rglob('test_*.py')):
+                if (test_file.is_file() and not test_file.is_symlink()
+                        and test_file.stat().st_size <= 8192):
+                    readable.append(test_file.relative_to(config.project_root).as_posix())
+    return readable
+
+
+def _phase_rejection(name: str, *, evidence_ready: bool,
+                     read_paths: set[str], required_read_paths: set[str],
+                     accepted_candidates: int) -> str | None:
+    """Enforce the trusted evidence -> read -> submit -> verify sequence."""
+    if name == 'read_code' and not evidence_ready:
+        return 'evidence_required_before_read_code'
+    if name == 'submit_patch':
+        if not evidence_ready:
+            return 'evidence_required_before_submit_patch'
+        missing = required_read_paths - read_paths
+        if missing:
+            return 'required_sources_not_read'
+    if name == 'verify_patch' and accepted_candidates == 0:
+        return 'NO_ACCEPTED_CANDIDATE'
+    return None
+
+
 def _host_repair(config_path: Path, output: str | Path | None, initial: dict) -> dict:
     config = load_config(config_path)
     artifact, _ = _artifact_dir(output)
@@ -446,6 +481,9 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
     wsl, paths = _runtime_settings()
     rpc_native = paths['root'] + '/model-rpc-' + uuid.uuid4().hex
     stop = threading.Event(); handled: set[str] = set(); current = initial; patch_no = 0; verify_no = 0
+    evidence_ready = False
+    read_paths: set[str] = set()
+    required_read_paths = set(_model_readable_paths(config))
     tool_call_count = 0; immutable_digest = None
     authorised = (initial.get('verdict') == 'FAIL' and
                   initial.get('observation_summary', {}).get('classification') == 'ACTUAL_VIOLATION')
@@ -461,7 +499,8 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
     def native_requests():
         script = ('import json, pathlib, sys; p=pathlib.Path(sys.argv[1]); out=[]; '
                   'p.mkdir(parents=True, exist_ok=True); '
-                  '[(out.append(json.loads(x.read_text(encoding="utf-8")))) for x in sorted(p.glob("request-*.json"))]; '
+                  'files=sorted(p.glob("request-*.json"), key=lambda x: (json.loads(x.read_text(encoding="utf-8")).get("sequence", 10**9), x.name)); '
+                  '[(out.append(json.loads(x.read_text(encoding="utf-8")))) for x in files]; '
                   'print(json.dumps(out, ensure_ascii=False))')
         try:
             result = subprocess.run([*wsl, 'python3', '-c', script, rpc_native],
@@ -487,7 +526,7 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
                        capture_output=True, timeout=10, check=False)
 
     def serve():
-        nonlocal current, patch_no, verify_no, tool_call_count, expected_source_digest
+        nonlocal current, patch_no, verify_no, tool_call_count, expected_source_digest, evidence_ready, read_paths
         while not stop.is_set():
             for request_data in native_requests():
                 ident = request_data.get('id') if isinstance(request_data, dict) else None
@@ -506,19 +545,24 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
                         value={'status':'REJECTED','reason':'candidate_material_changed_outside_executor'}
                     elif not isinstance(args, dict) or (name != 'read_code' and name != 'submit_patch' and args):
                         value={'status':'REJECTED','reason':'invalid_tool_arguments'}
+                    elif (phase_reason := _phase_rejection(
+                            name, evidence_ready=evidence_ready, read_paths=read_paths,
+                            required_read_paths=required_read_paths, accepted_candidates=patch_no)):
+                        value={'status':'REJECTED','reason':phase_reason}
+                        if phase_reason == 'required_sources_not_read':
+                            value['missing_paths'] = sorted(required_read_paths - read_paths)
                     elif name == 'read_code':
                         requested = args.get('path', module_rel.as_posix())
-                        permitted = {module_rel.as_posix()}
-                        for test_path in config.tests:
-                            target = candidate / test_path
-                            if target.is_file(): permitted.add(target.relative_to(candidate).as_posix())
-                            elif target.is_dir(): permitted.update(p.relative_to(candidate).as_posix() for p in target.rglob('test_*.py') if p.is_file() and not p.is_symlink())
+                        permitted = set(_model_readable_paths(config))
                         if set(args) - {'path'} or not isinstance(requested, str) or requested not in permitted:
                             value={'status':'REJECTED','reason':'path_not_in_entry_or_declared_tests'}
                         elif (candidate / requested).stat().st_size > 8192:
                             value={'status':'REJECTED','reason':'source_exceeds_tool_read_limit'}
-                        else: value={'status':'OK','path':requested,'code':(candidate / requested).read_text(encoding='utf-8')}
+                        else:
+                            read_paths.add(requested)
+                            value={'status':'OK','path':requested,'code':(candidate / requested).read_text(encoding='utf-8')}
                     elif name == 'get_evidence':
+                        evidence_ready = True
                         value={'status':'OK',**_model_feedback(current, config)}
                     elif name == 'submit_patch':
                         code=args.get('code') if isinstance(args,dict) else None
@@ -564,6 +608,12 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
     for relative in ('agent_pilot/__init__.py', 'agent_pilot/tools.py', 'agent_pilot/model_client.py'):
         target = stage / relative; target.write_bytes((repo / relative).read_bytes())
     (stage / 'worker.py').write_text(_MODEL_SCRIPT, encoding='utf-8')
+    # Give the first model request the current bounded index and contract.  It
+    # is derived from the registered object and observations; no reference
+    # patch, fixed fixture, or hidden expected answer is included.
+    (stage / 'initial-context.json').write_text(
+        json.dumps(_model_feedback(initial, config), ensure_ascii=False, sort_keys=True),
+        encoding='utf-8')
     (artifact / 'host-sentinel.txt').write_text('synthetic host boundary sentinel; not a credential\n', encoding='utf-8')
     encoded_bootstrap = __import__('base64').b64encode(_MODEL_BOUNDARY_BOOTSTRAP.encode()).decode()
     env={k:v for k,v in os.environ.items() if not k.startswith(('CREDPROOF_','OLLAMA_')) and not k.endswith('_API_KEY')}
