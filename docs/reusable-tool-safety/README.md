@@ -429,3 +429,12 @@ python scripts/run-exported-regression-check.py `
 脚本 [`scripts/replay-context-budget-v5-no-change.py`](../../scripts/replay-context-budget-v5-no-change.py) 从公开的真实 v5 摘要和第 8 次 wire 前缀重放下一请求；结果见 [`no-change-dedup/replay-summary.json`](acceptance/20261007-return-redirect/context-budget-pilot-v5/no-change-dedup/replay-summary.json) 和 [`no-change-dedup/reconstructed-next-request.json`](acceptance/20261007-return-redirect/context-budget-pilot-v5/no-change-dedup/reconstructed-next-request.json)。这次重放不访问 Ollama、不执行候选，保留当前源码、必要测试、`NO_CHANGE`/reason、最新 executor state 和成对 ID；wire 字节上界为 13,788，输入上界 13,788/14,848，context 上界 15,324/16,384，均通过。原 v5 未发送的 15,972-byte request 仍作为历史事实保留。
 
 本修正确认“状态保真”和“预算可用”可以同时满足，但尚未用修正版重新推理。v5 正式任务仍为 8 次请求、2 个候选、2 次自动验收且均 `FAIL`，没有可信 PASS、导出或新目录复检；当前仍为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。
+
+
+## dev27：v6 上下文保真与预算联合复测
+
+本轮先用 v5 真实材料做当前客户端重放：`NO_CHANGE` 源码去重、最新读取配对、当前 executor state、失败反馈和剩余预算同时保留；下一 wire payload 为 13,788 bytes，输入上界 13,788/14,848，context 上界 15,324/16,384，全部通过。原 v5 未发送的 15,972-byte 请求仍保留为历史事实。重放没有调用模型。
+
+随后只登记一次正式 `assistant-original/p01` 任务，在源码提交 `f7ac7aa7a6342de8e240e8e10146dbebe64133fe`、同一 `qwen3-coder:30b`、5090/CUDA0 和既有 bubblewrap 边界下运行。实际发送 9 次模型请求并收到 9 份 usage，处理 10 个工具请求；2 个候选进入程序自动验收，候选 1、2 均为 `FAIL`，第 3 个同源码提交为 `NO_CHANGE`，模型显式 `verify_patch` 因候选已由程序验收而被拒绝。准备第 10 个请求时，真实输入上界 16,642 超过 14,848，context 上界 18,178 超过 16,384；该请求未发送，没有服务 usage 或模型响应。没有候选 `PASS`、导出或新目录复检，状态保持 `NOT_READY_FOR_HANDOFF`。
+
+公开派生材料见 [`context-budget-pilot-v6/public-evidence/`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/)，其中保留逐工具状态、候选摘要和未发送预算收据；完整模型 artifact 仍只在本地评审目录保存。

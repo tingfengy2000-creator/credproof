@@ -1,0 +1,20 @@
+{
+  "schema": "credproof.context-budget-pilot-v6-freeze/v1",
+  "source_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
+  "task": "assistant-original/p01",
+  "model": "qwen3-coder:30b",
+  "host_requirement": "CUDA0 / NVIDIA RTX 5090",
+  "input_context_tokens": 16384,
+  "max_output_tokens": 1024,
+  "input_limit": 14848,
+  "max_model_requests": 12,
+  "max_tool_requests": 12,
+  "max_candidates": 3,
+  "max_verifications": 3,
+  "format_correction_limit": 1,
+  "request_timeout_seconds": 120,
+  "task_timeout_seconds": 900,
+  "protocol_replay": "context-budget-pilot-v5/no-change-dedup/replay-summary.json",
+  "model_run": true,
+  "retry_policy": "one formal run; no retry loop"
+}

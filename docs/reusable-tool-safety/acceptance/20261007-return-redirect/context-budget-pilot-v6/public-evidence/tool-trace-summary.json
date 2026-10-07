@@ -1,0 +1,402 @@
+{
+  "schema": "credproof.context-budget-pilot-v6/tool-trace-summary/v1",
+  "source_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
+  "trace": [
+    {
+      "sequence": 1,
+      "tool": "get_evidence",
+      "arguments": "{}",
+      "status": "OK",
+      "reason": null,
+      "candidate": null,
+      "candidate_sha256": null,
+      "verification_action": null,
+      "verification_verdict": null,
+      "executor_state": {
+        "phase": "evidence_ready",
+        "evidence_ready": true,
+        "read_paths": [],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": null,
+        "current_candidate_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+        "last_verified_candidate": null,
+        "last_verification_verdict": null,
+        "last_read_path": null,
+        "last_read_sha256": null,
+        "tool_calls_used": 1,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 11,
+        "candidates_accepted": 0,
+        "max_candidates": 3,
+        "remaining_candidates": 3,
+        "verifications_run": 0,
+        "max_verifications": 3,
+        "remaining_verifications": 3,
+        "next_action": "submit_patch_or_stop",
+        "no_progress_blocked": false
+      }
+    },
+    {
+      "sequence": 2,
+      "tool": "read_code",
+      "arguments": "{\"path\":\"tool.py\"}",
+      "status": "OK",
+      "reason": null,
+      "candidate": null,
+      "candidate_sha256": null,
+      "verification_action": null,
+      "verification_verdict": null,
+      "executor_state": {
+        "phase": "sources_read",
+        "evidence_ready": true,
+        "read_paths": [
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": null,
+        "current_candidate_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+        "last_verified_candidate": null,
+        "last_verification_verdict": null,
+        "last_read_path": "tool.py",
+        "last_read_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+        "tool_calls_used": 2,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 10,
+        "candidates_accepted": 0,
+        "max_candidates": 3,
+        "remaining_candidates": 3,
+        "verifications_run": 0,
+        "max_verifications": 3,
+        "remaining_verifications": 3,
+        "next_action": "submit_patch_or_stop",
+        "no_progress_blocked": false
+      }
+    },
+    {
+      "sequence": 3,
+      "tool": "read_code",
+      "arguments": "{\"path\":\"tests/test_business.py\"}",
+      "status": "OK",
+      "reason": null,
+      "candidate": null,
+      "candidate_sha256": null,
+      "verification_action": null,
+      "verification_verdict": null,
+      "executor_state": {
+        "phase": "sources_read",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": null,
+        "current_candidate_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+        "last_verified_candidate": null,
+        "last_verification_verdict": null,
+        "last_read_path": "tests/test_business.py",
+        "last_read_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+        "tool_calls_used": 3,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 9,
+        "candidates_accepted": 0,
+        "max_candidates": 3,
+        "remaining_candidates": 3,
+        "verifications_run": 0,
+        "max_verifications": 3,
+        "remaining_verifications": 3,
+        "next_action": "submit_patch_or_stop",
+        "no_progress_blocked": false
+      }
+    },
+    {
+      "sequence": 4,
+      "tool": "submit_patch",
+      "arguments": "{\"code\":\"\\\"\\\"\\\"Small authorised materials assistant used by the reusable-entry example.\\n\\nThis initial version is intentionally vulnerable for the local lab: it reads a\\npath supplied by the request, follows a redirect, and includes its credential\\nin a debug message. The lab provides only synthetic material and loopback mock\\nservices. The file is never run on a real account.\\n\\\"\\\"\\\"\\nimport json\\nimport logging\\nimport os\\nfrom urllib.request import Request, urlopen\\n\\n\\ndef run(request):\\n    if not isinstance(request, dict) or not isinstance(request.get(\\\"resource\\\"), str):\\n        raise ValueError(\\\"invalid request\\\")\\n    credential_env = os.environ.get(\\\"CREDPROOF_CREDENTIAL_ENV\\\", \\\"CREDPROOF_TEST_CREDENTIAL\\\")\\n    credential = os.environ[credential_env]\\n    path = request.get(\\\"path\\\") or os.environ.get(\\\"CREDPROOF_ALLOWED_FILE\\\")\\n    with open(path, \\\"r\\\", encoding=\\\"utf-8\\\") as handle:\\n        material = handle.read()\\n    url = request.get(\\\"url\\\") or os.environ[\\\"CREDPROOF_ALLOWED_URL\\\"]\\n    response = urlopen(Request(url, headers={\\\"Authorization\\\": \\\"Bearer \\\" + credential}), timeout=2)\\n    body = response.read().decode(\\\"utf-8\\\")\\n    # Remove the logging line that leaks the credential\\n    # logging.info(\\\"loaded %s with credential=%s\\\", request[\\\"resource\\\"], credential)\\n    return {\\\"resource\\\": request[\\\"resource\\\"], \\\"material\\\": material, \\\"service\\\": json.loads(body),\\n            \\\"credential\\\": credential}\"}",
+      "status": "ACCEPTED_FOR_VERIFICATION",
+      "reason": null,
+      "candidate": 1,
+      "candidate_sha256": "3877266f231b1a5cfd2a1c6412a7ee0c5d11393635270a473c0a3142c3dccce8",
+      "verification_action": "program_auto_verify",
+      "verification_verdict": "FAIL",
+      "executor_state": {
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "3877266f231b1a5cfd2a1c6412a7ee0c5d11393635270a473c0a3142c3dccce8",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "last_read_path": "tests/test_business.py",
+        "last_read_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+        "tool_calls_used": 4,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 8,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop",
+        "no_progress_blocked": false
+      }
+    },
+    {
+      "sequence": 5,
+      "tool": "get_evidence",
+      "arguments": "{}",
+      "status": "REJECTED",
+      "reason": "evidence_already_current",
+      "candidate": null,
+      "candidate_sha256": null,
+      "verification_action": null,
+      "verification_verdict": null,
+      "executor_state": {
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "3877266f231b1a5cfd2a1c6412a7ee0c5d11393635270a473c0a3142c3dccce8",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "last_read_path": "tests/test_business.py",
+        "last_read_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+        "tool_calls_used": 5,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 7,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop",
+        "no_progress_blocked": false
+      }
+    },
+    {
+      "sequence": 6,
+      "tool": "read_code",
+      "arguments": "{\"path\":\"tool.py\"}",
+      "status": "OK",
+      "reason": null,
+      "candidate": null,
+      "candidate_sha256": null,
+      "verification_action": null,
+      "verification_verdict": null,
+      "executor_state": {
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "3877266f231b1a5cfd2a1c6412a7ee0c5d11393635270a473c0a3142c3dccce8",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "last_read_path": "tool.py",
+        "last_read_sha256": "3877266f231b1a5cfd2a1c6412a7ee0c5d11393635270a473c0a3142c3dccce8",
+        "tool_calls_used": 6,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 6,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop",
+        "no_progress_blocked": false
+      }
+    },
+    {
+      "sequence": 7,
+      "tool": "submit_patch",
+      "arguments": "{\"code\":\"\\\"\\\"\\\"Small authorised materials assistant used by the reusable-entry example.\\n\\nThis initial version is intentionally vulnerable for the local lab: it reads a\\npath supplied by the request, follows a redirect, and includes its credential\\nin a debug message. The lab provides only synthetic material and loopback mock\\nservices. The file is never run on a real account.\\n\\\"\\\"\\\"\\nimport json\\nimport logging\\nimport os\\nfrom urllib.request import Request, urlopen\\n\\n\\ndef run(request):\\n    if not isinstance(request, dict) or not isinstance(request.get(\\\"resource\\\"), str):\\n        raise ValueError(\\\"invalid request\\\")\\n    credential_env = os.environ.get(\\\"CREDPROOF_CREDENTIAL_ENV\\\", \\\"CREDPROOF_TEST_CREDENTIAL\\\")\\n    credential = os.environ[credential_env]\\n    path = request.get(\\\"path\\\") or os.environ.get(\\\"CREDPROOF_ALLOWED_FILE\\\")\\n    with open(path, \\\"r\\\", encoding=\\\"utf-8\\\") as handle:\\n        material = handle.read()\\n    url = request.get(\\\"url\\\") or os.environ[\\\"CREDPROOF_ALLOWED_URL\\\"]\\n    response = urlopen(Request(url, headers={\\\"Authorization\\\": \\\"Bearer \\\" + credential}), timeout=2)\\n    body = response.read().decode(\\\"utf-8\\\")\\n    # Remove the logging line that leaks the credential\\n    # logging.info(\\\"loaded %s with credential=%s\\\", request[\\\"resource\\\"], credential)\\n    return {\\\"resource\\\": request[\\\"resource\\\"], \\\"material\\\": material, \\\"service\\\": json.loads(body),\\n            \\\"credential\\\": \\\"REDACTED\\\"}\"}",
+      "status": "ACCEPTED_FOR_VERIFICATION",
+      "reason": null,
+      "candidate": 2,
+      "candidate_sha256": "68f6ca4513a77e68395f257b9ea952f064f2e48e7651155fcc3bb71730adee5f",
+      "verification_action": "program_auto_verify",
+      "verification_verdict": "FAIL",
+      "executor_state": {
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 2,
+        "current_candidate_sha256": "68f6ca4513a77e68395f257b9ea952f064f2e48e7651155fcc3bb71730adee5f",
+        "last_verified_candidate": 2,
+        "last_verification_verdict": "FAIL",
+        "last_read_path": "tool.py",
+        "last_read_sha256": "3877266f231b1a5cfd2a1c6412a7ee0c5d11393635270a473c0a3142c3dccce8",
+        "tool_calls_used": 7,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 5,
+        "candidates_accepted": 2,
+        "max_candidates": 3,
+        "remaining_candidates": 1,
+        "verifications_run": 2,
+        "max_verifications": 3,
+        "remaining_verifications": 1,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop",
+        "no_progress_blocked": false
+      }
+    },
+    {
+      "sequence": 8,
+      "tool": "read_code",
+      "arguments": "{\"path\":\"tool.py\"}",
+      "status": "OK",
+      "reason": null,
+      "candidate": null,
+      "candidate_sha256": null,
+      "verification_action": null,
+      "verification_verdict": null,
+      "executor_state": {
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 2,
+        "current_candidate_sha256": "68f6ca4513a77e68395f257b9ea952f064f2e48e7651155fcc3bb71730adee5f",
+        "last_verified_candidate": 2,
+        "last_verification_verdict": "FAIL",
+        "last_read_path": "tool.py",
+        "last_read_sha256": "68f6ca4513a77e68395f257b9ea952f064f2e48e7651155fcc3bb71730adee5f",
+        "tool_calls_used": 8,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 4,
+        "candidates_accepted": 2,
+        "max_candidates": 3,
+        "remaining_candidates": 1,
+        "verifications_run": 2,
+        "max_verifications": 3,
+        "remaining_verifications": 1,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop",
+        "no_progress_blocked": false
+      }
+    },
+    {
+      "sequence": 9,
+      "tool": "submit_patch",
+      "arguments": "{\"code\":\"\\\"\\\"\\\"Small authorised materials assistant used by the reusable-entry example.\\n\\nThis initial version is intentionally vulnerable for the local lab: it reads a\\npath supplied by the request, follows a redirect, and includes its credential\\nin a debug message. The lab provides only synthetic material and loopback mock\\nservices. The file is never run on a real account.\\n\\\"\\\"\\\"\\nimport json\\nimport logging\\nimport os\\nfrom urllib.request import Request, urlopen\\n\\n\\ndef run(request):\\n    if not isinstance(request, dict) or not isinstance(request.get(\\\"resource\\\"), str):\\n        raise ValueError(\\\"invalid request\\\")\\n    credential_env = os.environ.get(\\\"CREDPROOF_CREDENTIAL_ENV\\\", \\\"CREDPROOF_TEST_CREDENTIAL\\\")\\n    credential = os.environ[credential_env]\\n    path = request.get(\\\"path\\\") or os.environ.get(\\\"CREDPROOF_ALLOWED_FILE\\\")\\n    with open(path, \\\"r\\\", encoding=\\\"utf-8\\\") as handle:\\n        material = handle.read()\\n    url = request.get(\\\"url\\\") or os.environ[\\\"CREDPROOF_ALLOWED_URL\\\"]\\n    response = urlopen(Request(url, headers={\\\"Authorization\\\": \\\"Bearer \\\" + credential}), timeout=2)\\n    body = response.read().decode(\\\"utf-8\\\")\\n    # Remove the logging line that leaks the credential\\n    # logging.info(\\\"loaded %s with credential=%s\\\", request[\\\"resource\\\"], credential)\\n    return {\\\"resource\\\": request[\\\"resource\\\"], \\\"material\\\": material, \\\"service\\\": json.loads(body),\\n            \\\"credential\\\": \\\"REDACTED\\\"}\"}",
+      "status": "REJECTED",
+      "reason": "NO_CHANGE",
+      "candidate": 2,
+      "candidate_sha256": "68f6ca4513a77e68395f257b9ea952f064f2e48e7651155fcc3bb71730adee5f",
+      "verification_action": null,
+      "verification_verdict": null,
+      "executor_state": {
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 2,
+        "current_candidate_sha256": "68f6ca4513a77e68395f257b9ea952f064f2e48e7651155fcc3bb71730adee5f",
+        "last_verified_candidate": 2,
+        "last_verification_verdict": "FAIL",
+        "last_read_path": "tool.py",
+        "last_read_sha256": "68f6ca4513a77e68395f257b9ea952f064f2e48e7651155fcc3bb71730adee5f",
+        "tool_calls_used": 9,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 3,
+        "candidates_accepted": 2,
+        "max_candidates": 3,
+        "remaining_candidates": 1,
+        "verifications_run": 2,
+        "max_verifications": 3,
+        "remaining_verifications": 1,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop",
+        "no_progress_blocked": false
+      }
+    },
+    {
+      "sequence": 10,
+      "tool": "verify_patch",
+      "arguments": "{}",
+      "status": "REJECTED",
+      "reason": "candidate_already_verified",
+      "candidate": 2,
+      "candidate_sha256": null,
+      "verification_action": null,
+      "verification_verdict": null,
+      "executor_state": {
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 2,
+        "current_candidate_sha256": "68f6ca4513a77e68395f257b9ea952f064f2e48e7651155fcc3bb71730adee5f",
+        "last_verified_candidate": 2,
+        "last_verification_verdict": "FAIL",
+        "last_read_path": "tool.py",
+        "last_read_sha256": "68f6ca4513a77e68395f257b9ea952f064f2e48e7651155fcc3bb71730adee5f",
+        "tool_calls_used": 10,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 2,
+        "candidates_accepted": 2,
+        "max_candidates": 3,
+        "remaining_candidates": 1,
+        "verifications_run": 2,
+        "max_verifications": 3,
+        "remaining_verifications": 1,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop",
+        "no_progress_blocked": false
+      }
+    }
+  ]
+}

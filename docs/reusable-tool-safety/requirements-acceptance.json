@@ -1,7 +1,7 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.24",
-  "tested_source_commit": "16498c6120a6bc6afa9d5b180c2f649b5ea048bd",
+  "candidate_version": "0.3.0-dev.27",
+  "tested_source_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
   "generated_at": "2026-10-07",
   "status_summary": {
     "verified": 12,
@@ -235,10 +235,11 @@
         "agent_pilot/tests/test_model_boundary.py",
         "scripts/replay-context-budget-v4.py",
         "scripts/model-context-budget-preflight.py",
-        "scripts/replay-context-budget-v5-no-change.py"
+        "scripts/replay-context-budget-v5-no-change.py",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/formal-run-summary.json"
       ],
       "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先完成首请求上下文、证据反馈压缩与可信阶段顺序预检，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
-      "acceptance": "v5协议重放保留当前源码、必要测试、FAIL反馈、最新executor_state及成对调用/返回ID；v5预算预检六阶段均在14848输入上限内（结构变化时使用UTF8 wire回退，v4实际服务前缀单独重放）。一次5090正式运行实际8次模型请求/8份usage/9次工具请求、2个接受候选/2次程序自动验收，候选均FAIL；第9次请求由输入预算保护停止，无PASS、导出或新目录复检。 dev26 无模型重放显示 NO_CHANGE 后的同对象源码去重与最新状态映射，下一请求 13788 bytes，输入 13788/14848、context 15324/16384，全部预算与配对断言通过；该修正尚未重新调用模型，不改变 v5 的 8 请求/2 FAIL 候选结果。",
+      "acceptance": "v6 replay from real v5 messages keeps the current source, latest read pair, failure feedback, executor state and budgets together; the next payload is 13788/14848 input and 15324/16384 context. One bounded 5090 run sent 9 model requests with 9 usage records and processed 10 tool requests; two candidates were accepted and automatically verified, both FAIL. A third same-source submission was NO_CHANGE; manual verify_patch was rejected as candidate_already_verified. Request 10 was recorded unsent at 16642 input and 18178 context, above the declared limits. No candidate PASS or export/recheck.",
       "commands": [
         ".venv\\Scripts\\python.exe scripts/replay-context-budget-v4.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v5",
         ".venv\\Scripts\\python.exe scripts/model-context-budget-preflight.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v5/budget-preflight.json",
@@ -253,10 +254,15 @@
         "agent_pilot/tests/test_model_boundary.py",
         "acceptance/20261007-return-redirect/context-budget-pilot-v5/no-change-dedup/replay-summary.json",
         "acceptance/20261007-return-redirect/context-budget-pilot-v5/no-change-dedup/reconstructed-next-request.json",
-        "acceptance/20261007-return-redirect/context-budget-pilot-v5/blocked-model-09-reconstruction.json"
+        "acceptance/20261007-return-redirect/context-budget-pilot-v5/blocked-model-09-reconstruction.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/formal-run-summary.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/tool-trace-summary.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-budget.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/candidate-01-verification.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/candidate-02-verification.json"
       ],
-      "source_commit": "f4757ac7286c474029e27e6a4551149b91466414",
-      "gaps": "当前真实模型候选1、2均未通过全部安全与业务条件；无同一候选公开导出和新目录复检PASS。",
+      "source_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
+      "gaps": "The v6 task reached two trusted automatic FAIL verifications but no current model repair PASS. Request 10 was not sent under the declared context limits; no candidate export or new-directory recheck is available.",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
@@ -304,11 +310,13 @@
           "id": "model_repair_effect",
           "status": "IMPLEMENTED_UNVERIFIED",
           "evidence": [
-            "acceptance/20261007-return-redirect/context-budget-pilot-v5/public-evidence/formal-p01-model-summary.json",
-            "acceptance/20261007-return-redirect/context-budget-pilot-v5/public-evidence/verification-01.json",
-            "acceptance/20261007-return-redirect/context-budget-pilot-v5/public-evidence/verification-02.json"
+            "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/formal-run-summary.json",
+            "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/tool-trace-summary.json",
+            "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/candidate-01-verification.json",
+            "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/candidate-02-verification.json",
+            "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-budget.json"
           ],
-          "reason": "v5唯一正式任务接受两个候选并由程序自动验收，均为FAIL；第9次模型请求在输入预算保护处停止，未产生PASS。"
+          "reason": "v6 was one bounded real 5090 run: 9 sent model requests, 2 accepted candidates, 2 program_auto_verify FAIL results, no PASS; request 10 was unsent because input/context bounds were exceeded."
         }
       ],
       "notes": "本轮协议重放、模型运行和后续阶段拒绝分别记录；模型权重与运行环境不入库，5060交接尚未启动。 dev26 的修正与协议重放独立记录；模型效果仍未取得可信 PASS。"
@@ -495,13 +503,13 @@
     "real credential revocation",
     "new model/case expansion"
   ],
-  "interpretation": "本版关闭了压缩后最新读取丢失和重复阶段空转的工程缺口；协议重放与有限模型运行分别记录，模型修复效果仍未验证，5060交接尚未启动。",
-  "current_review_receipt_commit": "f4757ac7286c474029e27e6a4551149b91466414",
+  "interpretation": "The v6 replay demonstrates that current source, latest tool result, failure state and budget can coexist in a valid next payload. The bounded live run reached trusted candidate verification but did not produce a PASS; no handoff or 5060 work is authorized.",
+  "current_review_receipt_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
   "handoff_status": "NOT_READY_FOR_HANDOFF",
   "handoff_blockers": [
-    "一次正式5090模型运行在候选1 FAIL后因重复证据请求的保守上下文预算停止；没有当前模型修复PASS。",
-    "因此没有同一模型候选的公开导出与新目录无模型复检PASS。"
+    "v6 formal p01 produced two accepted candidates and two program_auto_verify FAIL results; no current model repair PASS",
+    "the tenth model request was not sent because the actual input/context upper bounds exceeded the declared limits; no same-candidate export or new-directory recheck exists"
   ],
-  "version": "0.3.0-dev.26",
-  "latest_review_update": "dev26: NO_CHANGE source deduplication and budget-valid protocol replay; no new model request"
+  "version": "0.3.0-dev.27",
+  "latest_review_update": "dev27: v6 context fidelity and budget joint replay plus one bounded model run; no candidate PASS"
 }
