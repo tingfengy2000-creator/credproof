@@ -187,7 +187,12 @@ def main() -> None:
         }),
     ]
     rejection_payload = _payload(after_rejection, schemas)
-    rejection_budget = _budget("after_current_evidence_rejection", rejection_payload, first_prefix)
+    # This branch is a deliberately changed protocol state (the historical
+    # v4 OK result is replaced by the current rejection), so the old service
+    # prefix is not reused.  The live client follows the same fallback rule
+    # whenever the structural prefix changes and measures the complete wire
+    # payload instead.
+    rejection_budget = _budget("after_current_evidence_rejection", rejection_payload, None)
 
     # A legal next-candidate shape based on an existing saved candidate.  The
     # candidate is not run here; the branch only proves that the message still
@@ -214,7 +219,7 @@ def main() -> None:
         }),
     ]
     next_candidate_payload = _payload(after_next_candidate, schemas)
-    next_candidate_budget = _budget("after_next_candidate_protocol_sample", next_candidate_payload, first_prefix)
+    next_candidate_budget = _budget("after_next_candidate_protocol_sample", next_candidate_payload, None)
 
     stages = [first_budget, reads_budget, candidate_auto_budget, candidate_budget,
               rejection_budget, next_candidate_budget]
@@ -246,6 +251,7 @@ def main() -> None:
             "Runtime usage will be recorded only from the service response; no bytes-to-token conversion is used.",
             "Candidate failure feedback uses the saved candidate report only to size the next conversation; it is not a new model result.",
             "The current evidence rejection and candidate-2 branch are protocol samples; the historical v4 OK response is not reused as a current execution result.",
+            "The rejection and next-candidate samples use the UTF8 wire fallback because their prefix is intentionally changed; no unrelated service usage is reused. The v4 replay separately checks an exact measured continuation.",
         ],
     }
     OUT.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

@@ -308,10 +308,10 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
         return copied
 
     selected: set[str] = set()
-    # Any non-OK result is evidence, not disposable log noise.  Keep its exact
-    # original JSON content and matching assistant call.
+    # Non-OK decisions remain evidence. An earlier accepted candidate is
+    # superseded by the latest accepted candidate, not an error to repeat.
     for _, _, ident, _, value in pairs:
-        if value.get('status') not in (None, 'OK'):
+        if value.get('status') not in (None, 'OK', 'ACCEPTED_FOR_VERIFICATION'):
             selected.add(ident)
 
     def latest_matching(predicate):
@@ -448,6 +448,9 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
     # are dropped rather than inventing a tool result or changing a status.
     keep_indices = {index for pair in pairs if pair[2] in selected for index in pair[:2]}
     compacted = copied[:2]
+    latest_host_state = next((copy.deepcopy(pair[4]['executor_state'])
+                              for pair in sorted(pairs, key=lambda p: p[1], reverse=True)
+                              if isinstance(pair[4].get('executor_state'), dict)), None)
     selected_names = {ident: calls[ident][1] for ident in selected}
     for index, item in enumerate(copied[2:], start=2):
         if index not in keep_indices:
@@ -465,6 +468,15 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
                 item = copy.deepcopy(item)
                 item['content'] = json.dumps(_compact_function_content(item, name, original),
                                              ensure_ascii=False, separators=(',', ':'))
+            # The authoritative latest state is carried once in a separate
+            # executor-context block. Old per-tool counters must not compete
+            # with it. Preserve the paired status/source and label the mapping.
+            value = _json_result(item)
+            if latest_host_state is not None and 'executor_state' in value:
+                value.pop('executor_state')
+                value['executor_state_relation'] = 'latest_host_state_in_executor_context'
+                item = copy.deepcopy(item)
+                item['content'] = json.dumps(value, ensure_ascii=False, separators=(',', ':'))
         compacted.append(item)
 
     # Keep a separate, host-derived state record.  It is deliberately added
@@ -488,8 +500,8 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
                 'status': value.get('status'),
                 'code_sha256': hashlib.sha256(str(value.get('code')).encode('utf-8')).hexdigest(),
             })
-    if state_candidates:
-        state = copy.deepcopy(state_candidates[-1])
+    if latest_host_state is not None:
+        state = latest_host_state
         trusted = {
             'schema': 'credproof.executor-context/v1',
             'source': 'trusted_executor_latest_result',
