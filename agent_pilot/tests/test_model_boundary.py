@@ -158,6 +158,18 @@ class ModelBoundaryContractTests(unittest.TestCase):
         self.assertIn('\\"status\\": \\"REJECTED\\"', json.dumps(wire))
         self.assertIn('\\"reason\\": \\"NO_CHANGE\\"', json.dumps(wire))
 
+    def test_rejected_verify_does_not_drop_latest_rules_evidence(self):
+        messages = [
+            {"role": "system", "content": "system"}, {"role": "user", "content": "task"},
+            {"role": "assistant", "content": "", "function_call": {"name": "get_evidence", "arguments": "{}"}, "extra": {"function_id": "e"}},
+            {"role": "function", "content": json.dumps({"status": "OK", "readable_paths": ["tool.py"], "required_checks": {"business": True}}), "extra": {"function_id": "e"}},
+            {"role": "assistant", "content": "", "function_call": {"name": "verify_patch", "arguments": "{}"}, "extra": {"function_id": "v"}},
+            {"role": "function", "content": json.dumps({"status": "REJECTED", "reason": "NO_ACCEPTED_CANDIDATE"}), "extra": {"function_id": "v"}},
+        ]
+        payload = json.dumps(to_ollama_messages(compact_messages_for_budget(messages)))
+        self.assertIn('readable_paths', payload)
+        self.assertIn('NO_ACCEPTED_CANDIDATE', payload)
+
     def test_executor_state_stop_conditions_are_in_worker(self):
         text = SOURCE.read_text(encoding="utf-8")
         self.assertIn("program_auto_verify", text)

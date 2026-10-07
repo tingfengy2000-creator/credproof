@@ -248,7 +248,9 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
         if value.get('status') not in {'OK', 'ACCEPTED_FOR_VERIFICATION'}:
             return value
         result = copy.deepcopy(value)
-        if name in {'get_evidence', 'verify_patch'}:
+        if name == 'get_evidence':
+            result = {'status': 'OK', **_compact_feedback(value)}
+        elif name == 'verify_patch':
             nested = result.get('report')
             if isinstance(nested, dict):
                 result['report'] = _compact_feedback(nested)
@@ -311,7 +313,7 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
     # modification request.  The submitted candidate body remains in the
     # accepted submit call's arguments, never as a hash-only placeholder.
     latest_evidence = latest_matching(lambda name, value: name == 'get_evidence' and value.get('status') == 'OK')
-    if latest_evidence and not latest_verify:
+    if latest_evidence and (not latest_verify or latest_verify[4].get('status') != 'OK'):
         selected.add(latest_evidence[2])
     read_candidates = {}
     for pair in pairs:
