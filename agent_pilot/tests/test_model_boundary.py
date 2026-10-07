@@ -117,25 +117,54 @@ class ModelBoundaryContractTests(unittest.TestCase):
                              accepted_candidates=0),
             "required_sources_not_read")
 
-    def test_budget_compaction_keeps_latest_native_pair_only(self):
+    def test_budget_compaction_keeps_current_source_feedback_and_native_pairs(self):
         messages = [
             {"role": "system", "content": "system"},
             {"role": "user", "content": "task"},
             {"role": "assistant", "content": "", "function_call": {"name": "get_evidence", "arguments": "{}"},
              "extra": {"function_id": "e"}},
-            {"role": "function", "content": "full evidence", "extra": {"function_id": "e"}},
+            {"role": "function", "content": json.dumps({"status": "OK", "readable_paths": ["tool.py", "tests/test_business.py"]}), "extra": {"function_id": "e"}},
+            {"role": "assistant", "content": "", "function_call": {"name": "read_code", "arguments": "{\"path\":\"tool.py\"}"},
+             "extra": {"function_id": "r"}},
+            {"role": "function", "content": json.dumps({"status": "OK", "path": "tool.py", "code": "ORIGINAL = 1"}), "extra": {"function_id": "r"}},
             {"role": "assistant", "content": "", "function_call": {"name": "submit_patch", "arguments": "{\"code\":\"x\"}"},
              "extra": {"function_id": "s"}},
-            {"role": "function", "content": "accepted", "extra": {"function_id": "s"}},
+            {"role": "function", "content": json.dumps({"status": "ACCEPTED_FOR_VERIFICATION", "candidate": 1, "executor_state": {"phase": "candidate_submitted"}}), "extra": {"function_id": "s"}},
             {"role": "assistant", "content": "", "function_call": {"name": "verify_patch", "arguments": "{}"},
              "extra": {"function_id": "v"}},
-            {"role": "function", "content": "failure evidence", "extra": {"function_id": "v"}},
+            {"role": "function", "content": json.dumps({"status": "OK", "report": {"verdict": "FAIL", "reason": "business"}}), "extra": {"function_id": "v"}},
+            {"role": "assistant", "content": "", "function_call": {"name": "get_evidence", "arguments": "{}"},
+             "extra": {"function_id": "rejected"}},
+            {"role": "function", "content": json.dumps({"status": "REJECTED", "reason": "tool_call_budget_exhausted"}), "extra": {"function_id": "rejected"}},
         ]
         compacted = compact_messages_for_budget(messages)
-        self.assertEqual(len(compacted), 4)
         wire = to_ollama_messages(compacted)
-        self.assertEqual([item["role"] for item in wire], ["system", "user", "assistant", "tool"])
-        self.assertEqual(wire[-1]["tool_call_id"], "v")
+        self.assertGreaterEqual(len(compacted), 8)
+        payload = json.dumps(wire, ensure_ascii=False)
+        self.assertIn('\\"code\\":\\"x\\"', payload)
+        self.assertNotIn('ORIGINAL = 1', payload)
+        self.assertIn('\\"verdict\\":\\"FAIL\\"', payload)
+        self.assertIn('\\"reason\\": \\"tool_call_budget_exhausted\\"', payload)
+        self.assertEqual(wire[-1]["role"], "tool")
+        self.assertEqual(wire[-1]["tool_call_id"], "rejected")
+
+    def test_compaction_does_not_keep_rejected_submit_as_current_candidate(self):
+        messages = [
+            {"role": "system", "content": "system"}, {"role": "user", "content": "task"},
+            {"role": "assistant", "content": "", "function_call": {"name": "submit_patch", "arguments": "{\"code\":\"bad\"}"}, "extra": {"function_id": "s"}},
+            {"role": "function", "content": json.dumps({"status": "REJECTED", "reason": "NO_CHANGE"}), "extra": {"function_id": "s"}},
+        ]
+        wire = to_ollama_messages(compact_messages_for_budget(messages))
+        self.assertIn('\\"status\\": \\"REJECTED\\"', json.dumps(wire))
+        self.assertIn('\\"reason\\": \\"NO_CHANGE\\"', json.dumps(wire))
+
+    def test_executor_state_stop_conditions_are_in_worker(self):
+        text = SOURCE.read_text(encoding="utf-8")
+        self.assertIn("program_auto_verify", text)
+        self.assertIn("candidate_already_verified", text)
+        self.assertIn("NO_CHANGE", text)
+        self.assertIn("STOPPED_TOOL_BUDGET", text)
+        self.assertIn("remaining_tool_calls", text)
 
 
 if __name__ == "__main__":

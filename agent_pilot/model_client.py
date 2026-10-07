@@ -186,75 +186,165 @@ def to_ollama_messages(messages: Sequence[Message | dict]) -> list[dict]:
 
 
 def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict]:
-    """Remove superseded raw tool payloads before a later repair turn.
+    """Compact a repair conversation without changing executor evidence.
 
-    The full request/response artifacts remain on disk.  Once a candidate has
-    been submitted, the current candidate source and the latest verification
-    report are the authoritative context; repeating the initial evidence and
-    the original entry source wastes the fixed 16K window.  Assistant/tool
-    call records and IDs stay paired so the native protocol remains valid.
+    The old implementation cut the history at the last ``submit``/``verify``
+    call and rewrote every retained evidence result as ``OK``.  That could
+    remove the submitted source and turn a real rejection into a success.  We
+    now select *paired* call/result records: the latest accepted candidate,
+    its latest verification, the latest successful evidence/source reads, and
+    every non-OK result.  The retained function content is never rewritten;
+    full raw history remains in the host artifact.
     """
     copied = [item.model_dump() if isinstance(item, Message) else copy.deepcopy(item)
               for item in messages]
-    has_candidate_phase = any(
-        isinstance(item, dict) and item.get('role') == 'assistant'
-        and isinstance(item.get('function_call'), dict)
-        and item['function_call'].get('name') in {'submit_patch', 'verify_patch'}
-        for item in copied
-    )
-    if not has_candidate_phase:
+    if len(copied) <= 2:
         return copied
-    call_names = {}
-    call_positions = []
-    for item in copied:
-        if isinstance(item, dict) and item.get('role') == 'assistant':
-            call = item.get('function_call')
-            ident = item.get('extra', {}).get('function_id') if isinstance(item.get('extra'), dict) else None
-            if isinstance(call, dict) and isinstance(ident, str):
-                call_names[ident] = (call.get('name'), call.get('arguments'))
-                if call.get('name') in {'submit_patch', 'verify_patch'}:
-                    call_positions.append((len(call_positions), call.get('name'), item))
-    # Once a candidate phase has started, the executor's current response is
-    # sufficient for the next model request.  Retain the base task messages
-    # plus the latest submit/verify pair; the model can re-read declared files
-    # and the executor retains the phase/accepted-candidate state.
-    latest_name = call_positions[-1][1] if call_positions else None
-    retained_start = None
-    if latest_name in {'submit_patch', 'verify_patch'}:
-        for index in range(len(copied) - 1, 1, -1):
-            item = copied[index]
-            call = item.get('function_call') if isinstance(item, dict) else None
-            if isinstance(call, dict) and call.get('name') == latest_name:
-                retained_start = index
-                break
-    source_items = copied[retained_start:] if retained_start is not None else copied[2:]
-    compacted = copied[:2]
-    # Keep only the assistant tool call and its matching result after the
-    # retained start.  Any later plain assistant text is still task output and
-    # is retained for protocol fidelity.
-    for item in source_items:
-        if item.get('role') != 'function':
-            compacted.append(item)
+
+    def _ident(item: dict) -> str | None:
+        extra = item.get('extra')
+        value = extra.get('function_id') if isinstance(extra, dict) else None
+        return value if isinstance(value, str) and value else None
+
+    def _json_result(item: dict) -> dict:
+        if item.get('role') != 'function' or not isinstance(item.get('content'), str):
+            return {}
+        try:
+            value = json.loads(item['content'])
+        except (TypeError, ValueError):
+            return {}
+        return value if isinstance(value, dict) else {}
+
+    def _compact_feedback(value: dict) -> dict:
+        """Keep trusted decision fields while dropping repeated raw observations."""
+        result = {key: value[key] for key in (
+            'schema', 'object_id', 'verdict', 'reason', 'required_checks',
+            'confirmed_failed_checks', 'readable_paths', 'repair_guidance',
+            'credential_leaks', 'pytest_summary', 'forbidden_reads',
+            'out_of_scope_reads', 'unauthorized_connections', 'executor_state',
+        ) if key in value}
+        scenarios = value.get('scenario_summary')
+        if isinstance(scenarios, list):
+            result['scenario_summary'] = [{key: row[key] for key in (
+                'name', 'expected_error', 'require_network', 'observed',
+                'raised_type', 'returned_fields', 'service_observation_count',
+                'service_paths') if key in row} for row in scenarios[:8] if isinstance(row, dict)]
+        requests = value.get('request_summary')
+        if isinstance(requests, list):
+            result['request_summary'] = requests[:4]
+            result['request_summary_omitted'] = max(
+                value.get('request_summary_omitted', 0), len(requests) - 4)
+        access = value.get('access_summary')
+        if isinstance(access, dict):
+            result['access_summary'] = {key: access[key] for key in (
+                'credential_success_evidence', 'observed_credential_outputs',
+                'forbidden_read_count', 'out_of_scope_read_count',
+                'unauthorized_connection_count') if key in access}
+        return result
+
+    def _compact_function_content(item: dict, name: str, value: dict) -> dict:
+        # Only successful, structured summaries may be shortened.  Rejected,
+        # error and unknown results are returned byte-for-byte by the caller.
+        if value.get('status') not in {'OK', 'ACCEPTED_FOR_VERIFICATION'}:
+            return value
+        result = copy.deepcopy(value)
+        if name in {'get_evidence', 'verify_patch'}:
+            nested = result.get('report')
+            if isinstance(nested, dict):
+                result['report'] = _compact_feedback(nested)
+            else:
+                result = {key: result[key] for key in ('status', 'candidate', 'verification', 'executor_state')
+                          if key in result}
+        elif name == 'submit_patch' and result.get('status') == 'ACCEPTED_FOR_VERIFICATION':
+            nested = result.get('verification')
+            if isinstance(nested, dict) and isinstance(nested.get('report'), dict):
+                nested = copy.deepcopy(nested)
+                nested['report'] = _compact_feedback(nested['report'])
+                result['verification'] = nested
+        return result
+
+    calls: dict[str, tuple[int, str, dict]] = {}
+    results: dict[str, tuple[int, dict]] = {}
+    for index, item in enumerate(copied):
+        if not isinstance(item, dict):
             continue
-        ident = item.get('extra', {}).get('function_id') if isinstance(item.get('extra'), dict) else None
-        name, arguments = call_names.get(ident, (None, None))
-        if name == 'get_evidence':
-            item['content'] = json.dumps({
-                'status': 'OK',
-                'evidence_superseded': True,
-                'note': 'Use the latest verify_patch report; complete evidence is saved in the artifact.',
-            }, ensure_ascii=False)
-        elif name == 'read_code':
-            try:
-                path = json.loads(arguments or '{}').get('path')
-            except (TypeError, ValueError):
-                path = None
-            if path == 'tool.py':
-                item['content'] = json.dumps({
-                    'status': 'OK', 'path': 'tool.py',
-                    'code_superseded_by_submitted_candidate': True,
-                    'note': 'The submitted candidate contains the current entry source; the original is saved in the artifact.',
-                }, ensure_ascii=False)
+        ident = _ident(item)
+        if not ident:
+            continue
+        if item.get('role') == 'assistant' and isinstance(item.get('function_call'), dict):
+            name = item['function_call'].get('name')
+            if isinstance(name, str):
+                calls[ident] = (index, name, item)
+        elif item.get('role') == 'function':
+            results[ident] = (index, _json_result(item))
+
+    pairs: list[tuple[int, int, str, dict, dict]] = []
+    for ident, (call_index, name, call_item) in calls.items():
+        result = results.get(ident)
+        if result is not None:
+            result_index, result_value = result
+            pairs.append((call_index, result_index, ident, call_item, result_value))
+    if not any(name in {'submit_patch', 'verify_patch'} for _, _, _, call, _ in pairs
+               for name in [call.get('function_call', {}).get('name')]):
+        return copied
+
+    selected: set[str] = set()
+    # Any non-OK result is evidence, not disposable log noise.  Keep its exact
+    # original JSON content and matching assistant call.
+    for _, _, ident, _, value in pairs:
+        if value.get('status') not in (None, 'OK'):
+            selected.add(ident)
+
+    def latest_matching(predicate):
+        candidates = [pair for pair in pairs if predicate(pair[3].get('function_call', {}).get('name'), pair[4])]
+        return max(candidates, key=lambda pair: pair[1]) if candidates else None
+
+    accepted = latest_matching(lambda name, value: name == 'submit_patch' and
+                               value.get('status') == 'ACCEPTED_FOR_VERIFICATION')
+    if accepted:
+        selected.add(accepted[2])
+    latest_verify = latest_matching(lambda name, value: name == 'verify_patch')
+    if latest_verify:
+        selected.add(latest_verify[2])
+    # Keep the latest successful evidence and one successful read for every
+    # path.  These are the minimum trusted rules/source context for the next
+    # modification request.  The submitted candidate body remains in the
+    # accepted submit call's arguments, never as a hash-only placeholder.
+    latest_evidence = latest_matching(lambda name, value: name == 'get_evidence' and value.get('status') == 'OK')
+    if latest_evidence and not latest_verify:
+        selected.add(latest_evidence[2])
+    read_candidates = {}
+    for pair in pairs:
+        name = pair[3].get('function_call', {}).get('name')
+        if name != 'read_code' or pair[4].get('status') != 'OK':
+            continue
+        try:
+            args = json.loads(pair[3]['function_call'].get('arguments') or '{}')
+        except (TypeError, ValueError):
+            args = {}
+        path = args.get('path') if isinstance(args, dict) else None
+        if isinstance(path, str) and (not accepted or path.startswith('tests/') or '/tests/' in path):
+            read_candidates[path] = pair
+    selected.update(pair[2] for pair in read_candidates.values())
+
+    # Reassemble whole assistant/function pairs in their original order.  The
+    # base system/user task remains the first two messages.  Unpaired messages
+    # are dropped rather than inventing a tool result or changing a status.
+    keep_indices = {index for pair in pairs if pair[2] in selected for index in pair[:2]}
+    compacted = copied[:2]
+    selected_names = {ident: calls[ident][1] for ident in selected}
+    for index, item in enumerate(copied[2:], start=2):
+        if index not in keep_indices:
+            continue
+        ident = _ident(item)
+        if item.get('role') == 'function' and ident in selected_names:
+            original = _json_result(item)
+            name = selected_names[ident]
+            if ((original.get('status') == 'OK' and name in {'get_evidence', 'verify_patch'}) or
+                    (original.get('status') == 'ACCEPTED_FOR_VERIFICATION' and name == 'submit_patch')):
+                item = copy.deepcopy(item)
+                item['content'] = json.dumps(_compact_function_content(item, name, original),
+                                             ensure_ascii=False, separators=(',', ':'))
         compacted.append(item)
     return compacted
 

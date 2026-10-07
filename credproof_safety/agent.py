@@ -8,6 +8,7 @@ The model never executes project code.  Candidate verification is delegated to
 ``check_project`` and its bubblewrap lab; only that verifier owns the verdict.
 """
 
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -54,8 +55,25 @@ def rpc(name, args):
             except (OSError, ValueError): time.sleep(.05); continue
             response.unlink(missing_ok=True)
             if isinstance(value, dict):
-                state['last'] = value.get('report', state['last'])
-                if name == 'verify_patch' and value.get('report', {}).get('verdict') == 'PASS': state['terminal'] = 'COMPLETED_REPAIRED'
+                report = value.get('report')
+                verification = value.get('verification')
+                if isinstance(verification, dict) and isinstance(verification.get('report'), dict):
+                    report = verification['report']
+                if isinstance(report, dict):
+                    state['last'] = report
+                if isinstance(report, dict) and report.get('verdict') == 'PASS':
+                    state['terminal'] = 'COMPLETED_REPAIRED'
+                executor_state = value.get('executor_state')
+                if (value.get('reason') == 'tool_call_budget_exhausted' or
+                        (isinstance(executor_state, dict) and
+                         executor_state.get('remaining_tool_calls') == 0 and
+                         (not isinstance(report, dict) or report.get('verdict') != 'PASS'))):
+                    state['terminal'] = state['terminal'] or 'STOPPED_TOOL_BUDGET'
+                if (isinstance(executor_state, dict) and
+                        executor_state.get('remaining_candidates') == 0 and
+                        value.get('status') == 'ACCEPTED_FOR_VERIFICATION' and
+                        (not isinstance(report, dict) or report.get('verdict') != 'PASS')):
+                    state['terminal'] = state['terminal'] or 'STOPPED_CANDIDATE_BUDGET'
                 return value
             return {'status': 'REJECTED', 'reason': 'invalid_executor_response'}
         time.sleep(.05)
@@ -612,13 +630,51 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
     wsl, paths = _runtime_settings()
     rpc_native = paths['root'] + '/model-rpc-' + uuid.uuid4().hex
     stop = threading.Event(); handled: set[str] = set(); current = initial; patch_no = 0; verify_no = 0
+    last_verified_candidate = None; last_verification = None
     evidence_ready = False
     read_paths: set[str] = set()
     required_read_paths = set(_model_readable_paths(config))
     tool_call_count = 0; immutable_digest = None
     authorised = (initial.get('verdict') == 'FAIL' and
                   initial.get('observation_summary', {}).get('classification') == 'ACTUAL_VIOLATION')
-    expected_source_digest = __import__('hashlib').sha256(module_file.read_bytes()).hexdigest()
+    expected_source_digest = hashlib.sha256(module_file.read_bytes()).hexdigest()
+    max_tool_calls = 12; max_candidates = 3; max_verifications = 3
+
+    def canonical_source_bytes(value: str | bytes) -> bytes:
+        raw = value if isinstance(value, bytes) else value.encode('utf-8')
+        return raw.replace(b'\r\n', b'\n').replace(b'\r', b'\n')
+
+    def candidate_source_digest(value: str | bytes) -> str:
+        return hashlib.sha256(canonical_source_bytes(value)).hexdigest()
+
+    def executor_state() -> dict:
+        current_candidate_digest = hashlib.sha256(canonical_source_bytes(module_file.read_bytes())).hexdigest()
+        return {
+            'schema': 'credproof.executor-state/v1',
+            'phase': ('candidate_verified' if last_verified_candidate is not None else
+                      'candidate_submitted' if patch_no else
+                      'sources_read' if read_paths else
+                      'evidence_ready' if evidence_ready else 'initial'),
+            'evidence_ready': evidence_ready,
+            'read_paths': sorted(read_paths),
+            'required_read_paths': sorted(required_read_paths),
+            'current_candidate': patch_no or None,
+            'current_candidate_sha256': current_candidate_digest,
+            'last_verified_candidate': last_verified_candidate,
+            'last_verification_verdict': last_verification.get('verdict') if isinstance(last_verification, dict) else None,
+            'tool_calls_used': tool_call_count,
+            'max_tool_calls': max_tool_calls,
+            'remaining_tool_calls': max(0, max_tool_calls - tool_call_count),
+            'candidates_accepted': patch_no,
+            'max_candidates': max_candidates,
+            'remaining_candidates': max(0, max_candidates - patch_no),
+            'verifications_run': verify_no,
+            'max_verifications': max_verifications,
+            'remaining_verifications': max(0, max_verifications - verify_no),
+            'next_action': ('stop' if last_verified_candidate is not None and
+                            isinstance(last_verification, dict) and last_verification.get('verdict') == 'PASS'
+                            else 'submit_patch_or_stop' if patch_no == 0 else 'review_verification_and_submit_new_candidate_or_stop'),
+        }
     def candidate_immutable_digest():
         rows = []
         for path in sorted(candidate.rglob('*')):
@@ -656,8 +712,24 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
         subprocess.run([*wsl, 'python3', '-c', script, rpc_native, ident],
                        capture_output=True, timeout=10, check=False)
 
+    def run_trusted_verification(candidate_id: int) -> dict:
+        """Verify an accepted candidate as a host action, never as model text."""
+        nonlocal current, verify_no, last_verified_candidate, last_verification
+        if verify_no >= max_verifications:
+            return {'status': 'REJECTED', 'reason': 'verification_budget_exhausted',
+                    'candidate': candidate_id, 'verification_count': verify_no}
+        verify_no += 1
+        current = check_project(candidate_config, project_root=candidate)
+        last_verified_candidate = candidate_id
+        last_verification = current
+        (history / ('verification-%02d.json' % verify_no)).write_text(
+            json.dumps(current, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+        return {'status': 'OK', 'candidate': candidate_id, 'verification': verify_no,
+                'report': _model_feedback(current, config)}
+
     def serve():
         nonlocal current, patch_no, verify_no, tool_call_count, expected_source_digest, evidence_ready, read_paths
+        nonlocal last_verified_candidate, last_verification
         while not stop.is_set():
             for request_data in native_requests():
                 ident = request_data.get('id') if isinstance(request_data, dict) else None
@@ -670,9 +742,9 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
                 except Exception: name,args='__invalid__',{}
                 try:
                     tool_call_count += 1
-                    if tool_call_count > 12:
+                    if tool_call_count > max_tool_calls:
                         value={'status':'REJECTED','reason':'tool_call_budget_exhausted','tool_call_count':tool_call_count}
-                    elif candidate_immutable_digest() != immutable_digest or __import__('hashlib').sha256(module_file.read_bytes()).hexdigest() != expected_source_digest:
+                    elif candidate_immutable_digest() != immutable_digest or hashlib.sha256(module_file.read_bytes()).hexdigest() != expected_source_digest:
                         value={'status':'REJECTED','reason':'candidate_material_changed_outside_executor'}
                     elif not isinstance(args, dict) or (name != 'read_code' and name != 'submit_patch' and args):
                         value={'status':'REJECTED','reason':'invalid_tool_arguments'}
@@ -699,26 +771,37 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
                         code=args.get('code') if isinstance(args,dict) else None
                         if not authorised:
                             value={'status':'REJECTED','reason':'no_current_confirmed_violation'}
-                        elif patch_no >= 3:
+                        elif patch_no >= max_candidates:
                             value={'status':'REJECTED','reason':'candidate_budget_exhausted'}
                         elif not isinstance(code,str) or len(code.encode())>65536: value={'status':'REJECTED','reason':'candidate_size_or_type'}
+                        elif canonical_source_bytes(code) == canonical_source_bytes(module_file.read_bytes()):
+                            value={'status':'REJECTED','reason':'NO_CHANGE','candidate':patch_no,
+                                   'candidate_sha256':candidate_source_digest(code)}
                         else:
                             patch_no += 1
-                            value={'status':'ACCEPTED_FOR_VERIFICATION','candidate':patch_no}
-                            module_file.write_text(code,encoding='utf-8')
-                            expected_source_digest = __import__('hashlib').sha256(module_file.read_bytes()).hexdigest()
-                            (history / ('candidate-%02d.py' % patch_no)).write_text(code, encoding='utf-8')
+                            with module_file.open('w', encoding='utf-8', newline='\n') as handle:
+                                handle.write(code.replace('\r\n', '\n').replace('\r', '\n'))
+                            expected_source_digest = hashlib.sha256(module_file.read_bytes()).hexdigest()
+                            (history / ('candidate-%02d.py' % patch_no)).write_text(
+                                code.replace('\r\n', '\n').replace('\r', '\n'), encoding='utf-8', newline='\n')
+                            verification = run_trusted_verification(patch_no)
+                            value={'status':'ACCEPTED_FOR_VERIFICATION','candidate':patch_no,
+                                   'candidate_sha256':expected_source_digest,
+                                   'verification_action':'program_auto_verify',
+                                   'verification':verification,
+                                   'verification_count':verify_no}
                     elif name == 'verify_patch':
                         if candidate_immutable_digest() != immutable_digest:
                             value={'status':'REJECTED','reason':'immutable_candidate_material_changed'}
+                        elif last_verified_candidate == patch_no and patch_no:
+                            value={'status':'REJECTED','reason':'candidate_already_verified',
+                                   'candidate':patch_no, 'verification':_model_feedback(last_verification, config)}
                         else:
-                            verify_no += 1
-                            current=check_project(candidate_config, project_root=candidate)
-                            (history / ('verification-%02d.json' % verify_no)).write_text(
-                                json.dumps(current, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
-                            value={'status':'OK','report':_model_feedback(current, config)}
+                            value=run_trusted_verification(patch_no)
                     else: value={'status':'REJECTED','reason':'unknown_tool'}
                 except Exception as exc: value={'status':'REJECTED','reason':'executor_error','detail':type(exc).__name__}
+                if isinstance(value, dict):
+                    value.setdefault('executor_state', executor_state())
                 _write_response(rpc / ('response-' + ident + '.json'), value)
                 native_response(ident, value)
                 native_remove(ident)

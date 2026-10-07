@@ -1,4 +1,4 @@
-# CredProof 需求—实现—证据验收表（dev22）
+# CredProof 需求—实现—证据验收表（dev23）
 
 本表对应本版源码提交（完整 SHA 在 GitHub 评审入口及后续交付收据中固定）；验收资料随后在提交中固化。它用于外部复查，不表示模型修复成功或参赛资格已验收。
 
@@ -74,3 +74,14 @@
 正式模型运行所用源码提交为 `e6507f36b93a0a3168717cf7f09f439b57786132`；预算预检与材料冻结随后记录在 `2afd51bbd760a3e5d0aa01234e045c29d7e47f0e`。预检脚本使用实际客户端序列化和工具 schema，首请求、证据加两份源码、候选失败反馈三个阶段均 `within_declared_budget=true`，预检本身 `model_calls=0`。全套 `agent_pilot/tests` 实际为 `110 passed, 1 warning`。
 
 正式 `assistant-original/p01` 只运行一次：12次模型请求、12份服务 usage、15次工具请求尝试（12次接受、3次因执行器上限拒绝）、2份接受候选。候选1完成可信验收并为 `FAIL`；候选2已保存但未验收；任务终态为 `INCOMPLETE`，停止原因为 `Model request budget exhausted`。没有 input-budget 超限事件，没有可信 PASS，因此没有同候选导出或新目录复检。详细入口为 [`acceptance/20261007-return-redirect/context-budget-pilot/README.md`](acceptance/20261007-return-redirect/context-budget-pilot/README.md)，脱敏逐次证据在其 `public-evidence/` 子目录。当前 `handoff_status` 仍为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。
+
+
+## dev23 上下文保真与候选调度复测
+
+本轮先对保存的 candidate-02 做了一次独立 `POST_RUN_VERIFICATION`，不调用模型、不改变原候选：pytest 4/4 通过，但常量返回没有读允许文件、没有取得允许服务回执/认证证据；跳转场景在 `ValueError` 处提前结束，未执行到跳转请求。因此该事后结果为 `FAIL`，原正式任务的 `UNVERIFIED` 仍保留。材料见 [`acceptance/20261007-return-redirect/context-budget-pilot/post-run-verification-candidate02-v1/`](acceptance/20261007-return-redirect/context-budget-pilot/post-run-verification-candidate02-v1/)。
+
+压缩器现在按 `function_id` 将 assistant 工具调用与 function 结果成对选择：当前候选提交的源码正文、最新可信验收、必要测试读取和最新失败反馈保留；已脱离当前对象的重复成功日志可压缩。`REJECTED`、`ERROR`、`UNKNOWN`、预算耗尽和缺材料结果不改状态或 reason，也不再把入口源码替换成占位消息。提交新候选后由执行器立即调用可信 `check_project` 一次，记录 `program_auto_verify`；这不是模型工具调用，也不由模型文本判决。相同规范化 LF 源码记为 `NO_CHANGE`，不增加有效候选。
+
+在当前 5090/CUDA0 边界内登记了同一 `assistant-original/p01` 的有限复测。v2 保留为发现工具预算停止缺口的原始记录；v3 在修正后实际运行 12 次模型请求、12 次工具请求、接受 1 个候选并由程序自动验收 1 次（`FAIL`），第 12 个工具结果用尽后任务以 `STOPPED_TOOL_BUDGET` 结束，没有继续消费新的模型请求。可信 PASS 为 0，没有导出或新目录 PASS。v3 结构化脱敏记录见 [`acceptance/20261007-return-redirect/context-budget-pilot-v3/`](acceptance/20261007-return-redirect/context-budget-pilot-v3/)。
+
+因此 R08 的工程调度与上下文保真有协议和一次真实运行依据，但“当前模型产生合格修复、同一候选导出并在新目录复检 PASS”仍是 `IMPLEMENTED_UNVERIFIED`，整体维持 `NOT_READY_FOR_HANDOFF`。这不是稳定成功率或泛化结论。

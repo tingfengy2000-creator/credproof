@@ -399,3 +399,8 @@ python scripts/run-exported-regression-check.py `
 随后在源码提交 `e6507f36b93a0a3168717cf7f09f439b57786132` 对应的同一 5090、同一模型和既定隔离边界中只运行一次正式任务。实际结果是 12 次模型请求、12 份 usage、15 次工具请求尝试，其中前 12 次由执行器处理、后 3 次因工具请求上限拒绝；接受 2 份候选。候选 1 被真实验收为 `FAIL`，候选 2 已保存但未验收；任务以 `INCOMPLETE` 和 `Model request budget exhausted` 结束。运行期间没有再次出现 input-budget 超限事件，也没有候选获得可信 `PASS`，所以没有导出或新目录无模型复检。脱敏后的逐请求轨迹、候选和边界记录位于 [`acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/`](acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/)，汇总见 [`run-summary.json`](acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/run-summary.json)。
 
 这次运行证明了消息组织和预算保护可以让模型继续工作到候选阶段，但没有证明当前模型修复效果。候选 2 不是 PASS，也不能与旧 h03、人工修复或历史 bundle 拼接。当前状态仍为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。
+
+
+## 当前 dev23 评审入口
+
+本轮上下文保真、候选自动验收和工具额度停止的代码在 `agent_pilot/model_client.py`、`credproof_safety/agent.py`；真实 v3 记录入口为 [`acceptance/20261007-return-redirect/context-budget-pilot-v3/`](acceptance/20261007-return-redirect/context-budget-pilot-v3/)。当前模型任务仍无可信 PASS，状态为 `NOT_READY_FOR_HANDOFF`。

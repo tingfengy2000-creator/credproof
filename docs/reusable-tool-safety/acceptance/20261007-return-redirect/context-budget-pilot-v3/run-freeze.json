@@ -1,0 +1,37 @@
+{
+  "schema": "credproof.formal-run-freeze/v2",
+  "run_id": "context-budget-pilot-v3",
+  "supersedes": "context-budget-pilot-v2",
+  "task": "assistant-original/p01",
+  "source_files": {
+    "examples/material_assistant/credproof.toml": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+    "examples/material_assistant/tool.py": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+    "examples/material_assistant/tests/test_business.py": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356"
+  },
+  "controller_files": {
+    "credproof_safety/agent.py": "8fb473749ca4f89d009193905c2bc542524d1ae4274c1ad9c545e308f2e5d9d2",
+    "agent_pilot/model_client.py": "7b1b26ef421bf3f8a43655613773e6338db920d8a14c53e08adc3cb1f3b8903e",
+    "agent_pilot/tests/test_model_boundary.py": "386e044543586d98e823d7a83dc592e8504108e0f0e40e925d202bdbeb739a1d"
+  },
+  "model": "qwen3-coder:30b",
+  "model_runtime": "Ollama local, CUDA0/RTX5090, reviewed bubblewrap boundary",
+  "budgets": {
+    "max_model_calls": 12,
+    "max_candidates": 3,
+    "max_format_corrections": 1,
+    "max_tool_calls": 12,
+    "max_verifications": 3,
+    "request_timeout_s": 120,
+    "task_budget_s": 900,
+    "max_output_tokens": 1024,
+    "context_tokens": 16384
+  },
+  "safety": {
+    "synthetic_credentials_only": true,
+    "approved_paths_only": true,
+    "network": "private loopback/mock services",
+    "paid_api_used": false
+  },
+  "preflight": "20261007-context-budget-preflight.json",
+  "protocol_tests": "agent_pilot/tests/test_model_boundary.py"
+}
