@@ -254,10 +254,16 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
             if key in value}
 
     def _compact_function_content(item: dict, name: str, value: dict) -> dict:
-        # Only successful, structured summaries may be shortened.  Rejected,
-        # error and unknown results are returned byte-for-byte by the caller.
+        # Keep the decision-bearing fields of a non-OK result.  The complete
+        # response remains in the host audit log; the model turn needs the
+        # exact status/reason, object identifiers and latest executor state,
+        # not repeated raw diagnostics that can consume the next budget.
         if value.get('status') not in {'OK', 'ACCEPTED_FOR_VERIFICATION'}:
-            return value
+            return {key: value[key] for key in (
+                'status', 'reason', 'error', 'message', 'tool',
+                'candidate', 'candidate_sha256', 'path', 'read_sha256',
+                'missing_paths', 'repeated_read_count', 'tool_call_count',
+                'verification', 'executor_state') if key in value}
         result = copy.deepcopy(value)
         if name == 'get_evidence':
             result = {'status': 'OK', **_compact_feedback(value)}
@@ -450,7 +456,11 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
         if item.get('role') == 'function' and ident in selected_names:
             original = _json_result(item)
             name = selected_names[ident]
-            if ((original.get('status') == 'OK' and name in {'get_evidence', 'verify_patch'}) or
+            if (original.get('status') not in (None, 'OK', 'ACCEPTED_FOR_VERIFICATION')):
+                item = copy.deepcopy(item)
+                item['content'] = json.dumps(_compact_function_content(item, name, original),
+                                             ensure_ascii=False, separators=(',', ':'))
+            elif ((original.get('status') == 'OK' and name in {'get_evidence', 'verify_patch'}) or
                     (original.get('status') == 'ACCEPTED_FOR_VERIFICATION' and name == 'submit_patch')):
                 item = copy.deepcopy(item)
                 item['content'] = json.dumps(_compact_function_content(item, name, original),

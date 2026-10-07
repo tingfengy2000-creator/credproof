@@ -169,7 +169,7 @@ class ModelBoundaryContractTests(unittest.TestCase):
         # be removed; the accepted submit pair remains the current source.
         self.assertNotIn('ORIGINAL = 1', payload)
         self.assertIn('\\"verdict\\":\\"FAIL\\"', payload)
-        self.assertIn('\\"reason\\": \\"tool_call_budget_exhausted\\"', payload)
+        self.assertIn('tool_call_budget_exhausted', payload)
         self.assertTrue(any(item.get("tool_call_id") == "rejected" for item in wire))
         self.assertTrue(any(item.get("role") == "user" and
                             "executor-context/v1" in item.get("content", "")
@@ -210,8 +210,38 @@ class ModelBoundaryContractTests(unittest.TestCase):
             {"role": "function", "content": json.dumps({"status": "REJECTED", "reason": "NO_CHANGE"}), "extra": {"function_id": "s"}},
         ]
         wire = to_ollama_messages(compact_messages_for_budget(messages))
-        self.assertIn('\\"status\\": \\"REJECTED\\"', json.dumps(wire))
-        self.assertIn('\\"reason\\": \\"NO_CHANGE\\"', json.dumps(wire))
+        self.assertIn('REJECTED', json.dumps(wire))
+        self.assertIn('NO_CHANGE', json.dumps(wire))
+
+    def test_compaction_preserves_non_ok_statuses_and_reasons(self):
+        messages = [
+            {"role": "system", "content": "system"}, {"role": "user", "content": "task"},
+            {"role": "assistant", "content": "", "function_call": {"name": "submit_patch", "arguments": '{"code":"new"}'}, "extra": {"function_id": "submit"}},
+            {"role": "function", "content": json.dumps({
+                "status": "ACCEPTED_FOR_VERIFICATION", "candidate": 1,
+                "candidate_sha256": hashlib.sha256(b"new").hexdigest(),
+                "verification": {"status": "OK", "report": {"verdict": "FAIL", "reason": "leak"}},
+                "executor_state": {"phase": "candidate_verified", "remaining_tool_calls": 5},
+            }), "extra": {"function_id": "submit"}},
+            {"role": "assistant", "content": "", "function_call": {"name": "get_evidence", "arguments": "{}"}, "extra": {"function_id": "rejected"}},
+            {"role": "function", "content": json.dumps({
+                "status": "REJECTED", "reason": "evidence_already_current",
+                "detail": "raw detail retained only in host audit", "executor_state": {
+                    "phase": "candidate_verified", "tool_calls_used": 6, "remaining_tool_calls": 6,
+                },
+            }), "extra": {"function_id": "rejected"}},
+            {"role": "assistant", "content": "", "function_call": {"name": "read_code", "arguments": '{"path":"tool.py"}'}, "extra": {"function_id": "error"}},
+            {"role": "function", "content": json.dumps({"status": "ERROR", "reason": "source_unavailable", "executor_state": {"remaining_tool_calls": 5}}), "extra": {"function_id": "error"}},
+            {"role": "assistant", "content": "", "function_call": {"name": "read_code", "arguments": '{"path":"tests/test_business.py"}'}, "extra": {"function_id": "unknown"}},
+            {"role": "function", "content": json.dumps({"status": "UNKNOWN", "reason": "observation_incomplete", "executor_state": {"remaining_tool_calls": 4}}), "extra": {"function_id": "unknown"}},
+        ]
+        wire = to_ollama_messages(compact_messages_for_budget(messages))
+        text = json.dumps(wire, ensure_ascii=False)
+        self.assertIn('evidence_already_current', text)
+        self.assertIn('source_unavailable', text)
+        self.assertIn('observation_incomplete', text)
+        self.assertIn('remaining_tool_calls', text)
+        self.assertNotIn('raw detail retained only in host audit', text)
 
     def test_rejected_verify_does_not_drop_latest_rules_evidence(self):
         messages = [

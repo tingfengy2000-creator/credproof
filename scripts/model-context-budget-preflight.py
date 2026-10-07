@@ -162,7 +162,62 @@ def main() -> None:
     candidate_auto_budget = _budget("after_candidate_auto_verify", after_candidate_auto_payload, first_prefix)
     candidate_budget = _budget("after_candidate_failure_and_current_read", after_candidate_payload, first_prefix)
 
-    stages = [first_budget, reads_budget, candidate_auto_budget, candidate_budget]
+    # The live v4 task reached this branch after the accepted candidate had
+    # failed.  The old repeated get_evidence response was an historical OK;
+    # current execution must return a deterministic rejection while retaining
+    # the host state.  This is protocol-only and does not execute candidate 2.
+    current_state = {
+        "schema": "credproof.executor-state/v1",
+        "phase": "candidate_verified",
+        "current_candidate": 1,
+        "current_candidate_sha256": candidate_sha,
+        "last_verified_candidate": 1,
+        "last_verification_verdict": candidate_report.get("verdict"),
+        "tool_calls_used": 6,
+        "remaining_tool_calls": 6,
+        "remaining_candidates": 2,
+        "remaining_verifications": 2,
+        "next_action": "review_verification_and_submit_new_candidate_or_stop",
+    }
+    after_rejection = after_candidate + [
+        _assistant_calls(("get_evidence", {}, "call-preflight-current-evidence"))[0],
+        _function("call-preflight-current-evidence", {
+            "status": "REJECTED", "reason": "evidence_already_current",
+            "executor_state": current_state,
+        }),
+    ]
+    rejection_payload = _payload(after_rejection, schemas)
+    rejection_budget = _budget("after_current_evidence_rejection", rejection_payload, first_prefix)
+
+    # A legal next-candidate shape based on an existing saved candidate.  The
+    # candidate is not run here; the branch only proves that the message still
+    # carries current source/rules/feedback within the hard budget.
+    candidate2_code = CANDIDATE_FILE.read_text(encoding="utf-8")
+    candidate2_sha = hashlib.sha256(candidate2_code.replace("\r\n", "\n").replace("\r", "\n").encode("utf-8")).hexdigest()
+    after_next_candidate = after_rejection + [
+        _assistant_calls(("submit_patch", {"code": candidate2_code}, "call-preflight-candidate-2"))[0],
+        _function("call-preflight-candidate-2", {
+            "status": "ACCEPTED_FOR_VERIFICATION", "candidate": 2,
+            "candidate_sha256": candidate2_sha,
+            "verification_action": "program_auto_verify",
+            "verification": {"status": "PROTOCOL_SAMPLE", "execution": "not_run"},
+            "executor_state": {**current_state,
+                               "current_candidate": 2,
+                               "current_candidate_sha256": candidate2_sha,
+                               "candidates_accepted": 2,
+                               "remaining_candidates": 1,
+                               "tool_calls_used": 7,
+                               "remaining_tool_calls": 5,
+                               "verifications_run": 2,
+                               "remaining_verifications": 1},
+            "protocol_sample": True,
+        }),
+    ]
+    next_candidate_payload = _payload(after_next_candidate, schemas)
+    next_candidate_budget = _budget("after_next_candidate_protocol_sample", next_candidate_payload, first_prefix)
+
+    stages = [first_budget, reads_budget, candidate_auto_budget, candidate_budget,
+              rejection_budget, next_candidate_budget]
     record = {
         "schema": "credproof.model-context-budget-preflight/v1",
         "protocol_preflight": True,
@@ -190,6 +245,7 @@ def main() -> None:
             "The first-prefix prompt_tokens value is the first request conservative upper bound, not server usage.",
             "Runtime usage will be recorded only from the service response; no bytes-to-token conversion is used.",
             "Candidate failure feedback uses the saved candidate report only to size the next conversation; it is not a new model result.",
+            "The current evidence rejection and candidate-2 branch are protocol samples; the historical v4 OK response is not reused as a current execution result.",
         ],
     }
     OUT.write_text(json.dumps(record, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")

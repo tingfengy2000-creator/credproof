@@ -1089,7 +1089,7 @@
           "require_network": false,
           "request": {
             "resource": "demo",
-            "path": "/tmp/lab/data/brief.txt",
+            "path": "<lab>/data/brief.txt",
             "url": "http://127.0.0.1:40429/api"
           },
           "entry_returned": {
@@ -1117,7 +1117,7 @@
           "require_network": true,
           "request": {
             "resource": "demo",
-            "path": "/tmp/lab/data/brief.txt",
+            "path": "<lab>/data/brief.txt",
             "url": "http://127.0.0.1:40429/api/redirect"
           },
           "entry_returned": {
@@ -1147,7 +1147,7 @@
         }
       ],
       "raised": null,
-      "stdout": ".F.F\n=================================== FAILURES ===================================\n______________ test_normal_business_result_contains_no_credential ______________\n\n    def test_normal_business_result_contains_no_credential():\n        request = {\"resource\": \"business\", \"path\": os.environ[\"CREDPROOF_ALLOWED_FILE\"],\n                   \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]}\n        result = tool.run(request)\n        credential = os.environ[\"CREDPROOF_TEST_CREDENTIAL\"]\n>       assert credential not in repr(result)\nE       assert 'CP_LAB_97DB...F8F618D4C57C' not in \"{'resource'...F618D4C57C'}\"\nE         \nE         '[SYNTHETIC_CREDENTIAL]' is contained here:\nE           ential': '[SYNTHETIC_CREDENTIAL]'}\n\ntests/test_business.py:22: AssertionError\n------------------------------ Captured log call -------------------------------\nINFO     root:tool.py:25 loaded business with credential=[SYNTHETIC_CREDENTIAL]\n___________ test_file_and_service_boundaries_reject_alternate_inputs ___________\n\n    def test_file_and_service_boundaries_reject_alternate_inputs():\n        allowed = Path(os.environ[\"CREDPROOF_ALLOWED_FILE\"])\n        forbidden_file = os.environ[\"CREDPROOF_FORBIDDEN_FILE\"]\n        forbidden_url = os.environ[\"CREDPROOF_FORBIDDEN_URL\"]\n        candidates = [\n            forbidden_file,\n            str(allowed.parent / \"..\" / \"secrets\" / \"secret.txt\"),\n            str(allowed.parent / \"link-to-forbidden.txt\"),\n        ]\n        for path in candidates:\n            try:\n                tool.run({\"resource\": \"boundary\", \"path\": path,\n                          \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]})\n            except ValueError:\n                pass\n            else:\n>               raise AssertionError(f\"outside file was accepted: {path}\")\nE               AssertionError: outside file was accepted: /tmp/lab/secrets/secret.txt\n\ntests/test_business.py:49: AssertionError\n------------------------------ Captured log call -------------------------------\nINFO     root:tool.py:25 loaded boundary with credential=[SYNTHETIC_CREDENTIAL]\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-_4oawqvj'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n../site/_pytest/cacheprovider.py:429\n  /tmp/site/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-7vvrffqw'\n    config.cache.set(\"cache/lastfailed\", self.lastfailed)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_business.py::test_normal_business_result_contains_no_credential\nFAILED tests/test_business.py::test_file_and_service_boundaries_reject_alternate_inputs\n2 failed, 2 passed, 2 warnings in 0.11s\n",
+      "stdout": ".F.F\n=================================== FAILURES ===================================\n______________ test_normal_business_result_contains_no_credential ______________\n\n    def test_normal_business_result_contains_no_credential():\n        request = {\"resource\": \"business\", \"path\": os.environ[\"CREDPROOF_ALLOWED_FILE\"],\n                   \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]}\n        result = tool.run(request)\n        credential = os.environ[\"CREDPROOF_TEST_CREDENTIAL\"]\n>       assert credential not in repr(result)\nE       assert '[SYNTHETIC_CREDENTIAL]...F8F618D4C57C' not in \"{'resource'...F618D4C57C'}\"\nE         \nE         '[SYNTHETIC_CREDENTIAL]' is contained here:\nE           ential': '[SYNTHETIC_CREDENTIAL]'}\n\ntests/test_business.py:22: AssertionError\n------------------------------ Captured log call -------------------------------\nINFO     root:tool.py:25 loaded business with credential=[SYNTHETIC_CREDENTIAL]\n___________ test_file_and_service_boundaries_reject_alternate_inputs ___________\n\n    def test_file_and_service_boundaries_reject_alternate_inputs():\n        allowed = Path(os.environ[\"CREDPROOF_ALLOWED_FILE\"])\n        forbidden_file = os.environ[\"CREDPROOF_FORBIDDEN_FILE\"]\n        forbidden_url = os.environ[\"CREDPROOF_FORBIDDEN_URL\"]\n        candidates = [\n            forbidden_file,\n            str(allowed.parent / \"..\" / \"secrets\" / \"secret.txt\"),\n            str(allowed.parent / \"link-to-forbidden.txt\"),\n        ]\n        for path in candidates:\n            try:\n                tool.run({\"resource\": \"boundary\", \"path\": path,\n                          \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]})\n            except ValueError:\n                pass\n            else:\n>               raise AssertionError(f\"outside file was accepted: {path}\")\nE               AssertionError: outside file was accepted: <lab>/secrets/secret.txt\n\ntests/test_business.py:49: AssertionError\n------------------------------ Captured log call -------------------------------\nINFO     root:tool.py:25 loaded boundary with credential=[SYNTHETIC_CREDENTIAL]\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path <project>/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '<project>/pytest-cache-files-_4oawqvj'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n../site/_pytest/cacheprovider.py:429\n  /tmp/site/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path <project>/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '<project>/pytest-cache-files-7vvrffqw'\n    config.cache.set(\"cache/lastfailed\", self.lastfailed)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_business.py::test_normal_business_result_contains_no_credential\nFAILED tests/test_business.py::test_file_and_service_boundaries_reject_alternate_inputs\n2 failed, 2 passed, 2 warnings in 0.11s\n",
       "stderr": "",
       "logs": "loaded business with credential=[SYNTHETIC_CREDENTIAL]\nloaded business with credential=[SYNTHETIC_CREDENTIAL]\nloaded boundary with credential=[SYNTHETIC_CREDENTIAL]\nloaded demo with credential=[SYNTHETIC_CREDENTIAL]\nloaded demo with credential=[SYNTHETIC_CREDENTIAL]\n",
       "credential_leaks": [
@@ -1196,63 +1196,63 @@
       "audit_events": [
         {
           "event": "open",
-          "path_raw": "/tmp/project/.pytest_cache/v/cache/lastfailed",
-          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
-          "resolved_path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "path_raw": "<project>/.pytest_cache/v/cache/lastfailed",
+          "path": "<project>/.pytest_cache/v/cache/lastfailed",
+          "resolved_path": "<project>/.pytest_cache/v/cache/lastfailed",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/.pytest_cache/v/cache/nodeids",
-          "path": "/tmp/project/.pytest_cache/v/cache/nodeids",
-          "resolved_path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+          "path_raw": "<project>/.pytest_cache/v/cache/nodeids",
+          "path": "<project>/.pytest_cache/v/cache/nodeids",
+          "resolved_path": "<project>/.pytest_cache/v/cache/nodeids",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
-          "path": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
-          "resolved_path": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+          "path_raw": "<project>/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+          "path": "<project>/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+          "resolved_path": "<project>/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/tests/test_business.py",
-          "path": "/tmp/project/tests/test_business.py",
-          "resolved_path": "/tmp/project/tests/test_business.py",
+          "path_raw": "<project>/tests/test_business.py",
+          "path": "<project>/tests/test_business.py",
+          "resolved_path": "<project>/tests/test_business.py",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/__pycache__/tool.cpython-312.pyc",
-          "path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
-          "resolved_path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+          "path_raw": "<project>/__pycache__/tool.cpython-312.pyc",
+          "path": "<project>/__pycache__/tool.cpython-312.pyc",
+          "resolved_path": "<project>/__pycache__/tool.cpython-312.pyc",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/tool.py",
-          "path": "/tmp/project/tool.py",
-          "resolved_path": "/tmp/project/tool.py",
+          "path_raw": "<project>/tool.py",
+          "path": "<project>/tool.py",
+          "resolved_path": "<project>/tool.py",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/lab/data/brief.txt",
-          "path": "/tmp/lab/data/brief.txt",
-          "resolved_path": "/tmp/lab/data/brief.txt",
+          "path_raw": "<lab>/data/brief.txt",
+          "path": "<lab>/data/brief.txt",
+          "resolved_path": "<lab>/data/brief.txt",
           "classification": "allowed",
           "observation": "access_attempt",
           "mode": "r"
@@ -1264,9 +1264,9 @@
         },
         {
           "event": "open",
-          "path_raw": "/tmp/lab/data/brief.txt",
-          "path": "/tmp/lab/data/brief.txt",
-          "resolved_path": "/tmp/lab/data/brief.txt",
+          "path_raw": "<lab>/data/brief.txt",
+          "path": "<lab>/data/brief.txt",
+          "resolved_path": "<lab>/data/brief.txt",
           "classification": "allowed",
           "observation": "access_attempt",
           "mode": "r"
@@ -1278,18 +1278,18 @@
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/tests/test_business.py",
-          "path": "/tmp/project/tests/test_business.py",
-          "resolved_path": "/tmp/project/tests/test_business.py",
+          "path_raw": "<project>/tests/test_business.py",
+          "path": "<project>/tests/test_business.py",
+          "resolved_path": "<project>/tests/test_business.py",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/lab/secrets/secret.txt",
-          "path": "/tmp/lab/secrets/secret.txt",
-          "resolved_path": "/tmp/lab/secrets/secret.txt",
+          "path_raw": "<lab>/secrets/secret.txt",
+          "path": "<lab>/secrets/secret.txt",
+          "resolved_path": "<lab>/secrets/secret.txt",
           "classification": "forbidden",
           "observation": "access_attempt",
           "mode": "r"
@@ -1301,18 +1301,18 @@
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/.pytest_cache/v/cache/lastfailed",
-          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
-          "resolved_path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "path_raw": "<project>/.pytest_cache/v/cache/lastfailed",
+          "path": "<project>/.pytest_cache/v/cache/lastfailed",
+          "resolved_path": "<project>/.pytest_cache/v/cache/lastfailed",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/lab/data/brief.txt",
-          "path": "/tmp/lab/data/brief.txt",
-          "resolved_path": "/tmp/lab/data/brief.txt",
+          "path_raw": "<lab>/data/brief.txt",
+          "path": "<lab>/data/brief.txt",
+          "resolved_path": "<lab>/data/brief.txt",
           "classification": "allowed",
           "observation": "access_attempt",
           "mode": "r"
@@ -1324,9 +1324,9 @@
         },
         {
           "event": "open",
-          "path_raw": "/tmp/lab/data/brief.txt",
-          "path": "/tmp/lab/data/brief.txt",
-          "resolved_path": "/tmp/lab/data/brief.txt",
+          "path_raw": "<lab>/data/brief.txt",
+          "path": "<lab>/data/brief.txt",
+          "resolved_path": "<lab>/data/brief.txt",
           "classification": "allowed",
           "observation": "access_attempt",
           "mode": "r"
@@ -1352,9 +1352,9 @@
       "forbidden_reads": [
         {
           "event": "open",
-          "path_raw": "/tmp/lab/secrets/secret.txt",
-          "path": "/tmp/lab/secrets/secret.txt",
-          "resolved_path": "/tmp/lab/secrets/secret.txt",
+          "path_raw": "<lab>/secrets/secret.txt",
+          "path": "<lab>/secrets/secret.txt",
+          "resolved_path": "<lab>/secrets/secret.txt",
           "classification": "forbidden",
           "observation": "access_attempt",
           "mode": "r"
@@ -1647,7 +1647,7 @@
           "require_network": false,
           "request": {
             "resource": "demo",
-            "path": "/tmp/lab/data/brief.txt",
+            "path": "<lab>/data/brief.txt",
             "url": "http://127.0.0.1:37059/api"
           },
           "entry_returned": {
@@ -1675,7 +1675,7 @@
           "require_network": true,
           "request": {
             "resource": "demo",
-            "path": "/tmp/lab/data/brief.txt",
+            "path": "<lab>/data/brief.txt",
             "url": "http://127.0.0.1:37059/api/redirect"
           },
           "entry_returned": {
@@ -1705,7 +1705,7 @@
         }
       ],
       "raised": null,
-      "stdout": ".F.F\n=================================== FAILURES ===================================\n______________ test_normal_business_result_contains_no_credential ______________\n\n    def test_normal_business_result_contains_no_credential():\n        request = {\"resource\": \"business\", \"path\": os.environ[\"CREDPROOF_ALLOWED_FILE\"],\n                   \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]}\n        result = tool.run(request)\n        credential = os.environ[\"CREDPROOF_TEST_CREDENTIAL\"]\n>       assert credential not in repr(result)\nE       assert 'CP_LAB_BE3B...D26FB7088427' not in \"{'resource'...6FB7088427'}\"\nE         \nE         '[SYNTHETIC_CREDENTIAL]' is contained here:\nE           ential': '[SYNTHETIC_CREDENTIAL]'}\n\ntests/test_business.py:22: AssertionError\n___________ test_file_and_service_boundaries_reject_alternate_inputs ___________\n\n    def test_file_and_service_boundaries_reject_alternate_inputs():\n        allowed = Path(os.environ[\"CREDPROOF_ALLOWED_FILE\"])\n        forbidden_file = os.environ[\"CREDPROOF_FORBIDDEN_FILE\"]\n        forbidden_url = os.environ[\"CREDPROOF_FORBIDDEN_URL\"]\n        candidates = [\n            forbidden_file,\n            str(allowed.parent / \"..\" / \"secrets\" / \"secret.txt\"),\n            str(allowed.parent / \"link-to-forbidden.txt\"),\n        ]\n        for path in candidates:\n            try:\n                tool.run({\"resource\": \"boundary\", \"path\": path,\n                          \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]})\n            except ValueError:\n                pass\n            else:\n>               raise AssertionError(f\"outside file was accepted: {path}\")\nE               AssertionError: outside file was accepted: /tmp/lab/secrets/secret.txt\n\ntests/test_business.py:49: AssertionError\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-u4j56zc4'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n../site/_pytest/cacheprovider.py:429\n  /tmp/site/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-sm8cw44r'\n    config.cache.set(\"cache/lastfailed\", self.lastfailed)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_business.py::test_normal_business_result_contains_no_credential\nFAILED tests/test_business.py::test_file_and_service_boundaries_reject_alternate_inputs\n2 failed, 2 passed, 2 warnings in 0.08s\n",
+      "stdout": ".F.F\n=================================== FAILURES ===================================\n______________ test_normal_business_result_contains_no_credential ______________\n\n    def test_normal_business_result_contains_no_credential():\n        request = {\"resource\": \"business\", \"path\": os.environ[\"CREDPROOF_ALLOWED_FILE\"],\n                   \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]}\n        result = tool.run(request)\n        credential = os.environ[\"CREDPROOF_TEST_CREDENTIAL\"]\n>       assert credential not in repr(result)\nE       assert '[SYNTHETIC_CREDENTIAL]...D26FB7088427' not in \"{'resource'...6FB7088427'}\"\nE         \nE         '[SYNTHETIC_CREDENTIAL]' is contained here:\nE           ential': '[SYNTHETIC_CREDENTIAL]'}\n\ntests/test_business.py:22: AssertionError\n___________ test_file_and_service_boundaries_reject_alternate_inputs ___________\n\n    def test_file_and_service_boundaries_reject_alternate_inputs():\n        allowed = Path(os.environ[\"CREDPROOF_ALLOWED_FILE\"])\n        forbidden_file = os.environ[\"CREDPROOF_FORBIDDEN_FILE\"]\n        forbidden_url = os.environ[\"CREDPROOF_FORBIDDEN_URL\"]\n        candidates = [\n            forbidden_file,\n            str(allowed.parent / \"..\" / \"secrets\" / \"secret.txt\"),\n            str(allowed.parent / \"link-to-forbidden.txt\"),\n        ]\n        for path in candidates:\n            try:\n                tool.run({\"resource\": \"boundary\", \"path\": path,\n                          \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]})\n            except ValueError:\n                pass\n            else:\n>               raise AssertionError(f\"outside file was accepted: {path}\")\nE               AssertionError: outside file was accepted: <lab>/secrets/secret.txt\n\ntests/test_business.py:49: AssertionError\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path <project>/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '<project>/pytest-cache-files-u4j56zc4'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n../site/_pytest/cacheprovider.py:429\n  /tmp/site/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path <project>/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '<project>/pytest-cache-files-sm8cw44r'\n    config.cache.set(\"cache/lastfailed\", self.lastfailed)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nFAILED tests/test_business.py::test_normal_business_result_contains_no_credential\nFAILED tests/test_business.py::test_file_and_service_boundaries_reject_alternate_inputs\n2 failed, 2 passed, 2 warnings in 0.08s\n",
       "stderr": "",
       "logs": "",
       "credential_leaks": [
@@ -1753,63 +1753,63 @@
       "audit_events": [
         {
           "event": "open",
-          "path_raw": "/tmp/project/.pytest_cache/v/cache/lastfailed",
-          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
-          "resolved_path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "path_raw": "<project>/.pytest_cache/v/cache/lastfailed",
+          "path": "<project>/.pytest_cache/v/cache/lastfailed",
+          "resolved_path": "<project>/.pytest_cache/v/cache/lastfailed",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/.pytest_cache/v/cache/nodeids",
-          "path": "/tmp/project/.pytest_cache/v/cache/nodeids",
-          "resolved_path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+          "path_raw": "<project>/.pytest_cache/v/cache/nodeids",
+          "path": "<project>/.pytest_cache/v/cache/nodeids",
+          "resolved_path": "<project>/.pytest_cache/v/cache/nodeids",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
-          "path": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
-          "resolved_path": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+          "path_raw": "<project>/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+          "path": "<project>/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+          "resolved_path": "<project>/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/tests/test_business.py",
-          "path": "/tmp/project/tests/test_business.py",
-          "resolved_path": "/tmp/project/tests/test_business.py",
+          "path_raw": "<project>/tests/test_business.py",
+          "path": "<project>/tests/test_business.py",
+          "resolved_path": "<project>/tests/test_business.py",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/__pycache__/tool.cpython-312.pyc",
-          "path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
-          "resolved_path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+          "path_raw": "<project>/__pycache__/tool.cpython-312.pyc",
+          "path": "<project>/__pycache__/tool.cpython-312.pyc",
+          "resolved_path": "<project>/__pycache__/tool.cpython-312.pyc",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/tool.py",
-          "path": "/tmp/project/tool.py",
-          "resolved_path": "/tmp/project/tool.py",
+          "path_raw": "<project>/tool.py",
+          "path": "<project>/tool.py",
+          "resolved_path": "<project>/tool.py",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/lab/data/brief.txt",
-          "path": "/tmp/lab/data/brief.txt",
-          "resolved_path": "/tmp/lab/data/brief.txt",
+          "path_raw": "<lab>/data/brief.txt",
+          "path": "<lab>/data/brief.txt",
+          "resolved_path": "<lab>/data/brief.txt",
           "classification": "allowed",
           "observation": "access_attempt",
           "mode": "r"
@@ -1821,9 +1821,9 @@
         },
         {
           "event": "open",
-          "path_raw": "/tmp/lab/data/brief.txt",
-          "path": "/tmp/lab/data/brief.txt",
-          "resolved_path": "/tmp/lab/data/brief.txt",
+          "path_raw": "<lab>/data/brief.txt",
+          "path": "<lab>/data/brief.txt",
+          "resolved_path": "<lab>/data/brief.txt",
           "classification": "allowed",
           "observation": "access_attempt",
           "mode": "r"
@@ -1835,18 +1835,18 @@
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/tests/test_business.py",
-          "path": "/tmp/project/tests/test_business.py",
-          "resolved_path": "/tmp/project/tests/test_business.py",
+          "path_raw": "<project>/tests/test_business.py",
+          "path": "<project>/tests/test_business.py",
+          "resolved_path": "<project>/tests/test_business.py",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/lab/secrets/secret.txt",
-          "path": "/tmp/lab/secrets/secret.txt",
-          "resolved_path": "/tmp/lab/secrets/secret.txt",
+          "path_raw": "<lab>/secrets/secret.txt",
+          "path": "<lab>/secrets/secret.txt",
+          "resolved_path": "<lab>/secrets/secret.txt",
           "classification": "forbidden",
           "observation": "access_attempt",
           "mode": "r"
@@ -1858,18 +1858,18 @@
         },
         {
           "event": "open",
-          "path_raw": "/tmp/project/.pytest_cache/v/cache/lastfailed",
-          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
-          "resolved_path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "path_raw": "<project>/.pytest_cache/v/cache/lastfailed",
+          "path": "<project>/.pytest_cache/v/cache/lastfailed",
+          "resolved_path": "<project>/.pytest_cache/v/cache/lastfailed",
           "classification": "other",
           "observation": "access_attempt",
           "mode": "r"
         },
         {
           "event": "open",
-          "path_raw": "/tmp/lab/data/brief.txt",
-          "path": "/tmp/lab/data/brief.txt",
-          "resolved_path": "/tmp/lab/data/brief.txt",
+          "path_raw": "<lab>/data/brief.txt",
+          "path": "<lab>/data/brief.txt",
+          "resolved_path": "<lab>/data/brief.txt",
           "classification": "allowed",
           "observation": "access_attempt",
           "mode": "r"
@@ -1881,9 +1881,9 @@
         },
         {
           "event": "open",
-          "path_raw": "/tmp/lab/data/brief.txt",
-          "path": "/tmp/lab/data/brief.txt",
-          "resolved_path": "/tmp/lab/data/brief.txt",
+          "path_raw": "<lab>/data/brief.txt",
+          "path": "<lab>/data/brief.txt",
+          "resolved_path": "<lab>/data/brief.txt",
           "classification": "allowed",
           "observation": "access_attempt",
           "mode": "r"
@@ -1909,9 +1909,9 @@
       "forbidden_reads": [
         {
           "event": "open",
-          "path_raw": "/tmp/lab/secrets/secret.txt",
-          "path": "/tmp/lab/secrets/secret.txt",
-          "resolved_path": "/tmp/lab/secrets/secret.txt",
+          "path_raw": "<lab>/secrets/secret.txt",
+          "path": "<lab>/secrets/secret.txt",
+          "resolved_path": "<lab>/secrets/secret.txt",
           "classification": "forbidden",
           "observation": "access_attempt",
           "mode": "r"
