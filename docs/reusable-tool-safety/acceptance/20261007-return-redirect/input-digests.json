@@ -1,0 +1,10 @@
+{
+  "source_commit": "17a5c8c70af0b26225fdc78a093388daf65d8f95",
+  "files": {
+    "examples\\material_assistant\\credproof.toml": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+    "examples\\material_assistant\\tests\\test_business.py": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+    "examples\\material_assistant\\tool.py": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106"
+  },
+  "rule_change": "entry.scenarios adds normal_allowed_output and allowed_file_redirect; redirect requires observed allow request and declared HTTPError; no case-specific predicate",
+  "execution": "WSL/bubblewrap candidate check on current RTX 5090 host; synthetic credential only"
+}

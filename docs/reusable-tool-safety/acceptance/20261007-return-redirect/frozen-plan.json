@@ -1,0 +1,24 @@
+{
+  "schema": "credproof.return-redirect-plan/v1",
+  "status": "FROZEN_BEFORE_REVISED_CHECK",
+  "source_commit": "17a5c8c70af0b26225fdc78a093388daf65d8f95",
+  "registered_project": "material-assistant",
+  "cases": [
+    "original",
+    "saved-candidate-02"
+  ],
+  "scenarios": [
+    "normal_allowed_output",
+    "allowed_file_redirect"
+  ],
+  "budgets": {
+    "max_model_calls": 12,
+    "max_candidates": 3,
+    "max_format_corrections": 1,
+    "request_timeout_seconds": 120,
+    "task_wall_clock_seconds": 900
+  },
+  "model_run": "one formal task after fixed checker rejection; no retries",
+  "expected_boundary": "normal allowed return contains no synthetic credential; redirect records allowed request and raises HTTPError before forbidden service",
+  "note": "saved candidate-02 is historical model output; no manual edits were applied"
+}

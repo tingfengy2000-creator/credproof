@@ -1,11 +1,11 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.20",
-  "tested_source_commit": "7699c64703d545d70d8c1c487937bdb5f2fe5d73",
+  "candidate_version": "0.3.0-dev.21",
+  "tested_source_commit": "17a5c8c70af0b26225fdc78a093388daf65d8f95",
   "generated_at": "2026-10-07",
   "status_summary": {
-    "verified": 13,
-    "unverified": 0,
+    "verified": 12,
+    "unverified": 1,
     "blocked": 0,
     "excluded": 0
   },
@@ -227,33 +227,26 @@
     {
       "id": "R08",
       "name": "候选修复授权与修改边界",
-      "status": "IMPLEMENTED_VERIFIED",
+      "status": "IMPLEMENTED_UNVERIFIED",
       "implementation": [
         "credproof_safety/agent.py:serve",
         "agent_pilot/tools.py:dispatch",
         "agent_pilot/tests/test_reliability.py"
       ],
       "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先修正首请求上下文与可信阶段顺序，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
-      "acceptance": "正式运行首个模型请求已包含 tool.py 与 tests/test_business.py 索引；模型调用6次、服务usage 6份、native工具请求7次、接受候选2份、可信验收2次。候选1因 no_credential_output FAIL，候选2通过全部必要安全与业务检查，任务 COMPLETED_REPAIRED；同一候选已导出 project-bundle/v1 并在新目录无模型复检 PASS。",
+      "acceptance": "修订规则真实复测：原始版本 FAIL；保存 candidate-02 FAIL（正常返回含合成凭据且允许服务跳转到达禁止服务）。正式模型复验尚未运行。",
       "commands": [
         ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests/test_model_boundary.py credproof_safety/tests/test_web_repair.py credproof_safety/tests/test_project_bundle.py",
         "credproof_safety.agent.request_repair(config, output=...) for the registered assistant-original/p01 run",
         "credproof_safety.project_bundle.export_project_bundle(method, project-bundle); recheck_project_bundle(project-bundle, new-directory-recheck.json)"
       ],
       "evidence": [
-        "credproof_safety/agent.py:_model_readable_paths/_phase_rejection/serve",
-        "agent_pilot/tests/test_model_boundary.py",
-        "acceptance/20261007-agent-sequencing/evidence/summary.json",
-        "acceptance/20261007-agent-sequencing/evidence/model-work/model-01-request.json",
-        "acceptance/20261007-agent-sequencing/evidence/model-trace/",
-        "acceptance/20261007-agent-sequencing/evidence/rpc/",
-        "acceptance/20261007-agent-sequencing/evidence/candidates/",
-        "acceptance/20261007-agent-sequencing/evidence/verifications/",
-        "acceptance/20261007-agent-sequencing/formal-p01/project-bundle/",
-        "acceptance/20261007-agent-sequencing/formal-p01/new-directory-recheck.json"
+        "credproof_safety/agent.py:_model_feedback",
+        "credproof_safety/project.py:_scenario_requirements/_scenario_observation_gap",
+        "acceptance/20261007-return-redirect/"
       ],
-      "source_commit": "7699c64703d545d70d8c1c487937bdb5f2fe5d73",
-      "gaps": "仅证明当前登记的资料助手 p01 在合成凭据、受控文件/loopback服务和声明测试条件下完成一次修复；不代表跨项目泛化、稳定成功率或生产级安全保证。p02-p06仍为历史回放。",
+      "source_commit": "17a5c8c70af0b26225fdc78a093388daf65d8f95",
+      "gaps": "需要一次冻结预算内的新模型候选满足正常返回、日志、文件边界、直接禁止服务及跳转负例，并完成同候选导出与新目录复检。",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
@@ -295,17 +288,11 @@
         },
         {
           "id": "model_repair_effect",
-          "status": "IMPLEMENTED_VERIFIED",
+          "status": "IMPLEMENTED_UNVERIFIED",
           "evidence": [
-            "acceptance/20261007-agent-sequencing/evidence/summary.json",
-            "acceptance/20261007-agent-sequencing/evidence/candidates/candidate-01.py",
-            "acceptance/20261007-agent-sequencing/evidence/candidates/candidate-02.py",
-            "acceptance/20261007-agent-sequencing/evidence/verifications/verification-01.json",
-            "acceptance/20261007-agent-sequencing/evidence/verifications/verification-02.json",
-            "acceptance/20261007-agent-sequencing/formal-p01/project-bundle/",
-            "acceptance/20261007-agent-sequencing/formal-p01/new-directory-recheck.json"
+            "acceptance/20261007-return-redirect/"
           ],
-          "reason": "在一个登记的合成 p01 任务上取得一次可信 PASS；范围仍受当前配置、测试和隔离环境限定。"
+          "reason": "修订检查已拒绝保存候选；新模型任务待执行。"
         }
       ],
       "notes": "本次正式 p01 独立计数：6次模型尝试/6份usage/7次工具请求/2份接受候选/2次验收（FAIL→PASS）；旧页面批次6/5/7/1/1与本次不合并。"
@@ -491,8 +478,11 @@
     "new model/case expansion"
   ],
   "interpretation": "Detection, program gate, human repair validation and one bounded fresh Agent repair are reported separately. READY_FOR_EXTERNAL_FINAL_REVIEW applies only to the documented p01 scope; p02-p06 remain historical replay and 5060 handoff is intentionally not started.",
-  "current_review_receipt_commit": "7699c64703d545d70d8c1c487937bdb5f2fe5d73",
-  "handoff_status": "READY_FOR_EXTERNAL_FINAL_REVIEW",
-  "handoff_blockers": [],
-  "version": "0.3.0-dev.20"
+  "current_review_receipt_commit": "17a5c8c70af0b26225fdc78a093388daf65d8f95",
+  "handoff_status": "NOT_READY_FOR_HANDOFF",
+  "handoff_blockers": [
+    "修订后的正常返回与允许服务跳转场景已接入，保存 candidate-02 已被真实检查拒绝；尚无新模型候选在修订规则下通过。",
+    "新规则下的模型候选导出与新目录复检尚待本轮唯一正式模型任务。"
+  ],
+  "version": "0.3.0-dev.21"
 }

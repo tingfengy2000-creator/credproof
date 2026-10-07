@@ -1,4 +1,4 @@
-# CredProof 需求—实现—证据验收表（dev20）
+# CredProof 需求—实现—证据验收表（dev21）
 
 本表对应本版源码提交（完整 SHA 在 GitHub 评审入口及后续交付收据中固定）；验收资料随后在提交中固化。它用于外部复查，不表示模型修复成功或参赛资格已验收。
 
@@ -13,7 +13,7 @@
 | R05 | 网络边界 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:mock services/socket audit；credproof_safety/project.py:_verdict`；experiments/reusable-tool-safety/20261003-targeted-fix-07/allowed_file_redirect.json；experiments/reusable-tool-safety/20261003-targeted-fix-07/reintroduced_file_bypass.json | 不宣称公网 SSRF、DNS、原生 syscall 或 Windows 内核网络审计 |
 | R06 | 必要业务测试真实完成与通过 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:CredProofPytestObserver；credproof_safety/project.py:_verdict`；_runs/current-pytest-observer/；agent_pilot/tests/test_runtime_config.py | 只对声明的必要用例语义负责；递归包装 skip 由执行侧区分 |
 | R07 | 单页项目注册、检查、总体判决与分项 | `IMPLEMENTED_VERIFIED` | `agent_pilot/project_workspace.py；agent_pilot/web.py；credproof_safety/web_repair.py`；`acceptance/20261006-final/page-flow.md`；`acceptance/20261006-page-live-boundary/summary.json` | 目前只有登记案例 p01 映射到资料助手固定项目；p02–p06 仍只提供历史回放 |
-| R08 | 候选修复授权与修改边界 | `IMPLEMENTED_VERIFIED` | `credproof_safety/agent.py:_model_readable_paths/_phase_rejection/serve`; `acceptance/20261007-agent-sequencing/evidence/summary.json`; `acceptance/20261007-agent-sequencing/formal-p01/project-bundle/`; `acceptance/20261007-agent-sequencing/formal-p01/new-directory-recheck.json` | 本次 p01 在固定合成条件下完成一次 FAIL→PASS；不代表跨项目泛化、稳定成功率或生产级保证，p02–p06仍为历史回放 |
+| R08 | 候选修复授权与修改边界 | `IMPLEMENTED_UNVERIFIED` | `credproof_safety/agent.py:_model_readable_paths/_phase_rejection/serve`; `credproof_safety/project.py:_scenario_requirements/_scenario_observation_gap`; `acceptance/20261007-return-redirect/` | 修订后的正常返回与允许服务跳转已真实覆盖并拒绝保存 candidate-02；新模型 PASS、导出和新目录复检待本轮完成 |
 | R09 | 对象、报告适用性与复检 | `IMPLEMENTED_VERIFIED` | `agent_pilot/web.py:object/applicability checks；credproof_safety/project_bundle.py；credproof_safety/tests/test_project_bundle.py；acceptance/20261006-live-correction/new-project-bundle/；acceptance/20261006-live-correction/public-project-bundle-dev17/；acceptance/20261006-live-correction/public-project-recheck-dev17.json` | 首次导出核对当前候选树、配置、入口和必要测试；公开派生 bundle 按固定 Git blob 字节生成并在新目录复检。旧历史 bundle 与 `project-public-bundle/v1` 分流；哈希是完整性绑定，不是密码学证明或第三方认证 |
 | R10 | 导出与项目内复用 | `IMPLEMENTED_VERIFIED` | `credproof_safety/project.py:export_regression_tests；scripts/run-exported-regression-check.py`；acceptance/20261006-final/consumer/；acceptance/20261006-final/exported-tests/；acceptance/20261006-final/summary.json | 受控 WSL/bubblewrap 依赖需在消费者机器准备 |
 | R11 | 清洁安装、启动与隔离预检 | `IMPLEMENTED_VERIFIED` | `pyproject.toml package-data；agent_pilot/preflight.py；agent_pilot/launch.py；agent_pilot/web.py:launch_command`；acceptance/20261006-final/wheel-manifest.json；acceptance/20261006-final/import-origin-sanitized.txt；acceptance/20261006-final/preflight-summary.json；acceptance/20261006-final/page-flow.md | 跨机器、非 WSL 环境未承诺；现场页面必须通过 `CREDPROOF_INSTALLED_PYTHON` 或 local-runtime 的 `program_python` 指定已核验安装解释器，不再回退历史 `_runs` |
@@ -52,3 +52,10 @@
 经过受控 CUDA 环境修正后，正式登记的 `assistant-original/p01` 运行实际使用 `CUDA0 / NVIDIA GeForce RTX 5090 / 31.8 GiB`。运行预算冻结为最多 12 次模型请求、3 个候选、1 次格式纠正、120 秒单请求和 900 秒任务墙钟；本次实际为 6 次模型请求、6 份 usage、7 次工具请求、2 个被接受候选和 2 次候选验收。候选 1 因仍有 `no_credential_output` 证据而 FAIL，候选 2 通过全部安全与业务检查。该候选随后导出为当前 project-bundle，并在新目录无模型复检 PASS。
 
 这是一项固定合成任务的真实运行证据，不代表跨项目泛化、稳定成功率或所有风险类别均可自动修复。旧批次和 p02–p06 的历史回放不与本次结果合并；本轮不启动 5060 交接。
+
+
+## 2026-10-07 返回值与跳转漏测修正（dev21）
+
+本轮新增两个声明场景：允许文件+允许服务的真实返回必须不含合成凭据；允许文件+`/api/redirect` 必须产生允许服务观测，并满足声明的 `HTTPError`，否则为 `UNKNOWN` 或 `FAIL`。保存的 candidate-02 原样复测为 `FAIL`：正常返回仍含合成凭据，跳转观测到 `/api/redirect` 后又到达禁止 `/secret`。这份结果说明旧 PASS 只覆盖了旧入口，并不代表修复效果成立。
+
+本目录的定向报告在 `acceptance/20261007-return-redirect/`。一次新的冻结模型任务及其候选导出/新目录复检尚待执行；在此之前本版保持 `NOT_READY_FOR_HANDOFF`。历史 8/10/20 版本记录不被改写或拼接。
