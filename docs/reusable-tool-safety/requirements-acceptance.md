@@ -102,3 +102,11 @@ v3 原始请求序列的无模型重放见 `acceptance/20261007-return-redirect/
 源码提交 `2cf029ddb5adfa1bce40332906cb359a4e06a16b` 的压缩器保留当前源码、必要测试、候选失败反馈、最新 executor 状态和成对工具调用/返回；拒绝与错误语义不改写。重放与预算预检见 `acceptance/20261007-return-redirect/context-budget-pilot-v5/`，六个协议阶段均在 14,848 输入上限内，前缀结构变化使用完整 wire 字节回退。
 
 同一 5090、`qwen3-coder:30b`、`assistant-original/p01` 只运行一次：8 次模型请求、8 份 usage、9 次工具请求、2 个接受候选、2 次程序自动验收；候选 1 和 2 均为 `FAIL`，第 9 次请求在输入预算保护处停止。没有可信 PASS、导出或新目录复检，状态继续 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。
+
+## dev26：上下文保真与预算同时可用的协议修正
+
+本轮在不重跑模型的前提下修正了 v5 暴露的重复源码路径：候选 2 的 `NO_CHANGE` 提交之后再次读取同一入口时，只有在规范化源码、候选摘要和主机当前对象一致的条件下才做显式去重；完整源码仍保留在提交参数中，读取结果保留 `source_deduplication` 映射。`REJECTED`、`ERROR`、`UNKNOWN` 和失败 reason 不改写，工具调用/返回 ID 仍成对。
+
+真实 v5 公开摘要和第 8 次 wire 前缀的无模型重放见 `acceptance/20261007-return-redirect/context-budget-pilot-v5/no-change-dedup/`，脚本为 `scripts/replay-context-budget-v5-no-change.py`。重放下一请求 wire 13,788 bytes，输入上界 13,788/14,848，context 上界 15,324/16,384，当前源码、必要测试、NO_CHANGE、最新状态和配对 ID 均保留。该结果是协议重放，不是新的模型调用，也不改变 v5 正式任务结果。
+
+v5 唯一正式任务仍是 8 次模型请求、8 份 usage、9 次工具请求、2 个接受候选、2 次程序自动验收，候选均 `FAIL`，第 9 次请求因输入预算保护未发送；没有模型 PASS、同候选导出或新目录复检。R08 的模型修复效果仍为 `IMPLEMENTED_UNVERIFIED`，整体为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。

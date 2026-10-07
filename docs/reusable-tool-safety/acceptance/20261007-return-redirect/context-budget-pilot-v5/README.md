@@ -39,3 +39,11 @@
 ## 当前结论
 
 本轮关闭了“最新读取/拒绝状态在压缩后消失”的协议缺口，并证明预检分支和正式运行都能把当前状态送到候选验收。正式任务在累计两个候选及其反馈后，第 9 次请求仍触发保守输入预算保护，说明全程余量尚未充分；这不是模型修复成功。状态仍为 `NOT_READY_FOR_HANDOFF`；没有启动 5060，也没有进行候选导出或新目录复检。该结果不代表模型泛化能力或成功率。
+
+## 正式运行后的最小上下文修正
+
+正式 v5 运行结束后发现，候选 2 的 `NO_CHANGE` 提交和随后再次读取同一 `tool.py` 会重复携带相同源码。当前压缩器只在确认规范化源码、候选摘要和主机 `current_candidate_sha256` 完全一致时，保留 `submit_patch` 参数中的一份完整源码，并把最新 `read_code` 返回改为显式 `source_deduplication` 关系；`NO_CHANGE`、读取状态和最新 `executor_state` 仍原样可见。不同对象、不同摘要或缺少完整正文时不会去重。
+
+脚本 [`scripts/replay-context-budget-v5-no-change.py`](../../../../../scripts/replay-context-budget-v5-no-change.py) 使用公开的真实 v5 模型摘要和第 8 次 wire 前缀重建未发送的下一请求，不调用 Ollama、不执行候选。结果见 [`no-change-dedup/replay-summary.json`](no-change-dedup/replay-summary.json) 和 [`no-change-dedup/reconstructed-next-request.json`](no-change-dedup/reconstructed-next-request.json)：当前源码、必要测试、`NO_CHANGE` 及其 reason、最新状态和成对工具 ID 均保留，UTF-8 wire 上界从原未发送的 15,972 bytes 降为 13,788，输入上界 13,788 ≤ 14,848，context 上界 15,324 ≤ 16,384。该结果是修正后的协议重放，不是新的模型调用或修复成功。
+
+本修正尚未用模型重新运行；v5 唯一正式任务仍按上文 8 次请求、2 个 FAIL 候选和输入预算停止记录。没有可信 PASS、候选导出或新目录复检，状态继续为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。

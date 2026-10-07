@@ -243,6 +243,66 @@ class ModelBoundaryContractTests(unittest.TestCase):
         self.assertIn('remaining_tool_calls', text)
         self.assertNotIn('raw detail retained only in host audit', text)
 
+    def test_no_change_keeps_source_once_and_maps_latest_read(self):
+        code = "CURRENT = 2\n"
+        digest = hashlib.sha256(code.encode()).hexdigest()
+        state = {
+            "phase": "candidate_verified", "current_candidate": 2,
+            "current_candidate_sha256": digest, "last_verified_candidate": 2,
+            "last_verification_verdict": "FAIL", "remaining_tool_calls": 3,
+            "remaining_candidates": 1, "remaining_verifications": 1,
+        }
+        messages = [
+            {"role": "system", "content": "system"}, {"role": "user", "content": "task"},
+            {"role": "assistant", "content": "", "function_call": {
+                "name": "submit_patch", "arguments": json.dumps({"code": code})},
+             "extra": {"function_id": "accepted"}},
+            {"role": "function", "content": json.dumps({
+                "status": "ACCEPTED_FOR_VERIFICATION", "candidate": 2,
+                "candidate_sha256": digest, "verification_action": "program_auto_verify",
+                "verification": {"status": "OK", "report": {"verdict": "FAIL", "reason": "network"}},
+                "executor_state": state,
+            }), "extra": {"function_id": "accepted"}},
+            {"role": "assistant", "content": "", "function_call": {
+                "name": "read_code", "arguments": '{"path":"tool.py"}'},
+             "extra": {"function_id": "latest-read"}},
+            {"role": "function", "content": json.dumps({
+                "status": "OK", "path": "tool.py", "code": code,
+                "executor_state": {**state, "remaining_tool_calls": 2},
+            }), "extra": {"function_id": "latest-read"}},
+            {"role": "assistant", "content": "", "function_call": {
+                "name": "submit_patch", "arguments": json.dumps({"code": code})},
+             "extra": {"function_id": "no-change"}},
+            {"role": "function", "content": json.dumps({
+                "status": "REJECTED", "reason": "NO_CHANGE", "candidate": 2,
+                "candidate_sha256": digest, "executor_state": {**state, "remaining_tool_calls": 1},
+            }), "extra": {"function_id": "no-change"}},
+            {"role": "assistant", "content": "", "function_call": {
+                "name": "read_code", "arguments": '{"path":"tool.py"}'},
+             "extra": {"function_id": "latest-read-after"}},
+            {"role": "function", "content": json.dumps({
+                "status": "OK", "path": "tool.py", "code": code,
+                "executor_state": {**state, "remaining_tool_calls": 0},
+            }), "extra": {"function_id": "latest-read-after"}},
+        ]
+        wire = to_ollama_messages(compact_messages_for_budget(messages))
+        text = json.dumps(wire, ensure_ascii=False)
+        self.assertIn("NO_CHANGE", text)
+        self.assertIn("CURRENT = 2", text)
+        self.assertIn("source_deduplication", text)
+        self.assertIn("latest-read-after", text)
+        self.assertIn("function.arguments.code", text)
+        # The read result is mapped to the retained submit argument, not replaced
+        # by an unverified hash-only placeholder.
+        tool_results = [item for item in wire if item.get("role") == "tool"]
+        latest = next(item for item in tool_results if item.get("tool_call_id") == "latest-read-after")
+        latest_value = json.loads(latest["content"])
+        self.assertNotIn("code", latest_value)
+        self.assertEqual(latest_value["code_relation"]["source_call_id"], "no-change")
+        calls = [call["id"] for item in wire for call in item.get("tool_calls", [])]
+        result_ids = [item.get("tool_call_id") for item in wire if item.get("role") == "tool"]
+        self.assertEqual(calls, result_ids)
+
     def test_rejected_verify_does_not_drop_latest_rules_evidence(self):
         messages = [
             {"role": "system", "content": "system"}, {"role": "user", "content": "task"},

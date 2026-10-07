@@ -421,3 +421,11 @@ python scripts/run-exported-regression-check.py `
 本轮源码修正提交为 `2cf029ddb5adfa1bce40332906cb359a4e06a16b`。协议预检覆盖了拒绝和下一候选分支，但正式运行在累计候选反馈后仍于第9次请求触发保守输入预算，不能把预算问题写成已完全解决。`compact_messages_for_budget` 在保留当前源码、必要测试、候选验收失败和最新工具返回配对的同时，将主机最新 `executor_state` 单独保留一次；重复状态字段不再逐条占用上下文。`REJECTED`、`ERROR`、`UNKNOWN` 和失败原因仍按原值保留。协议预检新增当前取证拒绝和合法下一候选分支；结构前缀改变时使用完整 wire 字节回退，v4 实际服务前缀由重放单独核对。材料见 [`acceptance/20261007-return-redirect/context-budget-pilot-v5/README.md`](acceptance/20261007-return-redirect/context-budget-pilot-v5/README.md)。
 
 随后在同一 5090、同一 `assistant-original/p01` 和既有隔离边界内只运行一次正式模型任务：8 次模型请求、8 份 usage、9 次工具请求、2 个接受候选、2 次程序自动验收。候选 1 仍触发返回值/日志与禁止服务问题；候选 2 去掉了返回值中的凭据，但业务测试仍有 1 项失败，且允许文件+跳转场景仍到达禁止服务。第 9 次请求在输入预算保护处停止，未重试；没有可信 `PASS`，没有导出或新目录复检。逐次脱敏记录、候选和结果见该目录的 `public-evidence/`，原始 artifact 仅保留本地。状态仍为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。
+
+## dev26：把 NO_CHANGE 去重与预算验证放在同一条协议上
+
+对 dev25 的真实停止状态做了不调用模型的最小修正。真实序列是“候选 2 自动验收 FAIL→再次读取当前 `tool.py`→相同源码提交 `NO_CHANGE`”；压缩器现在只在提交参数正文、读取正文摘要和主机当前候选摘要完全一致时，将重复读取映射到提交正文，并保留 `source_deduplication`、拒绝 reason、最新状态和工具调用配对。不同对象不会套用该映射。
+
+脚本 [`scripts/replay-context-budget-v5-no-change.py`](../../scripts/replay-context-budget-v5-no-change.py) 从公开的真实 v5 摘要和第 8 次 wire 前缀重放下一请求；结果见 [`no-change-dedup/replay-summary.json`](acceptance/20261007-return-redirect/context-budget-pilot-v5/no-change-dedup/replay-summary.json) 和 [`no-change-dedup/reconstructed-next-request.json`](acceptance/20261007-return-redirect/context-budget-pilot-v5/no-change-dedup/reconstructed-next-request.json)。这次重放不访问 Ollama、不执行候选，保留当前源码、必要测试、`NO_CHANGE`/reason、最新 executor state 和成对 ID；wire 字节上界为 13,788，输入上界 13,788/14,848，context 上界 15,324/16,384，均通过。原 v5 未发送的 15,972-byte request 仍作为历史事实保留。
+
+本修正确认“状态保真”和“预算可用”可以同时满足，但尚未用修正版重新推理。v5 正式任务仍为 8 次请求、2 个候选、2 次自动验收且均 `FAIL`，没有可信 PASS、导出或新目录复检；当前仍为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。

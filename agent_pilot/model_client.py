@@ -218,6 +218,11 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
             return {}
         return value if isinstance(value, dict) else {}
 
+    def _source_digest(code: object) -> str | None:
+        if not isinstance(code, str):
+            return None
+        return hashlib.sha256(code.replace('\r\n', '\n').replace('\r', '\n').encode('utf-8')).hexdigest()
+
     def _compact_feedback(value: dict) -> dict:
         """Keep trusted decision fields while dropping repeated raw observations."""
         result = {key: value[key] for key in (
@@ -396,11 +401,6 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
             } if isinstance(verification, dict) else None,
         }
 
-        def _source_digest(code: object) -> str | None:
-            if not isinstance(code, str):
-                return None
-            return hashlib.sha256(code.replace('\r\n', '\n').replace('\r', '\n').encode('utf-8')).hexdigest()
-
         candidate_sha = accepted_value.get('candidate_sha256')
         current_read_is_candidate = any(
             _source_digest(pair[4].get('code')) == candidate_sha
@@ -451,6 +451,28 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
     latest_host_state = next((copy.deepcopy(pair[4]['executor_state'])
                               for pair in sorted(pairs, key=lambda p: p[1], reverse=True)
                               if isinstance(pair[4].get('executor_state'), dict)), None)
+    # NO_CHANGE contains the current source once more. Keep the newest full
+    # call/result pair and map a duplicate read body to that visible argument.
+    # No source is removed unless its complete same-object text is retained.
+    duplicate_source_call = latest_matching(
+        lambda name, value: name == 'submit_patch'
+        and value.get('status') == 'REJECTED'
+        and value.get('reason') == 'NO_CHANGE')
+    if duplicate_source_call is not None and duplicate_source_call[2] not in selected:
+        duplicate_source_call = None
+    if duplicate_source_call is not None:
+        try:
+            args = json.loads(duplicate_source_call[3]['function_call'].get('arguments') or '{}')
+            code = args.get('code') if isinstance(args, dict) else None
+            if (isinstance(code, str) and _source_digest(code) == duplicate_source_call[4].get('candidate_sha256')
+                    and latest_host_state is not None
+                    and duplicate_source_call[4].get('candidate_sha256') == latest_host_state.get('current_candidate_sha256')):
+                pass
+            else:
+                duplicate_source_call = None
+        except (TypeError, ValueError):
+            duplicate_source_call = None
+    source_deduplication = []
     selected_names = {ident: calls[ident][1] for ident in selected}
     for index, item in enumerate(copied[2:], start=2):
         if index not in keep_indices:
@@ -472,6 +494,19 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
             # executor-context block. Old per-tool counters must not compete
             # with it. Preserve the paired status/source and label the mapping.
             value = _json_result(item)
+            if (duplicate_source_call is not None and name == 'read_code'
+                    and value.get('status') == 'OK'
+                    and _source_digest(value.get('code')) == duplicate_source_call[4].get('candidate_sha256')):
+                value.pop('code')
+                value['code_relation'] = {
+                    'source_call_id': duplicate_source_call[2],
+                    'source_field': 'function.arguments.code',
+                    'code_sha256': duplicate_source_call[4]['candidate_sha256'],
+                    'same_current_object': True,
+                }
+                source_deduplication.append({'read_call_id': ident, **value['code_relation']})
+                item = copy.deepcopy(item)
+                item['content'] = json.dumps(value, ensure_ascii=False, separators=(',', ':'))
             if latest_host_state is not None and 'executor_state' in value:
                 value.pop('executor_state')
                 value['executor_state_relation'] = 'latest_host_state_in_executor_context'
@@ -509,6 +544,8 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
             'latest_read_receipts': read_receipts,
             'note': 'This state is authoritative task data. It does not grant permissions and cannot replace a missing tool result.',
         }
+        if source_deduplication:
+            trusted['source_deduplication'] = source_deduplication
         if accepted_summary is not None and accepted[2] not in selected:
             trusted['accepted_candidate'] = accepted_summary
         compacted.append({
@@ -764,6 +801,8 @@ class LocalAgentClient:
         budget = estimate_input_budget(payload, self.max_output_tokens, self._last_measured_request)
         self._journal.emit("input_budget_checked", next_call_id=self.model_calls + 1, budget=budget)
         if not budget["within_context_budget"] or not budget["within_wire_limit"]:
+            self._journal.artifact(f"model-{self.model_calls + 1:02d}-unsent-request.json", payload)
+            self._journal.artifact(f"model-{self.model_calls + 1:02d}-unsent-budget.json", budget)
             self._journal.emit("input_budget_exceeded", budget=budget, measured_model_tokens=None)
             raise BudgetExceeded("Request exceeds the recorded conservative input budget; no silent truncation")
         self.model_calls += 1

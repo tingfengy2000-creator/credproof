@@ -1,0 +1,69 @@
+{
+  "schema": "credproof.context-budget-pilot-v5-no-change-replay/v1",
+  "protocol_replay": true,
+  "model_request_sent": false,
+  "candidate_execution": false,
+  "source": {
+    "public_summary": "../public-evidence/formal-p01-model-summary.json",
+    "wire_prefix": "../public-evidence/model-08-request.json",
+    "source_commit_of_formal_run": "2cf029ddb5adfa1bce40332906cb359a4e06a16b",
+    "compactor_under_test": "agent_pilot\\model_client.py"
+  },
+  "messages": {
+    "completed_internal_messages": 19,
+    "prefix_messages_reused": 2,
+    "wire_messages": 11,
+    "tool_calls": [
+      "call_endplrj7",
+      "call_6vo3jfvb",
+      "call_rm34rooi",
+      "call_aj3djkf0"
+    ],
+    "tool_results": [
+      "call_endplrj7",
+      "call_6vo3jfvb",
+      "call_rm34rooi",
+      "call_aj3djkf0"
+    ],
+    "ids_paired": true
+  },
+  "budget": {
+    "method": "UTF8_WIRE_BYTES",
+    "reuse_reason": "no_previous_measured_request",
+    "request_bytes": 13788,
+    "prefix_call_id": null,
+    "prefix_prompt_tokens": null,
+    "suffix_json_bytes": null,
+    "new_message_count": null,
+    "new_message_reserve_tokens": 0,
+    "global_reserve_tokens": 512,
+    "max_output_tokens": 1024,
+    "input_token_upper_bound": 13788,
+    "input_token_limit": 14848,
+    "context_token_upper_bound": 15324,
+    "context_token_limit": 16384,
+    "within_context_budget": true,
+    "within_wire_limit": true,
+    "request_sha256": "b1ce5bde50ed9bc007fb9a0b30377eb80380ad058c484db3921b123880c460a6",
+    "request_json_bytes": 13788,
+    "request_limit_bytes": 262144,
+    "context_limit_tokens": 16384
+  },
+  "preserved": {
+    "current_source_body": true,
+    "source_deduplication_relation": true,
+    "no_change_status_and_reason": true,
+    "latest_executor_state": true,
+    "paired_tool_calls_and_results": true
+  },
+  "assertions": {
+    "all_payload_limits_pass": true,
+    "current_state_and_source_fit_together": true,
+    "no_request_sent": true
+  },
+  "notes": [
+    "The previous v5 formal request-09 stop remains an unsent 15,972-byte payload; this replay is a post-fix derived payload, not a new model result.",
+    "The duplicate read body is removed only when the exact same normalized source is retained in the NO_CHANGE submit arguments; the relation is explicit and the source is not hash-only.",
+    "The public summary and wire prefix are sanitized evidence; no candidate is executed and no Ollama request is sent."
+  ]
+}
