@@ -1,0 +1,21 @@
+{
+  "schema": "credproof.context-budget-post-run-checks/v1",
+  "source_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e",
+  "checks": [
+    {
+      "command": ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests",
+      "exit_code": 0,
+      "result": "110 passed, 1 warning",
+      "model_calls": 0
+    },
+    {
+      "command": ".venv\\Scripts\\python.exe scripts/model-context-budget-preflight.py",
+      "exit_code": 0,
+      "result": "protocol_preflight=true; all_within_declared_budget=true; model_calls=0",
+      "model_calls": 0,
+      "evidence": "../20261007-context-budget-preflight.json"
+    }
+  ],
+  "scope": "post-run protocol and regression checks only; the formal model run is recorded separately",
+  "formal_model_run": "context-budget-pilot/public-evidence/run-summary.json"
+}

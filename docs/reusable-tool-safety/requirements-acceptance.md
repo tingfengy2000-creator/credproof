@@ -1,4 +1,4 @@
-# CredProof 需求—实现—证据验收表（dev21）
+# CredProof 需求—实现—证据验收表（dev22）
 
 本表对应本版源码提交（完整 SHA 在 GitHub 评审入口及后续交付收据中固定）；验收资料随后在提交中固化。它用于外部复查，不表示模型修复成功或参赛资格已验收。
 
@@ -13,12 +13,12 @@
 | R05 | 网络边界 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:mock services/socket audit；credproof_safety/project.py:_verdict`；experiments/reusable-tool-safety/20261003-targeted-fix-07/allowed_file_redirect.json；experiments/reusable-tool-safety/20261003-targeted-fix-07/reintroduced_file_bypass.json | 不宣称公网 SSRF、DNS、原生 syscall 或 Windows 内核网络审计 |
 | R06 | 必要业务测试真实完成与通过 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:CredProofPytestObserver；credproof_safety/project.py:_verdict`；_runs/current-pytest-observer/；agent_pilot/tests/test_runtime_config.py | 只对声明的必要用例语义负责；递归包装 skip 由执行侧区分 |
 | R07 | 单页项目注册、检查、总体判决与分项 | `IMPLEMENTED_VERIFIED` | `agent_pilot/project_workspace.py；agent_pilot/web.py；credproof_safety/web_repair.py`；`acceptance/20261006-final/page-flow.md`；`acceptance/20261006-page-live-boundary/summary.json` | 目前只有登记案例 p01 映射到资料助手固定项目；p02–p06 仍只提供历史回放 |
-| R08 | 候选修复授权与修改边界 | `IMPLEMENTED_UNVERIFIED` | `credproof_safety/agent.py:_model_readable_paths/_phase_rejection/serve`; `credproof_safety/project.py:_scenario_requirements/_scenario_observation_gap`; `acceptance/20261007-return-redirect/` | 修订后的正常返回与允许服务跳转已真实覆盖并拒绝保存 candidate-02；新模型 PASS、导出和新目录复检待本轮完成 |
+| R08 | 候选修复授权与修改边界 | `IMPLEMENTED_UNVERIFIED` | `credproof_safety/agent.py:_model_readable_paths/_phase_rejection/serve`; `credproof_safety/project.py:_scenario_requirements/_scenario_observation_gap`; `acceptance/20261007-return-redirect/`；`acceptance/20261007-return-redirect/context-budget-pilot/` | 预算预检三阶段均在16K内；正式任务12次模型请求/12份usage/15次工具请求尝试，候选1验收FAIL、候选2未验收，任务INCOMPLETE；没有模型PASS、导出或新目录复检 |
 | R09 | 对象、报告适用性与复检 | `IMPLEMENTED_VERIFIED` | `agent_pilot/web.py:object/applicability checks；credproof_safety/project_bundle.py；credproof_safety/tests/test_project_bundle.py；acceptance/20261006-live-correction/new-project-bundle/；acceptance/20261006-live-correction/public-project-bundle-dev17/；acceptance/20261006-live-correction/public-project-recheck-dev17.json` | 首次导出核对当前候选树、配置、入口和必要测试；公开派生 bundle 按固定 Git blob 字节生成并在新目录复检。旧历史 bundle 与 `project-public-bundle/v1` 分流；哈希是完整性绑定，不是密码学证明或第三方认证 |
 | R10 | 导出与项目内复用 | `IMPLEMENTED_VERIFIED` | `credproof_safety/project.py:export_regression_tests；scripts/run-exported-regression-check.py`；acceptance/20261006-final/consumer/；acceptance/20261006-final/exported-tests/；acceptance/20261006-final/summary.json | 受控 WSL/bubblewrap 依赖需在消费者机器准备 |
 | R11 | 清洁安装、启动与隔离预检 | `IMPLEMENTED_VERIFIED` | `pyproject.toml package-data；agent_pilot/preflight.py；agent_pilot/launch.py；agent_pilot/web.py:launch_command`；acceptance/20261006-final/wheel-manifest.json；acceptance/20261006-final/import-origin-sanitized.txt；acceptance/20261006-final/preflight-summary.json；acceptance/20261006-final/page-flow.md | 跨机器、非 WSL 环境未承诺；现场页面必须通过 `CREDPROOF_INSTALLED_PYTHON` 或 local-runtime 的 `program_python` 指定已核验安装解释器，不再回退历史 `_runs` |
 | R12 | 模型进程文件系统/网络边界独立证明 | `IMPLEMENTED_VERIFIED` | `credproof_safety/agent.py:_MODEL_BOUNDARY_BOOTSTRAP`；`acceptance/20261006-model-boundary/model-boundary-probe.raw.json`；`acceptance/20261006-page-live-boundary/page-live-record.json` | 只覆盖一次授权合成项目和一次页面任务；不等同通用沙箱或内核级审计 |
-| R13 | 模型本地/零付费API运行 | `IMPLEMENTED_VERIFIED` | `acceptance/20261007-agent-sequencing/evidence/model-work/ollama-stderr.txt`; `acceptance/20261007-agent-sequencing/evidence/summary.json` | 旧页面批次保留 CPU/0 VRAM 记录；本轮正式 p01 日志确认 CUDA0/RTX 5090/31.8 GiB；未调用付费 API |
+| R13 | 模型本地/零付费API运行 | `IMPLEMENTED_VERIFIED` | 历史页面批次与本轮 `acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/ollama-stderr.txt`、`run-summary.json` 分开保存；本轮为 CUDA0/RTX 5090/12次模型请求/12份usage | 未调用付费 API；没有模型修复 PASS，不构成跨机器或稳定成功率结论 |
 
 ## 本轮页面现场链路
 
@@ -67,3 +67,10 @@
 
 
 公开 bundle 复核：保存 candidate-02 的 Git blob 派生 bundle `public-saved-candidate02-bundle-dev21` 字节清单匹配，`project/tool.py` 为 LF/1808 bytes/SHA-256 `f7b017b6d8789dddc9231d89a3b0185713be9f869620262602e369b0b310a9a9`；从该公开目录新目录复检仍 `FAIL`。旧 dev20 bundle 仍独立保留，不能与本版两场景结果混用。
+
+
+## dev22 上下文预算适配后的当前结论
+
+本轮冻结源码提交为 `2afd51bbd760a3e5d0aa01234e045c29d7e47f0e`。预检脚本使用实际客户端序列化和工具 schema，首请求、证据加两份源码、候选失败反馈三个阶段均 `within_declared_budget=true`，预检本身 `model_calls=0`。全套 `agent_pilot/tests` 实际为 `110 passed, 1 warning`。
+
+正式 `assistant-original/p01` 只运行一次：12次模型请求、12份服务 usage、15次工具请求尝试（12次接受、3次因执行器上限拒绝）、2份接受候选。候选1完成可信验收并为 `FAIL`；候选2已保存但未验收；任务终态为 `INCOMPLETE`，停止原因为 `Model request budget exhausted`。没有 input-budget 超限事件，没有可信 PASS，因此没有同候选导出或新目录复检。详细入口为 [`acceptance/20261007-return-redirect/context-budget-pilot/README.md`](acceptance/20261007-return-redirect/context-budget-pilot/README.md)，脱敏逐次证据在其 `public-evidence/` 子目录。当前 `handoff_status` 仍为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。

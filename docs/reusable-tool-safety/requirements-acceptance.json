@@ -1,7 +1,7 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.21",
-  "tested_source_commit": "17a5c8c70af0b26225fdc78a093388daf65d8f95",
+  "candidate_version": "0.3.0-dev.22",
+  "tested_source_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e",
   "generated_at": "2026-10-07",
   "status_summary": {
     "verified": 12,
@@ -233,24 +233,27 @@
         "agent_pilot/tools.py:dispatch",
         "agent_pilot/tests/test_reliability.py"
       ],
-      "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先修正首请求上下文与可信阶段顺序，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
-      "acceptance": "修订规则真实复测：原始版本 FAIL；保存 candidate-02 FAIL（正常返回含合成凭据且允许服务跳转到达禁止服务）。正式模型复验尚未运行。",
+      "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先完成首请求上下文、证据反馈压缩与可信阶段顺序预检，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
+      "acceptance": "协议预检三阶段均在16K上下文预算内；正式运行实际完成12次模型请求并收到12份usage，尝试15次工具请求（前12次由执行器处理，后3次因工具请求上限拒绝）；接受2份候选。候选1真实验收为FAIL，候选2已保存但未验收；任务以 INCOMPLETE / Model request budget exhausted 结束，没有可信 PASS。",
       "commands": [
-        ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests/test_model_boundary.py credproof_safety/tests/test_web_repair.py credproof_safety/tests/test_project_bundle.py",
-        "credproof_safety.agent.request_repair(config, output=...) for the registered assistant-original/p01 run",
-        "credproof_safety.project_bundle.export_project_bundle(method, project-bundle); recheck_project_bundle(project-bundle, new-directory-recheck.json)"
+        ".venv\\Scripts\\python.exe scripts/model-context-budget-preflight.py",
+        ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests",
+        ".venv\\Scripts\\python.exe -m credproof_safety repair --config examples/material_assistant/credproof.toml --output acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result.json"
       ],
       "evidence": [
-        "credproof_safety/agent.py:_model_feedback",
-        "credproof_safety/project.py:_scenario_requirements/_scenario_observation_gap",
-        "acceptance/20261007-return-redirect/",
-        "acceptance/20261007-return-redirect/public-saved-candidate02-bundle-dev21/",
-        "acceptance/20261007-return-redirect/public-saved-candidate02-byte-verification-dev21.json",
-        "acceptance/20261007-return-redirect/public-saved-candidate02-recheck-dev21.json",
-        "acceptance/20261007-return-redirect/fixed-control-report.json"
+        "credproof_safety/agent.py:_model_initial_context/_model_feedback",
+        "agent_pilot/model_client.py:compact_messages_for_budget",
+        "agent_pilot/tests/test_model_boundary.py",
+        "acceptance/20261007-return-redirect/20261007-context-budget-preflight.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot/run-freeze.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot/README.md",
+        "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/run-summary.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/events.jsonl",
+        "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/verification/verification-01.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot/post-run-checks.json"
       ],
-      "source_commit": "17a5c8c70af0b26225fdc78a093388daf65d8f95",
-      "gaps": "需要一次冻结预算内的新模型候选满足正常返回、日志、文件边界、直接禁止服务及跳转负例，并完成同候选导出与新目录复检。",
+      "source_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e",
+      "gaps": "本轮上下文预算停止未再发生，但12次模型调用耗尽后仍无可信 PASS；candidate-02未验收，因此没有同候选导出或新目录复检。模型修复效果仍未验证。",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
@@ -294,12 +297,15 @@
           "id": "model_repair_effect",
           "status": "IMPLEMENTED_UNVERIFIED",
           "evidence": [
-            "acceptance/20261007-return-redirect/"
+            "acceptance/20261007-return-redirect/context-budget-pilot/README.md",
+            "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/run-summary.json",
+            "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/verification/verification-01.json",
+            "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/verification/candidate-02.py"
           ],
-          "reason": "修订检查已拒绝保存候选；新模型任务待执行。"
+          "reason": "本轮真实运行有2份接受候选；候选1已验收为FAIL，候选2未验收即因模型请求预算耗尽结束，未取得修复PASS。"
         }
       ],
-      "notes": "本次正式 p01 独立计数：6次模型尝试/6份usage/7次工具请求/2份接受候选/2次验收（FAIL→PASS）；旧页面批次6/5/7/1/1与本次不合并。"
+      "notes": "本轮正式 p01 独立计数：12次模型请求/12份usage/15次工具请求尝试（12次接受、3次上限拒绝）/2份接受候选/1次候选验收；候选1 FAIL、候选2 UNVERIFIED；未导出、未做新目录复检。旧页面批次与历史 Agent 结果不合并。"
     },
     {
       "id": "R09",
@@ -450,17 +456,19 @@
         "agent_pilot/model_client.py"
       ],
       "setup": "5090主机上通过页面任务使用本地 Ollama qwen3-coder:30b；没有 API key 或云端回退，运行收据保留。",
-      "acceptance": "页面任务实际取得6次模型调用、5份usage响应、7次native工具请求；执行器实际接受1份候选并验收1次；付费API标记为false；Ollama日志记录本次计算设备为CPU。",
+      "acceptance": "历史页面批次仍单独记录为6次模型调用、5份usage、7次native工具请求；本轮上下文适配任务单独记录为12次模型请求、12份usage，Ollama日志确认 CUDA0/NVIDIA GeForce RTX 5090。两批次不合并，不把 GPU 运行改写成历史 CPU 结果。付费API标记为false。",
       "commands": [
         "python -m agent_pilot.preflight"
       ],
       "evidence": [
         "acceptance/20261006-page-live-boundary/summary.json",
         "acceptance/20261006-page-live-boundary/commands.txt",
-        "acceptance/20261006-model-boundary/ollama-stderr.raw.log"
+        "acceptance/20261006-model-boundary/ollama-stderr.raw.log",
+        "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/ollama-stderr.txt",
+        "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/run-summary.json"
       ],
-      "source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
-      "gaps": "本次运行未取得 GPU 推理性能证据；仅说明在 RTX 5090 开发机上完成本地运行，不能把 CPU 记录改写为 GPU 加速。",
+      "source_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e",
+      "gaps": "本轮证明了该次受限任务在5090上使用本地 GPU 模型运行；没有修复 PASS，也不构成跨机器、跨模型或稳定成功率结论。",
       "file_digests": [
         {
           "path": "agent_pilot/offline_run.py",
@@ -481,12 +489,12 @@
     "real credential revocation",
     "new model/case expansion"
   ],
-  "interpretation": "Detection, program gate, human repair validation and one bounded fresh Agent repair are reported separately. READY_FOR_EXTERNAL_FINAL_REVIEW applies only to the documented p01 scope; p02-p06 remain historical replay and 5060 handoff is intentionally not started.",
-  "current_review_receipt_commit": "17a5c8c70af0b26225fdc78a093388daf65d8f95",
+  "interpretation": "检测、程序验收、上下文预算适配和模型修复效果分别报告。当前预算适配在一次正式运行中得到验证，但模型修复效果仍为未验证；5060交接尚未启动。",
+  "current_review_receipt_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e",
   "handoff_status": "NOT_READY_FOR_HANDOFF",
   "handoff_blockers": [
-    "修订后的正常返回与允许服务跳转场景已接入，保存 candidate-02 已被真实检查拒绝；尚无新模型候选在修订规则下通过。",
-    "新规则下的模型候选导出与新目录复检尚待本轮唯一正式模型任务。"
+    "本轮12次模型请求后仍无在修订返回/跳转规则下通过的可信候选；候选1 FAIL，候选2未验收。",
+    "因为没有可信 PASS 候选，同一候选导出与新目录无模型复检尚未执行。"
   ],
-  "version": "0.3.0-dev.21"
+  "version": "0.3.0-dev.22"
 }

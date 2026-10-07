@@ -6,10 +6,10 @@
 - 清洁安装发现的 wheel 静态资源缺口已在 `pyproject.toml` 修复，细节见 [`packaging-gap.md`](packaging-gap.md)。
 - 无模型项目检查与导出记录见 [`page-flow.md`](page-flow.md)；模型现场入口的真实 HTTP 记录见 [`acceptance/20261006-page-live-boundary/`](acceptance/20261006-page-live-boundary/)。
 - dev18 wheel、site-packages 导入和清洁安装现场入口收据见 [`acceptance/20261006-live-correction/`](acceptance/20261006-live-correction/)。旧 dev16/dev17 收据仍原样保留。
-- 当前状态：程序检查、导出链以及一次真实模型边界运行均有可读证据；本次模型任务本身按预算以 `INCOMPLETE` 结束，不能写成自动修复成功。
+- 当前状态：程序检查、导出链以及模型边界运行均有可读证据；最新上下文适配任务按真实请求预算以 `INCOMPLETE` 结束，不能写成自动修复成功。
 - 本轮新增 [`acceptance/20261006-live-correction/`](acceptance/20261006-live-correction/)：保存的现场候选按新 `project-bundle/v1` 导出并在新目录复检，真实结果仍为 `FAIL`。页面批次实际接受 1 份候选、验收 1 次；清洁 wheel 批次接受 0 份候选，二者未合并统计。
 
-# CredProof reusable-tool-safety（0.3.0-dev.21）
+# CredProof reusable-tool-safety（0.3.0-dev.22）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
@@ -391,3 +391,11 @@ python scripts/run-exported-regression-check.py `
 ### 修订失败候选的公开取件核对
 
 保存的 candidate-02 派生公开 bundle 位于 [`public-saved-candidate02-bundle-dev21/`](acceptance/20261007-return-redirect/public-saved-candidate02-bundle-dev21/)，对应 [`public-saved-candidate02-recheck-dev21.json`](acceptance/20261007-return-redirect/public-saved-candidate02-recheck-dev21.json)。该 bundle 从固定 Git 提交 `6aeebcf` 的 Git blob 取得；`project/tool.py` 为 1808 bytes、LF、SHA-256 `f7b017b6d8789dddc9231d89a3b0185713be9f869620262602e369b0b310a9a9`。字节收据 [`public-saved-candidate02-byte-verification-dev21.json`](acceptance/20261007-return-redirect/public-saved-candidate02-byte-verification-dev21.json) 的清单和 Git 源材料匹配均为 true。公开 bundle 的新目录复检仍为 `FAIL`，因为它是保存的失败候选；这项材料证明公开取件与复检链路，不证明模型修复成功。
+
+## 当前 dev22：上下文预算适配后的唯一正式运行
+
+本轮只针对已登记的 `assistant-original/p01` 任务整理消息。首请求改为入口、有限文件索引、修改范围和规则摘要；`get_evidence` 返回有界结构化证据，完整报告仍独立保存。提交/验收阶段把内部历史压缩为基础任务加最新依赖工具对，执行器保留完整原始轨迹。协议预检使用客户端实际序列化和工具 schema，首请求、证据加两份源码、候选失败反馈三个阶段均在 16K 上下文限制内；记录见 [`acceptance/20261007-return-redirect/20261007-context-budget-preflight.json`](acceptance/20261007-return-redirect/20261007-context-budget-preflight.json) 和 [`acceptance/20261007-return-redirect/context-budget-pilot/README.md`](acceptance/20261007-return-redirect/context-budget-pilot/README.md)。预检没有调用模型，也不把字节值当作服务 token 用量。
+
+随后在同一 5090、同一模型和既定隔离边界中只运行一次正式任务。实际结果是 12 次模型请求、12 份 usage、15 次工具请求尝试，其中前 12 次由执行器处理、后 3 次因工具请求上限拒绝；接受 2 份候选。候选 1 被真实验收为 `FAIL`，候选 2 已保存但未验收；任务以 `INCOMPLETE` 和 `Model request budget exhausted` 结束。运行期间没有再次出现 input-budget 超限事件，也没有候选获得可信 `PASS`，所以没有导出或新目录无模型复检。脱敏后的逐请求轨迹、候选和边界记录位于 [`acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/`](acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/)，汇总见 [`run-summary.json`](acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/run-summary.json)。
+
+这次运行证明了消息组织和预算保护可以让模型继续工作到候选阶段，但没有证明当前模型修复效果。候选 2 不是 PASS，也不能与旧 h03、人工修复或历史 bundle 拼接。当前状态仍为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。

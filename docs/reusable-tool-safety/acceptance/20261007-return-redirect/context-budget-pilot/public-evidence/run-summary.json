@@ -1,0 +1,58 @@
+{
+  "schema": "credproof.context-budget-model-run-summary/v1",
+  "source_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e",
+  "registered_task": "assistant-original/p01",
+  "status": "INCOMPLETE",
+  "task_status": "INCOMPLETE",
+  "model_status": "STOPPED_LIMIT",
+  "stop_reason": "Model request budget exhausted",
+  "model_calls": 12,
+  "usage_count": 12,
+  "tool_requests_attempted": 15,
+  "tool_requests_accepted_before_cap": 12,
+  "tool_requests_rejected_after_cap": 3,
+  "accepted_candidates": 2,
+  "candidate_history": [
+    {
+      "candidate": 1,
+      "source": "model-generated; identical to original source",
+      "verification": "verification-01.json",
+      "verdict": "FAIL"
+    },
+    {
+      "candidate": 2,
+      "source": "model-generated; stored as candidate-02.py",
+      "verification": "NOT_RUN",
+      "verdict": "UNVERIFIED"
+    }
+  ],
+  "trusted_verifications": 1,
+  "trusted_passes": 0,
+  "trusted_fails": 1,
+  "exported_candidate": "NONE",
+  "fresh_directory_recheck": "NOT_APPLICABLE",
+  "input_budget_exceeded_events": 0,
+  "conversation_compaction_events": 10,
+  "model_boundary": "VERIFIED_FOR_THIS_RUN",
+  "device": {
+    "library": "CUDA",
+    "device": "CUDA0",
+    "name": "NVIDIA GeForce RTX 5090",
+    "model_buffer": "CUDA0 17524.43 MiB",
+    "ollama_log_source": "model-work/ollama-stderr.txt"
+  },
+  "network_boundary": {
+    "interfaces": [
+      "lo"
+    ],
+    "outside_connectivity": false,
+    "host_sentinel_visible": false
+  },
+  "notes": [
+    "The initial context-budget stop did not recur; all 12 model requests had within_context_budget=true.",
+    "Candidate 2 was not verified because the fixed executor tool-call cap had already rejected requests 13-15; it is not classified as PASS or FAIL.",
+    "No bundle export or fresh no-model recheck was attempted because no candidate had a trusted PASS.",
+    "Synthetic runtime values are redacted in this public copy; local raw artifacts remain outside the commit."
+  ],
+  "evidence_generation_note": "Derived from the single frozen run at source_commit; the final documentation commit is recorded separately by Git."
+}

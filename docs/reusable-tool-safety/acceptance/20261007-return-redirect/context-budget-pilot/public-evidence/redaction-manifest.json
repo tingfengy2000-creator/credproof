@@ -1,0 +1,361 @@
+{
+  "schema": "credproof.redacted-evidence-manifest/v1",
+  "source_run": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot",
+  "redaction_policy": {
+    "patterns": [
+      "CP_LAB_[A-Za-z0-9_.-]+"
+    ],
+    "replacement": "[SYNTHETIC_CREDENTIAL]",
+    "local_absolute_paths": "<local-path>",
+    "raw_artifacts": "retained locally and not committed"
+  },
+  "redactions": [
+    {
+      "pattern": "CP_LAB_[A-Za-z0-9_.-]+",
+      "replacement": "[SYNTHETIC_CREDENTIAL]",
+      "count": 3,
+      "files": [
+        "command-output.redacted.txt",
+        "verification/verification-01.json"
+      ]
+    }
+  ],
+  "published_files": [
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-result.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-result.json",
+      "source_sha256": "d825e2b16a5f962450c40364310005c86790ea28f68b4c4f5f4909c9931ebac5",
+      "published_sha256": "00a5a3872278febdd154e44206185fb7917240ac5c26dffe567165197e26bd0e",
+      "bytes": 76193
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/boundary-probe.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/boundary-probe.json",
+      "source_sha256": "74e2d1bc0c569fabbbda743d0092276aabafd211c006aa839f1732d0182575b7",
+      "published_sha256": "fb0ae57f941f78d6340a2b2bd2cf2809f1cb23ca1f645319f1c2e9ce56125fd0",
+      "bytes": 9287
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/service-boundary.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/service-boundary.json",
+      "source_sha256": "2bc5ff59a7cb2588db4cc741a11f7307c6e06b52fa8ff65955afce5a8ab0e6a9",
+      "published_sha256": "cf5e7aaa8df1ec7245752a0527c125064a020afa85eb4e9391eed8257ff1ab5f",
+      "bytes": 6019
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/boundary-plan.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/boundary-plan.json",
+      "source_sha256": "b34918b02e1c544754fc5d39d8f7378e7a99a30315c323baa567e184ea3c3082",
+      "published_sha256": "e6c8638d7c41c55f45d32ba9b59b1c5bc9e636605f870224163c708bec44f393",
+      "bytes": 1408
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/ollama-stderr.txt",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/ollama-stderr.txt",
+      "source_sha256": "5b67dd8712ea113242b317774e4df228e185cd60c7c3ed5cce6630a63bcf2126",
+      "published_sha256": "5955e90af5d4d32c6eb2c838985a4d2031d08a5d5eee0f81507f0afd5745bbfe",
+      "bytes": 43070
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/ollama-stdout.txt",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/ollama-stdout.txt",
+      "source_sha256": "dc8ccfd9171a7748fe7f1b5b9a62739f3f1937bf04271d6632320833d692871d",
+      "published_sha256": "5b1b80eb22e756263796b773598d388bec37002b93f96fae3fa758b974c2fbbb",
+      "bytes": 1639
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/verification-history/verification-01.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/verification/verification-01.json",
+      "source_sha256": "1540f4b6aa4578eac1852028a88d5a721447f9efdaef64ec0102c6dc103e0674",
+      "published_sha256": "452f6fc9b6c9c0262f00d988b8ae1a8f436e2af445d88bf91c4abb4ff49a21f2",
+      "bytes": 19404
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/verification-history/candidate-01.py",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/verification/candidate-01.py",
+      "source_sha256": "b3cbd0345b7cf59dfac8cc6523d828e88f366996ed14695fdb54c49a2fc19bae",
+      "published_sha256": "8c4fa6d62c5a7c5ce0d18535008b5e68fb6402a91b544dbc5c23acbe36778782",
+      "bytes": 1349
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/verification-history/candidate-02.py",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/verification/candidate-02.py",
+      "source_sha256": "091ac3fc0e2ac920017ba2b56314bda4fbc11ea3eb4ef1736f403255b22ed2c1",
+      "published_sha256": "0f98ddc27390051c569e320e574573a6cd4801e211e4683d0e9c328557cf5f08",
+      "bytes": 1208
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-01-input-budget.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-01-input-budget.json",
+      "source_sha256": "d20c6ff3453e34aaa1daba8589e247f0be7d59d6f9402a350986ad1052f6d4b0",
+      "published_sha256": "66c5e91e118a7b7eaa3ec0d75cd747199299b8f89a08dd0420bc30ff24e23035",
+      "bytes": 535
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-01-request.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-01-request.json",
+      "source_sha256": "8d5d43fa1c44bfea541586f838ea85f7ba67f85a01afed3062b31e3867fc5f01",
+      "published_sha256": "2d4d401fb063523f601ab437df16506cd996fd80aa4475ee31c4607beec27635",
+      "bytes": 4468
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-01-response.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-01-response.json",
+      "source_sha256": "3ef0808155c68ef4a665405b646a437bc3cbe1ceafbaa602276c7b6231d417b7",
+      "published_sha256": "3ddfc89a3f49f46e4b131c729e653040a6c20c2d02fa957b5479c64ddb4872a4",
+      "bytes": 771
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-02-input-budget.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-02-input-budget.json",
+      "source_sha256": "dcb2f1a8f675ffd4c81f96b281237e57e54b27d2b28e31fdb973ac7ea69cb298",
+      "published_sha256": "4b8cd90a213f2c5b4afb90a323841e0f0c079f9b2f6634a7dc55340e9f611d26",
+      "bytes": 567
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-02-request.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-02-request.json",
+      "source_sha256": "341ba61174f9acd820492cc6ab081b2d4f50d6da5f4d3a0113cc7b9040045389",
+      "published_sha256": "e57a5a91090aefe49311c508695e02df7e38c24ee214c8c5fea856996f0c88e4",
+      "bytes": 8482
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-02-response.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-02-response.json",
+      "source_sha256": "4e370647b50ce43fdc3c4d96a58beeb3e75f1f4420726fbe2cf40704b8be02d2",
+      "published_sha256": "8eaeec8c5a0775ddb519999d02aa19b45529af90e1e84c5322f6cfde3029aecf",
+      "bytes": 1059
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-03-input-budget.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-03-input-budget.json",
+      "source_sha256": "19192220e1752babe5250dc2200855f05a1d2f7cdd23b6119a8320c9805046fe",
+      "published_sha256": "c86c06c4c39c61fa98b98e63cb5efd3cfdd622fd4e7ef706952676122f208181",
+      "bytes": 569
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-03-request.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-03-request.json",
+      "source_sha256": "98ffc098ed66bb82bdfa5ff4a12cf3f08b2b856be41a1ee0285c02397c192a05",
+      "published_sha256": "de570fa07ad37a0946a4a9bff6292a3f9d813f22280174580d8620121ba64d68",
+      "bytes": 12775
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-03-response.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-03-response.json",
+      "source_sha256": "f6946392b505366be95fca2eea7ee11bd06ed86c7e9991ad083815d19d9350b3",
+      "published_sha256": "84ed614894c3ddaadd57e90117e0773439a9084d515f5be09ecf81cc8ca0c3c6",
+      "bytes": 2250
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-04-input-budget.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-04-input-budget.json",
+      "source_sha256": "7e5a0a5bdd64c6b91215e78141e9ab18d6a6d82915ac7dffd766e514b22838c9",
+      "published_sha256": "881ea405d8e1bb634858c6790f4e5408650d227715b0e84911d6ad0fa3e6fa59",
+      "bytes": 529
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-04-request.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-04-request.json",
+      "source_sha256": "36a266faeb54d1562330a98babdf9407958f8846e64326e67c5464e19447aa13",
+      "published_sha256": "d9b5a06573713701e82a5186f66966afc47fb3aff7877b360cb721b967134a15",
+      "bytes": 6391
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-04-response.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-04-response.json",
+      "source_sha256": "d8ed22c46e00c181e77157d5bd3158ace53220d64231a5bf71d96093d45202b5",
+      "published_sha256": "db59f88c30b6f1d9cd7d474cd3fa655eacbf48f3609248326c4b16cc50d9e200",
+      "bytes": 775
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-05-input-budget.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-05-input-budget.json",
+      "source_sha256": "25cce95ec0dc7e549c8f1aaadb62ca641abb97542136f38e481537889081f81c",
+      "published_sha256": "26b4ff4387e61a201fd76ed8af1be663362c11a326a35e88d5a04d57d139f85d",
+      "bytes": 567
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-05-request.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-05-request.json",
+      "source_sha256": "d3f005ad1d6b479965bed032d4ae4a430ef1b1d8fe4d562f222c97bedf4e426b",
+      "published_sha256": "220b771f4dc7b58a082f3dc6cb3dae67e52756a5b979a8cab11c4669590fbed7",
+      "bytes": 6926
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-05-response.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-05-response.json",
+      "source_sha256": "4bee04fd77f6dc891de9b10235f9a788c74cf0c2e92c944e59d6f20a70038361",
+      "published_sha256": "96ba1cef768c9857bb2488e92e5d50bfdcb1ae1c600a3e7ce82e65dbc48ca6b8",
+      "bytes": 1060
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-06-input-budget.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-06-input-budget.json",
+      "source_sha256": "5df38ace603bf59131ee19c7fbe51176245e14bc3d620fce00949e1e09051571",
+      "published_sha256": "38711a643b4c769cb02147ba23db3f6da2e4be144b7585d34f3fd33262d41d08",
+      "bytes": 568
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-06-request.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-06-request.json",
+      "source_sha256": "35246ade29e23df1a3ee59199f1eb0e8d9e82fa0aa02c7af29b034460082cce6",
+      "published_sha256": "712ea6093d441ab0b384753dcefec51b129279f218601590b9743546166116a6",
+      "bytes": 9903
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-06-response.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-06-response.json",
+      "source_sha256": "83faeb121a41404908a1ee8d95ae825846eaadde0119f37b17b54a61643b75f7",
+      "published_sha256": "3ed066aa739ec16a602134e0fd74f2d0d423fe6ccbe6b8da3d9e3e6138a978c8",
+      "bytes": 776
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-07-input-budget.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-07-input-budget.json",
+      "source_sha256": "1d1e0fcb351d0aecf9af47f5e56cf9d24aa88c01a4fc855322b832ac18d4eadb",
+      "published_sha256": "ef98a72f3cd794ba97a8ba9d521099c691f0de47f87a9cf77a9bea2eaded82fc",
+      "bytes": 529
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-07-request.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-07-request.json",
+      "source_sha256": "290b31557de1bea08bab602ef997fd434c8a9f196789bb913913227fd3d4db33",
+      "published_sha256": "0e5c6c5e2025bb00f5965d392c74ebc8740876052a5791b135f2ac19fa0ac6ea",
+      "bytes": 8496
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-07-response.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-07-response.json",
+      "source_sha256": "47822bb402b957939f9b3b54ce48ff5391fe6bbb380e91b6971450fa255043a7",
+      "published_sha256": "f7659344860abc0ec7444623cc9724ad17c09caae2653bd51c7ca653dd11a492",
+      "bytes": 775
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-08-input-budget.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-08-input-budget.json",
+      "source_sha256": "d2e67a51c49bcaed8f9510f2be715dfd1fd0239f5a6146fb4bb208cda4520a62",
+      "published_sha256": "f9b1b85c29aee061cdcbf40dd592e4a6fce82117fdbf47520f5700504d50e0f0",
+      "bytes": 567
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-08-request.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-08-request.json",
+      "source_sha256": "8dbf1fda923a73c1c2de79ee9a52c9f2979838716f9958d98c8ccf93f317ded3",
+      "published_sha256": "3c76ddc774c453c942b25a3dee258ae1cc9e57cedde3facb05ac6870d0df27fc",
+      "bytes": 9031
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-08-response.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-08-response.json",
+      "source_sha256": "56dc03b2dd5400c4e39719f98d194a67e0bc2275169e763c42d7f8604d2df660",
+      "published_sha256": "4f905092512ac78b928e13be4dfd485645fc3e315b7755686f85c900e2243e66",
+      "bytes": 1059
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-09-input-budget.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-09-input-budget.json",
+      "source_sha256": "57a8278948855dd21d8614048ff408bbd3c8da8d8122a7463217ed95e3bf5acd",
+      "published_sha256": "e0173b7d3dfb7918d69e4708e03828ff2a9ada72efa9185da8b6146b04570979",
+      "bytes": 569
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-09-request.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-09-request.json",
+      "source_sha256": "3c07f1b51b0484945a76065d57fd6cf61986c5fd0787bc9cb283b553d4fc04e6",
+      "published_sha256": "3208943e3423b93cc6379b055a8c9bc5e50550e3b03bc51e4ea7a256b0146a4f",
+      "bytes": 12008
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-09-response.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-09-response.json",
+      "source_sha256": "c496564095524b4b540b6b0f244d88c47ff12b63a000142f24e3fce2cd037395",
+      "published_sha256": "add3914a126b4fceedde2a356d4881b5751d2b16173142ead029f79473e38dd6",
+      "bytes": 2094
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-10-input-budget.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-10-input-budget.json",
+      "source_sha256": "ee7c55af3a046f102cf41e796246a162d401d630e6d08e365d1d063661a35bbf",
+      "published_sha256": "1031e583e2142a4610f7a8884fd728eefe68b7d7a4c4f6122b58aac24d961f70",
+      "bytes": 529
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-10-request.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-10-request.json",
+      "source_sha256": "bccfda5e9600a907f0a2f6e85a7abf6fd5d0fda191350d15c7225f1efdaeae41",
+      "published_sha256": "79f9cbcf18e5aaf169f84b75200f03b149efa4eb7f6fc25d8a764951ef398b11",
+      "bytes": 6235
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-10-response.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-10-response.json",
+      "source_sha256": "5681208727e20480aa5c138f21b0962bf390278067153158d2c60e43b07eaa8d",
+      "published_sha256": "379f1afb0446b342a78b04acdbfe0c11582641a89e636731413bf56927a82c91",
+      "bytes": 775
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-11-input-budget.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-11-input-budget.json",
+      "source_sha256": "10cb131ccba556b19da4aa5a4a8d28c84d4af1fe6e6f5a6736a567d7e3e8118f",
+      "published_sha256": "0ae77aeebb705792864517fadda1ae6fa1a6790930dd077f65238cb00b47b064",
+      "bytes": 568
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-11-request.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-11-request.json",
+      "source_sha256": "0b7034e4c120de3bebf46bc129b89e5b044b27a470cdd73ecc599a620c2a4079",
+      "published_sha256": "b90f76e35c51ccd2e15c09d5e6715e0236a6cdde5e721589c2043a5fc36f9730",
+      "bytes": 6770
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-11-response.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-11-response.json",
+      "source_sha256": "e7f63af90d5817e47bbb349e10a6665f81656ed1d35ba510f455033e67d66c87",
+      "published_sha256": "ec32fbede0f9fb88ab2d7f6079b34ab48962df7863c5e893493161d9a87d09de",
+      "bytes": 793
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-12-input-budget.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-12-input-budget.json",
+      "source_sha256": "86ba11f850773bb2e26da9f73183f9c9dff5d840b5016cf9dddaa8d822f4bfd5",
+      "published_sha256": "441c72bac9e6d341c95a6686034ac267fe7f8637f33f0f6f27e7b1907986930a",
+      "bytes": 568
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-12-request.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-12-request.json",
+      "source_sha256": "6e5293b63cb1499c0e159da50219522ef7d736e91fa4c5497eebe41da05bdf3d",
+      "published_sha256": "56357b0615ab54c3c1020a3820c7f4e33315d9f5a0b787dac00ac84a726bf864",
+      "bytes": 7382
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/model-12-response.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/model-12-response.json",
+      "source_sha256": "752cbdcf1cbe23f28dc2c5ee5c641e9f2e3db8f11f6de390e8ab9a5883664fe1",
+      "published_sha256": "48a74738296cb0633e303ddab5d3c5e5fe41d6e0b2dc2d2c0d9b6f1537d01cdd",
+      "bytes": 808
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/formal-p01-model-result-artifacts/model-work/model-trace/events.jsonl",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/model-trace/events.jsonl",
+      "source_sha256": "5525f0e1407e6192d1bd4956698a5fed9be84657bc65694517e8fde38c748e99",
+      "published_sha256": "e2dd7e488203cc08490b41b308a9232c6ee4ecac6198ca15a739f1ce92b22a80",
+      "bytes": 103189
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/command-output.txt",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/command-output.redacted.txt",
+      "source_sha256": "4106eaf4b80ca4aa9c6bdded44101cf73e6f98502173fe68649698487f97db40",
+      "published_sha256": "1320bed53de0e5fd1039376c00d95f8d520f792581ec339f49d9be96504eaa44",
+      "bytes": 127349
+    },
+    {
+      "source": "derived:context-budget-pilot/run-summary.json",
+      "published": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/run-summary.json",
+      "source_sha256": null,
+      "published_sha256": "d7e4f507fdbbd04ce1ce7b578e27987eb1022119d7bc9bb8d101ac4fe847b9d8",
+      "bytes": 2121
+    }
+  ]
+}
