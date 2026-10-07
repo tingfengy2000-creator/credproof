@@ -604,6 +604,8 @@ def _phase_rejection(name: str, *, evidence_ready: bool,
                      read_paths: set[str], required_read_paths: set[str],
                      accepted_candidates: int) -> str | None:
     """Enforce the trusted evidence -> read -> submit -> verify sequence."""
+    if name == 'get_evidence' and evidence_ready and (read_paths or accepted_candidates):
+        return 'evidence_already_current'
     if name == 'read_code' and not evidence_ready:
         return 'evidence_required_before_read_code'
     if name == 'submit_patch':

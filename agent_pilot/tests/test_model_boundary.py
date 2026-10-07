@@ -117,6 +117,11 @@ class ModelBoundaryContractTests(unittest.TestCase):
                              read_paths={"tool.py"}, required_read_paths=required,
                              accepted_candidates=0),
             "required_sources_not_read")
+        self.assertEqual(
+            _phase_rejection("get_evidence", evidence_ready=True,
+                             read_paths={"tool.py"}, required_read_paths=required,
+                             accepted_candidates=1),
+            "evidence_already_current")
 
     def test_same_read_progress_stops_after_real_repeats(self):
         key = ("tool.py", "sha-current", 1, "FAIL")
