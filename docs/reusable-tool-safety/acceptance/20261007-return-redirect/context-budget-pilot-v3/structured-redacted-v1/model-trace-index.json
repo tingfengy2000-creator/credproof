@@ -1,0 +1,391 @@
+{
+  "schema": "credproof.model-trace-index/v1",
+  "run": "context-budget-pilot-v3",
+  "records": [
+    {
+      "request": "model-01-request.json",
+      "response": "model-01-response.json",
+      "request_sha256": "8d5d43fa1c44bfea541586f838ea85f7ba67f85a01afed3062b31e3867fc5f01",
+      "response_sha256": "afc4a52950ef1b835884571bd58a938cbfa8849b35da5e490886861f2b999ca8",
+      "request_bytes": 4388,
+      "budget": {
+        "call_id": null,
+        "input_token_upper_bound": 3785,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true,
+        "method": "UTF8_WIRE_BYTES"
+      },
+      "response_usage": {
+        "prompt_tokens": 986,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens": 13,
+        "total_tokens": 999
+      },
+      "finish_reason": "tool_calls",
+      "assistant_tool_calls": [
+        {
+          "id": "call_mhpbsjqc",
+          "name": "get_evidence",
+          "arguments_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+        }
+      ],
+      "content_omitted": true
+    },
+    {
+      "request": "model-02-request.json",
+      "response": "model-02-response.json",
+      "request_sha256": "5de285a1ac3a0cba6fe10f4a1104826575973df3a034e5c8db41efd5892e032d",
+      "response_sha256": "54cb5891c753e40a8022ff59db34738a617c61203f9d958b3c55232d8fb262c3",
+      "request_bytes": 9081,
+      "budget": {
+        "call_id": null,
+        "input_token_upper_bound": 6555,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true,
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX"
+      },
+      "response_usage": {
+        "prompt_tokens": 2139,
+        "prompt_tokens_details": {
+          "cached_tokens": 985
+        },
+        "completion_tokens": 22,
+        "total_tokens": 2161
+      },
+      "finish_reason": "tool_calls",
+      "assistant_tool_calls": [
+        {
+          "id": "call_nh7e3uch",
+          "name": "read_code",
+          "arguments_sha256": "a3cfa1ea04e10c640f74cc2be1e965a9766ee7a6a99d8de8f73f3587b4406240"
+        }
+      ],
+      "content_omitted": true
+    },
+    {
+      "request": "model-03-request.json",
+      "response": "model-03-response.json",
+      "request_sha256": "99a1080f8ae9cc5b439d065d5a8dedc1f288106fa5d10144d470570492613160",
+      "response_sha256": "a39c93ee183aaeb0e9c43e5d8dc64c43b2795d1bb4060b73f57937c45cbeac82",
+      "request_bytes": 11750,
+      "budget": {
+        "call_id": null,
+        "input_token_upper_bound": 5684,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true,
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX"
+      },
+      "response_usage": {
+        "prompt_tokens": 2741,
+        "prompt_tokens_details": {
+          "cached_tokens": 2138
+        },
+        "completion_tokens": 24,
+        "total_tokens": 2765
+      },
+      "finish_reason": "tool_calls",
+      "assistant_tool_calls": [
+        {
+          "id": "call_p5sdrx1p",
+          "name": "read_code",
+          "arguments_sha256": "397a250d23171af0add8bd92d997326091c5935157e6cbea315af314a0b6df7d"
+        }
+      ],
+      "content_omitted": true
+    },
+    {
+      "request": "model-04-request.json",
+      "response": "model-04-response.json",
+      "request_sha256": "734a27dc3f7c1b72b46637d90830330235156fe9b82961cbe3b8190bfe8a0441",
+      "response_sha256": "6cbbe7861c38fe5ab1d936bffc5308ab75a2cbf654344d13a78ed3e3b813890a",
+      "request_bytes": 15142,
+      "budget": {
+        "call_id": null,
+        "input_token_upper_bound": 7009,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true,
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX"
+      },
+      "response_usage": {
+        "prompt_tokens": 3535,
+        "prompt_tokens_details": {
+          "cached_tokens": 2740
+        },
+        "completion_tokens": 321,
+        "total_tokens": 3856
+      },
+      "finish_reason": "tool_calls",
+      "assistant_tool_calls": [
+        {
+          "id": "call_7vvpebgh",
+          "name": "submit_patch",
+          "arguments_sha256": "d0ba8a9c7e77de55e94226748dd482d1bbf77c03ca5c11926ca54474542ce039"
+        }
+      ],
+      "content_omitted": true
+    },
+    {
+      "request": "model-05-request.json",
+      "response": "model-05-response.json",
+      "request_sha256": "680965448bb89100f0724c0dd47ed2a8038bdf88f9bd08ec990a93d04c354a62",
+      "response_sha256": "29a571b378024b2c87cdec678836207cdb7723d5730f432c5dfa74af473fe4aa",
+      "request_bytes": 14575,
+      "budget": {
+        "call_id": null,
+        "input_token_upper_bound": 13528,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true,
+        "method": "UTF8_WIRE_BYTES"
+      },
+      "response_usage": {
+        "prompt_tokens": 3227,
+        "prompt_tokens_details": {
+          "cached_tokens": 1007
+        },
+        "completion_tokens": 22,
+        "total_tokens": 3249
+      },
+      "finish_reason": "tool_calls",
+      "assistant_tool_calls": [
+        {
+          "id": "call_qzr2imyp",
+          "name": "read_code",
+          "arguments_sha256": "a3cfa1ea04e10c640f74cc2be1e965a9766ee7a6a99d8de8f73f3587b4406240"
+        }
+      ],
+      "content_omitted": true
+    },
+    {
+      "request": "model-06-request.json",
+      "response": "model-06-response.json",
+      "request_sha256": "680965448bb89100f0724c0dd47ed2a8038bdf88f9bd08ec990a93d04c354a62",
+      "response_sha256": "23290a61010a0accf7c41e49e265d1ae7343a53d325a6042ca3a64b22d49ed1a",
+      "request_bytes": 14575,
+      "budget": {
+        "call_id": null,
+        "input_token_upper_bound": 3229,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true,
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX"
+      },
+      "response_usage": {
+        "prompt_tokens": 3227,
+        "prompt_tokens_details": {
+          "cached_tokens": 3226
+        },
+        "completion_tokens": 22,
+        "total_tokens": 3249
+      },
+      "finish_reason": "tool_calls",
+      "assistant_tool_calls": [
+        {
+          "id": "call_da722366",
+          "name": "read_code",
+          "arguments_sha256": "a3cfa1ea04e10c640f74cc2be1e965a9766ee7a6a99d8de8f73f3587b4406240"
+        }
+      ],
+      "content_omitted": true
+    },
+    {
+      "request": "model-07-request.json",
+      "response": "model-07-response.json",
+      "request_sha256": "680965448bb89100f0724c0dd47ed2a8038bdf88f9bd08ec990a93d04c354a62",
+      "response_sha256": "ef69c50c7675d654ba066c1a6c831d1be0682cd59a923a6d568f27b734eb68b8",
+      "request_bytes": 14575,
+      "budget": {
+        "call_id": null,
+        "input_token_upper_bound": 3229,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true,
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX"
+      },
+      "response_usage": {
+        "prompt_tokens": 3227,
+        "prompt_tokens_details": {
+          "cached_tokens": 3226
+        },
+        "completion_tokens": 22,
+        "total_tokens": 3249
+      },
+      "finish_reason": "tool_calls",
+      "assistant_tool_calls": [
+        {
+          "id": "call_jwvlq215",
+          "name": "read_code",
+          "arguments_sha256": "a3cfa1ea04e10c640f74cc2be1e965a9766ee7a6a99d8de8f73f3587b4406240"
+        }
+      ],
+      "content_omitted": true
+    },
+    {
+      "request": "model-08-request.json",
+      "response": "model-08-response.json",
+      "request_sha256": "680965448bb89100f0724c0dd47ed2a8038bdf88f9bd08ec990a93d04c354a62",
+      "response_sha256": "3eae599c70ce3b36dffe2a174313f82bf4dfbee7819a70dee8a9dd34c9c6194f",
+      "request_bytes": 14575,
+      "budget": {
+        "call_id": null,
+        "input_token_upper_bound": 3229,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true,
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX"
+      },
+      "response_usage": {
+        "prompt_tokens": 3227,
+        "prompt_tokens_details": {
+          "cached_tokens": 3226
+        },
+        "completion_tokens": 22,
+        "total_tokens": 3249
+      },
+      "finish_reason": "tool_calls",
+      "assistant_tool_calls": [
+        {
+          "id": "call_lsf117mo",
+          "name": "read_code",
+          "arguments_sha256": "a3cfa1ea04e10c640f74cc2be1e965a9766ee7a6a99d8de8f73f3587b4406240"
+        }
+      ],
+      "content_omitted": true
+    },
+    {
+      "request": "model-09-request.json",
+      "response": "model-09-response.json",
+      "request_sha256": "680965448bb89100f0724c0dd47ed2a8038bdf88f9bd08ec990a93d04c354a62",
+      "response_sha256": "3c302b671517e8881e3c1f774bc28a72ed11894eae11392c7d474d7a5eaf4041",
+      "request_bytes": 14575,
+      "budget": {
+        "call_id": null,
+        "input_token_upper_bound": 3229,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true,
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX"
+      },
+      "response_usage": {
+        "prompt_tokens": 3227,
+        "prompt_tokens_details": {
+          "cached_tokens": 3226
+        },
+        "completion_tokens": 22,
+        "total_tokens": 3249
+      },
+      "finish_reason": "tool_calls",
+      "assistant_tool_calls": [
+        {
+          "id": "call_nws6q2ib",
+          "name": "read_code",
+          "arguments_sha256": "a3cfa1ea04e10c640f74cc2be1e965a9766ee7a6a99d8de8f73f3587b4406240"
+        }
+      ],
+      "content_omitted": true
+    },
+    {
+      "request": "model-10-request.json",
+      "response": "model-10-response.json",
+      "request_sha256": "680965448bb89100f0724c0dd47ed2a8038bdf88f9bd08ec990a93d04c354a62",
+      "response_sha256": "235c12a48e4478b342045ab7c9b94b94195a188fe32f33fb07f47e6254ca2f08",
+      "request_bytes": 14575,
+      "budget": {
+        "call_id": null,
+        "input_token_upper_bound": 3229,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true,
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX"
+      },
+      "response_usage": {
+        "prompt_tokens": 3227,
+        "prompt_tokens_details": {
+          "cached_tokens": 3226
+        },
+        "completion_tokens": 22,
+        "total_tokens": 3249
+      },
+      "finish_reason": "tool_calls",
+      "assistant_tool_calls": [
+        {
+          "id": "call_ukg6hazz",
+          "name": "read_code",
+          "arguments_sha256": "a3cfa1ea04e10c640f74cc2be1e965a9766ee7a6a99d8de8f73f3587b4406240"
+        }
+      ],
+      "content_omitted": true
+    },
+    {
+      "request": "model-11-request.json",
+      "response": "model-11-response.json",
+      "request_sha256": "680965448bb89100f0724c0dd47ed2a8038bdf88f9bd08ec990a93d04c354a62",
+      "response_sha256": "9a319adec545b0eb270fef933030e30081b76888fe8e447231384282db3a9063",
+      "request_bytes": 14575,
+      "budget": {
+        "call_id": null,
+        "input_token_upper_bound": 3229,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true,
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX"
+      },
+      "response_usage": {
+        "prompt_tokens": 3227,
+        "prompt_tokens_details": {
+          "cached_tokens": 3226
+        },
+        "completion_tokens": 22,
+        "total_tokens": 3249
+      },
+      "finish_reason": "tool_calls",
+      "assistant_tool_calls": [
+        {
+          "id": "call_fi4g3yuy",
+          "name": "read_code",
+          "arguments_sha256": "a3cfa1ea04e10c640f74cc2be1e965a9766ee7a6a99d8de8f73f3587b4406240"
+        }
+      ],
+      "content_omitted": true
+    },
+    {
+      "request": "model-12-request.json",
+      "response": "model-12-response.json",
+      "request_sha256": "680965448bb89100f0724c0dd47ed2a8038bdf88f9bd08ec990a93d04c354a62",
+      "response_sha256": "266eff768a711d4784589af0f040f743e0cd2a26d24c4e924be61c97629f5c1a",
+      "request_bytes": 14575,
+      "budget": {
+        "call_id": null,
+        "input_token_upper_bound": 3229,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true,
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX"
+      },
+      "response_usage": {
+        "prompt_tokens": 3227,
+        "prompt_tokens_details": {
+          "cached_tokens": 3226
+        },
+        "completion_tokens": 22,
+        "total_tokens": 3249
+      },
+      "finish_reason": "tool_calls",
+      "assistant_tool_calls": [
+        {
+          "id": "call_c8wq38k1",
+          "name": "read_code",
+          "arguments_sha256": "a3cfa1ea04e10c640f74cc2be1e965a9766ee7a6a99d8de8f73f3587b4406240"
+        }
+      ],
+      "content_omitted": true
+    }
+  ],
+  "note": "Raw request/response JSON remains local; this public index preserves per-call byte hashes, budgets, usage and native tool-call names without publishing runtime paths or model-weight data."
+}
