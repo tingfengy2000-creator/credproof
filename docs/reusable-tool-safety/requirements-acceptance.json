@@ -1,7 +1,7 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
   "candidate_version": "0.3.0-dev.22",
-  "tested_source_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e",
+  "tested_source_commit": "e6507f36b93a0a3168717cf7f09f439b57786132",
   "generated_at": "2026-10-07",
   "status_summary": {
     "verified": 12,
@@ -252,7 +252,7 @@
         "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/verification/verification-01.json",
         "acceptance/20261007-return-redirect/context-budget-pilot/post-run-checks.json"
       ],
-      "source_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e",
+      "source_commit": "e6507f36b93a0a3168717cf7f09f439b57786132",
       "gaps": "本轮上下文预算停止未再发生，但12次模型调用耗尽后仍无可信 PASS；candidate-02未验收，因此没有同候选导出或新目录复检。模型修复效果仍未验证。",
       "file_digests": [
         {
@@ -467,7 +467,7 @@
         "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/ollama-stderr.txt",
         "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/run-summary.json"
       ],
-      "source_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e",
+      "source_commit": "e6507f36b93a0a3168717cf7f09f439b57786132",
       "gaps": "本轮证明了该次受限任务在5090上使用本地 GPU 模型运行；没有修复 PASS，也不构成跨机器、跨模型或稳定成功率结论。",
       "file_digests": [
         {

@@ -3,9 +3,10 @@ from __future__ import annotations
 """Protocol-only preflight for the bounded Qwen repair conversation.
 
 This does not contact Ollama or execute a candidate. It uses the same
-``to_ollama_messages`` conversion, tool schemas, and ``estimate_input_budget``
-used by the live client.  Values without server usage are explicitly marked as
-conservative bounds; they are not claimed token measurements.
+``to_ollama_messages`` conversion, native tool envelope, and
+``estimate_input_budget`` used by the live client. Values without server usage
+are explicitly marked as conservative bounds; they are not claimed token
+measurements.
 """
 import ast
 import hashlib
@@ -72,7 +73,10 @@ def _payload(messages: list[dict], schemas: list[dict]) -> dict:
     # Preserve the key order emitted by _LocalModel._chat_stream.
     return {"model": MODEL, "messages": to_ollama_messages(compact_messages_for_budget(messages)), "stream": False,
             "temperature": 0.2, "top_p": 0.8, "max_tokens": 1024, "seed": 0,
-            "tools": schemas}
+            # qwen-agent supplies the OpenAI-compatible outer envelope around
+            # each BaseTool.function. Keep it here so preflight sizes the same
+            # payload shape that reaches Ollama.
+            "tools": [{"type": "function", "function": schema} for schema in schemas]}
 
 
 def _budget(label: str, payload: dict, previous: dict | None) -> dict:
@@ -138,8 +142,9 @@ def main() -> None:
         "model": MODEL,
         "context_tokens": CONTEXT_TOKENS,
         "max_output_tokens": 1024,
-        "serialization": "agent_pilot.model_client._LocalModel._chat_stream + to_ollama_messages",
-        "tool_schema_sha256": hashlib.sha256(json.dumps(schemas, ensure_ascii=False, sort_keys=True).encode()).hexdigest(),
+        "serialization": "agent_pilot.model_client._LocalModel._chat_stream + to_ollama_messages + native tool envelope",
+        "tool_schema_sha256": hashlib.sha256(json.dumps(first["tools"], ensure_ascii=False, sort_keys=True).encode()).hexdigest(),
+        "tool_function_schema_sha256": hashlib.sha256(json.dumps(schemas, ensure_ascii=False, sort_keys=True).encode()).hexdigest(),
         "system_prompt_sha256": hashlib.sha256(system.encode()).hexdigest(),
         "initial_context_bytes": len(json.dumps(initial_context, ensure_ascii=False, sort_keys=True).encode()),
         "evidence_context_bytes": len(json.dumps(evidence, ensure_ascii=False, sort_keys=True).encode()),

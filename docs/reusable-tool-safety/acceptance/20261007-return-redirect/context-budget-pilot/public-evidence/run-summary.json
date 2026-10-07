@@ -1,6 +1,6 @@
 {
   "schema": "credproof.context-budget-model-run-summary/v1",
-  "source_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e",
+  "source_commit": "e6507f36b93a0a3168717cf7f09f439b57786132",
   "registered_task": "assistant-original/p01",
   "status": "INCOMPLETE",
   "task_status": "INCOMPLETE",
@@ -54,5 +54,6 @@
     "No bundle export or fresh no-model recheck was attempted because no candidate had a trusted PASS.",
     "Synthetic runtime values are redacted in this public copy; local raw artifacts remain outside the commit."
   ],
-  "evidence_generation_note": "Derived from the single frozen run at source_commit; the final documentation commit is recorded separately by Git."
+  "evidence_generation_note": "This public summary was derived after the run; source_commit identifies the code used by the formal model task, while evidence_derivation_commit identifies the documentation freeze.",
+  "evidence_derivation_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e"
 }

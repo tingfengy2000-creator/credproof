@@ -1,6 +1,6 @@
 {
   "schema": "credproof.context-budget-post-run-checks/v1",
-  "source_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e",
+  "source_commit": "e6507f36b93a0a3168717cf7f09f439b57786132",
   "checks": [
     {
       "command": ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests",
@@ -13,7 +13,10 @@
       "exit_code": 0,
       "result": "protocol_preflight=true; all_within_declared_budget=true; model_calls=0",
       "model_calls": 0,
-      "evidence": "../20261007-context-budget-preflight.json"
+      "evidence": "../20261007-context-budget-preflight.json",
+      "tool_schema_sha256": "2f14ff70fd56839040317646c61f14e736b6f2eb560d01f146570a709ad6cb78",
+      "stage_context_upper_bounds": [5321, 15480, 10184],
+      "note": "This is the corrected native-tool-envelope preflight rerun; it does not alter or rerun the formal model task."
     }
   ],
   "scope": "post-run protocol and regression checks only; the formal model run is recorded separately",

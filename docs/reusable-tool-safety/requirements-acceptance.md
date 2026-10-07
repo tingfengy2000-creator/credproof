@@ -71,6 +71,6 @@
 
 ## dev22 上下文预算适配后的当前结论
 
-本轮冻结源码提交为 `2afd51bbd760a3e5d0aa01234e045c29d7e47f0e`。预检脚本使用实际客户端序列化和工具 schema，首请求、证据加两份源码、候选失败反馈三个阶段均 `within_declared_budget=true`，预检本身 `model_calls=0`。全套 `agent_pilot/tests` 实际为 `110 passed, 1 warning`。
+正式模型运行所用源码提交为 `e6507f36b93a0a3168717cf7f09f439b57786132`；预算预检与材料冻结随后记录在 `2afd51bbd760a3e5d0aa01234e045c29d7e47f0e`。预检脚本使用实际客户端序列化和工具 schema，首请求、证据加两份源码、候选失败反馈三个阶段均 `within_declared_budget=true`，预检本身 `model_calls=0`。全套 `agent_pilot/tests` 实际为 `110 passed, 1 warning`。
 
 正式 `assistant-original/p01` 只运行一次：12次模型请求、12份服务 usage、15次工具请求尝试（12次接受、3次因执行器上限拒绝）、2份接受候选。候选1完成可信验收并为 `FAIL`；候选2已保存但未验收；任务终态为 `INCOMPLETE`，停止原因为 `Model request budget exhausted`。没有 input-budget 超限事件，没有可信 PASS，因此没有同候选导出或新目录复检。详细入口为 [`acceptance/20261007-return-redirect/context-budget-pilot/README.md`](acceptance/20261007-return-redirect/context-budget-pilot/README.md)，脱敏逐次证据在其 `public-evidence/` 子目录。当前 `handoff_status` 仍为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。
