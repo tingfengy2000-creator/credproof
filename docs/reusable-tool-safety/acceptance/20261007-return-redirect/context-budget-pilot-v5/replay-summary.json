@@ -1,0 +1,158 @@
+{
+  "schema": "credproof.context-budget-v4-replay/v1",
+  "protocol_replay": true,
+  "model_run": false,
+  "candidate_execution": false,
+  "source": {
+    "v4_result": "context-budget-pilot-v4/formal-p01-model-result.json",
+    "real_request": "context-budget-pilot-v4/public-evidence/model-05-request.json",
+    "real_response": "context-budget-pilot-v4/public-evidence/model-05-response.json",
+    "real_tool_trace_count": 6
+  },
+  "current_executor_return": {
+    "status": "REJECTED",
+    "reason": "evidence_already_current",
+    "state_source": "v4 tool_trace[4] state plus host tool count 6",
+    "old_saved_result_status": "OK",
+    "old_saved_result_not_reused": true
+  },
+  "stages": {
+    "before_repeat": {
+      "payload": "payload-before-repeat.json",
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 13584,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 1024,
+        "input_token_upper_bound": 13584,
+        "input_token_limit": 14848,
+        "context_token_upper_bound": 15120,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "wire": {
+        "tool_call_ids": [
+          "call_mdlzlvk4",
+          "call_zj30zfuy"
+        ],
+        "tool_result_ids": [
+          "call_mdlzlvk4",
+          "call_zj30zfuy"
+        ],
+        "ids_paired": true,
+        "has_current_source": true,
+        "has_required_test": true,
+        "has_failure": true,
+        "has_current_rejection": false,
+        "has_latest_executor_state": true,
+        "wire_bytes": 13584,
+        "wire_messages": 7
+      }
+    },
+    "after_current_rejection": {
+      "payload": "payload-after-current-rejection.json",
+      "budget": {
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX",
+        "reuse_reason": "exact_previous_request_prefix_and_configuration",
+        "request_bytes": 14829,
+        "prefix_call_id": "chatcmpl-678",
+        "prefix_prompt_tokens": 3670,
+        "suffix_json_bytes": 1245,
+        "new_message_count": 2,
+        "new_message_reserve_tokens": 1024,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 1024,
+        "input_token_upper_bound": 5939,
+        "input_token_limit": 14848,
+        "context_token_upper_bound": 7475,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "wire": {
+        "tool_call_ids": [
+          "call_mdlzlvk4",
+          "call_zj30zfuy",
+          "call_6oaeuo1e"
+        ],
+        "tool_result_ids": [
+          "call_mdlzlvk4",
+          "call_zj30zfuy",
+          "call_6oaeuo1e"
+        ],
+        "ids_paired": true,
+        "has_current_source": true,
+        "has_required_test": true,
+        "has_failure": true,
+        "has_current_rejection": true,
+        "has_latest_executor_state": true,
+        "wire_bytes": 14829,
+        "wire_messages": 9
+      }
+    },
+    "after_next_candidate_protocol_sample": {
+      "payload": "payload-after-next-candidate-sample.json",
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 11255,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 1024,
+        "input_token_upper_bound": 11255,
+        "input_token_limit": 14848,
+        "context_token_upper_bound": 12791,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "wire": {
+        "tool_call_ids": [
+          "call_mdlzlvk4",
+          "call_6oaeuo1e",
+          "protocol-candidate-02-submit"
+        ],
+        "tool_result_ids": [
+          "call_mdlzlvk4",
+          "call_6oaeuo1e",
+          "protocol-candidate-02-submit"
+        ],
+        "ids_paired": true,
+        "has_current_source": true,
+        "has_required_test": true,
+        "has_failure": true,
+        "has_current_rejection": true,
+        "has_latest_executor_state": true,
+        "wire_bytes": 11255,
+        "wire_messages": 9
+      },
+      "candidate_sha256": "f7b017b6d8789dddc9231d89a3b0185713be9f869620262602e369b0b310a9a9",
+      "execution": "not_run"
+    }
+  },
+  "assertions": {
+    "current_read_and_candidate_preserved": true,
+    "required_test_preserved": true,
+    "failure_and_rejection_preserved": true,
+    "latest_state_preserved": true,
+    "tool_ids_paired": true,
+    "all_payloads_within_budget": true,
+    "next_candidate_state_is_distinct": true
+  },
+  "notes": [
+    "The repeated get_evidence result is recomputed by the current phase guard; the historical v4 OK is retained only as an old fact.",
+    "The candidate-02 branch is a protocol sample from an existing saved candidate and is not executed or counted as a model result.",
+    "Full raw audit history remains in the local v4 artifact; this replay publishes only structured payloads and derived facts."
+  ]
+}

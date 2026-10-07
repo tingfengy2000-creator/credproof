@@ -1,0 +1,29 @@
+{
+  "schema": "credproof.context-budget-pilot-freeze/v1",
+  "source_commit": "2cf029ddb5adfa1bce40332906cb359a4e06a16b",
+  "model": "qwen3-coder:30b",
+  "model_run_device": "CUDA0 / NVIDIA RTX 5090 (resolved WSL boundary)",
+  "task": "assistant-original/p01",
+  "budgets": {
+    "max_model_calls": 12,
+    "max_candidates": 3,
+    "max_format_corrections": 1,
+    "executor_tool_call_cap": 12,
+    "request_timeout_s": 120,
+    "task_budget_s": 900,
+    "context_tokens": 16384,
+    "max_output_tokens": 1024
+  },
+  "config": {
+    "credproof_toml_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+    "entry_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+    "business_tests_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356"
+  },
+  "protocol_preflight": "budget-preflight.json",
+  "context_replay": "replay-summary.json",
+  "model_run_started_after_freeze": true,
+  "notes": [
+    "No reference patch or artificial fixed candidate is supplied.",
+    "All model/candidate execution remains inside the existing WSL/bubblewrap boundary."
+  ]
+}

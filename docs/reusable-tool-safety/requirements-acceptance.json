@@ -232,35 +232,38 @@
         "credproof_safety/agent.py:_read_progress_update",
         "credproof_safety/agent.py:serve",
         "agent_pilot/model_client.py:compact_messages_for_budget",
-        "agent_pilot/tests/test_model_boundary.py"
+        "agent_pilot/tests/test_model_boundary.py",
+        "scripts/replay-context-budget-v4.py",
+        "scripts/model-context-budget-preflight.py"
       ],
       "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先完成首请求上下文、证据反馈压缩与可信阶段顺序预检，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
-      "acceptance": "v3原始消息的真实无模型重放保留最新tool.py读取、配对ID、FAIL反馈和tool_calls_used状态；预算预检四阶段均在14848保守上限内。一次5090正式运行实际5次模型请求/5份usage/6次工具请求/1个接受候选/1次程序自动验收，候选FAIL，随后因重复get_evidence触发保守输入预算停止；没有模型PASS或导出复检。",
+      "acceptance": "v5协议重放保留当前源码、必要测试、FAIL反馈、最新executor_state及成对调用/返回ID；v5预算预检六阶段均在14848输入上限内（结构变化时使用UTF8 wire回退，v4实际服务前缀单独重放）。一次5090正式运行实际8次模型请求/8份usage/9次工具请求、2个接受候选/2次程序自动验收，候选均FAIL；第9次请求由输入预算保护停止，无PASS、导出或新目录复检。",
       "commands": [
-        ".venv\\Scripts\\python.exe scripts/replay-context-sequencing.py",
-        ".venv\\Scripts\\python.exe scripts/model-context-budget-preflight.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v4/budget-preflight.json",
-        ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests"
+        ".venv\\Scripts\\python.exe scripts/replay-context-budget-v4.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v5",
+        ".venv\\Scripts\\python.exe scripts/model-context-budget-preflight.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v5/budget-preflight.json",
+        ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests/test_model_boundary.py agent_pilot/test_model_client.py credproof_safety/tests/test_entry_scenarios.py credproof_safety/tests/test_project_bundle.py"
       ],
       "evidence": [
-        "acceptance/20261007-return-redirect/context-budget-pilot-v4/replay-summary.json",
-        "acceptance/20261007-return-redirect/context-budget-pilot-v4/budget-preflight.json",
-        "acceptance/20261007-return-redirect/context-budget-pilot-v4/public-evidence/run-summary.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v5/replay-summary.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v5/budget-preflight.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v5/public-evidence/formal-p01-model-summary.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v5/public-evidence/events-summary.json",
         "agent_pilot/tests/test_model_boundary.py"
       ],
-      "source_commit": "16498c6120a6bc6afa9d5b180c2f649b5ea048bd",
-      "gaps": "当前真实模型候选没有通过修订后的安全与业务条件；没有同一候选公开导出和新目录复检PASS。",
+      "source_commit": "2cf029ddb5adfa1bce40332906cb359a4e06a16b",
+      "gaps": "当前真实模型候选1、2均未通过全部安全与业务条件；无同一候选公开导出和新目录复检PASS。",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
-          "sha256": "e0a75d61e3fdcf630e2efa4621c5672e27a6c09146f9d44249545c2fc466b7ae"
+          "sha256": "c86c4cfe688731c552091dd77aee4d4e416021d8643562fc4e27ed02e9238bf0"
         },
         {
           "path": "agent_pilot/model_client.py",
-          "sha256": "982222697f7a73b2061312ec9eb58893fa6a0642b3f27406d8e6d387c546ac99"
+          "sha256": "24f5371a7904f47144db112c3d22399d6390cf834cf6dc4e3ff23da9495bd4bd"
         },
         {
           "path": "agent_pilot/tests/test_model_boundary.py",
-          "sha256": "e0020b199ae7c813611343d2d6d58a67ff975f8318020cf8ffce5aa2a7caa0a3"
+          "sha256": "343b8c7534e14ffd5b6e0285d7df58cc396cf3464fe6881b3c6cc8bbc7341677"
         }
       ],
       "subitems": [
@@ -292,10 +295,11 @@
           "id": "model_repair_effect",
           "status": "IMPLEMENTED_UNVERIFIED",
           "evidence": [
-            "acceptance/20261007-return-redirect/context-budget-pilot-v4/public-evidence/run-summary.json",
-            "acceptance/20261007-return-redirect/context-budget-pilot-v4/public-evidence/formal-p01-model-result.redacted.json"
+            "acceptance/20261007-return-redirect/context-budget-pilot-v5/public-evidence/formal-p01-model-summary.json",
+            "acceptance/20261007-return-redirect/context-budget-pilot-v5/public-evidence/verification-01.json",
+            "acceptance/20261007-return-redirect/context-budget-pilot-v5/public-evidence/verification-02.json"
           ],
-          "reason": "本轮唯一正式任务接受candidate-01并由程序自动验收为FAIL；第5次模型后再次请求已完成证据，客户端保守预算停止，未产生PASS。"
+          "reason": "v5唯一正式任务接受两个候选并由程序自动验收，均为FAIL；第9次模型请求在输入预算保护处停止，未产生PASS。"
         }
       ],
       "notes": "本轮协议重放、模型运行和后续阶段拒绝分别记录；模型权重与运行环境不入库，5060交接尚未启动。"

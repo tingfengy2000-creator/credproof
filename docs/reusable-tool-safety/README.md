@@ -414,3 +414,10 @@ python scripts/run-exported-regression-check.py `
 随后在源码提交 `502072a1e20459bbf0e474ce0630c6cc22b6a842` 上、同一 `assistant-original/p01`、qwen3-coder:30b、5090 CUDA0 和既有 bubblewrap 边界内只运行一次正式任务。实际为 **5次模型请求、5份服务usage、6次工具请求、1个接受候选、1次程序自动验收**；候选1仍为 `FAIL`（凭据仍出现在返回值，正常/跳转边界及必要业务未满足），没有可信 `PASS`、导出或新目录复检。模型在第5次请求后再次请求已完成的 `get_evidence`，后续请求被保守输入预算保护拒绝；这次失败原样保留，没有用重试覆盖。Ollama日志确认本次使用 `CUDA0 / NVIDIA GeForce RTX 5090`，模型边界探针仍为白名单挂载和 loopback-only 私有网络，付费 API 为 false。
 
 为避免相同阶段再次循环，当前源码随后在 `16498c6` 增加了 `evidence_already_current` 阶段拒绝；这项修正只做了协议/单元回归，没有再次调用模型。完整原始运行留在本机评审目录；公开脱敏证据在 [`acceptance/20261007-return-redirect/context-budget-pilot-v4/public-evidence/`](acceptance/20261007-return-redirect/context-budget-pilot-v4/public-evidence/)，包括真实请求/响应、预算、候选和边界收据。协议重放及摘要见 [`context-budget-pilot-v4/replay-summary.json`](acceptance/20261007-return-redirect/context-budget-pilot-v4/replay-summary.json)。本轮仍为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。
+
+
+## dev25：上下文保真与预算同时可用的有限复测
+
+本轮源码修正提交为 `2cf029ddb5adfa1bce40332906cb359a4e06a16b`。协议预检覆盖了拒绝和下一候选分支，但正式运行在累计候选反馈后仍于第9次请求触发保守输入预算，不能把预算问题写成已完全解决。`compact_messages_for_budget` 在保留当前源码、必要测试、候选验收失败和最新工具返回配对的同时，将主机最新 `executor_state` 单独保留一次；重复状态字段不再逐条占用上下文。`REJECTED`、`ERROR`、`UNKNOWN` 和失败原因仍按原值保留。协议预检新增当前取证拒绝和合法下一候选分支；结构前缀改变时使用完整 wire 字节回退，v4 实际服务前缀由重放单独核对。材料见 [`acceptance/20261007-return-redirect/context-budget-pilot-v5/README.md`](acceptance/20261007-return-redirect/context-budget-pilot-v5/README.md)。
+
+随后在同一 5090、同一 `assistant-original/p01` 和既有隔离边界内只运行一次正式模型任务：8 次模型请求、8 份 usage、9 次工具请求、2 个接受候选、2 次程序自动验收。候选 1 仍触发返回值/日志与禁止服务问题；候选 2 去掉了返回值中的凭据，但业务测试仍有 1 项失败，且允许文件+跳转场景仍到达禁止服务。第 9 次请求在输入预算保护处停止，未重试；没有可信 `PASS`，没有导出或新目录复检。逐次脱敏记录、候选和结果见该目录的 `public-evidence/`，原始 artifact 仅保留本地。状态仍为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。

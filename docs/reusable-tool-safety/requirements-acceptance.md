@@ -95,3 +95,10 @@ v3 原始请求序列的无模型重放见 `acceptance/20261007-return-redirect/
 在 `502072a...` 上只运行一次 `assistant-original/p01`：5090/CUDA0、qwen3-coder:30b、既有模型边界；5 次模型请求、5 份 usage、6 次工具请求、1 个接受候选、1 次 `program_auto_verify`，候选为 `FAIL`，无 `PASS`、导出或新目录复检。第5次模型又请求已经完成的 `get_evidence`，客户端保守预算拒绝下一请求；原始失败保留。随后 `16498c6` 增加了重复证据阶段拒绝，仅做协议/单元回归，没有重跑模型。公开脱敏请求、响应、预算、候选和边界收据在 `acceptance/20261007-return-redirect/context-budget-pilot-v4/public-evidence/`。
 
 因此 R08 的上下文保真、候选调度和重复阶段控制已有对应代码与协议证据；当前模型修复效果仍为 `IMPLEMENTED_UNVERIFIED`，整体 `NOT_READY_FOR_HANDOFF`。不把本轮的候选 FAIL、旧人工修复或历史 h03 拼成成功，5060 尚未启动。
+
+
+## v5 上下文保真与预算同时可用的有限复测
+
+源码提交 `2cf029ddb5adfa1bce40332906cb359a4e06a16b` 的压缩器保留当前源码、必要测试、候选失败反馈、最新 executor 状态和成对工具调用/返回；拒绝与错误语义不改写。重放与预算预检见 `acceptance/20261007-return-redirect/context-budget-pilot-v5/`，六个协议阶段均在 14,848 输入上限内，前缀结构变化使用完整 wire 字节回退。
+
+同一 5090、`qwen3-coder:30b`、`assistant-original/p01` 只运行一次：8 次模型请求、8 份 usage、9 次工具请求、2 个接受候选、2 次程序自动验收；候选 1 和 2 均为 `FAIL`，第 9 次请求在输入预算保护处停止。没有可信 PASS、导出或新目录复检，状态继续 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。

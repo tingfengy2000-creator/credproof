@@ -1,0 +1,664 @@
+{
+  "schema": "credproof.model-events-summary/v1",
+  "source": "formal-p01-model-result-artifacts/model-work/model-trace/events.jsonl",
+  "events": [
+    {
+      "event": "client_created"
+    },
+    {
+      "event": "task_started"
+    },
+    {
+      "event": "execution_completion_checked"
+    },
+    {
+      "event": "input_budget_checked",
+      "next_call_id": 1
+    },
+    {
+      "event": "model_request",
+      "call_id": 1,
+      "timeout_s": 120,
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 4160,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "input_token_upper_bound": 4160,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "event": "model_response",
+      "call_id": 1,
+      "elapsed_s": 8.925015102955513,
+      "usage_status": "REPORTED_BY_SERVER",
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 4160,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "input_token_upper_bound": 4160,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "usage": {
+        "prompt_tokens": 1046,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "completion_tokens": 13,
+        "total_tokens": 1059
+      }
+    },
+    {
+      "event": "native_response_decoded",
+      "call_id": 1
+    },
+    {
+      "event": "tool_request",
+      "name": "get_evidence"
+    },
+    {
+      "event": "tool_result",
+      "name": "get_evidence",
+      "elapsed_s": 0.15193734201602638
+    },
+    {
+      "event": "execution_completion_checked"
+    },
+    {
+      "event": "input_budget_checked",
+      "next_call_id": 2
+    },
+    {
+      "event": "model_request",
+      "call_id": 2,
+      "timeout_s": 120,
+      "input_budget": {
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX",
+        "reuse_reason": "exact_previous_request_prefix_and_configuration",
+        "request_bytes": 8819,
+        "prefix_prompt_tokens": 1046,
+        "suffix_json_bytes": 4659,
+        "new_message_count": 2,
+        "input_token_upper_bound": 6729,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "event": "model_response",
+      "call_id": 2,
+      "elapsed_s": 0.37256521900417283,
+      "usage_status": "REPORTED_BY_SERVER",
+      "input_budget": {
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX",
+        "reuse_reason": "exact_previous_request_prefix_and_configuration",
+        "request_bytes": 8819,
+        "prefix_prompt_tokens": 1046,
+        "suffix_json_bytes": 4659,
+        "new_message_count": 2,
+        "input_token_upper_bound": 6729,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "usage": {
+        "prompt_tokens": 2232,
+        "prompt_tokens_details": {
+          "cached_tokens": 1045
+        },
+        "completion_tokens": 46,
+        "total_tokens": 2278
+      }
+    },
+    {
+      "event": "native_response_decoded",
+      "call_id": 2
+    },
+    {
+      "event": "tool_request",
+      "name": "read_code"
+    },
+    {
+      "event": "tool_result",
+      "name": "read_code",
+      "elapsed_s": 0.15220650000264868
+    },
+    {
+      "event": "execution_completion_checked"
+    },
+    {
+      "event": "tool_request",
+      "name": "read_code"
+    },
+    {
+      "event": "tool_result",
+      "name": "read_code",
+      "elapsed_s": 0.20211341395042837
+    },
+    {
+      "event": "execution_completion_checked"
+    },
+    {
+      "event": "input_budget_checked",
+      "next_call_id": 3
+    },
+    {
+      "event": "model_request",
+      "call_id": 3,
+      "timeout_s": 120,
+      "input_budget": {
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX",
+        "reuse_reason": "exact_previous_request_prefix_and_configuration",
+        "request_bytes": 15089,
+        "prefix_prompt_tokens": 2232,
+        "suffix_json_bytes": 6270,
+        "new_message_count": 3,
+        "input_token_upper_bound": 10038,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "event": "model_response",
+      "call_id": 3,
+      "elapsed_s": 1.7509667889680713,
+      "usage_status": "REPORTED_BY_SERVER",
+      "input_budget": {
+        "method": "MEASURED_PREFIX_PLUS_UTF8_SUFFIX",
+        "reuse_reason": "exact_previous_request_prefix_and_configuration",
+        "request_bytes": 15089,
+        "prefix_prompt_tokens": 2232,
+        "suffix_json_bytes": 6270,
+        "new_message_count": 3,
+        "input_token_upper_bound": 10038,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "usage": {
+        "prompt_tokens": 3924,
+        "prompt_tokens_details": {
+          "cached_tokens": 2231
+        },
+        "completion_tokens": 326,
+        "total_tokens": 4250
+      }
+    },
+    {
+      "event": "native_response_decoded",
+      "call_id": 3
+    },
+    {
+      "event": "tool_request",
+      "name": "submit_patch"
+    },
+    {
+      "event": "tool_result",
+      "name": "submit_patch",
+      "elapsed_s": 1.505123789946083
+    },
+    {
+      "event": "execution_completion_checked"
+    },
+    {
+      "event": "conversation_compacted",
+      "reason": "candidate_phase_replaced_superseded_tool_history"
+    },
+    {
+      "event": "input_budget_checked",
+      "next_call_id": 4
+    },
+    {
+      "event": "model_request",
+      "call_id": 4,
+      "timeout_s": 120,
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 11554,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "input_token_upper_bound": 11554,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "event": "model_response",
+      "call_id": 4,
+      "elapsed_s": 0.39873032399918884,
+      "usage_status": "REPORTED_BY_SERVER",
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 11554,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "input_token_upper_bound": 11554,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "usage": {
+        "prompt_tokens": 2834,
+        "prompt_tokens_details": {
+          "cached_tokens": 1050
+        },
+        "completion_tokens": 22,
+        "total_tokens": 2856
+      }
+    },
+    {
+      "event": "native_response_decoded",
+      "call_id": 4
+    },
+    {
+      "event": "tool_request",
+      "name": "read_code"
+    },
+    {
+      "event": "tool_result",
+      "name": "read_code",
+      "elapsed_s": 0.1519424970028922
+    },
+    {
+      "event": "execution_completion_checked"
+    },
+    {
+      "event": "conversation_compacted",
+      "reason": "candidate_phase_replaced_superseded_tool_history"
+    },
+    {
+      "event": "input_budget_checked",
+      "next_call_id": 5
+    },
+    {
+      "event": "model_request",
+      "call_id": 5,
+      "timeout_s": 120,
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 11821,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "input_token_upper_bound": 11821,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "event": "model_response",
+      "call_id": 5,
+      "elapsed_s": 0.228062484995462,
+      "usage_status": "REPORTED_BY_SERVER",
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 11821,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "input_token_upper_bound": 11821,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "usage": {
+        "prompt_tokens": 3036,
+        "prompt_tokens_details": {
+          "cached_tokens": 1683
+        },
+        "completion_tokens": 13,
+        "total_tokens": 3049
+      }
+    },
+    {
+      "event": "native_response_decoded",
+      "call_id": 5
+    },
+    {
+      "event": "tool_request",
+      "name": "get_evidence"
+    },
+    {
+      "event": "tool_result",
+      "name": "get_evidence",
+      "elapsed_s": 0.10124586400343105
+    },
+    {
+      "event": "execution_completion_checked"
+    },
+    {
+      "event": "conversation_compacted",
+      "reason": "candidate_phase_replaced_superseded_tool_history"
+    },
+    {
+      "event": "input_budget_checked",
+      "next_call_id": 6
+    },
+    {
+      "event": "model_request",
+      "call_id": 6,
+      "timeout_s": 120,
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 12178,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "input_token_upper_bound": 12178,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "event": "model_response",
+      "call_id": 6,
+      "elapsed_s": 3.262955611979123,
+      "usage_status": "REPORTED_BY_SERVER",
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 12178,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "input_token_upper_bound": 12178,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "usage": {
+        "prompt_tokens": 3085,
+        "prompt_tokens_details": {
+          "cached_tokens": 2143
+        },
+        "completion_tokens": 643,
+        "total_tokens": 3728
+      }
+    },
+    {
+      "event": "native_response_decoded",
+      "call_id": 6
+    },
+    {
+      "event": "tool_request",
+      "name": "submit_patch"
+    },
+    {
+      "event": "tool_result",
+      "name": "submit_patch",
+      "elapsed_s": 1.8056897589704022
+    },
+    {
+      "event": "execution_completion_checked"
+    },
+    {
+      "event": "conversation_compacted",
+      "reason": "candidate_phase_replaced_superseded_tool_history"
+    },
+    {
+      "event": "input_budget_checked",
+      "next_call_id": 7
+    },
+    {
+      "event": "model_request",
+      "call_id": 7,
+      "timeout_s": 120,
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 12739,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "input_token_upper_bound": 12739,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "event": "model_response",
+      "call_id": 7,
+      "elapsed_s": 0.3875547170173377,
+      "usage_status": "REPORTED_BY_SERVER",
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 12739,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "input_token_upper_bound": 12739,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "usage": {
+        "prompt_tokens": 3046,
+        "prompt_tokens_details": {
+          "cached_tokens": 1683
+        },
+        "completion_tokens": 22,
+        "total_tokens": 3068
+      }
+    },
+    {
+      "event": "native_response_decoded",
+      "call_id": 7
+    },
+    {
+      "event": "tool_request",
+      "name": "read_code"
+    },
+    {
+      "event": "tool_result",
+      "name": "read_code",
+      "elapsed_s": 0.15202857396798208
+    },
+    {
+      "event": "execution_completion_checked"
+    },
+    {
+      "event": "conversation_compacted",
+      "reason": "candidate_phase_replaced_superseded_tool_history"
+    },
+    {
+      "event": "input_budget_checked",
+      "next_call_id": 8
+    },
+    {
+      "event": "model_request",
+      "call_id": 8,
+      "timeout_s": 120,
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 13021,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "input_token_upper_bound": 13021,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "event": "model_response",
+      "call_id": 8,
+      "elapsed_s": 2.6135275790002197,
+      "usage_status": "REPORTED_BY_SERVER",
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 13021,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "input_token_upper_bound": 13021,
+        "input_token_limit": 14848,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "usage": {
+        "prompt_tokens": 3280,
+        "prompt_tokens_details": {
+          "cached_tokens": 1732
+        },
+        "completion_tokens": 498,
+        "total_tokens": 3778
+      }
+    },
+    {
+      "event": "native_response_decoded",
+      "call_id": 8
+    },
+    {
+      "event": "tool_request",
+      "name": "submit_patch"
+    },
+    {
+      "event": "tool_result",
+      "name": "submit_patch",
+      "elapsed_s": 0.20174038998084143
+    },
+    {
+      "event": "execution_completion_checked"
+    },
+    {
+      "event": "conversation_compacted",
+      "reason": "candidate_phase_replaced_superseded_tool_history"
+    },
+    {
+      "event": "input_budget_checked",
+      "next_call_id": 9
+    },
+    {
+      "event": "input_budget_exceeded"
+    },
+    {
+      "event": "task_finished",
+      "elapsed_s": 22.427274733025115,
+      "usage": [
+        {
+          "call_id": 1,
+          "usage": {
+            "prompt_tokens": 1046,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "completion_tokens": 13,
+            "total_tokens": 1059
+          },
+          "status": "REPORTED_BY_SERVER"
+        },
+        {
+          "call_id": 2,
+          "usage": {
+            "prompt_tokens": 2232,
+            "prompt_tokens_details": {
+              "cached_tokens": 1045
+            },
+            "completion_tokens": 46,
+            "total_tokens": 2278
+          },
+          "status": "REPORTED_BY_SERVER"
+        },
+        {
+          "call_id": 3,
+          "usage": {
+            "prompt_tokens": 3924,
+            "prompt_tokens_details": {
+              "cached_tokens": 2231
+            },
+            "completion_tokens": 326,
+            "total_tokens": 4250
+          },
+          "status": "REPORTED_BY_SERVER"
+        },
+        {
+          "call_id": 4,
+          "usage": {
+            "prompt_tokens": 2834,
+            "prompt_tokens_details": {
+              "cached_tokens": 1050
+            },
+            "completion_tokens": 22,
+            "total_tokens": 2856
+          },
+          "status": "REPORTED_BY_SERVER"
+        },
+        {
+          "call_id": 5,
+          "usage": {
+            "prompt_tokens": 3036,
+            "prompt_tokens_details": {
+              "cached_tokens": 1683
+            },
+            "completion_tokens": 13,
+            "total_tokens": 3049
+          },
+          "status": "REPORTED_BY_SERVER"
+        },
+        {
+          "call_id": 6,
+          "usage": {
+            "prompt_tokens": 3085,
+            "prompt_tokens_details": {
+              "cached_tokens": 2143
+            },
+            "completion_tokens": 643,
+            "total_tokens": 3728
+          },
+          "status": "REPORTED_BY_SERVER"
+        },
+        {
+          "call_id": 7,
+          "usage": {
+            "prompt_tokens": 3046,
+            "prompt_tokens_details": {
+              "cached_tokens": 1683
+            },
+            "completion_tokens": 22,
+            "total_tokens": 3068
+          },
+          "status": "REPORTED_BY_SERVER"
+        },
+        {
+          "call_id": 8,
+          "usage": {
+            "prompt_tokens": 3280,
+            "prompt_tokens_details": {
+              "cached_tokens": 1732
+            },
+            "completion_tokens": 498,
+            "total_tokens": 3778
+          },
+          "status": "REPORTED_BY_SERVER"
+        }
+      ]
+    }
+  ]
+}

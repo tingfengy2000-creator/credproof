@@ -1,0 +1,14 @@
+{
+  "source_commit": "2cf029ddb5adfa1bce40332906cb359a4e06a16b",
+  "device": "CUDA0 / NVIDIA RTX 5090",
+  "model": "qwen3-coder:30b",
+  "model_stack": "Qwen-Agent + Ollama local qwen3-coder:30b",
+  "execution_boundary": "model: bubblewrap allowlisted mounts + private network namespace; candidate verification: bubblewrap check_project",
+  "budgets": {
+    "max_model_calls": 12,
+    "max_candidates": 3,
+    "max_format_corrections": 1,
+    "executor_tool_call_cap": 12
+  },
+  "paid_api_used": false
+}
