@@ -1,7 +1,7 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
   "candidate_version": "0.3.0-dev.23",
-  "tested_source_commit": "e6507f36b93a0a3168717cf7f09f439b57786132",
+  "tested_source_commit": "a54dede",
   "generated_at": "2026-10-07",
   "status_summary": {
     "verified": 12,
@@ -483,7 +483,7 @@
     "new model/case expansion"
   ],
   "interpretation": "检测、程序验收、上下文预算适配和模型修复效果分别报告。当前预算适配在一次正式运行中得到验证，但模型修复效果仍为未验证；5060交接尚未启动。",
-  "current_review_receipt_commit": "2afd51bbd760a3e5d0aa01234e045c29d7e47f0e",
+  "current_review_receipt_commit": "a54dede",
   "handoff_status": "NOT_READY_FOR_HANDOFF",
   "handoff_blockers": [
     "本轮12次模型请求后仍无在修订返回/跳转规则下通过的可信候选；候选1 FAIL，候选2未验收。",
@@ -494,6 +494,7 @@
     "run": "context-budget-pilot-v3",
     "review_start_commit": "38269cca531ec4c687cb93a3761da8e50c7b2a31",
     "status": "NOT_READY_FOR_HANDOFF",
-    "note": "source commit and evidence receipt are recorded after local commit; no 5060 handoff"
+    "note": "source commit and evidence receipt are recorded after local commit; no 5060 handoff",
+    "source_commit": "a54dede"
   }
 }
