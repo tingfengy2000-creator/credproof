@@ -5,7 +5,7 @@
 边界内运行；没有调用付费 API，也没有把模型权重、rootfs 或虚拟环境放入仓库。
 
 本轮先完成了当前客户端的无模型续行预检（见
-`../context-budget-pilot-v6/public-evidence/current-client-continuation/`），随后只登记并执行一次
+`../../context-budget-pilot-v6/public-evidence/current-client-continuation/`），随后只登记并执行一次
 `assistant-original/p01`。实际结果为：9 次模型请求、9 份服务 usage、10 次工具请求、2 份候选，
 2 次由程序自动验收，候选均为 `FAIL`；任务因连续相同读取触发 `STOPPED_NO_PROGRESS`，没有模型
 修复 `PASS`，没有导出或新目录复检。
