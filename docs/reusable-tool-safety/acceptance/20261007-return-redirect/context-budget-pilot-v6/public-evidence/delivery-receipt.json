@@ -1,0 +1,19 @@
+{
+  "schema": "credproof.context-budget-pilot-v6/delivery-receipt/v1",
+  "branch": "feat/reusable-tool-safety",
+  "prior_remote_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
+  "delivery_commits": [
+    "4b603f68bb5c1ea75388c0e2ebd5bb0726327a63",
+    "686b3160ef9d5336eece5492fd0aea7b33ec8870"
+  ],
+  "current_remote_commit": "686b3160ef9d5336eece5492fd0aea7b33ec8870",
+  "tested_source_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
+  "source_code_relation": "v6 model run used the code at f7ac7aa; the two later commits add only public evidence and receipts",
+  "runtime_source_digests": {
+    "agent_pilot/model_client.py": "102c97c2e4a3fc5355dc1873e6acef30841eac431c8896feb6b8e34bf13f9df9",
+    "credproof_safety/agent.py": "c86c4cfe688731c552091dd77aee4d4e416021d8643562fc4e27ed02e9238bf0",
+    "agent_pilot/tests/test_model_boundary.py": "46252080c5afb2aa66731c3e058e3f1bc749bcc5358adb602a8cf1cef6fa79e6"
+  },
+  "status": "pushed_to_remote_branch",
+  "raw_model_artifacts_not_committed": true
+}

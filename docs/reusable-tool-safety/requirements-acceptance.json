@@ -260,7 +260,13 @@
         "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-budget.json",
         "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/candidate-01-verification.json",
         "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/candidate-02-verification.json",
-        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/targeted-regression.txt"
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/targeted-regression.txt",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/model-request-summary.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/model-trace/",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-payload.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/replay-reference.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/delivery-receipt.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/derivation-receipt.json"
       ],
       "source_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
       "gaps": "The v6 task reached two trusted automatic FAIL verifications but no current model repair PASS. Request 10 was not sent under the declared context limits; no candidate export or new-directory recheck is available.",
@@ -320,7 +326,7 @@
           "reason": "v6 was one bounded real 5090 run: 9 sent model requests, 2 accepted candidates, 2 program_auto_verify FAIL results, no PASS; request 10 was unsent because input/context bounds were exceeded."
         }
       ],
-      "notes": "本轮协议重放、模型运行和后续阶段拒绝分别记录；模型权重与运行环境不入库，5060交接尚未启动。 dev26 的修正与协议重放独立记录；模型效果仍未取得可信 PASS。"
+      "notes": "v6 public evidence now includes the nine request/response pairs, usage summary, complete unsent request-10 payload, replay reference, and source/delivery/derivation receipts; raw artifacts remain local and are not overwritten."
     },
     {
       "id": "R09",

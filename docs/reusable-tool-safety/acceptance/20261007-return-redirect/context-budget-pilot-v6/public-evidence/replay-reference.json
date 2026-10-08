@@ -1,0 +1,24 @@
+{
+  "schema": "credproof.context-budget-pilot-v6/replay-reference/v1",
+  "source_material": "v5 real message summary + v5 wire prefix; no Ollama call and no candidate execution",
+  "source_commit_of_replay": "f4757ac7286c474029e27e6a4551149b91466414",
+  "input": "acceptance/20261007-return-redirect/context-budget-pilot-v5/no-change-dedup/replay-summary.json and reconstructed-next-request.json",
+  "expected": [
+    "current source body retained once with explicit source_deduplication relation",
+    "latest executor_state and NO_CHANGE reason retained",
+    "tool call/result IDs paired",
+    "wire and context limits pass"
+  ],
+  "output_metrics": {
+    "request_bytes": 13788,
+    "input_token_upper_bound": 13788,
+    "input_limit": 14848,
+    "context_token_upper_bound": 15324,
+    "context_limit": 16384,
+    "all_payload_limits_pass": true,
+    "current_state_and_source_fit_together": true,
+    "no_request_sent": true
+  },
+  "historical_unsent_v5_request_bytes": 15972,
+  "historical_unsent_v5_request_sent": false
+}

@@ -1,0 +1,258 @@
+{
+  "schema": "credproof.context-budget-pilot-v6/model-request-summary/v1",
+  "model": "qwen3-coder:30b",
+  "sent_requests": 9,
+  "usage_records": 9,
+  "requests": [
+    {
+      "request_index": 1,
+      "request_file": "model-trace/model-01-request.json",
+      "response_file": "model-trace/model-01-response.json",
+      "request_file_bytes": 4763,
+      "wire_request_bytes": 4160,
+      "input_token_upper_bound": 4160,
+      "response_usage": {
+        "prompt_tokens": 1046,
+        "completion_tokens": 13,
+        "total_tokens": 1059
+      },
+      "message_count": 2,
+      "assistant_tool_calls": [],
+      "request_sha256": "5d40fd385bb3cf2d54f1a976efe697fbb6f4e00827e880110ffa88e63cc9fcde",
+      "response_sha256": "13d680782975d5c3e41933b23642b38dfed62ac9e394fd51f818fb96ad161daf"
+    },
+    {
+      "request_index": 2,
+      "request_file": "model-trace/model-02-request.json",
+      "response_file": "model-trace/model-02-response.json",
+      "request_file_bytes": 9570,
+      "wire_request_bytes": 8819,
+      "input_token_upper_bound": 6729,
+      "response_usage": {
+        "prompt_tokens": 2232,
+        "completion_tokens": 46,
+        "total_tokens": 2278
+      },
+      "message_count": 4,
+      "assistant_tool_calls": [
+        {
+          "id": "call_vurctmpr",
+          "name": "get_evidence"
+        }
+      ],
+      "request_sha256": "7aa74c682e55e6dc0daf96fda79f954d7c06602bcb1af3cb44bc0beffe405b51",
+      "response_sha256": "a7e5b92c07dce3d8c3f546d534f77ec9e332cf5ddc7aebe635602dfec921fcec"
+    },
+    {
+      "request_index": 3,
+      "request_file": "model-trace/model-03-request.json",
+      "response_file": "model-trace/model-03-response.json",
+      "request_file_bytes": 16100,
+      "wire_request_bytes": 15089,
+      "input_token_upper_bound": 10038,
+      "response_usage": {
+        "prompt_tokens": 3924,
+        "completion_tokens": 326,
+        "total_tokens": 4250
+      },
+      "message_count": 7,
+      "assistant_tool_calls": [
+        {
+          "id": "call_vurctmpr",
+          "name": "get_evidence"
+        },
+        {
+          "id": "call_65igletk",
+          "name": "read_code"
+        },
+        {
+          "id": "call_ghcnap90",
+          "name": "read_code"
+        }
+      ],
+      "request_sha256": "5c0466d3ea0cd8945d6853234d4a08f3140666f07e13c751ace5dd5b52bf217f",
+      "response_sha256": "3b94e10d34797a98f81813d19c0dada34ac4817acf25e89965ebb05eaf302c7c"
+    },
+    {
+      "request_index": 4,
+      "request_file": "model-trace/model-04-request.json",
+      "response_file": "model-trace/model-04-response.json",
+      "request_file_bytes": 12475,
+      "wire_request_bytes": 11554,
+      "input_token_upper_bound": 11554,
+      "response_usage": {
+        "prompt_tokens": 2836,
+        "completion_tokens": 13,
+        "total_tokens": 2849
+      },
+      "message_count": 7,
+      "assistant_tool_calls": [
+        {
+          "id": "call_ghcnap90",
+          "name": "read_code"
+        },
+        {
+          "id": "call_63crkqx7",
+          "name": "submit_patch"
+        }
+      ],
+      "request_sha256": "45c70106b8a7dd0cc33b413616bbc8d43469e3a40c80857050b7c4b5f88430aa",
+      "response_sha256": "2e39145f2686cdee9026d776c14eb127416c357bc6c6f3606e3825ded0ae29be"
+    },
+    {
+      "request_index": 5,
+      "request_file": "model-trace/model-05-request.json",
+      "response_file": "model-trace/model-05-response.json",
+      "request_file_bytes": 12980,
+      "wire_request_bytes": 11911,
+      "input_token_upper_bound": 11911,
+      "response_usage": {
+        "prompt_tokens": 2885,
+        "completion_tokens": 22,
+        "total_tokens": 2907
+      },
+      "message_count": 9,
+      "assistant_tool_calls": [
+        {
+          "id": "call_ghcnap90",
+          "name": "read_code"
+        },
+        {
+          "id": "call_63crkqx7",
+          "name": "submit_patch"
+        },
+        {
+          "id": "call_k1idk3sp",
+          "name": "get_evidence"
+        }
+      ],
+      "request_sha256": "e25b5caa21c8d879ed56d4ccc3ee9d61b1a4062e8ae9d5226027adde7a45f2d0",
+      "response_sha256": "b00d68ad302cbdfd31ccd78709b854eef97fc4e83e39786418a0a54eb90a95a5"
+    },
+    {
+      "request_index": 6,
+      "request_file": "model-trace/model-06-request.json",
+      "response_file": "model-trace/model-06-response.json",
+      "request_file_bytes": 13247,
+      "wire_request_bytes": 12178,
+      "input_token_upper_bound": 12178,
+      "response_usage": {
+        "prompt_tokens": 3087,
+        "completion_tokens": 330,
+        "total_tokens": 3417
+      },
+      "message_count": 9,
+      "assistant_tool_calls": [
+        {
+          "id": "call_ghcnap90",
+          "name": "read_code"
+        },
+        {
+          "id": "call_k1idk3sp",
+          "name": "get_evidence"
+        },
+        {
+          "id": "call_umc4sx98",
+          "name": "read_code"
+        }
+      ],
+      "request_sha256": "b30b435cf92304ced2df987b2ea2b9b03fef607f83bce8c6c0997e79855e5214",
+      "response_sha256": "6c5573f33ce8d50c1e1f249b4615976f982dfff71781e87a8aef02af8ae2d695"
+    },
+    {
+      "request_index": 7,
+      "request_file": "model-trace/model-07-request.json",
+      "response_file": "model-trace/model-07-response.json",
+      "request_file_bytes": 12924,
+      "wire_request_bytes": 11855,
+      "input_token_upper_bound": 11855,
+      "response_usage": {
+        "prompt_tokens": 2887,
+        "completion_tokens": 22,
+        "total_tokens": 2909
+      },
+      "message_count": 9,
+      "assistant_tool_calls": [
+        {
+          "id": "call_ghcnap90",
+          "name": "read_code"
+        },
+        {
+          "id": "call_k1idk3sp",
+          "name": "get_evidence"
+        },
+        {
+          "id": "call_p3ddf1ab",
+          "name": "submit_patch"
+        }
+      ],
+      "request_sha256": "af3dd6da52e1b288a6f7f86c061dc7ffd640ad16d7a58d909ee7d55340fc827e",
+      "response_sha256": "0c6b59a431b8d5d2d0cd05e1862e310a78eb52b2b8eab19b66e52ba20349ecc1"
+    },
+    {
+      "request_index": 8,
+      "request_file": "model-trace/model-08-request.json",
+      "response_file": "model-trace/model-08-response.json",
+      "request_file_bytes": 13206,
+      "wire_request_bytes": 12137,
+      "input_token_upper_bound": 12137,
+      "response_usage": {
+        "prompt_tokens": 3079,
+        "completion_tokens": 330,
+        "total_tokens": 3409
+      },
+      "message_count": 9,
+      "assistant_tool_calls": [
+        {
+          "id": "call_ghcnap90",
+          "name": "read_code"
+        },
+        {
+          "id": "call_k1idk3sp",
+          "name": "get_evidence"
+        },
+        {
+          "id": "call_j8w6v4gx",
+          "name": "read_code"
+        }
+      ],
+      "request_sha256": "4d5bf3916ac6820eca14a9f60725c147ae5e0523c16e76d2d4df6a19aa29a484",
+      "response_sha256": "c0743f4cbb882b23da26eeb4e4279e7583e73c39f424b8a131f870d6b5957924"
+    },
+    {
+      "request_index": 9,
+      "request_file": "model-trace/model-09-request.json",
+      "response_file": "model-trace/model-09-response.json",
+      "request_file_bytes": 14121,
+      "wire_request_bytes": 12904,
+      "input_token_upper_bound": 12904,
+      "response_usage": {
+        "prompt_tokens": 3281,
+        "completion_tokens": 13,
+        "total_tokens": 3294
+      },
+      "message_count": 11,
+      "assistant_tool_calls": [
+        {
+          "id": "call_ghcnap90",
+          "name": "read_code"
+        },
+        {
+          "id": "call_k1idk3sp",
+          "name": "get_evidence"
+        },
+        {
+          "id": "call_j8w6v4gx",
+          "name": "read_code"
+        },
+        {
+          "id": "call_8y0mx05q",
+          "name": "submit_patch"
+        }
+      ],
+      "request_sha256": "3c8001091d2f8254f557e862bf0a457da28dccfb4dc96811fc2f9ef0cace50e4",
+      "response_sha256": "8c62804648abcbd561cf8598a40e9f07505052d0c8a8fe3c27241eb886f1f11b"
+    }
+  ],
+  "note": "Request/response files are copied byte-identically after checks for synthetic credential values and host paths; model-10 was not sent and has a separate full payload file."
+}

@@ -8,5 +8,9 @@
 - `candidate-01.py`、`candidate-02.py`：本次模型实际提交并被程序接受进入自动验收的合成候选。
 - `candidate-01-verification.json`、`candidate-02-verification.json`：对应程序自动验收的脱敏摘要。
 - `targeted-regression.txt`：本轮定向回归的真实命令、退出码和结果（47 passed）。
+- `model-request-summary.json` 与 `model-trace/`：9 次实际请求/响应、usage、工具调用名和请求摘要；请求/响应在脱敏检查后与本地原件字节一致。
+- `unsent-request-10-payload.json` 与 `unsent-request-10-budget.json`：第 10 次完整未发送 payload 和预算收据，明确无服务 usage。
+- `replay-reference.json`：无模型重放的输入、预期、输出和 13,788 字节预算来源。
+- `delivery-receipt.json`、`derivation-receipt.json`：被测源码、两个交付提交及原始/派生文件 SHA-256 关系。
 
 无模型协议重放沿用 v5 真实材料，详见 [`replay-summary`](../../context-budget-pilot-v5/no-change-dedup/replay-summary.json) 与 [`reconstructed-next-request`](../../context-budget-pilot-v5/no-change-dedup/reconstructed-next-request.json)。本轮没有候选通过全部安全与业务检查，因此没有同一候选导出或新目录复检；状态保持 `NOT_READY_FOR_HANDOFF`。
