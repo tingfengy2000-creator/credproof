@@ -1,4 +1,18 @@
-## 清洁安装与需求验收（dev18）
+# CredProof reusable-tool-safety（0.3.0-dev.28）
+
+## 当前固定评审入口
+
+本分支最新公开提交为 `ad54132ef6c7c883105944e4039a84e9d07ed391`。本版只整理 v6 真实模型运行的可读证据并修正重复验收反馈的上下文占用；没有启动新的模型任务。
+
+- 需求验收表：[`requirements-acceptance.md`](requirements-acceptance.md) / [`requirements-acceptance.json`](requirements-acceptance.json)
+- v6 公开证据：[`acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/)
+- 预算拆分：[`budget-breakdown.json`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/budget-breakdown.json)
+- 无模型预算重放：[`duplicate-verify-dedup/replay-summary.json`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup/replay-summary.json)
+- 关键修正：`credproof_safety/agent.py:_verification_repeat_summary`；定向回归 `48 passed, 1 warning`。
+
+固定 v6 运行仍为 9 次已发送模型请求、2 个候选且均由程序验收为 `FAIL`；第 10 次请求未发送，因真实输入/上下文上界超过声明限制。压缩后的无模型重放通过预算并保留失败语义，但不是新的模型修复成功。当前状态为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。
+
+## 历史清洁安装与需求验收（dev18）
 
 本版先完成清洁安装链路和可复核需求表，再决定是否交接 5060。入口文件是 [`requirements-acceptance.md`](requirements-acceptance.md) 与机器可读的 [`requirements-acceptance.json`](requirements-acceptance.json)。
 
@@ -9,7 +23,7 @@
 - 当前状态：程序检查、导出链以及模型边界运行均有可读证据；最新上下文适配任务按真实请求预算以 `INCOMPLETE` 结束，不能写成自动修复成功。
 - 本轮新增 [`acceptance/20261006-live-correction/`](acceptance/20261006-live-correction/)：保存的现场候选按新 `project-bundle/v1` 导出并在新目录复检，真实结果仍为 `FAIL`。页面批次实际接受 1 份候选、验收 1 次；清洁 wheel 批次接受 0 份候选，二者未合并统计。
 
-# CredProof reusable-tool-safety（0.3.0-dev.22）
+# 历史基线：CredProof reusable-tool-safety（0.3.0-dev.22）
 
 本开发分支把 CredProof 的受控凭据验收扩展到两类实际工具行为：越过配置目录
 读取文件、以及访问未授权的 HTTP 服务。它面向有源码和授权的小型 Python 工具，
