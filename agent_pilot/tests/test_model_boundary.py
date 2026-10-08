@@ -10,6 +10,7 @@ import json
 import unittest
 
 from credproof_safety.agent import (_model_feedback, _model_initial_context,
+                                    _model_actionable_failures,
                                     _phase_rejection, _read_progress_update,
                                     _verification_repeat_summary)
 from agent_pilot.model_client import compact_messages_for_budget, to_ollama_messages
@@ -95,6 +96,30 @@ class ModelBoundaryContractTests(unittest.TestCase):
         self.assertNotIn("[SYNTHETIC_CREDENTIAL]", json.dumps(feedback, ensure_ascii=False))
         self.assertIn("stdout", feedback["omitted_fields"])
 
+    def test_feedback_includes_bounded_actionable_boundary_facts(self):
+        config = load_config(Path(__file__).resolve().parents[2] / "examples/material_assistant/credproof.toml")
+        report = {
+            "verdict": "FAIL", "project_tree_sha256": "object-test",
+            "execution": {
+                "forbidden_reads": [{"path_raw": "/tmp/lab/data/../secrets/secret.txt",
+                                      "path": "/tmp/lab/secrets/secret.txt",
+                                      "resolved_path": "/tmp/lab/secrets/secret.txt",
+                                      "classification": "forbidden", "observation": "access_attempt"}],
+                "requests": [{"service": "forbidden", "path": "/secret",
+                              "authorization_present": True, "credential_ok": True}],
+                "entry_scenarios": [{"name": "allowed_file_redirect", "expected_error": "HTTPError",
+                                      "require_network": True, "entry_returned": {"service": "forbidden"},
+                                      "raised": None, "request_observations":
+                                      [{"service": "forbidden", "path": "/secret"}]}],
+                "pytest_observation": {"required_unmet_cases": ["tests/test_business.py::boundary"]},
+            },
+        }
+        facts = _model_actionable_failures(report, config)
+        self.assertEqual(facts["forbidden_file_attempts"][0]["resolved_path"], "/tmp/lab/secrets/secret.txt")
+        self.assertEqual(facts["forbidden_service_requests"][0]["path"], "/secret")
+        self.assertEqual(facts["scenario_mismatches"][0]["observed"], "returned")
+        self.assertEqual(facts["required_pytest_unmet_cases"], ["tests/test_business.py::boundary"])
+
     def test_duplicate_verify_summary_keeps_failure_without_full_repeat(self):
         config = load_config(Path(__file__).resolve().parents[2] / "examples/material_assistant/credproof.toml")
         report = {
@@ -151,6 +176,17 @@ class ModelBoundaryContractTests(unittest.TestCase):
                              read_paths={"tool.py"}, required_read_paths=required,
                              accepted_candidates=1),
             "evidence_already_current")
+
+    def test_revision_phase_requires_new_candidate_after_failed_auto_verify(self):
+        required = {"tool.py", "tests/test_business.py"}
+        kwargs = dict(evidence_ready=True, read_paths=required,
+                      required_read_paths=required, accepted_candidates=2,
+                      last_verified_candidate=2, last_verification_verdict="FAIL")
+        self.assertEqual(_phase_rejection("read_code", **kwargs),
+                         "revision_source_already_current")
+        self.assertEqual(_phase_rejection("get_evidence", **kwargs),
+                         "revision_evidence_already_current")
+        self.assertIsNone(_phase_rejection("submit_patch", **kwargs))
 
     def test_same_read_progress_stops_after_real_repeats(self):
         key = ("tool.py", "sha-current", 1, "FAIL")
@@ -360,6 +396,9 @@ class ModelBoundaryContractTests(unittest.TestCase):
         self.assertIn("repeated_read_count", text)
         self.assertIn("last_read_sha256", text)
         self.assertIn("remaining_tool_calls", text)
+        self.assertIn("revision_source_already_current", text)
+        self.assertIn("no_progress_revision_action", text)
+        self.assertIn("actionable_failures", text)
 
 
 if __name__ == "__main__":

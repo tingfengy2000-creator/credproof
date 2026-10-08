@@ -229,7 +229,7 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
             'schema', 'object_id', 'verdict', 'reason', 'required_checks',
             'confirmed_failed_checks', 'readable_paths', 'repair_guidance',
             'credential_leaks', 'pytest_summary', 'forbidden_reads', 'violation_facts',
-            'out_of_scope_reads', 'unauthorized_connections', 'executor_state',
+            'actionable_failures', 'out_of_scope_reads', 'unauthorized_connections', 'executor_state',
         ) if key in value}
         scenarios = value.get('scenario_summary')
         if isinstance(scenarios, list):
@@ -255,7 +255,7 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
         return {key: value[key] for key in (
             'schema', 'object_id', 'verdict', 'reason', 'required_checks',
             'confirmed_failed_checks', 'credential_leaks', 'pytest_summary', 'violation_facts',
-            'forbidden_reads', 'out_of_scope_reads', 'unauthorized_connections')
+            'actionable_failures', 'forbidden_reads', 'out_of_scope_reads', 'unauthorized_connections')
             if key in value}
 
     def _compact_function_content(item: dict, name: str, value: dict) -> dict:
@@ -384,7 +384,7 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
             failure_summary = {key: report[key] for key in (
                 'schema', 'object_id', 'verdict', 'reason', 'required_checks',
                 'confirmed_failed_checks', 'credential_leaks', 'pytest_summary', 'violation_facts',
-                'forbidden_reads', 'out_of_scope_reads', 'unauthorized_connections')
+                'actionable_failures', 'forbidden_reads', 'out_of_scope_reads', 'unauthorized_connections')
                 if key in report}
         accepted_summary = {
             'candidate': accepted_value.get('candidate'),

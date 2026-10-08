@@ -1,0 +1,28 @@
+{
+  "schema": "credproof.v7-revision-diagnosis/v1",
+  "source": "v7 model trace, requests 7-9",
+  "model_contacted_by_exporter": false,
+  "omitted_fields": [
+    "full source text",
+    "stdout/stderr",
+    "logs",
+    "raw audit rows",
+    "runtime credentials",
+    "host absolute paths"
+  ],
+  "omitted_reason": "Candidate source is already a public artifact; the diagnosis retains hashes, sizes, tool IDs, state, and trusted failure facts.",
+  "files": {
+    "request-07-excerpt.json": {
+      "request_sha256": "782b640b3071d3f0bc62aaec7a48df004406fbb7b96a12c0cf395603e59b8fb7",
+      "response_sha256": "4502675a82c2063962528aea29164f5b44f5f19b3d15f857b40cedaf379c051b"
+    },
+    "request-08-excerpt.json": {
+      "request_sha256": "f439fe904ccc6d9147d95622fae7a472f37fd54df9d9a9088b199169584bee62",
+      "response_sha256": "a46f4f535522fdb6abc0e70e25019a905eabbf64b090ca936d8cbdaa45f8bcfa"
+    },
+    "request-09-excerpt.json": {
+      "request_sha256": "666653a8ae96b7180176c744efd3f57ac70381a497c97e59afab143f49980dee",
+      "response_sha256": "cdac44a0dfe31e8a171a074940850756ea1fd084d142bff50c1de4804244c4ff"
+    }
+  }
+}
