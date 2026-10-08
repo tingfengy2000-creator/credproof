@@ -1,0 +1,71 @@
+{
+  "schema": "credproof.context-budget-pilot-v6/duplicate-verify-replay/v1",
+  "protocol_replay": true,
+  "model_request_sent": false,
+  "candidate_execution": false,
+  "input_source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-payload.json",
+  "old_unsent_budget": {
+    "method": "UTF8_WIRE_BYTES",
+    "reuse_reason": "no_previous_measured_request",
+    "request_bytes": 16642,
+    "prefix_call_id": null,
+    "prefix_prompt_tokens": null,
+    "suffix_json_bytes": null,
+    "new_message_count": null,
+    "new_message_reserve_tokens": 0,
+    "global_reserve_tokens": 512,
+    "max_output_tokens": 1024,
+    "input_token_upper_bound": 16642,
+    "input_token_limit": 14848,
+    "context_token_upper_bound": 18178,
+    "context_token_limit": 16384,
+    "within_context_budget": false,
+    "within_wire_limit": true
+  },
+  "new_compacted_budget": {
+    "method": "UTF8_WIRE_BYTES",
+    "reuse_reason": "no_previous_measured_request",
+    "request_bytes": 14336,
+    "prefix_call_id": null,
+    "prefix_prompt_tokens": null,
+    "suffix_json_bytes": null,
+    "new_message_count": null,
+    "new_message_reserve_tokens": 0,
+    "global_reserve_tokens": 512,
+    "max_output_tokens": 1024,
+    "input_token_upper_bound": 14336,
+    "input_token_limit": 14848,
+    "context_token_upper_bound": 15872,
+    "context_token_limit": 16384,
+    "within_context_budget": true,
+    "within_wire_limit": true
+  },
+  "replacement": {
+    "reason": "candidate_already_verified",
+    "preserved_candidate": 2,
+    "preserved_verdict": "FAIL",
+    "preserved_failed_checks": [
+      "pytest",
+      "required_pytest_tests",
+      "required_entry_scenarios",
+      "no_forbidden_file_read",
+      "no_forbidden_service_receipt",
+      "no_unauthorized_connection"
+    ],
+    "removed_duplicate_fields": [
+      "readable_paths",
+      "repair_guidance",
+      "scenario_summary",
+      "request_summary",
+      "access_summary",
+      "omitted_counts"
+    ]
+  },
+  "assertions": {
+    "old_payload_exceeded_input_limit": true,
+    "new_payload_within_input_limit": true,
+    "new_payload_within_context_limit": true,
+    "failure_state_preserved": true,
+    "no_request_sent": true
+  }
+}

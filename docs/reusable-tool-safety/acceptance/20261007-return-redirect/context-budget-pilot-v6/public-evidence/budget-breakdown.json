@@ -1,0 +1,53 @@
+{
+  "schema": "credproof.context-budget-pilot-v6/budget-breakdown/v1",
+  "source": "formal-p01-model-result-artifacts/model-work/model-trace/model-09-request.json and model-10-unsent-request.json",
+  "model09": {
+    "wire_bytes": 12904,
+    "context_upper_bound": 14440,
+    "within_input_limit": true,
+    "within_context_limit": true
+  },
+  "model10_unsent": {
+    "wire_bytes": 16642,
+    "input_upper_bound": 16642,
+    "input_limit": 14848,
+    "context_upper_bound": 18178,
+    "context_limit": 16384,
+    "input_over_by": 1794,
+    "context_over_by": 1794,
+    "within_wire_limit": true,
+    "within_context_budget": false,
+    "method": "UTF8_WIRE_BYTES",
+    "reuse_reason": "message_prefix_changed"
+  },
+  "model10_wire_components": {
+    "system_message": 1374,
+    "initial_user_task": 1755,
+    "assistant_tool_calls": 2411,
+    "tool_results": 7013,
+    "executor_context_user": 3036,
+    "top_level_model_params_tools_and_arrays": 1053,
+    "sum": 16642
+  },
+  "increment_from_model09": {
+    "total_wire_bytes": 3738,
+    "duplicate_verify_call": 154,
+    "candidate_already_verified_tool_result": 3579,
+    "executor_context_state_change": 1,
+    "array_and_top_level_overhead": 4
+  },
+  "actual_repetition_checks": {
+    "model10_prefix_messages_0_to_9_equal_model09": true,
+    "prefix_replayed_wire_and_config_bytes_approx": 9853,
+    "candidate1_full_source_present": false,
+    "candidate2_sha_occurrences": 7,
+    "current_source_body_in_latest_read_result": false,
+    "current_source_relation_in_latest_read_result": true,
+    "no_change_status_retained": true,
+    "evidence_already_current_retained": true,
+    "duplicate_full_verification_subtree_in_rejected_verify_and_executor_context": true,
+    "duplicate_subtree_compact_bytes_at_least": 844
+  },
+  "root_cause": "submit_patch already performed program_auto_verify; the model then called verify_patch, and the executor returned a redundant bounded failure report. The new tool result changed the prefix, so the client used the full UTF-8 wire fallback and rejected request 10 before sending it.",
+  "not_claimed": "This breakdown does not measure server token usage for request 10; no request 10 usage exists."
+}

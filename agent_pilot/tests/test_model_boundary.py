@@ -9,7 +9,9 @@ import hashlib
 import json
 import unittest
 
-from credproof_safety.agent import _model_feedback, _model_initial_context, _phase_rejection, _read_progress_update
+from credproof_safety.agent import (_model_feedback, _model_initial_context,
+                                    _phase_rejection, _read_progress_update,
+                                    _verification_repeat_summary)
 from agent_pilot.model_client import compact_messages_for_budget, to_ollama_messages
 from credproof_safety.config import load_config
 
@@ -92,6 +94,33 @@ class ModelBoundaryContractTests(unittest.TestCase):
         self.assertEqual(feedback["scenario_summary"][0]["observed"], "returned")
         self.assertNotIn("[SYNTHETIC_CREDENTIAL]", json.dumps(feedback, ensure_ascii=False))
         self.assertIn("stdout", feedback["omitted_fields"])
+
+    def test_duplicate_verify_summary_keeps_failure_without_full_repeat(self):
+        config = load_config(Path(__file__).resolve().parents[2] / "examples/material_assistant/credproof.toml")
+        report = {
+            "verdict": "FAIL", "reason": None, "project_tree_sha256": "object-test",
+            "required_checks": {"no_credential_output": True, "no_forbidden_file_read": False},
+            "failed_checks": ["no_forbidden_file_read"],
+            "execution": {
+                "credential_leaks": [],
+                "entry_scenarios": [{"name": "normal_allowed_output", "expected_error": None,
+                                      "require_network": False, "entry_returned": {"service": {"ok": True}},
+                                      "request_observations": [{"service": "allow", "path": "/api"}]}],
+                "requests": [{"service": "allow", "path": "/api"}],
+                "pytest_exit_code": 1,
+                "pytest_observation": {"collected": 4, "executed": 4, "passed": 3, "failed": 1, "skipped": 0},
+                "forbidden_reads": ["secrets/secret.txt"],
+                "out_of_scope_reads": [],
+                "unauthorized_connections": [{"service": "forbidden", "path": "/secret"}],
+            },
+        }
+        summary = _verification_repeat_summary(report, config)
+        self.assertEqual(summary["verdict"], "FAIL")
+        self.assertIn("no_forbidden_file_read", summary["confirmed_failed_checks"])
+        self.assertEqual(summary["pytest_summary"]["failed"], 1)
+        self.assertNotIn("repair_guidance", summary)
+        self.assertNotIn("scenario_summary", summary)
+        self.assertNotIn("execution", summary)
 
     def test_phase_protocol_never_verifies_without_candidate(self):
         required = {"tool.py", "tests/test_business.py"}
@@ -319,6 +348,8 @@ class ModelBoundaryContractTests(unittest.TestCase):
         text = SOURCE.read_text(encoding="utf-8")
         self.assertIn("program_auto_verify", text)
         self.assertIn("candidate_already_verified", text)
+        self.assertIn("'verification':{'status':'REJECTED'", text)
+        self.assertIn("_verification_repeat_summary", text)
         self.assertIn("NO_CHANGE", text)
         self.assertIn("STOPPED_TOOL_BUDGET", text)
         self.assertIn("no_progress_same_read", text)

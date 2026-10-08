@@ -1,8 +1,8 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.27",
+  "candidate_version": "0.3.0-dev.28",
   "tested_source_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
-  "generated_at": "2026-10-07",
+  "generated_at": "2026-10-08",
   "status_summary": {
     "verified": 12,
     "unverified": 1,
@@ -236,15 +236,18 @@
         "scripts/replay-context-budget-v4.py",
         "scripts/model-context-budget-preflight.py",
         "scripts/replay-context-budget-v5-no-change.py",
-        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/formal-run-summary.json"
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/formal-run-summary.json",
+        "credproof_safety/agent.py:_verification_repeat_summary",
+        "scripts/replay-context-budget-v6-duplicate-verify.py",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/budget-breakdown.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup/replay-summary.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup/reconstructed-next-request.json"
       ],
       "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先完成首请求上下文、证据反馈压缩与可信阶段顺序预检，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
-      "acceptance": "v6 replay from real v5 messages keeps the current source, latest read pair, failure feedback, executor state and budgets together; the next payload is 13788/14848 input and 15324/16384 context. One bounded 5090 run sent 9 model requests with 9 usage records and processed 10 tool requests; two candidates were accepted and automatically verified, both FAIL. A third same-source submission was NO_CHANGE; manual verify_patch was rejected as candidate_already_verified. Request 10 was recorded unsent at 16642 input and 18178 context, above the declared limits. No candidate PASS or export/recheck.",
+      "acceptance": "The v6 live run remains historical and was executed against source f7ac7aa7a6342de8e240e8e10146dbebe64133fe: 9 model requests with 9 usage records, 10 processed tool requests, two accepted candidates and two program_auto_verify FAIL results; candidate 3 was NO_CHANGE and duplicate verify_patch was rejected as candidate_already_verified. Request 10 was unsent at 16642 input / 18178 context, above 14848 / 16384, with no service usage. A no-model replay of that exact unsent payload after compacting the redundant duplicate verification result produced 14336 input / 15872 context, within 14848 / 16384, while preserving candidate 2 FAIL and all failed checks. The replay sent no request and executed no candidate.",
       "commands": [
-        ".venv\\Scripts\\python.exe scripts/replay-context-budget-v4.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v5",
-        ".venv\\Scripts\\python.exe scripts/model-context-budget-preflight.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v5/budget-preflight.json",
-        ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests/test_model_boundary.py agent_pilot/test_model_client.py credproof_safety/tests/test_entry_scenarios.py credproof_safety/tests/test_project_bundle.py",
-        ".venv\\Scripts\\python.exe scripts/replay-context-budget-v5-no-change.py"
+        ".venv\\Scripts\\python.exe scripts/replay-context-budget-v6-duplicate-verify.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-payload.json --output-dir docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup",
+        ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests/test_model_boundary.py agent_pilot/test_model_client.py credproof_safety/tests/test_entry_scenarios.py credproof_safety/tests/test_project_bundle.py"
       ],
       "evidence": [
         "acceptance/20261007-return-redirect/context-budget-pilot-v5/replay-summary.json",
@@ -266,10 +269,14 @@
         "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-payload.json",
         "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/replay-reference.json",
         "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/delivery-receipt.json",
-        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/derivation-receipt.json"
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/derivation-receipt.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/budget-breakdown.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup/replay-summary.json",
+        "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup/reconstructed-next-request.json",
+        "scripts/replay-context-budget-v6-duplicate-verify.py"
       ],
       "source_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
-      "gaps": "The v6 task reached two trusted automatic FAIL verifications but no current model repair PASS. Request 10 was not sent under the declared context limits; no candidate export or new-directory recheck is available.",
+      "gaps": "The v6 live run has no model repair PASS, no candidate export, and no new-directory recheck. The duplicate-verify response compaction is validated only by a no-model protocol replay and 48 targeted tests; a new real model run is intentionally deferred. The live v6 run used the historical source commit above; the protocol fix is post-run and must not be described as part of that model run.",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
@@ -326,7 +333,31 @@
           "reason": "v6 was one bounded real 5090 run: 9 sent model requests, 2 accepted candidates, 2 program_auto_verify FAIL results, no PASS; request 10 was unsent because input/context bounds were exceeded."
         }
       ],
-      "notes": "v6 public evidence now includes the nine request/response pairs, usage summary, complete unsent request-10 payload, replay reference, and source/delivery/derivation receipts; raw artifacts remain local and are not overwritten."
+      "notes": "Full v6 raw artifacts remain local and are not overwritten. Public derived JSON preserves semantic content but may differ in newline bytes; derivation-receipt.json records original and derived hashes. The final status remains NOT_READY_FOR_HANDOFF.",
+      "post_v6_protocol_fix": {
+        "status": "PROTOCOL_REPLAY_VERIFIED_NOT_LIVE_MODEL",
+        "source_run_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
+        "file_digests": [
+          {
+            "path": "credproof_safety/agent.py",
+            "sha256": "ccaea723ee95af609482e6d822c03c8ed5c5acdb06557b34ba650af33041fc4d"
+          },
+          {
+            "path": "agent_pilot/tests/test_model_boundary.py",
+            "sha256": "e47e159e9ea664d37904be5d68f70bc957f16158b09c422e7360be6f00db65ff"
+          },
+          {
+            "path": "scripts/replay-context-budget-v6-duplicate-verify.py",
+            "sha256": "6e3342965db7a5124278bdc450d1661a049815f6711f443ddb27270a988477de"
+          }
+        ],
+        "evidence": [
+          "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/budget-breakdown.json",
+          "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup/replay-summary.json",
+          "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/targeted-regression.txt"
+        ],
+        "note": "These digests describe the post-run protocol correction; they do not change the source used for the v6 live model task."
+      }
     },
     {
       "id": "R09",
@@ -517,6 +548,8 @@
     "v6 formal p01 produced two accepted candidates and two program_auto_verify FAIL results; no current model repair PASS",
     "the tenth model request was not sent because the actual input/context upper bounds exceeded the declared limits; no same-candidate export or new-directory recheck exists"
   ],
-  "version": "0.3.0-dev.27",
-  "latest_review_update": "dev27: v6 context fidelity and budget joint replay plus one bounded model run; no candidate PASS"
+  "version": "0.3.0-dev.28",
+  "latest_review_update": "dev28: v6 evidence is publicly structured; duplicate verification feedback is compacted in a no-model replay; no candidate PASS",
+  "protocol_replay_only": true,
+  "historical_live_run_source_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe"
 }

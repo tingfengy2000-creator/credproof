@@ -581,6 +581,24 @@ def _model_feedback(report: dict, config, *, initial: bool = False) -> dict:
     }
 
 
+def _verification_repeat_summary(report: dict, config) -> dict:
+    """Keep a compact trusted result for a duplicate verify request.
+
+    ``submit_patch`` already returns the program-owned verification feedback.
+    If the model calls ``verify_patch`` again, returning the full feedback a
+    second time can consume the next context window without adding evidence.
+    The complete report remains in the host history; this summary keeps the
+    decision fields and declared scenario outcomes needed to reason about the
+    already-verified candidate.
+    """
+    feedback = _model_feedback(report, config)
+    fields = (
+        'schema', 'object_id', 'verdict', 'reason', 'required_checks',
+        'confirmed_failed_checks', 'pytest_summary',
+    )
+    return {key: feedback[key] for key in fields if key in feedback}
+
+
 def _model_readable_paths(config) -> list[str]:
     """Return the bounded source index exposed to the model and executor.
 
@@ -838,7 +856,11 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
                             value={'status':'REJECTED','reason':'immutable_candidate_material_changed'}
                         elif last_verified_candidate == patch_no and patch_no:
                             value={'status':'REJECTED','reason':'candidate_already_verified',
-                                   'candidate':patch_no, 'verification':_model_feedback(last_verification, config)}
+                                   'candidate':patch_no,
+                                   'verification':{'status':'REJECTED',
+                                                   'reason':'candidate_already_verified',
+                                                   'candidate':patch_no,
+                                                   'report':_verification_repeat_summary(last_verification, config)}}
                         else:
                             value=run_trusted_verification(patch_no)
                     else: value={'status':'REJECTED','reason':'unknown_tool'}

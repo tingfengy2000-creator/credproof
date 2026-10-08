@@ -254,5 +254,5 @@
       "response_sha256": "8c62804648abcbd561cf8598a40e9f07505052d0c8a8fe3c27241eb886f1f11b"
     }
   ],
-  "note": "Request/response files are copied byte-identically after checks for synthetic credential values and host paths; model-10 was not sent and has a separate full payload file."
+  "note": "Request/response files were UTF-8 parsed and newline-normalized after checks for synthetic credential values and host paths; JSON semantics are preserved, while original and derived byte hashes are recorded in derivation-receipt.json. model-10 was not sent and has a separate full payload file."
 }
