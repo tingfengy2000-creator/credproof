@@ -228,7 +228,7 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
         result = {key: value[key] for key in (
             'schema', 'object_id', 'verdict', 'reason', 'required_checks',
             'confirmed_failed_checks', 'readable_paths', 'repair_guidance',
-            'credential_leaks', 'pytest_summary', 'forbidden_reads',
+            'credential_leaks', 'pytest_summary', 'forbidden_reads', 'violation_facts',
             'out_of_scope_reads', 'unauthorized_connections', 'executor_state',
         ) if key in value}
         scenarios = value.get('scenario_summary')
@@ -254,7 +254,7 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
         """Keep actionable failure evidence without repeating every row."""
         return {key: value[key] for key in (
             'schema', 'object_id', 'verdict', 'reason', 'required_checks',
-            'confirmed_failed_checks', 'credential_leaks', 'pytest_summary',
+            'confirmed_failed_checks', 'credential_leaks', 'pytest_summary', 'violation_facts',
             'forbidden_reads', 'out_of_scope_reads', 'unauthorized_connections')
             if key in value}
 
@@ -383,7 +383,7 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
             # scenario/request rows already present in the host artifact.
             failure_summary = {key: report[key] for key in (
                 'schema', 'object_id', 'verdict', 'reason', 'required_checks',
-                'confirmed_failed_checks', 'credential_leaks', 'pytest_summary',
+                'confirmed_failed_checks', 'credential_leaks', 'pytest_summary', 'violation_facts',
                 'forbidden_reads', 'out_of_scope_reads', 'unauthorized_connections')
                 if key in report}
         accepted_summary = {
