@@ -1,0 +1,53 @@
+{
+  "schema": "credproof.public-formal-run-summary/v1",
+  "run_id": "context-budget-pilot-v7-formal-p01",
+  "run_kind": "single_real_local_model_task",
+  "tested_source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1",
+  "task_source_context": "assistant-original/p01",
+  "model": "qwen3-coder:30b",
+  "model_stack": "Qwen-Agent + Ollama local qwen3-coder:30b",
+  "host_gpu_scope": "5090 host; CUDA0 boundary was used for this run",
+  "boundary_status": "VERIFIED_FOR_THIS_RUN",
+  "boundary_evidence": {
+    "interfaces": ["lo"],
+    "outside_connect_tests": "all three declared external addresses failed with network unreachable",
+    "host_sentinel_visible": false,
+    "model_code_writable": [],
+    "mountinfo_has_windows_or_host_mount": false,
+    "device_allowlist": "/dev/dxg plus read-only WSL CUDA driver allowlist",
+    "network": "private bubblewrap namespace; loopback only"
+  },
+  "frozen_budget": {
+    "max_model_requests": 12,
+    "max_tool_requests": 12,
+    "max_candidates": 3,
+    "max_verifications": 3,
+    "format_corrections": 1,
+    "single_request_timeout_seconds": 120,
+    "task_timeout_seconds": 900,
+    "model_context_tokens": 16384
+  },
+  "actual": {
+    "model_requests_sent": 9,
+    "server_usage_records": 9,
+    "tool_requests": 10,
+    "accepted_candidates": 2,
+    "program_auto_verifications": 2,
+    "candidate_pass": 0,
+    "candidate_fail": 2,
+    "exports": 0,
+    "new_directory_rechecks": 0,
+    "format_corrections": 0,
+    "paid_api_used": false,
+    "elapsed_seconds": 22.513
+  },
+  "termination": {
+    "status": "INCOMPLETE",
+    "task_status": "STOPPED_NO_PROGRESS",
+    "reason": "Repeated same read after the second candidate; the executor stopped without another model request.",
+    "model_request_timeout": false,
+    "unsent_request": false
+  },
+  "handoff_status": "NOT_READY_FOR_HANDOFF",
+  "claims_boundary": "This is one bounded synthetic task. It does not establish generalization, stable success rate, or automatic repair for all risk classes."
+}

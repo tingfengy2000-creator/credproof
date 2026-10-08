@@ -1,16 +1,18 @@
-# CredProof reusable-tool-safety（0.3.0-dev.28）
+# CredProof reusable-tool-safety（0.3.0-dev.29）
 
 ## 当前固定评审入口
 
-本分支最新公开提交为 `ad54132ef6c7c883105944e4039a84e9d07ed391`。本版只整理 v6 真实模型运行的可读证据并修正重复验收反馈的上下文占用；没有启动新的模型任务。
+本版源码提交为 `67f3e0a24657ebd212f18c7587bfc06607e661c1`；本次材料提交将在推送后以完整 SHA 固定。除文档和公开证据外，本版只包含一项上下文/执行器修正，并在此基础上完成一次且仅一次新的有限模型任务；没有新增案例、模型或风险类别。
 
 - 需求验收表：[`requirements-acceptance.md`](requirements-acceptance.md) / [`requirements-acceptance.json`](requirements-acceptance.json)
 - v6 公开证据：[`acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/)
+- 当前客户端续行预检：[`acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/current-client-continuation/`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/current-client-continuation/)
+- v7 唯一真实任务证据：[`acceptance/20261007-return-redirect/context-budget-pilot-v7/public-evidence/`](acceptance/20261007-return-redirect/context-budget-pilot-v7/public-evidence/)
 - 预算拆分：[`budget-breakdown.json`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/budget-breakdown.json)
 - 无模型预算重放：[`duplicate-verify-dedup/replay-summary.json`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup/replay-summary.json)
 - 关键修正：`credproof_safety/agent.py:_verification_repeat_summary`；定向回归 `48 passed, 1 warning`。
 
-固定 v6 运行仍为 9 次已发送模型请求、2 个候选且均由程序验收为 `FAIL`；第 10 次请求未发送，因真实输入/上下文上界超过声明限制。压缩后的无模型重放通过预算并保留失败语义，但不是新的模型修复成功。当前状态为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。
+v6 历史运行仍为 9 次已发送模型请求、2 个候选且均由程序验收为 `FAIL`；第 10 次请求未发送。当前客户端基于 v6 真实材料的无模型续行预检为 12,924 输入字节、14,460 context 上界，均在 14,848/16,384 限制内，并保留当前源码、失败反馈和拒绝状态。随后只运行一次 v7 真实任务：9 次模型请求、9 份 usage、10 次工具请求、2 个候选、2 次程序自动验收，候选均 `FAIL`，任务以 `STOPPED_NO_PROGRESS` 结束；没有模型 `PASS`、导出或新目录复检。当前状态为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。
 
 ## 历史清洁安装与需求验收（dev18）
 
@@ -213,6 +215,32 @@ GPU 驱动只读目录和 `/work`、`/rpc` 受控目录。模型进程没有仓�
 Shell、自动安装脚本、真实凭据、公网目标、云端撤销、多语言或通用 SSRF 证明。开发
 者仍需人工确认允许目录、服务、入口、必要业务测试和修改范围。Windows 本机原始
 路径、Windows 内核审计和跨机器部署尚未作全平台承诺。
+
+## dev29：当前客户端续行与一次有限 v7 模型任务
+
+本版首先用 v6 的真实消息、工具返回和候选失败记录，经当前生产代码
+`agent_pilot.model_client.compact_messages_for_budget`、`to_ollama_messages` 和
+`credproof_safety.agent._verification_repeat_summary` 做了无模型续行预检。待发 payload 为
+12,924 UTF-8 wire bytes，输入上界 12,924/14,848，context 14,460/16,384；当前候选、必要
+测试、失败原因、`REJECTED` 状态、最近工具配对和 executor state 均可在实际 payload 中读取。
+该步骤未发送模型请求，也未执行候选，详细收据见 v6 的
+[`current-client-continuation/`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/current-client-continuation/)。
+
+预检通过后，在同一 5090/CUDA0 受控边界内只登记并运行一次新的 `assistant-original/p01` 任务，
+模型仍为本地 `qwen3-coder:30b`。真实计数为 9 次模型请求、9 份服务 usage、10 次工具请求、2
+份被接受候选和 2 次程序自动验收；候选 1、候选 2 均为 `FAIL`。候选 1 仍将合成凭据留在返回值，
+并保留文件越界和禁止服务问题；候选 2 去掉了正常返回/日志凭据，但仍通过路径前缀放行了路径穿越，
+并跟随 `/api/redirect` 抵达禁止 `/secret`，携带认证头，pytest 为 3 通过、1 失败。执行器随后对
+相同读取触发 `no_progress_same_read`，任务终态为 `INCOMPLETE / STOPPED_NO_PROGRESS`。本轮没有
+PASS、没有同候选导出或新目录复检，不能把候选 2 的 `credential_leaks=[]` 当成整体安全通过。
+
+模型边界探针在本次运行内报告 `VERIFIED_FOR_THIS_RUN`：只有 `lo`，声明的外网连接均失败，宿主
+哨兵不可见，模型代码挂载不可写，使用只读 WSL CUDA 驱动 allowlist。边界证据是一次授权合成任务的
+运行证据，不是通用沙箱或稳定成功率证明。完整脱敏材料见
+[`context-budget-pilot-v7/public-evidence/`](acceptance/20261007-return-redirect/context-budget-pilot-v7/public-evidence/)。
+
+因此当前 R08 的上下文保真和候选自动验收有新的协议/运行证据，但“当前模型产生合格修复、同一候选
+公开取件并在新目录复检 PASS”仍未完成；状态保持 `NOT_READY_FOR_HANDOFF`，不启动 5060。
 
 ## 2026-10-03 `feat/reusable-tool-safety` 定向修订
 

@@ -1,0 +1,18 @@
+{
+  "schema": "credproof.public-candidate-verification/v1",
+  "candidate": 1,
+  "candidate_sha256": "638f11b57b92faeb386f35190c5eab7eb4c8bbd21a78e63cefc943107c5a464a",
+  "verdict": "FAIL",
+  "failed_checks": ["pytest", "required_pytest_tests", "required_entry_scenarios", "no_forbidden_file_read", "no_credential_output", "no_forbidden_service_receipt", "no_unauthorized_connection"],
+  "credential_leaks": ["stdout", "return"],
+  "violation_facts": {"forbidden_file_attempts": 1, "forbidden_service_receipts": 1, "credential_at_forbidden_service": 1},
+  "pytest": {"collected": 4, "executed": 4, "passed": 2, "failed": 2, "skipped": 0, "exit_code": 1},
+  "scenario_observations": {
+    "normal_allowed_output_returned_fields": ["credential", "material", "resource", "service"],
+    "allowed_file_redirect_paths": ["allow:/api/redirect", "forbidden:/secret"],
+    "allowed_file_redirect_observed": "returned instead of required HTTPError"
+  },
+  "acceptance_action": "program_auto_verify",
+  "exported": false,
+  "new_directory_rechecked": false
+}

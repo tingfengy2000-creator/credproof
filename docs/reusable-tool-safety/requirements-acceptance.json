@@ -1,7 +1,7 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.28",
-  "tested_source_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
+  "candidate_version": "0.3.0-dev.29",
+  "tested_source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1",
   "generated_at": "2026-10-08",
   "status_summary": {
     "verified": 12,
@@ -508,7 +508,7 @@
         "agent_pilot/model_client.py"
       ],
       "setup": "5090主机上通过页面任务使用本地 Ollama qwen3-coder:30b；没有 API key 或云端回退，运行收据保留。",
-      "acceptance": "历史页面批次仍单独记录为6次模型调用、5份usage、7次native工具请求；本轮上下文适配任务单独记录为12次模型请求、12份usage，Ollama日志确认 CUDA0/NVIDIA GeForce RTX 5090。两批次不合并，不把 GPU 运行改写成历史 CPU 结果。付费API标记为false。",
+      "acceptance": "历史页面批次仍单独记录为6次模型调用、5份usage、7次native工具请求；dev29唯一正式任务单独记录为9次模型请求、9份usage、10次工具请求，运行于5090/CUDA0的本地受控边界。两批次不合并，不把协议重放当作模型usage。付费API标记为false。",
       "commands": [
         "python -m agent_pilot.preflight"
       ],
@@ -519,8 +519,8 @@
         "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/ollama-stderr.txt",
         "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/run-summary.json"
       ],
-      "source_commit": "e6507f36b93a0a3168717cf7f09f439b57786132",
-      "gaps": "本轮证明了该次受限任务在5090上使用本地 GPU 模型运行；没有修复 PASS，也不构成跨机器、跨模型或稳定成功率结论。",
+      "source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1",
+      "gaps": "dev29任务没有修复PASS、同对象导出或新目录复检；边界仅是一次授权合成任务的运行证据，不构成跨机器、跨模型或稳定成功率结论。",
       "file_digests": [
         {
           "path": "agent_pilot/offline_run.py",
@@ -541,15 +541,29 @@
     "real credential revocation",
     "new model/case expansion"
   ],
-  "interpretation": "The v6 replay demonstrates that current source, latest tool result, failure state and budget can coexist in a valid next payload. The bounded live run reached trusted candidate verification but did not produce a PASS; no handoff or 5060 work is authorized.",
+  "interpretation": "The current-client replay demonstrates that current source, latest tool result, failure state and budget can coexist in a valid next payload. The single dev29 bounded live run reached trusted verification for two candidates, both FAIL; no model PASS, same-candidate export or new-directory recheck exists, so no handoff or 5060 work is authorized.",
   "current_review_receipt_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
   "handoff_status": "NOT_READY_FOR_HANDOFF",
   "handoff_blockers": [
-    "v6 formal p01 produced two accepted candidates and two program_auto_verify FAIL results; no current model repair PASS",
-    "the tenth model request was not sent because the actual input/context upper bounds exceeded the declared limits; no same-candidate export or new-directory recheck exists"
+    "dev29 formal p01 produced two accepted candidates and two program_auto_verify FAIL results; no current model repair PASS",
+    "no same-candidate public export and no new-directory recheck exists for a passing candidate"
   ],
-  "version": "0.3.0-dev.28",
-  "latest_review_update": "dev28: v6 evidence is publicly structured; duplicate verification feedback is compacted in a no-model replay; no candidate PASS",
-  "protocol_replay_only": true,
-  "historical_live_run_source_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe"
+  "version": "0.3.0-dev.29",
+  "latest_review_update": "dev29: current-client continuation replay passed the live serializer/budget checks; one real v7 task ended STOPPED_NO_PROGRESS with two FAIL candidates; no PASS",
+  "protocol_replay_only": false,
+  "historical_live_run_source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1",
+  "dev29_live_run": {
+    "source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1",
+    "evidence": "acceptance/20261007-return-redirect/context-budget-pilot-v7/public-evidence/",
+    "model_requests": 9,
+    "usage_records": 9,
+    "tool_requests": 10,
+    "accepted_candidates": 2,
+    "program_auto_verifications": 2,
+    "candidate_pass": 0,
+    "task_status": "INCOMPLETE",
+    "termination": "STOPPED_NO_PROGRESS",
+    "exported_candidate": false,
+    "new_directory_recheck": false
+  }
 }

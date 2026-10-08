@@ -1,0 +1,14 @@
+1. Protocol/unit regression
+Command: .venv\Scripts\python.exe -m pytest agent_pilot/tests/test_model_boundary.py -q
+Exit code: 0
+Result: 17 passed, 1 warning (dashscope deprecation warning).
+
+2. Current-client continuation replay
+Script: scripts/replay-context-budget-v6-current-client.py
+Mode: no model request; no candidate execution.
+Result: input upper bound 12924 <= 14848; context upper bound 14460 <= 16384; source, tests, failure, rejection, latest state and tool-call/result pairing all true; exit code 0.
+
+3. v7 formal task
+Command: .venv\Scripts\python.exe -m credproof_safety repair --config examples/material_assistant/credproof.toml --output docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v7/formal-p01-model-result.json
+Exit code: 1 (expected INCOMPLETE result).
+Result: 9 model requests, 9 server usage records, 10 tool requests, 2 accepted candidates, 2 program_auto_verify FAIL results, task STOPPED_NO_PROGRESS; no PASS/export/recheck. No retry was performed.

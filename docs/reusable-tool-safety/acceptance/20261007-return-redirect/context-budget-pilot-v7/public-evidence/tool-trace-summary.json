@@ -1,0 +1,19 @@
+{
+  "schema": "credproof.public-tool-trace-summary/v1",
+  "run_id": "context-budget-pilot-v7-formal-p01",
+  "tool_requests": 10,
+  "trace": [
+    {"n": 1, "tool": "get_evidence", "status": "OK", "phase": "evidence_ready", "remaining_tool_requests": 11},
+    {"n": 2, "tool": "read_code", "path": "tool.py", "status": "OK", "phase": "sources_read", "remaining_tool_requests": 10},
+    {"n": 3, "tool": "read_code", "path": "tests/test_business.py", "status": "OK", "phase": "sources_read", "remaining_tool_requests": 9},
+    {"n": 4, "tool": "submit_patch", "candidate": 1, "status": "ACCEPTED_FOR_VERIFICATION", "auto_verdict": "FAIL", "remaining_tool_requests": 8},
+    {"n": 5, "tool": "get_evidence", "status": "REJECTED", "reason": "evidence_already_current", "phase": "candidate_verified", "remaining_tool_requests": 7},
+    {"n": 6, "tool": "read_code", "path": "tool.py", "status": "OK", "phase": "candidate_verified", "remaining_tool_requests": 6},
+    {"n": 7, "tool": "submit_patch", "candidate": 2, "status": "ACCEPTED_FOR_VERIFICATION", "auto_verdict": "FAIL", "remaining_tool_requests": 5},
+    {"n": 8, "tool": "read_code", "path": "tool.py", "status": "OK", "phase": "candidate_verified", "remaining_tool_requests": 4},
+    {"n": 9, "tool": "read_code", "path": "tool.py", "status": "OK", "phase": "candidate_verified", "remaining_tool_requests": 3},
+    {"n": 10, "tool": "read_code", "path": "tool.py", "status": "REJECTED", "reason": "no_progress_same_read", "phase": "no_progress_blocked", "remaining_tool_requests": 2}
+  ],
+  "counts": {"accepted_candidates": 2, "program_auto_verifications": 2, "candidate_pass": 0, "candidate_fail": 2},
+  "state_semantics": "REJECTED and FAIL remain non-success states; no model text overwrote the trusted verdict."
+}

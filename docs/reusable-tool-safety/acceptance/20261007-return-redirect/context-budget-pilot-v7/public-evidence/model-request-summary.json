@@ -1,0 +1,20 @@
+{
+  "schema": "credproof.public-model-request-summary/v1",
+  "run_id": "context-budget-pilot-v7-formal-p01",
+  "requests_sent": 9,
+  "usage_records": 9,
+  "requests_not_sent": 0,
+  "usage_is_server_reported": true,
+  "calls": [
+    {"request": 1, "prompt_tokens": 1094, "completion_tokens": 13, "total_tokens": 1107, "cached_tokens": 0},
+    {"request": 2, "prompt_tokens": 2315, "completion_tokens": 46, "total_tokens": 2361, "cached_tokens": 1093},
+    {"request": 3, "prompt_tokens": 4007, "completion_tokens": 319, "total_tokens": 4326, "cached_tokens": 2314},
+    {"request": 4, "prompt_tokens": 2905, "completion_tokens": 13, "total_tokens": 2918, "cached_tokens": 1098},
+    {"request": 5, "prompt_tokens": 2954, "completion_tokens": 22, "total_tokens": 2976, "cached_tokens": 2498},
+    {"request": 6, "prompt_tokens": 3151, "completion_tokens": 527, "total_tokens": 3678, "cached_tokens": 1731},
+    {"request": 7, "prompt_tokens": 3057, "completion_tokens": 22, "total_tokens": 3079, "cached_tokens": 1780},
+    {"request": 8, "prompt_tokens": 3294, "completion_tokens": 22, "total_tokens": 3316, "cached_tokens": 1780},
+    {"request": 9, "prompt_tokens": 3292, "completion_tokens": 22, "total_tokens": 3314, "cached_tokens": 2596}
+  ],
+  "note": "These are the nine usage objects reported by the local model service. They are not token estimates from the no-model replay."
+}
