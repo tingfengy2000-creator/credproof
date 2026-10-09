@@ -1,0 +1,69 @@
+{
+  "ready": true,
+  "isolation_ready": true,
+  "model_ready": true,
+  "runtime_root": "<runtime>",
+  "reasons": [],
+  "isolation": {
+    "ready": true,
+    "checks": {
+      "saved_probe_ready": true,
+      "runner_identity": true,
+      "kernel_identity": true,
+      "mandatory_saved_checks": true,
+      "bwrap_sha256": true,
+      "seccomp_sha256": true,
+      "rootfs_identity": true
+    },
+    "reasons": []
+  },
+  "model_files": {
+    "ready": true,
+    "manifest_sha256": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+    "blob_count": 4,
+    "warnings": [
+      {
+        "code": "SMALL_BLOB_SIZE_METADATA_MISMATCH",
+        "digest": "sha256:24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318",
+        "declared_size": 539,
+        "actual_size": 542,
+        "sha256_verified": true
+      }
+    ],
+    "blob_checks": [
+      {
+        "digest": "sha256:24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318",
+        "declared_size": 539,
+        "actual_size": 542,
+        "sha256_verified": true
+      },
+      {
+        "digest": "sha256:1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a",
+        "declared_size": 18556688736,
+        "actual_size": 18556688736,
+        "sha256_verified": false
+      },
+      {
+        "digest": "sha256:d18a5cc71b84bc4af394a31116bd3932b42241de70c77d2b76d69a314ec8aa12",
+        "declared_size": 11338,
+        "actual_size": 11338,
+        "sha256_verified": true
+      },
+      {
+        "digest": "sha256:69aa441ea44ff5e1e7b56cac4f471e71e8a5e2e3963c29684a9234d5d5e5f7aa",
+        "declared_size": 148,
+        "actual_size": 148,
+        "sha256_verified": true
+      }
+    ],
+    "full_weight_rehashed": false,
+    "blob_verification": "full SHA256 for blobs up to 16 MiB; larger weights existence and declared size only; no inference",
+    "reasons": []
+  },
+  "observed_at": "2026-10-09T05:56:51.491756+00:00",
+  "model_label": "qwen3-coder:30b · 本地服务",
+  "observation_scope": "Read-only saved probe/hash and model-file observation; no fresh boundary probe, model inference or candidate execution",
+  "model_executed": false,
+  "candidate_executed": false,
+  "network_probe_performed": false
+}

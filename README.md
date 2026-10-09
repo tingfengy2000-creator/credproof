@@ -1,6 +1,6 @@
 # 密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统
 
-当前研发评审：[组件辅助的LLM受控修复（dev32）](docs/reusable-tool-safety/component-assisted.md) · [真实证据入口](docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/README.md)。旧初赛候选与历史Agent结果保留；本台5090负责本轮验证，尚未开始5060交接。
+当前研发评审：[组件辅助的LLM受控修复（dev32）](docs/reusable-tool-safety/component-assisted.md) · [真实证据入口](docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/README.md)。组件1.0.0已有12项隔离测试，安装页面实际生成1份候选但验收FAIL；状态NOT_READY_FOR_HANDOFF。旧候选与历史结果保留，尚未开始5060交接。
 
 
 系统检查工具是否把凭据写入输出、读取规定目录之外的文件或请求未授权服务，并用必要业务测试确认正常任务仍然成立；本地大模型只在已确认的问题上提出候选修复，程序负责验收、导出和复检。

@@ -1,8 +1,12 @@
-# CredProof 需求—实现—证据验收表（dev31）
+# CredProof 需求—实现—证据验收表（dev32）
 
 本表对应本版源码提交（完整 SHA 在 GitHub 评审入口及后续交付收据中固定）；验收资料随后在提交中固化。它用于外部复查，不表示模型修复成功或参赛资格已验收。
 
-## dev31：独立结构化候选生成
+## dev32：组件辅助的LLM受控修复
+
+被测源码 `7011959e795f3bde442d3f4899ea5097ab42528a`；[完整证据](acceptance/20261009-component-assisted/public-evidence/README.md)。运行时契约由真实运行器生成；组件1.0.0在隔离中12项实际测试通过。当前安装页面显式派发bounded_patch/component_assisted，真实任务3次生成/3份usage、0 native工具、1候选/1次自动FAIL、2次NO_CHANGE，按生成预算结束。候选错误地把凭据值当环境变量名，正常业务和必要场景失败。95项软件回归及20项安装预检回归独立统计，不当作修复效果。R08中契约、组件、页面连接和失败处理已有证据；合格模型候选及同对象公开PASS复检仍未成立。保持NOT_READY_FOR_HANDOFF，旧关项仍在其原适用范围内，不启动5060。
+
+## 历史dev31：独立结构化候选生成
 
 源码`42592c9ff3625e1291d0569ef3f22727b37e7116`；[完整证据/决定](acceptance/20261009-bounded-patch/public-evidence/README.md)。3次结构化生成、0 native工具、2候选/2次原可信自动FAIL；第三输出NO_CHANGE，按生成预算结束，没有追加任务。接口与反馈续行实际接通，不代表自动修复成功。两候选误拒正常目录，仍有敏感日志与URL/跳转约束缺口；反馈摘要的运行时映射/异常详情也有具体局限。61项软件回归及四种无模型输入构造通过分开统计。状态NOT_READY_FOR_HANDOFF，不启动5060。无PASS，不声称完成成功bundle或新版安装/页面入口验收。原对象/发布字节/解释器关项证据继续沿用。
 
@@ -21,7 +25,7 @@
 | R05 | 网络边界 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:mock services/socket audit；credproof_safety/project.py:_verdict`；experiments/reusable-tool-safety/20261003-targeted-fix-07/allowed_file_redirect.json；experiments/reusable-tool-safety/20261003-targeted-fix-07/reintroduced_file_bypass.json | 不宣称公网 SSRF、DNS、原生 syscall 或 Windows 内核网络审计 |
 | R06 | 必要业务测试真实完成与通过 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:CredProofPytestObserver；credproof_safety/project.py:_verdict`；_runs/current-pytest-observer/；agent_pilot/tests/test_runtime_config.py | 只对声明的必要用例语义负责；递归包装 skip 由执行侧区分 |
 | R07 | 单页项目注册、检查、总体判决与分项 | `IMPLEMENTED_VERIFIED` | `agent_pilot/project_workspace.py；agent_pilot/web.py；credproof_safety/web_repair.py`；`acceptance/20261006-final/page-flow.md`；`acceptance/20261006-page-live-boundary/summary.json` | 目前只有登记案例 p01 映射到资料助手固定项目；p02–p06 仍只提供历史回放 |
-| R08 | 候选授权、受控生成与修复效果 | `IMPLEMENTED_UNVERIFIED` | [dev31完整证据](acceptance/20261009-bounded-patch/public-evidence/README.md)；`agent_pilot/bounded_patch.py`、`credproof_safety/agent.py` | 结构化接口/授权/原自动FAIL验收已执行；当前模型合格修复与同对象成功复检仍无证据 |
+| R08 | 候选授权、受控生成与修复效果 | `IMPLEMENTED_UNVERIFIED` | [dev32完整证据](acceptance/20261009-component-assisted/public-evidence/README.md)；`agent_pilot/bounded_patch.py`、`credproof_safety/agent.py` | 结构化接口/授权/原自动FAIL验收已执行；当前模型合格修复与同对象成功复检仍无证据 |
 | R09 | 对象、报告适用性与复检 | `IMPLEMENTED_VERIFIED` | `agent_pilot/web.py:object/applicability checks；credproof_safety/project_bundle.py；credproof_safety/tests/test_project_bundle.py；acceptance/20261006-live-correction/new-project-bundle/；acceptance/20261006-live-correction/public-project-bundle-dev17/；acceptance/20261006-live-correction/public-project-recheck-dev17.json` | 首次导出核对当前候选树、配置、入口和必要测试；公开派生 bundle 按固定 Git blob 字节生成并在新目录复检。旧历史 bundle 与 `project-public-bundle/v1` 分流；哈希是完整性绑定，不是密码学证明或第三方认证 |
 | R10 | 导出与项目内复用 | `IMPLEMENTED_VERIFIED` | `credproof_safety/project.py:export_regression_tests；scripts/run-exported-regression-check.py`；acceptance/20261006-final/consumer/；acceptance/20261006-final/exported-tests/；acceptance/20261006-final/summary.json | 受控 WSL/bubblewrap 依赖需在消费者机器准备 |
 | R11 | 清洁安装、启动与隔离预检 | `IMPLEMENTED_VERIFIED` | `pyproject.toml package-data；agent_pilot/preflight.py；agent_pilot/launch.py；agent_pilot/web.py:launch_command`；acceptance/20261006-final/wheel-manifest.json；acceptance/20261006-final/import-origin-sanitized.txt；acceptance/20261006-final/preflight-summary.json；acceptance/20261006-final/page-flow.md | 跨机器、非 WSL 环境未承诺；现场页面必须通过 `CREDPROOF_INSTALLED_PYTHON` 或 local-runtime 的 `program_python` 指定已核验安装解释器，不再回退历史 `_runs` |

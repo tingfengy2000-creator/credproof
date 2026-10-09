@@ -2,8 +2,9 @@
 
 ## 当前：运行时契约与组件辅助修复
 
-[本轮方法及API](component-assisted.md) / [可读取证据入口](acceptance/20261009-component-assisted/public-evidence/README.md)。保留原规则、业务测试、隔离与历史失败；先验证组件与当前工作包，再从安装后的页面入口执行一次登记任务。完整结果以证据入口为准，不把准备检查当模型修复成功。
+[本轮方法及API](component-assisted.md) / [完整可读取证据](acceptance/20261009-component-assisted/public-evidence/README.md)。实际被测源码 `7011959e795f3bde442d3f4899ea5097ab42528a`。组件隔离测试12项通过；清洁安装页面已实际调用 bounded_patch/component_assisted。本轮唯一正式任务3次生成、1份接受候选/1次自动FAIL、2次NO_CHANGE，按生成预算结束。候选未接入组件，并把凭据值当成变量名导致KeyError；提前退出不证明文件/网络安全。
 
+**NOT_READY_FOR_HANDOFF**：有实际契约、组件、安装页面与失败处理证据；没有合格模型修复或同候选公开PASS复检。完整失败、安装来源及失败对象交付检查均在入口中分开列明。不追加模型任务、不启动5060。
 
 ## 历史dev31：受控候选生成方式验证
 
@@ -19,7 +20,7 @@
 - [匿名GitHub取件收据](acceptance/20261009-bounded-patch/github-publication.json)：证据提交`7e56c1b37647aa4d6ede6d226082c737b09e25d3`，41份Raw正文及34份清单字节验证一致；收据为后续文档提交。
 - [当前需求表](requirements-acceptance.md) / [机器可读状态](requirements-acceptance.json)：仍为NOT_READY_FOR_HANDOFF，无PASS候选导出、新目录复检或成功后最终安装/页面接入。本轮不追加任务、不启动5060。
 
-下一步仅建议经用户批准后采用经过验证的文件/HTTP访问组件辅助生成；尚未实施。不据v8与本轮不同策略/预算宣称公平性能优势。
+该历史轮次提出的组件方向已在dev32实施，实际结果见首节；本段保留dev31原结论。不据v8与本轮不同策略/预算宣称公平性能优势。
 
 ## 历史v8材料（dev30）
 

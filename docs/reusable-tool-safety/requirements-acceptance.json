@@ -1,7 +1,7 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.31",
-  "tested_source_commit": "42592c9ff3625e1291d0569ef3f22727b37e7116",
+  "candidate_version": "0.3.0-dev.32",
+  "tested_source_commit": "7011959e795f3bde442d3f4899ea5097ab42528a",
   "generated_at": "2026-10-09",
   "status_summary": {
     "verified": 12,
@@ -245,10 +245,13 @@
         "credproof_safety/agent.py:_model_actionable_failures/_model_work_feedback/_phase_rejection",
         "scripts/preflight-v8-revision.py",
         "agent_pilot/bounded_patch.py:build_payload/parse_response/BoundedPatchClient",
-        "credproof_safety/agent.py:_bounded_model_script/_bounded_initial_context"
+        "credproof_safety/agent.py:_bounded_model_script/_bounded_initial_context",
+        "credproof_access/__init__.py:read_text/get_json",
+        "credproof_access/contract.py:build_contract",
+        "credproof_safety/access_dependency.py:dependency_receipt"
       ],
       "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先完成首请求上下文、证据反馈压缩与可信阶段顺序预检，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
-      "acceptance": "One bounded_patch task from original p01: 3 structured generation requests with 3 usage records, zero native tools, 2 accepted candidates and 2 check_project auto FAIL; third PATCH is canonical NO_CHANGE. Four preflight states retain full source/tests/rules/FAIL within 13824 input limit with 2048 output. Source-level connection and strict output tests plus existing regressions: 61 passed, 1 dependency warning. Not a model success.",
+      "acceptance": "Installed page: 3 generation requests/3 usage, 1 accepted candidate/1 automatic FAIL, 2 NO_CHANGE; no native tool calls. Qualified current repair remains unverified.",
       "commands": [
         ".venv\\Scripts\\python.exe scripts/replay-context-budget-v6-duplicate-verify.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-payload.json --output-dir docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup",
         ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests/test_model_boundary.py agent_pilot/test_model_client.py credproof_safety/tests/test_entry_scenarios.py credproof_safety/tests/test_project_bundle.py"
@@ -294,30 +297,43 @@
         "acceptance/20261009-bounded-patch/public-evidence/model-trace/model-02-request.json",
         "acceptance/20261009-bounded-patch/public-evidence/model-trace/model-03-request.json",
         "acceptance/20261009-bounded-patch/public-evidence/protocol-preflight/summary.json",
-        "acceptance/20261009-bounded-patch/public-evidence/regression-receipt.json"
+        "acceptance/20261009-bounded-patch/public-evidence/regression-receipt.json",
+        "acceptance/20261009-component-assisted/public-evidence/README.md",
+        "acceptance/20261009-component-assisted/public-evidence/summary.json",
+        "acceptance/20261009-component-assisted/public-evidence/source-review.json",
+        "acceptance/20261009-component-assisted/public-evidence/candidates/verification-01.json",
+        "acceptance/20261009-component-assisted/public-evidence/install-receipt.json"
       ],
-      "source_commit": "42592c9ff3625e1291d0569ef3f22727b37e7116",
-      "gaps": "Both candidates reject normal allowed file before network/log execution, still contain sensitive logger and insufficient port/redirect control. Input summary omitted raised.message and explicit runtime permitted-root mapping. No trusted repair PASS or same-object public recheck; stopped after exactly one task.",
+      "source_commit": "7011959e795f3bde442d3f4899ea5097ab42528a",
+      "gaps": "Model candidate treats credential value as environment key, does not use access component; normal business/entry scenes fail. No qualified repair or same-object public PASS recheck.",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
-          "sha256": "c1259a3d3c78955db99209abdc6f06ff1696b50b73dd6e471d091f54216d2a16"
-        },
-        {
-          "path": "credproof_safety/cli.py",
-          "sha256": "f32d8a0773700c9bcaa2ff95a8a04c7a9ae339c70857ad7001956303362c50ff"
+          "sha256": "9771bb0c0defe43b6a6bda3c12a5439d86ecdc9f35c373b083d931e3c6804629"
         },
         {
           "path": "agent_pilot/bounded_patch.py",
-          "sha256": "2e6581e15c01b85870445a52b20df91cf2a3f48ecea6e4c2d48d7c4ad194d9e6"
+          "sha256": "3404525767c3601da35754d350e03cef05cfdeacf9cdee7098c272ebdc1c2c29"
         },
         {
-          "path": "agent_pilot/model_client.py",
-          "sha256": "9bb30b47560da2fc56e3f1c318ab159b7b9229540e47db36fcac87db572130f5"
+          "path": "credproof_safety/runner.py",
+          "sha256": "6a4593ae37a175c702580a78429d578fb85c1dac3f3de478dc49365f8236575c"
         },
         {
-          "path": "agent_pilot/tests/test_bounded_patch.py",
-          "sha256": "649f2073d3bc21251aab3ec977041f714f6262f32780584c60e2527e6ff47bb5"
+          "path": "credproof_safety/project_bundle.py",
+          "sha256": "ab3d614a5fefe0e477a6f42b82e30a2d3a4eeaa5625c5478b601febf2b74a674"
+        },
+        {
+          "path": "credproof_safety/web_repair.py",
+          "sha256": "18112ab679d0ee18acbd5bfe19fb021446450a8e61d66dc80458a8896614f81e"
+        },
+        {
+          "path": "credproof_access/__init__.py",
+          "sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc"
+        },
+        {
+          "path": "credproof_access/contract.py",
+          "sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
         }
       ],
       "subitems": [
@@ -450,6 +466,14 @@
             "sha256": "37decd1d326468ac964e41582757977de3588c94390309d41fecaf1ffdaa4196"
           }
         ]
+      },
+      "component_assisted_subitems": {
+        "runtime_contract": "VERIFIED_CURRENT_RUNTIME_AND_MODEL_REQUEST",
+        "component_operations": "VERIFIED_12_REAL_ISOLATED_TESTS",
+        "installed_page_dispatch": "VERIFIED_ONE_ACTUAL_TASK",
+        "generation_and_judge": "VERIFIED_1_ACCEPTED_FAIL_AND_2_NO_CHANGE",
+        "qualified_repair": "UNVERIFIED",
+        "same_candidate_public_PASS": "UNVERIFIED"
       }
     },
     {

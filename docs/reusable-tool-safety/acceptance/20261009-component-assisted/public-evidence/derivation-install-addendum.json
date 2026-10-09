@@ -1,0 +1,26 @@
+{
+  "kind": "STRUCTURED_REDACTION_AND_ENCODING_RECEIPT",
+  "files": [
+    {
+      "source": "_runs/dev32-installed-preflight.json",
+      "source_sha256": "9ef536c75ece8dc0c16a7f5a687b9814c0fd207fac4c4d0cfc03002557251d50",
+      "source_bytes": 2318,
+      "source_encoding": "GB18030 (PowerShell redirected console)",
+      "published": "install-preflight.json",
+      "published_sha256": "956c526a62332152585cf7a99e4e27fc6c9cf13298734fc54307f10b56e0ee88",
+      "published_bytes": 2224
+    },
+    {
+      "source": "docs/reusable-tool-safety/acceptance/20261009-component-assisted/failed-candidate-local-recheck.json",
+      "source_sha256": "81ed962f70a997afddf3550feca00de7d174fa9de6c3f15c02f06523c46ac5f0",
+      "source_bytes": 26914,
+      "source_encoding": "UTF-8",
+      "published": "failed-candidate-local-recheck.json",
+      "published_sha256": "6416e31f60365ebcacb0b62ef401b944ff17bbb57a4355c17fcafb60d94381c5",
+      "published_bytes": 26360
+    }
+  ],
+  "requirements_source_sha256": "0418fb1018e16df1461b5ccd407242c1269bac310bfe583f6ece4ad5d40e62fa",
+  "requirements_change": "local wheel file URI replaced with credproof-safety==0.3.0.dev32; wheel identity is install-receipt.json; versions unchanged",
+  "post_run_dependency_note": "origin-only standalone probe needed numpy 2.5.3, soundfile 0.14.0, tqdm 4.70.1, python-dateutil 2.9.0.post0 and six 1.17.0 from existing prepared environment versions; actual earlier page task had already used the prepared WSL dependencies. No additional inference."
+}
