@@ -10,6 +10,7 @@
 - [当前协议预检](acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/protocol-preflight-final/summary.json)：6个续行状态通过保真/配对/预算检查，0推理、0候选执行；早期过大反馈的失败预检另存。
 - [真实任务结果](acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/summary.json)：5次模型请求、5份usage、6次工具请求、1份接受候选、1次程序自动验收FAIL。候选只改日志，仍返回凭据且未限制文件与重定向；之后重复读取/取证被拒绝，任务STOPPED_NO_PROGRESS，并非预算耗尽或超时。
 - [软件回归](acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/regression-receipt.json)：Python3.12.14 / pytest8.4.2，50 passed、1依赖弃用warning；不是50个模型安全案例。
+- [GitHub匿名取件收据](acceptance/20261007-return-redirect/github-publication-v8.json)：证据提交 `3ac26991e486d9b224a8bb1126ed4d911c90b0d9` 的51份Raw正文读取成功，46份清单文件逐字节核对；收据随后追加，原模型源码与结果不变。
 - [需求表](requirements-acceptance.md) / [机器可读状态](requirements-acceptance.json)。本轮没有合格模型候选、同候选导出或新目录PASS复检；仍不满足交接效果要求，不追加运行刷成功。
 
 旧v7为9请求/10工具/2候选/2次FAIL，旧v6及全部原记录保留，未与v8拼接；旧对象绑定、Git字节清单和解释器选择的适用证据继续沿用。
