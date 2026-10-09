@@ -559,7 +559,7 @@
         "agent_pilot/web.py:launch_command"
       ],
       "setup": "仓库外短路径 fresh venv；安装 dev14 wheel；预检 WSL Ubuntu-24.04/bubblewrap/rootfs",
-      "acceptance": "现场启动只接受环境变量或 local-runtime.json 的 program_python；不存在时明确失败，不扫描历史 _runs；python -I 子进程路径规则保持",
+      "acceptance": "Installed wheel 0.3.0.dev32 main/child resolve to site-packages with -I; module hashes match fixed source. Actual installed page dispatches bounded_patch/component_assisted. Preflight runner identity uses installed module.",
       "commands": [
         "pip wheel . --no-deps --no-build-isolation",
         "pip install wheel",
@@ -571,20 +571,26 @@
         "acceptance/20261006-final/preflight-summary.json",
         "acceptance/20261006-final/page-flow.md",
         "agent_pilot/tests/test_runtime_config.py",
-        "acceptance/20261006-live-correction/installed-origin-dev18.json"
+        "acceptance/20261006-live-correction/installed-origin-dev18.json",
+        "acceptance/20261009-component-assisted/public-evidence/install-receipt.json",
+        "acceptance/20261009-component-assisted/public-evidence/install-origin-probe.json",
+        "acceptance/20261009-component-assisted/public-evidence/install-preflight.json",
+        "acceptance/20261009-component-assisted/public-evidence/formal-page/installed-child-origin.json",
+        "acceptance/20261009-component-assisted/public-evidence/regressions/dev32-preflight-fix.xml"
       ],
-      "source_commit": "a7772787010d57372f029069be7127a44b88fef7",
-      "gaps": "跨机器、非 WSL 环境未承诺；运行者仍需配置已核验安装解释器",
+      "source_commit": "7011959e795f3bde442d3f4899ea5097ab42528a",
+      "gaps": "Only this 5090 Windows/WSL environment verified; no 5060 handoff or cross-machine claim.",
       "file_digests": [
         {
           "path": "agent_pilot/preflight.py",
-          "sha256": "773df5cd388052bfc9bdd5c2255dde72e6a1b248d4d444e894ccc03b9fb3f1e8"
+          "sha256": "21aa80fdf81a4b70eee8abebfd6f43a134d0886d2de0adc20e0a26461922ac81"
         },
         {
           "path": "agent_pilot/launch.py",
           "sha256": "0d2585621409ebb57ce919d07ae8ff2512780202731de206af1dd3149b2a57a9"
         }
-      ]
+      ],
+      "prior_evidence_source_commit": "a7772787010d57372f029069be7127a44b88fef7"
     },
     {
       "id": "R12",
@@ -595,7 +601,7 @@
         "agent_pilot/tests/test_model_boundary.py"
       ],
       "setup": "5090主机上由页面 p01 真实任务进入同一模型进程边界；本次动态探针与推理结果均从现场 artifact 导出并脱敏。",
-      "acceptance": "模型进程只有 lo；外部连接失败；宿主哨兵不可见；代码只读；Ollama继承同一 namespace；本次推理真实完成到预算终止。",
+      "acceptance": "Current actual model task used existing private-network/whitelist boundary; model/Ollama stayed isolated and current device evidence records CUDA0. Candidate isolation and model boundary remain separate evidence.",
       "commands": [
         "python -m agent_pilot.preflight"
       ],
@@ -603,20 +609,24 @@
         "acceptance/20261006-page-live-boundary/summary.json",
         "acceptance/20261006-page-live-boundary/page-live-record.json",
         "acceptance/20261006-model-boundary/model-boundary-probe.raw.json",
-        "acceptance/20261006-model-boundary/service-boundary.raw.json"
+        "acceptance/20261006-model-boundary/service-boundary.raw.json",
+        "acceptance/20261009-component-assisted/public-evidence/formal-page/boundary-probe.json",
+        "acceptance/20261009-component-assisted/public-evidence/formal-page/model-boundary.json",
+        "acceptance/20261009-component-assisted/public-evidence/formal-page/device-evidence.json"
       ],
-      "source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
-      "gaps": "一次授权合成项目运行；不等同通用沙箱、内核级审计或跨机器验证。",
+      "source_commit": "7011959e795f3bde442d3f4899ea5097ab42528a",
+      "gaps": "Limited boundary probes and one registered task; not protection against all malicious native/Python behaviour.",
       "file_digests": [
         {
           "path": "agent_pilot/offline_run.py",
-          "sha256": "7dcf3d6b63aa26db51dee72b164b67f6269f0544b56e765d79637f5e10d99849"
+          "sha256": "8dca01ab8c76056b296bbd51ddd59c0e0450aaf369eb47aeda6356a3c0404ba6"
         },
         {
           "path": "agent_pilot/runtime_config.py",
-          "sha256": "77f0e09186e70b552b5ea2f6d81ebbaa90eb6f91f2901ce1719a7937c318e2a4"
+          "sha256": "bdd3325fc9604aefd2f357e015bb9e1dba05da5d58b0c3716b08d6ceb97300e5"
         }
-      ]
+      ],
+      "prior_evidence_source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125"
     },
     {
       "id": "R13",
@@ -627,7 +637,7 @@
         "agent_pilot/model_client.py"
       ],
       "setup": "5090主机上通过页面任务使用本地 Ollama qwen3-coder:30b；没有 API key 或云端回退，运行收据保留。",
-      "acceptance": "历史页面批次仍单独记录为6次模型调用、5份usage、7次native工具请求；dev29唯一正式任务单独记录为9次模型请求、9份usage、10次工具请求，运行于5090/CUDA0的本地受控边界。两批次不合并，不把协议重放当作模型usage。付费API标记为false。 dev31 separate task: Ollama 0.34.4 / qwen3-coder:30b unchanged digest / CUDA0; 3 native /api/chat responses with schema, zero tool selections and no paid API. Not a Qwen-Agent-loop result.",
+      "acceptance": "Current dev32 installed page task: 3 local /api/chat requests, 3 usage records, 0 native tool requests, CUDA0 RTX 5090 / 49 of 49 model layers offloaded. qwen3-coder:30b Q4_K_M fixed digest and Ollama 0.34.4. No paid API called.",
       "commands": [
         "python -m agent_pilot.preflight"
       ],
@@ -639,10 +649,14 @@
         "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/run-summary.json",
         "acceptance/20261009-bounded-patch/public-evidence/structured-api-service.json",
         "acceptance/20261009-bounded-patch/public-evidence/device-evidence.json",
-        "acceptance/20261009-bounded-patch/public-evidence/model-boundary.json"
+        "acceptance/20261009-bounded-patch/public-evidence/model-boundary.json",
+        "acceptance/20261009-component-assisted/public-evidence/summary.json",
+        "acceptance/20261009-component-assisted/public-evidence/formal-page/structured-api-service.json",
+        "acceptance/20261009-component-assisted/public-evidence/formal-page/device-evidence.json",
+        "acceptance/20261009-component-assisted/public-evidence/formal-page/repair-summary.json"
       ],
-      "source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1",
-      "gaps": "dev29任务没有修复PASS、同对象导出或新目录复检；边界仅是一次授权合成任务的运行证据，不构成跨机器、跨模型或稳定成功率结论。",
+      "source_commit": "7011959e795f3bde442d3f4899ea5097ab42528a",
+      "gaps": "1 accepted candidate FAIL, 2 NO_CHANGE; no qualified repair or stable-success-rate/cross-machine evidence.",
       "file_digests": [
         {
           "path": "agent_pilot/offline_run.py",
@@ -650,9 +664,10 @@
         },
         {
           "path": "agent_pilot/model_client.py",
-          "sha256": "982222697f7a73b2061312ec9eb58893fa6a0642b3f27406d8e6d387c546ac99"
+          "sha256": "9bb30b47560da2fc56e3f1c318ab159b7b9229540e47db36fcac87db572130f5"
         }
-      ]
+      ],
+      "prior_evidence_source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1"
     }
   ],
   "excluded_by_owner": [

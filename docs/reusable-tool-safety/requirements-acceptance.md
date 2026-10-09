@@ -30,7 +30,7 @@
 | R10 | 导出与项目内复用 | `IMPLEMENTED_VERIFIED` | `credproof_safety/project.py:export_regression_tests；scripts/run-exported-regression-check.py`；acceptance/20261006-final/consumer/；acceptance/20261006-final/exported-tests/；acceptance/20261006-final/summary.json | 受控 WSL/bubblewrap 依赖需在消费者机器准备 |
 | R11 | 清洁安装、启动与隔离预检 | `IMPLEMENTED_VERIFIED` | `pyproject.toml package-data；agent_pilot/preflight.py；agent_pilot/launch.py；agent_pilot/web.py:launch_command`；acceptance/20261006-final/wheel-manifest.json；acceptance/20261006-final/import-origin-sanitized.txt；acceptance/20261006-final/preflight-summary.json；acceptance/20261006-final/page-flow.md | 跨机器、非 WSL 环境未承诺；现场页面必须通过 `CREDPROOF_INSTALLED_PYTHON` 或 local-runtime 的 `program_python` 指定已核验安装解释器，不再回退历史 `_runs` |
 | R12 | 模型进程文件系统/网络边界独立证明 | `IMPLEMENTED_VERIFIED` | `credproof_safety/agent.py:_MODEL_BOUNDARY_BOOTSTRAP`；`acceptance/20261006-model-boundary/model-boundary-probe.raw.json`；`acceptance/20261006-page-live-boundary/page-live-record.json` | 只覆盖一次授权合成项目和一次页面任务；不等同通用沙箱或内核级审计 |
-| R13 | 模型本地/零付费API运行 | `IMPLEMENTED_VERIFIED` | 历史页面批次与本轮 `acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/ollama-stderr.txt`、`run-summary.json` 分开保存；本轮为 CUDA0/RTX 5090/12次模型请求/12份usage | 未调用付费 API；没有模型修复 PASS，不构成跨机器或稳定成功率结论 |
+| R13 | 模型本地/零付费API运行 | `IMPLEMENTED_VERIFIED` | [dev32独立批次](acceptance/20261009-component-assisted/public-evidence/summary.json)与历史分开：CUDA0/RTX 5090、3次本地chat请求/3份usage、0 native工具；设备/模型摘要见formal-page/ | 未调用付费 API；没有模型修复 PASS，不构成跨机器或稳定成功率结论 |
 
 ## 本轮页面现场链路
 

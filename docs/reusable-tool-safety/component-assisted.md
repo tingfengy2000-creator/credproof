@@ -33,6 +33,12 @@ data = get_json(url, credential)     # 一次认证请求示例
 - CLI：`python -m credproof_safety repair --strategy bounded_patch --config <registered-config> --output <new-report>`。
 - 页面：当前登记 p01 通过 `web_repair → request_repair(strategy='bounded_patch')`；历史回放仍独立标识。
 - 实际正式任务由 `scripts/run-component-page-task.py` 在新安装环境，通过真实 HTTP 页面 API 发起一次；预算：3次生成、最多1次格式纠正、4次请求、3候选/3验收、16K上下文、2048输出、120秒/请求、900秒任务。原生模型工具调用为0。
-- [当前证据](acceptance/20261009-component-assisted/public-evidence/)记录组件检查、原件 FAIL、完整待发消息、预算与后续正式结果；历史不合并统计。
+- [当前证据](acceptance/20261009-component-assisted/public-evidence/)记录组件检查、原件 FAIL、完整实际消息、预算与正式失败结果；历史不合并统计。
 
 同时改变运行时说明和组件接入，不能据一次任务归因某个因素带来提升，也不能推出泛化成功率、独立盲测或人工时间收益。开源模型、Ollama、Qwen-Agent归属不变；本轮实际推理链为本地结构化生成，不声称模型自主安排全部工具。AI辅助参赛许可仍由参赛者确认。
+
+## 本轮实际结果与决定
+
+固定源码 `7011959e795f3bde442d3f4899ea5097ab42528a` 的新安装页面发起一次正式任务：3次生成，1份接受候选/1次原检查器FAIL，2次重复输出NO_CHANGE。候选没有接入上述组件，且将凭据值当环境变量名引发KeyError；必要业务及场景失败。组件的12项隔离测试通过不代表这份模型候选成功。完整计数、源码与报告见证据入口；同一失败候选公开取回后再次执行仍FAIL，未取得公开PASS。
+
+保持NOT_READY_FOR_HANDOFF。唯一后续建议是由用户批准后，对同一工作包进行编码模型对照；本轮没有更换/下载模型或追加正式任务。页面/安装调度已执行，当前阻断是合格模型业务修复及同对象PASS复检，不能以程序回归数量代替。

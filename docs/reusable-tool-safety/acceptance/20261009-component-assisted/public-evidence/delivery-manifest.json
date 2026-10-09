@@ -1,0 +1,498 @@
+{
+  "schema": "credproof.component-review-git-inventory/v1",
+  "inventory_commit": "02f0be1e557bab138c158b32686f1657c8503130",
+  "tested_program_source": "7011959e795f3bde442d3f4899ea5097ab42528a",
+  "version": "0.3.0-dev.32",
+  "component_version": "1.0.0",
+  "source_byte_policy": "exact fixed Git blob, no working-tree newline conversion",
+  "includes": "public evidence plus installed program/component/selected page modules and tests; full repository source remains readable at fixed commit",
+  "files": {
+    "agent_pilot/bounded_patch.py": {
+      "bytes": 8421,
+      "sha256": "3404525767c3601da35754d350e03cef05cfdeacf9cdee7098c272ebdc1c2c29"
+    },
+    "agent_pilot/preflight.py": {
+      "bytes": 8727,
+      "sha256": "21aa80fdf81a4b70eee8abebfd6f43a134d0886d2de0adc20e0a26461922ac81"
+    },
+    "agent_pilot/ui/app.js": {
+      "bytes": 43483,
+      "sha256": "7de4843fcab3fabfdffa68432961a79266e5311e07afc8628dbbe96d02253301"
+    },
+    "agent_pilot/web.py": {
+      "bytes": 49948,
+      "sha256": "e2a2277e7dc93a1d08aeae020be846adcd6e0da1d89914b6bb6b50bcd2d5b7b6"
+    },
+    "credproof_access/__init__.py": {
+      "bytes": 4276,
+      "sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc"
+    },
+    "credproof_access/contract.py": {
+      "bytes": 2677,
+      "sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+    },
+    "credproof_safety/__init__.py": {
+      "bytes": 586,
+      "sha256": "537ce4bc4005f18d73b9416615d49e4c2cadf5ef574d9164a9af709d29f3102c"
+    },
+    "credproof_safety/__main__.py": {
+      "bytes": 48,
+      "sha256": "935a1c1166b0c1ea35a82256345000bf2c73ded718d77773bc27a71ecce28f7d"
+    },
+    "credproof_safety/access_dependency.py": {
+      "bytes": 1337,
+      "sha256": "6c5c9005a86eca9597d3d29c743c5a03537ec0073a229aeed031985775cd93d5"
+    },
+    "credproof_safety/agent.py": {
+      "bytes": 76488,
+      "sha256": "9771bb0c0defe43b6a6bda3c12a5439d86ecdc9f35c373b083d931e3c6804629"
+    },
+    "credproof_safety/cli.py": {
+      "bytes": 3189,
+      "sha256": "f32d8a0773700c9bcaa2ff95a8a04c7a9ae339c70857ad7001956303362c50ff"
+    },
+    "credproof_safety/config.py": {
+      "bytes": 12430,
+      "sha256": "371ef03e9ae63e2d8991712bf4b0066d39973adbcad16a7744ac6aad6345d4b5"
+    },
+    "credproof_safety/observer.py": {
+      "bytes": 2813,
+      "sha256": "324aaed7a6c10b0fe8cd28aca25d7112cb476ee326b6bab0e5a6b861a1a2296b"
+    },
+    "credproof_safety/project.py": {
+      "bytes": 19686,
+      "sha256": "3a92c3674216cfecf976c933bd75e4aea37c12f493a038f50776a5f904e85c68"
+    },
+    "credproof_safety/project_bundle.py": {
+      "bytes": 12999,
+      "sha256": "ab3d614a5fefe0e477a6f42b82e30a2d3a4eeaa5625c5478b601febf2b74a674"
+    },
+    "credproof_safety/requirements-lock.txt": {
+      "bytes": 307,
+      "sha256": "54b4610e7e1e38b324df5115cae9fdd44e186c47ef9cedc1bca97a339df12ac6"
+    },
+    "credproof_safety/runner.py": {
+      "bytes": 30762,
+      "sha256": "6a4593ae37a175c702580a78429d578fb85c1dac3f3de478dc49365f8236575c"
+    },
+    "credproof_safety/tests/test_component_assisted.py": {
+      "bytes": 5654,
+      "sha256": "8dae92abca15d7e7dd0b3eec6cb53557bc4ed41380a6b10674fb4fda11fdfb5f"
+    },
+    "credproof_safety/tests/test_entry_scenarios.py": {
+      "bytes": 1995,
+      "sha256": "b7d0e5e998b22c28c531a2809b5adc9df397fd957bdebb0eafabb606661d32fd"
+    },
+    "credproof_safety/tests/test_project_bundle.py": {
+      "bytes": 5019,
+      "sha256": "82fc8ac4bc6b1ecfbdd4e258e832ebba5f305b10ffffa706046d1dffecb5714b"
+    },
+    "credproof_safety/tests/test_web_repair.py": {
+      "bytes": 2409,
+      "sha256": "682fd52052bb5490d9a4ec64f6bfe71ed7a51242921b30c0d447d674c7fc49ed"
+    },
+    "credproof_safety/web_repair.py": {
+      "bytes": 13497,
+      "sha256": "18112ab679d0ee18acbd5bfe19fb021446450a8e61d66dc80458a8896614f81e"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/README.md": {
+      "bytes": 5999,
+      "sha256": "dee984a07544686bb606857a960ce11e12a13b389f70b39dee49678c1303bdfa"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/candidates/candidate-01.py": {
+      "bytes": 887,
+      "sha256": "e5715e5e1334084b96dd2e63b22bf1ea1d4e12ae87db15ae716830328084e4be"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/candidates/verification-01.json": {
+      "bytes": 24765,
+      "sha256": "955fe7097a82600717bc8d06c19187886cb3468245c6672f13009a1f2cc4a922"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/component-controls-b/component-execution.json": {
+      "bytes": 15107,
+      "sha256": "01af2cdb6733ac06a507e1231b2c96297686728ba5366ea2f5fd6e30cb599130"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/component-controls-b/summary.json": {
+      "bytes": 10353,
+      "sha256": "6bb8f598fa6bf64cfc420055fcf33be8af7c3f24d09e056d58585f97dc479399"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/component-controls-b/unchanged-original-report.json": {
+      "bytes": 24998,
+      "sha256": "6f1c09135f12b1595210974c1be0c1cb99e1227177cc5b8bf9bea49cb09f0697"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/component-controls-final/component-execution.json": {
+      "bytes": 15107,
+      "sha256": "e8b6012cffa75ae887f9c433e15d6caab0b105658a61e12a1491c47dc26e20eb"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/component-controls-final/summary.json": {
+      "bytes": 10357,
+      "sha256": "4847bf1491b3f4cbe5ac4a30f6e3f513ef9f3c1b04cce43d4193e4cacf58abd8"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/component-controls-final/unchanged-original-report.json": {
+      "bytes": 25018,
+      "sha256": "c9bfc111fbc6e5fde083c830e240d2c5894a36610863a03d01127124dddaa02c"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/component-controls/component-execution.json": {
+      "bytes": 2190,
+      "sha256": "82ebc64c644081d7b0443ed3efb7c07f8333d05b1d985b6226f16c8ba93819e3"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/component-controls/summary.json": {
+      "bytes": 745,
+      "sha256": "169ff067ecf534007e37a794fa8db26dfe582cb13c480a0761d84c8fbeb47372"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/component-controls/unchanged-original-report.json": {
+      "bytes": 4224,
+      "sha256": "2cb8041d21d0023e68660973a4c83ca10dcf93ee0c48ff980f9007dba70795b4"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/derivation-formal.json": {
+      "bytes": 12320,
+      "sha256": "930ba2c3508616188fd2915e0e79c352690dd51a557eea39ef0ee610efe61535"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/derivation-install-addendum.json": {
+      "bytes": 1522,
+      "sha256": "77a09aee85110ac7b16e8be12ef75f3f8e2a7662aa16a023c92c6f97403d90bc"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/derivation-preparation.json": {
+      "bytes": 6688,
+      "sha256": "548b49e6db0f03c33bcbff7548b33165379b9d4c18f3f55b3d2a815a21d95189"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-local-recheck.json": {
+      "bytes": 26360,
+      "sha256": "6416e31f60365ebcacb0b62ef401b944ff17bbb57a4355c17fcafb60d94381c5"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/access-dependency.json": {
+      "bytes": 2756,
+      "sha256": "83d78a434d8f882271554d79ccaf3cf6f39c3095023262ad4391b22a06e036b6"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/candidate.py": {
+      "bytes": 887,
+      "sha256": "e5715e5e1334084b96dd2e63b22bf1ea1d4e12ae87db15ae716830328084e4be"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/configuration.json": {
+      "bytes": 248,
+      "sha256": "ed915d079c6021cbd2b957efaf1b7500c74e8503144be5923960b14ffd10894b"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/dependencies/credproof_access/__init__.py": {
+      "bytes": 4276,
+      "sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/dependencies/credproof_access/contract.py": {
+      "bytes": 2677,
+      "sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/manifest.json": {
+      "bytes": 4543,
+      "sha256": "610efabdaf1b652d562e38db6995db44aae7aaa8a973feaca3aae61242f99781"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/original.py": {
+      "bytes": 1324,
+      "sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/project/README.md": {
+      "bytes": 1149,
+      "sha256": "f445ce2942d2284777dfb554cba4630af17c9fbb2bc7b8d2475afcb9dff3ea6c"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/project/credproof.toml": {
+      "bytes": 1161,
+      "sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/project/tests/test_business.py": {
+      "bytes": 1850,
+      "sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/project/tool.py": {
+      "bytes": 887,
+      "sha256": "e5715e5e1334084b96dd2e63b22bf1ea1d4e12ae87db15ae716830328084e4be"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/publication.json": {
+      "bytes": 2414,
+      "sha256": "e8f22c2c0ee03abcf8122975378e4f6ba8da01808ab990c326d61ac8ba3a5d96"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle/report.json": {
+      "bytes": 35804,
+      "sha256": "84e8c245ad3a8e954daaddd77e8d559cedef7b5c733190a3eb90c4d9b95eb3c4"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-source-bundle/access-dependency.json": {
+      "bytes": 2756,
+      "sha256": "83d78a434d8f882271554d79ccaf3cf6f39c3095023262ad4391b22a06e036b6"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-source-bundle/candidate.py": {
+      "bytes": 887,
+      "sha256": "e5715e5e1334084b96dd2e63b22bf1ea1d4e12ae87db15ae716830328084e4be"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-source-bundle/configuration.json": {
+      "bytes": 248,
+      "sha256": "ed915d079c6021cbd2b957efaf1b7500c74e8503144be5923960b14ffd10894b"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-source-bundle/dependencies/credproof_access/__init__.py": {
+      "bytes": 4276,
+      "sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-source-bundle/dependencies/credproof_access/contract.py": {
+      "bytes": 2677,
+      "sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-source-bundle/manifest.json": {
+      "bytes": 2414,
+      "sha256": "932454dabe3f240362a20e7b7bb251a4b80ee2f35ec2a49532c306e600a4d06d"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-source-bundle/original.py": {
+      "bytes": 1324,
+      "sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-source-bundle/project/README.md": {
+      "bytes": 1149,
+      "sha256": "f445ce2942d2284777dfb554cba4630af17c9fbb2bc7b8d2475afcb9dff3ea6c"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-source-bundle/project/credproof.toml": {
+      "bytes": 1161,
+      "sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-source-bundle/project/tests/test_business.py": {
+      "bytes": 1850,
+      "sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-source-bundle/project/tool.py": {
+      "bytes": 887,
+      "sha256": "e5715e5e1334084b96dd2e63b22bf1ea1d4e12ae87db15ae716830328084e4be"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-source-bundle/report.json": {
+      "bytes": 34767,
+      "sha256": "846e18294be8f0de94a7faa1ecc1412359ec23bbf91c84ff8684db019e5d1732"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/bootstrap.json": {
+      "bytes": 4626,
+      "sha256": "aa675be8463cf6c616c9230116df354faa77b8ad0ede85b43be6378c02d9c567"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/boundary-probe.json": {
+      "bytes": 10773,
+      "sha256": "0ec7694794ba0454e34acb5a1a9c6ed54af5f5ff5e5cb5f442ff09a65b0aabd4"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/command-receipt.json": {
+      "bytes": 211,
+      "sha256": "18124381547a5e69b78be7e77e47c27cd925f373f558a05c14269a0a0af7e44a"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/device-evidence.json": {
+      "bytes": 599,
+      "sha256": "dbb42a4f5536d62495c077c5b34f66a7055a0c9ed8126052345e2f9e20cf0905"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/final-report.json": {
+      "bytes": 24765,
+      "sha256": "955fe7097a82600717bc8d06c19187886cb3468245c6672f13009a1f2cc4a922"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/freeze.json": {
+      "bytes": 3050,
+      "sha256": "174bd7cfbc4d213ebe24e0d2f0e1041b9799e042979572a62826ab9947f7d5a7"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/initial-report.json": {
+      "bytes": 25018,
+      "sha256": "c6d2edebdf5f3a46ae15238c9b1eebe6bc8df1e18cc771d8ec3c4e5a3c1310d8"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/installed-child-origin.json": {
+      "bytes": 1091,
+      "sha256": "f915d9d25fbdc45c95cc00bff6ee30f161816c402e422e2ab2c908d2b0a1b978"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/launch.json": {
+      "bytes": 440,
+      "sha256": "15b589ed5ee1cc62f7409a3429dcc250adb0085a009ab5269446f528c43f85c5"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/model-boundary.json": {
+      "bytes": 12386,
+      "sha256": "cdc1876e92a5192872003e14bfa98aff4f9e92c3e931354e71c14734b91c38d3"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/page-command.json": {
+      "bytes": 349,
+      "sha256": "58577cce221373a21f9d42ba057147e36ae5683c425eeff120891eb17dfd07db"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/page-final.json": {
+      "bytes": 52533,
+      "sha256": "cc027e3727200b297e263e365e1907121fa44bbe796bd7806273cc615200f136"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/page-read.json": {
+      "bytes": 51,
+      "sha256": "bb4961765ae9fbda4807e21f8de80e80fb7a4dd3466fe89df29b5fbe90968ef0"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/page-start.json": {
+      "bytes": 3148,
+      "sha256": "353ade5dae6cc43aece6722398693ea4f0e74c18427efe0be1449ab3a9338c89"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/program-trace.json": {
+      "bytes": 25336,
+      "sha256": "a9bfb1c23b31e81acbc7722b491b9b0917cb4094aefb6460d2a0422e3dffff74"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/repair-summary.json": {
+      "bytes": 6012,
+      "sha256": "c640f80cccf1226aa60a93ad52ada90e067e31fb1dcf95383f22895008f4b39c"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/formal-page/structured-api-service.json": {
+      "bytes": 853,
+      "sha256": "c3d23ef3dd0d9b4b17e1045deccd387cf769e019bd80c81a1185f374305ba4f1"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/install-origin-probe.json": {
+      "bytes": 2077,
+      "sha256": "2c7e904ff7e90b6bc6d71d7a9517aef22711081cd7bb7b431dc873e01b98b794"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/install-preflight.json": {
+      "bytes": 2224,
+      "sha256": "956c526a62332152585cf7a99e4e27fc6c9cf13298734fc54307f10b56e0ee88"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/install-receipt.json": {
+      "bytes": 2897,
+      "sha256": "be7463d3937de9c259e8b1b0c160f14c51807c569ad37f609c54d823cfa47308"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/installed-requirements.txt": {
+      "bytes": 1174,
+      "sha256": "9896f536d878b8b062cea14783e5a9040f070ff67040a4fd7c75166dc0fecfa5"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/manifest-formal.json": {
+      "bytes": 5941,
+      "sha256": "10ca0045f4f31ff7fcee6fbe7f95c52d3ab60f9b6f2b89380f625c432b5dcaee"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/manifest-preparation.json": {
+      "bytes": 1822,
+      "sha256": "0530b674637492ee1efd5c774644cb9fc3afadf200a1e8a7702bc9ba95356f18"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/model-trace/model-01-input-budget.json": {
+      "bytes": 520,
+      "sha256": "ffd078ba92ce78d6d413e7e09f36a2f9b6aaac107c3e5e3b98ec3824c22c50f7"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/model-trace/model-01-request.json": {
+      "bytes": 13742,
+      "sha256": "955f89ee01c48c9693f78fed177b9fcd3a12089c4e1a2e3d047ae1ba106f540f"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/model-trace/model-01-response.json": {
+      "bytes": 1725,
+      "sha256": "392f6e7c461d8683e04240b627d8bf33efcd963f0e97076b34660f1f164b5c06"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/model-trace/model-02-input-budget.json": {
+      "bytes": 520,
+      "sha256": "5e35b8e7943910b4dfd8ca1b2ad4fc26c7cb435a35c189d6809d1c96bd2101f2"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/model-trace/model-02-request.json": {
+      "bytes": 13457,
+      "sha256": "5036bb93667f92aa511523dc4c5b7c4c9c57a3aceb4812f3867a805055a2eebd"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/model-trace/model-02-response.json": {
+      "bytes": 1920,
+      "sha256": "d647803e4127a93ecd7a364fdd358a9e5a251d4e94e1472789afc8e5039bb279"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/model-trace/model-03-input-budget.json": {
+      "bytes": 520,
+      "sha256": "dcedd53944bd389cd697cc5b9571b694a55d0f335a64373b5015d3cfa9258b1d"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/model-trace/model-03-request.json": {
+      "bytes": 13536,
+      "sha256": "4067a8a29a5668d4eb19e27d84868885345b009b90337f691704ba79b52ee11e"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/model-trace/model-03-response.json": {
+      "bytes": 1792,
+      "sha256": "b9d84cd71e3bf1ca64fa6c5ff8ea0839ce50cb267a4cea77e565eb0a44e7bc57"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/pre-model-startup-block/bootstrap.json": {
+      "bytes": 2694,
+      "sha256": "4fb53fec72c1b0c514d44724ad5f8c7b3a3157a0feaa048bb6590f1bbebbb0c1"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/pre-model-startup-block/explanation.json": {
+      "bytes": 337,
+      "sha256": "69233672cb253ca0cbf6d5e3422c2dccf36907719f54107d9be8c7516f76bad6"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/pre-model-startup-block/freeze.json": {
+      "bytes": 2991,
+      "sha256": "4c4cd0b41a7e25bc6089ab3a12b975642cb3dc8073ffb5fb657ff1da53637c4c"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/pre-model-startup-block/page-command.json": {
+      "bytes": 387,
+      "sha256": "7991288f29ff67bb39478190cf3f5575609b6014841a4a5196ea606b88827ef6"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/preflight/original-payload.json": {
+      "bytes": 13663,
+      "sha256": "3d632a0707b997b9b3f31ac3df1ec6a8b55efe423e59c8039b87209cfb95cab5"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/preflight/saved-failed-candidate-1-payload.json": {
+      "bytes": 13161,
+      "sha256": "51b9fdadc62bb27ac14e041bdeae56bcc8d13ff0790b4669e4a0d3d9f37e5001"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/preflight/saved-failed-candidate-2-format-correction-payload.json": {
+      "bytes": 13603,
+      "sha256": "d2a32b8aaa84655a34e16e836b6639d385e337b9d78a191c4c5aba948221eead"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/preflight/saved-failed-candidate-2-payload.json": {
+      "bytes": 13471,
+      "sha256": "839ed5c1cfbc0da3d4c7f1ef1977f76462109b58e89020da8a5533ab4c45d1dd"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/preflight/summary.json": {
+      "bytes": 4481,
+      "sha256": "fb9e6ae400afd049a1499c49b998dbb810c50c027ad98c0dd6e34b69d9b380c0"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/public-retrieval/bundle-retrieval.json": {
+      "bytes": 8087,
+      "sha256": "0e4c4b66a8e1986afd6808cffb472ea84e326863f40bbf135eda2fb7e267ceef"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/public-retrieval/execution-receipt.json": {
+      "bytes": 1166,
+      "sha256": "b64eaa6c4a3317ca4233ff8af6ea0828b24f5c3d3c0ecae09d808d6135751634"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/public-retrieval/recheck.json": {
+      "bytes": 26360,
+      "sha256": "38818cf11293aedd04e37abe4e9461cad80dfd02451f6f0d2ba2afc77c343bff"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/public-retrieval/summary.json": {
+      "bytes": 10065,
+      "sha256": "8493273679971ab3ec65b8f1cd276cf9962cd608d0396f8bb5fa09a8496e9f4f"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/regressions/component-protocol-final-b-junit.xml": {
+      "bytes": 15225,
+      "sha256": "fc01312d991d9e6eb30e665f83f6246e1096a98e8c70ff3b7b095bf9495df708"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/regressions/component-protocol-final-b-stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/regressions/component-protocol-final-b-stdout.txt": {
+      "bytes": 863,
+      "sha256": "48446c32e83c4610020f7b895d6de72d2c6172cac2a08427ed0f7b5c51f76478"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/regressions/component-protocol-final-junit.xml": {
+      "bytes": 16535,
+      "sha256": "c6126067a415bc8cd43e27e1c65d80f3a0eaa147e32729efc1acfa7e7404a816"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/regressions/component-protocol-final-stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/regressions/component-protocol-final-stdout.txt": {
+      "bytes": 2559,
+      "sha256": "c6fa3133add116a28e568dcc4f3e97c83a66c9bfc896c62323962cb8750dea28"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/regressions/dev32-preflight-fix-stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/regressions/dev32-preflight-fix-stdout.txt": {
+      "bytes": 770,
+      "sha256": "d90f92018dd32488f75f508daa8aba0bc3bc816be6db7f56cfcbc037ff2c1e10"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/regressions/dev32-preflight-fix.xml": {
+      "bytes": 3478,
+      "sha256": "61ff9ff825e5b742fbdb23767d91ab9e690246308135a09432b7ad78f4b7eca9"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/regressions/receipt.json": {
+      "bytes": 964,
+      "sha256": "0fc0f0deef14aeb240a6d33ab3d27c329233f329de4a017b5f945c0498dfd958"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/source-review.json": {
+      "bytes": 1977,
+      "sha256": "0bd1d62c87ec953195b840620380feeab56016d68223145dcfc9dc3923ba0881"
+    },
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/summary.json": {
+      "bytes": 1138,
+      "sha256": "67cfed3e303cc601b33a2569de8954728adda75cfa7ff12fe7216c9165f055bb"
+    },
+    "pyproject.toml": {
+      "bytes": 1083,
+      "sha256": "fed0da4662c409c5d0b9133b640984b0d7124b39943dbca47b52e3425e52662c"
+    }
+  },
+  "self_hash_excluded": true,
+  "wheel_identity": "public-evidence/install-receipt.json (wheel is not the Git source archive)",
+  "status": "NOT_READY_FOR_HANDOFF"
+}
