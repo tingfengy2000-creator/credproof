@@ -7,7 +7,7 @@ import re
 
 ROOT=Path(__file__).resolve().parents[1]
 base=ROOT/'docs/reusable-tool-safety/acceptance/20261009-component-assisted'
-ap=argparse.ArgumentParser();ap.add_argument('phase',choices=['preparation','formal']);ap.add_argument('--workspace',type=Path)
+ap=argparse.ArgumentParser();ap.add_argument('phase',choices=['preparation','formal']);ap.add_argument('--workspace',type=Path);ap.add_argument('--run',type=Path)
 args=ap.parse_args();dest=base/'public-evidence';dest.mkdir(exist_ok=True)
 mapping=[]
 def sha(b):return hashlib.sha256(b).hexdigest()
@@ -44,7 +44,7 @@ if args.phase=='preparation':
             emit(folder+'/'+name,base/folder/name)
     for file in (base/'preflight').glob('*.json'):emit('preflight/'+file.name,file)
 else:
-    run=base/'formal-page'
+    run=args.run or base/'formal-page'
     for f in run.glob('*.json'):emit('formal-page/'+f.name,f)
     workspace=args.workspace
     final=json.loads((run/'page-final.json').read_text(encoding='utf8'))

@@ -25,7 +25,7 @@ def save(name,value):
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
 source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
 paths=[*list((ROOT/'credproof_safety').glob('*.py')), *list((ROOT/'credproof_access').glob('*.py')),
-       ROOT/'agent_pilot/bounded_patch.py',ROOT/'agent_pilot/web.py',ROOT/'agent_pilot/ui/app.js',ROOT/'pyproject.toml',
+       ROOT/'agent_pilot/bounded_patch.py',ROOT/'agent_pilot/web.py',ROOT/'agent_pilot/preflight.py',ROOT/'agent_pilot/ui/app.js',ROOT/'pyproject.toml',
        *list((args.workspace/'examples/material_assistant').rglob('*.py')),args.workspace/'examples/material_assistant/credproof.toml']
 save('freeze.json',{'registered_at':datetime.now(timezone.utc).isoformat(),'source_commit':source,
      'task':'assistant-original/p01','strategy':'bounded_patch','profile':'component_assisted',

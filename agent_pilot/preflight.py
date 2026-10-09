@@ -116,7 +116,8 @@ def observe(root=None, config=None):
     root = Path(root) if root is not None else Path(__file__).resolve().parents[1]
     try:
         config = config if config is not None else load_config(root)
-        identity = _file_hash(root / 'agent_pilot/sandbox_runner.py')
+        # Program identity comes from the installation, not the data workspace.
+        identity = _file_hash(Path(__file__).resolve().with_name('sandbox_runner.py'))
         if os.name != 'nt':
             return _inspect_runtime(linux_runtime_root(config), identity, REQUIRED_CHECKS)
         # Only these trusted read-only functions travel to WSL, never candidate text.

@@ -88,3 +88,11 @@ def test_bundle_binds_and_exports_dependency_without_model_success(tmp_path):
         result = recheck_project_bundle(bundle,tmp_path/'changed.json')
         checker.assert_not_called()
     assert result['validation']['verdict']=='UNKNOWN'
+
+
+def test_preflight_program_identity_is_not_read_from_data_workspace():
+    from agent_pilot import preflight
+    import inspect
+    source = inspect.getsource(preflight.observe)
+    assert "Path(__file__).resolve().with_name('sandbox_runner.py')" in source
+    assert "root / 'agent_pilot/sandbox_runner.py'" not in source
