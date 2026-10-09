@@ -1,0 +1,31 @@
+{
+  "records": [
+    {
+      "file": "install-receipt.json",
+      "raw_sha256": "537164a70b5333b83f1401d55786cacdc1297e3440c9c2c4c6f125d81a68f1df",
+      "raw_bytes": 3349,
+      "derived_sha256": "eb9c7eada67ebed4aabfb1b1c7ac150fc88e491abcaefc0eeb68c609b60c6387",
+      "derived_bytes": 3282
+    },
+    {
+      "file": "installed-program-origin.json",
+      "raw_sha256": "8242f3451a2993bbfc8752ea52ddf399d758f863466c5725b1bc9379ab8d3435",
+      "raw_bytes": 2675,
+      "derived_sha256": "f300e9ed2198d062f7a946c6660e8f3c4d7cf44c0f23f429a02340e783151401",
+      "derived_bytes": 2289
+    },
+    {
+      "file": "installed-child-origin-only.json",
+      "raw_sha256": "98a668ea53868d75c42dcf3444f1e00b5b732d666570af0d21f9cc44fad15d38",
+      "raw_bytes": 1433,
+      "derived_sha256": "91f1378c93e26c455167060590beb318b38e6cc7d3fca8daf9c41d3656b60def",
+      "derived_bytes": 1312
+    }
+  ],
+  "dependency_freeze_raw_sha256": "a9674fde46e30d0d73ebd10eaad0f3c32d79e59ee3347dbd806bdd78b1d5e323",
+  "transforms": [
+    "exact repository/install prefix mapping",
+    "local wheel direct URL replaced by exact version and wheel digest"
+  ],
+  "module_source_probes_do_not_run_model": true
+}

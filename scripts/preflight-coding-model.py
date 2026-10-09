@@ -8,7 +8,8 @@ import subprocess
 import sys
 import uuid
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+if not sys.flags.isolated:
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from credproof_safety.agent import _bounded_model_script, _MODEL_BOUNDARY_BOOTSTRAP, _runtime_settings, _wsl_path
 from agent_pilot.model_config import claim_comparison, finish_comparison, selected_profile
 
@@ -33,7 +34,10 @@ tail = r'''
  start=time.monotonic()
  with opener.open(req,timeout=120) as response: result=json.loads(response.read(2097152))
  (artifact/'response.json').write_text(json.dumps(result,indent=2)+'\n')
- if result.get('done') is not True or json.loads(result['message']['content'])!={'ok':True}: raise RuntimeError('structured_preflight_failed')
+ answer=json.loads(result['message']['content'])
+ if (result.get('done') is not True or result.get('done_reason')!='stop'
+     or result['message'].get('tool_calls') or not isinstance(answer,dict)
+     or set(answer)!={'ok'} or answer['ok'] is not True): raise RuntimeError('structured_preflight_failed')
  req=urllib.request.Request('http://127.0.0.1:11435/api/show',data=json.dumps({'model':selected_profile()['name']}).encode(),headers={'Content-Type':'application/json'})
  with opener.open(req,timeout=10) as response: show=json.loads(response.read())
  (artifact/'model-show.json').write_text(json.dumps(show,indent=2)+'\n')
@@ -67,7 +71,10 @@ env = {k:v for k,v in os.environ.items() if not k.startswith(('CREDPROOF_', 'OLL
 proc = subprocess.run(cmd, capture_output=True, timeout=180, env=env)
 (args.output/'stdout.txt').write_bytes(proc.stdout)
 (args.output/'stderr.txt').write_bytes(proc.stderr)
-receipt = {'returncode':proc.returncode,'model':selected_profile(),'formal_tasks':0,'claim_consumed':True}
+receipt = {'returncode':proc.returncode,'model':selected_profile(),'formal_tasks':0,'claim_consumed':True,
+           'interpreter':sys.executable,'isolated_import':sys.flags.isolated,
+           'program_origin':__import__('credproof_safety.agent',fromlist=['__file__']).__file__,
+           'stage_module_origin':str(installed)}
 (args.output/'command-receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
 finish_comparison(claim, receipt)
 print(json.dumps(receipt))

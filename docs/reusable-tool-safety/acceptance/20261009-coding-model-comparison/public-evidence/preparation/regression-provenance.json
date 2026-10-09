@@ -1,0 +1,39 @@
+{
+  "records": [
+    {
+      "source_name": "model-comparison-protocol.xml",
+      "raw_sha256": "7c4bc6de76cfe1e049791ccce94608cdc29b1e985da5fef6399df5e8abfc5376",
+      "raw_bytes": 84765,
+      "derived": "model-comparison-protocol-structured.xml",
+      "derived_sha256": "37646adca01019d0f37102f076704a8a6953e70e5c7b963897ed79ab69ce6029",
+      "derived_bytes": 83727
+    },
+    {
+      "source_name": "model-comparison-protocol-host.xml",
+      "raw_sha256": "10c9dec7e55d926f830bf3cc179733a213cd973f77b1fa11ecd42a00e3fd7ef1",
+      "raw_bytes": 8834,
+      "derived": "model-comparison-protocol-host-structured.xml",
+      "derived_sha256": "f7ef29afd5b5f5ec06b65f2ba60ed804b38f66162729c849904c5c08b41aa86e",
+      "derived_bytes": 8833
+    }
+  ],
+  "actual_software_tests": {
+    "passed": 55,
+    "failed": 0,
+    "exit_code": 0,
+    "python": "3.12.14",
+    "pytest": "8.4.2"
+  },
+  "earlier_attempt": {
+    "passed": 28,
+    "failed": 22,
+    "errors": 5,
+    "exit_code": 1,
+    "reason": "Codex tool filesystem sandbox denied declared sample reads and temporary creation; no model/candidate executed"
+  },
+  "xml_note": "Use *-structured.xml. Initial text-replaced XML derivatives contain unescaped redaction markers; retained as superseded derivatives, not original pytest bytes. New structured XML parses and preserves events.",
+  "warning": "one dashscope dependency deprecation; no paid API invoked",
+  "commands": [
+    ".venv/Scripts/python.exe -m pytest -q agent_pilot/tests/test_model_configuration.py agent_pilot/tests/test_bounded_patch.py agent_pilot/tests/test_model_boundary.py agent_pilot/tests/test_runtime_config.py credproof_safety/tests/test_component_assisted.py --junitxml=<fresh-output>"
+  ]
+}

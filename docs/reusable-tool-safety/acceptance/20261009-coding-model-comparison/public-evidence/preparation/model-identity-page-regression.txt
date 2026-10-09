@@ -1,0 +1,9 @@
+.................                                                        [100%]
+============================== warnings summary ===============================
+agent_pilot/tests/test_model_configuration.py::test_old_instructions_api_and_schema_unchanged
+  REPOSITORY\.venv\Lib\site-packages\dashscope\__init__.py:63: DeprecationWarning: The Assistants API (dashscope.assistants) is deprecated and will be removed in a future release. Please migrate to the Responses API. See https://help.aliyun.com/zh/model-studio/synchronous-call-api-reference for migration details.
+    from dashscope.assistants import Assistant, AssistantList, Assistants
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: REPOSITORY\_runs\model-identity-page-regression.xml -
+17 passed, 1 warning in 7.86s

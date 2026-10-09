@@ -1,0 +1,50 @@
+{
+  "previous_model_source": "7011959e795f3bde442d3f4899ea5097ab42528a",
+  "new_model_source": "ed8a29b9fc7a9a9d10f0b4b58570890bd1989b51",
+  "functions": [
+    {
+      "file": "credproof_safety/agent.py",
+      "function": "_bounded_initial_context",
+      "AST_unchanged": true,
+      "normalized_AST_sha256": "3ee31eaf1e36933340c3f2d9b30e5d08cfee611497025f43f475c398842cb11a"
+    },
+    {
+      "file": "credproof_safety/agent.py",
+      "function": "_model_work_feedback",
+      "AST_unchanged": true,
+      "normalized_AST_sha256": "23411e2635f81835387d5dde6d8cd7e9c9f580a24e0de43c18a66843541d9c01"
+    },
+    {
+      "file": "credproof_safety/agent.py",
+      "function": "_model_actionable_failures",
+      "AST_unchanged": true,
+      "normalized_AST_sha256": "eb686983acf079b999ecbd9207d3e5da8720a3a4e8b17fa336976fe15602a5c1"
+    },
+    {
+      "file": "agent_pilot/bounded_patch.py",
+      "function": "build_payload",
+      "AST_unchanged": true,
+      "normalized_AST_sha256": "e058e05c24140317c6e19f7997e5b3bf4d2bc75bdaf33f90aa83315be6d8ebe5"
+    },
+    {
+      "file": "agent_pilot/bounded_patch.py",
+      "function": "parse_response",
+      "AST_unchanged": true,
+      "normalized_AST_sha256": "6d485e9ba5016d0943ddbeea5e154b713d6fbfbbe233054ad5be2f4e73b87e1e"
+    },
+    {
+      "file": "agent_pilot/bounded_patch.py",
+      "function": "generation_state",
+      "AST_unchanged": true,
+      "normalized_AST_sha256": "521ac098c7c46f388ffad63eef9061519bc98d9a7ee4b71f97ad4680ab96df82"
+    }
+  ],
+  "system_and_output_schema": "exact equality tested in test_old_instructions_api_and_schema_unchanged",
+  "allowed_differences": [
+    "model identity",
+    "native chat template supplied by the model manifest",
+    "new runtime random port/synthetic values/task identity",
+    "later feedback from actual new candidates"
+  ],
+  "previous_feedback_not_replayed_to_new_model": true
+}
