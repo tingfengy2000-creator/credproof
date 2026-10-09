@@ -11,3 +11,5 @@
 本轮只新增固定模型身份、manifest挂载及版本记录；同一原始p01、组件API、系统指令、工作包构造、测试与判决保持。官方来源：[固定模型标签](https://ollama.com/library/qwen2.5-coder:32b-instruct-q4_K_M)、[结构化输出接口](https://docs.ollama.com/capabilities/structured-outputs)。
 
 本轮已关闭：暂停自动生成效果优化，等待用户裁定后续资源或产品范围。不自动启动5060。
+
+公开证据提交 `c79dc14b4cacb071274b452b48945675f1823123`；清单提交 `4a6d14eca01dd1db38cb48514d44f4dbab2912bb` 已匿名取回100份正文并逐字节核对。[匿名取件收据](github-publication.json)在取件后追加，未改变被测程序或模型成绩。
