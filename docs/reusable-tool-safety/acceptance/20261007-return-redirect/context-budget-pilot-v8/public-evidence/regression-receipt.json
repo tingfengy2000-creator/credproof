@@ -1,0 +1,32 @@
+{
+  "kind": "SOFTWARE_REGRESSION_NOT_MODEL_INFERENCE",
+  "source_commit": "d352e97088a56719a7495c206fa86680355ed8ca",
+  "command": [
+    "<repository>/.venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "agent_pilot/tests/test_model_boundary.py",
+    "agent_pilot/test_model_client.py",
+    "credproof_safety/tests/test_entry_scenarios.py",
+    "credproof_safety/tests/test_project_bundle.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=<public-evidence>/regression.junit.xml"
+  ],
+  "exit_code": 0,
+  "environment": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]\n8.4.2\n",
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "50",
+    "time": "1.307",
+    "timestamp": "2026-10-09T08:32:57.410000+08:00",
+    "hostname": "<test-host>"
+  },
+  "warning": "dashscope Assistants API deprecation warning from installed qwen_agent dependency; no paid API invocation",
+  "started_at_recorded_on": "2026-10-09T00:32:59.156912+00:00",
+  "capture_note": "pytest exited 0 and JUnit was saved. The local capture wrapper subsequently exited 1 while printing captured text to a GBK console. Non-ASCII path bytes were decoded with replacement; affected path-only fragments mapped below. Test results/warning text unchanged."
+}

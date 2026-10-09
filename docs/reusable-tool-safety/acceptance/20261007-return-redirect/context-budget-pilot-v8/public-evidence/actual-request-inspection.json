@@ -1,0 +1,141 @@
+{
+  "kind": "POST_RUN_STATIC_INSPECTION_OF_ACTUAL_SENT_PAYLOADS",
+  "model_calls": 0,
+  "new_candidate_execution": false,
+  "requests": [
+    {
+      "actual_request": "model-trace/model-04-request.json",
+      "published_sha256": "0de4cedc0d7fe626c35bee2251ffc41c53d882b2b99a259c2d3faf8fb061cb66",
+      "checks": {
+        "candidate_body": true,
+        "required_tests": true,
+        "matching_tool_pairs": true,
+        "current_candidate": true,
+        "latest_FAIL": true,
+        "concrete_feedback": true,
+        "rejection_preserved": true
+      },
+      "latest_executor_state": {
+        "schema": "credproof.executor-state/v1",
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "eb20b0a747afb8d4aada746faf7b3616d877294c1db3ba5e18735ba9661de5e0",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "last_read_path": "tests/test_business.py",
+        "last_read_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+        "repeated_read_count": 1,
+        "no_progress_blocked": false,
+        "tool_calls_used": 4,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 8,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "allowed_actions": [
+          "submit_patch",
+          "stop"
+        ],
+        "revision_phase_rejections": 0,
+        "next_action": "review_feedback_and_submit_new_candidate_or_stop"
+      },
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 13359,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 1024,
+        "input_token_upper_bound": 13359,
+        "input_token_limit": 14848,
+        "context_token_upper_bound": 14895,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "actual_request": "model-trace/model-05-request.json",
+      "published_sha256": "4f5cb7e8bb148c86dec2b20511328b1c391f8df4dab584b209447919e440768e",
+      "checks": {
+        "candidate_body": true,
+        "required_tests": true,
+        "matching_tool_pairs": true,
+        "current_candidate": true,
+        "latest_FAIL": true,
+        "concrete_feedback": true,
+        "rejection_preserved": true
+      },
+      "latest_executor_state": {
+        "schema": "credproof.executor-state/v1",
+        "phase": "candidate_verified",
+        "evidence_ready": true,
+        "read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "required_read_paths": [
+          "tests/test_business.py",
+          "tool.py"
+        ],
+        "current_candidate": 1,
+        "current_candidate_sha256": "eb20b0a747afb8d4aada746faf7b3616d877294c1db3ba5e18735ba9661de5e0",
+        "last_verified_candidate": 1,
+        "last_verification_verdict": "FAIL",
+        "last_read_path": "tests/test_business.py",
+        "last_read_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+        "repeated_read_count": 1,
+        "no_progress_blocked": false,
+        "tool_calls_used": 5,
+        "max_tool_calls": 12,
+        "remaining_tool_calls": 7,
+        "candidates_accepted": 1,
+        "max_candidates": 3,
+        "remaining_candidates": 2,
+        "verifications_run": 1,
+        "max_verifications": 3,
+        "remaining_verifications": 2,
+        "allowed_actions": [
+          "submit_patch",
+          "stop"
+        ],
+        "revision_phase_rejections": 1,
+        "next_action": "review_feedback_and_submit_new_candidate_or_stop"
+      },
+      "input_budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "message_prefix_changed",
+        "request_bytes": 13788,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 1024,
+        "input_token_upper_bound": 13788,
+        "input_token_limit": 14848,
+        "context_token_upper_bound": 15324,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    }
+  ]
+}

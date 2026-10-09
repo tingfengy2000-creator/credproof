@@ -1,0 +1,184 @@
+{
+  "model_calls": 0,
+  "candidate_execution": false,
+  "schema": "credproof.revision-preflight/v1",
+  "stages": [
+    {
+      "stage": "initial",
+      "kind": "PROTOCOL_REPLAY_CURRENT_CODE",
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 4870,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 1024,
+        "input_token_upper_bound": 4870,
+        "input_token_limit": 14848,
+        "context_token_upper_bound": 6406,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "checks": {
+        "paired": true,
+        "candidate_object_visible": true,
+        "budget": true
+      }
+    },
+    {
+      "stage": "evidence_and_sources",
+      "kind": "PROTOCOL_REPLAY_CURRENT_CODE",
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 13874,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 1024,
+        "input_token_upper_bound": 13874,
+        "input_token_limit": 14848,
+        "context_token_upper_bound": 15410,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "checks": {
+        "paired": true,
+        "candidate_object_visible": true,
+        "budget": true
+      }
+    },
+    {
+      "stage": "candidate2_auto_FAIL",
+      "kind": "PROTOCOL_REPLAY_CURRENT_CODE",
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 14071,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 1024,
+        "input_token_upper_bound": 14071,
+        "input_token_limit": 14848,
+        "context_token_upper_bound": 15607,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "checks": {
+        "paired": true,
+        "candidate_object_visible": true,
+        "budget": true,
+        "failure_fact_visible": true,
+        "tests_visible": true,
+        "source_visible": true
+      }
+    },
+    {
+      "stage": "historical_read_after_FAIL",
+      "kind": "PROTOCOL_REPLAY_CURRENT_CODE",
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 14353,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 1024,
+        "input_token_upper_bound": 14353,
+        "input_token_limit": 14848,
+        "context_token_upper_bound": 15889,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "checks": {
+        "paired": true,
+        "candidate_object_visible": true,
+        "budget": true,
+        "failure_fact_visible": true,
+        "tests_visible": true,
+        "source_visible": true
+      }
+    },
+    {
+      "stage": "historical_second_read",
+      "kind": "PROTOCOL_REPLAY_CURRENT_CODE",
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 14353,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 1024,
+        "input_token_upper_bound": 14353,
+        "input_token_limit": 14848,
+        "context_token_upper_bound": 15889,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "checks": {
+        "paired": true,
+        "candidate_object_visible": true,
+        "budget": true,
+        "failure_fact_visible": true,
+        "tests_visible": true,
+        "source_visible": true
+      }
+    },
+    {
+      "stage": "current_revision_rejection",
+      "kind": "PROTOCOL_REPLAY_CURRENT_CODE",
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 14560,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 1024,
+        "input_token_upper_bound": 14560,
+        "input_token_limit": 14848,
+        "context_token_upper_bound": 16096,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "checks": {
+        "paired": true,
+        "candidate_object_visible": true,
+        "budget": true,
+        "failure_fact_visible": true,
+        "tests_visible": true,
+        "source_visible": true,
+        "true_rejection_visible": true
+      }
+    }
+  ],
+  "all_pass": true,
+  "tool_schema_sha256": "9d193df27f1f75666987380aab9ee21d00a78054ed4887ac9445618530b087db"
+}

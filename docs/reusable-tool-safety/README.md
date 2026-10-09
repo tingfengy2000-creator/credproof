@@ -1,18 +1,18 @@
-# CredProof reusable-tool-safety（0.3.0-dev.29）
+# CredProof reusable-tool-safety（0.3.0-dev.30 评审材料）
 
 ## 当前固定评审入口
 
-本版源码提交为 `67f3e0a24657ebd212f18c7587bfc06607e661c1`；本次材料提交将在推送后以完整 SHA 固定。除文档和公开证据外，本版只包含一项上下文/执行器修正，并在此基础上完成一次且仅一次新的有限模型任务；没有新增案例、模型或风险类别。
+本轮实际被测源码：`d352e97088a56719a7495c206fa86680355ed8ca`。评审材料随后提交；软件包自身的历史版本号不冒充本轮清洁安装版本。状态：`NOT_READY_FOR_HANDOFF`，不启动 5060。
 
-- 需求验收表：[`requirements-acceptance.md`](requirements-acceptance.md) / [`requirements-acceptance.json`](requirements-acceptance.json)
-- v6 公开证据：[`acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/)
-- 当前客户端续行预检：[`acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/current-client-continuation/`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/current-client-continuation/)
-- v7 唯一真实任务证据：[`acceptance/20261007-return-redirect/context-budget-pilot-v7/public-evidence/`](acceptance/20261007-return-redirect/context-budget-pilot-v7/public-evidence/)
-- 预算拆分：[`budget-breakdown.json`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/budget-breakdown.json)
-- 无模型预算重放：[`duplicate-verify-dedup/replay-summary.json`](acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup/replay-summary.json)
-- 关键修正：`credproof_safety/agent.py:_verification_repeat_summary`；定向回归 `48 passed, 1 warning`。
+- [v8 完整证据入口](acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/README.md)：冻结、实际请求/响应、候选、验收、预算、命令、JUnit 与脱敏映射。
+- [v7 第7—9次请求诊断](acceptance/20261007-return-redirect/context-budget-pilot-v7/public-evidence/revision-stage-diagnosis/)：候选正文、FAIL、业务要求、读取配对和状态确实已送达；本轮关闭消息丢失疑点，未泛改压缩器。
+- 当前修改：`credproof_safety/agent.py:_model_actionable_failures/_model_work_feedback/_phase_rejection` 及执行器。自动FAIL后提供同对象代码与具体反例，限定修订动作、两次无进展请求后停止；没有给模型参考补丁。
+- [当前协议预检](acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/protocol-preflight-final/summary.json)：6个续行状态通过保真/配对/预算检查，0推理、0候选执行；早期过大反馈的失败预检另存。
+- [真实任务结果](acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/summary.json)：5次模型请求、5份usage、6次工具请求、1份接受候选、1次程序自动验收FAIL。候选只改日志，仍返回凭据且未限制文件与重定向；之后重复读取/取证被拒绝，任务STOPPED_NO_PROGRESS，并非预算耗尽或超时。
+- [软件回归](acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/regression-receipt.json)：Python3.12.14 / pytest8.4.2，50 passed、1依赖弃用warning；不是50个模型安全案例。
+- [需求表](requirements-acceptance.md) / [机器可读状态](requirements-acceptance.json)。本轮没有合格模型候选、同候选导出或新目录PASS复检；仍不满足交接效果要求，不追加运行刷成功。
 
-v6 历史运行仍为 9 次已发送模型请求、2 个候选且均由程序验收为 `FAIL`；第 10 次请求未发送。当前客户端基于 v6 真实材料的无模型续行预检为 12,924 输入字节、14,460 context 上界，均在 14,848/16,384 限制内，并保留当前源码、失败反馈和拒绝状态。随后只运行一次 v7 真实任务：9 次模型请求、9 份 usage、10 次工具请求、2 个候选、2 次程序自动验收，候选均 `FAIL`，任务以 `STOPPED_NO_PROGRESS` 结束；没有模型 `PASS`、导出或新目录复检。当前状态为 `NOT_READY_FOR_HANDOFF`，5060 尚未启动。
+旧v7为9请求/10工具/2候选/2次FAIL，旧v6及全部原记录保留，未与v8拼接；旧对象绑定、Git字节清单和解释器选择的适用证据继续沿用。
 
 ## 历史清洁安装与需求验收（dev18）
 

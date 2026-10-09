@@ -1,6 +1,10 @@
-# CredProof 需求—实现—证据验收表（dev29）
+# CredProof 需求—实现—证据验收表（dev30）
 
 本表对应本版源码提交（完整 SHA 在 GitHub 评审入口及后续交付收据中固定）；验收资料随后在提交中固化。它用于外部复查，不表示模型修复成功或参赛资格已验收。
+
+## dev30 当前受限修订结果
+
+被测源码 `d352e97088a56719a7495c206fa86680355ed8ca`；[v8完整入口](acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/README.md)。v7实际请求中必要材料齐全；本轮改为程序约束修订动作并从报告给出具体反例。新任务5次请求/5份usage/6次工具/1候选/1自动FAIL，随后STOPPED_NO_PROGRESS，剩余预算未耗尽。候选仍有返回凭据、文件与跳转违规；R08修复效果仍未验证。50项软件回归与6个无模型协议状态通过仅支撑程序机制。没有新的PASS导出、新目录复检或最终安装效果收据，旧已闭合工程证据继续沿用，保持NOT_READY_FOR_HANDOFF。
 
 状态含义：`IMPLEMENTED_VERIFIED` 表示本轮有实际命令和材料；`IMPLEMENTED_UNVERIFIED` 表示代码/历史测试存在但本轮缺少新实测；`FAILED_OR_BLOCKED` 表示交接前必须补齐或保持禁用。
 
@@ -13,7 +17,7 @@
 | R05 | 网络边界 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:mock services/socket audit；credproof_safety/project.py:_verdict`；experiments/reusable-tool-safety/20261003-targeted-fix-07/allowed_file_redirect.json；experiments/reusable-tool-safety/20261003-targeted-fix-07/reintroduced_file_bypass.json | 不宣称公网 SSRF、DNS、原生 syscall 或 Windows 内核网络审计 |
 | R06 | 必要业务测试真实完成与通过 | `IMPLEMENTED_VERIFIED` | `credproof_safety/runner.py:CredProofPytestObserver；credproof_safety/project.py:_verdict`；_runs/current-pytest-observer/；agent_pilot/tests/test_runtime_config.py | 只对声明的必要用例语义负责；递归包装 skip 由执行侧区分 |
 | R07 | 单页项目注册、检查、总体判决与分项 | `IMPLEMENTED_VERIFIED` | `agent_pilot/project_workspace.py；agent_pilot/web.py；credproof_safety/web_repair.py`；`acceptance/20261006-final/page-flow.md`；`acceptance/20261006-page-live-boundary/summary.json` | 目前只有登记案例 p01 映射到资料助手固定项目；p02–p06 仍只提供历史回放 |
-| R08 | 候选修复授权与修改边界 | `IMPLEMENTED_UNVERIFIED` | `credproof_safety/agent.py:_read_progress_update/_verification_repeat_summary`、`agent_pilot/model_client.py:compact_messages_for_budget`；`acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/current-client-continuation/`；`acceptance/20261007-return-redirect/context-budget-pilot-v7/public-evidence/`；`scripts/replay-context-budget-v6-current-client.py` | 当前客户端无模型续行预检为12,924输入/14,460 context，均在14,848/16,384内并保留当前源码、失败反馈和拒绝状态。随后唯一一次v7真实任务实际9次模型请求/9份usage/10次工具请求，2候选均由程序自动验收为FAIL，任务STOPPED_NO_PROGRESS；没有模型PASS、导出或新目录复检 |
+| R08 | 候选修复授权、修订阶段与修改边界 | `IMPLEMENTED_UNVERIFIED` | `credproof_safety/agent.py:_model_actionable_failures/_model_work_feedback/_phase_rejection`；[v8证据](acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/README.md) | 阶段控制有协议与真实拒绝证据；唯一候选FAIL，无实质第二修改，模型效果未通过 |
 | R09 | 对象、报告适用性与复检 | `IMPLEMENTED_VERIFIED` | `agent_pilot/web.py:object/applicability checks；credproof_safety/project_bundle.py；credproof_safety/tests/test_project_bundle.py；acceptance/20261006-live-correction/new-project-bundle/；acceptance/20261006-live-correction/public-project-bundle-dev17/；acceptance/20261006-live-correction/public-project-recheck-dev17.json` | 首次导出核对当前候选树、配置、入口和必要测试；公开派生 bundle 按固定 Git blob 字节生成并在新目录复检。旧历史 bundle 与 `project-public-bundle/v1` 分流；哈希是完整性绑定，不是密码学证明或第三方认证 |
 | R10 | 导出与项目内复用 | `IMPLEMENTED_VERIFIED` | `credproof_safety/project.py:export_regression_tests；scripts/run-exported-regression-check.py`；acceptance/20261006-final/consumer/；acceptance/20261006-final/exported-tests/；acceptance/20261006-final/summary.json | 受控 WSL/bubblewrap 依赖需在消费者机器准备 |
 | R11 | 清洁安装、启动与隔离预检 | `IMPLEMENTED_VERIFIED` | `pyproject.toml package-data；agent_pilot/preflight.py；agent_pilot/launch.py；agent_pilot/web.py:launch_command`；acceptance/20261006-final/wheel-manifest.json；acceptance/20261006-final/import-origin-sanitized.txt；acceptance/20261006-final/preflight-summary.json；acceptance/20261006-final/page-flow.md | 跨机器、非 WSL 环境未承诺；现场页面必须通过 `CREDPROOF_INSTALLED_PYTHON` 或 local-runtime 的 `program_python` 指定已核验安装解释器，不再回退历史 `_runs` |

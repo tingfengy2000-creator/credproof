@@ -1,0 +1,39 @@
+{
+  "registered_at": "2026-10-09T00:22:56.394792+00:00",
+  "tested_source_commit": "d352e97088a56719a7495c206fa86680355ed8ca",
+  "task": "assistant-original/p01",
+  "model": "qwen3-coder:30b",
+  "python": "3.12.14",
+  "scope": "5090 existing reviewed isolation; no 5060",
+  "budgets": {
+    "model_requests": 12,
+    "model_tools": 12,
+    "candidates": 3,
+    "program_verifications": 3,
+    "format_corrections": 1,
+    "request_seconds": 120,
+    "task_seconds": 900,
+    "context": 16384,
+    "output_tokens": 1024
+  },
+  "files": {
+    "credproof_safety/agent.py": "c34d34961f2beca97a19af32c1d1cfd24ea39779c8948f4408e1b41c592e46e6",
+    "agent_pilot/model_client.py": "9bb30b47560da2fc56e3f1c318ab159b7b9229540e47db36fcac87db572130f5",
+    "agent_pilot/tools.py": "d180137bf516a5b2d9a1725575b7c8bca9edd8f0157696e12ed6c009f6c43ff0",
+    "agent_pilot/requirements-lock.txt": "7231f03daf9bcc0c6d279bbfd38febcdfe47f074e7967a8d8c5830f51731bb89",
+    "examples/material_assistant/credproof.toml": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+    "examples/material_assistant/tool.py": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+    "examples/material_assistant/tests/test_business.py": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356"
+  },
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "credproof_safety",
+    "repair",
+    "--config",
+    "examples/material_assistant/credproof.toml",
+    "--output",
+    "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v8/formal-p01-host-authorized/result.json"
+  ],
+  "retry": false
+}

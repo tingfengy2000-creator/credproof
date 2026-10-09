@@ -1,0 +1,14 @@
+{
+  "gitleaks": "8.28.0",
+  "command": "gitleaks dir <public-evidence> --no-banner --redact --report-format json",
+  "exit_code": 0,
+  "findings": [],
+  "scope": "new v8 public derived files; not certification of whole repository history",
+  "manual_checks": [
+    "JSON parses",
+    "candidate LF bytes equal executor candidate",
+    "known README relative links resolve",
+    "full and abbreviated synthetic credentials redacted",
+    "unneeded host identity removed"
+  ]
+}

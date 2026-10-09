@@ -1,0 +1,66 @@
+{
+  "status": "VERIFIED_FOR_THIS_RUN",
+  "probe": {
+    "interfaces": [
+      "lo"
+    ],
+    "outside_connect_tests": [
+      {
+        "address": "1.1.1.1",
+        "port": 443,
+        "connected": false,
+        "errno": 101,
+        "reason": "OSError",
+        "elapsed_s": 0.0001
+      },
+      {
+        "address": "8.8.8.8",
+        "port": 443,
+        "connected": false,
+        "errno": 101,
+        "reason": "OSError",
+        "elapsed_s": 0.0
+      },
+      {
+        "address": "2606:4700:4700::1111",
+        "port": 443,
+        "connected": false,
+        "errno": null,
+        "reason": "OSError",
+        "elapsed_s": 0.0
+      }
+    ],
+    "host_sentinel_visible": false,
+    "model_code_writable": [],
+    "mountinfo_has_windows_or_host_mount": false,
+    "host_link_visible": false,
+    "denied_paths": {
+      "/mnt": false,
+      "/workspace": false,
+      "/reference": false,
+      "/history": false
+    },
+    "allowed_writable_roots": [
+      "/work",
+      "/rpc",
+      "/tmp",
+      "/run",
+      "/home"
+    ],
+    "readonly_roots": [
+      "/app",
+      "/deps",
+      "/runtime/ollama",
+      "/runtime/models",
+      "/usr",
+      "/lib",
+      "/lib64"
+    ]
+  },
+  "omitted": [
+    "full_mountinfo",
+    "mountinfo_excerpt",
+    "process identity details"
+  ],
+  "reason": "omit unnecessary host identity; original probe retained locally"
+}

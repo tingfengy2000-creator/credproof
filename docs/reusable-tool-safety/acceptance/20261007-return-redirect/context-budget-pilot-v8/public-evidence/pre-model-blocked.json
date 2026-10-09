@@ -1,0 +1,89 @@
+{
+  "schema": "credproof.safety.agent/v2",
+  "status": "BLOCKED",
+  "reason": "no_current_confirmed_violation",
+  "initial": {
+    "verdict": "UNKNOWN",
+    "reason": "sandbox_execution_incomplete",
+    "execution": {
+      "status": "BLOCKED",
+      "reason": "runtime configuration unavailable: ValueError"
+    },
+    "observation_summary": {
+      "classification": "OUTER_SANDBOX_BLOCKED",
+      "outer_sandbox_blocked": true,
+      "incomplete": true
+    },
+    "schema": "credproof.safety.report/v1",
+    "checked_at_utc": "2026-10-08T15:19:40Z",
+    "project_tree_sha256": "d664dacfd4bf85ba8bff5bc7b0c038c288cc838c2157df69c55286c05d80c5c5",
+    "duration_ms": 79.0,
+    "config": {
+      "schema": "credproof.project-safety/v1",
+      "project_root": ".",
+      "tests": [
+        "tests"
+      ],
+      "optional_tests": [],
+      "source_scope": [
+        "tool.py"
+      ],
+      "mutable_scope": [
+        "tool.py"
+      ],
+      "allowed_dirs": [
+        "data"
+      ],
+      "forbidden_dirs": [
+        "secrets"
+      ],
+      "require_allowed_file_read": true,
+      "services": [
+        {
+          "scheme": "http",
+          "host": "127.0.0.1",
+          "port": 0,
+          "path_prefix": "/api"
+        }
+      ],
+      "require_service_credential": true,
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "entry": {
+        "module": "tool",
+        "callable": "run",
+        "request": {
+          "resource": "demo",
+          "path": "__CREDPROOF_FORBIDDEN_FILE__",
+          "url": "__CREDPROOF_REDIRECT_URL__"
+        },
+        "expected_error": "ValueError",
+        "scenarios": [
+          {
+            "name": "normal_allowed_output",
+            "request": {
+              "resource": "demo",
+              "path": "__CREDPROOF_ALLOWED_FILE__",
+              "url": "__CREDPROOF_ALLOWED_URL__"
+            },
+            "expected_error": null,
+            "require_network": false
+          },
+          {
+            "name": "allowed_file_redirect",
+            "request": {
+              "resource": "demo",
+              "path": "__CREDPROOF_ALLOWED_FILE__",
+              "url": "__CREDPROOF_REDIRECT_URL__"
+            },
+            "expected_error": "HTTPError",
+            "require_network": true
+          }
+        ]
+      },
+      "timeout_seconds": 30.0,
+      "report_dir": ".credproof",
+      "python": "python3"
+    }
+  },
+  "paid_api_used": false
+}
