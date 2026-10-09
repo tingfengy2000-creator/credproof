@@ -4,6 +4,7 @@ import copy
 import hashlib
 import json
 import os
+import re
 from pathlib import Path
 import shutil
 import tempfile
@@ -236,7 +237,8 @@ def _verdict(config: SafetyConfig, execution: dict) -> dict:
 
 
 def check_project(config_path: str | Path, *, output: str | Path | None = None,
-                  project_root: str | Path | None = None) -> dict:
+                  project_root: str | Path | None = None,
+                  access_dependency: str | Path | None = None) -> dict:
     """Run declared tests and entry in a disposable reviewed WSL lab."""
     config = load_config(config_path, project_root=project_root)
     module_relative = Path(config.entry.module.replace(".", "/") + ".py").as_posix()
@@ -266,7 +268,7 @@ def check_project(config_path: str | Path, *, output: str | Path | None = None,
                                 require_service_credential=config.require_service_credential,
                                 credential_env=config.credential_env,
                                 entry_scenarios=scenarios,
-                                optional_tests=config.optional_tests)
+                                optional_tests=config.optional_tests, service_enabled=bool(config.services), access_dependency=access_dependency)
         report = _verdict(config, execution)
         report.update({"schema": "credproof.safety.report/v1", "checked_at_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                        "project_tree_sha256": _digest_tree(project),
@@ -287,7 +289,12 @@ def check_project(config_path: str | Path, *, output: str | Path | None = None,
 def _redact_execution(value: dict, credential: str) -> dict:
     value = copy.deepcopy(value)
     def red(x):
-        if isinstance(x, str): return x.replace(credential, "[SYNTHETIC_CREDENTIAL]")
+        if isinstance(x, str):
+            text = x.replace(credential, "[SYNTHETIC_CREDENTIAL]")
+            text = re.sub(r'(?<=\.\.\.)[A-Fa-f0-9]{6,32}', lambda m: '[SYNTHETIC_FRAGMENT]' if m.group() in credential else m.group(), text)
+            # pytest may abbreviate a secret in assertion introspection.
+            return re.sub(r'CP_LAB_[A-Fa-f0-9]+(?:\.{3}|…)[A-Fa-f0-9]+',
+                          '[SYNTHETIC_CREDENTIAL_ABBREVIATED]', text)
         if isinstance(x, dict): return {red(k) if isinstance(k, str) else k: red(v) for k, v in x.items()}
         if isinstance(x, list): return [red(v) for v in x]
         return x
@@ -303,6 +310,7 @@ def export_regression_tests(config_path: str | Path, destination: str | Path) ->
     destination.mkdir(parents=True)
     test = '''"""CredProof reusable safety regression; generated from a reviewed project config."""
 import os
+import re
 from pathlib import Path
 import tempfile
 import pytest

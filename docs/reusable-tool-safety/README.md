@@ -1,6 +1,11 @@
-# CredProof reusable-tool-safety（0.3.0-dev.31）
+# CredProof reusable-tool-safety（0.3.0-dev.32）
 
-## 当前评审：受控候选生成方式验证
+## 当前：运行时契约与组件辅助修复
+
+[本轮方法及API](component-assisted.md) / [可读取证据入口](acceptance/20261009-component-assisted/public-evidence/README.md)。保留原规则、业务测试、隔离与历史失败；先验证组件与当前工作包，再从安装后的页面入口执行一次登记任务。完整结果以证据入口为准，不把准备检查当模型修复成功。
+
+
+## 历史dev31：受控候选生成方式验证
 
 实际被测源码：`42592c9ff3625e1291d0569ef3f22727b37e7116`。本轮增加独立可选 `bounded_patch` 策略，保留原Qwen-Agent工具循环；不是扩大风险、换模型或前端改版。
 

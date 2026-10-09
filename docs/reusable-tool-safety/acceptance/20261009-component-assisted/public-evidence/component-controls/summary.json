@@ -1,0 +1,25 @@
+{
+  "kind": "NO_MODEL_COMPONENT_AND_UNCHANGED_ORIGINAL_CONTROL",
+  "model_requests": 0,
+  "checks": {
+    "real_pytest_completed": false,
+    "real_allowed_auth": false,
+    "real_initial_redirect": false,
+    "no_forbidden_receipt": true,
+    "no_forbidden_read_attempt": true,
+    "no_credential_output": true,
+    "trusted_import": false,
+    "component_install_alone_does_not_repair_original": false
+  },
+  "pass": false,
+  "original_verdict": "UNKNOWN",
+  "pytest": null,
+  "requests": [],
+  "command": [
+    "<repository>\\.venv\\Scripts\\python.exe",
+    "scripts/check-access-components.py",
+    "docs/reusable-tool-safety/acceptance/20261009-component-assisted/component-controls"
+  ],
+  "component": null,
+  "runtime_contract": null
+}

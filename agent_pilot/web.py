@@ -347,7 +347,12 @@ class Application:
                                            + (' 当前现场修复映射到“资料助手”固定项目。' if key in LIVE_PROJECTS
                                               else ' 当前仅提供历史记录查看，现场修复尚未接入新边界。')),
                            'source_code': text_file(path), 'source_sha256': sha(text_file(path)),
-                           'rules': PUBLIC_RULES, 'live_supported': key in LIVE_PROJECTS} for key, path in self.cases.items()],
+                           'rules': ([
+                               '只修改登记项目入口；测试、配置及访问组件只读。',
+                               '真实读取允许目录，向当前允许服务认证，保留业务与非法输入行为。',
+                               '禁止凭据输出、目录越界、直接或跳转到禁止服务。',
+                               '组件辅助 bounded_patch 生成；程序独立验收、导出与复检。'
+                           ] if key in LIVE_PROJECTS else PUBLIC_RULES), 'live_supported': key in LIVE_PROJECTS} for key, path in self.cases.items()],
                 'runtime': self.runtime(), 'access_mode': self.access_mode,
                 'demonstrations': getattr(self, 'demonstrations', []),
                 'history': [{'id': run.id, 'case_id': run.case_id, 'created_at': run.started_at,
@@ -396,7 +401,7 @@ class Application:
                  'command': 'python -m credproof_safety check --config credproof.toml --output .credproof/report.json',
                  'description': '在受控副本运行 pytest、文件边界、网络边界和凭据观察。'},
                 {'id': 'repair', 'label': '请求修复', 'requires_model': True,
-                 'command': 'python -m credproof_safety repair --config credproof.toml --output .credproof/repair.json',
+                 'command': 'python -m credproof_safety repair --strategy bounded_patch --config credproof.toml --output .credproof/repair.json',
                  'description': '仅在当前副本有对应违规证据时请求本地模型提出候选补丁。'},
                 {'id': 'export', 'label': '导出测试', 'requires_model': False,
                  'command': 'python -m credproof_safety export-tests --config credproof.toml --output tests/credproof-regression',
@@ -683,6 +688,9 @@ class Application:
                   'historical_recheck': historical_recheck,
                   'stop_reason': task.get('reason') or run.error,
                   'project': {'id': (row or {}).get('project_id'),
+                              'strategy': (row or {}).get('strategy') or ('bounded_patch' if run.mode == 'LIVE' else 'historical_qwen_agent'),
+                              'profile': (row or {}).get('profile') or ('component_assisted' if run.mode == 'LIVE' else 'historical'),
+                              'component_version': ((row or {}).get('access_component') or {}).get('version'),
                               'config': (row or {}).get('project_config'),
                               'adapter': (row or {}).get('web_adapter'),
                               'model_boundary': (row or {}).get('model_boundary')},

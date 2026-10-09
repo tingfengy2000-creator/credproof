@@ -1,0 +1,22 @@
+{
+  "kind": "NO_MODEL_SOFTWARE_REGRESSIONS",
+  "python": "3.12.14",
+  "pytest": "8.4.2",
+  "command": "python -m pytest credproof_safety/tests agent_pilot/tests/test_bounded_patch.py agent_pilot/tests/test_web.py agent_pilot/tests/test_web_material_binding.py agent_pilot/tests/test_model_boundary.py agent_pilot/tests/test_runtime_config.py tests/test_reusable_tool_safety.py -q -p no:cacheprovider --basetemp <new-temp> --junitxml <new-file>",
+  "attempts": [
+    {
+      "exit_code": 1,
+      "passed": 93,
+      "failed": 2,
+      "reason": "old complete-execution test stub lacked already-required entry_scenarios; judge correctly returned UNKNOWN"
+    },
+    {
+      "exit_code": 0,
+      "passed": 95,
+      "failed": 0,
+      "change": "test fixture supplies primary scenario; production safety predicate unchanged"
+    }
+  ],
+  "warnings": "one dashscope Assistants API deprecation at dependency import; no paid API called",
+  "not_model_success": true
+}

@@ -1,0 +1,42 @@
+........................................................................ [ 75%]
+...................FF..                                                  [100%]
+================================== FAILURES ===================================
+_ ReusableSafetyRegressionTests.test_pass_requires_business_and_security_checks _
+
+self = <test_reusable_tool_safety.ReusableSafetyRegressionTests testMethod=test_pass_requires_business_and_security_checks>
+
+    def test_pass_requires_business_and_security_checks(self):
+        config = load_config(self.config_path)
+        execution = self._complete_execution()
+>       self.assertEqual("PASS", _verdict(config, execution)["verdict"])
+E       AssertionError: 'PASS' != 'UNKNOWN'
+E       - PASS
+E       + UNKNOWN
+
+tests\test_reusable_tool_safety.py:155: AssertionError
+_ ReusableSafetyRegressionTests.test_required_pytest_case_failure_cannot_pass_on_zero_exit _
+
+self = <test_reusable_tool_safety.ReusableSafetyRegressionTests testMethod=test_required_pytest_case_failure_cannot_pass_on_zero_exit>
+
+    def test_required_pytest_case_failure_cannot_pass_on_zero_exit(self):
+        config = load_config(self.config_path)
+        execution = self._complete_execution()
+        execution["pytest_observation"]["required_tests_passed"] = False
+        result = _verdict(config, execution)
+>       self.assertEqual("FAIL", result["verdict"])
+E       AssertionError: 'FAIL' != 'UNKNOWN'
+E       - FAIL
+E       + UNKNOWN
+
+tests\test_reusable_tool_safety.py:132: AssertionError
+============================== warnings summary ===============================
+.venv\Lib\site-packages\dashscope\__init__.py:63
+  <repository>\.venv\Lib\site-packages\dashscope\__init__.py:63: DeprecationWarning: The Assistants API (dashscope.assistants) is deprecated and will be removed in a future release. Please migrate to the Responses API. See https://help.aliyun.com/zh/model-studio/synchronous-call-api-reference for migration details.
+    from dashscope.assistants import Assistant, AssistantList, Assistants
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+- generated xml file: <repository>\_runs\component-protocol-final-junit.xml -
+=========================== short test summary info ===========================
+FAILED tests/test_reusable_tool_safety.py::ReusableSafetyRegressionTests::test_pass_requires_business_and_security_checks
+FAILED tests/test_reusable_tool_safety.py::ReusableSafetyRegressionTests::test_required_pytest_case_failure_cannot_pass_on_zero_exit
+2 failed, 93 passed, 1 warning in 10.64s

@@ -46,6 +46,11 @@ class ReusableSafetyRegressionTests(unittest.TestCase):
                 "required_tests_passed": True,
                 "all_required_skipped": False,
             },
+            # Complete current scenario schema; the previous stub omitted it
+            # and correctly became UNKNOWN before the intended assertions.
+            "entry_scenarios": [{"name": "primary", "expected_error": None,
+                                 "entry_returned": {"resource": "demo"}, "raised": None,
+                                 "request_observations": []}],
             "entry_returned": {"resource": "demo"},
             "raised": None,
             "forbidden_reads": [],

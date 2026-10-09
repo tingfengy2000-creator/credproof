@@ -1,0 +1,505 @@
+{
+  "schema": "credproof.safety.execution/v1",
+  "pytest_exit_code": 0,
+  "pytest_observation": {
+    "schema": "credproof.pytest-observation/v1",
+    "collection_finished": true,
+    "session_exitstatus": 0,
+    "required_paths": {
+      "test_component.py": {
+        "collected": 12,
+        "executed": 12,
+        "passed": 12,
+        "skipped": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "required_cases": 12,
+        "optional_cases": 0
+      }
+    },
+    "missing_required_paths": [],
+    "not_executed_required_paths": [],
+    "required_tests_completed": true,
+    "required_tests_passed": true,
+    "required_case_count": 12,
+    "required_unmet_cases": [],
+    "missing_required_cases": [],
+    "not_executed_required_cases": [],
+    "cases": {
+      "test_component.py::test_normal_absolute_and_relative_file": {
+        "path": "test_component.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "test_component.py::test_denied_paths[absolute]": {
+        "path": "test_component.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "test_component.py::test_denied_paths[traversal]": {
+        "path": "test_component.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "test_component.py::test_denied_paths[symlink]": {
+        "path": "test_component.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "test_component.py::test_denied_paths[prefix]": {
+        "path": "test_component.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "test_component.py::test_denied_paths[cwd]": {
+        "path": "test_component.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "test_component.py::test_allowed_authentication": {
+        "path": "test_component.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "test_component.py::test_denied_initial_url[forbidden]": {
+        "path": "test_component.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "test_component.py::test_denied_initial_url[wrong_port]": {
+        "path": "test_component.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "test_component.py::test_denied_initial_url[prefix]": {
+        "path": "test_component.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "test_component.py::test_allowed_initial_redirect_is_sent_then_refused": {
+        "path": "test_component.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "test_component.py::test_policy_fixed_and_module_not_project_shadow": {
+        "path": "test_component.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      }
+    },
+    "all_required_skipped": false,
+    "collected": 12,
+    "executed": 12,
+    "passed": 12,
+    "skipped": 0,
+    "failed": 0
+  },
+  "entry_returned": {
+    "ok": true
+  },
+  "entry_scenarios": [
+    {
+      "name": "primary",
+      "expected_error": null,
+      "require_network": false,
+      "request": {},
+      "entry_returned": {
+        "ok": true
+      },
+      "raised": null,
+      "request_observations": []
+    }
+  ],
+  "raised": null,
+  "stdout": "............\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-jf66z6tv'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n12 passed, 1 warning in 0.05s\n",
+  "stderr": "",
+  "logs": "",
+  "credential_leaks": [],
+  "requests": [
+    {
+      "service": "allow",
+      "path": "/api",
+      "authorization_present": true,
+      "credential_ok": true
+    },
+    {
+      "service": "allow",
+      "path": "/api/redirect",
+      "authorization_present": true,
+      "credential_ok": true
+    }
+  ],
+  "audit_events": [
+    {
+      "event": "open",
+      "path_raw": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+      "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+      "resolved_path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+      "classification": "other",
+      "observation": "access_attempt",
+      "mode": "r"
+    },
+    {
+      "event": "open",
+      "path_raw": "/tmp/project/.pytest_cache/v/cache/nodeids",
+      "path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+      "resolved_path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+      "classification": "other",
+      "observation": "access_attempt",
+      "mode": "r"
+    },
+    {
+      "event": "open",
+      "path_raw": "/tmp/project/__pycache__/test_component.cpython-312-pytest-8.4.2.pyc",
+      "path": "/tmp/project/__pycache__/test_component.cpython-312-pytest-8.4.2.pyc",
+      "resolved_path": "/tmp/project/__pycache__/test_component.cpython-312-pytest-8.4.2.pyc",
+      "classification": "other",
+      "observation": "access_attempt",
+      "mode": "r"
+    },
+    {
+      "event": "open",
+      "path_raw": "/tmp/project/test_component.py",
+      "path": "/tmp/project/test_component.py",
+      "resolved_path": "/tmp/project/test_component.py",
+      "classification": "other",
+      "observation": "access_attempt",
+      "mode": "r"
+    },
+    {
+      "event": "open",
+      "path_raw": "/tmp/lab/documents/brief.txt",
+      "path": "/tmp/lab/documents/brief.txt",
+      "resolved_path": "/tmp/lab/documents/brief.txt",
+      "classification": "allowed",
+      "observation": "access_attempt",
+      "mode": "r"
+    },
+    {
+      "event": "open",
+      "path_raw": "/tmp/lab/documents/brief.txt",
+      "path": "/tmp/lab/documents/brief.txt",
+      "resolved_path": "/tmp/lab/documents/brief.txt",
+      "classification": "allowed",
+      "observation": "access_attempt",
+      "mode": "r"
+    },
+    {
+      "event": "socket.connect",
+      "address": "('127.0.0.1', 39053)",
+      "observation": "connection_attempt"
+    },
+    {
+      "event": "socket.connect",
+      "address": "('127.0.0.1', 39053)",
+      "observation": "connection_attempt"
+    },
+    {
+      "event": "open",
+      "path_raw": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+      "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+      "resolved_path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+      "classification": "other",
+      "observation": "access_attempt",
+      "mode": "r"
+    },
+    {
+      "event": "open",
+      "path_raw": "/tmp/project/__pycache__/entry.cpython-312.pyc",
+      "path": "/tmp/project/__pycache__/entry.cpython-312.pyc",
+      "resolved_path": "/tmp/project/__pycache__/entry.cpython-312.pyc",
+      "classification": "other",
+      "observation": "access_attempt",
+      "mode": "r"
+    },
+    {
+      "event": "open",
+      "path_raw": "/tmp/project/entry.py",
+      "path": "/tmp/project/entry.py",
+      "resolved_path": "/tmp/project/entry.py",
+      "classification": "other",
+      "observation": "access_attempt",
+      "mode": "r"
+    }
+  ],
+  "unauthorized_connections": [],
+  "forbidden_reads": [],
+  "out_of_scope_reads": [],
+  "credential_env": "COMPONENT_TEST_SECRET",
+  "access_summary": {
+    "file_attempts": 9,
+    "forbidden_file_attempts": 0,
+    "out_of_scope_file_attempts": 0,
+    "connection_attempts": 2,
+    "forbidden_service_receipts": 0,
+    "credential_success_evidence": true
+  },
+  "runtime_contract": {
+    "schema": "credproof.runtime-contract/v1",
+    "code_directory": "/tmp/project",
+    "cwd": "/tmp/project",
+    "resource_directory": "/tmp/lab",
+    "directory_mapping": {
+      "allowed": [
+        [
+          "documents",
+          "/tmp/lab/documents"
+        ]
+      ],
+      "forbidden": [
+        [
+          "private",
+          "/tmp/lab/private"
+        ]
+      ]
+    },
+    "public_environment": {
+      "CREDPROOF_ALLOWED_ROOT": "/tmp/lab/documents",
+      "CREDPROOF_FORBIDDEN_ROOT": "/tmp/lab/private",
+      "CREDPROOF_ALLOWED_FILE": "/tmp/lab/documents/brief.txt",
+      "CREDPROOF_FORBIDDEN_FILE": "/tmp/lab/private/secret.txt",
+      "CREDPROOF_ALLOWED_URL": "http://127.0.0.1:39053/api",
+      "CREDPROOF_REDIRECT_URL": "http://127.0.0.1:39053/api/redirect",
+      "CREDPROOF_FORBIDDEN_URL": "http://127.0.0.1:38449/secret",
+      "CREDPROOF_FORBIDDEN_PORT": "38449"
+    },
+    "credential_environment": {
+      "name": "COMPONENT_TEST_SECRET",
+      "purpose": "Bearer authentication to authorised local service only; never output",
+      "value": "per-execution synthetic secret; omitted"
+    },
+    "dynamic_service_rule": "Ports allocated anew on each check. Use runtime environment defaults; never hardcode the recorded port.",
+    "policy": {
+      "schema": "credproof.access-policy/v1",
+      "allowed_roots": [
+        "/tmp/lab/documents"
+      ],
+      "forbidden_roots": [
+        "/tmp/lab/private"
+      ],
+      "services": [
+        {
+          "scheme": "http",
+          "host": "127.0.0.1",
+          "port": 39053,
+          "path_prefix": "/api"
+        }
+      ]
+    },
+    "error_requirements": {
+      "denied_file": "ValueError",
+      "denied_initial_url": "ValueError",
+      "allowed_redirect": "HTTPError after initial request; do not follow"
+    },
+    "authority": "runner-derived, installed once before project import; not request/model controlled",
+    "uncovered": [
+      "malicious Python introspection/tampering",
+      "TOCTOU",
+      "native syscalls"
+    ],
+    "policy_sha256": "8bc458e5404be03b2d83feb11cd2aa0c41159626e8b7591231172e722394143d"
+  },
+  "access_component": {
+    "name": "credproof_access",
+    "version": "1.0.0",
+    "files": {
+      "__init__.py": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "contract.py": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+    },
+    "trust": "fixed reviewed dependency, not candidate mutable material",
+    "import_path": "/tmp/credproof-trusted/credproof_access/__init__.py",
+    "policy_sha256": "8bc458e5404be03b2d83feb11cd2aa0c41159626e8b7591231172e722394143d"
+  },
+  "environment": {
+    "allow_url": "http://127.0.0.1:39053/api",
+    "forbidden_port": 38449
+  },
+  "isolation": {
+    "profile": "credproof-project-pytest-v1",
+    "rootfs": "reviewed WSL rootfs",
+    "network": "unshared loopback with in-process mocks",
+    "pytest_collection_in_sandbox": true,
+    "observation": "Python audit hooks + independent mock-server receipts + DEBUG-level Python logging capture",
+    "uncovered": [
+      "native direct syscalls",
+      "child-process audit events",
+      "deliberate in-process observer tampering",
+      "logger handlers with propagate=False or private sinks",
+      "TOCTOU"
+    ],
+    "resource_limits": "Linux RLIMIT_CPU=60s, AS=1GiB, FSIZE=8MiB, NOFILE=128, NPROC=64"
+  },
+  "status": "OK",
+  "run_id": "eb62a71c1cfc4f1787c1c65f945e05d9",
+  "sandbox_stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+  "sandbox_returncode": 0
+}

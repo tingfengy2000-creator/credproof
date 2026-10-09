@@ -1,5 +1,8 @@
 # 密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统
 
+当前研发评审：[组件辅助的LLM受控修复（dev32）](docs/reusable-tool-safety/component-assisted.md) · [真实证据入口](docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/README.md)。旧初赛候选与历史Agent结果保留；本台5090负责本轮验证，尚未开始5060交接。
+
+
 系统检查工具是否把凭据写入输出、读取规定目录之外的文件或请求未授权服务，并用必要业务测试确认正常任务仍然成立；本地大模型只在已确认的问题上提出候选修复，程序负责验收、导出和复检。
 
 独立开发分支 `feat/reusable-tool-safety` 增加了一个面向小型授权 Python 工具的共同入口：在 WSL/bubblewrap 副本中收集 pytest 和配置入口，观察目录越界读取、未授权 loopback HTTP 访问及合成凭据输出，并可导出以后重复运行的 pytest 回归断言。完整命令、外部 python-dotenv 接入和已覆盖边界见 [可复用工具安全开发说明](docs/reusable-tool-safety/README.md)。

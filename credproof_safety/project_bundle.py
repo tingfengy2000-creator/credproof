@@ -150,9 +150,23 @@ def export_project_bundle(method: str | Path, output: str | Path) -> dict:
     original = (method / "original.py").read_bytes()
     current = (method / "final-candidate.py").read_bytes()
     binding = _bind_validation_object(row, candidate, current)
+    dependency = (row.get('final_validation', {}).get('execution') or {}).get('access_component')
+    if dependency is not None:
+        from .access_dependency import dependency_receipt
+        if any(dependency.get(k) != v for k, v in dependency_receipt().items()):
+            raise ValueError('validated_access_dependency_changed')
     output.mkdir(parents=True)
     project = output / "project"
     _safe_copy_tree(candidate, project)
+    if dependency is not None:
+        dependency_root = Path(__file__).resolve().parents[1] / 'credproof_access'
+        target = output / 'dependencies' / 'credproof_access'
+        target.mkdir(parents=True)
+        for name in dependency['files']:
+            (target / name).write_bytes((dependency_root / name).read_bytes())
+        _json(output / 'access-dependency.json', {
+            'identity': dependency, 'runtime_contract': row['final_validation']['execution']['runtime_contract'],
+            'policy_reconstruction': 'fresh runner derives same directory/service semantics; ports and synthetic secret regenerated'})
     (output / "original.py").write_bytes(original)
     (output / "candidate.py").write_bytes(current)
     public_row = {k: row.get(k) for k in (
@@ -214,7 +228,18 @@ def recheck_project_bundle(bundle: str | Path, output: str | Path) -> dict:
             validation = {"verdict": "UNKNOWN", "reasons": reasons, "checks": []}
         else:
             fresh_path = root / (".fresh-" + next(tempfile._get_candidate_names()) + ".json")
-            fresh = check_project(project / "credproof.toml", output=fresh_path, project_root=project)
+            dependency = None
+            dependency_record = root / 'access-dependency.json'
+            if dependency_record.is_file():
+                from .access_dependency import dependency_receipt
+                dependency = root / 'dependencies' / 'credproof_access'
+                identity = json.loads(dependency_record.read_text(encoding='utf8'))['identity']
+                if any(identity.get(k) != v for k,v in dependency_receipt(dependency).items()):
+                    raise ValueError('exported_access_dependency_mismatch')
+            elif (report.get('final_validation', {}).get('execution') or {}).get('access_component'):
+                raise ValueError('exported_access_dependency_missing')
+            fresh = check_project(project / "credproof.toml", output=fresh_path, project_root=project,
+                                  access_dependency=dependency)
             fresh_path.unlink(missing_ok=True)
             validation = fresh
         result = {"schema": "credproof.project-recheck/v1", "status": "RECHECKED",

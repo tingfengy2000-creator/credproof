@@ -88,7 +88,9 @@ def execution_summary(repair: dict) -> dict:
             'model_call_cap': budgets.get('max_model_calls'),
             'accepted_candidates': len(accepted), 'candidate_history': accepted,
             'verifications': len(verified), 'verification_history': verified,
-            'tool_requests': len(requests), 'tool_requests_by_name': {
+            'program_requests': len(requests) if repair.get('strategy') == 'bounded_patch' else 0,
+            'native_tool_requests': 0 if repair.get('strategy') == 'bounded_patch' else len(requests),
+            'tool_requests': 0 if repair.get('strategy') == 'bounded_patch' else len(requests), 'tool_requests_by_name': {
                 name: sum(x['tool'] == name for x in requests) for name in sorted({x['tool'] for x in requests})},
             'tool_rejections': len(refused), 'rejected_requests': refused,
             'model_attempts': model.get('model_calls', 0),
@@ -152,6 +154,9 @@ def _adapt(config_path: Path, output: Path, project_id: str, case_id: str, repai
         "project_id": project_id,
         "case_id": case_id,
         "project_config": config_path.name,
+        "strategy": repair.get("strategy", "bounded_patch"),
+        "profile": "component_assisted",
+        "access_component": (final.get("execution") or {}).get("access_component") or (initial.get("execution") or {}).get("access_component"),
         "initial_authority": _authority(initial),
         "diagnosis": {"diagnosis": "模型意见与程序初始证据分开保存；详见模型轨迹。",
                       "initially_leaking": _authority(initial)["confirmed"] == "CONFIRMED_LEAK"},
@@ -198,6 +203,10 @@ def main(argv=None) -> int:
         "web_repair": str(Path(__file__).resolve()),
         "agent": str(Path(__import__('credproof_safety.agent', fromlist=['__file__']).__file__).resolve()),
         "package_version": importlib.metadata.version("credproof-safety"),
+        "strategy": "bounded_patch", "profile": "component_assisted",
+        "module_sha256": {"web_repair.py": _sha(Path(__file__)),
+                          "agent.py": _sha(Path(__file__).with_name("agent.py"))},
+        "access_dependency": __import__('credproof_safety.access_dependency', fromlist=['dependency_receipt']).dependency_receipt(),
         "isolated_import": "python -I -m credproof_safety.web_repair",
     })
     if args.origin_only:
@@ -207,7 +216,7 @@ def main(argv=None) -> int:
         raise SystemExit("--project-id, --case-id and --config are required unless --origin-only is used")
     report_path = args.output / "repair.json"
     try:
-        result = request_repair(args.config.resolve(strict=True), output=report_path)
+        result = request_repair(args.config.resolve(strict=True), output=report_path, strategy='bounded_patch')
     except Exception as exc:  # preserve a visible incomplete task for the page
         result = {"schema": "credproof.safety.agent/v2", "status": "BLOCKED",
                   "reason": "web_adapter_error", "detail": type(exc).__name__,

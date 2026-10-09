@@ -31,6 +31,7 @@ def _script() -> str:
     return textwrap.dedent(r'''
         import contextlib, importlib, io, json, logging, os, sys, threading
         import resource
+        import hashlib
         from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
         from pathlib import Path
         import traceback
@@ -84,7 +85,7 @@ def _script() -> str:
                                 'collected': 1, 'executed': 0, 'passed': 0,
                                 'skipped': 0, 'xfail': 0, 'xpass': 0,
                                 'failed': 0, 'setup_failed': 0,
-                                'teardown_failed': 0, 'phases': {},
+                                'teardown_failed': 0, 'phases': {}, 'failure_details': [],
                             }
 
             def pytest_runtest_logreport(self, report):
@@ -98,6 +99,8 @@ def _script() -> str:
                 if case is None:
                     return
                 case['phases'][report.when] = report.outcome
+                if report.failed:
+                    case['failure_details'].append({'phase': report.when, 'location': list(report.location), 'excerpt': str(report.longrepr)[-1800:]})
                 if report.when == 'setup' and report.failed:
                     bucket['setup_failed'] += 1
                     case['setup_failed'] += 1
@@ -199,8 +202,15 @@ def _script() -> str:
         sys.path.insert(0, '/tmp/site')
         sys.path.insert(0, '/tmp/project')
         lab = Path('/tmp/lab')
-        allowed_root = os.environ['CREDPROOF_ALLOWED_ROOT']
-        forbidden_root = os.environ['CREDPROOF_FORBIDDEN_ROOT']
+        # Preload from the immutable minimal mount, before project imports.
+        sys.path.insert(0, '/tmp/credproof-trusted')
+        import credproof_access
+        from credproof_access.contract import build_contract
+        expected = json.loads(os.environ['CREDPROOF_ACCESS_IDENTITY'])
+        component_root = Path(credproof_access.__file__).parent
+        actual = {name: hashlib.sha256((component_root/name).read_bytes()).hexdigest() for name in expected['files']}
+        if str(component_root) != '/tmp/credproof-trusted/credproof_access' or actual != expected['files'] or credproof_access.__version__ != expected['version']:
+            raise RuntimeError('trusted access dependency identity mismatch')
         events = []
         forbidden_reads = []
         out_of_scope_reads = []
@@ -241,19 +251,19 @@ def _script() -> str:
                 requests.append({'service': self.server.service_name, 'path': self.path,
                                  'authorization_present': bool(auth),
                                  'credential_ok': auth == ('Bearer ' + credential)})
-                if self.server.service_name == 'allow' and self.path == '/api/redirect':
+                if self.server.service_name == 'allow' and self.path == os.environ['CREDPROOF_SERVICE_PATH_PREFIX'].rstrip('/') + '/redirect':
                     self.send_response(302); self.send_header('Location', os.environ['CREDPROOF_FORBIDDEN_URL']); self.end_headers(); return
                 body = json.dumps({'ok': True, 'service': self.server.service_name}).encode()
                 self.send_response(200); self.send_header('Content-Type','application/json'); self.end_headers(); self.wfile.write(body)
             def log_message(self,*args): pass
         allow = ThreadingHTTPServer(('127.0.0.1',0), Handler); allow.service_name='allow'
         forbid = ThreadingHTTPServer(('127.0.0.1',0), Handler); forbid.service_name='forbidden'
-        os.environ['CREDPROOF_ALLOWED_URL'] = f'http://127.0.0.1:{allow.server_port}/api'
-        os.environ['CREDPROOF_REDIRECT_URL'] = f'http://127.0.0.1:{allow.server_port}/api/redirect'
-        os.environ['CREDPROOF_FORBIDDEN_URL'] = f'http://127.0.0.1:{forbid.server_port}/secret'
-        os.environ['CREDPROOF_FORBIDDEN_PORT'] = str(forbid.server_port)
-        os.environ['CREDPROOF_ALLOWED_FILE'] = str(Path(allowed_root)/'brief.txt')
-        os.environ['CREDPROOF_FORBIDDEN_FILE'] = str(Path(forbidden_root)/'secret.txt')
+        runtime_contract, public_env = build_contract(json.loads(os.environ['CREDPROOF_POLICY_SPEC']), allow.server_port, forbid.server_port)
+        os.environ.update(public_env)
+        allowed_root = public_env['CREDPROOF_ALLOWED_ROOT']
+        forbidden_root = public_env['CREDPROOF_FORBIDDEN_ROOT']
+        credproof_access._install_policy(runtime_contract['policy'])
+        access_identity = dict(expected, import_path=str(credproof_access.__file__), policy_sha256=runtime_contract['policy_sha256'])
         for server in (allow, forbid): threading.Thread(target=server.serve_forever, daemon=True).start()
         out, err, log_output = io.StringIO(), io.StringIO(), io.StringIO()
         # Capture emitted INFO/debug records independently of pytest's capture
@@ -345,6 +355,7 @@ def _script() -> str:
                                      'connection_attempts': sum(1 for x in events if x.get('event') == 'socket.connect'),
                                      'forbidden_service_receipts': sum(1 for x in requests if x.get('service') == 'forbidden'),
                                      'credential_success_evidence': bool(leaks or any(x.get('credential_ok') is True for x in requests))},
+                  'runtime_contract': runtime_contract, 'access_component': access_identity,
                   'environment': {'allow_url':os.environ['CREDPROOF_ALLOWED_URL'], 'forbidden_port':forbid.server_port},
                   'isolation': {'profile':'credproof-project-pytest-v1','rootfs':'reviewed WSL rootfs','network':'unshared loopback with in-process mocks',
                                 'pytest_collection_in_sandbox': True, 'observation':'Python audit hooks + independent mock-server receipts + DEBUG-level Python logging capture',
@@ -378,10 +389,16 @@ def run_sandbox(project: Path, lab: Path, test_args: list[str], entry_module: st
                 service_path_prefix: str = '/', require_service_credential: bool = False,
                 credential_env: str = 'CREDPROOF_TEST_CREDENTIAL',
                 entry_scenarios: tuple[dict, ...] = (),
-                optional_tests: tuple[str, ...] = ()) -> dict:
+                optional_tests: tuple[str, ...] = (), service_enabled: bool = True, access_dependency: Path | None = None) -> dict:
     ok, reason = available()
     if not ok:
         return {"status": "BLOCKED", "reason": reason}
+    from .access_dependency import dependency_receipt
+    dependency = Path(access_dependency) if access_dependency is not None else Path(__file__).resolve().parents[1] / 'credproof_access'
+    try:
+        identity = dependency_receipt(dependency)
+    except (OSError, ValueError):
+        return {'status': 'BLOCKED', 'reason': 'access_dependency_missing'}
     wsl, paths = _runtime_settings()
     project = project.resolve(strict=True); lab = lab.resolve(strict=True)
     run_id = uuid.uuid4().hex
@@ -404,16 +421,17 @@ def run_sandbox(project: Path, lab: Path, test_args: list[str], entry_module: st
                    "--ro-bind", _wsl_path(lab), "/tmp/lab", "--bind", _wsl_path(result), "/tmp/result",
                    "--ro-bind", _wsl_path(script), "/tmp/runner.py", "--ro-bind", _wsl_path(host_tmp / "env.json"), "/tmp/env.json",
                    "--ro-bind", paths['site_packages'], "/tmp/site",
+                   "--dir", "/tmp/credproof-trusted", "--ro-bind", _wsl_path(dependency), "/tmp/credproof-trusted/credproof_access",
                    "--chdir", "/tmp/project", "--", "/usr/bin/python3", "-I", "/tmp/runner.py"]
         env = {
+            "CREDPROOF_ACCESS_IDENTITY": json.dumps(identity),
+            "CREDPROOF_POLICY_SPEC": json.dumps({"allowed_dirs": list(allowed_dirs), "forbidden_dirs": list(forbidden_dirs), "service_path_prefix": service_path_prefix, "credential_env": credential_env, "service_enabled": service_enabled}),
             "CREDPROOF_TEST_ARGS": json.dumps(test_args), "CREDPROOF_REQUIRED_TESTS": json.dumps([str(x) for x in test_args[2:]]),
             "CREDPROOF_OPTIONAL_TESTS": json.dumps([str(x) for x in optional_tests]), "CREDPROOF_ENTRY_MODULE": entry_module,
             "CREDPROOF_ENTRY_CALLABLE": entry_callable, "CREDPROOF_ENTRY_REQUEST": json.dumps(entry_request),
             "CREDPROOF_CREDENTIAL_ENV": credential_env, credential_env: credential, "CREDPROOF_INNER": "1",
             "CREDPROOF_ENTRY_SCENARIOS": json.dumps(list(entry_scenarios)),
             "CREDPROOF_ENTRY_EXPECTED_ERROR": "",
-            "CREDPROOF_ALLOWED_ROOT": "/tmp/lab/" + allowed_dirs[0].replace('\\', '/'),
-            "CREDPROOF_FORBIDDEN_ROOT": "/tmp/lab/" + forbidden_dirs[0].replace('\\', '/'),
             "CREDPROOF_SERVICE_PATH_PREFIX": service_path_prefix,
             "CREDPROOF_REQUIRE_SERVICE_CREDENTIAL": "1" if require_service_credential else "0",
         }

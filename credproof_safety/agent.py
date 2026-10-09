@@ -361,7 +361,20 @@ def _bounded_initial_context(report: dict, config) -> dict:
         {'name': x.name, 'request': x.request, 'expected_error': x.expected_error,
          'require_network': x.require_network} for x in config.entry.scenarios]
     context['strategy'] = 'bounded_patch'
-    context['service_port_semantics'] = 'port=0 means dynamically allocated local mock; actual allowed URL supplied to code via environment'
+    from .access_dependency import API
+    execution = report.get('execution', {})
+    context['profile'] = 'component_assisted'
+    context['runtime_contract'] = execution.get('runtime_contract')
+    context['access_component'] = dict(execution.get('access_component', {}), api=API)
+    if not context['runtime_contract']:
+        context.pop('runtime_contract')
+        context.pop('access_component')
+        context['profile'] = 'historical_plain_bounded_patch'
+    if context.get('runtime_contract'):
+        for key in ('allowed_dirs', 'forbidden_dirs', 'allowed_services'):
+            context['project'].pop(key, None)
+    else:
+        context['service_port_semantics'] = 'port=0 means dynamically allocated local mock; actual allowed URL supplied to code via environment'
     return context
 
 # This supervisor is passed to a clean WSL interpreter.  It stages only the
@@ -598,7 +611,10 @@ def _model_feedback(report: dict, config, *, initial: bool = False) -> dict:
             'expected_error': declared.expected_error,
             'require_network': declared.require_network,
             'observed': 'raised' if row.get('raised') else ('returned' if returned is not None else 'not_observed'),
-            'raised_type': (row.get('raised') or {}).get('type') if isinstance(row.get('raised'), dict) else None,
+            'raised_message': str((row.get('raised') or {}).get('message', ''))[:400],
+                'input_summary': row.get('request'),
+                'network_not_reached': not bool(row.get('request_observations')),
+                'raised_type': (row.get('raised') or {}).get('type') if isinstance(row.get('raised'), dict) else None,
             'returned_fields': sorted(returned) if isinstance(returned, dict) else [],
             'service_paths': [
                 {'service': item.get('service'), 'path': item.get('path')}
@@ -616,7 +632,10 @@ def _model_feedback(report: dict, config, *, initial: bool = False) -> dict:
             'expected_error': row.get('expected_error'),
             'require_network': bool(row.get('require_network')),
             'observed': 'raised' if row.get('raised') else ('returned' if returned is not None else 'not_observed'),
-            'raised_type': (row.get('raised') or {}).get('type') if isinstance(row.get('raised'), dict) else None,
+            'raised_message': str((row.get('raised') or {}).get('message', ''))[:400],
+                'input_summary': row.get('request'),
+                'network_not_reached': not bool(row.get('request_observations')),
+                'raised_type': (row.get('raised') or {}).get('type') if isinstance(row.get('raised'), dict) else None,
             'returned_fields': sorted(returned) if isinstance(returned, dict) else [],
             'service_paths': [
                 {'service': item.get('service'), 'path': item.get('path')}
@@ -750,6 +769,9 @@ def _model_actionable_failures(report: dict, config) -> dict:
                 'name', 'expected_error', 'require_network') if key in row})
             scenario_mismatches[-1].update({
                 'observed': observed,
+                'raised_message': str((row.get('raised') or {}).get('message', ''))[:400],
+                'input_summary': row.get('request'),
+                'network_not_reached': not bool(row.get('request_observations')),
                 'raised_type': (row.get('raised') or {}).get('type')
                 if isinstance(row.get('raised'), dict) else None,
                 'returned_fields': sorted(row.get('entry_returned', {}))
@@ -768,14 +790,32 @@ def _model_actionable_failures(report: dict, config) -> dict:
         {'scheme': item.scheme, 'host': item.host, 'path_prefix': item.path_prefix}
         for item in config.services
     ]
+    def unique(rows):
+        result=[]
+        for row in rows:
+            if row not in result: result.append(row)
+        return result
+    failures=[]
+    for nodeid, case in (pytest_observation or {}).get('cases', {}).items():
+        if not case.get('failure_details'): continue
+        details=[]
+        for detail in case['failure_details']:
+            lines=str(detail.get('excerpt', '')).splitlines()
+            selected=[line for line in lines if line.lstrip().startswith(('>', 'E '))]
+            details.append({'phase':detail['phase'], 'location':detail['location'],
+                            'assertion_excerpt':'\n'.join(selected)[:800],
+                            'omitted_context_lines':len(lines)-len(selected)})
+        failures.append({'nodeid':nodeid,'details':details})
     return {
         'allowed_dirs': list(config.allowed_dirs),
         'forbidden_dirs': list(config.forbidden_dirs),
         'allowed_services': allowed_services,
-        'forbidden_file_attempts': forbidden_reads,
-        'forbidden_service_requests': forbidden_requests,
+        'forbidden_file_attempts': unique(forbidden_reads),
+        'forbidden_service_requests': unique(forbidden_requests),
         'scenario_mismatches': scenario_mismatches,
         'required_pytest_unmet_cases': unmet,
+        'pytest_failures': failures,
+        'summary_mapping': 'same factual rows deduplicated; assertion source already supplied in necessary tests; full report retained',
         'credential_destination_policy': 'credential_ok=true is allowed only for the declared authorised service; it is a violation at a forbidden service',
     }
 
@@ -789,8 +829,8 @@ def _model_work_feedback(report: dict, config) -> dict:
     """
     full = _model_feedback(report, config)
     return {key: full[key] for key in (
-        'schema', 'object_id', 'verdict', 'reason', 'required_checks',
-        'confirmed_failed_checks', 'readable_paths', 'credential_leaks',
+        'schema', 'object_id', 'verdict', 'reason',
+        'confirmed_failed_checks', 'credential_leaks',
         'pytest_summary', 'actionable_failures')}
 
 
@@ -998,12 +1038,19 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict, *,
         subprocess.run([*wsl, 'python3', '-c', script, rpc_native, ident],
                        capture_output=True, timeout=10, check=False)
 
+    from .access_dependency import dependency_receipt
+    frozen_dependency = dependency_receipt()
+    if frozen_dependency != {k: initial['execution']['access_component'][k] for k in frozen_dependency}:
+        raise ValueError('initial_access_dependency_changed')
+
     def run_trusted_verification(candidate_id: int) -> dict:
         """Verify an accepted candidate as a host action, never as model text."""
         nonlocal current, verify_no, last_verified_candidate, last_verification
         if verify_no >= max_verifications:
             return {'status': 'REJECTED', 'reason': 'verification_budget_exhausted',
                     'candidate': candidate_id, 'verification_count': verify_no}
+        if dependency_receipt() != frozen_dependency:
+            raise ValueError('access_dependency_changed_during_task')
         verify_no += 1
         current = check_project(candidate_config, project_root=candidate)
         last_verified_candidate = candidate_id
