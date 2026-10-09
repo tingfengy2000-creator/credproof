@@ -1,0 +1,44 @@
+{
+  "kind": "POSTHOC_FORMAT_NORMALIZED_RECHECK",
+  "new_model_calls": 0,
+  "placeholders": {
+    "<INSTALL>": "existing dev33 installation; private absolute prefix redacted",
+    "<REPOSITORY>": "review checkout",
+    "<POSTHOC_WORKSPACE>": "new dedicated authorised data copy"
+  },
+  "actual_commands_redacted": [
+    {
+      "command": "<REPOSITORY>\\.venv\\Scripts\\python.exe -m pytest agent_pilot/tests/test_output_format.py -q --junitxml=<EVIDENCE>/protocol-junit.xml",
+      "exit_code": 0,
+      "python": "3.12.14",
+      "pytest": "8.4.2",
+      "collected_executed_passed": 13,
+      "scope": "pure protocol; no candidate execution"
+    },
+    {
+      "command": "<REPOSITORY>\\.venv\\Scripts\\python.exe scripts/prepare-format-normalized.py --artifacts <INSTALL>/data/runs/ui/live-c5e9217f868f4681a94bdda49c914e6e/output/repair-artifacts --output <EVIDENCE> --project <POSTHOC_WORKSPACE>/project",
+      "exit_code": 0,
+      "scope": "saved JSON parse, exact comparison, outer-fence derivation, AST/compile only"
+    },
+    {
+      "command": "<INSTALL>\\venv\\Scripts\\python.exe -I <REPOSITORY>/scripts/run-format-normalized-check.py --project <POSTHOC_WORKSPACE>/project --output <EVIDENCE>",
+      "cwd": "<POSTHOC_WORKSPACE>",
+      "exit_code": 2,
+      "scope": "one original check_project; WSL/bubblewrap, synthetic-only",
+      "inner_pytest_exit_code": 1,
+      "inner_collected": 4,
+      "inner_executed": 4,
+      "inner_passed": 3,
+      "inner_failed": 1,
+      "inner_skipped": 0
+    },
+    {
+      "command": "nvidia-smi --query-gpu=name,memory.total,memory.used --format=csv,noheader",
+      "exit_code": 0,
+      "output": "NVIDIA GeForce RTX 5090, 32607 MiB, 12 MiB",
+      "scope": "host device presence only; no model inference or GPU computation claimed"
+    }
+  ],
+  "production_parser": "installed dev33 unchanged; no installed replay/integration after FAIL",
+  "stop": "FAIL branch; no further model, candidate check, bundle or page repair execution"
+}

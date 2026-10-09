@@ -1,0 +1,40 @@
+{
+  "kind": "HISTORICAL_OUTPUT_INSPECTION",
+  "new_model_calls": 0,
+  "original_task_id": "live-c5e9217f868f4681a94bdda49c914e6e",
+  "original_tested_source": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
+  "original_delivery": "c956b1f7f050df6d9aa707ab71fb3fa9cff7fc31",
+  "model": "qwen2.5-coder:32b-instruct-q4_K_M",
+  "strict_json_action": "PATCH",
+  "fence_origin": "original_model_code_field",
+  "saved_candidate_equals_code_utf8_exactly": true,
+  "original_code_sha256": "e72a71346be60d2867c583072735fc97624a18a9e4ad6612312e5e0e9b0ec881",
+  "original_code_bytes": 1276,
+  "original_files": {
+    "model-response": {
+      "source_relative": "model-work/model-trace/model-01-response.json",
+      "sha256": "b6d985b305f606d8cc6cc2187d2335664fb18ea8af7e9c57876c7b2e1f746c25",
+      "bytes": 2077
+    },
+    "original-candidate": {
+      "source_relative": "verification-history/candidate-01.py",
+      "sha256": "e72a71346be60d2867c583072735fc97624a18a9e4ad6612312e5e0e9b0ec881",
+      "bytes": 1276
+    },
+    "original-unknown-report": {
+      "source_relative": "verification-history/verification-01.json",
+      "sha256": "f582d2044a80eeed58f50acf7f6178993f6c6bbcb140bef21dcad143d842fc39",
+      "bytes": 13820
+    }
+  },
+  "old_verdict": "UNKNOWN",
+  "old_reason": "required_tests_not_executed",
+  "old_raised": {
+    "type": "SyntaxError",
+    "message": "invalid syntax (tool.py, line 1)"
+  },
+  "old_pytest_exit_code": 2,
+  "old_stop": "STOPPED_UNKNOWN_VERIFICATION",
+  "stop_source": "credproof_safety/agent.py:_bounded_model_script; UNKNOWN branch",
+  "explanation": "JSON parser accepted a code string without compiling it; program auto verification returned UNKNOWN and terminated the generation loop. No budget is resumed."
+}

@@ -309,7 +309,8 @@
         "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/page-final.json",
         "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/installed-child-origin.json",
         "acceptance/20261009-coding-model-comparison/public-evidence/candidates/verification-01.json",
-        "acceptance/20261009-coding-model-comparison/public-evidence/preparation/install-final-receipt.json"
+        "acceptance/20261009-coding-model-comparison/public-evidence/preparation/install-final-receipt.json",
+        "acceptance/20261010-format-normalized/public-evidence/report.json"
       ],
       "source_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
       "gaps": "Literal Markdown fences caused SyntaxError and zero collected/executed business tests. Current repair and public PASS recheck remain unverified; model comparison closed unsuccessful.",
@@ -488,7 +489,8 @@
         "qualified_repair": "UNVERIFIED",
         "same_candidate_public_PASS": "UNVERIFIED",
         "failed_candidate_public_delivery": "VERIFIED_SAME_BYTES_FRESH_FAIL_NOT_QUALIFIED_PASS"
-      }
+      },
+      "posthoc_format_normalized": "Syntax passes after wrapper-only derivation; one original check FAIL; not a new model task, no new inference, no repair acceptance."
     },
     {
       "id": "R09",
@@ -726,15 +728,15 @@
     "real credential revocation",
     "new model/case expansion"
   ],
-  "interpretation": "dev33: one non-project preflight passed; one formal installed-page task, one generation/candidate/auto verification UNKNOWN because literal Markdown fences caused SyntaxError and zero collected/executed tests. No model repair PASS. Round closed; no added retry or changed acceptance.",
+  "interpretation": "Original dev33 model task remains UNKNOWN. User-authorized format-only historical derivation passed static syntax but one unchanged isolated check FAIL; zero new model requests. No parser integration or PASS export after FAIL; round closed.",
   "current_review_receipt_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
   "handoff_status": "NOT_READY_FOR_HANDOFF",
   "handoff_blockers": [
-    "No qualifying current model repair; generated source did not import/execute.",
-    "No same-object public PASS recheck or successful-effect final entry evidence."
+    "Format-normalized historical candidate FAIL: NameError masks required ValueError/HTTPError; pytest traceback emits synthetic credential.",
+    "No qualifying same-object public PASS recheck or successful-effect final entry evidence; installed dev33 parser unchanged."
   ],
   "version": "0.3.0-dev.33",
-  "latest_review_update": "acceptance/20261009-coding-model-comparison/public-evidence/README.md",
+  "latest_review_update": "acceptance/20261010-format-normalized/README.md",
   "protocol_replay_only": false,
   "historical_live_run_source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1",
   "dev29_live_run": {
@@ -851,5 +853,26 @@
     "next_decision": "Pause automatic-generation effectiveness optimization; await user resources/scope decision.",
     "not_a_semantic_model_ranking": true,
     "no_second_task_permitted": true
+  },
+  "posthoc_format_normalized": {
+    "kind": "POSTHOC_FORMAT_NORMALIZED_RECHECK",
+    "source_commit": "56815b4548c09bd4d8ee995f8563e563ebd0158e",
+    "original_model_source": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
+    "evidence": "acceptance/20261010-format-normalized/README.md",
+    "model_requests": 0,
+    "derived_candidates": 1,
+    "trusted_checks": 1,
+    "verdict": "FAIL",
+    "pytest": {
+      "collected": 4,
+      "executed": 4,
+      "passed": 3,
+      "failed": 1,
+      "skipped": 0
+    },
+    "original_task_result": "UNKNOWN unchanged",
+    "installed_parser_integration": "NOT_PERFORMED: FAIL stop",
+    "handoff_status": "NOT_READY_FOR_HANDOFF",
+    "closed": true
   }
 }

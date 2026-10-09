@@ -29,3 +29,7 @@ docs/preliminary-candidate/materials/** -text whitespace=-blank-at-eol,cr-at-eol
 docs/preliminary-candidate/checks/** -text whitespace=-blank-at-eol,cr-at-eol
 experiments/external-twine/** -text whitespace=-blank-at-eol,cr-at-eol
 docs/external-scenario/** -text whitespace=-blank-at-eol,cr-at-eol
+# Format-only public derivatives use the exact documented LF publication bytes.
+docs/reusable-tool-safety/acceptance/20261010-format-normalized/public-evidence/** text eol=lf
+# A unified diff's empty context line legitimately consists of one space.
+docs/reusable-tool-safety/acceptance/20261010-format-normalized/public-evidence/normalization.diff whitespace=-blank-at-eol

@@ -1,0 +1,12 @@
+--- original-code-field
++++ format-normalized-code
+@@ -1,4 +1,3 @@
+-```python
+ """Small authorised materials assistant used by the reusable-entry example.
+ 
+ This initial version is intentionally vulnerable for the local lab: it reads a
+@@ -27,4 +26,3 @@
+         raise ValueError(f"HTTP error accessing service: {e}")
+     logging.info("loaded %s", request["resource"])
+     return {"resource": request["resource"], "material": material, "service": service_data}
+-```

@@ -1,6 +1,8 @@
 # 密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统
 
-当前研发评审：[单次编码模型对照dev33](docs/reusable-tool-safety/acceptance/20261009-coding-model-comparison/public-evidence/README.md)。固定Qwen2.5-Coder 32B Q4_K_M，唯一正式安装页面任务1次生成、1候选、1次验收UNKNOWN（候选含代码围栏、语法错误，必要测试未执行）。没有合格修复，**NOT_READY_FOR_HANDOFF / MODEL_COMPARISON_CLOSED_UNSUCCESSFUL**；本轮已结束，暂停自动生成优化，等待用户决定。不启动5060。
+最新定向收尾：[已有输出格式归一化与一次事后验收](docs/reusable-tool-safety/acceptance/20261010-format-normalized/README.md)。仅去掉模型原有外层围栏，语法通过；原规则隔离检查 **FAIL**（业务3通过1失败，异常处理错误及回溯凭据输出）。原任务UNKNOWN不变，新增模型调用0，**NOT_READY_FOR_HANDOFF**；本轮已停止，安装版解析流程未改。
+
+历史模型任务：[单次编码模型对照dev33](docs/reusable-tool-safety/acceptance/20261009-coding-model-comparison/public-evidence/README.md)。固定Qwen2.5-Coder 32B Q4_K_M，唯一正式安装页面任务1次生成、1候选、1次验收UNKNOWN（候选含代码围栏、语法错误，必要测试未执行）。没有合格修复，**NOT_READY_FOR_HANDOFF / MODEL_COMPARISON_CLOSED_UNSUCCESSFUL**；本轮已结束，暂停自动生成优化，等待用户决定。不启动5060。
 
 
 系统检查工具是否把凭据写入输出、读取规定目录之外的文件或请求未授权服务，并用必要业务测试确认正常任务仍然成立；本地大模型只在已确认的问题上提出候选修复，程序负责验收、导出和复检。

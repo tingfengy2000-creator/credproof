@@ -1,0 +1,57 @@
+{
+  "kind": "POSTHOC_FORMAT_NORMALIZED_RECHECK",
+  "new_model_calls": 0,
+  "check_calls_allowed": 1,
+  "baseline_head": "56815b4548c09bd4d8ee995f8563e563ebd0158e",
+  "rule_sha256": "5c24cf39ca67e8fc32dbacad3bcfc95f3f90c99ca488b0a80111d277761da7f9",
+  "source_files": {
+    "agent_pilot/output_format.py": "6b7ff25edea6bcd2715471eb8f94b95b5e8fc990b9146afc8101b54cbe550562",
+    "scripts/prepare-format-normalized.py": "c56716ef0cbcaff99540a61f6d7b812a80c3205be4cbc02b568ae388b503f16a",
+    "scripts/run-format-normalized-check.py": "82a7e5fe2c7a12eb699f2c3fd2c5d15d067649a0989cccd8cba7203aafead031",
+    "credproof_safety/project.py": "3a92c3674216cfecf976c933bd75e4aea37c12f493a038f50776a5f904e85c68",
+    "credproof_safety/runner.py": "6a4593ae37a175c702580a78429d578fb85c1dac3f3de478dc49365f8236575c",
+    "credproof_access/__init__.py": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+    "credproof_access/contract.py": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+  },
+  "source_note": "New normalization/helpers may be uncommitted at preparation; exact file digests are frozen. Original checker and installed dev33 remain unchanged.",
+  "original_immutable_files": {
+    "model-response": {
+      "source_relative": "model-work/model-trace/model-01-response.json",
+      "sha256": "b6d985b305f606d8cc6cc2187d2335664fb18ea8af7e9c57876c7b2e1f746c25",
+      "bytes": 2077
+    },
+    "original-candidate": {
+      "source_relative": "verification-history/candidate-01.py",
+      "sha256": "e72a71346be60d2867c583072735fc97624a18a9e4ad6612312e5e0e9b0ec881",
+      "bytes": 1276
+    },
+    "original-unknown-report": {
+      "source_relative": "verification-history/verification-01.json",
+      "sha256": "f582d2044a80eeed58f50acf7f6178993f6c6bbcb140bef21dcad143d842fc39",
+      "bytes": 13820
+    }
+  },
+  "project_files": {
+    "credproof.toml": {
+      "sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "bytes": 1161,
+      "unchanged_from_original_candidate": true
+    },
+    "tests/test_business.py": {
+      "sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "bytes": 1850,
+      "unchanged_from_original_candidate": true
+    },
+    "README.md": {
+      "sha256": "f445ce2942d2284777dfb554cba4630af17c9fbb2bc7b8d2475afcb9dff3ea6c",
+      "bytes": 1149,
+      "unchanged_from_original_candidate": true
+    },
+    "tool.py": {
+      "sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+      "bytes": 1263,
+      "source": "model_generated_then_format_normalized"
+    }
+  },
+  "constraints": "Same original component, policy, tests, scenes and checker; no model, no business edits, no retries."
+}

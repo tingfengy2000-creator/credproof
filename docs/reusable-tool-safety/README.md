@@ -1,6 +1,10 @@
 # CredProof reusable-tool-safety（0.3.0-dev.33）
 
-## 当前dev33：一次有上限的编码模型对照，已关闭
+## 当前定向收尾：已有输出格式归一化
+
+[本轮固定证据入口](acceptance/20261010-format-normalized/README.md)。只删除唯一外层围栏13 bytes，源码逻辑不变；静态语法通过，一次原规则隔离验收 **FAIL**。必要业务4项实际执行、3通过1失败；直接禁止URL和跳转时出现未定义urllib的NameError，pytest回溯还暴露合成凭据。新增模型调用0，原正式任务UNKNOWN与全部历史不变。**NOT_READY_FOR_HANDOFF**，按FAIL分支停止，未接入安装版解析、未生成PASS bundle或启动5060。
+
+## 历史dev33：一次有上限的编码模型对照，已关闭
 
 [固定评审材料](acceptance/20261009-coding-model-comparison/public-evidence/README.md)。被测源码 `a780b9e6543355c2108c1d41e43a8dccd7c2e0c1`；新固定模型 qwen2.5-coder:32b-instruct-q4_K_M 使用原生模板、CUDA0与原隔离边界。唯一非项目预检通过，唯一正式安装页面任务1次生成/1份不同候选/1次自动验收 **UNKNOWN**。候选JSON有效，但源码包含Markdown围栏，Python第1行SyntaxError、pytest收集/执行0；不是修复成功或环境安装失败。没有追加任务、剥除围栏或重跑旧模型。
 
