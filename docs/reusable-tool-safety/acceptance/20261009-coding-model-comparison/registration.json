@@ -1,0 +1,36 @@
+{
+  "round": "coding-model-comparison-20261009",
+  "task": "assistant-original/p01",
+  "model": {
+    "profile": "qwen25",
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+  },
+  "limits": {
+    "preflights": 1,
+    "formal_tasks": 1,
+    "environment_repairs": 1,
+    "generations": 3,
+    "model_requests": 4,
+    "format_corrections": 1,
+    "candidates": 3,
+    "program_verifications": 3,
+    "context": 16384,
+    "output": 2048,
+    "safety_reserve": 512,
+    "request_seconds": 120,
+    "task_seconds": 900
+  },
+  "baseline_delivery": "72a41f3db7703f0e2dc932e7b1495cf60bf1b9a5",
+  "previous_tested_source": "7011959e795f3bde442d3f4899ea5097ab42528a",
+  "现场_HEAD": "ed3cf88e1250f17f1f23c45941e83a04f2506230",
+  "context_strategy": "unchanged bounded_patch/component_assisted",
+  "permitted_changes": "pinned model selection/manifest mounts and metadata only",
+  "restart_resets_budget": false,
+  "formal_task_must_use_original": true,
+  "second_formal_task_permitted": false,
+  "reference_patch_provided": false,
+  "all_dynamic_runs": "this 5090 only",
+  "semantic_failure_decision": "pause automatic generation optimization; await user scope/resources decision"
+}

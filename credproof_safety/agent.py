@@ -19,6 +19,7 @@ import threading
 import time
 import uuid
 
+from agent_pilot.model_config import selected_profile, claim_comparison, finish_comparison
 from .config import load_config
 from .project import check_project, _copy_project, _digest_tree
 from agent_pilot.runtime_config import load_config as load_runtime_config
@@ -36,6 +37,7 @@ repo, artifact = map(Path, sys.argv[1:])
 runtime = os.environ['CREDPROOF_RUNTIME_ROOT']
 initial_context = json.loads(Path('/app/initial-context.json').read_text(encoding='utf-8'))
 sys.path.insert(0, str(repo))
+from agent_pilot.model_config import selected_profile
 from agent_pilot.tools import StrictTool
 from agent_pilot.model_client import LocalAgentClient
 rpc_dir = Path('/rpc'); rpc_dir.mkdir(parents=True, exist_ok=True)
@@ -215,7 +217,7 @@ try:
   raise RuntimeError('Ollama did not inherit the reviewed process boundary')
  if os.environ.get('CREDPROOF_BOUNDARY_ONLY') == '1':
   opener=urllib.request.build_opener(urllib.request.ProxyHandler({}))
-  request=urllib.request.Request('http://127.0.0.1:11435/api/generate', data=json.dumps({'model':'qwen3-coder:30b','prompt':'Reply READY.','stream':False,'options':{'num_predict':4,'num_ctx':16384,'seed':0}}).encode(), headers={'Content-Type':'application/json'})
+  request=urllib.request.Request('http://127.0.0.1:11435/api/generate', data=json.dumps({'model':selected_profile()['name'],'prompt':'Reply READY.','stream':False,'options':{'num_predict':4,'num_ctx':16384,'seed':0}}).encode(), headers={'Content-Type':'application/json'})
   with opener.open(request, timeout=120) as response: generation=json.loads(response.read())
   (artifact / 'live-generation.json').write_text(json.dumps(generation, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
   with opener.open('http://127.0.0.1:11435/api/ps', timeout=5) as response: active_models=json.loads(response.read())
@@ -239,7 +241,7 @@ try:
  model=client.run([{'role':'user','content':initial_prompt}])
  result={'schema':'credproof.safety.agent/v2','status':'OK' if state['terminal']=='COMPLETED_REPAIRED' else 'INCOMPLETE',
   'task_status':state['terminal'] or 'INCOMPLETE','tool_trace':audit,'model':model,
-  'elapsed_s':round(time.monotonic()-started,3),'model_stack':'Qwen-Agent + Ollama local qwen3-coder:30b',
+  'elapsed_s':round(time.monotonic()-started,3),'model_stack':'Qwen-Agent + Ollama local ' + selected_profile()['name'],
   'execution_boundary':'model: bubblewrap allowlisted mounts + private network namespace; candidate verification: bubblewrap check_project',
   'budgets':{'max_model_calls':12,'max_candidates':3,'max_format_corrections':1,'executor_tool_call_cap':12},
   'paid_api_used':False}
@@ -266,7 +268,12 @@ def _bounded_model_script() -> str:
  started=time.monotonic()
  (artifact/'structured-api-service.json').write_text(json.dumps({
    'version':json.loads(api('/api/version')),'models':json.loads(api('/api/tags')),
+   'profile':selected_profile(),
    'interface':'/api/chat format JSON Schema; compatibility tested by actual formal responses'},indent=2)+'\n',encoding='utf8')
+ opener=urllib.request.build_opener(urllib.request.ProxyHandler({}))
+ show_request=urllib.request.Request('http://127.0.0.1:11435/api/show', data=json.dumps({'model':selected_profile()['name']}).encode(),headers={'Content-Type':'application/json'})
+ with opener.open(show_request,timeout=10) as response: model_show=json.loads(response.read())
+ (artifact/'model-show.json').write_text(json.dumps(model_show,indent=2)+'\n',encoding='utf8')
  client=BoundedPatchClient(artifact/'model-trace')
  program_trace=[]; generations=0; corrections=0; decoded=[]; terminal=None; error=None
  def program_call(name, arguments):
@@ -386,7 +393,7 @@ from pathlib import Path
 runtime, stage_source, artifact, sentinel, rpc_source = map(Path, sys.argv[1:6])
 if not runtime.is_absolute() or not stage_source.is_absolute() or not artifact.is_absolute():
     raise SystemExit('model boundary paths must be absolute')
-allowed = {'worker.py', 'initial-context.json', 'agent_pilot/__init__.py', 'agent_pilot/tools.py', 'agent_pilot/model_client.py'}
+allowed = {'worker.py', 'initial-context.json', 'model-profile.json', 'agent_pilot/model_config.py', 'agent_pilot/__init__.py', 'agent_pilot/tools.py', 'agent_pilot/model_client.py'}
 strategy = json.loads((stage_source/'initial-context.json').read_text(encoding='utf8')).get('_generation_strategy', 'qwen_agent')
 if strategy == 'bounded_patch': allowed.add('agent_pilot/bounded_patch.py')
 elif strategy != 'qwen_agent': raise SystemExit('unknown generation strategy')
@@ -396,8 +403,11 @@ if found != allowed:
 for name in allowed:
     if not (stage_source / name).is_file() or (stage_source / name).is_symlink():
         raise SystemExit('model stage is incomplete or symlinked')
-manifest_rel = Path('models/manifests/registry.ollama.ai/library/qwen3-coder/30b')
-manifest = runtime / manifest_rel
+sys.path.insert(0, str(stage_source))
+from agent_pilot.model_config import verify_profile
+profile = json.loads((stage_source/'model-profile.json').read_text(encoding='utf8'))
+manifest = verify_profile(profile, runtime)
+manifest_rel = manifest.relative_to(runtime)
 data = json.loads(manifest.read_text(encoding='utf-8'))
 digests = ['sha256:' + str(data['config']['digest']).removeprefix('sha256:')]
 digests += ['sha256:' + str(x['digest']).removeprefix('sha256:') for x in data['layers']]
@@ -459,6 +469,7 @@ try:
              '--setenv', 'PYTHONPATH', '/app:/deps', '--setenv', 'HOME', '/home/model',
              '--setenv', 'CREDPROOF_RUNTIME_ROOT', '/runtime', '--setenv',
              'CREDPROOF_HOST_SENTINEL', str(sentinel), '--setenv', 'OLLAMA_HOST', '127.0.0.1:11435',
+             '--setenv', 'CREDPROOF_MODEL_PROFILE', profile['profile'],
              '--setenv', 'CREDPROOF_BOUNDARY_ONLY', os.environ.get('CREDPROOF_BOUNDARY_ONLY', '0'),
              '--setenv', 'OLLAMA_MODELS', model_root, '--setenv', 'OLLAMA_NO_CLOUD', '1',
              '--setenv', 'OLLAMA_LLM_LIBRARY', 'cuda_v12',
@@ -470,7 +481,7 @@ try:
              '--setenv', 'NO_PROXY', '127.0.0.1,localhost', '--setenv', 'LANG', 'C.UTF-8',
              '--remount-ro', '/',
              '/usr/bin/python3', '/app/worker.py', '/app', '/work']
-    plan = {'schema': 'credproof.model-boundary-plan/v1', 'allowlist': {
+    plan = {'schema': 'credproof.model-boundary-plan/v1', 'model_profile': profile, 'allowlist': {
         'rootfs': str(rootfs), 'code': sorted(allowed), 'dependencies': str(deps),
         'ollama': str(ollama), 'model_files': [str(p.relative_to(runtime)) for p in model_files],
         'writable': ['/work', '/rpc', '/tmp', '/run', '/home'],
@@ -1191,10 +1202,11 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict, *,
     stage.mkdir()
     (stage / 'agent_pilot').mkdir()
     repo=Path(__file__).resolve().parents[1]
-    for relative in ('agent_pilot/__init__.py', 'agent_pilot/tools.py', 'agent_pilot/model_client.py'):
+    for relative in ('agent_pilot/__init__.py', 'agent_pilot/tools.py', 'agent_pilot/model_client.py', 'agent_pilot/model_config.py'):
         target = stage / relative; target.write_bytes((repo / relative).read_bytes())
     if strategy == 'bounded_patch':
         (stage/'agent_pilot/bounded_patch.py').write_bytes((repo/'agent_pilot/bounded_patch.py').read_bytes())
+    (stage / 'model-profile.json').write_text(json.dumps(selected_profile()), encoding='utf8')
     (stage / 'worker.py').write_text(_bounded_model_script() if strategy=='bounded_patch' else _MODEL_SCRIPT, encoding='utf-8')
     # Give the first model request the current bounded index and contract.  It
     # is derived from the registered object and observations; no reference
@@ -1247,8 +1259,15 @@ def request_repair(config_path: str | Path, *, output: str | Path | None = None,
                    strategy: str = 'qwen_agent') -> dict:
     if strategy not in {'qwen_agent', 'bounded_patch'}:
         raise ValueError('unknown_repair_strategy')
-    config=load_config(config_path); initial=check_project(config.config_path)
+    if selected_profile()['profile'] == 'qwen25' and strategy != 'bounded_patch':
+        raise ValueError('comparison_requires_bounded_patch_no_strategy_fallback')
+    config=load_config(config_path)
+    claim=claim_comparison('formal')
+    initial=check_project(config.config_path)
     if (initial.get('verdict') != 'FAIL' or
             initial.get('observation_summary', {}).get('classification') != 'ACTUAL_VIOLATION'):
         return _save({'schema':'credproof.safety.agent/v2','status':'BLOCKED','reason':'no_current_confirmed_violation','initial':initial,'paid_api_used':False},output)
-    return _host_repair(Path(config.config_path),output,initial,strategy=strategy)
+    result=_host_repair(Path(config.config_path),output,initial,strategy=strategy)
+    finish_comparison(claim, {'status':result.get('status'),'task_status':result.get('task_status'),
+                            'model':result.get('model'),'final_verdict':result.get('final',{}).get('verdict')})
+    return result

@@ -27,8 +27,9 @@ def _file_hash(path):
     return digest.hexdigest()
 
 
-def _inspect_runtime(runtime, runner_id, required_checks):
+def _inspect_runtime(runtime, runner_id, required_checks, model_profile=None):
     """Read existing files only; small blobs are hashed, large weights size-checked."""
+    model_profile = model_profile or {'name':'qwen3-coder:30b','manifest':'models/manifests/registry.ollama.ai/library/qwen3-coder/30b'}
     runtime = Path(runtime).expanduser().absolute()
     reasons, model_reasons, checks = [], [], {}
     isolation = runtime / 'isolation'
@@ -68,11 +69,13 @@ def _inspect_runtime(runtime, runner_id, required_checks):
         if not path.is_file() or not os.access(path, os.X_OK):
             model_reasons.append('model_runtime_executable_missing')
     try:
-        manifest_path = runtime / 'models/manifests/registry.ollama.ai/library/qwen3-coder/30b'
+        manifest_path = runtime / model_profile['manifest']
         if manifest_path.stat().st_size > 1024 * 1024:
             raise ValueError('oversized_manifest')
         manifest = json.loads(manifest_path.read_text(encoding='utf-8'))
         model_info['manifest_sha256'] = _file_hash(manifest_path)
+        if model_profile.get('digest') and model_info['manifest_sha256'] != model_profile['digest']:
+            raise ValueError('pinned_manifest_mismatch')
         descriptors = [manifest['config'], *manifest['layers']]
         if not descriptors or not manifest['layers']:
             raise ValueError('empty_model')
@@ -106,28 +109,29 @@ def _inspect_runtime(runtime, runner_id, required_checks):
             'isolation': {'ready': isolation_ready, 'checks': checks, 'reasons': sorted(set(reasons))},
             'model_files': {'ready': model_ready, **model_info, 'reasons': sorted(set(model_reasons))},
             'observed_at': datetime.now(timezone.utc).isoformat(),
-            'model_label': 'qwen3-coder:30b · 本地服务',
+            'model_label': model_profile['name'] + ' · 本地服务', 'model_profile':model_profile,
             'observation_scope': 'Read-only saved probe/hash and model-file observation; no fresh boundary probe, model inference or candidate execution',
             'model_executed': False, 'candidate_executed': False, 'network_probe_performed': False}
 
 
 def observe(root=None, config=None):
     from .runtime_config import load_config, linux_runtime_root, wsl_prefix
+    from .model_config import selected_profile
     root = Path(root) if root is not None else Path(__file__).resolve().parents[1]
     try:
         config = config if config is not None else load_config(root)
         # Program identity comes from the installation, not the data workspace.
         identity = _file_hash(Path(__file__).resolve().with_name('sandbox_runner.py'))
         if os.name != 'nt':
-            return _inspect_runtime(linux_runtime_root(config), identity, REQUIRED_CHECKS)
+            return _inspect_runtime(linux_runtime_root(config), identity, REQUIRED_CHECKS, selected_profile())
         # Only these trusted read-only functions travel to WSL, never candidate text.
         script = ('from datetime import datetime,timezone\nimport hashlib,json,os,pathlib,platform,re,sys\n'
                   'from pathlib import Path\n' + inspect.getsource(_file_hash) + '\n'
                   + inspect.getsource(_inspect_runtime) + '\n'
-                  + 'p=json.load(sys.stdin)\nprint(json.dumps(_inspect_runtime(p["runtime_root"],p["runner_id"],p["required_checks"])))\n')
+                  + 'p=json.load(sys.stdin)\nprint(json.dumps(_inspect_runtime(p["runtime_root"],p["runner_id"],p["required_checks"],p["model_profile"])))\n')
         result = subprocess.run([*wsl_prefix(config), '--exec', 'python3', '-I', '-c', script],
             input=json.dumps({'runtime_root': config['runtime_root'], 'runner_id': identity,
-                             'required_checks': REQUIRED_CHECKS}).encode('utf-8'),
+                             'required_checks': REQUIRED_CHECKS, 'model_profile':selected_profile()}).encode('utf-8'),
             capture_output=True, timeout=45)
         if result.returncode:
             raise ValueError('WSL read-only observation failed')

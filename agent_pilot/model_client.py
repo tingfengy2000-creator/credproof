@@ -26,7 +26,8 @@ from qwen_agent.llm.schema import Message
 from qwen_agent.tools.base import BaseTool
 
 BASE_URL = "http://127.0.0.1:11435/v1"
-MODEL = "qwen3-coder:30b"
+from .model_config import selected_profile
+MODEL = selected_profile()['name']
 MAX_REQUEST_BYTES = 262_144
 MAX_RESPONSE_BYTES = 2_097_152
 CONTEXT_TOKENS = 16_384

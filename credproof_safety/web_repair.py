@@ -204,6 +204,7 @@ def main(argv=None) -> int:
         "agent": str(Path(__import__('credproof_safety.agent', fromlist=['__file__']).__file__).resolve()),
         "package_version": importlib.metadata.version("credproof-safety"),
         "strategy": "bounded_patch", "profile": "component_assisted",
+        "model_profile": __import__('agent_pilot.model_config', fromlist=['selected_profile']).selected_profile(),
         "module_sha256": {"web_repair.py": _sha(Path(__file__)),
                           "agent.py": _sha(Path(__file__).with_name("agent.py"))},
         "access_dependency": __import__('credproof_safety.access_dependency', fromlist=['dependency_receipt']).dependency_receipt(),

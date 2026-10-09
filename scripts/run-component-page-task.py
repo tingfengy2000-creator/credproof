@@ -12,6 +12,9 @@ import socket
 import subprocess
 import time
 import urllib.request
+import sys
+sys.path.insert(0,str(Path(__file__).resolve().parents[1]))
+from agent_pilot.model_config import selected_profile
 
 ROOT=Path(__file__).resolve().parents[1]
 ap=argparse.ArgumentParser()
@@ -23,13 +26,13 @@ args.output.mkdir(parents=True,exist_ok=False)
 def save(name,value):
     (args.output/name).write_text(json.dumps(value,ensure_ascii=False,indent=2)+'\n',encoding='utf8',newline='\n')
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest()
-source=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip()
+source=subprocess.check_output(['git','-c','safe.directory='+str(ROOT),'rev-parse','HEAD'],cwd=ROOT,text=True).strip()
 paths=[*list((ROOT/'credproof_safety').glob('*.py')), *list((ROOT/'credproof_access').glob('*.py')),
-       ROOT/'agent_pilot/bounded_patch.py',ROOT/'agent_pilot/web.py',ROOT/'agent_pilot/preflight.py',ROOT/'agent_pilot/ui/app.js',ROOT/'pyproject.toml',
+       ROOT/'agent_pilot/model_config.py',ROOT/'agent_pilot/model_client.py',ROOT/'agent_pilot/bounded_patch.py',ROOT/'agent_pilot/web.py',ROOT/'agent_pilot/preflight.py',ROOT/'agent_pilot/ui/app.js',ROOT/'pyproject.toml',
        *list((args.workspace/'examples/material_assistant').rglob('*.py')),args.workspace/'examples/material_assistant/credproof.toml']
 save('freeze.json',{'registered_at':datetime.now(timezone.utc).isoformat(),'source_commit':source,
      'task':'assistant-original/p01','strategy':'bounded_patch','profile':'component_assisted',
-     'model':'qwen3-coder:30b','model_digest':'06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca',
+     'model':selected_profile()['name'],'model_digest':selected_profile()['digest'],'model_profile':selected_profile(),
      'budget':{'generations':3,'requests':4,'format_corrections':1,'candidates':3,'program_verifications':3,
                'context':16384,'output':2048,'input_limit':13824,'request_seconds':120,'task_seconds':900},
      'files':{str(p.relative_to(ROOT)) if p.is_relative_to(ROOT) else 'data/'+p.relative_to(args.workspace).as_posix():sha(p) for p in paths},

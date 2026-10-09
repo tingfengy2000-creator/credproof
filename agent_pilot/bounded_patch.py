@@ -14,7 +14,8 @@ import urllib.request
 
 from .model_client import estimate_input_budget, _NoRedirect
 
-MODEL = 'qwen3-coder:30b'
+from .model_config import selected_profile
+MODEL = selected_profile()['name']
 OUTPUT_TOKENS = 2048
 FORMAT = {
     'type': 'object', 'additionalProperties': False,

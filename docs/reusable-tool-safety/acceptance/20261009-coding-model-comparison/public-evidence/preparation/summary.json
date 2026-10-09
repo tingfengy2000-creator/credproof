@@ -1,0 +1,140 @@
+{
+  "pass": true,
+  "model_calls": 0,
+  "candidate_execution": false,
+  "rows": [
+    {
+      "state": "original",
+      "kind": "NO_MODEL_SAVED_STATE_PROTOCOL",
+      "source": "examples/material_assistant/tool.py",
+      "source_bytes": 1324,
+      "checks": {
+        "source": true,
+        "tests": true,
+        "contract": true,
+        "api": true,
+        "real_fail": true,
+        "no_tools": true,
+        "budget": true
+      },
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 13416,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 2048,
+        "input_token_upper_bound": 13416,
+        "input_token_limit": 13824,
+        "context_token_upper_bound": 15976,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "state": "saved-failed-candidate-1",
+      "kind": "NO_MODEL_SAVED_STATE_PROTOCOL",
+      "source": "docs/reusable-tool-safety/acceptance/20261009-bounded-patch/public-evidence/candidate-01.py",
+      "source_bytes": 1945,
+      "checks": {
+        "source": true,
+        "tests": true,
+        "contract": true,
+        "api": true,
+        "real_fail": true,
+        "no_tools": true,
+        "budget": true
+      },
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 12914,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 2048,
+        "input_token_upper_bound": 12914,
+        "input_token_limit": 13824,
+        "context_token_upper_bound": 15474,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "state": "saved-failed-candidate-2",
+      "kind": "NO_MODEL_SAVED_STATE_PROTOCOL",
+      "source": "docs/reusable-tool-safety/acceptance/20261009-bounded-patch/public-evidence/candidate-02.py",
+      "source_bytes": 2243,
+      "checks": {
+        "source": true,
+        "tests": true,
+        "contract": true,
+        "api": true,
+        "real_fail": true,
+        "no_tools": true,
+        "budget": true
+      },
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 13224,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 2048,
+        "input_token_upper_bound": 13224,
+        "input_token_limit": 13824,
+        "context_token_upper_bound": 15784,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "state": "saved-failed-candidate-2-format-correction",
+      "kind": "NO_MODEL_SAVED_STATE_PROTOCOL",
+      "source": "docs/reusable-tool-safety/acceptance/20261009-bounded-patch/public-evidence/candidate-02.py",
+      "source_bytes": 2243,
+      "checks": {
+        "source": true,
+        "tests": true,
+        "contract": true,
+        "api": true,
+        "real_fail": true,
+        "no_tools": true,
+        "budget": true
+      },
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 13356,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 2048,
+        "input_token_upper_bound": 13356,
+        "input_token_limit": 13824,
+        "context_token_upper_bound": 15916,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    }
+  ],
+  "scope": "original and two saved failure sources, with component work package and one format correction; not arbitrary length guarantee"
+}

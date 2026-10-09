@@ -25,8 +25,11 @@ def main():
     output = args.output.resolve(); output.mkdir(parents=True, exist_ok=False)
     stage = output / 'model-stage'; (stage / 'agent_pilot').mkdir(parents=True)
     repo = Path(__file__).resolve().parents[1]
-    for name in ('__init__.py', 'tools.py', 'model_client.py'):
+    for name in ('__init__.py', 'tools.py', 'model_client.py', 'model_config.py'):
         (stage / 'agent_pilot' / name).write_bytes((repo / 'agent_pilot' / name).read_bytes())
+    from agent_pilot.model_config import selected_profile
+    (stage / 'model-profile.json').write_text(json.dumps(selected_profile()), encoding='utf8')
+    (stage / 'initial-context.json').write_text('{}', encoding='utf8')
     (stage / 'worker.py').write_text(_MODEL_SCRIPT, encoding='utf-8')
     sentinel = output / 'host-sentinel.txt'
     sentinel.write_text('harmless synthetic isolation sentinel\n', encoding='utf-8')

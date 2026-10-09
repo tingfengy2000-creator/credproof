@@ -7,8 +7,8 @@ import re
 
 ROOT=Path(__file__).resolve().parents[1]
 base=ROOT/'docs/reusable-tool-safety/acceptance/20261009-component-assisted'
-ap=argparse.ArgumentParser();ap.add_argument('phase',choices=['preparation','formal']);ap.add_argument('--workspace',type=Path);ap.add_argument('--run',type=Path)
-args=ap.parse_args();dest=base/'public-evidence';dest.mkdir(exist_ok=True)
+ap=argparse.ArgumentParser();ap.add_argument('phase',choices=['preparation','formal']);ap.add_argument('--workspace',type=Path);ap.add_argument('--run',type=Path);ap.add_argument('--base',type=Path);ap.add_argument('--install-root',type=Path)
+args=ap.parse_args();base=args.base or base;dest=base/'public-evidence';dest.mkdir(exist_ok=True)
 mapping=[]
 def sha(b):return hashlib.sha256(b).hexdigest()
 def redact(value):
@@ -17,6 +17,8 @@ def redact(value):
     if isinstance(value,str):
         value=value.replace(str(ROOT),'<repository>').replace(ROOT.as_posix(),'<repository>')
         value=value.replace('E:\\比赛\\CredProof-dev32-install','<install-root>')
+        if args.install_root:
+            value=value.replace(str(args.install_root),'<install-root>').replace(args.install_root.as_posix(),'<install-root>')
         value=re.sub(r'/home/[^/\s"\x27]+/credproof-agent-runtime','<runtime>',value)
         tails=re.findall(r'CP_LAB_[A-Fa-f0-9]+(?:\.{3}|…)([A-Fa-f0-9]+)',value)
         for tail in tails:
@@ -59,7 +61,7 @@ else:
     for file in (artifact/'model-work/model-trace').glob('*.json'):emit('model-trace/'+file.name,file)
     for file in (artifact/'verification-history').glob('*'):
         if file.suffix in ('.json','.py'):emit('candidates/'+file.name,file)
-    for name in ('structured-api-service.json','boundary-probe.json'):
+    for name in ('structured-api-service.json','model-show.json','boundary-probe.json','service-boundary.json'):
         file=artifact/'model-work'/name
         if file.is_file():emit('formal-page/'+name,file)
     log=artifact/'model-work/ollama-stderr.txt'
