@@ -638,7 +638,7 @@
     "new model/case expansion"
   ],
   "interpretation": "bounded_patch is a structured, program-scheduled LLM repair workflow, not the Qwen-Agent native tool loop. One registered task produced 3 schema-valid PATCH outputs, 2 accepted candidates/2 trusted FAIL results; third was NO_CHANGE. No passing candidate/export/recheck; no handoff.",
-  "current_review_receipt_commit": null,
+  "current_review_receipt_commit": "7e56c1b37647aa4d6ede6d226082c737b09e25d3",
   "handoff_status": "NOT_READY_FOR_HANDOFF",
   "handoff_blockers": [
     "Current model candidates still do not fulfil all original normal business and safety requirements",
@@ -694,5 +694,6 @@
     "exported_candidate": false,
     "new_directory_recheck": false,
     "next_decision": "Request user approval for verified file/HTTP safety components aiding generation; not implemented"
-  }
+  },
+  "publication_receipt": "acceptance/20261009-bounded-patch/github-publication.json"
 }

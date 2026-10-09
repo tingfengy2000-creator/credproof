@@ -11,6 +11,7 @@
 - [真实结果](acceptance/20261009-bounded-patch/public-evidence/summary.json)：3次模型生成/3份usage/0 native工具，2份接受候选/2次自动FAIL，第三份与第二份相同不再验收。25.791秒后STOPPED_GENERATION_BUDGET；没有输入预算、超时或格式阻断。
 - 两份候选错误拒绝正常资料路径，保留敏感日志且端口/跳转约束未完成。未观察到日志/禁止请求是提前拒绝的结果，不能宣称三类风险已修好。反馈未明确运行时目录映射/异常消息的限制也如实记录，不把全部原因归为模型能力。
 - [无模型输入预检](acceptance/20261009-bounded-patch/public-evidence/protocol-preflight/summary.json)四个状态通过；[61项软件回归](acceptance/20261009-bounded-patch/public-evidence/regression-receipt.json)通过。两类检查都不计为模型修复成功。
+- [匿名GitHub取件收据](acceptance/20261009-bounded-patch/github-publication.json)：证据提交`7e56c1b37647aa4d6ede6d226082c737b09e25d3`，41份Raw正文及34份清单字节验证一致；收据为后续文档提交。
 - [当前需求表](requirements-acceptance.md) / [机器可读状态](requirements-acceptance.json)：仍为NOT_READY_FOR_HANDOFF，无PASS候选导出、新目录复检或成功后最终安装/页面接入。本轮不追加任务、不启动5060。
 
 下一步仅建议经用户批准后采用经过验证的文件/HTTP访问组件辅助生成；尚未实施。不据v8与本轮不同策略/预算宣称公平性能优势。
