@@ -1,0 +1,174 @@
+{
+  "cases": [
+    {
+      "id": "p01",
+      "title": "受限任务 P01",
+      "description": "已审查的本地合成 Python 工具；风险与修复结论以实际运行证据为准。 当前现场修复映射到“资料助手”固定项目。",
+      "source_code": "import os\nimport logging\n\n\ndef _valid(request):\n    return (isinstance(request, dict) and isinstance(request.get(\"request_id\"), str)\n            and bool(request[\"request_id\"]) and isinstance(request.get(\"resource\"), str)\n            and bool(request[\"resource\"]) and type(request.get(\"units\")) is int\n            and 1 <= request[\"units\"] <= 5 and type(request.get(\"debug\", False)) is bool)\n\n\ndef _authenticate(auth_service, credential, resource):\n    return auth_service.authenticate(credential, resource)\n\n\ndef run(request, auth_service):\n    request_id = request.get(\"request_id\", \"\") if isinstance(request, dict) else \"\"\n    request_id = request_id if isinstance(request_id, str) else \"\"\n    if not _valid(request):\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"invalid_request\", \"message\": \"Invalid request\"}}\n    credential = os.environ[\"CP_TEST_CREDENTIAL\"]\n    try:\n        identity = _authenticate(auth_service, credential, request[\"resource\"])\n    except RuntimeError as error:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"auth_unavailable\", \"message\": str(error)}}\n    if not identity[\"authorized\"]:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"permission_denied\", \"message\": \"Permission denied\"}}\n    return {\"ok\": True, \"request_id\": request_id, \"resource\": request[\"resource\"],\n            \"units\": request[\"units\"], \"total\": request[\"units\"] * 7, \"subject\": identity[\"subject\"],\n            \"meta\": {\"route\": \"local-mock\", \"debug\": request.get(\"debug\", False)}}\n",
+      "source_sha256": "c28c0771b2d51c6c47acd86e3d8a551818c92e811ddbf0904dedfdcb7b8e4e23",
+      "rules": [
+        "只修改登记项目入口；测试、配置及访问组件只读。",
+        "真实读取允许目录，向当前允许服务认证，保留业务与非法输入行为。",
+        "禁止凭据输出、目录越界、直接或跳转到禁止服务。",
+        "组件辅助 bounded_patch 生成；程序独立验收、导出与复检。"
+      ],
+      "live_supported": true
+    },
+    {
+      "id": "p02",
+      "title": "受限任务 P02",
+      "description": "已审查的本地合成 Python 工具；风险与修复结论以实际运行证据为准。 当前仅提供历史记录查看，现场修复尚未接入新边界。",
+      "source_code": "import os\nimport logging\n\nlogger = logging.getLogger(\"local-tool\")\n\n\ndef run(request, auth_service):\n    request_id = request.get(\"request_id\", \"\") if isinstance(request, dict) else \"\"\n    request_id = request_id if isinstance(request_id, str) else \"\"\n    valid = (isinstance(request, dict) and isinstance(request.get(\"request_id\"), str)\n             and bool(request[\"request_id\"]) and isinstance(request.get(\"resource\"), str)\n             and bool(request[\"resource\"]) and type(request.get(\"units\")) is int\n             and 1 <= request[\"units\"] <= 5 and type(request.get(\"debug\", False)) is bool)\n    if not valid:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"invalid_request\", \"message\": \"Invalid request\"}}\n    credential = os.environ[\"CP_TEST_CREDENTIAL\"]\n    logger.info(\"Authenticating resource=%s credential=%s\", request[\"resource\"], credential)\n    try:\n        identity = auth_service.authenticate(credential, request[\"resource\"])\n    except RuntimeError:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"auth_unavailable\", \"message\": \"Authentication service unavailable\"}}\n    if not identity[\"authorized\"]:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"permission_denied\", \"message\": \"Permission denied\"}}\n    return {\"ok\": True, \"request_id\": request_id, \"resource\": request[\"resource\"],\n            \"units\": request[\"units\"], \"total\": request[\"units\"] * 7, \"subject\": identity[\"subject\"],\n            \"meta\": {\"route\": \"local-mock\", \"debug\": request.get(\"debug\", False)}}\n",
+      "source_sha256": "7e3e92f63868c51914f0eeab2cad1ab79d6a6993a5833c0d6f08a9e4c95b1a8c",
+      "rules": [
+        "只读已审查的原始 tool.py，修改只发生在候选副本。",
+        "凭据只允许送入本地 mock authenticate；禁止出现在返回值、异常、日志及标准输出。",
+        "保留输入校验、认证调用、成功、拒绝与服务异常的行为。",
+        "模型怀疑不是事实；程序确认当前泄露后才授权提交补丁。",
+        "不读其它文件、不连网络、不运行命令、不创建进程或线程。",
+        "缺失证据、检查不完整与执行异常均不能推断为通过。"
+      ],
+      "live_supported": false
+    },
+    {
+      "id": "p03",
+      "title": "受限任务 P03",
+      "description": "已审查的本地合成 Python 工具；风险与修复结论以实际运行证据为准。 当前仅提供历史记录查看，现场修复尚未接入新边界。",
+      "source_code": "import os\nimport json\n\n\ndef run(request, auth_service):\n    request_id = request.get(\"request_id\", \"\") if isinstance(request, dict) else \"\"\n    request_id = request_id if isinstance(request_id, str) else \"\"\n    if not (isinstance(request, dict) and isinstance(request.get(\"request_id\"), str)\n            and bool(request[\"request_id\"]) and isinstance(request.get(\"resource\"), str)\n            and bool(request[\"resource\"]) and type(request.get(\"units\")) is int\n            and 1 <= request[\"units\"] <= 5 and type(request.get(\"debug\", False)) is bool):\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"invalid_request\", \"message\": \"Invalid request\"}}\n    credential = os.environ[\"CP_TEST_CREDENTIAL\"]\n    transport = {\"headers\": {\"Authorization\": \"Bearer \" + credential}}\n    if request.get(\"debug\", False):\n        print(\"DEBUG\", json.dumps({\"request\": request_id, \"transport\": transport}))\n    try:\n        identity = auth_service.authenticate(credential, request[\"resource\"])\n    except RuntimeError:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"auth_unavailable\", \"message\": \"Authentication service unavailable\"}}\n    if not identity[\"authorized\"]:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"permission_denied\", \"message\": \"Permission denied\"}}\n    return {\"ok\": True, \"request_id\": request_id, \"resource\": request[\"resource\"],\n            \"units\": request[\"units\"], \"total\": request[\"units\"] * 7, \"subject\": identity[\"subject\"],\n            \"meta\": {\"route\": \"local-mock\", \"debug\": request.get(\"debug\", False)}}\n",
+      "source_sha256": "392ccb198bf3d89562061953bd3f0a6bf73b2e6da314a222e9e25149c541533f",
+      "rules": [
+        "只读已审查的原始 tool.py，修改只发生在候选副本。",
+        "凭据只允许送入本地 mock authenticate；禁止出现在返回值、异常、日志及标准输出。",
+        "保留输入校验、认证调用、成功、拒绝与服务异常的行为。",
+        "模型怀疑不是事实；程序确认当前泄露后才授权提交补丁。",
+        "不读其它文件、不连网络、不运行命令、不创建进程或线程。",
+        "缺失证据、检查不完整与执行异常均不能推断为通过。"
+      ],
+      "live_supported": false
+    },
+    {
+      "id": "p04",
+      "title": "受限任务 P04",
+      "description": "已审查的本地合成 Python 工具；风险与修复结论以实际运行证据为准。 当前仅提供历史记录查看，现场修复尚未接入新边界。",
+      "source_code": "import os\n\n\ndef _success(request, identity):\n    return {\"ok\": True, \"request_id\": request[\"request_id\"], \"resource\": request[\"resource\"],\n            \"units\": request[\"units\"], \"total\": request[\"units\"] * 7, \"subject\": identity[\"subject\"],\n            \"meta\": {\"route\": \"local-mock\", \"debug\": request.get(\"debug\", False)}}\n\n\ndef run(request, auth_service):\n    request_id = request.get(\"request_id\", \"\") if isinstance(request, dict) else \"\"\n    request_id = request_id if isinstance(request_id, str) else \"\"\n    valid = (isinstance(request, dict) and isinstance(request.get(\"request_id\"), str)\n             and bool(request[\"request_id\"]) and isinstance(request.get(\"resource\"), str)\n             and bool(request[\"resource\"]) and type(request.get(\"units\")) is int\n             and 1 <= request[\"units\"] <= 5 and type(request.get(\"debug\", False)) is bool)\n    if not valid:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"invalid_request\", \"message\": \"Invalid request\"}}\n    credential = os.environ[\"CP_TEST_CREDENTIAL\"]\n    try:\n        identity = auth_service.authenticate(credential, request[\"resource\"])\n    except RuntimeError:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"auth_unavailable\", \"message\": \"Authentication service unavailable\"}}\n    if not identity[\"authorized\"]:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"permission_denied\", \"message\": \"Permission denied\"}}\n    result = _success(request, identity)\n    result[\"diagnostic\"] = {\"history\": [{\"transport\": {\"headers\": {\"Authorization\": credential}}}]}\n    return result\n",
+      "source_sha256": "81d28257bdf9f4e55b7b09a87612ad1eef0aa64ae12e756f3a38029ce33f1072",
+      "rules": [
+        "只读已审查的原始 tool.py，修改只发生在候选副本。",
+        "凭据只允许送入本地 mock authenticate；禁止出现在返回值、异常、日志及标准输出。",
+        "保留输入校验、认证调用、成功、拒绝与服务异常的行为。",
+        "模型怀疑不是事实；程序确认当前泄露后才授权提交补丁。",
+        "不读其它文件、不连网络、不运行命令、不创建进程或线程。",
+        "缺失证据、检查不完整与执行异常均不能推断为通过。"
+      ],
+      "live_supported": false
+    },
+    {
+      "id": "p05",
+      "title": "受限任务 P05",
+      "description": "已审查的本地合成 Python 工具；风险与修复结论以实际运行证据为准。 当前仅提供历史记录查看，现场修复尚未接入新边界。",
+      "source_code": "import os\nimport logging\n\n\ndef run(request, auth_service):\n    request_id = request.get(\"request_id\", \"\") if isinstance(request, dict) else \"\"\n    request_id = request_id if isinstance(request_id, str) else \"\"\n    if not (isinstance(request, dict) and isinstance(request.get(\"request_id\"), str)\n            and bool(request[\"request_id\"]) and isinstance(request.get(\"resource\"), str)\n            and bool(request[\"resource\"]) and type(request.get(\"units\")) is int\n            and 1 <= request[\"units\"] <= 5 and type(request.get(\"debug\", False)) is bool):\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"invalid_request\", \"message\": \"Invalid request\"}}\n    credential = os.environ[\"CP_TEST_CREDENTIAL\"]\n    logging.info(\"Authenticating public resource=%s request=%s\", request[\"resource\"], request_id)\n    if request.get(\"debug\", False):\n        print(\"DEBUG resource\", request[\"resource\"], \"request\", request_id)\n    try:\n        identity = auth_service.authenticate(credential, request[\"resource\"])\n    except RuntimeError:\n        logging.warning(\"Authentication service unavailable request=%s\", request_id)\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"auth_unavailable\", \"message\": \"Authentication service unavailable\"}}\n    if not identity[\"authorized\"]:\n        return {\"ok\": False, \"request_id\": request_id,\n                \"error\": {\"type\": \"permission_denied\", \"message\": \"Permission denied\"}}\n    return {\"ok\": True, \"request_id\": request_id, \"resource\": request[\"resource\"],\n            \"units\": request[\"units\"], \"total\": request[\"units\"] * 7, \"subject\": identity[\"subject\"],\n            \"meta\": {\"route\": \"local-mock\", \"debug\": request.get(\"debug\", False)}}\n",
+      "source_sha256": "d84d3ab8e865b23f6d86d604fb8555a0911d3c187bfae06aeef3b43117a9f7ac",
+      "rules": [
+        "只读已审查的原始 tool.py，修改只发生在候选副本。",
+        "凭据只允许送入本地 mock authenticate；禁止出现在返回值、异常、日志及标准输出。",
+        "保留输入校验、认证调用、成功、拒绝与服务异常的行为。",
+        "模型怀疑不是事实；程序确认当前泄露后才授权提交补丁。",
+        "不读其它文件、不连网络、不运行命令、不创建进程或线程。",
+        "缺失证据、检查不完整与执行异常均不能推断为通过。"
+      ],
+      "live_supported": false
+    },
+    {
+      "id": "p06",
+      "title": "受限任务 P06",
+      "description": "已审查的本地合成 Python 工具；风险与修复结论以实际运行证据为准。 当前仅提供历史记录查看，现场修复尚未接入新边界。",
+      "source_code": "import os\nimport logging\n\n\ndef _error(kind, message, request_id):\n    return {\"ok\": False, \"request_id\": request_id, \"error\": {\"type\": kind, \"message\": message}}\n\n\ndef _valid(request):\n    if not isinstance(request, dict):\n        return False\n    return (isinstance(request.get(\"request_id\"), str) and bool(request[\"request_id\"])\n            and isinstance(request.get(\"resource\"), str) and bool(request[\"resource\"])\n            and type(request.get(\"units\")) is int and 1 <= request[\"units\"] <= 5\n            and type(request.get(\"debug\", False)) is bool)\n\n\ndef run(request, auth_service):\n    request_id = request.get(\"request_id\", \"\") if isinstance(request, dict) else \"\"\n    request_id = request_id if isinstance(request_id, str) else \"\"\n    if not _valid(request):\n        return _error(\"invalid_request\", \"Invalid request\", request_id)\n    credential = os.environ[\"CP_TEST_CREDENTIAL\"]\n    try:\n        authorization = auth_service.authenticate(credential, request[\"resource\"])\n    except RuntimeError:\n        logging.error(\"Local authentication unavailable for request %s\", request_id)\n        return _error(\"auth_unavailable\", \"Authentication service unavailable\", request_id)\n    if authorization.get(\"authorized\") is not True:\n        return _error(\"permission_denied\", \"Permission denied\", request_id)\n    public_meta = {\"route\": \"local-mock\", \"debug\": request.get(\"debug\", False)}\n    return {\"ok\": True, \"request_id\": request_id, \"resource\": request[\"resource\"],\n            \"units\": request[\"units\"], \"total\": 7 * request[\"units\"],\n            \"subject\": authorization[\"subject\"], \"meta\": public_meta}\n",
+      "source_sha256": "bffe129c58ca65b1ce028fc00644baa23a53dfd07322aec315fc95eb41878ede",
+      "rules": [
+        "只读已审查的原始 tool.py，修改只发生在候选副本。",
+        "凭据只允许送入本地 mock authenticate；禁止出现在返回值、异常、日志及标准输出。",
+        "保留输入校验、认证调用、成功、拒绝与服务异常的行为。",
+        "模型怀疑不是事实；程序确认当前泄露后才授权提交补丁。",
+        "不读其它文件、不连网络、不运行命令、不创建进程或线程。",
+        "缺失证据、检查不完整与执行异常均不能推断为通过。"
+      ],
+      "live_supported": false
+    }
+  ],
+  "runtime": {
+    "ready": true,
+    "isolation_ready": true,
+    "model_ready": true,
+    "runtime_root": "<runtime>",
+    "reasons": [],
+    "isolation": {
+      "ready": true,
+      "checks": {
+        "saved_probe_ready": true,
+        "runner_identity": true,
+        "kernel_identity": true,
+        "mandatory_saved_checks": true,
+        "bwrap_sha256": true,
+        "seccomp_sha256": true,
+        "rootfs_identity": true
+      },
+      "reasons": []
+    },
+    "model_files": {
+      "ready": true,
+      "manifest_sha256": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41",
+      "blob_count": 5,
+      "warnings": [],
+      "blob_checks": [
+        {
+          "digest": "sha256:f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee",
+          "declared_size": 488,
+          "actual_size": 488,
+          "sha256_verified": true
+        },
+        {
+          "digest": "sha256:ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9",
+          "declared_size": 19851336384,
+          "actual_size": 19851336384,
+          "sha256_verified": false
+        },
+        {
+          "digest": "sha256:66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e",
+          "declared_size": 68,
+          "actual_size": 68,
+          "sha256_verified": true
+        },
+        {
+          "digest": "sha256:1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320",
+          "declared_size": 1615,
+          "actual_size": 1615,
+          "sha256_verified": true
+        },
+        {
+          "digest": "sha256:832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+          "declared_size": 11343,
+          "actual_size": 11343,
+          "sha256_verified": true
+        }
+      ],
+      "full_weight_rehashed": false,
+      "blob_verification": "full SHA256 for blobs up to 16 MiB; larger weights existence and declared size only; no inference",
+      "reasons": []
+    },
+    "observed_at": "2026-10-09T15:38:38.369558+00:00",
+    "model_label": "qwen2.5-coder:32b-instruct-q4_K_M · 本地服务",
+    "model_profile": {
+      "profile": "qwen25",
+      "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+      "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+      "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+    },
+    "observation_scope": "Read-only saved probe/hash and model-file observation; no fresh boundary probe, model inference or candidate execution",
+    "model_executed": false,
+    "candidate_executed": false,
+    "network_probe_performed": false
+  },
+  "access_mode": "live",
+  "demonstrations": [],
+  "history": []
+}

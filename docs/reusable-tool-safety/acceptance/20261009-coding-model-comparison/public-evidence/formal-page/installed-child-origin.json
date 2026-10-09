@@ -1,0 +1,30 @@
+{
+  "schema": "credproof.installed-origin/v1",
+  "interpreter": "<install-root>\\venv\\Scripts\\python.exe",
+  "cwd": "<install-root>\\data\\runs\\ui\\live-c5e9217f868f4681a94bdda49c914e6e",
+  "web_repair": "<install-root>\\venv\\Lib\\site-packages\\credproof_safety\\web_repair.py",
+  "agent": "<install-root>\\venv\\Lib\\site-packages\\credproof_safety\\agent.py",
+  "package_version": "0.3.0.dev33",
+  "strategy": "bounded_patch",
+  "profile": "component_assisted",
+  "model_profile": {
+    "profile": "qwen25",
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+  },
+  "module_sha256": {
+    "web_repair.py": "e59f4c5b7e8fa5704ecd0ff81577459b97ef963a6d30395acb6580d06af7af13",
+    "agent.py": "a3f54573f636aadd84c00ff2aa15a20f2757a08513c3175d47986e8f5781dc84"
+  },
+  "access_dependency": {
+    "name": "credproof_access",
+    "version": "1.0.0",
+    "files": {
+      "__init__.py": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "contract.py": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+    },
+    "trust": "fixed reviewed dependency, not candidate mutable material"
+  },
+  "isolated_import": "python -I -m credproof_safety.web_repair"
+}

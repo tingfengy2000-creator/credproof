@@ -1,6 +1,12 @@
-# CredProof reusable-tool-safety（0.3.0-dev.32）
+# CredProof reusable-tool-safety（0.3.0-dev.33）
 
-## 当前：运行时契约与组件辅助修复
+## 当前dev33：一次有上限的编码模型对照，已关闭
+
+[固定评审材料](acceptance/20261009-coding-model-comparison/public-evidence/README.md)。被测源码 `a780b9e6543355c2108c1d41e43a8dccd7c2e0c1`；新固定模型 qwen2.5-coder:32b-instruct-q4_K_M 使用原生模板、CUDA0与原隔离边界。唯一非项目预检通过，唯一正式安装页面任务1次生成/1份不同候选/1次自动验收 **UNKNOWN**。候选JSON有效，但源码包含Markdown围栏，Python第1行SyntaxError、pytest收集/执行0；不是修复成功或环境安装失败。没有追加任务、剥除围栏或重跑旧模型。
+
+**NOT_READY_FOR_HANDOFF / MODEL_COMPARISON_CLOSED_UNSUCCESSFUL**。本轮到此结束；暂停自动生成效果优化，等待用户裁定资源或产品范围。不启动5060，不用旧成功或人工修复替代当前效果。实际请求、响应、候选、完整报告、安装来源和预算均在入口中可读。
+
+## 历史dev32：运行时契约与组件辅助修复
 
 [本轮方法及API](component-assisted.md) / [完整可读取证据](acceptance/20261009-component-assisted/public-evidence/README.md)。实际被测源码 `7011959e795f3bde442d3f4899ea5097ab42528a`。组件隔离测试12项通过；清洁安装页面已实际调用 bounded_patch/component_assisted。本轮唯一正式任务3次生成、1份接受候选/1次自动FAIL、2次NO_CHANGE，按生成预算结束。候选未接入组件，并把凭据值当成变量名导致KeyError；提前退出不证明文件/网络安全。
 

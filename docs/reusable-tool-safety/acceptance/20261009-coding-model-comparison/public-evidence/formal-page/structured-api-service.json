@@ -1,0 +1,40 @@
+{
+  "version": {
+    "version": "0.34.4"
+  },
+  "models": {
+    "models": [
+      {
+        "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+        "model": "qwen2.5-coder:32b-instruct-q4_K_M",
+        "modified_at": "2026-10-09T15:33:23.742209825Z",
+        "size": 19851349898,
+        "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen2",
+          "families": [
+            "qwen2"
+          ],
+          "parameter_size": "32.8B",
+          "quantization_level": "Q4_K_M",
+          "context_length": 32768,
+          "embedding_length": 5120
+        },
+        "capabilities": [
+          "completion",
+          "tools",
+          "insert"
+        ]
+      }
+    ]
+  },
+  "profile": {
+    "profile": "qwen25",
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+  },
+  "interface": "/api/chat format JSON Schema; compatibility tested by actual formal responses"
+}

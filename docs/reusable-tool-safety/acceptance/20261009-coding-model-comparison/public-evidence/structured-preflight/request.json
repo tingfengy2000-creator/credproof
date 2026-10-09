@@ -1,0 +1,28 @@
+{
+  "model": "qwen2.5-coder:32b-instruct-q4_K_M",
+  "stream": false,
+  "format": {
+    "type": "object",
+    "properties": {
+      "ok": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "ok"
+    ],
+    "additionalProperties": false
+  },
+  "messages": [
+    {
+      "role": "user",
+      "content": "Return a JSON object with ok=true."
+    }
+  ],
+  "options": {
+    "num_ctx": 16384,
+    "num_predict": 2048,
+    "temperature": 0,
+    "seed": 0
+  }
+}

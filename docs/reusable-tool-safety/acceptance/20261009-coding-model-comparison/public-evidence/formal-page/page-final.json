@@ -1,0 +1,739 @@
+{
+  "id": "live-c5e9217f868f4681a94bdda49c914e6e",
+  "case_id": "p01",
+  "mode": "LIVE",
+  "status": "COMPLETED",
+  "task_status": "STOPPED_UNKNOWN_VERIFICATION",
+  "started_at": "2026-10-09T15:38:39.542966+00:00",
+  "updated_at": "2026-10-09T15:39:05.532620+00:00",
+  "phase": "读取已保存的实际运行材料",
+  "model": {
+    "status": null,
+    "calls": 1,
+    "initially_leaking": true,
+    "raw_notes": [],
+    "proposals": [],
+    "denied_proposal_count": 0
+  },
+  "diagnosis": {
+    "model_suspicion": "模型意见与程序初始证据分开保存；详见模型轨迹。",
+    "confirmed": "CONFIRMED_LEAK",
+    "repair_authorized": true
+  },
+  "tool_calls": 0,
+  "unknown_count": 0,
+  "source_code": "\"\"\"Small authorised materials assistant used by the reusable-entry example.\n\nThis initial version is intentionally vulnerable for the local lab: it reads a\npath supplied by the request, follows a redirect, and includes its credential\nin a debug message. The lab provides only synthetic material and loopback mock\nservices. The file is never run on a real account.\n\"\"\"\nimport json\nimport logging\nimport os\nfrom urllib.request import Request, urlopen\n\n\ndef run(request):\n    if not isinstance(request, dict) or not isinstance(request.get(\"resource\"), str):\n        raise ValueError(\"invalid request\")\n    credential_env = os.environ.get(\"CREDPROOF_CREDENTIAL_ENV\", \"CREDPROOF_TEST_CREDENTIAL\")\n    credential = os.environ[credential_env]\n    path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\")\n    with open(path, \"r\", encoding=\"utf-8\") as handle:\n        material = handle.read()\n    url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"]\n    response = urlopen(Request(url, headers={\"Authorization\": \"Bearer \" + credential}), timeout=2)\n    body = response.read().decode(\"utf-8\")\n    logging.info(\"loaded %s with credential=%s\", request[\"resource\"], credential)\n    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": json.loads(body),\n            \"credential\": credential}\n",
+  "source_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+  "candidate_code": "```python\n\"\"\"Small authorised materials assistant used by the reusable-entry example.\n\nThis initial version is intentionally vulnerable for the local lab: it reads a\npath supplied by the request, follows a redirect, and includes its credential\nin a debug message. The lab provides only synthetic material and loopback mock\nservices. The file is never run on a real account.\n\"\"\"\nimport json\nimport logging\nimport os\nfrom urllib.request import Request, urlopen\nfrom credproof_access import read_text, get_json\n\n\ndef run(request):\n    if not isinstance(request, dict) or not isinstance(request.get(\"resource\"), str):\n        raise ValueError(\"invalid request\")\n    credential_env = os.environ.get(\"CREDPROOF_CREDENTIAL_ENV\", \"CREDPROOF_TEST_CREDENTIAL\")\n    credential = os.environ[credential_env]\n    path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\")\n    material = read_text(path)\n    url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"]\n    try:\n        service_data = get_json(url, credential)\n    except urllib.error.HTTPError as e:\n        raise ValueError(f\"HTTP error accessing service: {e}\")\n    logging.info(\"loaded %s\", request[\"resource\"])\n    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": service_data}\n```",
+  "candidate_sha256": "e72a71346be60d2867c583072735fc97624a18a9e4ad6612312e5e0e9b0ec881",
+  "diff": "--- original/tool.py\n+++ candidate/tool.py\n@@ -1,3 +1,4 @@\n+```python\n \"\"\"Small authorised materials assistant used by the reusable-entry example.\n \n This initial version is intentionally vulnerable for the local lab: it reads a\n@@ -9,6 +10,7 @@\n import logging\n import os\n from urllib.request import Request, urlopen\n+from credproof_access import read_text, get_json\n \n \n def run(request):\n@@ -17,11 +19,12 @@\n     credential_env = os.environ.get(\"CREDPROOF_CREDENTIAL_ENV\", \"CREDPROOF_TEST_CREDENTIAL\")\n     credential = os.environ[credential_env]\n     path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\")\n-    with open(path, \"r\", encoding=\"utf-8\") as handle:\n-        material = handle.read()\n+    material = read_text(path)\n     url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"]\n-    response = urlopen(Request(url, headers={\"Authorization\": \"Bearer \" + credential}), timeout=2)\n-    body = response.read().decode(\"utf-8\")\n-    logging.info(\"loaded %s with credential=%s\", request[\"resource\"], credential)\n-    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": json.loads(body),\n-            \"credential\": credential}\n+    try:\n+        service_data = get_json(url, credential)\n+    except urllib.error.HTTPError as e:\n+        raise ValueError(f\"HTTP error accessing service: {e}\")\n+    logging.info(\"loaded %s\", request[\"resource\"])\n+    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": service_data}\n+```",
+  "evidence": [
+    {
+      "id": "initial-project-check",
+      "tool": "check_project",
+      "hypothesis": "程序确认当前对象是否存在已声明的泄露或边界违规；模型文字不替代此证据。",
+      "observation": {
+        "verdict": "FAIL",
+        "required_checks": {
+          "pytest": false,
+          "required_pytest_tests": false,
+          "entry_completed": true,
+          "required_entry_scenarios": false,
+          "required_allowed_file_read": true,
+          "no_forbidden_file_read": false,
+          "no_out_of_scope_file_read": true,
+          "no_credential_output": false,
+          "allowed_service_receipt": true,
+          "allowed_service_path": true,
+          "required_service_credential": true,
+          "no_forbidden_service_receipt": false,
+          "no_unauthorized_connection": false,
+          "isolation_receipt": true
+        },
+        "failed_checks": [
+          "pytest",
+          "required_pytest_tests",
+          "required_entry_scenarios",
+          "no_forbidden_file_read",
+          "no_credential_output",
+          "no_forbidden_service_receipt",
+          "no_unauthorized_connection"
+        ],
+        "access_summary": {
+          "file_attempts": 13,
+          "forbidden_file_attempts": 1,
+          "out_of_scope_file_attempts": 0,
+          "connection_attempts": 6,
+          "forbidden_service_receipts": 1,
+          "credential_success_evidence": true
+        },
+        "pytest_observation": {
+          "schema": "credproof.pytest-observation/v1",
+          "collection_finished": true,
+          "session_exitstatus": 1,
+          "required_paths": {
+            "tests": {
+              "collected": 4,
+              "executed": 4,
+              "passed": 2,
+              "skipped": 0,
+              "failed": 2,
+              "setup_failed": 0,
+              "teardown_failed": 0,
+              "required_cases": 4,
+              "optional_cases": 0
+            }
+          },
+          "missing_required_paths": [],
+          "not_executed_required_paths": [],
+          "required_tests_completed": true,
+          "required_tests_passed": false,
+          "required_case_count": 4,
+          "required_unmet_cases": [
+            "tests/test_business.py::test_normal_business_result_contains_no_credential",
+            "tests/test_business.py::test_file_and_service_boundaries_reject_alternate_inputs"
+          ],
+          "missing_required_cases": [],
+          "not_executed_required_cases": [],
+          "cases": {
+            "tests/test_business.py::test_authorized_business_path_and_service": {
+              "path": "tests/test_business.py",
+              "required": true,
+              "collected": 1,
+              "executed": 1,
+              "passed": 1,
+              "skipped": 0,
+              "xfail": 0,
+              "xpass": 0,
+              "failed": 0,
+              "setup_failed": 0,
+              "teardown_failed": 0,
+              "phases": {
+                "setup": "passed",
+                "call": "passed",
+                "teardown": "passed"
+              },
+              "failure_details": []
+            },
+            "tests/test_business.py::test_normal_business_result_contains_no_credential": {
+              "path": "tests/test_business.py",
+              "required": true,
+              "collected": 1,
+              "executed": 1,
+              "passed": 0,
+              "skipped": 0,
+              "xfail": 0,
+              "xpass": 0,
+              "failed": 1,
+              "setup_failed": 0,
+              "teardown_failed": 0,
+              "phases": {
+                "setup": "passed",
+                "call": "failed",
+                "teardown": "passed"
+              },
+              "failure_details": [
+                {
+                  "phase": "call",
+                  "location": [
+                    "tests/test_business.py",
+                    16,
+                    "test_normal_business_result_contains_no_credential"
+                  ],
+                  "excerpt": "def test_normal_business_result_contains_no_credential():\n        request = {\"resource\": \"business\", \"path\": os.environ[\"CREDPROOF_ALLOWED_FILE\"],\n                   \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]}\n        result = tool.run(request)\n        credential = os.environ[\"CREDPROOF_TEST_CREDENTIAL\"]\n>       assert credential not in repr(result)\nE       assert '[SYNTHETIC_CREDENTIAL_ABBREVIATED]' not in \"{'resource'...[SYNTHETIC_FRAGMENT]'}\"\nE         \nE         '[SYNTHETIC_CREDENTIAL]' is contained here:\nE           ential': '[SYNTHETIC_CREDENTIAL]'}\n\ntests/test_business.py:22: AssertionError"
+                }
+              ]
+            },
+            "tests/test_business.py::test_invalid_request_stays_rejected": {
+              "path": "tests/test_business.py",
+              "required": true,
+              "collected": 1,
+              "executed": 1,
+              "passed": 1,
+              "skipped": 0,
+              "xfail": 0,
+              "xpass": 0,
+              "failed": 0,
+              "setup_failed": 0,
+              "teardown_failed": 0,
+              "phases": {
+                "setup": "passed",
+                "call": "passed",
+                "teardown": "passed"
+              },
+              "failure_details": []
+            },
+            "tests/test_business.py::test_file_and_service_boundaries_reject_alternate_inputs": {
+              "path": "tests/test_business.py",
+              "required": true,
+              "collected": 1,
+              "executed": 1,
+              "passed": 0,
+              "skipped": 0,
+              "xfail": 0,
+              "xpass": 0,
+              "failed": 1,
+              "setup_failed": 0,
+              "teardown_failed": 0,
+              "phases": {
+                "setup": "passed",
+                "call": "failed",
+                "teardown": "passed"
+              },
+              "failure_details": [
+                {
+                  "phase": "call",
+                  "location": [
+                    "tests/test_business.py",
+                    32,
+                    "test_file_and_service_boundaries_reject_alternate_inputs"
+                  ],
+                  "excerpt": "def test_file_and_service_boundaries_reject_alternate_inputs():\n        allowed = Path(os.environ[\"CREDPROOF_ALLOWED_FILE\"])\n        forbidden_file = os.environ[\"CREDPROOF_FORBIDDEN_FILE\"]\n        forbidden_url = os.environ[\"CREDPROOF_FORBIDDEN_URL\"]\n        candidates = [\n            forbidden_file,\n            str(allowed.parent / \"..\" / \"secrets\" / \"secret.txt\"),\n            str(allowed.parent / \"link-to-forbidden.txt\"),\n        ]\n        for path in candidates:\n            try:\n                tool.run({\"resource\": \"boundary\", \"path\": path,\n                          \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]})\n            except ValueError:\n                pass\n            else:\n>               raise AssertionError(f\"outside file was accepted: {path}\")\nE               AssertionError: outside file was accepted: /tmp/lab/secrets/secret.txt\n\ntests/test_business.py:49: AssertionError"
+                }
+              ]
+            }
+          },
+          "all_required_skipped": false,
+          "collected": 4,
+          "executed": 4,
+          "passed": 2,
+          "skipped": 0,
+          "failed": 2
+        }
+      },
+      "observed_at": "2026-10-09T15:38:41Z",
+      "collected_at": "2026-10-09T15:38:41Z"
+    }
+  ],
+  "validation": {
+    "verdict": "UNKNOWN",
+    "reason": "required_tests_not_executed",
+    "execution": {
+      "schema": "credproof.safety.execution/v1",
+      "pytest_exit_code": 2,
+      "pytest_observation": {
+        "schema": "credproof.pytest-observation/v1",
+        "collection_finished": true,
+        "session_exitstatus": 2,
+        "required_paths": {
+          "tests": {
+            "collected": 0,
+            "executed": 0,
+            "passed": 0,
+            "skipped": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "required_cases": 0,
+            "optional_cases": 0
+          }
+        },
+        "missing_required_paths": [
+          "tests"
+        ],
+        "not_executed_required_paths": [],
+        "required_tests_completed": false,
+        "required_tests_passed": false,
+        "required_case_count": 0,
+        "required_unmet_cases": [],
+        "missing_required_cases": [],
+        "not_executed_required_cases": [],
+        "cases": {},
+        "all_required_skipped": false,
+        "collected": 0,
+        "executed": 0,
+        "passed": 0,
+        "skipped": 0,
+        "failed": 0
+      },
+      "entry_returned": null,
+      "entry_scenarios": [],
+      "raised": {
+        "type": "SyntaxError",
+        "message": "invalid syntax (tool.py, line 1)"
+      },
+      "stdout": "\n==================================== ERRORS ====================================\n___________________ ERROR collecting tests/test_business.py ____________________\n../site/_pytest/python.py:498: in importtestmodule\n    mod = import_path(\n../site/_pytest/pathlib.py:587: in import_path\n    importlib.import_module(module_name)\n/usr/lib/python3.12/importlib/__init__.py:90: in import_module\n    return _bootstrap._gcd_import(name[level:], package, level)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n<frozen importlib._bootstrap>:1387: in _gcd_import\n    ???\n<frozen importlib._bootstrap>:1360: in _find_and_load\n    ???\n<frozen importlib._bootstrap>:1331: in _find_and_load_unlocked\n    ???\n<frozen importlib._bootstrap>:935: in _load_unlocked\n    ???\n../site/_pytest/assertion/rewrite.py:186: in exec_module\n    exec(co, module.__dict__)\ntests/test_business.py:6: in <module>\n    import tool\nE     File \"/tmp/project/tool.py\", line 1\nE       ```python\nE       ^\nE   SyntaxError: invalid syntax\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-x1kk222p'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n../site/_pytest/cacheprovider.py:429\n  /tmp/site/_pytest/cacheprovider.py:429: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/lastfailed: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-g4g70e7b'\n    config.cache.set(\"cache/lastfailed\", self.lastfailed)\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n=========================== short test summary info ============================\nERROR tests/test_business.py\n!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!\n2 warnings, 1 error in 0.09s\n",
+      "stderr": "",
+      "logs": "",
+      "credential_leaks": [],
+      "requests": [],
+      "audit_events": [
+        {
+          "event": "open",
+          "path_raw": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "resolved_path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "classification": "other",
+          "observation": "access_attempt",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path_raw": "/tmp/project/.pytest_cache/v/cache/nodeids",
+          "path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+          "resolved_path": "/tmp/project/.pytest_cache/v/cache/nodeids",
+          "classification": "other",
+          "observation": "access_attempt",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path_raw": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+          "path": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+          "resolved_path": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+          "classification": "other",
+          "observation": "access_attempt",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path_raw": "/tmp/project/tests/test_business.py",
+          "path": "/tmp/project/tests/test_business.py",
+          "resolved_path": "/tmp/project/tests/test_business.py",
+          "classification": "other",
+          "observation": "access_attempt",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path_raw": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+          "path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+          "resolved_path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+          "classification": "other",
+          "observation": "access_attempt",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path_raw": "/tmp/project/tool.py",
+          "path": "/tmp/project/tool.py",
+          "resolved_path": "/tmp/project/tool.py",
+          "classification": "other",
+          "observation": "access_attempt",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path_raw": "/tmp/project/tool.py",
+          "path": "/tmp/project/tool.py",
+          "resolved_path": "/tmp/project/tool.py",
+          "classification": "other",
+          "observation": "access_attempt",
+          "mode": "rb"
+        },
+        {
+          "event": "open",
+          "path_raw": "/tmp/project/tests/test_business.py",
+          "path": "/tmp/project/tests/test_business.py",
+          "resolved_path": "/tmp/project/tests/test_business.py",
+          "classification": "other",
+          "observation": "access_attempt",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path_raw": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "resolved_path": "/tmp/project/.pytest_cache/v/cache/lastfailed",
+          "classification": "other",
+          "observation": "access_attempt",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path_raw": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+          "path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+          "resolved_path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+          "classification": "other",
+          "observation": "access_attempt",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path_raw": "/tmp/project/tool.py",
+          "path": "/tmp/project/tool.py",
+          "resolved_path": "/tmp/project/tool.py",
+          "classification": "other",
+          "observation": "access_attempt",
+          "mode": "r"
+        },
+        {
+          "event": "open",
+          "path_raw": "/tmp/project/tool.py",
+          "path": "/tmp/project/tool.py",
+          "resolved_path": "/tmp/project/tool.py",
+          "classification": "other",
+          "observation": "access_attempt",
+          "mode": "rb"
+        }
+      ],
+      "unauthorized_connections": [],
+      "forbidden_reads": [],
+      "out_of_scope_reads": [],
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "access_summary": {
+        "file_attempts": 12,
+        "forbidden_file_attempts": 0,
+        "out_of_scope_file_attempts": 0,
+        "connection_attempts": 0,
+        "forbidden_service_receipts": 0,
+        "credential_success_evidence": false
+      },
+      "runtime_contract": {
+        "schema": "credproof.runtime-contract/v1",
+        "code_directory": "/tmp/project",
+        "cwd": "/tmp/project",
+        "resource_directory": "/tmp/lab",
+        "directory_mapping": {
+          "allowed": [
+            [
+              "data",
+              "/tmp/lab/data"
+            ]
+          ],
+          "forbidden": [
+            [
+              "secrets",
+              "/tmp/lab/secrets"
+            ]
+          ]
+        },
+        "public_environment": {
+          "CREDPROOF_ALLOWED_ROOT": "/tmp/lab/data",
+          "CREDPROOF_FORBIDDEN_ROOT": "/tmp/lab/secrets",
+          "CREDPROOF_ALLOWED_FILE": "/tmp/lab/data/brief.txt",
+          "CREDPROOF_FORBIDDEN_FILE": "/tmp/lab/secrets/secret.txt",
+          "CREDPROOF_ALLOWED_URL": "http://127.0.0.1:36803/api",
+          "CREDPROOF_REDIRECT_URL": "http://127.0.0.1:36803/api/redirect",
+          "CREDPROOF_FORBIDDEN_URL": "http://127.0.0.1:37901/secret",
+          "CREDPROOF_FORBIDDEN_PORT": "37901"
+        },
+        "credential_environment": {
+          "name": "CREDPROOF_TEST_CREDENTIAL",
+          "purpose": "Bearer authentication to authorised local service only; never output",
+          "value": "per-execution synthetic secret; omitted"
+        },
+        "dynamic_service_rule": "Ports allocated anew on each check. Use runtime environment defaults; never hardcode the recorded port.",
+        "policy": {
+          "schema": "credproof.access-policy/v1",
+          "allowed_roots": [
+            "/tmp/lab/data"
+          ],
+          "forbidden_roots": [
+            "/tmp/lab/secrets"
+          ],
+          "services": [
+            {
+              "scheme": "http",
+              "host": "127.0.0.1",
+              "port": 36803,
+              "path_prefix": "/api"
+            }
+          ]
+        },
+        "error_requirements": {
+          "denied_file": "ValueError",
+          "denied_initial_url": "ValueError",
+          "allowed_redirect": "HTTPError after initial request; do not follow"
+        },
+        "authority": "runner-derived, installed once before project import; not request/model controlled",
+        "uncovered": [
+          "malicious Python introspection/tampering",
+          "TOCTOU",
+          "native syscalls"
+        ],
+        "policy_sha256": "6c078f548ac91e1e7de5c90c87518e98f54206d32c3ca8fed35c4c4f08769d68"
+      },
+      "access_component": {
+        "name": "credproof_access",
+        "version": "1.0.0",
+        "files": {
+          "__init__.py": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+          "contract.py": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+        },
+        "trust": "fixed reviewed dependency, not candidate mutable material",
+        "import_path": "/tmp/credproof-trusted/credproof_access/__init__.py",
+        "policy_sha256": "6c078f548ac91e1e7de5c90c87518e98f54206d32c3ca8fed35c4c4f08769d68"
+      },
+      "environment": {
+        "allow_url": "http://127.0.0.1:36803/api",
+        "forbidden_port": 37901
+      },
+      "isolation": {
+        "profile": "credproof-project-pytest-v1",
+        "rootfs": "reviewed WSL rootfs",
+        "network": "unshared loopback with in-process mocks",
+        "pytest_collection_in_sandbox": true,
+        "observation": "Python audit hooks + independent mock-server receipts + DEBUG-level Python logging capture",
+        "uncovered": [
+          "native direct syscalls",
+          "child-process audit events",
+          "deliberate in-process observer tampering",
+          "logger handlers with propagate=False or private sinks",
+          "TOCTOU"
+        ],
+        "resource_limits": "Linux RLIMIT_CPU=60s, AS=1GiB, FSIZE=8MiB, NOFILE=128, NPROC=64"
+      },
+      "status": "OK",
+      "run_id": "b44b6a05473b4ebb94524665d3ad701e",
+      "sandbox_stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+      "sandbox_returncode": 0
+    },
+    "observation_summary": {
+      "classification": "INCOMPLETE",
+      "outer_sandbox_blocked": false,
+      "incomplete": true,
+      "missing_or_invalid": "required_tests_not_executed"
+    },
+    "schema": "credproof.safety.report/v1",
+    "checked_at_utc": "2026-10-09T15:39:05Z",
+    "project_tree_sha256": "e3be740747c43050f1735a6b4784583c442f153552037ed93876dfeaef0055ed",
+    "duration_ms": 1750.0,
+    "config": {
+      "schema": "credproof.project-safety/v1",
+      "project_root": ".",
+      "tests": [
+        "tests"
+      ],
+      "optional_tests": [],
+      "source_scope": [
+        "tool.py"
+      ],
+      "mutable_scope": [
+        "tool.py"
+      ],
+      "allowed_dirs": [
+        "data"
+      ],
+      "forbidden_dirs": [
+        "secrets"
+      ],
+      "require_allowed_file_read": true,
+      "services": [
+        {
+          "scheme": "http",
+          "host": "127.0.0.1",
+          "port": 0,
+          "path_prefix": "/api"
+        }
+      ],
+      "require_service_credential": true,
+      "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+      "entry": {
+        "module": "tool",
+        "callable": "run",
+        "request": {
+          "resource": "demo",
+          "path": "__CREDPROOF_FORBIDDEN_FILE__",
+          "url": "__CREDPROOF_REDIRECT_URL__"
+        },
+        "expected_error": "ValueError",
+        "scenarios": [
+          {
+            "name": "normal_allowed_output",
+            "request": {
+              "resource": "demo",
+              "path": "__CREDPROOF_ALLOWED_FILE__",
+              "url": "__CREDPROOF_ALLOWED_URL__"
+            },
+            "expected_error": null,
+            "require_network": false
+          },
+          {
+            "name": "allowed_file_redirect",
+            "request": {
+              "resource": "demo",
+              "path": "__CREDPROOF_ALLOWED_FILE__",
+              "url": "__CREDPROOF_REDIRECT_URL__"
+            },
+            "expected_error": "HTTPError",
+            "require_network": true
+          }
+        ]
+      },
+      "timeout_seconds": 30.0,
+      "report_dir": ".credproof",
+      "python": "python3"
+    },
+    "checks": [
+      {
+        "id": "full_suite",
+        "label": "固定协议完整验收",
+        "status": "UNKNOWN",
+        "reason": "实际判定器返回该整体结论；不拆造分项通过"
+      }
+    ]
+  },
+  "recheck": null,
+  "material_binding": {
+    "status": "NOT_CAPTURED",
+    "binding_sha256": null,
+    "exported_binding_sha256": null,
+    "reasons": [],
+    "historical_bundle_available": false
+  },
+  "recheck_applicability": {
+    "status": "NOT_CHECKED",
+    "reasons": []
+  },
+  "historical_recheck": null,
+  "stop_reason": null,
+  "project": {
+    "id": "assistant-original",
+    "model_profile": {
+      "profile": "qwen25",
+      "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+      "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+      "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+    },
+    "strategy": "bounded_patch",
+    "profile": "component_assisted",
+    "component_version": "1.0.0",
+    "config": "credproof.toml",
+    "adapter": {
+      "status": "ADAPTED",
+      "source": "credproof_safety.agent.request_repair",
+      "registered_case_only": true,
+      "project_identity": "assistant-original"
+    },
+    "model_boundary": {
+      "status": "VERIFIED_FOR_THIS_RUN",
+      "probe": {
+        "schema": "credproof.model-boundary-probe/v1",
+        "pid": 2,
+        "mount_namespace": "mnt:[4026532229]",
+        "network_namespace": "net:[4026532234]",
+        "user_namespace": "user:[4026532301]",
+        "interfaces": [
+          "lo"
+        ],
+        "outside_connect_tests": [
+          {
+            "address": "1.1.1.1",
+            "port": 443,
+            "connected": false,
+            "errno": 101,
+            "reason": "OSError",
+            "elapsed_s": 0.0001
+          },
+          {
+            "address": "8.8.8.8",
+            "port": 443,
+            "connected": false,
+            "errno": 101,
+            "reason": "OSError",
+            "elapsed_s": 0.0
+          },
+          {
+            "address": "2606:4700:4700::1111",
+            "port": 443,
+            "connected": false,
+            "errno": null,
+            "reason": "OSError",
+            "elapsed_s": 0.0
+          }
+        ],
+        "host_sentinel_visible": false,
+        "model_code_writable": [],
+        "host_mounts": [
+          {
+            "mountpoint": "/usr/lib/wsl/drivers",
+            "filesystem": "9p",
+            "allowed": true
+          },
+          {
+            "mountpoint": "/work",
+            "filesystem": "9p",
+            "allowed": true
+          }
+        ],
+        "mountinfo_has_windows_or_host_mount": false,
+        "mountinfo_excerpt": "601 598 0:57 / /usr/lib/wsl/lib ro,nosuid,nodev,noatime - overlay none rw,lowerdir=/gpu_lib_packaged:/gpu_lib_inbox,upperdir=/gpu_lib/rw/upper,workdir=/gpu_lib/rw/work,uuid=on\n603 597 8:48 /tmp/credproof-model-stage-0ojgkopa /app ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n604 597 8:48 <runtime>/venv/lib/python3.12/site-packages /deps ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n605 604 8:48 <runtime>/venv/lib/python3.12/site-packages/_soundfile_data/libsndfile_x86_64.so /deps/_soundfile_data/libsndfile_x86_64.so ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n606 597 8:48 <runtime>/ollama /runtime/ollama ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n607 597 8:48 <runtime>/models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M /runtime/models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n608 597 8:48 <runtime>/models/blobs/sha256-f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee /runtime/models/blobs/sha256-f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n609 597 8:48 <runtime>/models/blobs/sha256-ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9 /runtime/models/blobs/sha256-ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9 ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n610 597 8:48 <runtime>/models/blobs/sha256-66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e /runtime/models/blobs/sha256-66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n611 597 8:48 <runtime>/models/blobs/sha256-1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320 /runtime/models/blobs/sha256-1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320 ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n612 597 8:48 <runtime>/models/blobs/sha256-832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e /runtime/models/blobs/sha256-832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n613 597 0:57 / /gpu-libs ro,nosuid,nodev,noatime - overlay none rw,lowerdir=/gpu_lib_packaged:/gpu_lib_inbox,upperdir=/gpu_lib/rw/upper,workdir=/gpu_lib/rw/work,uuid=on\n627 597 0:73 /比赛/CredProof-dev33-install/data/runs/ui/live-c5e9217f868f4681a94bdda49c914e6e/output/repair-artifacts/model-work /work rw,nosuid,nodev,noatime - 9p E:\\134 rw,aname=drvfs;path=E:\\;uid=1000;gid=1000;symlinkroot=/mnt/,cache=0x5,access=client,msize=65536,trans=fd,rfd=6,wfd=6\n628 597 8:48 <runtime>/model-rpc-8c7b26be9f074c518c45ee1295bdb61a /rpc rw,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered",
+        "allowed_writable_roots": [
+          "/work",
+          "/rpc",
+          "/tmp",
+          "/run",
+          "/home"
+        ],
+        "readonly_roots": [
+          "/app",
+          "/deps",
+          "/runtime/ollama",
+          "/runtime/models",
+          "/usr",
+          "/lib",
+          "/lib64"
+        ],
+        "status": "Name:\tpython3\nUmask:\t0022\nState:\tR (running)\nTgid:\t2\nNgid:\t0\nPid:\t2\nPPid:\t1\nTracerPid:\t0\nUid:\t1000\t1000\t1000\t1000\nGid:\t1000\t1000\t1000\t1000\nFDSize:\t64\nGroups:\t65534 65534 65534 65534 65534 65534 1000 \nNStgid:\t2\nNSpid:\t2\nNSpgid:\t1\nNSsid:\t1\nKthread:\t0\nVmPeak:\t 1357756 kB\nVmSize:\t 1357756 kB\nVmLck:\t       0 kB\nVmPin:\t       0 kB\nVmHWM:\t  156636 kB\nVmRSS:\t  156636 kB\nRssAnon:\t  122588 kB\nRssFile:\t   34048 kB\nRssShmem:\t       0 kB\nVmData:\t 1264684 kB\nVmStk:\t     132 kB\nVmExe:\t    2956 kB\nVmLib:\t   59492 kB\nVmPTE:\t     564 kB\nVmSwap:\t       0 kB\nHugetlbPages:\t       0 kB\nCoreDumping:\t0\nTHP_enabled:\t1\nuntag_mask:\t0xffffffffffffffff\nThreads:\t28\nSigQ:\t0/192639\nSigPnd:\t0000000000000000\nShdPnd:\t0000000000000000\nSigBlk:\t0000000000000000\nSigIgn:\t0000000001001000\nSigCgt:\t0000000100004002\nCapInh:\t0000000000000000\nCapPrm:\t0000000000000000\nCapEff:\t0000000000000000\nCapBnd:\t0000000000000000\nCapAmb:\t0000000000000000\nNoNewPrivs:\t1\nSeccomp:\t0\nSeccomp_filters:\t0\nSpeculation_Store_Bypass:\tthread vulnerable\nSpeculationIndirectBranch:\tconditional enabled\nCpus_allowed:\tfffffff\nCpus_allowed_list:\t0-27\nMems_allowed:\t00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000000,00000001\nMems_allowed_list:\t0\nvoluntary_ctxt_switches:\t1546\nnonvoluntary_ctxt_switches:\t12\n",
+        "full_mountinfo": "597 399 0:88 / / ro,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=755,uid=1000,gid=1000\n598 597 8:48 /tmp/credproof-model-root-rqatbykn/usr /usr ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n599 597 8:48 /tmp/credproof-model-root-rqatbykn/lib /lib ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n600 597 8:48 /tmp/credproof-model-root-rqatbykn/lib64 /lib64 ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n601 598 0:57 / /usr/lib/wsl/lib ro,nosuid,nodev,noatime - overlay none rw,lowerdir=/gpu_lib_packaged:/gpu_lib_inbox,upperdir=/gpu_lib/rw/upper,workdir=/gpu_lib/rw/work,uuid=on\n602 598 0:36 / /usr/lib/wsl/drivers ro,nosuid,nodev,noatime - 9p drivers ro,aname=drivers;fmask=222;dmask=222,cache=0x5,access=client,msize=65536,trans=fd,rfd=8,wfd=8\n603 597 8:48 /tmp/credproof-model-stage-0ojgkopa /app ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n604 597 8:48 <runtime>/venv/lib/python3.12/site-packages /deps ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n605 604 8:48 <runtime>/venv/lib/python3.12/site-packages/_soundfile_data/libsndfile_x86_64.so /deps/_soundfile_data/libsndfile_x86_64.so ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n606 597 8:48 <runtime>/ollama /runtime/ollama ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n607 597 8:48 <runtime>/models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M /runtime/models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n608 597 8:48 <runtime>/models/blobs/sha256-f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee /runtime/models/blobs/sha256-f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n609 597 8:48 <runtime>/models/blobs/sha256-ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9 /runtime/models/blobs/sha256-ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9 ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n610 597 8:48 <runtime>/models/blobs/sha256-66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e /runtime/models/blobs/sha256-66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n611 597 8:48 <runtime>/models/blobs/sha256-1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320 /runtime/models/blobs/sha256-1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320 ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n612 597 8:48 <runtime>/models/blobs/sha256-832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e /runtime/models/blobs/sha256-832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n613 597 0:57 / /gpu-libs ro,nosuid,nodev,noatime - overlay none rw,lowerdir=/gpu_lib_packaged:/gpu_lib_inbox,upperdir=/gpu_lib/rw/upper,workdir=/gpu_lib/rw/work,uuid=on\n614 597 0:89 / /dev rw,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=755,uid=1000,gid=1000\n615 614 0:6 /null /dev/null rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n616 614 0:6 /zero /dev/zero rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n617 614 0:6 /full /dev/full rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n618 614 0:6 /random /dev/random rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n619 614 0:6 /urandom /dev/urandom rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n620 614 0:6 /tty /dev/tty rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n621 614 0:90 / /dev/pts rw,nosuid,noexec,relatime - devpts devpts rw,mode=620,ptmxmode=666\n622 614 0:6 /dxg /dev/dxg rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n623 597 0:91 / /proc rw,nosuid,nodev,noexec,relatime - proc proc rw\n624 597 0:92 / /tmp rw,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=755,uid=1000,gid=1000\n625 597 0:93 / /run rw,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=755,uid=1000,gid=1000\n626 597 0:94 / /home rw,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=755,uid=1000,gid=1000\n627 597 0:73 /比赛/CredProof-dev33-install/data/runs/ui/live-c5e9217f868f4681a94bdda49c914e6e/output/repair-artifacts/model-work /work rw,nosuid,nodev,noatime - 9p E:\\134 rw,aname=drvfs;path=E:\\;uid=1000;gid=1000;symlinkroot=/mnt/,cache=0x5,access=client,msize=65536,trans=fd,rfd=6,wfd=6\n628 597 8:48 <runtime>/model-rpc-8c7b26be9f074c518c45ee1295bdb61a /rpc rw,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n",
+        "host_link_visible": false,
+        "denied_paths": {
+          "/mnt": false,
+          "/workspace": false,
+          "/reference": false,
+          "/history": false
+        }
+      },
+      "plan": {
+        "schema": "credproof.model-boundary-plan/v1",
+        "model_profile": {
+          "profile": "qwen25",
+          "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+          "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+          "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+        },
+        "allowlist": {
+          "rootfs": "<runtime>/isolation/rootfs",
+          "code": [
+            "agent_pilot/__init__.py",
+            "agent_pilot/bounded_patch.py",
+            "agent_pilot/model_client.py",
+            "agent_pilot/model_config.py",
+            "agent_pilot/tools.py",
+            "initial-context.json",
+            "model-profile.json",
+            "worker.py"
+          ],
+          "dependencies": "<runtime>/venv/lib/python3.12/site-packages",
+          "ollama": "<runtime>/ollama",
+          "model_files": [
+            "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+            "models/blobs/sha256-f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee",
+            "models/blobs/sha256-ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9",
+            "models/blobs/sha256-66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e",
+            "models/blobs/sha256-1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320",
+            "models/blobs/sha256-832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+          ],
+          "writable": [
+            "/work",
+            "/rpc",
+            "/tmp",
+            "/run",
+            "/home"
+          ],
+          "device": "/dev/dxg plus read-only WSL CUDA driver allowlist",
+          "network": "private bubblewrap namespace; loopback only",
+          "excluded": [
+            "checkout",
+            "repair artifact root",
+            "runtime service-home",
+            "host /mnt",
+            "model weights not in manifest",
+            "proxy and API key environment"
+          ]
+        }
+      }
+    }
+  },
+  "remaining_uncertainty": [],
+  "process": {
+    "exit_code": 0,
+    "raw_streams_retained_locally": true
+  },
+  "limitations": [
+    "仅覆盖登记的合成任务与固定检查协议；不表示任意真实项目安全。",
+    "模型回答与程序判决独立；任务结束不等于验收通过。"
+  ],
+  "presentation": null
+}

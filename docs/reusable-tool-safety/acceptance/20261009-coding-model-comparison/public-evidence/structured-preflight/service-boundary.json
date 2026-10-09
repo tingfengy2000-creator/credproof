@@ -1,0 +1,53 @@
+{
+  "pid": 30,
+  "controller_pid": 2,
+  "namespace_ids": {
+    "mnt": {
+      "controller": "mnt:[4026532229]",
+      "ollama": "mnt:[4026532229]"
+    },
+    "net": {
+      "controller": "net:[4026532234]",
+      "ollama": "net:[4026532234]"
+    },
+    "pid": {
+      "controller": "pid:[4026532232]",
+      "ollama": "pid:[4026532232]"
+    },
+    "user": {
+      "controller": "user:[4026532299]",
+      "ollama": "user:[4026532299]"
+    }
+  },
+  "mountinfo": "597 319 0:88 / / ro,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=755,uid=1000,gid=1000\n598 597 8:48 /tmp/credproof-model-root-ugmsxkfq/usr /usr ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n599 597 8:48 /tmp/credproof-model-root-ugmsxkfq/lib /lib ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n600 597 8:48 /tmp/credproof-model-root-ugmsxkfq/lib64 /lib64 ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n601 598 0:57 / /usr/lib/wsl/lib ro,nosuid,nodev,noatime - overlay none rw,lowerdir=/gpu_lib_packaged:/gpu_lib_inbox,upperdir=/gpu_lib/rw/upper,workdir=/gpu_lib/rw/work,uuid=on\n602 598 0:36 / /usr/lib/wsl/drivers ro,nosuid,nodev,noatime - 9p drivers ro,aname=drivers;fmask=222;dmask=222,cache=0x5,access=client,msize=65536,trans=fd,rfd=8,wfd=8\n603 597 8:48 /tmp/credproof-model-stage-z6l0c52q /app ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n604 597 8:48 <runtime>/venv/lib/python3.12/site-packages /deps ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n605 604 8:48 <runtime>/venv/lib/python3.12/site-packages/_soundfile_data/libsndfile_x86_64.so /deps/_soundfile_data/libsndfile_x86_64.so ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n606 597 8:48 <runtime>/ollama /runtime/ollama ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n607 597 8:48 <runtime>/models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M /runtime/models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n608 597 8:48 <runtime>/models/blobs/sha256-f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee /runtime/models/blobs/sha256-f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n609 597 8:48 <runtime>/models/blobs/sha256-ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9 /runtime/models/blobs/sha256-ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9 ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n610 597 8:48 <runtime>/models/blobs/sha256-66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e /runtime/models/blobs/sha256-66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n611 597 8:48 <runtime>/models/blobs/sha256-1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320 /runtime/models/blobs/sha256-1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320 ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n612 597 8:48 <runtime>/models/blobs/sha256-832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e /runtime/models/blobs/sha256-832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e ro,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n613 597 0:57 / /gpu-libs ro,nosuid,nodev,noatime - overlay none rw,lowerdir=/gpu_lib_packaged:/gpu_lib_inbox,upperdir=/gpu_lib/rw/upper,workdir=/gpu_lib/rw/work,uuid=on\n614 597 0:89 / /dev rw,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=755,uid=1000,gid=1000\n615 614 0:6 /null /dev/null rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n616 614 0:6 /zero /dev/zero rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n617 614 0:6 /full /dev/full rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n618 614 0:6 /random /dev/random rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n619 614 0:6 /urandom /dev/urandom rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n620 614 0:6 /tty /dev/tty rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n621 614 0:90 / /dev/pts rw,nosuid,noexec,relatime - devpts devpts rw,mode=620,ptmxmode=666\n622 614 0:6 /dxg /dev/dxg rw,nosuid,relatime master:13 - devtmpfs none rw,size=24657612k,nr_inodes=6164403,mode=755\n623 597 0:91 / /proc rw,nosuid,nodev,noexec,relatime - proc proc rw\n624 597 0:92 / /tmp rw,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=755,uid=1000,gid=1000\n625 597 0:93 / /run rw,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=755,uid=1000,gid=1000\n626 597 0:94 / /home rw,nosuid,nodev,relatime - tmpfs tmpfs rw,mode=755,uid=1000,gid=1000\n627 597 0:73 <repository-drvfs>/docs/reusable-tool-safety/acceptance/20261009-coding-model-comparison/structured-preflight/model-work /work rw,nosuid,nodev,noatime - 9p E:\\134 rw,aname=drvfs;path=E:\\;uid=1000;gid=1000;symlinkroot=/mnt/,cache=0x5,access=client,msize=65536,trans=fd,rfd=6,wfd=6\n628 597 8:48 <runtime>/model-preflight-rpc-997ec2686b53416d8a825eb1eca21740 /rpc rw,nosuid,nodev,relatime - ext4 /dev/sdd rw,discard,errors=remount-ro,data=ordered\n",
+  "host_sentinel_via_service_root_visible": false,
+  "ollama_local_version": {
+    "version": "0.34.4"
+  },
+  "external_probes_after_service_start": [
+    {
+      "address": "1.1.1.1",
+      "port": 443,
+      "connected": false,
+      "errno": 101,
+      "reason": "OSError",
+      "elapsed_s": 0.0
+    },
+    {
+      "address": "8.8.8.8",
+      "port": 443,
+      "connected": false,
+      "errno": 101,
+      "reason": "OSError",
+      "elapsed_s": 0.0
+    },
+    {
+      "address": "2606:4700:4700::1111",
+      "port": 443,
+      "connected": false,
+      "errno": null,
+      "reason": "OSError",
+      "elapsed_s": 0.0
+    }
+  ]
+}

@@ -1,0 +1,73 @@
+{
+  "ready": true,
+  "isolation_ready": true,
+  "model_ready": true,
+  "runtime_root": "<runtime>",
+  "reasons": [],
+  "isolation": {
+    "ready": true,
+    "checks": {
+      "saved_probe_ready": true,
+      "runner_identity": true,
+      "kernel_identity": true,
+      "mandatory_saved_checks": true,
+      "bwrap_sha256": true,
+      "seccomp_sha256": true,
+      "rootfs_identity": true
+    },
+    "reasons": []
+  },
+  "model_files": {
+    "ready": true,
+    "manifest_sha256": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41",
+    "blob_count": 5,
+    "warnings": [],
+    "blob_checks": [
+      {
+        "digest": "sha256:f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee",
+        "declared_size": 488,
+        "actual_size": 488,
+        "sha256_verified": true
+      },
+      {
+        "digest": "sha256:ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9",
+        "declared_size": 19851336384,
+        "actual_size": 19851336384,
+        "sha256_verified": false
+      },
+      {
+        "digest": "sha256:66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e",
+        "declared_size": 68,
+        "actual_size": 68,
+        "sha256_verified": true
+      },
+      {
+        "digest": "sha256:1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320",
+        "declared_size": 1615,
+        "actual_size": 1615,
+        "sha256_verified": true
+      },
+      {
+        "digest": "sha256:832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+        "declared_size": 11343,
+        "actual_size": 11343,
+        "sha256_verified": true
+      }
+    ],
+    "full_weight_rehashed": false,
+    "blob_verification": "full SHA256 for blobs up to 16 MiB; larger weights existence and declared size only; no inference",
+    "reasons": []
+  },
+  "observed_at": "2026-10-09T15:36:22.062623+00:00",
+  "model_label": "qwen2.5-coder:32b-instruct-q4_K_M �� ���ط���",
+  "model_profile": {
+    "profile": "qwen25",
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+  },
+  "observation_scope": "Read-only saved probe/hash and model-file observation; no fresh boundary probe, model inference or candidate execution",
+  "model_executed": false,
+  "candidate_executed": false,
+  "network_probe_performed": false
+}

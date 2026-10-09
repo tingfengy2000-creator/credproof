@@ -1,0 +1,66 @@
+{
+  "schema": "credproof.coding-model-comparison/v1",
+  "tested_source_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
+  "wheel_build_source": "ad826dae2d43ee0c0ec636f59a48f9325bcd14df",
+  "wheel_sha256": "90cbb4f328de855eeb363ac4b13062c44a5d7edf9787a4660ffb76ac7d8648f9",
+  "program_changed_after_formal_start": false,
+  "model": {
+    "profile": "qwen25",
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+  },
+  "preflight_requests": 1,
+  "formal_tasks": 1,
+  "formal_model_requests": 1,
+  "usage_records": 1,
+  "generation_attempts": 1,
+  "different_generated_codes": 1,
+  "accepted_candidates": 1,
+  "program_auto_verifications": 1,
+  "native_tool_calls": 0,
+  "format_corrections": 0,
+  "initial_verdict": "FAIL",
+  "candidate_verdict": "UNKNOWN",
+  "task_status": "STOPPED_UNKNOWN_VERIFICATION",
+  "pytest_exit_code": 2,
+  "pytest_collected": 0,
+  "pytest_executed": 0,
+  "entry_scenarios_executed": 0,
+  "root_failure_class": "MODEL_GENERATED_INVALID_SOURCE_FORMAT",
+  "execution_consequence": "collection/import blocked by literal Markdown fences, not environment installation, timeout or input budget",
+  "json_schema_valid": true,
+  "python_source_valid": false,
+  "component_import_and_calls_present": true,
+  "credential_lookup_expression_correct_statically": true,
+  "function_or_safety_success_established": false,
+  "static_issues": [
+    {
+      "lines": [
+        1,
+        30
+      ],
+      "type": "GENERATED_SOURCE_FORMAT",
+      "fact": "Markdown fences are literal candidate bytes; actual SyntaxError line 1 prevents import/collection."
+    },
+    {
+      "lines": [
+        26,
+        27
+      ],
+      "type": "STATIC_ONLY_UNEXECUTED",
+      "fact": "except urllib.error.HTTPError references an unbound urllib name and converts required HTTPError into ValueError. Not dynamically reached or repaired."
+    }
+  ],
+  "same_object_public_PASS_recheck": false,
+  "PASS_export_not_attempted": true,
+  "page_task_identity": "live-c5e9217f868f4681a94bdda49c914e6e",
+  "installed_page_status": "COMPLETED",
+  "handoff_status": "NOT_READY_FOR_HANDOFF",
+  "comparison_status": "MODEL_COMPARISON_CLOSED_UNSUCCESSFUL",
+  "round_closed": true,
+  "remaining_budget_not_used_due_to_unknown_stop": true,
+  "next_decision": "Pause automatic-generation effectiveness optimization; await user resources/scope decision.",
+  "not_a_semantic_model_ranking": true,
+  "no_second_task_permitted": true
+}

@@ -1,11 +1,13 @@
-# 单次编码模型工程对照（dev33）
+# dev33：单次编码模型对照（已结束）
 
-登记任务 assistant-original/p01；原始项目、组件 API、规则、必要业务测试及生成策略保持 dev32。仅新增固定 qwen2.5-coder:32b-instruct-q4_K_M，不覆盖 Qwen3 记录。本页暂为运行前登记，结果随后追加。
+**NOT_READY_FOR_HANDOFF / MODEL_COMPARISON_CLOSED_UNSUCCESSFUL**。
 
-最多一次无项目代码结构化预检、一次正式任务；正式任务最多3次实质生成、1次格式纠正、4次请求、3候选/3程序验收。16K上下文、2048输出、512预留、120秒请求、900秒任务。持久化独占 claim 在宿主保留，重启/换目录不恢复额度。失败不追加第二轮。
+[一页结论与全部证据](public-evidence/README.md)。固定 qwen2.5-coder:32b-instruct-q4_K_M，真实被测源码 `a780b9e6543355c2108c1d41e43a8dccd7c2e0c1`；安装程序构建源 `ad826dae2d43ee0c0ec636f59a48f9325bcd14df`，12份受影响程序文件相同。后续证据提交不代表又一次模型任务。
 
-[登记与限制](registration.json)。[固定模型配置](../../../../agent_pilot/model_config.py)、[生成客户端](../../../../agent_pilot/bounded_patch.py)、[原边界和自动验收](../../../../credproof_safety/agent.py)。
+一次非项目结构化预检通过；唯一正式安装页面任务为1次生成、1份不同/接受候选、1次自动验收UNKNOWN。JSON有效但代码含Markdown围栏，导致SyntaxError、pytest收集/执行0，按既有UNKNOWN分支停止。没有模型修复PASS、成功导出或公开PASS复检。未修改候选、未追加第二任务。
 
-官方来源：[固定标签](https://ollama.com/library/qwen2.5-coder:32b-instruct-q4_K_M)、[结构化输出接口](https://docs.ollama.com/capabilities/structured-outputs)。模板由模型自己的 manifest 读取，无模板覆盖、付费 API 或自动回退。
+[硬上限登记](registration.json) / [真实计数与结束原因](public-evidence/closure/conclusion.json) / [实际请求](public-evidence/model-trace/model-01-request.json) / [实际响应](public-evidence/model-trace/model-01-response.json) / [候选](public-evidence/candidates/candidate-01.py) / [完整验收](public-evidence/candidates/verification-01.json)。
 
-状态：NOT_READY_FOR_HANDOFF。此页不是模型成功或外部验收声明。
+本轮只新增固定模型身份、manifest挂载及版本记录；同一原始p01、组件API、系统指令、工作包构造、测试与判决保持。官方来源：[固定模型标签](https://ollama.com/library/qwen2.5-coder:32b-instruct-q4_K_M)、[结构化输出接口](https://docs.ollama.com/capabilities/structured-outputs)。
+
+本轮已关闭：暂停自动生成效果优化，等待用户裁定后续资源或产品范围。不自动启动5060。

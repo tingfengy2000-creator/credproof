@@ -1,0 +1,33 @@
+{
+  "environment": {
+    "CREDPROOF_MODEL_PROFILE": "qwen25",
+    "CREDPROOF_MODEL_COMPARISON_LEDGER": "<host-ledger>/ledger.json",
+    "PYTHONUTF8": "1"
+  },
+  "commands": [
+    {
+      "argv": "<installed-python> -I -m agent_pilot.preflight",
+      "exit_code": 0,
+      "kind": "NO_INFERENCE"
+    },
+    {
+      "argv": "<installed-python> -I scripts/preflight-coding-model.py --output <registered-output>/structured-preflight",
+      "exit_code": 0,
+      "kind": "ONE_NON_PROJECT_MODEL_REQUEST"
+    },
+    {
+      "argv": ".venv/Scripts/python.exe scripts/run-component-page-task.py --python <installed-python> --workspace <install-root>/data --output <registered-output>/formal-page",
+      "exit_code": 0,
+      "kind": "ONE_REAL_INSTALLED_PAGE_TASK",
+      "task_status": "STOPPED_UNKNOWN_VERIFICATION",
+      "verdict": "UNKNOWN"
+    },
+    {
+      "argv": ".venv/Scripts/python.exe scripts/export-component-evidence.py formal --base <registered-output> --workspace <install-root>/data --run <registered-output>/formal-page --install-root <install-root>",
+      "exit_code": 0,
+      "kind": "POST_RUN_DERIVATION_NO_EXECUTION"
+    }
+  ],
+  "zero_exit_is_not_candidate_PASS": true,
+  "no_model_after_formal_task": true
+}

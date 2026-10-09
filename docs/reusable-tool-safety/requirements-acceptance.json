@@ -1,7 +1,7 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.32",
-  "tested_source_commit": "7011959e795f3bde442d3f4899ea5097ab42528a",
+  "candidate_version": "0.3.0-dev.33",
+  "tested_source_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
   "generated_at": "2026-10-09",
   "status_summary": {
     "verified": 12,
@@ -251,7 +251,7 @@
         "credproof_safety/access_dependency.py:dependency_receipt"
       ],
       "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先完成首请求上下文、证据反馈压缩与可信阶段顺序预检，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
-      "acceptance": "Installed page: 3 generation requests/3 usage, 1 accepted candidate/1 automatic FAIL, 2 NO_CHANGE; no native tool calls. Qualified current repair remains unverified.",
+      "acceptance": "dev33 installed page: 1 generation/usage, 1 accepted candidate, 1 trusted UNKNOWN. JSON is valid, source is not valid Python; no qualifying repair.",
       "commands": [
         ".venv\\Scripts\\python.exe scripts/replay-context-budget-v6-duplicate-verify.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-payload.json --output-dir docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup",
         ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests/test_model_boundary.py agent_pilot/test_model_client.py credproof_safety/tests/test_entry_scenarios.py credproof_safety/tests/test_project_bundle.py"
@@ -303,18 +303,24 @@
         "acceptance/20261009-component-assisted/public-evidence/source-review.json",
         "acceptance/20261009-component-assisted/public-evidence/candidates/verification-01.json",
         "acceptance/20261009-component-assisted/public-evidence/install-receipt.json",
-        "acceptance/20261009-component-assisted/public-evidence/public-retrieval/summary.json"
+        "acceptance/20261009-component-assisted/public-evidence/public-retrieval/summary.json",
+        "acceptance/20261009-coding-model-comparison/public-evidence/README.md",
+        "acceptance/20261009-coding-model-comparison/public-evidence/closure/conclusion.json",
+        "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/page-final.json",
+        "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/installed-child-origin.json",
+        "acceptance/20261009-coding-model-comparison/public-evidence/candidates/verification-01.json",
+        "acceptance/20261009-coding-model-comparison/public-evidence/preparation/install-final-receipt.json"
       ],
-      "source_commit": "7011959e795f3bde442d3f4899ea5097ab42528a",
-      "gaps": "Model candidate treats credential value as environment key, does not use access component; normal business/entry scenes fail. No qualified repair or same-object public PASS recheck.",
+      "source_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
+      "gaps": "Literal Markdown fences caused SyntaxError and zero collected/executed business tests. Current repair and public PASS recheck remain unverified; model comparison closed unsuccessful.",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
-          "sha256": "9771bb0c0defe43b6a6bda3c12a5439d86ecdc9f35c373b083d931e3c6804629"
+          "sha256": "a3f54573f636aadd84c00ff2aa15a20f2757a08513c3175d47986e8f5781dc84"
         },
         {
           "path": "agent_pilot/bounded_patch.py",
-          "sha256": "3404525767c3601da35754d350e03cef05cfdeacf9cdee7098c272ebdc1c2c29"
+          "sha256": "0c7b4bb25421da02585a096b403b63e1542e390d45a08bcd87690e85deb94e10"
         },
         {
           "path": "credproof_safety/runner.py",
@@ -326,7 +332,7 @@
         },
         {
           "path": "credproof_safety/web_repair.py",
-          "sha256": "18112ab679d0ee18acbd5bfe19fb021446450a8e61d66dc80458a8896614f81e"
+          "sha256": "e59f4c5b7e8fa5704ecd0ff81577459b97ef963a6d30395acb6580d06af7af13"
         },
         {
           "path": "credproof_access/__init__.py",
@@ -374,9 +380,15 @@
             "acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/summary.json",
             "acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/verification-01.json",
             "acceptance/20261009-bounded-patch/public-evidence/summary.json",
-            "acceptance/20261009-bounded-patch/public-evidence/verification-02.json"
+            "acceptance/20261009-bounded-patch/public-evidence/verification-02.json",
+            "acceptance/20261009-coding-model-comparison/public-evidence/README.md",
+            "acceptance/20261009-coding-model-comparison/public-evidence/closure/conclusion.json",
+            "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/page-final.json",
+            "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/installed-child-origin.json",
+            "acceptance/20261009-coding-model-comparison/public-evidence/candidates/verification-01.json",
+            "acceptance/20261009-coding-model-comparison/public-evidence/preparation/install-final-receipt.json"
           ],
-          "reason": "Structured generator produced valid candidate data but no qualifying repair; model semantic errors and identified context detail limits are recorded."
+          "reason": "dev33 invalid source prevented necessary test execution; UNKNOWN is not safe or repaired. No successful current candidate; round closed unsuccessful."
         },
         {
           "id": "revision_stage_actions",
@@ -590,7 +602,19 @@
           "sha256": "0d2585621409ebb57ce919d07ae8ff2512780202731de206af1dd3149b2a57a9"
         }
       ],
-      "prior_evidence_source_commit": "a7772787010d57372f029069be7127a44b88fef7"
+      "prior_evidence_source_commit": "a7772787010d57372f029069be7127a44b88fef7",
+      "current_round_addendum": {
+        "source_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
+        "evidence": [
+          "acceptance/20261009-coding-model-comparison/public-evidence/README.md",
+          "acceptance/20261009-coding-model-comparison/public-evidence/closure/conclusion.json",
+          "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/page-final.json",
+          "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/installed-child-origin.json",
+          "acceptance/20261009-coding-model-comparison/public-evidence/candidates/verification-01.json",
+          "acceptance/20261009-coding-model-comparison/public-evidence/preparation/install-final-receipt.json"
+        ],
+        "scope": "dev33 installed origin/local inference/boundary and conservative UNKNOWN stop only; no repair PASS or handoff"
+      }
     },
     {
       "id": "R12",
@@ -626,7 +650,19 @@
           "sha256": "bdd3325fc9604aefd2f357e015bb9e1dba05da5d58b0c3716b08d6ceb97300e5"
         }
       ],
-      "prior_evidence_source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125"
+      "prior_evidence_source_commit": "41d06cd5707de50ede87f49eb5062758c54c6125",
+      "current_round_addendum": {
+        "source_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
+        "evidence": [
+          "acceptance/20261009-coding-model-comparison/public-evidence/README.md",
+          "acceptance/20261009-coding-model-comparison/public-evidence/closure/conclusion.json",
+          "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/page-final.json",
+          "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/installed-child-origin.json",
+          "acceptance/20261009-coding-model-comparison/public-evidence/candidates/verification-01.json",
+          "acceptance/20261009-coding-model-comparison/public-evidence/preparation/install-final-receipt.json"
+        ],
+        "scope": "dev33 installed origin/local inference/boundary and conservative UNKNOWN stop only; no repair PASS or handoff"
+      }
     },
     {
       "id": "R13",
@@ -667,7 +703,19 @@
           "sha256": "9bb30b47560da2fc56e3f1c318ab159b7b9229540e47db36fcac87db572130f5"
         }
       ],
-      "prior_evidence_source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1"
+      "prior_evidence_source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1",
+      "current_round_addendum": {
+        "source_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
+        "evidence": [
+          "acceptance/20261009-coding-model-comparison/public-evidence/README.md",
+          "acceptance/20261009-coding-model-comparison/public-evidence/closure/conclusion.json",
+          "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/page-final.json",
+          "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/installed-child-origin.json",
+          "acceptance/20261009-coding-model-comparison/public-evidence/candidates/verification-01.json",
+          "acceptance/20261009-coding-model-comparison/public-evidence/preparation/install-final-receipt.json"
+        ],
+        "scope": "dev33 installed origin/local inference/boundary and conservative UNKNOWN stop only; no repair PASS or handoff"
+      }
     }
   ],
   "excluded_by_owner": [
@@ -678,16 +726,15 @@
     "real credential revocation",
     "new model/case expansion"
   ],
-  "interpretation": "bounded_patch is a structured, program-scheduled LLM repair workflow, not the Qwen-Agent native tool loop. One registered task produced 3 schema-valid PATCH outputs, 2 accepted candidates/2 trusted FAIL results; third was NO_CHANGE. No passing candidate/export/recheck; no handoff.",
-  "current_review_receipt_commit": "7e56c1b37647aa4d6ede6d226082c737b09e25d3",
+  "interpretation": "dev33: one non-project preflight passed; one formal installed-page task, one generation/candidate/auto verification UNKNOWN because literal Markdown fences caused SyntaxError and zero collected/executed tests. No model repair PASS. Round closed; no added retry or changed acceptance.",
+  "current_review_receipt_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
   "handoff_status": "NOT_READY_FOR_HANDOFF",
   "handoff_blockers": [
-    "Current model candidates still do not fulfil all original normal business and safety requirements",
-    "No same-model-candidate passing public bundle/recheck",
-    "Final installed/page bounded strategy verification is gated on a qualifying candidate"
+    "No qualifying current model repair; generated source did not import/execute.",
+    "No same-object public PASS recheck or successful-effect final entry evidence."
   ],
-  "version": "0.3.0-dev.31",
-  "latest_review_update": "dev31: structured /api/chat format on unchanged local model; no tools field/native tool calls; valid generation/feedback cycle but normal business rejected by model code. No repeat task.",
+  "version": "0.3.0-dev.33",
+  "latest_review_update": "acceptance/20261009-coding-model-comparison/public-evidence/README.md",
   "protocol_replay_only": false,
   "historical_live_run_source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1",
   "dev29_live_run": {
@@ -736,5 +783,73 @@
     "new_directory_recheck": false,
     "next_decision": "Request user approval for verified file/HTTP safety components aiding generation; not implemented"
   },
-  "publication_receipt": "acceptance/20261009-bounded-patch/github-publication.json"
+  "publication_receipt": "acceptance/20261009-bounded-patch/github-publication.json",
+  "current_round_status": "MODEL_COMPARISON_CLOSED_UNSUCCESSFUL",
+  "current_review_receipt_commit_meaning": "frozen tested source; evidence commit recorded by final Git delivery, not a claim that these later evidence files already existed in source commit",
+  "dev33_live_run": {
+    "schema": "credproof.coding-model-comparison/v1",
+    "tested_source_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
+    "wheel_build_source": "ad826dae2d43ee0c0ec636f59a48f9325bcd14df",
+    "wheel_sha256": "90cbb4f328de855eeb363ac4b13062c44a5d7edf9787a4660ffb76ac7d8648f9",
+    "program_changed_after_formal_start": false,
+    "model": {
+      "profile": "qwen25",
+      "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+      "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+      "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+    },
+    "preflight_requests": 1,
+    "formal_tasks": 1,
+    "formal_model_requests": 1,
+    "usage_records": 1,
+    "generation_attempts": 1,
+    "different_generated_codes": 1,
+    "accepted_candidates": 1,
+    "program_auto_verifications": 1,
+    "native_tool_calls": 0,
+    "format_corrections": 0,
+    "initial_verdict": "FAIL",
+    "candidate_verdict": "UNKNOWN",
+    "task_status": "STOPPED_UNKNOWN_VERIFICATION",
+    "pytest_exit_code": 2,
+    "pytest_collected": 0,
+    "pytest_executed": 0,
+    "entry_scenarios_executed": 0,
+    "root_failure_class": "MODEL_GENERATED_INVALID_SOURCE_FORMAT",
+    "execution_consequence": "collection/import blocked by literal Markdown fences, not environment installation, timeout or input budget",
+    "json_schema_valid": true,
+    "python_source_valid": false,
+    "component_import_and_calls_present": true,
+    "credential_lookup_expression_correct_statically": true,
+    "function_or_safety_success_established": false,
+    "static_issues": [
+      {
+        "lines": [
+          1,
+          30
+        ],
+        "type": "GENERATED_SOURCE_FORMAT",
+        "fact": "Markdown fences are literal candidate bytes; actual SyntaxError line 1 prevents import/collection."
+      },
+      {
+        "lines": [
+          26,
+          27
+        ],
+        "type": "STATIC_ONLY_UNEXECUTED",
+        "fact": "except urllib.error.HTTPError references an unbound urllib name and converts required HTTPError into ValueError. Not dynamically reached or repaired."
+      }
+    ],
+    "same_object_public_PASS_recheck": false,
+    "PASS_export_not_attempted": true,
+    "page_task_identity": "live-c5e9217f868f4681a94bdda49c914e6e",
+    "installed_page_status": "COMPLETED",
+    "handoff_status": "NOT_READY_FOR_HANDOFF",
+    "comparison_status": "MODEL_COMPARISON_CLOSED_UNSUCCESSFUL",
+    "round_closed": true,
+    "remaining_budget_not_used_due_to_unknown_stop": true,
+    "next_decision": "Pause automatic-generation effectiveness optimization; await user resources/scope decision.",
+    "not_a_semantic_model_ranking": true,
+    "no_second_task_permitted": true
+  }
 }

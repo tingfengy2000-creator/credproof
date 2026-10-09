@@ -1,0 +1,68 @@
+{
+  "id": "live-c5e9217f868f4681a94bdda49c914e6e",
+  "case_id": "p01",
+  "mode": "LIVE",
+  "status": "QUEUED",
+  "task_status": "UNKNOWN",
+  "started_at": "2026-10-09T15:38:39.542966+00:00",
+  "updated_at": "2026-10-09T15:38:39.542966+00:00",
+  "phase": "读取已保存的实际运行材料",
+  "model": {
+    "status": null,
+    "calls": null,
+    "initially_leaking": null,
+    "raw_notes": [],
+    "proposals": [],
+    "denied_proposal_count": null
+  },
+  "diagnosis": {
+    "model_suspicion": null,
+    "confirmed": "UNKNOWN",
+    "repair_authorized": null
+  },
+  "tool_calls": null,
+  "unknown_count": null,
+  "source_code": "\"\"\"Small authorised materials assistant used by the reusable-entry example.\n\nThis initial version is intentionally vulnerable for the local lab: it reads a\npath supplied by the request, follows a redirect, and includes its credential\nin a debug message. The lab provides only synthetic material and loopback mock\nservices. The file is never run on a real account.\n\"\"\"\nimport json\nimport logging\nimport os\nfrom urllib.request import Request, urlopen\n\n\ndef run(request):\n    if not isinstance(request, dict) or not isinstance(request.get(\"resource\"), str):\n        raise ValueError(\"invalid request\")\n    credential_env = os.environ.get(\"CREDPROOF_CREDENTIAL_ENV\", \"CREDPROOF_TEST_CREDENTIAL\")\n    credential = os.environ[credential_env]\n    path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\")\n    with open(path, \"r\", encoding=\"utf-8\") as handle:\n        material = handle.read()\n    url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"]\n    response = urlopen(Request(url, headers={\"Authorization\": \"Bearer \" + credential}), timeout=2)\n    body = response.read().decode(\"utf-8\")\n    logging.info(\"loaded %s with credential=%s\", request[\"resource\"], credential)\n    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": json.loads(body),\n            \"credential\": credential}\n",
+  "source_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+  "candidate_code": null,
+  "candidate_sha256": null,
+  "diff": null,
+  "evidence": [],
+  "validation": null,
+  "recheck": null,
+  "material_binding": {
+    "status": "NOT_CAPTURED",
+    "binding_sha256": null,
+    "exported_binding_sha256": null,
+    "reasons": [],
+    "historical_bundle_available": false
+  },
+  "recheck_applicability": {
+    "status": "NOT_CHECKED",
+    "reasons": []
+  },
+  "historical_recheck": null,
+  "stop_reason": null,
+  "project": {
+    "id": null,
+    "model_profile": null,
+    "strategy": "bounded_patch",
+    "profile": "component_assisted",
+    "component_version": null,
+    "config": null,
+    "adapter": null,
+    "model_boundary": null
+  },
+  "remaining_uncertainty": [
+    "final_result_not_available"
+  ],
+  "process": {
+    "exit_code": null,
+    "raw_streams_retained_locally": true
+  },
+  "limitations": [
+    "仅覆盖登记的合成任务与固定检查协议；不表示任意真实项目安全。",
+    "模型回答与程序判决独立；任务结束不等于验收通过。"
+  ],
+  "presentation": null
+}
