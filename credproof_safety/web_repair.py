@@ -163,6 +163,7 @@ def _adapt(config_path: Path, output: Path, project_id: str, case_id: str, repai
         "final_validation": final,
         "task": {"task_status": task_status, "reason": repair.get("reason")},
         "model": model,
+        "model_profile": repair.get("model_profile"),
         "execution_counts": execution_counts,
         "tool_trace": repair.get("tool_trace", []),
         "observations": _observation(initial),

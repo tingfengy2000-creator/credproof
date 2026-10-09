@@ -688,6 +688,7 @@ class Application:
                   'historical_recheck': historical_recheck,
                   'stop_reason': task.get('reason') or run.error,
                   'project': {'id': (row or {}).get('project_id'),
+                              'model_profile': (row or {}).get('model_profile'),
                               'strategy': (row or {}).get('strategy') or ('bounded_patch' if run.mode == 'LIVE' else 'historical_qwen_agent'),
                               'profile': (row or {}).get('profile') or ('component_assisted' if run.mode == 'LIVE' else 'historical'),
                               'component_version': ((row or {}).get('access_component') or {}).get('version'),

@@ -157,7 +157,10 @@ function renderScope() {
   const rules = array(item?.rules);
   $('rule-list').innerHTML = rules.length ? rules.map(rule => `<li>${escape(text(rule))}</li>`).join('')
     : '<li class="placeholder-line">服务端尚未提供本任务规则。</li>';
-  $('model-label').textContent = state.bootstrap?.runtime.model_label || '尚未取得运行信息';
+  $('model-label').textContent = state.run?.project?.model_profile?.name
+    ? `${state.run.project.model_profile.name} · 本次记录`
+    : state.replay ? '历史回放 · 模型身份见原始记录'
+    : state.bootstrap?.runtime.model_label || '尚未取得运行信息';
   const mode = state.bootstrap?.access_mode;
   const ready = mode === 'recheck' ? state.bootstrap?.runtime.isolation_ready : state.bootstrap?.runtime.ready;
   $('runtime-status').textContent = state.error ? '状态未确认' : mode === 'view' ? '历史查看 · 无需模型' : ready === true ? (mode === 'recheck' ? '隔离就绪 · 不调用模型' : '设施已就绪') : ready === false ? '尚未就绪' : '待检查';

@@ -333,6 +333,7 @@ def _bounded_model_script() -> str:
         'format_correction_attempts':corrections,'decoded_outputs':decoded,'error':error,
         'native_tool_requests':0,'task_status':terminal}
  result={'schema':'credproof.safety.agent/v2','strategy':'bounded_patch',
+   'model_profile':selected_profile(),
    'status':'OK' if terminal=='COMPLETED_REPAIRED' else 'INCOMPLETE','task_status':terminal,
    'tool_trace':[],'program_trace':program_trace,'model':model,
    'elapsed_s':round(time.monotonic()-started,3),
