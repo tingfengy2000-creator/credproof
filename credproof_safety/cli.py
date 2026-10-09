@@ -26,6 +26,7 @@ def build_parser() -> argparse.ArgumentParser:
     repair = sub.add_parser("repair", help="让本地模型提出候选并由程序复验")
     repair.add_argument("--config", type=Path, required=True)
     repair.add_argument("--output", type=Path)
+    repair.add_argument("--strategy", choices=['qwen_agent', 'bounded_patch'], default='qwen_agent')
     return p
 
 
@@ -51,7 +52,7 @@ def main(argv=None) -> int:
             result = export_regression_tests(args.config, args.output)
             print(json.dumps({"status": "EXPORTED", "directory": str(result)}, ensure_ascii=True, indent=2)); return 0
         if args.command == "repair":
-            result = request_repair(args.config, output=args.output)
+            result = request_repair(args.config, output=args.output, strategy=args.strategy)
             print(json.dumps(result, ensure_ascii=True, indent=2))
             return 0 if result.get("status") == "OK" else 3
     except (OSError, ValueError, KeyError) as exc:

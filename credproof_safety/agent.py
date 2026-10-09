@@ -254,6 +254,116 @@ finally:
  shutil.rmtree(work,ignore_errors=True)
 '''
 
+
+def _bounded_model_script() -> str:
+    """Share only reviewed service/boundary/RPC setup, never old tool prompts."""
+    prefix = _MODEL_SCRIPT[:_MODEL_SCRIPT.index(' started=time.monotonic()')]
+    start, end = prefix.index('def read_code(data)'), prefix.index("work = Path('/tmp/credproof-agent-model-")
+    prefix = prefix[:start] + prefix[end:]
+    prefix = prefix.replace('from agent_pilot.model_client import LocalAgentClient',
+                            'from agent_pilot.bounded_patch import BoundedPatchClient, build_payload, parse_response, generation_state')
+    tail = r'''
+ started=time.monotonic()
+ (artifact/'structured-api-service.json').write_text(json.dumps({
+   'version':json.loads(api('/api/version')),'models':json.loads(api('/api/tags')),
+   'interface':'/api/chat format JSON Schema; compatibility tested by actual formal responses'},indent=2)+'\n',encoding='utf8')
+ client=BoundedPatchClient(artifact/'model-trace')
+ program_trace=[]; generations=0; corrections=0; decoded=[]; terminal=None; error=None
+ def program_call(name, arguments):
+  value=rpc(name, arguments)
+  program_trace.append({'sequence':len(program_trace)+1,'operation':name,'arguments':arguments,'result':value})
+  return value
+ evidence=program_call('get_evidence',{})
+ if evidence.get('status')!='OK': raise RuntimeError('initial_evidence_unavailable')
+ paths=initial_context['project']['readable_paths']; entry=initial_context['project']['entry_path']
+ sources={}
+ for path in paths:
+  value=program_call('read_code',{'path':path})
+  if value.get('status')!='OK': raise RuntimeError('authorised_source_unavailable:'+path)
+  sources[path]=value['code']
+ current_code=sources.pop(entry)
+ feedback={k:v for k,v in evidence.items() if k not in ('status','executor_state')}
+ host_state=program_trace[-1]['result']['executor_state']
+ try:
+  while generations<3 and not terminal:
+   work_state={'strategy':'bounded_patch','executor':generation_state(host_state),
+     'remaining_generations':3-generations,'remaining_requests':4-client.calls,
+     'remaining_format_corrections':1-corrections,'max_program_verifications':3}
+   payload=build_payload(initial_context,current_code,sources,feedback,work_state)
+   generations+=1
+   response=client.request(payload)
+   try: obj=parse_response(response)
+   except (ValueError,TypeError) as exc:
+    client.save('invalid-output-%02d.json'%client.calls,{'reason':str(exc),'candidate_accepted':False})
+    if corrections>=1: terminal='STOPPED_INVALID_OUTPUT'; break
+    corrections+=1
+    work_state.update(remaining_generations=3-generations,remaining_requests=4-client.calls,
+                      remaining_format_corrections=1-corrections)
+    payload=build_payload(initial_context,current_code,sources,feedback,work_state,correction=str(exc))
+    response=client.request(payload)
+    try: obj=parse_response(response)
+    except (ValueError,TypeError) as exc:
+     client.save('invalid-output-%02d.json'%client.calls,{'reason':str(exc),'candidate_accepted':False})
+     terminal='STOPPED_INVALID_OUTPUT'; break
+   decoded.append({'call_id':client.calls,'output':obj})
+   if obj['action']=='STOP': terminal='STOPPED_BY_MODEL'; break
+   # Only the trusted host writes the permitted entry and runs check_project.
+   applied=program_call('submit_patch',{'code':obj['code']})
+   host_state=applied['executor_state']
+   if applied.get('status')!='ACCEPTED_FOR_VERIFICATION':
+    if applied.get('reason')=='NO_CHANGE':
+     feedback=dict(feedback,proposal_rejection={'status':'REJECTED','reason':'NO_CHANGE'})
+     continue
+    terminal='STOPPED_EXECUTOR_REJECTION'; break
+   current_code=obj['code']
+   feedback=applied['verification']['report']
+   if feedback['verdict']=='PASS': terminal='COMPLETED_REPAIRED'
+   elif feedback['verdict']=='UNKNOWN': terminal='STOPPED_UNKNOWN_VERIFICATION'
+  terminal=terminal or 'STOPPED_GENERATION_BUDGET'
+ except Exception as exc:
+  error={'type':type(exc).__name__,'detail':str(exc)}; terminal='STOPPED_GENERATION_ERROR'
+ model={'model_calls':client.calls,'usage':client.usage,'generations':generations,
+        'format_correction_attempts':corrections,'decoded_outputs':decoded,'error':error,
+        'native_tool_requests':0,'task_status':terminal}
+ result={'schema':'credproof.safety.agent/v2','strategy':'bounded_patch',
+   'status':'OK' if terminal=='COMPLETED_REPAIRED' else 'INCOMPLETE','task_status':terminal,
+   'tool_trace':[],'program_trace':program_trace,'model':model,
+   'elapsed_s':round(time.monotonic()-started,3),
+   'model_stack':'local Ollama /api/chat format schema + bounded program scheduling',
+   'execution_boundary':'existing model bubblewrap/private network + check_project candidate isolation',
+   'budgets':{'max_model_calls':4,'max_generations':3,'max_candidates':3,
+             'max_program_verifications':3,'max_format_corrections':1,
+             'request_seconds':120,'task_seconds':900,'context':16384,'output_tokens':2048},
+   'paid_api_used':False}
+ (artifact/'model-result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
+finally:
+ if ollama is not None:
+  ollama.terminate()
+  try: ollama.wait(timeout=10)
+  except subprocess.TimeoutExpired: ollama.kill()
+  try: ollama_stdout.close(); ollama_stderr.close()
+  except NameError: pass
+ shutil.rmtree(work,ignore_errors=True)
+'''
+    return prefix + tail
+
+
+def _bounded_initial_context(report: dict, config) -> dict:
+    context = _model_initial_context(report, config)
+    context.pop('stages')
+    context.pop('read_code_limit_bytes')
+    context['original_object_id'] = context.pop('object_id')
+    context['initial_confirmed_violation'] = context.pop('confirmed_current_violation')
+    context['project']['allowed_services'] = [x.as_dict() for x in config.services]
+    context['project']['entry_request'] = config.entry.request
+    context['project']['entry_expected_error'] = config.entry.expected_error
+    context['project']['scenarios'] = [
+        {'name': x.name, 'request': x.request, 'expected_error': x.expected_error,
+         'require_network': x.require_network} for x in config.entry.scenarios]
+    context['strategy'] = 'bounded_patch'
+    context['service_port_semantics'] = 'port=0 means dynamically allocated local mock; actual allowed URL supplied to code via environment'
+    return context
+
 # This supervisor is passed to a clean WSL interpreter.  It stages only the
 # reviewed worker modules, then starts bubblewrap with an explicit allowlist;
 # the model process never receives the checkout or the repair artifact root.
@@ -264,6 +374,9 @@ runtime, stage_source, artifact, sentinel, rpc_source = map(Path, sys.argv[1:6])
 if not runtime.is_absolute() or not stage_source.is_absolute() or not artifact.is_absolute():
     raise SystemExit('model boundary paths must be absolute')
 allowed = {'worker.py', 'initial-context.json', 'agent_pilot/__init__.py', 'agent_pilot/tools.py', 'agent_pilot/model_client.py'}
+strategy = json.loads((stage_source/'initial-context.json').read_text(encoding='utf8')).get('_generation_strategy', 'qwen_agent')
+if strategy == 'bounded_patch': allowed.add('agent_pilot/bounded_patch.py')
+elif strategy != 'qwen_agent': raise SystemExit('unknown generation strategy')
 found = {p.relative_to(stage_source).as_posix() for p in stage_source.rglob('*') if p.is_file()}
 if found != allowed:
     raise SystemExit('model stage contains unexpected files')
@@ -767,7 +880,7 @@ def _read_progress_update(key, previous_key, previous_count: int, *, limit: int 
     return key, count, count >= limit
 
 
-def _host_repair(config_path: Path, output: str | Path | None, initial: dict) -> dict:
+def _host_repair(config_path: Path, output: str | Path | None, initial: dict, *, strategy='qwen_agent') -> dict:
     config = load_config(config_path)
     artifact, _ = _artifact_dir(output)
     candidate = artifact / 'candidate'
@@ -1033,12 +1146,16 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
     repo=Path(__file__).resolve().parents[1]
     for relative in ('agent_pilot/__init__.py', 'agent_pilot/tools.py', 'agent_pilot/model_client.py'):
         target = stage / relative; target.write_bytes((repo / relative).read_bytes())
-    (stage / 'worker.py').write_text(_MODEL_SCRIPT, encoding='utf-8')
+    if strategy == 'bounded_patch':
+        (stage/'agent_pilot/bounded_patch.py').write_bytes((repo/'agent_pilot/bounded_patch.py').read_bytes())
+    (stage / 'worker.py').write_text(_bounded_model_script() if strategy=='bounded_patch' else _MODEL_SCRIPT, encoding='utf-8')
     # Give the first model request the current bounded index and contract.  It
     # is derived from the registered object and observations; no reference
     # patch, fixed fixture, or hidden expected answer is included.
     (stage / 'initial-context.json').write_text(
-        json.dumps(_model_initial_context(initial, config), ensure_ascii=False, sort_keys=True),
+        json.dumps(dict((_bounded_initial_context(initial, config) if strategy=='bounded_patch'
+                        else _model_initial_context(initial, config)),
+                        _generation_strategy=strategy), ensure_ascii=False, sort_keys=True),
         encoding='utf-8')
     (artifact / 'host-sentinel.txt').write_text('synthetic host boundary sentinel; not a credential\n', encoding='utf-8')
     encoded_bootstrap = __import__('base64').b64encode(_MODEL_BOUNDARY_BOOTSTRAP.encode()).decode()
@@ -1079,9 +1196,12 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
     return _save(error,output)
 
 
-def request_repair(config_path: str | Path, *, output: str | Path | None = None) -> dict:
+def request_repair(config_path: str | Path, *, output: str | Path | None = None,
+                   strategy: str = 'qwen_agent') -> dict:
+    if strategy not in {'qwen_agent', 'bounded_patch'}:
+        raise ValueError('unknown_repair_strategy')
     config=load_config(config_path); initial=check_project(config.config_path)
     if (initial.get('verdict') != 'FAIL' or
             initial.get('observation_summary', {}).get('classification') != 'ACTUAL_VIOLATION'):
         return _save({'schema':'credproof.safety.agent/v2','status':'BLOCKED','reason':'no_current_confirmed_violation','initial':initial,'paid_api_used':False},output)
-    return _host_repair(Path(config.config_path),output,initial)
+    return _host_repair(Path(config.config_path),output,initial,strategy=strategy)
