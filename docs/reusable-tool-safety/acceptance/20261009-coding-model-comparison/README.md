@@ -2,6 +2,8 @@
 
 **NOT_READY_FOR_HANDOFF / MODEL_COMPARISON_CLOSED_UNSUCCESSFUL**。
 
+[最终收尾记录](closeout.md)：身份、真实计数、完成/未执行步骤及明确阻断；本轮已停止，没有新增推理或5060交接。
+
 [一页结论与全部证据](public-evidence/README.md)。固定 qwen2.5-coder:32b-instruct-q4_K_M，真实被测源码 `a780b9e6543355c2108c1d41e43a8dccd7c2e0c1`；安装程序构建源 `ad826dae2d43ee0c0ec636f59a48f9325bcd14df`，12份受影响程序文件相同。后续证据提交不代表又一次模型任务。
 
 一次非项目结构化预检通过；唯一正式安装页面任务为1次生成、1份不同/接受候选、1次自动验收UNKNOWN。JSON有效但代码含Markdown围栏，导致SyntaxError、pytest收集/执行0，按既有UNKNOWN分支停止。没有模型修复PASS、成功导出或公开PASS复检。未修改候选、未追加第二任务。
