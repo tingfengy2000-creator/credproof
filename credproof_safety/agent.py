@@ -85,9 +85,9 @@ def get_evidence(_): return rpc('get_evidence', {})
 def submit_patch(data): return rpc('submit_patch', data)
 def verify_patch(_): return rpc('verify_patch', {})
 tools = [
- StrictTool('read_code', 'Initial evidence phase only: read the configured entry or one declared test by relative path. After a candidate is auto-verified FAIL, the current source and failure are already in the revision context; repeated reads are rejected.', {'path': {'type':'string','maxLength':256}}, [], read_code, audit),
- StrictTool('get_evidence', 'Initial evidence phase only: read fixed developer rules and compact redacted controlled observations. After an auto-verified FAIL, the executor provides the current failure facts; repeating evidence is rejected.', {}, [], get_evidence, audit),
- StrictTool('submit_patch', 'Submit one materially different bounded source candidate. The trusted executor automatically verifies it and returns the real result; after FAIL, submit a revised candidate or stop.', {'code': {'type':'string','maxLength':65536}}, ['code'], submit_patch, audit),
+ StrictTool('read_code', 'Initial phase: read a listed entry/test. After auto-verified FAIL the current source is supplied; repeated reads are rejected.', {'path': {'type':'string','maxLength':256}}, [], read_code, audit),
+ StrictTool('get_evidence', 'Initial phase: obtain trusted rules and observations. After FAIL the current evidence is supplied; repeats are rejected.', {}, [], get_evidence, audit),
+ StrictTool('submit_patch', 'Submit materially different source; program automatically verifies. After FAIL revise from supplied source/facts or stop.', {'code': {'type':'string','maxLength':65536}}, ['code'], submit_patch, audit),
  StrictTool('verify_patch', 'Compatibility-only entry. submit_patch already runs trusted verification; do not call this again for an accepted candidate. A repeated call is rejected.', {}, [], verify_patch, audit),
 ]
 system = ('Repair the authorised Python tool using native tool calls only. First call get_evidence, then '
@@ -630,7 +630,9 @@ def _model_actionable_failures(report: dict, config) -> dict:
         expected = row.get('expected_error')
         observed = 'raised' if row.get('raised') else (
             'returned' if row.get('entry_returned') is not None else 'not_observed')
-        if expected and observed != 'raised' or not expected and observed == 'not_observed':
+        raised_type = (row.get('raised') or {}).get('type') if isinstance(row.get('raised'), dict) else None
+        if ((expected and raised_type != expected) or
+                (not expected and observed != 'returned')):
             scenario_mismatches.append({key: row[key] for key in (
                 'name', 'expected_error', 'require_network') if key in row})
             scenario_mismatches[-1].update({
@@ -663,6 +665,20 @@ def _model_actionable_failures(report: dict, config) -> dict:
         'required_pytest_unmet_cases': unmet,
         'credential_destination_policy': 'credential_ok=true is allowed only for the declared authorised service; it is a violation at a forbidden service',
     }
+
+
+def _model_work_feedback(report: dict, config) -> dict:
+    """One bounded fact set for model work; full observations remain on host.
+
+    The first task already supplies rules and behavior, and source reads supply
+    tests. Do not repeat scenario/request summaries, guidance and the same
+    counts alongside the concrete failure facts in every tool response.
+    """
+    full = _model_feedback(report, config)
+    return {key: full[key] for key in (
+        'schema', 'object_id', 'verdict', 'reason', 'required_checks',
+        'confirmed_failed_checks', 'readable_paths', 'credential_leaks',
+        'pytest_summary', 'actionable_failures')}
 
 
 def _verification_repeat_summary(report: dict, config) -> dict:
@@ -733,6 +749,9 @@ def _phase_rejection(name: str, *, evidence_ready: bool,
             return 'required_sources_not_read'
     if name == 'verify_patch' and accepted_candidates == 0:
         return 'NO_ACCEPTED_CANDIDATE'
+    if (name == 'verify_patch' and last_verified_candidate == accepted_candidates
+            and accepted_candidates > 0):
+        return 'candidate_already_verified'
     return None
 
 
@@ -879,7 +898,7 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
         (history / ('verification-%02d.json' % verify_no)).write_text(
             json.dumps(current, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
         return {'status': 'OK', 'candidate': candidate_id, 'verification': verify_no,
-                'report': _model_feedback(current, config)}
+                'report': _model_work_feedback(current, config)}
 
     def serve():
         nonlocal current, patch_no, verify_no, tool_call_count, expected_source_digest, evidence_ready, read_paths
@@ -954,7 +973,7 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict) ->
                                        'read_sha256':read_digest}
                     elif name == 'get_evidence':
                         evidence_ready = True
-                        value={'status':'OK',**_model_feedback(current, config)}
+                        value={'status':'OK',**_model_work_feedback(current, config)}
                     elif name == 'submit_patch':
                         code=args.get('code') if isinstance(args,dict) else None
                         if not authorised:

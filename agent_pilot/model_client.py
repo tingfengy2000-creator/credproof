@@ -268,6 +268,7 @@ def compact_messages_for_budget(messages: Sequence[Message | dict]) -> list[dict
                 'status', 'reason', 'error', 'message', 'tool',
                 'candidate', 'candidate_sha256', 'path', 'read_sha256',
                 'missing_paths', 'repeated_read_count', 'tool_call_count',
+                'original_reason', 'allowed_actions', 'revision_phase_rejections',
                 'verification', 'executor_state') if key in value}
         result = copy.deepcopy(value)
         if name == 'get_evidence':
