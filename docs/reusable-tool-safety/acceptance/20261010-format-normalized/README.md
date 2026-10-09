@@ -10,6 +10,8 @@
 4. [运行前冻结](public-evidence/freeze.json) / [安装来源](public-evidence/installed-origin.json) / [唯一执行收据](public-evidence/execution-receipt.json) / [命令与退出码](public-evidence/commands.json)。
 5. [13项格式协议测试输出](public-evidence/protocol-pytest.txt) / [JUnit](public-evidence/protocol-junit.xml) / [原件与公开件摘要映射](public-evidence/derivation.json) / [公开文件清单](public-evidence/manifest.json) / [收尾](closeout.md)。
 
+公开取件：[匿名GitHub字节核验收据](github-publication.json)。证据提交 `f86c9db024e3e7727b10048c7ae0295e8e29a08a` 的30个Raw入口正文与Git blob完全相同，包含清单22项全部文件。此项只证明公开材料可读取及字节一致，不是新的动态复检或外部验收。
+
 ## 原件确实是什么
 
 原任务 `live-c5e9217f868f4681a94bdda49c914e6e` 使用 qwen2.5-coder:32b-instruct-q4_K_M。被测源码为 `a780b9e6543355c2108c1d41e43a8dccd7c2e0c1`；原交付为 `c956b1f7f050df6d9aa707ab71fb3fa9cff7fc31`。

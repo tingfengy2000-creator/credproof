@@ -12,3 +12,5 @@
 - 状态：**NOT_READY_FOR_HANDOFF**；本轮已结束，不启动新实验或5060交接。当前缺口为生成源码异常处理及输出不满足原要求，而不是围栏仍阻止执行。
 
 完整入口：[README](README.md)；[结果](public-evidence/summary.json)；[完整报告](public-evidence/report.json)。
+
+GitHub证据提交：`f86c9db024e3e7727b10048c7ae0295e8e29a08a`。开发分支已普通推送；[匿名收据](github-publication.json)记录30份固定Raw正文及22项完整清单字节核对。收据随后另行提交，不改变原模型任务或事后验收结果。
