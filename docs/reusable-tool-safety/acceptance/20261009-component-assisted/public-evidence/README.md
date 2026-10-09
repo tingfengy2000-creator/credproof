@@ -33,7 +33,7 @@
 
 ## 失败对象交付
 
-[本地失败复检](failed-candidate-local-recheck.json)仍FAIL。[source bundle](failed-candidate-source-bundle/)仅是Git字节派生的输入档案：其中原本地清单可能对应CRLF，**不能直接当作公开可复检包**。可消费材料只使用随后派生的[LF公开bundle](failed-candidate-public-bundle/)，清单由固定Git blob生成，组件依赖随包。公开取件/新目录动态收据随后追加；复检重新执行当前检查，不读取旧FAIL充数。
+[本地失败复检](failed-candidate-local-recheck.json)仍FAIL。[source bundle](failed-candidate-source-bundle/)仅是Git字节派生的输入档案：其中原本地清单可能对应CRLF，**不能直接当作公开可复检包**。可消费材料只使用随后派生的[LF公开bundle](failed-candidate-public-bundle/)，清单由固定Git blob生成，组件依赖随包。[固定47387c3匿名取件与新目录动态收据](public-retrieval/summary.json)：13份Raw文件与Git/完整清单逐字节一致；安装程序在新目录重新执行，仍为FAIL，旧报告适用且材料完整。必要测试1通过3失败；这不是UNKNOWN或读取旧FAIL充数，更不是成功修复。完整新报告与pytest逐nodeid事件见[recheck.json](public-retrieval/recheck.json)。
 
 ## 决策与边界
 

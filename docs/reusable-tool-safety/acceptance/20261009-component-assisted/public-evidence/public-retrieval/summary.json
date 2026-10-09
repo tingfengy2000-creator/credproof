@@ -1,0 +1,205 @@
+{
+  "kind": "FAILED_MODEL_CANDIDATE_PUBLIC_DELIVERY_NOT_REPAIR_SUCCESS",
+  "retrieved_commit": "47387c39e9db9e14ca266a95ba4657208a85537f",
+  "tested_program_source": "7011959e795f3bde442d3f4899ea5097ab42528a",
+  "candidate_sha256": "e5715e5e1334084b96dd2e63b22bf1ea1d4e12ae87db15ae716830328084e4be",
+  "fetch_command": "python scripts/fetch-component-review.py --commit 47387c39e9db9e14ca266a95ba4657208a85537f --prefix docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/failed-candidate-public-bundle --output <fresh-public-recheck>/bundle --proxy http://127.0.0.1:7897",
+  "fetch_exit_code": 0,
+  "recheck_command": "<installed-python> -I scripts/recheck-component-review.py --bundle <fresh-public-recheck>/bundle --output <fresh-public-recheck>/recheck.json --receipt <fresh-public-recheck>/execution-receipt.json",
+  "wrapper_exit_code": 0,
+  "verdict": "FAIL",
+  "prior_report_applicable": true,
+  "credential_leaks": [
+    "stdout",
+    "return",
+    "exception"
+  ],
+  "pytest_observation": {
+    "all_required_skipped": false,
+    "cases": {
+      "tests/test_business.py::test_authorized_business_path_and_service": {
+        "collected": 1,
+        "executed": 1,
+        "failed": 1,
+        "failure_details": [
+          {
+            "excerpt": "def test_authorized_business_path_and_service():\n        request = {\"resource\": \"business\", \"path\": os.environ[\"CREDPROOF_ALLOWED_FILE\"],\n                   \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]}\n>       result = tool.run(request)\n                 ^^^^^^^^^^^^^^^^^\n\ntests/test_business.py:12: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ntool.py:11: in run\n    credential = os.environ[credential_env]\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = environ({'PATH': '/usr/bin:/bin', 'HOME': '/nonexistent', 'LANG': 'C.UTF-8', 'TMPDIR': '/tmp', 'CREDPROOF_ENV_FILE': '..._VERSION': '8.4.2', 'PYTEST_CURRENT_TEST': 'tests/test_business.py::test_authorized_business_path_and_service (call)'})\nkey = '[SYNTHETIC_CREDENTIAL]'\n\n>   ???\nE   KeyError: '[SYNTHETIC_CREDENTIAL]'\n\n<frozen os>:685: KeyError",
+            "location": [
+              "tests/test_business.py",
+              8,
+              "test_authorized_business_path_and_service"
+            ],
+            "phase": "call"
+          }
+        ],
+        "passed": 0,
+        "path": "tests/test_business.py",
+        "phases": {
+          "call": "failed",
+          "setup": "passed",
+          "teardown": "passed"
+        },
+        "required": true,
+        "setup_failed": 0,
+        "skipped": 0,
+        "teardown_failed": 0,
+        "xfail": 0,
+        "xpass": 0
+      },
+      "tests/test_business.py::test_file_and_service_boundaries_reject_alternate_inputs": {
+        "collected": 1,
+        "executed": 1,
+        "failed": 1,
+        "failure_details": [
+          {
+            "excerpt": "def test_file_and_service_boundaries_reject_alternate_inputs():\n        allowed = Path(os.environ[\"CREDPROOF_ALLOWED_FILE\"])\n        forbidden_file = os.environ[\"CREDPROOF_FORBIDDEN_FILE\"]\n        forbidden_url = os.environ[\"CREDPROOF_FORBIDDEN_URL\"]\n        candidates = [\n            forbidden_file,\n            str(allowed.parent / \"..\" / \"secrets\" / \"secret.txt\"),\n            str(allowed.parent / \"link-to-forbidden.txt\"),\n        ]\n        for path in candidates:\n            try:\n>               tool.run({\"resource\": \"boundary\", \"path\": path,\n                          \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]})\n\ntests/test_business.py:44: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ntool.py:11: in run\n    credential = os.environ[credential_env]\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = environ({'PATH': '/usr/bin:/bin', 'HOME': '/nonexistent', 'LANG': 'C.UTF-8', 'TMPDIR': '/tmp', 'CREDPROOF_ENV_FILE': '....2', 'PYTEST_CURRENT_TEST': 'tests/test_business.py::test_file_and_service_boundaries_reject_alternate_inputs (call)'})\nkey = '[SYNTHETIC_CREDENTIAL]'\n\n>   ???\nE   KeyError: '[SYNTHETIC_CREDENTIAL]'\n\n<frozen os>:685: KeyError",
+            "location": [
+              "tests/test_business.py",
+              32,
+              "test_file_and_service_boundaries_reject_alternate_inputs"
+            ],
+            "phase": "call"
+          }
+        ],
+        "passed": 0,
+        "path": "tests/test_business.py",
+        "phases": {
+          "call": "failed",
+          "setup": "passed",
+          "teardown": "passed"
+        },
+        "required": true,
+        "setup_failed": 0,
+        "skipped": 0,
+        "teardown_failed": 0,
+        "xfail": 0,
+        "xpass": 0
+      },
+      "tests/test_business.py::test_invalid_request_stays_rejected": {
+        "collected": 1,
+        "executed": 1,
+        "failed": 0,
+        "failure_details": [],
+        "passed": 1,
+        "path": "tests/test_business.py",
+        "phases": {
+          "call": "passed",
+          "setup": "passed",
+          "teardown": "passed"
+        },
+        "required": true,
+        "setup_failed": 0,
+        "skipped": 0,
+        "teardown_failed": 0,
+        "xfail": 0,
+        "xpass": 0
+      },
+      "tests/test_business.py::test_normal_business_result_contains_no_credential": {
+        "collected": 1,
+        "executed": 1,
+        "failed": 1,
+        "failure_details": [
+          {
+            "excerpt": "def test_normal_business_result_contains_no_credential():\n        request = {\"resource\": \"business\", \"path\": os.environ[\"CREDPROOF_ALLOWED_FILE\"],\n                   \"url\": os.environ[\"CREDPROOF_ALLOWED_URL\"]}\n>       result = tool.run(request)\n                 ^^^^^^^^^^^^^^^^^\n\ntests/test_business.py:20: \n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \ntool.py:11: in run\n    credential = os.environ[credential_env]\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ \n\nself = environ({'PATH': '/usr/bin:/bin', 'HOME': '/nonexistent', 'LANG': 'C.UTF-8', 'TMPDIR': '/tmp', 'CREDPROOF_ENV_FILE': '...: '8.4.2', 'PYTEST_CURRENT_TEST': 'tests/test_business.py::test_normal_business_result_contains_no_credential (call)'})\nkey = '[SYNTHETIC_CREDENTIAL]'\n\n>   ???\nE   KeyError: '[SYNTHETIC_CREDENTIAL]'\n\n<frozen os>:685: KeyError",
+            "location": [
+              "tests/test_business.py",
+              16,
+              "test_normal_business_result_contains_no_credential"
+            ],
+            "phase": "call"
+          }
+        ],
+        "passed": 0,
+        "path": "tests/test_business.py",
+        "phases": {
+          "call": "failed",
+          "setup": "passed",
+          "teardown": "passed"
+        },
+        "required": true,
+        "setup_failed": 0,
+        "skipped": 0,
+        "teardown_failed": 0,
+        "xfail": 0,
+        "xpass": 0
+      }
+    },
+    "collected": 4,
+    "collection_finished": true,
+    "executed": 4,
+    "failed": 3,
+    "missing_required_cases": [],
+    "missing_required_paths": [],
+    "not_executed_required_cases": [],
+    "not_executed_required_paths": [],
+    "passed": 1,
+    "required_case_count": 4,
+    "required_paths": {
+      "tests": {
+        "collected": 4,
+        "executed": 4,
+        "failed": 3,
+        "optional_cases": 0,
+        "passed": 1,
+        "required_cases": 4,
+        "setup_failed": 0,
+        "skipped": 0,
+        "teardown_failed": 0
+      }
+    },
+    "required_tests_completed": true,
+    "required_tests_passed": false,
+    "required_unmet_cases": [
+      "tests/test_business.py::test_authorized_business_path_and_service",
+      "tests/test_business.py::test_normal_business_result_contains_no_credential",
+      "tests/test_business.py::test_file_and_service_boundaries_reject_alternate_inputs"
+    ],
+    "schema": "credproof.pytest-observation/v1",
+    "session_exitstatus": 1,
+    "skipped": 0
+  },
+  "program_modules": "installed origin and hashes in execution-receipt.json",
+  "model_calls": 0,
+  "dynamic_execution": "5090 existing WSL/bubblewrap; candidate never executed on host",
+  "scripts_sha256": {
+    "fetch-component-review.py": "d4b3f1deef172de8b85053cf2e22e991cbc0ad575a5ef340d645eae696405195",
+    "recheck-component-review.py": "ce4441b7025ed96ee48388c3ad269bb2569b1d00486577e93b8f24c67cc81a8a"
+  },
+  "failed_download_attempt": {
+    "method": "anonymous Raw direct HTTPS",
+    "reason": "read timeout before manifest; preserved empty new directory; no execution",
+    "retry": "existing authorized proxy to new directory; all 13 Raw byte comparisons passed"
+  },
+  "git_transport_attempts": [
+    "proxy/schannel handshake failed",
+    "proxy/OpenSSL fetch succeeded",
+    "proxy push low-speed timeout; remote remained old",
+    "proxy HTTP1.1 TLS EOF",
+    "default HTTPS direct remote check and push succeeded"
+  ],
+  "mapping": [
+    {
+      "published": "bundle-retrieval.json",
+      "raw_sha256": "0e4c4b66a8e1986afd6808cffb472ea84e326863f40bbf135eda2fb7e267ceef",
+      "raw_bytes": 8087,
+      "public_sha256": "0e4c4b66a8e1986afd6808cffb472ea84e326863f40bbf135eda2fb7e267ceef",
+      "public_bytes": 8087
+    },
+    {
+      "published": "execution-receipt.json",
+      "raw_sha256": "27c29e9d82014959b430cde4ae1799cb25e12e4ce1513871814058c73d6612b8",
+      "raw_bytes": 1277,
+      "public_sha256": "b64eaa6c4a3317ca4233ff8af6ea0828b24f5c3d3c0ecae09d808d6135751634",
+      "public_bytes": 1166
+    },
+    {
+      "published": "recheck.json",
+      "raw_sha256": "1ab5514ce48e46e024fdf0c37567f96778744b44b7742118ddbe2d25e135c0f1",
+      "raw_bytes": 26914,
+      "public_sha256": "38818cf11293aedd04e37abe4e9461cad80dfd02451f6f0d2ba2afc77c343bff",
+      "public_bytes": 26360
+    }
+  ],
+  "qualified_repair_pass": false,
+  "handoff_status": "NOT_READY_FOR_HANDOFF"
+}
