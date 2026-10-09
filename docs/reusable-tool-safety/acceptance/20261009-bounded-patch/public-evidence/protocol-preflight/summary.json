@@ -1,0 +1,141 @@
+{
+  "schema": "credproof.bounded-patch-preflight/v1",
+  "model_calls": 0,
+  "candidate_execution": false,
+  "records": [
+    {
+      "stage": "original",
+      "kind": "NO_MODEL_MESSAGE_CONSTRUCTION",
+      "checks": {
+        "no_tools": true,
+        "code_in_actual_request": true,
+        "tests_in_actual_request": true,
+        "real_FAIL": true,
+        "no_old_loop_instruction": true,
+        "budget": true
+      },
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 9961,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 2048,
+        "input_token_upper_bound": 9961,
+        "input_token_limit": 13824,
+        "context_token_upper_bound": 12521,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "source": "examples/material_assistant/tool.py",
+      "source_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "report": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/initial-report.json"
+    },
+    {
+      "stage": "v8_failed_candidate",
+      "kind": "NO_MODEL_MESSAGE_CONSTRUCTION",
+      "checks": {
+        "no_tools": true,
+        "code_in_actual_request": true,
+        "tests_in_actual_request": true,
+        "real_FAIL": true,
+        "no_old_loop_instruction": true,
+        "budget": true
+      },
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 9916,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 2048,
+        "input_token_upper_bound": 9916,
+        "input_token_limit": 13824,
+        "context_token_upper_bound": 12476,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/candidate-01.py",
+      "source_sha256": "eb20b0a747afb8d4aada746faf7b3616d877294c1db3ba5e18735ba9661de5e0",
+      "report": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/verification-01.json"
+    },
+    {
+      "stage": "v7_second_candidate",
+      "kind": "NO_MODEL_MESSAGE_CONSTRUCTION",
+      "checks": {
+        "no_tools": true,
+        "code_in_actual_request": true,
+        "tests_in_actual_request": true,
+        "real_FAIL": true,
+        "no_old_loop_instruction": true,
+        "budget": true
+      },
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 9044,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 2048,
+        "input_token_upper_bound": 9044,
+        "input_token_limit": 13824,
+        "context_token_upper_bound": 11604,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v7/public-evidence/candidate-02.py",
+      "source_sha256": "8d5f112086bbf8cb39980604cfd981e1c1898b3d1a9e0995e13050106d3c359d",
+      "report": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v7/public-evidence/candidate-02-verification.json"
+    },
+    {
+      "stage": "v7_second_candidate-format-correction",
+      "kind": "NO_MODEL_MESSAGE_CONSTRUCTION",
+      "checks": {
+        "no_tools": true,
+        "code_in_actual_request": true,
+        "tests_in_actual_request": true,
+        "real_FAIL": true,
+        "no_old_loop_instruction": true,
+        "budget": true
+      },
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 9176,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 2048,
+        "input_token_upper_bound": 9176,
+        "input_token_limit": 13824,
+        "context_token_upper_bound": 11736,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      },
+      "source": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v7/public-evidence/candidate-02.py",
+      "source_sha256": "8d5f112086bbf8cb39980604cfd981e1c1898b3d1a9e0995e13050106d3c359d",
+      "report": "docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v7/public-evidence/candidate-02-verification.json"
+    }
+  ],
+  "all_checks_pass": true,
+  "scope": "three saved source/report states and one format correction; not arbitrary source length proof"
+}

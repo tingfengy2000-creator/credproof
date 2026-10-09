@@ -1,0 +1,10 @@
+{
+  "original_log_sha256": "01a4ac6b5793eca99a3dbc7fac55a87a695a7d3b9872b0c65b897830c70fc9c5",
+  "actual_lines": [
+    "time=2026-10-09T02:01:49.686Z level=INFO source=types.go:32 msg=\"inference compute\" id=0 filter_id=0 library=CUDA compute=12.0 name=CUDA0 description=\"NVIDIA GeForce RTX 5090\" libdirs=ollama,cuda_v12 driver=13.3 pci_id=0000:01:00.0 type=discrete total=\"31.8 GiB\" available=\"30.2 GiB\"",
+    "load_tensors: offloaded 49/49 layers to GPU",
+    "load_tensors:        CUDA0 model buffer size = 17524.43 MiB",
+    "llama_kv_cache:      CUDA0 KV buffer size =   816.00 MiB",
+    "sched_reserve:      CUDA0 compute buffer size =   200.10 MiB"
+  ]
+}

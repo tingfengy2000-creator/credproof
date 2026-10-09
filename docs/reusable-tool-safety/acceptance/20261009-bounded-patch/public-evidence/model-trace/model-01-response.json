@@ -1,0 +1,17 @@
+{
+  "model": "qwen3-coder:30b",
+  "created_at": "2026-10-09T02:02:04.792538342Z",
+  "message": {
+    "role": "assistant",
+    "content": "{\"action\":\"PATCH\",\"code\":\"import json\\nimport logging\\nimport os\\nfrom urllib.request import Request, urlopen\\n\\n\\ndef run(request):\\n    if not isinstance(request, dict) or not isinstance(request.get(\\\"resource\\\"), str):\\n        raise ValueError(\\\"invalid request\\\")\\n    credential_env = os.environ.get(\\\"CREDPROOF_CREDENTIAL_ENV\\\", \\\"CREDPROOF_TEST_CREDENTIAL\\\")\\n    credential = os.environ[credential_env]\\n    path = request.get(\\\"path\\\") or os.environ.get(\\\"CREDPROOF_ALLOWED_FILE\\\")\\n    # Validate path is within allowed directories\\n    allowed_dirs = [os.path.abspath(p) for p in os.environ.get(\\\"CREDPROOF_ALLOWED_DIRS\\\", \\\"data\\\").split(\\\":\\\")]\\n    resolved_path = os.path.abspath(path)\\n    if not any(resolved_path.startswith(os.path.abspath(d)) for d in allowed_dirs):\\n        raise ValueError(\\\"path outside allowed directories\\\")\\n    with open(path, \\\"r\\\", encoding=\\\"utf-8\\\") as handle:\\n        material = handle.read()\\n    url = request.get(\\\"url\\\") or os.environ[\\\"CREDPROOF_ALLOWED_URL\\\"]\\n    # Validate service URL is within allowed services\\n    allowed_services = [\\n        {\\n            \\\"scheme\\\": \\\"http\\\",\\n            \\\"host\\\": \\\"127.0.0.1\\\",\\n            \\\"path_prefix\\\": \\\"/api\\\"\\n        }\\n    ]\\n    from urllib.parse import urlparse\\n    parsed_url = urlparse(url)\\n    service_allowed = False\\n    for svc in allowed_services:\\n        if (parsed_url.scheme == svc[\\\"scheme\\\"] and\\n                parsed_url.hostname == svc[\\\"host\\\"] and\\n                parsed_url.path.startswith(svc[\\\"path_prefix\\\"])):\\n            service_allowed = True\\n            break\\n    if not service_allowed:\\n        raise ValueError(\\\"service URL outside allowed services\\\")\\n    response = urlopen(Request(url, headers={\\\"Authorization\\\": \\\"Bearer \\\" + credential}), timeout=2)\\n    body = response.read().decode(\\\"utf-8\\\")\\n    logging.info(\\\"loaded %s with credential=%s\\\", request[\\\"resource\\\"], credential)\\n    return {\\\"resource\\\": request[\\\"resource\\\"], \\\"material\\\": material, \\\"service\\\": json.loads(body),\\n            \\\"credential\\\": None}\\n\",\"reason\":\"Patch addresses multiple violations: (1) adds path validation to ensure files are within allowed directories, (2) adds service URL validation to prevent unauthorized connections, and (3) removes credential from the return value to prevent leakage.\"}"
+  },
+  "done": true,
+  "done_reason": "stop",
+  "total_duration": 14465690849,
+  "load_duration": 11408515679,
+  "prompt_eval_count": 2241,
+  "prompt_eval_cached_count": 0,
+  "prompt_eval_duration": 382548000,
+  "eval_count": 560,
+  "eval_duration": 2663741000
+}

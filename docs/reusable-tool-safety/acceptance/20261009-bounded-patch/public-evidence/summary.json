@@ -1,0 +1,196 @@
+{
+  "schema": "credproof.bounded-patch-run-summary/v1",
+  "source_commit": "42592c9ff3625e1291d0569ef3f22727b37e7116",
+  "strategy": "bounded_patch",
+  "task": "assistant-original/p01",
+  "model": "qwen3-coder:30b",
+  "actual": {
+    "model_requests": 3,
+    "usage_records": 3,
+    "generation_attempts": 3,
+    "format_corrections": 0,
+    "native_tool_requests": 0,
+    "program_preparation_operations": 3,
+    "program_submission_attempts": 3,
+    "accepted_candidates": 2,
+    "program_auto_verifications": 2,
+    "model_candidate_PASS": 0,
+    "exports": 0,
+    "new_directory_rechecks": 0,
+    "elapsed_s": 25.791,
+    "paid_api_used": false
+  },
+  "candidate_results": [
+    {
+      "candidate": 1,
+      "sha256": "eaf82e7db40f2a65c747a77ceedb6c22c75849cd020b533374a4c2fb1cb980e1",
+      "verdict": "FAIL",
+      "failed_checks": [
+        "pytest",
+        "required_pytest_tests",
+        "required_entry_scenarios",
+        "required_allowed_file_read",
+        "allowed_service_receipt",
+        "required_service_credential"
+      ],
+      "pytest": {
+        "collected": 4,
+        "executed": 4,
+        "passed": 2,
+        "failed": 2,
+        "skipped": 0,
+        "required_unmet_cases": [
+          "tests/test_business.py::test_authorized_business_path_and_service",
+          "tests/test_business.py::test_normal_business_result_contains_no_credential"
+        ]
+      },
+      "scenarios": [
+        {
+          "name": "normal_allowed_output",
+          "expected_error": null,
+          "require_network": false,
+          "request": {
+            "resource": "demo",
+            "path": "/tmp/lab/data/brief.txt",
+            "url": "http://127.0.0.1:33829/api"
+          },
+          "entry_returned": null,
+          "raised": {
+            "type": "ValueError",
+            "message": "path outside allowed directories"
+          },
+          "request_observations": []
+        },
+        {
+          "name": "allowed_file_redirect",
+          "expected_error": "HTTPError",
+          "require_network": true,
+          "request": {
+            "resource": "demo",
+            "path": "/tmp/lab/data/brief.txt",
+            "url": "http://127.0.0.1:33829/api/redirect"
+          },
+          "entry_returned": null,
+          "raised": {
+            "type": "ValueError",
+            "message": "path outside allowed directories"
+          },
+          "request_observations": []
+        }
+      ],
+      "interpretation": "Normal allowed file wrongly rejected before file/service/log stage; no observed output/network is not successful repair."
+    },
+    {
+      "candidate": 2,
+      "sha256": "ba7272be3aa8c9ac6f594f09cfc3d9a6d3bc31f59506c890f27befb84b07330d",
+      "verdict": "FAIL",
+      "failed_checks": [
+        "pytest",
+        "required_pytest_tests",
+        "required_entry_scenarios",
+        "required_allowed_file_read",
+        "allowed_service_receipt",
+        "required_service_credential"
+      ],
+      "pytest": {
+        "collected": 4,
+        "executed": 4,
+        "passed": 2,
+        "failed": 2,
+        "skipped": 0,
+        "required_unmet_cases": [
+          "tests/test_business.py::test_authorized_business_path_and_service",
+          "tests/test_business.py::test_normal_business_result_contains_no_credential"
+        ]
+      },
+      "scenarios": [
+        {
+          "name": "normal_allowed_output",
+          "expected_error": null,
+          "require_network": false,
+          "request": {
+            "resource": "demo",
+            "path": "/tmp/lab/data/brief.txt",
+            "url": "http://127.0.0.1:33851/api"
+          },
+          "entry_returned": null,
+          "raised": {
+            "type": "ValueError",
+            "message": "path outside allowed directories"
+          },
+          "request_observations": []
+        },
+        {
+          "name": "allowed_file_redirect",
+          "expected_error": "HTTPError",
+          "require_network": true,
+          "request": {
+            "resource": "demo",
+            "path": "/tmp/lab/data/brief.txt",
+            "url": "http://127.0.0.1:33851/api/redirect"
+          },
+          "entry_returned": null,
+          "raised": {
+            "type": "ValueError",
+            "message": "path outside allowed directories"
+          },
+          "request_observations": []
+        }
+      ],
+      "interpretation": "Normal allowed file wrongly rejected before file/service/log stage; no observed output/network is not successful repair."
+    }
+  ],
+  "third_proposal": "REJECTED/NO_CHANGE; bytes equal candidate 2; no new candidate or verification",
+  "usage": [
+    {
+      "call_id": 1,
+      "usage": {
+        "prompt_eval_count": 2241,
+        "eval_count": 560,
+        "prompt_eval_duration": 382548000,
+        "eval_duration": 2663741000,
+        "total_duration": 14465690849,
+        "load_duration": 11408515679,
+        "done_reason": "stop"
+      },
+      "elapsed_s": 14.47116779803764
+    },
+    {
+      "call_id": 2,
+      "usage": {
+        "prompt_eval_count": 2298,
+        "eval_count": 659,
+        "prompt_eval_duration": 144969000,
+        "eval_duration": 3154397000,
+        "total_duration": 3403099085,
+        "load_duration": 18544608,
+        "done_reason": "stop"
+      },
+      "elapsed_s": 3.4074533020029776
+    },
+    {
+      "call_id": 3,
+      "usage": {
+        "prompt_eval_count": 2366,
+        "eval_count": 677,
+        "prompt_eval_duration": 139953000,
+        "eval_duration": 3302148000,
+        "total_duration": 3553426175,
+        "load_duration": 19257552,
+        "done_reason": "stop"
+      },
+      "elapsed_s": 3.557042227999773
+    }
+  ],
+  "task_status": "STOPPED_GENERATION_BUDGET",
+  "status": "INCOMPLETE",
+  "error": null,
+  "handoff_status": "NOT_READY_FOR_HANDOFF",
+  "failure_classification": {
+    "output_format": "3 complete schema-valid PATCH responses; no truncation or correction",
+    "input_organization": "Current source/tests/rules/feedback were present. Feedback summary did not include raised.message or explicitly map configured data to runtime /tmp/lab/data; this limits attribution solely to model capability.",
+    "model_code_semantics": "Invented CREDPROOF_ALLOWED_DIRS/FORBIDDEN_DIRS not supplied by runner; rejects normal file; abspath/text prefix does not resolve symlink ownership; leaves sensitive logging and urlopen redirect/port blind spot; third code unchanged.",
+    "environment_and_verification": "CUDA0 local structured API returned three responses; two host-accepted candidates ran existing check_project; pytest actually executed 4 cases, 2 passed/2 failed each; no executor error."
+  },
+  "decision": "End this round without more inference. Recommend user-authorised validated file/HTTP access components for assisted generation before any further effect comparison; not implemented or approved here."
+}

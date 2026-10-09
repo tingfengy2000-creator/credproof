@@ -1,0 +1,100 @@
+{
+  "kind": "POST_RUN_STATIC_INSPECTION_OF_REAL_SENT_REQUESTS",
+  "model_calls": 0,
+  "new_safety_execution": false,
+  "records": [
+    {
+      "sent_request": "model-trace/model-01-request.json",
+      "checks": {
+        "no_tools": true,
+        "no_native_loop_system": true,
+        "current_source_visible": true,
+        "necessary_tests_visible": true,
+        "FAIL_visible": true,
+        "format_is_schema": true,
+        "budget_pass": true
+      },
+      "expected_source_object": "original",
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 10040,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 2048,
+        "input_token_upper_bound": 10040,
+        "input_token_limit": 13824,
+        "context_token_upper_bound": 12600,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "sent_request": "model-trace/model-02-request.json",
+      "checks": {
+        "no_tools": true,
+        "no_native_loop_system": true,
+        "current_source_visible": true,
+        "necessary_tests_visible": true,
+        "FAIL_visible": true,
+        "format_is_schema": true,
+        "budget_pass": true
+      },
+      "expected_source_object": "candidate-1",
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 10331,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 2048,
+        "input_token_upper_bound": 10331,
+        "input_token_limit": 13824,
+        "context_token_upper_bound": 12891,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    },
+    {
+      "sent_request": "model-trace/model-03-request.json",
+      "checks": {
+        "no_tools": true,
+        "no_native_loop_system": true,
+        "current_source_visible": true,
+        "necessary_tests_visible": true,
+        "FAIL_visible": true,
+        "format_is_schema": true,
+        "budget_pass": true
+      },
+      "expected_source_object": "candidate-2",
+      "budget": {
+        "method": "UTF8_WIRE_BYTES",
+        "reuse_reason": "no_previous_measured_request",
+        "request_bytes": 10641,
+        "prefix_call_id": null,
+        "prefix_prompt_tokens": null,
+        "suffix_json_bytes": null,
+        "new_message_count": null,
+        "new_message_reserve_tokens": 0,
+        "global_reserve_tokens": 512,
+        "max_output_tokens": 2048,
+        "input_token_upper_bound": 10641,
+        "input_token_limit": 13824,
+        "context_token_upper_bound": 13201,
+        "context_token_limit": 16384,
+        "within_context_budget": true,
+        "within_wire_limit": true
+      }
+    }
+  ]
+}

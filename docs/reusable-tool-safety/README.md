@@ -1,6 +1,23 @@
-# CredProof reusable-tool-safety（0.3.0-dev.30 评审材料）
+# CredProof reusable-tool-safety（0.3.0-dev.31）
 
-## 当前固定评审入口
+## 当前评审：受控候选生成方式验证
+
+实际被测源码：`42592c9ff3625e1291d0569ef3f22727b37e7116`。本轮增加独立可选 `bounded_patch` 策略，保留原Qwen-Agent工具循环；不是扩大风险、换模型或前端改版。
+
+程序准备授权输入 → 同一本地模型生成PATCH/STOP JSON数据 → 原宿主校验/副本应用 → 原check_project自动验收 → 携当前代码/反馈再生成。请求没有tools和旧工具history。模型reason不拥有判决权。
+
+- [本轮完整证据及一页决定](acceptance/20261009-bounded-patch/public-evidence/README.md)：冻结、全部请求/响应、两份候选、完整验收、三次程序提交和NO_CHANGE。
+- [薄接口与运行命令](bounded-patch.md)：`agent_pilot/bounded_patch.py`、`credproof_safety/agent.py:_bounded_model_script/_bounded_initial_context`，CLI显式`--strategy bounded_patch`，未知策略拒绝、无静默回退。
+- [真实结果](acceptance/20261009-bounded-patch/public-evidence/summary.json)：3次模型生成/3份usage/0 native工具，2份接受候选/2次自动FAIL，第三份与第二份相同不再验收。25.791秒后STOPPED_GENERATION_BUDGET；没有输入预算、超时或格式阻断。
+- 两份候选错误拒绝正常资料路径，保留敏感日志且端口/跳转约束未完成。未观察到日志/禁止请求是提前拒绝的结果，不能宣称三类风险已修好。反馈未明确运行时目录映射/异常消息的限制也如实记录，不把全部原因归为模型能力。
+- [无模型输入预检](acceptance/20261009-bounded-patch/public-evidence/protocol-preflight/summary.json)四个状态通过；[61项软件回归](acceptance/20261009-bounded-patch/public-evidence/regression-receipt.json)通过。两类检查都不计为模型修复成功。
+- [当前需求表](requirements-acceptance.md) / [机器可读状态](requirements-acceptance.json)：仍为NOT_READY_FOR_HANDOFF，无PASS候选导出、新目录复检或成功后最终安装/页面接入。本轮不追加任务、不启动5060。
+
+下一步仅建议经用户批准后采用经过验证的文件/HTTP访问组件辅助生成；尚未实施。不据v8与本轮不同策略/预算宣称公平性能优势。
+
+## 历史v8材料（dev30）
+
+### 历史v8固定评审入口
 
 本轮实际被测源码：`d352e97088a56719a7495c206fa86680355ed8ca`。评审材料随后提交；软件包自身的历史版本号不冒充本轮清洁安装版本。状态：`NOT_READY_FOR_HANDOFF`，不启动 5060。
 

@@ -1,7 +1,7 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.30",
-  "tested_source_commit": "d352e97088a56719a7495c206fa86680355ed8ca",
+  "candidate_version": "0.3.0-dev.31",
+  "tested_source_commit": "42592c9ff3625e1291d0569ef3f22727b37e7116",
   "generated_at": "2026-10-09",
   "status_summary": {
     "verified": 12,
@@ -243,10 +243,12 @@
         "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup/replay-summary.json",
         "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup/reconstructed-next-request.json",
         "credproof_safety/agent.py:_model_actionable_failures/_model_work_feedback/_phase_rejection",
-        "scripts/preflight-v8-revision.py"
+        "scripts/preflight-v8-revision.py",
+        "agent_pilot/bounded_patch.py:build_payload/parse_response/BoundedPatchClient",
+        "credproof_safety/agent.py:_bounded_model_script/_bounded_initial_context"
       ],
       "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先完成首请求上下文、证据反馈压缩与可信阶段顺序预检，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
-      "acceptance": "One v8 bounded real 5090/CUDA0 task: 5 requests, 5 usage, 6 tool requests, 1 accepted candidate and 1 auto-verification FAIL. Concrete feedback and current source reached requests 4/5. Revision read/evidence were rejected; stopped with 6 tools, 2 candidates and 2 verifications remaining. No PASS. Current protocol replay passed six states without inference or candidate execution.",
+      "acceptance": "One bounded_patch task from original p01: 3 structured generation requests with 3 usage records, zero native tools, 2 accepted candidates and 2 check_project auto FAIL; third PATCH is canonical NO_CHANGE. Four preflight states retain full source/tests/rules/FAIL within 13824 input limit with 2048 output. Source-level connection and strict output tests plus existing regressions: 61 passed, 1 dependency warning. Not a model success.",
       "commands": [
         ".venv\\Scripts\\python.exe scripts/replay-context-budget-v6-duplicate-verify.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-payload.json --output-dir docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup",
         ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests/test_model_boundary.py agent_pilot/test_model_client.py credproof_safety/tests/test_entry_scenarios.py credproof_safety/tests/test_project_bundle.py"
@@ -283,22 +285,39 @@
         "acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/tool-trace.json",
         "acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/verification-01.json",
         "acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/protocol-preflight-final/summary.json",
-        "acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/regression-receipt.json"
+        "acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/regression-receipt.json",
+        "acceptance/20261009-bounded-patch/public-evidence/README.md",
+        "acceptance/20261009-bounded-patch/public-evidence/summary.json",
+        "acceptance/20261009-bounded-patch/public-evidence/program-trace.json",
+        "acceptance/20261009-bounded-patch/public-evidence/verification-01.json",
+        "acceptance/20261009-bounded-patch/public-evidence/verification-02.json",
+        "acceptance/20261009-bounded-patch/public-evidence/model-trace/model-02-request.json",
+        "acceptance/20261009-bounded-patch/public-evidence/model-trace/model-03-request.json",
+        "acceptance/20261009-bounded-patch/public-evidence/protocol-preflight/summary.json",
+        "acceptance/20261009-bounded-patch/public-evidence/regression-receipt.json"
       ],
-      "source_commit": "d352e97088a56719a7495c206fa86680355ed8ca",
-      "gaps": "Current candidate still returns synthetic credential and does not enforce file/redirect boundaries. No second materially revised candidate, passing same-object export/recheck or final installed entry effect proof.",
+      "source_commit": "42592c9ff3625e1291d0569ef3f22727b37e7116",
+      "gaps": "Both candidates reject normal allowed file before network/log execution, still contain sensitive logger and insufficient port/redirect control. Input summary omitted raised.message and explicit runtime permitted-root mapping. No trusted repair PASS or same-object public recheck; stopped after exactly one task.",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
-          "sha256": "c34d34961f2beca97a19af32c1d1cfd24ea39779c8948f4408e1b41c592e46e6"
+          "sha256": "c1259a3d3c78955db99209abdc6f06ff1696b50b73dd6e471d091f54216d2a16"
+        },
+        {
+          "path": "credproof_safety/cli.py",
+          "sha256": "f32d8a0773700c9bcaa2ff95a8a04c7a9ae339c70857ad7001956303362c50ff"
+        },
+        {
+          "path": "agent_pilot/bounded_patch.py",
+          "sha256": "2e6581e15c01b85870445a52b20df91cf2a3f48ecea6e4c2d48d7c4ad194d9e6"
         },
         {
           "path": "agent_pilot/model_client.py",
           "sha256": "9bb30b47560da2fc56e3f1c318ab159b7b9229540e47db36fcac87db572130f5"
         },
         {
-          "path": "agent_pilot/tests/test_model_boundary.py",
-          "sha256": "37decd1d326468ac964e41582757977de3588c94390309d41fecaf1ffdaa4196"
+          "path": "agent_pilot/tests/test_bounded_patch.py",
+          "sha256": "649f2073d3bc21251aab3ec977041f714f6262f32780584c60e2527e6ff47bb5"
         }
       ],
       "subitems": [
@@ -336,9 +355,11 @@
             "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/candidate-02-verification.json",
             "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-budget.json",
             "acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/summary.json",
-            "acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/verification-01.json"
+            "acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/verification-01.json",
+            "acceptance/20261009-bounded-patch/public-evidence/summary.json",
+            "acceptance/20261009-bounded-patch/public-evidence/verification-02.json"
           ],
-          "reason": "v8 accepted one candidate, auto FAIL; subsequent repeated actions stopped, no successful repair."
+          "reason": "Structured generator produced valid candidate data but no qualifying repair; model semantic errors and identified context detail limits are recorded."
         },
         {
           "id": "revision_stage_actions",
@@ -350,6 +371,17 @@
             "acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/regression-receipt.json"
           ],
           "scope": "Protocol and actual rejection/termination; not successful model revision."
+        },
+        {
+          "id": "bounded_structured_generation",
+          "status": "IMPLEMENTED_VERIFIED",
+          "source_commit": "42592c9ff3625e1291d0569ef3f22727b37e7116",
+          "evidence": [
+            "acceptance/20261009-bounded-patch/public-evidence/structured-api-service.json",
+            "acceptance/20261009-bounded-patch/public-evidence/program-trace.json",
+            "acceptance/20261009-bounded-patch/public-evidence/regression-receipt.json"
+          ],
+          "scope": "JSON interface/program scheduling and real FAIL feedback; no successful model repair or live STOP response claimed"
         }
       ],
       "notes": "Full v6 raw artifacts remain local and are not overwritten. Public derived JSON preserves semantic content but may differ in newline bytes; derivation-receipt.json records original and derived hashes. The final status remains NOT_READY_FOR_HANDOFF.",
@@ -397,6 +429,25 @@
           {
             "path": "scripts/replay-context-budget-v5-no-change.py",
             "sha256": "015975e2a44261325887989fea9db35d37f16e05d0685160d84d3d2f4a558ab5"
+          }
+        ]
+      },
+      "historical_dev30_description": {
+        "source_commit": "d352e97088a56719a7495c206fa86680355ed8ca",
+        "acceptance": "One v8 bounded real 5090/CUDA0 task: 5 requests, 5 usage, 6 tool requests, 1 accepted candidate and 1 auto-verification FAIL. Concrete feedback and current source reached requests 4/5. Revision read/evidence were rejected; stopped with 6 tools, 2 candidates and 2 verifications remaining. No PASS. Current protocol replay passed six states without inference or candidate execution.",
+        "gaps": "Current candidate still returns synthetic credential and does not enforce file/redirect boundaries. No second materially revised candidate, passing same-object export/recheck or final installed entry effect proof.",
+        "file_digests": [
+          {
+            "path": "credproof_safety/agent.py",
+            "sha256": "c34d34961f2beca97a19af32c1d1cfd24ea39779c8948f4408e1b41c592e46e6"
+          },
+          {
+            "path": "agent_pilot/model_client.py",
+            "sha256": "9bb30b47560da2fc56e3f1c318ab159b7b9229540e47db36fcac87db572130f5"
+          },
+          {
+            "path": "agent_pilot/tests/test_model_boundary.py",
+            "sha256": "37decd1d326468ac964e41582757977de3588c94390309d41fecaf1ffdaa4196"
           }
         ]
       }
@@ -550,7 +601,7 @@
         "agent_pilot/model_client.py"
       ],
       "setup": "5090主机上通过页面任务使用本地 Ollama qwen3-coder:30b；没有 API key 或云端回退，运行收据保留。",
-      "acceptance": "历史页面批次仍单独记录为6次模型调用、5份usage、7次native工具请求；dev29唯一正式任务单独记录为9次模型请求、9份usage、10次工具请求，运行于5090/CUDA0的本地受控边界。两批次不合并，不把协议重放当作模型usage。付费API标记为false。",
+      "acceptance": "历史页面批次仍单独记录为6次模型调用、5份usage、7次native工具请求；dev29唯一正式任务单独记录为9次模型请求、9份usage、10次工具请求，运行于5090/CUDA0的本地受控边界。两批次不合并，不把协议重放当作模型usage。付费API标记为false。 dev31 separate task: Ollama 0.34.4 / qwen3-coder:30b unchanged digest / CUDA0; 3 native /api/chat responses with schema, zero tool selections and no paid API. Not a Qwen-Agent-loop result.",
       "commands": [
         "python -m agent_pilot.preflight"
       ],
@@ -559,7 +610,10 @@
         "acceptance/20261006-page-live-boundary/commands.txt",
         "acceptance/20261006-model-boundary/ollama-stderr.raw.log",
         "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/ollama-stderr.txt",
-        "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/run-summary.json"
+        "acceptance/20261007-return-redirect/context-budget-pilot/public-evidence/run-summary.json",
+        "acceptance/20261009-bounded-patch/public-evidence/structured-api-service.json",
+        "acceptance/20261009-bounded-patch/public-evidence/device-evidence.json",
+        "acceptance/20261009-bounded-patch/public-evidence/model-boundary.json"
       ],
       "source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1",
       "gaps": "dev29任务没有修复PASS、同对象导出或新目录复检；边界仅是一次授权合成任务的运行证据，不构成跨机器、跨模型或稳定成功率结论。",
@@ -583,16 +637,16 @@
     "real credential revocation",
     "new model/case expansion"
   ],
-  "interpretation": "v7 message fidelity was verified from actual requests. v8 constrained revision and concrete report facts reached the model, but its only accepted candidate failed and two repeated preparation actions ended STOPPED_NO_PROGRESS with budget remaining. No passing candidate or same-object recheck; no handoff.",
-  "current_review_receipt_commit": "3ac26991e486d9b224a8bb1126ed4d911c90b0d9",
+  "interpretation": "bounded_patch is a structured, program-scheduled LLM repair workflow, not the Qwen-Agent native tool loop. One registered task produced 3 schema-valid PATCH outputs, 2 accepted candidates/2 trusted FAIL results; third was NO_CHANGE. No passing candidate/export/recheck; no handoff.",
+  "current_review_receipt_commit": null,
   "handoff_status": "NOT_READY_FOR_HANDOFF",
   "handoff_blockers": [
-    "No current model candidate satisfies all existing safety and business conditions",
-    "No passing same-model-candidate public bundle and new-directory recheck",
-    "Final changed installed/page entry verification remains gated by obtaining the required passing candidate"
+    "Current model candidates still do not fulfil all original normal business and safety requirements",
+    "No same-model-candidate passing public bundle/recheck",
+    "Final installed/page bounded strategy verification is gated on a qualifying candidate"
   ],
-  "version": "0.3.0-dev.30",
-  "latest_review_update": "dev30: bounded revision control and feedback protocol verified; one real v8 task 5/5/6/1/1 requests/usage/tools/candidates/auto-verifications, FAIL; no further inference.",
+  "version": "0.3.0-dev.31",
+  "latest_review_update": "dev31: structured /api/chat format on unchanged local model; no tools field/native tool calls; valid generation/feedback cycle but normal business rejected by model code. No repeat task.",
   "protocol_replay_only": false,
   "historical_live_run_source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1",
   "dev29_live_run": {
@@ -623,5 +677,22 @@
     "exported_candidate": false,
     "new_directory_recheck": false
   },
-  "publication_receipt": "acceptance/20261007-return-redirect/github-publication-v8.json"
+  "historical_publication_receipt": "acceptance/20261007-return-redirect/github-publication-v8.json",
+  "dev31_live_run": {
+    "source_commit": "42592c9ff3625e1291d0569ef3f22727b37e7116",
+    "evidence": "acceptance/20261009-bounded-patch/public-evidence/",
+    "strategy": "bounded_patch",
+    "model_requests": 3,
+    "usage_records": 3,
+    "native_tool_requests": 0,
+    "generation_attempts": 3,
+    "accepted_candidates": 2,
+    "program_auto_verifications": 2,
+    "candidate_pass": 0,
+    "termination": "STOPPED_GENERATION_BUDGET",
+    "task_status": "INCOMPLETE",
+    "exported_candidate": false,
+    "new_directory_recheck": false,
+    "next_decision": "Request user approval for verified file/HTTP safety components aiding generation; not implemented"
+  }
 }

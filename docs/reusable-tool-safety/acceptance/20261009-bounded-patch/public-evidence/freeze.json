@@ -1,0 +1,45 @@
+{
+  "registered_at": "2026-10-09T02:01:43.523687+00:00",
+  "source_commit": "42592c9ff3625e1291d0569ef3f22727b37e7116",
+  "task": "assistant-original/p01",
+  "strategy": "bounded_patch",
+  "model": "qwen3-coder:30b",
+  "python": "3.12.14",
+  "retry": false,
+  "budgets": {
+    "generations": 3,
+    "requests_including_format_correction": 4,
+    "format_corrections": 1,
+    "candidates": 3,
+    "program_verifications": 3,
+    "context": 16384,
+    "output_tokens": 2048,
+    "input_upper_limit": 13824,
+    "request_seconds": 120,
+    "task_seconds": 900
+  },
+  "files": {
+    "credproof_safety/agent.py": "c1259a3d3c78955db99209abdc6f06ff1696b50b73dd6e471d091f54216d2a16",
+    "credproof_safety/cli.py": "f32d8a0773700c9bcaa2ff95a8a04c7a9ae339c70857ad7001956303362c50ff",
+    "agent_pilot/bounded_patch.py": "2e6581e15c01b85870445a52b20df91cf2a3f48ecea6e4c2d48d7c4ad194d9e6",
+    "agent_pilot/model_client.py": "9bb30b47560da2fc56e3f1c318ab159b7b9229540e47db36fcac87db572130f5",
+    "agent_pilot/requirements-lock.txt": "7231f03daf9bcc0c6d279bbfd38febcdfe47f074e7967a8d8c5830f51731bb89",
+    "pyproject.toml": "5465c896d9f30cbe9d05929870f82afb2ab44a7856f1075d155d6db7c9e4f661",
+    "examples/material_assistant/credproof.toml": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+    "examples/material_assistant/tool.py": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+    "examples/material_assistant/tests/test_business.py": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356"
+  },
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "credproof_safety",
+    "repair",
+    "--strategy",
+    "bounded_patch",
+    "--config",
+    "examples/material_assistant/credproof.toml",
+    "--output",
+    "docs/reusable-tool-safety/acceptance/20261009-bounded-patch/formal-p01/result.json"
+  ],
+  "scope": "5090 existing model/candidate isolation; no 5060; fixed rules; no reference patch"
+}

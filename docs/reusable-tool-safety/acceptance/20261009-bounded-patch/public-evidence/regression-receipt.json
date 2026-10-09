@@ -1,0 +1,33 @@
+{
+  "kind": "SOFTWARE_PROTOCOL_REGRESSION_NOT_MODEL_SECURITY_RESULTS",
+  "source_commit": "42592c9ff3625e1291d0569ef3f22727b37e7116",
+  "command": [
+    ".venv/Scripts/python.exe",
+    "-m",
+    "pytest",
+    "agent_pilot/tests/test_bounded_patch.py",
+    "agent_pilot/tests/test_model_boundary.py",
+    "agent_pilot/test_model_client.py",
+    "credproof_safety/tests/test_entry_scenarios.py",
+    "credproof_safety/tests/test_project_bundle.py",
+    "-q",
+    "-p",
+    "no:cacheprovider",
+    "--junitxml=<public-evidence>/regression.junit.xml"
+  ],
+  "exit_code": 0,
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "pytest": "8.4.2",
+  "junit": {
+    "name": "pytest",
+    "errors": "0",
+    "failures": "0",
+    "skipped": "0",
+    "tests": "61",
+    "time": "1.340",
+    "timestamp": "2026-10-09T10:09:40.755144+08:00",
+    "hostname": "test-host"
+  },
+  "warning": "dashscope installed dependency deprecated Assistants API import; no API invocation",
+  "scope": "structured JSON/request/budget/source wiring tests plus affected prior message/boundary/scenario/bundle software regressions"
+}

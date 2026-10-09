@@ -1,0 +1,53 @@
+{
+  "status": "VERIFIED_FOR_THIS_RUN",
+  "probe": {
+    "interfaces": [
+      "lo"
+    ],
+    "outside_connect_tests": [
+      {
+        "address": "1.1.1.1",
+        "port": 443,
+        "connected": false,
+        "errno": 101,
+        "reason": "OSError",
+        "elapsed_s": 0.0001
+      },
+      {
+        "address": "8.8.8.8",
+        "port": 443,
+        "connected": false,
+        "errno": 101,
+        "reason": "OSError",
+        "elapsed_s": 0.0
+      },
+      {
+        "address": "2606:4700:4700::1111",
+        "port": 443,
+        "connected": false,
+        "errno": null,
+        "reason": "OSError",
+        "elapsed_s": 0.0
+      }
+    ],
+    "host_sentinel_visible": false,
+    "model_code_writable": [],
+    "mountinfo_has_windows_or_host_mount": false,
+    "host_link_visible": false,
+    "denied_paths": {
+      "/mnt": false,
+      "/workspace": false,
+      "/reference": false,
+      "/history": false
+    }
+  },
+  "code_allowlist": [
+    "agent_pilot/__init__.py",
+    "agent_pilot/bounded_patch.py",
+    "agent_pilot/model_client.py",
+    "agent_pilot/tools.py",
+    "initial-context.json",
+    "worker.py"
+  ],
+  "omitted": "full mounts/process identity retained locally"
+}
