@@ -1,0 +1,35 @@
+{
+  "cases": [
+    {
+      "id": "p01",
+      "title": "受限任务 P01",
+      "description": "已审查的本地合成 Python 工具；风险与修复结论以实际运行证据为准。 当前现场修复映射到“资料助手”固定项目。",
+      "source_code": "\"\"\"Small authorised materials assistant used by the reusable-entry example.\n\nThis initial version is intentionally vulnerable for the local lab: it reads a\npath supplied by the request, follows a redirect, and includes its credential\nin a debug message. The lab provides only synthetic material and loopback mock\nservices. The file is never run on a real account.\n\"\"\"\nimport json\nimport logging\nimport os\nfrom urllib.request import Request, urlopen\n\n\ndef run(request):\n    if not isinstance(request, dict) or not isinstance(request.get(\"resource\"), str):\n        raise ValueError(\"invalid request\")\n    credential_env = os.environ.get(\"CREDPROOF_CREDENTIAL_ENV\", \"CREDPROOF_TEST_CREDENTIAL\")\n    credential = os.environ[credential_env]\n    path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\")\n    with open(path, \"r\", encoding=\"utf-8\") as handle:\n        material = handle.read()\n    url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"]\n    response = urlopen(Request(url, headers={\"Authorization\": \"Bearer \" + credential}), timeout=2)\n    body = response.read().decode(\"utf-8\")\n    logging.info(\"loaded %s with credential=%s\", request[\"resource\"], credential)\n    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": json.loads(body),\n            \"credential\": credential}\n",
+      "source_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "rules": [
+        "只修改登记项目入口；测试、配置及访问组件只读。",
+        "真实读取允许目录，向当前允许服务认证，保留业务与非法输入行为。",
+        "禁止凭据输出、目录越界、直接或跳转到禁止服务。",
+        "组件辅助 bounded_patch 生成；程序独立验收、导出与复检。"
+      ],
+      "live_supported": true
+    }
+  ],
+  "runtime": {
+    "ready": false,
+    "isolation_ready": false,
+    "model_ready": false,
+    "runtime_root": null,
+    "reasons": [
+      "runtime_configuration_or_observation_unavailable"
+    ],
+    "observed_at": "2026-10-09T05:54:21.463729+00:00",
+    "model_executed": false,
+    "candidate_executed": false,
+    "network_probe_performed": false,
+    "observation_scope": "Read-only observation unavailable; no readiness inferred"
+  },
+  "access_mode": "live",
+  "demonstrations": [],
+  "history": []
+}

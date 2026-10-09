@@ -1,0 +1,24 @@
+{
+  "schema": "credproof.installed-origin/v1",
+  "interpreter": "<install-root>\\venv\\Scripts\\python.exe",
+  "cwd": "<install-root>\\data\\runs\\ui\\live-6addaa63ad1849929cf0e7997405dcdf",
+  "web_repair": "<install-root>\\venv\\Lib\\site-packages\\credproof_safety\\web_repair.py",
+  "agent": "<install-root>\\venv\\Lib\\site-packages\\credproof_safety\\agent.py",
+  "package_version": "0.3.0.dev32",
+  "strategy": "bounded_patch",
+  "profile": "component_assisted",
+  "module_sha256": {
+    "web_repair.py": "18112ab679d0ee18acbd5bfe19fb021446450a8e61d66dc80458a8896614f81e",
+    "agent.py": "9771bb0c0defe43b6a6bda3c12a5439d86ecdc9f35c373b083d931e3c6804629"
+  },
+  "access_dependency": {
+    "name": "credproof_access",
+    "version": "1.0.0",
+    "files": {
+      "__init__.py": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "contract.py": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+    },
+    "trust": "fixed reviewed dependency, not candidate mutable material"
+  },
+  "isolated_import": "python -I -m credproof_safety.web_repair"
+}

@@ -1,0 +1,45 @@
+{
+  "kind": "POST_RUN_IMPORT_RESOLUTION_PROBE_NO_INFERENCE",
+  "python": "<install-root>\\venv\\Scripts\\python.exe",
+  "cwd": "<repository>",
+  "version": "0.3.0.dev32",
+  "isolated": 1,
+  "modules": {
+    "agent_pilot.launch": {
+      "file": "<install-root>\\venv\\Lib\\site-packages\\agent_pilot\\launch.py",
+      "sha256": "0d2585621409ebb57ce919d07ae8ff2512780202731de206af1dd3149b2a57a9"
+    },
+    "agent_pilot.web": {
+      "file": "<install-root>\\venv\\Lib\\site-packages\\agent_pilot\\web.py",
+      "sha256": "e2a2277e7dc93a1d08aeae020be846adcd6e0da1d89914b6bb6b50bcd2d5b7b6"
+    },
+    "agent_pilot.preflight": {
+      "file": "<install-root>\\venv\\Lib\\site-packages\\agent_pilot\\preflight.py",
+      "sha256": "21aa80fdf81a4b70eee8abebfd6f43a134d0886d2de0adc20e0a26461922ac81"
+    },
+    "agent_pilot.bounded_patch": {
+      "file": "<install-root>\\venv\\Lib\\site-packages\\agent_pilot\\bounded_patch.py",
+      "sha256": "3404525767c3601da35754d350e03cef05cfdeacf9cdee7098c272ebdc1c2c29"
+    },
+    "credproof_safety.agent": {
+      "file": "<install-root>\\venv\\Lib\\site-packages\\credproof_safety\\agent.py",
+      "sha256": "9771bb0c0defe43b6a6bda3c12a5439d86ecdc9f35c373b083d931e3c6804629"
+    },
+    "credproof_safety.web_repair": {
+      "file": "<install-root>\\venv\\Lib\\site-packages\\credproof_safety\\web_repair.py",
+      "sha256": "18112ab679d0ee18acbd5bfe19fb021446450a8e61d66dc80458a8896614f81e"
+    },
+    "credproof_safety.runner": {
+      "file": "<install-root>\\venv\\Lib\\site-packages\\credproof_safety\\runner.py",
+      "sha256": "6a4593ae37a175c702580a78429d578fb85c1dac3f3de478dc49365f8236575c"
+    },
+    "credproof_access": {
+      "file": "<install-root>\\venv\\Lib\\site-packages\\credproof_access\\__init__.py",
+      "sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc"
+    },
+    "credproof_access.contract": {
+      "file": "<install-root>\\venv\\Lib\\site-packages\\credproof_access\\contract.py",
+      "sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+    }
+  }
+}

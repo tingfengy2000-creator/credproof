@@ -1,0 +1,90 @@
+{
+  "cases": [
+    {
+      "id": "p01",
+      "title": "受限任务 P01",
+      "description": "已审查的本地合成 Python 工具；风险与修复结论以实际运行证据为准。 当前现场修复映射到“资料助手”固定项目。",
+      "source_code": "\"\"\"Small authorised materials assistant used by the reusable-entry example.\n\nThis initial version is intentionally vulnerable for the local lab: it reads a\npath supplied by the request, follows a redirect, and includes its credential\nin a debug message. The lab provides only synthetic material and loopback mock\nservices. The file is never run on a real account.\n\"\"\"\nimport json\nimport logging\nimport os\nfrom urllib.request import Request, urlopen\n\n\ndef run(request):\n    if not isinstance(request, dict) or not isinstance(request.get(\"resource\"), str):\n        raise ValueError(\"invalid request\")\n    credential_env = os.environ.get(\"CREDPROOF_CREDENTIAL_ENV\", \"CREDPROOF_TEST_CREDENTIAL\")\n    credential = os.environ[credential_env]\n    path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\")\n    with open(path, \"r\", encoding=\"utf-8\") as handle:\n        material = handle.read()\n    url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"]\n    response = urlopen(Request(url, headers={\"Authorization\": \"Bearer \" + credential}), timeout=2)\n    body = response.read().decode(\"utf-8\")\n    logging.info(\"loaded %s with credential=%s\", request[\"resource\"], credential)\n    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": json.loads(body),\n            \"credential\": credential}\n",
+      "source_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "rules": [
+        "只修改登记项目入口；测试、配置及访问组件只读。",
+        "真实读取允许目录，向当前允许服务认证，保留业务与非法输入行为。",
+        "禁止凭据输出、目录越界、直接或跳转到禁止服务。",
+        "组件辅助 bounded_patch 生成；程序独立验收、导出与复检。"
+      ],
+      "live_supported": true
+    }
+  ],
+  "runtime": {
+    "ready": true,
+    "isolation_ready": true,
+    "model_ready": true,
+    "runtime_root": "<runtime>",
+    "reasons": [],
+    "isolation": {
+      "ready": true,
+      "checks": {
+        "saved_probe_ready": true,
+        "runner_identity": true,
+        "kernel_identity": true,
+        "mandatory_saved_checks": true,
+        "bwrap_sha256": true,
+        "seccomp_sha256": true,
+        "rootfs_identity": true
+      },
+      "reasons": []
+    },
+    "model_files": {
+      "ready": true,
+      "manifest_sha256": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+      "blob_count": 4,
+      "warnings": [
+        {
+          "code": "SMALL_BLOB_SIZE_METADATA_MISMATCH",
+          "digest": "sha256:24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318",
+          "declared_size": 539,
+          "actual_size": 542,
+          "sha256_verified": true
+        }
+      ],
+      "blob_checks": [
+        {
+          "digest": "sha256:24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318",
+          "declared_size": 539,
+          "actual_size": 542,
+          "sha256_verified": true
+        },
+        {
+          "digest": "sha256:1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a",
+          "declared_size": 18556688736,
+          "actual_size": 18556688736,
+          "sha256_verified": false
+        },
+        {
+          "digest": "sha256:d18a5cc71b84bc4af394a31116bd3932b42241de70c77d2b76d69a314ec8aa12",
+          "declared_size": 11338,
+          "actual_size": 11338,
+          "sha256_verified": true
+        },
+        {
+          "digest": "sha256:69aa441ea44ff5e1e7b56cac4f471e71e8a5e2e3963c29684a9234d5d5e5f7aa",
+          "declared_size": 148,
+          "actual_size": 148,
+          "sha256_verified": true
+        }
+      ],
+      "full_weight_rehashed": false,
+      "blob_verification": "full SHA256 for blobs up to 16 MiB; larger weights existence and declared size only; no inference",
+      "reasons": []
+    },
+    "observed_at": "2026-10-09T05:57:22.469193+00:00",
+    "model_label": "qwen3-coder:30b · 本地服务",
+    "observation_scope": "Read-only saved probe/hash and model-file observation; no fresh boundary probe, model inference or candidate execution",
+    "model_executed": false,
+    "candidate_executed": false,
+    "network_probe_performed": false
+  },
+  "access_mode": "live",
+  "demonstrations": [],
+  "history": []
+}

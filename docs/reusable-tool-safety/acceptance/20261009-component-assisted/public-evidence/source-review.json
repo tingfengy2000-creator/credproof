@@ -1,0 +1,21 @@
+{
+  "kind": "POST_RUN_SOURCE_REVIEW_NOT_ADDITIONAL_INFERENCE",
+  "model_candidate": 1,
+  "accepted_source_sha256": "e5715e5e1334084b96dd2e63b22bf1ea1d4e12ae87db15ae716830328084e4be",
+  "changes": "removed explicit secret log argument and returned credential field",
+  "blocking_defect": "os.environ.get(CREDPROOF_TEST_CREDENTIAL,...) returns the synthetic secret value, then os.environ[credential_env] treats the secret as an environment key and raises KeyError",
+  "component_use": "no credproof_access import or calls; open and urlopen remain",
+  "actual_effect": "4 tests actually executed: invalid-input passed, normal-business/no-secret/boundary tests failed; normal and redirect entry scenes raise KeyError before real file/service business",
+  "output": "exception and pytest stdout contain the synthetic value before redaction; no_credential_output FAIL",
+  "remaining_boundaries": "unrestricted raw file open and automatic HTTP redirect remain in source; early KeyError is not successful path/network protection",
+  "no_change": "generations 2 and 3 equal accepted candidate 1 after LF normalization; no new acceptance/verification",
+  "failure_classification": {
+    "component": "independent component tests passed; this candidate did not invoke them",
+    "runtime_contract": "actual directory/env/port policy supplied; model confused credential value with variable name",
+    "model_business_connection": "failed; ignored API and repeated the same invalid source",
+    "delivery": "installed page/child ran; FAIL candidate dependency export/recheck recorded separately, not repair success"
+  },
+  "causal_limit": "runtime description and components changed together; no factor attribution or generalized model incapability conclusion",
+  "next_decision_requires_user_approval": "Consider one coding-model comparison with the same fixed work package. No model download, replacement or new inference has been started.",
+  "handoff_status": "NOT_READY_FOR_HANDOFF"
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "ONE_REGISTERED_COMPONENT_ASSISTED_PAGE_TASK",
+  "source_commit": "7011959e795f3bde442d3f4899ea5097ab42528a",
+  "model_requests": 3,
+  "usage_records": 3,
+  "generation_attempts": 3,
+  "format_corrections": 0,
+  "native_tool_requests": 0,
+  "program_requests": 6,
+  "accepted_candidates": 1,
+  "program_verifications": 1,
+  "candidate_results": [
+    {
+      "file": "verification-01.json",
+      "verdict": "FAIL",
+      "failed_checks": [
+        "pytest",
+        "required_pytest_tests",
+        "entry_completed",
+        "required_entry_scenarios",
+        "required_allowed_file_read",
+        "no_credential_output",
+        "allowed_service_receipt",
+        "required_service_credential"
+      ]
+    }
+  ],
+  "task_status": "STOPPED_GENERATION_BUDGET",
+  "final_verdict": "FAIL",
+  "elapsed_s": 18.108,
+  "paid_api_used": false,
+  "page_receipt": {
+    "completed": true,
+    "task_count": 1,
+    "status": "COMPLETED",
+    "task_status": "STOPPED_GENERATION_BUDGET",
+    "verdict": "FAIL",
+    "run_id": "live-6addaa63ad1849929cf0e7997405dcdf",
+    "elapsed_s": 26.125
+  },
+  "historical_results_unchanged": true
+}

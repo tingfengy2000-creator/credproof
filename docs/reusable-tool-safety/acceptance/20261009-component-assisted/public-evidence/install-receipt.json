@@ -1,0 +1,57 @@
+{
+  "source_commit": "7011959e795f3bde442d3f4899ea5097ab42528a",
+  "wheel_name": "credproof_safety-0.3.0.dev32-py3-none-any.whl",
+  "wheel_bytes": 373736,
+  "wheel_sha256": "3bab6e34bc46600bf9654e51ad3ce13f93a4451ecfa9ac75a4ffc96cfe7ec894",
+  "module_bytes": {
+    "credproof_safety/agent.py": {
+      "installed_sha256": "9771bb0c0defe43b6a6bda3c12a5439d86ecdc9f35c373b083d931e3c6804629",
+      "source_sha256": "9771bb0c0defe43b6a6bda3c12a5439d86ecdc9f35c373b083d931e3c6804629",
+      "match": true
+    },
+    "credproof_safety/runner.py": {
+      "installed_sha256": "6a4593ae37a175c702580a78429d578fb85c1dac3f3de478dc49365f8236575c",
+      "source_sha256": "6a4593ae37a175c702580a78429d578fb85c1dac3f3de478dc49365f8236575c",
+      "match": true
+    },
+    "credproof_safety/web_repair.py": {
+      "installed_sha256": "18112ab679d0ee18acbd5bfe19fb021446450a8e61d66dc80458a8896614f81e",
+      "source_sha256": "18112ab679d0ee18acbd5bfe19fb021446450a8e61d66dc80458a8896614f81e",
+      "match": true
+    },
+    "agent_pilot/web.py": {
+      "installed_sha256": "e2a2277e7dc93a1d08aeae020be846adcd6e0da1d89914b6bb6b50bcd2d5b7b6",
+      "source_sha256": "e2a2277e7dc93a1d08aeae020be846adcd6e0da1d89914b6bb6b50bcd2d5b7b6",
+      "match": true
+    },
+    "agent_pilot/preflight.py": {
+      "installed_sha256": "21aa80fdf81a4b70eee8abebfd6f43a134d0886d2de0adc20e0a26461922ac81",
+      "source_sha256": "21aa80fdf81a4b70eee8abebfd6f43a134d0886d2de0adc20e0a26461922ac81",
+      "match": true
+    },
+    "agent_pilot/bounded_patch.py": {
+      "installed_sha256": "3404525767c3601da35754d350e03cef05cfdeacf9cdee7098c272ebdc1c2c29",
+      "source_sha256": "3404525767c3601da35754d350e03cef05cfdeacf9cdee7098c272ebdc1c2c29",
+      "match": true
+    },
+    "credproof_access/__init__.py": {
+      "installed_sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "source_sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "match": true
+    },
+    "credproof_access/contract.py": {
+      "installed_sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc",
+      "source_sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc",
+      "match": true
+    }
+  },
+  "original_install_probe": "d2812d5 wheel and origin-only probe retained locally; pre-model preflight prevented any inference on that version",
+  "actual_page_model_source": "7011959e795f3bde442d3f4899ea5097ab42528a",
+  "source_zip_is_not_wheel": true,
+  "commands": [
+    "python -m pip wheel --no-deps --no-build-isolation --wheel-dir <new-dir> .",
+    "<installed-python> -m pip install --no-deps --force-reinstall <wheel>",
+    "<installed-python> -I -m agent_pilot.launch --workspace <data> --mode live --port <port>"
+  ],
+  "post_run_origin_note": "main module import resolution corroboration and actual child origin are separate receipts"
+}

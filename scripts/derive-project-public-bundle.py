@@ -94,7 +94,7 @@ def main() -> int:
         "entry_path": "project/tool.py",
         "source_entry_sha256": old_manifest.get("files", {}).get("project/tool.py"),
         "published_entry_sha256": published.get("project/tool.py"),
-        "source_entry_newline": "CRLF",
+        "source_entry_newline": old_manifest.get("object_binding", {}).get("entry_candidate_newline", "CRLF"),
         "published_entry_newline": "LF",
         "newline_policy": "Git blob bytes are authoritative; no checkout newline conversion is trusted",
         "historical_final_validation_preserved": True,
