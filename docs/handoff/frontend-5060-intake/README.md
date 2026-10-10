@@ -5,7 +5,7 @@
 - 接收分支：`feat/frontend-human-review-5060` @ `5b3ff23ee078d9070da5d61cf2bca93d17813465`（与 5090 通报一致）
 - 冻结基线 `81c289fd…`、被测源码 `50e0d694…`：两个提交对象均已取得
 - 5060 环境：Linux x86_64，Python 3.12.3，新建最小 venv，仅 `pip install --no-index --no-deps` 原 wheel
-- 5060 身份：参赛者本人账户下由 Claude（AI）承担前端/文档开发，不是另一实际人员。AI 辅助开发参赛许可仍由本人确认。
+- 开发者：tingfeng 开发项目，部分 AI 辅助。5060 是 tingfeng 的第二个开发环境（前端与文档），不新增团队成员；AI 辅助开发参赛许可已由 tingfeng 确认。
 
 ## 核对结果
 
