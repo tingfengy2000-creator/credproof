@@ -17,6 +17,7 @@ import json
 import os
 from pathlib import Path
 import re
+import secrets
 import subprocess
 import sys
 import threading
@@ -290,6 +291,9 @@ class Application:
         self.runs = {}
         self.mutex = threading.Lock()
         self.operation = threading.Lock()
+        from credproof_safety.human_review import ReviewWorkspace
+        self.review_workspace = ReviewWorkspace(self.root)
+        self.review_session = secrets.token_urlsafe(32)
         self._runtime = None
         self._runtime_at = 0.0
         from .project_workspace import ProjectWorkspace
@@ -354,6 +358,7 @@ class Application:
                                '组件辅助 bounded_patch 生成；程序独立验收、导出与复检。'
                            ] if key in LIVE_PROJECTS else PUBLIC_RULES), 'live_supported': key in LIVE_PROJECTS} for key, path in self.cases.items()],
                 'runtime': self.runtime(), 'access_mode': self.access_mode,
+                'review_session': self.review_session, 'reviews': self.review_workspace.list(),
                 'demonstrations': getattr(self, 'demonstrations', []),
                 'history': [{'id': run.id, 'case_id': run.case_id, 'created_at': run.started_at,
                              'label': f'{run.case_id.upper()} · {run.started_at or "未提供时间"}'}
@@ -825,15 +830,15 @@ class Handler(BaseHTTPRequestHandler):
         self.write_headers(code, 'application/json; charset=utf-8', len(payload))
         self.wfile.write(payload)
 
-    def body(self):
+    def body(self, limit=4096):
         if self.headers.get_content_type() != 'application/json':
             raise Problem(415, '请求体必须是 application/json。')
         lengths = self.headers.get_all('Content-Length', [])
         if len(lengths) != 1 or not lengths[0].isdigit():
             raise Problem(400, '缺少明确的请求体长度。')
         size = int(lengths[0])
-        if size > 4096:
-            raise Problem(413, '请求体超过 4 KiB。')
+        if size > limit:
+            raise Problem(413, '请求体超过允许大小。')
         self.connection.settimeout(4)
         try:
             data = json.loads(self.rfile.read(size).decode('utf-8'))
@@ -862,6 +867,51 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_json(200, app.runtime())
         if self.command == 'GET' and path == '/api/agent/bootstrap':
             return self.send_json(200, app.bootstrap())
+        review_match = re.fullmatch(r'/api/review/([0-9a-f]{32})(/revise|/check|/decide|/export)?', path)
+        if self.command == 'GET' and review_match and not review_match[2]:
+            try:
+                return self.send_json(200, app.review_workspace.view(review_match[1]))
+            except (ValueError, OSError) as error:
+                raise Problem(409, str(error))
+        if self.command == 'POST' and (path == '/api/review/open' or review_match):
+            sessions = self.headers.get_all('X-CredProof-Review-Session', [])
+            if len(sessions) != 1 or not secrets.compare_digest(sessions[0], app.review_session):
+                raise Problem(403, 'review_session_required')
+            data = self.body(72*1024)
+            if not app.operation.acquire(blocking=False):
+                raise Problem(409, 'another_local_operation_is_running')
+            try:
+                if path == '/api/review/open':
+                    if set(data) != {'run_id'} or data['run_id'] not in app.runs:
+                        raise ValueError('registered_run_required')
+                    run = app.runs[data['run_id']]
+                    if run.status in ('QUEUED','RUNNING'):
+                        raise ValueError('task_not_finished')
+                    result = app.review_workspace.open_method(run.method, run.id)
+                else:
+                    identifier, operation = review_match.groups()
+                    expected = data.get('expected')
+                    if operation == '/revise' and set(data)=={'expected','code','reason'}:
+                        result = app.review_workspace.revise(identifier, expected, data['code'], data['reason'])
+                    elif operation == '/check' and set(data)=={'expected'}:
+                        if app.access_mode=='view' or not runtime_observation(app.root).get('isolation_ready'):
+                            raise Problem(409, 'isolation_required_no_host_fallback')
+                        result = app.review_workspace.check(identifier, expected)
+                    elif operation == '/decide' and set(data)=={'expected','decision','reason','test_operation'}:
+                        result = app.review_workspace.decide(identifier, expected, data['decision'], data['reason'], test_operation=data['test_operation'])
+                    elif operation == '/export' and set(data)=={'expected','adopted'}:
+                        archive = app.review_workspace.export(identifier, expected, adopted=data['adopted'])
+                        payload = archive.read_bytes()
+                        self.write_headers(200,'application/zip',len(payload),[('Content-Disposition','attachment; filename="credproof-review.zip"')])
+                        self.wfile.write(payload)
+                        return
+                    else:
+                        raise ValueError('unsupported_review_operation_or_fields')
+                return self.send_json(200, result)
+            except (ValueError, OSError, KeyError, TypeError) as error:
+                raise Problem(409, str(error))
+            finally:
+                app.operation.release()
         if self.command == 'GET' and path == '/api/project/modes':
             return self.send_json(200, app.project_modes())
         if self.command == 'POST' and path in ('/api/project/select', '/api/project/check', '/api/project/export'):

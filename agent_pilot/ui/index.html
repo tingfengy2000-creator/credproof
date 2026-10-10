@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="dark">
   <meta name="referrer" content="no-referrer">
-  <title>密证 CredProof——面向 AI 与 Python 工具的安全行为验证与受控修复系统</title>
+  <title>密证 CredProof——面向Python工具的AI辅助安全修复与证据验收工作台</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./app.js" type="module"></script>
 </head>
@@ -36,10 +36,10 @@
     <div class="hero-copy">
       <div class="hero-kicker"><span></span> CREDENTIAL SECURITY / AI TOOLS</div>
       <p class="hero-tagline">工具不泄密、不乱读、不乱连。</p>
-      <h1 id="product-title"><span class="hero-name">密证 <em>CredProof</em></span><span class="hero-product">——面向 AI 与 Python 工具的安全行为验证与受控修复系统</span></h1>
+      <h1 id="product-title"><span class="hero-name">密证 <em>CredProof</em></span><span class="hero-product">——面向Python工具的AI辅助安全修复与证据验收工作台</span></h1>
       <p class="hero-description">工具能正常运行，不代表只做了被允许的事。检查密钥输出、目录之外的文件读取和未授权服务请求；同时验收必要业务行为，把可再次运行的安全检查留在项目里。</p>
       <div class="hero-capabilities"><span>本地模型</span><span>运行不调用付费 API</span><span>材料可复检</span></div><div class="hero-actions"><a class="button hero-primary" href="#cases">探索典型案例 <svg class="icon"><use href="#i-arrow"/></svg></a><a class="button hero-secondary" href="#workbench">进入验证工作区 <span>↗</span></a></div>
-      <p class="hero-boundary"><svg class="icon"><use href="#i-lock"/></svg>程序检查是否合格，Agent 提出候选，开发者可以持续复检。</p>
+      <p class="hero-boundary"><svg class="icon"><use href="#i-lock"/></svg>AI提出建议，程序独立验收，开发者修订并决定是否采纳。采纳不等于已应用原仓库。</p>
     </div>
     <figure class="hero-visual" aria-label="机制示意：代码与观测进入受控修复，由程序验收并导出复检材料">
       <svg viewBox="0 0 470 350" role="img" aria-labelledby="mechanism-art-title" xmlns="http://www.w3.org/2000/svg">
@@ -92,6 +92,26 @@
         <div class="project-side-boundary"><svg class="icon"><use href="#i-lock"/></svg><span>隔离材料缺失时只返回 UNKNOWN；不在宿主机降级执行。</span></div>
         <a class="project-side-link" href="#workbench">查看已有证据工作台 <svg class="icon"><use href="#i-arrow"/></svg></a>
       </aside>
+    </div>
+  </section>
+  <section id="human-review" class="panel review-panel" aria-labelledby="review-title">
+    <div class="panel-heading"><div><span class="eyebrow">AI ASSISTED / HUMAN REVIEW</span><h2 id="review-title">审阅、修订与人工采纳</h2></div><span class="tiny-tag">不调用模型即可继续</span></div>
+    <div class="review-body">
+      <p>导入真实AI历史候选，查看失败依据。开发者修订保存为新副本；技术检查与人工决定分别记录，原项目和index保持只读。</p>
+      <label for="review-history">已登记AI记录（历史响应，不是现场新推理）</label><select id="review-history"></select><button id="review-open" class="button secondary">审阅此AI候选</button>
+      <label for="review-saved">已保存的审阅工作</label><select id="review-saved"></select><button id="review-load" class="button secondary">读取已有修订</button>
+      <div id="review-status" class="review-status">尚未选择候选。</div>
+      <div id="review-content" hidden>
+        <div class="review-code-grid"><details><summary>原始问题代码</summary><pre id="review-original"></pre></details><details><summary>原AI候选（保持原件）</summary><pre id="review-ai"></pre></details></div>
+        <details open><summary>相邻版本差异与来源</summary><pre id="review-diff"></pre></details>
+        <label for="review-code">当前修订完整源码 · 仅允许配置入口文件</label><textarea id="review-code" spellcheck="false" rows="18"></textarea>
+        <label for="review-reason">修改或决策理由</label><input id="review-reason" maxlength="1000" placeholder="说明修改内容或审阅理由">
+        <div class="review-actions"><button id="review-revise" class="button">提交开发者修订</button><button id="review-check" class="button">重新验收 · 无模型</button><button id="review-needs" class="button secondary">需要修改</button><button id="review-reject" class="button secondary">拒绝候选</button><button id="review-approve" class="button">确认采纳</button></div>
+        <label><input id="review-test" type="checkbox">审批功能测试（自动化检查应勾选，不代表本人真实审阅）</label>
+        <div class="review-actions"><button id="review-diagnostic" class="button secondary">导出诊断／待采纳材料</button><button id="review-adopted" class="button secondary">导出已验证且已采纳修复</button></div>
+        <div id="review-checks"></div><details><summary>完整报告、独立场景与必要测试执行</summary><pre id="review-report"></pre></details><details><summary>追加的人工决策与版本链</summary><pre id="review-decisions"></pre></details>
+        <p class="decision-footnote">PASS不会自动采纳；本机记录不是强身份签名或第三方认证。修改或重新验收后，旧决定不自动恢复。导出副本需由开发者自行应用。</p>
+      </div>
     </div>
   </section>
   <section id="cases" class="demo-gallery" aria-label="典型案例演示">

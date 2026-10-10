@@ -95,6 +95,16 @@ class WebTests(unittest.TestCase):
         self.assertIn('no-store', headers['Cache-Control'])
         self.assertIn("frame-ancestors 'none'", headers['Content-Security-Policy'])
 
+    def test_review_writes_require_session_and_registered_identity(self):
+        status, _, _ = self.call('POST','/api/review/open',{'run_id':'unknown'})
+        self.assertEqual(status,403)
+        status, _, _ = self.call('POST','/api/review/open',{'run_id':'unknown'},
+                                 headers={'X-CredProof-Review-Session':self.app.review_session})
+        self.assertEqual(status,409)
+        status, _, _ = self.call('POST','/api/review/open',{'run_id':'unknown'},
+                                 headers={'X-CredProof-Review-Session':self.app.review_session,'Origin':'https://outside.invalid'})
+        self.assertEqual(status,403)
+
     def test_project_modes_are_read_only_and_do_not_accept_paths(self):
         status, value, headers = self.call('GET', '/api/project/modes')
         self.assertEqual(status, 200)

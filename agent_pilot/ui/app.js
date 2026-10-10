@@ -2,7 +2,7 @@
 const API = '/api/agent';
 const $ = id => document.getElementById(id);
 const state = { bootstrap: null, projectModes: null, caseId: '', run: null, view: 'source', busy: false,
-  error: '', stale: false, replay: false, epoch: 0, timer: null, demoRuns: {}, project: null };
+  error: '', stale: false, replay: false, epoch: 0, timer: null, demoRuns: {}, project: null, review: null };
 const activeStatuses = new Set(['QUEUED', 'RUNNING']);
 const statusNames = { QUEUED: '等待执行', RUNNING: '执行中', COMPLETED: '任务结束',
   STOPPED: '已停止', ERROR: '执行异常' };
@@ -47,7 +47,7 @@ async function request(path, body) {
   const timeout = window.setTimeout(() => controller.abort(), 90000);
   try {
     const response = await responseChecked(await fetch(path, { method: body === undefined ? 'GET' : 'POST',
-      headers: body === undefined ? undefined : { 'Content-Type': 'application/json' },
+      headers: body === undefined ? undefined : { 'Content-Type': 'application/json', ...(path.startsWith('/api/review/') ? {'X-CredProof-Review-Session':state.bootstrap.review_session} : {}) },
       body: body === undefined ? undefined : JSON.stringify(body), credentials: 'same-origin',
       cache: 'no-store', signal: controller.signal }));
     return await response.json();
@@ -389,7 +389,41 @@ function renderStories() {
   }).join('') || '<p class="story-preserved">这份记录未提交补丁，验证后保留原代码。</p>'}</div><div class="story-foot"><span>同批固定流程（A-fixed）：${escape(story.fixed_comparison?.verdict || 'UNKNOWN')} · ${escape(taskNames[story.fixed_comparison?.task_status] || story.fixed_comparison?.task_status || '任务状态未知')}</span><span>历史验证结果，与本次复检分别保留</span></div><details class="story-provenance"><summary>查看历史来源与版本</summary><p>批次 ${escape(story.batch)} · 版本 ${escape(story.source_commit || '未提供')}<br>${escape(story.provenance || '')}</p></details>`;
 }
 
-function render() { renderConnection(); renderProjectModes(); renderScope(); renderActions(); renderDecisions(); renderCode(); renderEvidence(); renderValidation(); renderResultStates(); renderStories(); }
+function render() { renderConnection(); renderProjectModes(); renderScope(); renderActions(); renderDecisions(); renderCode(); renderEvidence(); renderValidation(); renderResultStates(); renderStories(); renderReview(); }
+
+function renderReview() {
+  for (const [id,items] of [['review-history',array(state.bootstrap?.history).map(x=>[x.id,x.label])],['review-saved',array(state.bootstrap?.reviews).map(x=>[x.id,x.id.slice(0,8)+' · '+x.label])]]) {
+    const select=$(id), old=select.value;
+    select.innerHTML=items.map(([key,label])=>`<option value="${escape(key)}">${escape(label)}</option>`).join('');
+    if(items.some(x=>x[0]===old))select.value=old;
+  }
+  $('review-open').disabled=state.busy||!$('review-history').value;
+  $('review-load').disabled=state.busy||!$('review-saved').value;
+  const r=state.review; $('review-content').hidden=!r;
+  if(!r)return;
+  $('review-status').innerHTML=`${badge('程序 '+r.technical_verdict,tone(r.technical_verdict))} ${badge('人工 '+r.decision)} ${r.decision_is_test?'审批功能测试 · 非本人签字':''}<p>${escape(r.version.id)} · ${escape(r.version.source)} · ${escape(r.version.reason)}<br>对象 ${escape(r.object_sha256||'材料缺失')}<br>报告 ${escape(r.report?.checked_at||r.report?.created_at||'未执行')} · ${r.report_applicable?'适用于当前副本':'不适用／未验收'} · 原仓库未应用</p>${escape(r.material_reasons.join('; '))}`;
+  $('review-original').textContent=r.original_code; $('review-ai').textContent=r.ai_code; $('review-diff').textContent=r.diff||'与父候选相同';
+  if($('review-code').dataset.identity!==r.id+r.version.id){$('review-code').value=r.code;$('review-code').dataset.identity=r.id+r.version.id;}
+  $('review-report').textContent=text(r.report); $('review-decisions').textContent=text({versions:r.versions,decisions:r.decisions});
+  $('review-checks').innerHTML=Object.entries(r.report?.checks||{}).map(([key,value])=>`<p>${badge(value===true?'PASS':value===false?'FAIL':'UNKNOWN',value===true?'pass':value===false?'fail':'unknown')} ${escape(key)}</p>`).join('');
+  for(const id of ['review-revise','review-check','review-needs','review-reject','review-diagnostic'])$(id).disabled=state.busy||r.material_reasons.length>0;
+  $('review-check').disabled||=state.bootstrap?.access_mode==='view';
+  $('review-approve').disabled=state.busy||r.technical_verdict!=='PASS'||!r.report_applicable;
+  $('review-adopted').disabled=state.busy||r.decision!=='APPROVED'||!r.decision_applicable||r.technical_verdict!=='PASS';
+}
+const reviewExpected=()=>({version_id:state.review.version.id,object_sha256:state.review.object_sha256,report_sha256:state.review.report_sha256,decision_count:state.review.decisions.length});
+async function reviewAction(operation,data={}) {state.review=await request(`/api/review/${state.review.id}/${operation}`,{expected:reviewExpected(),...data});}
+async function reviewDownload(adopted) {
+  const response=await responseChecked(await fetch(`/api/review/${state.review.id}/export`,{method:'POST',headers:{'Content-Type':'application/json','X-CredProof-Review-Session':state.bootstrap.review_session},body:JSON.stringify({expected:reviewExpected(),adopted}),cache:'no-store'}));
+  const url=URL.createObjectURL(await response.blob());const a=document.createElement('a');a.href=url;a.download=adopted?'credproof-adopted-review.zip':'credproof-diagnostic-review.zip';a.click();window.setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+$('review-open').addEventListener('click',()=>busyAction(async()=>{state.review=await request('/api/review/open',{run_id:$('review-history').value});await loadBootstrap();}));
+$('review-load').addEventListener('click',()=>busyAction(async()=>{state.review=await request('/api/review/'+$('review-saved').value);}));
+$('review-revise').addEventListener('click',()=>busyAction(()=>reviewAction('revise',{code:$('review-code').value,reason:$('review-reason').value})));
+$('review-check').addEventListener('click',()=>busyAction(()=>reviewAction('check')));
+for(const [id,decision] of [['review-needs','NEEDS_CHANGES'],['review-reject','REJECTED'],['review-approve','APPROVED']])$(id).addEventListener('click',()=>busyAction(()=>reviewAction('decide',{decision,reason:$('review-reason').value,test_operation:$('review-test').checked})));
+$('review-diagnostic').addEventListener('click',()=>busyAction(()=>reviewDownload(false)));
+$('review-adopted').addEventListener('click',()=>busyAction(()=>reviewDownload(true)));
 function clearPoll() { if (state.timer) window.clearTimeout(state.timer); state.timer = null; }
 function schedulePoll() {
   clearPoll();

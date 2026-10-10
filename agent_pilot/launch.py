@@ -10,11 +10,12 @@ def main():
     parser.add_argument('--port', type=int, default=8765)
     parser.add_argument('--demo', action='store_true', help='Open curated real history, clearly labelled REPLAY')
     parser.add_argument('--workspace', type=Path, help='Candidate source/material directory (installed wheel may use an extracted package)')
+    parser.add_argument('--history', type=Path, action='append', default=[], help='Explicit registered historical method under workspace/runs')
     parser.add_argument('--project-config', type=Path, help='Local operator explicitly authorizes one adapted project config; not accepted through HTTP')
     parser.add_argument('--mode', choices=['view', 'recheck', 'live'], default='view',
                         help='view: history only; recheck: isolation, no model; live: local model required')
     args = parser.parse_args()
-    options = {'access_mode': args.mode, 'project_config': args.project_config, 'project_examples': args.demo}
+    options = {'access_mode': args.mode, 'project_config': args.project_config, 'project_examples': args.demo, 'histories':args.history}
     if args.workspace:
         options['root'] = args.workspace.resolve(strict=True)
     app = Application(**options)
