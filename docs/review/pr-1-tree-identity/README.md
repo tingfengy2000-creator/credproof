@@ -21,6 +21,7 @@
 - [Windows/Linux 已安装版本只读 HTTP 验证](evidence/readonly/)
 - [同一公开 bundle 的5090无模型复检](evidence/recheck/)
 - [总收据：源码 SHA、实际结果和文件摘要](evidence/review-receipt.json)
+- [匿名取件：25份 Raw 正文／wheel字节与固定Git blob逐项一致](evidence/github-content-check.json)
 
 安装与查看命令见 [交接入口](../../handoff/frontend-5060/README.md)。只读查看不需要 GPU、模型、WSL 或候选执行。Linux 验证若通过，只证明本台5090的 WSL Linux 只读链路；不冒称另一台5060已实测、macOS已实测或任意系统均可动态验收。真实动态检查仍使用5090已有 Windows+WSL/bubblewrap 环境。
 

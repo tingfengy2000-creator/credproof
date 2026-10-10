@@ -42,3 +42,6 @@ docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/** te
 docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/workspace/** -text whitespace=-blank-at-eol,cr-at-eol
 docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/**/*.jpg binary
 docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/**/*.whl binary
+# PR1 review receipts publish exact UTF-8 LF bytes; the wheel stays binary.
+docs/review/pr-1-tree-identity/evidence/** text eol=lf
+docs/review/pr-1-tree-identity/evidence/**/*.whl binary
