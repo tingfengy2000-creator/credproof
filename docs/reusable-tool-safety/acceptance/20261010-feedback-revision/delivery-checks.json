@@ -1,0 +1,41 @@
+{
+  "tested_source_commit": "18533454be948d23fc28236aa4070d63e2e3b289",
+  "original_files_unchanged": {
+    "model-response": true,
+    "original-candidate": true,
+    "original-unknown-report": true
+  },
+  "preflight_live_request_comparison": {
+    "byte_identical": false,
+    "semantic_json_identical": true,
+    "changed_message_indices": [
+      1
+    ],
+    "difference": "JSON object key ordering in task data; same content and byte bound. Actual live client budget separately saved."
+  },
+  "commands": [
+    {
+      "kind": "software protocol",
+      "command": "python -m pytest -q agent_pilot/tests/test_output_format.py agent_pilot/tests/test_feedback_revision.py agent_pilot/tests/test_bounded_patch.py agent_pilot/tests/test_model_boundary.py --basetemp=_runs/feedback-revision-20261010/pytest-temp-privileged --junitxml=_runs/feedback-revision-20261010/protocol-privileged-junit.xml",
+      "exit_code": 0,
+      "result": "51 passed; one dashscope Assistants API deprecation warning; no inference/candidate execution"
+    },
+    {
+      "kind": "new single linked model revision",
+      "command": "CREDPROOF_MODEL_PROFILE=qwen25 <INSTALL>/venv/Scripts/python.exe -I -m credproof_safety.feedback_revision --config <INSTALL>/data/examples/material_assistant/credproof.toml --report <REPOSITORY>/docs/reusable-tool-safety/acceptance/20261010-format-normalized/report.raw.json --registration <LOCAL_LEDGER>/feedback-revision-20261010/registration.json --output <INSTALL>/data/runs/linked-feedback-20261010/output",
+      "exit_code": 0,
+      "meaning": "dispatcher completed; candidate verdict FAIL; pytest exit 1"
+    },
+    {
+      "kind": "installed history HTTP view",
+      "command": "<INSTALL>/venv/Scripts/python.exe -I scripts/check-feedback-revision-view.py --data <INSTALL>/data --method <INSTALL>/data/runs/linked-feedback-20261010/output/comparison/p01/C-agent --output <LOCAL_RECEIPT>",
+      "exit_code": 0,
+      "result": "HTTP200 with actual FAIL and linked-history label; REPLAY, new_model_calls=0"
+    }
+  ],
+  "manifest_files_verified": 51,
+  "old_packages_and_results_overwritten": false,
+  "bundle_export": "NOT_EXECUTED: FAIL",
+  "public_PASS_recheck": "NOT_EXECUTED: FAIL",
+  "status": "NOT_READY_FOR_HANDOFF"
+}

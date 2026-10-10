@@ -1,0 +1,50 @@
+{
+  "schema": "credproof.model-boundary-plan/v1",
+  "model_profile": {
+    "profile": "qwen25",
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+  },
+  "allowlist": {
+    "rootfs": "<RUNTIME_USER_HOME>/credproof-agent-runtime/isolation/rootfs",
+    "code": [
+      "agent_pilot/__init__.py",
+      "agent_pilot/bounded_patch.py",
+      "agent_pilot/model_client.py",
+      "agent_pilot/model_config.py",
+      "agent_pilot/output_format.py",
+      "agent_pilot/tools.py",
+      "initial-context.json",
+      "model-profile.json",
+      "worker.py"
+    ],
+    "dependencies": "<RUNTIME_USER_HOME>/credproof-agent-runtime/venv/lib/python3.12/site-packages",
+    "ollama": "<RUNTIME_USER_HOME>/credproof-agent-runtime/ollama",
+    "model_files": [
+      "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+      "models/blobs/sha256-f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee",
+      "models/blobs/sha256-ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9",
+      "models/blobs/sha256-66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e",
+      "models/blobs/sha256-1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320",
+      "models/blobs/sha256-832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e"
+    ],
+    "writable": [
+      "/work",
+      "/rpc",
+      "/tmp",
+      "/run",
+      "/home"
+    ],
+    "device": "/dev/dxg plus read-only WSL CUDA driver allowlist",
+    "network": "private bubblewrap namespace; loopback only",
+    "excluded": [
+      "checkout",
+      "repair artifact root",
+      "runtime service-home",
+      "host /mnt",
+      "model weights not in manifest",
+      "proxy and API key environment"
+    ]
+  }
+}

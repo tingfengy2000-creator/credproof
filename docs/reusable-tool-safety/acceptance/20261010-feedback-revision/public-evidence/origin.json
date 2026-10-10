@@ -1,0 +1,14 @@
+{
+  "interpreter": "<INSTALL>\\venv\\Scripts\\python.exe",
+  "cwd": "<INSTALL>\\data",
+  "isolated": true,
+  "distribution_version": "0.3.0.dev34",
+  "modules": {
+    "credproof_safety.agent": "<INSTALL>\\venv\\Lib\\site-packages\\credproof_safety\\agent.py",
+    "agent_pilot.bounded_patch": "<INSTALL>\\venv\\Lib\\site-packages\\agent_pilot\\bounded_patch.py",
+    "agent_pilot.output_format": "<INSTALL>\\venv\\Lib\\site-packages\\agent_pilot\\output_format.py"
+  },
+  "strategy": "bounded_patch",
+  "profile": "component_assisted",
+  "execution_kind": "new feedback revision linked to historical candidate"
+}

@@ -1,6 +1,10 @@
-# CredProof reusable-tool-safety（0.3.0-dev.33）
+# CredProof reusable-tool-safety（0.3.0-dev.34）
 
-## 当前定向收尾：已有输出格式归一化
+## 当前dev34：一次定点反馈修订已结束
+
+[固定证据入口](acceptance/20261010-feedback-revision/README.md)。统一外层围栏归一化及静态语法接收已接入安装程序；实际1次新模型请求、1候选、1次自动验收FAIL。模型仅删import os，正常业务和跳转在NameError处提前结束，不能以零观察宣称安全。原UNKNOWN和上轮FAIL保留。**NOT_READY_FOR_HANDOFF**；本轮不追加调用、不生成PASS bundle、不启动5060。
+
+## 历史定向收尾：已有输出格式归一化
 
 [本轮固定证据入口](acceptance/20261010-format-normalized/README.md)。只删除唯一外层围栏13 bytes，源码逻辑不变；静态语法通过，一次原规则隔离验收 **FAIL**。必要业务4项实际执行、3通过1失败；直接禁止URL和跳转时出现未定义urllib的NameError，pytest回溯还暴露合成凭据。新增模型调用0，原正式任务UNKNOWN与全部历史不变。**NOT_READY_FOR_HANDOFF**，按FAIL分支停止，未接入安装版解析、未生成PASS bundle或启动5060。
 

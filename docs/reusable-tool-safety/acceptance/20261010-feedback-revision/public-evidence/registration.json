@@ -1,0 +1,30 @@
+{
+  "kind": "HISTORICAL_CANDIDATE_FEEDBACK_REVISION",
+  "project_id": "assistant-linked-feedback-20261010",
+  "task_id": "linked-feedback-20261010",
+  "parent_task_id": "live-c5e9217f868f4681a94bdda49c914e6e",
+  "source_candidate_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+  "report_sha256": "a6b07447377499a74f1fece4a56a5bd37f12f1a6ac712d049e7fcae79e81c587",
+  "model": {
+    "profile": "qwen25",
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+  },
+  "limits": {
+    "model_requests": 1,
+    "generations": 1,
+    "format_corrections": 0,
+    "candidates": 1,
+    "verifications": 1,
+    "context": 16384,
+    "output": 2048,
+    "safety_reserve": 512,
+    "request_seconds": 120,
+    "task_seconds": 900
+  },
+  "tested_source_commit": "18533454be948d23fc28236aa4070d63e2e3b289",
+  "parent_result": "UNKNOWN; unchanged",
+  "posthoc_result": "FAIL; unchanged",
+  "scope": "one new feedback request, not old task restart"
+}

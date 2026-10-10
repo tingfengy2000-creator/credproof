@@ -1,0 +1,41 @@
+{
+  "rule_version": "credproof.python-outer-fence/v1",
+  "original_code_sha256": "c221542792d0114837209c7c48157a8f31472cf7629e6726c17cb2a308c6e113",
+  "original_code_bytes": 1266,
+  "deletions": [
+    {
+      "character_range": [
+        0,
+        10
+      ],
+      "utf8_byte_range": [
+        0,
+        10
+      ],
+      "text": "```python\n"
+    },
+    {
+      "character_range": [
+        1263,
+        1266
+      ],
+      "utf8_byte_range": [
+        1263,
+        1266
+      ],
+      "text": "```"
+    }
+  ],
+  "source": "model_generated_then_format_normalized",
+  "semantic_edits": false,
+  "format": "SINGLE_COMPLETE_OUTER_FENCE_REMOVED",
+  "body_preserved_exactly": true,
+  "normalized_code_sha256": "fb23b2299729c891dfe071f3a8cc19fd28e38bc676da60dea81a04230ad3ba8c",
+  "normalized_code_bytes": 1253,
+  "syntax": {
+    "status": "VALID_SYNTAX",
+    "source_sha256": "fb23b2299729c891dfe071f3a8cc19fd28e38bc676da60dea81a04230ad3ba8c",
+    "executed": false
+  },
+  "diff": "--- original-model-code\n+++ received-python-code\n@@ -1,4 +1,3 @@\n-```python\n \"\"\"Small authorised materials assistant used by the reusable-entry example.\n \n This initial version is intentionally vulnerable for the local lab: it reads a\n@@ -26,4 +25,3 @@\n         raise ValueError(f\"HTTP error accessing service: {e}\")\n     logging.info(\"loaded %s\", request[\"resource\"])\n     return {\"resource\": request[\"resource\"], \"material\": material, \"service\": service_data}\n-```"
+}

@@ -1,0 +1,42 @@
+{
+  "status": "OK",
+  "path": "tool.py",
+  "code": "\"\"\"Small authorised materials assistant used by the reusable-entry example.\n\nThis initial version is intentionally vulnerable for the local lab: it reads a\npath supplied by the request, follows a redirect, and includes its credential\nin a debug message. The lab provides only synthetic material and loopback mock\nservices. The file is never run on a real account.\n\"\"\"\nimport json\nimport logging\nimport os\nfrom urllib.request import Request, urlopen\nfrom credproof_access import read_text, get_json\n\n\ndef run(request):\n    if not isinstance(request, dict) or not isinstance(request.get(\"resource\"), str):\n        raise ValueError(\"invalid request\")\n    credential_env = os.environ.get(\"CREDPROOF_CREDENTIAL_ENV\", \"CREDPROOF_TEST_CREDENTIAL\")\n    credential = os.environ[credential_env]\n    path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\")\n    material = read_text(path)\n    url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"]\n    try:\n        service_data = get_json(url, credential)\n    except urllib.error.HTTPError as e:\n        raise ValueError(f\"HTTP error accessing service: {e}\")\n    logging.info(\"loaded %s\", request[\"resource\"])\n    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": service_data}\n",
+  "read_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+  "executor_state": {
+    "schema": "credproof.executor-state/v1",
+    "phase": "sources_read",
+    "evidence_ready": true,
+    "read_paths": [
+      "tool.py"
+    ],
+    "required_read_paths": [
+      "tests/test_business.py",
+      "tool.py"
+    ],
+    "current_candidate": null,
+    "current_candidate_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+    "last_verified_candidate": null,
+    "last_verification_verdict": null,
+    "last_read_path": "tool.py",
+    "last_read_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+    "repeated_read_count": 1,
+    "no_progress_blocked": false,
+    "tool_calls_used": 2,
+    "max_tool_calls": 12,
+    "remaining_tool_calls": 10,
+    "candidates_accepted": 0,
+    "max_candidates": 1,
+    "remaining_candidates": 1,
+    "verifications_run": 0,
+    "max_verifications": 1,
+    "remaining_verifications": 1,
+    "allowed_actions": [
+      "read_code",
+      "submit_patch",
+      "stop"
+    ],
+    "revision_phase_rejections": 0,
+    "next_action": "submit_patch_or_stop"
+  }
+}

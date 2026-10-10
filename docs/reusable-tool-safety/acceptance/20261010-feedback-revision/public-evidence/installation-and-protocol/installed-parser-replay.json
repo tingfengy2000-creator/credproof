@@ -1,0 +1,55 @@
+{
+  "kind": "HISTORICAL_RESPONSE_PROTOCOL_REPLAY",
+  "model_calls": 0,
+  "interpreter": "<INSTALL>\\venv\\Scripts\\python.exe",
+  "isolated": 1,
+  "version": "0.3.0.dev34",
+  "origins": {
+    "credproof_safety.agent": "<INSTALL>\\venv\\Lib\\site-packages\\credproof_safety\\agent.py",
+    "agent_pilot.bounded_patch": "<INSTALL>\\venv\\Lib\\site-packages\\agent_pilot\\bounded_patch.py",
+    "agent_pilot.output_format": "<INSTALL>\\venv\\Lib\\site-packages\\agent_pilot\\output_format.py"
+  },
+  "parsed_source_format": {
+    "rule_version": "credproof.python-outer-fence/v1",
+    "original_code_sha256": "e72a71346be60d2867c583072735fc97624a18a9e4ad6612312e5e0e9b0ec881",
+    "original_code_bytes": 1276,
+    "deletions": [
+      {
+        "character_range": [
+          0,
+          10
+        ],
+        "utf8_byte_range": [
+          0,
+          10
+        ],
+        "text": "```python\n"
+      },
+      {
+        "character_range": [
+          1273,
+          1276
+        ],
+        "utf8_byte_range": [
+          1273,
+          1276
+        ],
+        "text": "```"
+      }
+    ],
+    "source": "model_generated_then_format_normalized",
+    "semantic_edits": false,
+    "format": "SINGLE_COMPLETE_OUTER_FENCE_REMOVED",
+    "body_preserved_exactly": true,
+    "normalized_code_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+    "normalized_code_bytes": 1263,
+    "syntax": {
+      "status": "VALID_SYNTAX",
+      "source_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+      "executed": false
+    },
+    "diff": "--- original-model-code\n+++ received-python-code\n@@ -1,4 +1,3 @@\n-```python\n \"\"\"Small authorised materials assistant used by the reusable-entry example.\n \n This initial version is intentionally vulnerable for the local lab: it reads a\n@@ -27,4 +26,3 @@\n         raise ValueError(f\"HTTP error accessing service: {e}\")\n     logging.info(\"loaded %s\", request[\"resource\"])\n     return {\"resource\": request[\"resource\"], \"material\": material, \"service\": service_data}\n-```"
+  },
+  "equals_parent_normalized_code": true,
+  "semantic_repair": false
+}

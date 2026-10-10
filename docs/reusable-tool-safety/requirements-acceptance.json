@@ -1,8 +1,8 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.33",
-  "tested_source_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
-  "generated_at": "2026-10-09",
+  "candidate_version": "0.3.0-dev.34",
+  "tested_source_commit": "18533454be948d23fc28236aa4070d63e2e3b289",
+  "generated_at": "2026-10-10",
   "status_summary": {
     "verified": 12,
     "unverified": 1,
@@ -248,10 +248,13 @@
         "credproof_safety/agent.py:_bounded_model_script/_bounded_initial_context",
         "credproof_access/__init__.py:read_text/get_json",
         "credproof_access/contract.py:build_contract",
-        "credproof_safety/access_dependency.py:dependency_receipt"
+        "credproof_safety/access_dependency.py:dependency_receipt",
+        "agent_pilot/output_format.py:receive_python_source",
+        "credproof_safety/agent.py:request_feedback_revision",
+        "credproof_safety/feedback_revision.py:main"
       ],
       "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先完成首请求上下文、证据反馈压缩与可信阶段顺序预检，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
-      "acceptance": "dev33 installed page: 1 generation/usage, 1 accepted candidate, 1 trusted UNKNOWN. JSON is valid, source is not valid Python; no qualifying repair.",
+      "acceptance": "dev34 linked feedback revision: 1 model request/usage, 1 accepted candidate, 1 program-auto verification FAIL; installed strict outer-fence normalization and syntax reception verified. Original UNKNOWN and prior format FAIL unchanged.",
       "commands": [
         ".venv\\Scripts\\python.exe scripts/replay-context-budget-v6-duplicate-verify.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-payload.json --output-dir docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup",
         ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests/test_model_boundary.py agent_pilot/test_model_client.py credproof_safety/tests/test_entry_scenarios.py credproof_safety/tests/test_project_bundle.py"
@@ -310,18 +313,22 @@
         "acceptance/20261009-coding-model-comparison/public-evidence/formal-page/installed-child-origin.json",
         "acceptance/20261009-coding-model-comparison/public-evidence/candidates/verification-01.json",
         "acceptance/20261009-coding-model-comparison/public-evidence/preparation/install-final-receipt.json",
-        "acceptance/20261010-format-normalized/public-evidence/report.json"
+        "acceptance/20261010-format-normalized/public-evidence/report.json",
+        "acceptance/20261010-feedback-revision/README.md",
+        "acceptance/20261010-feedback-revision/public-evidence/repair.json",
+        "acceptance/20261010-feedback-revision/public-evidence/verification-history/verification-01.json",
+        "acceptance/20261010-feedback-revision/public-evidence/installation-and-protocol/installed-page-view.json"
       ],
-      "source_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
-      "gaps": "Literal Markdown fences caused SyntaxError and zero collected/executed business tests. Current repair and public PASS recheck remain unverified; model comparison closed unsuccessful.",
+      "source_commit": "18533454be948d23fc28236aa4070d63e2e3b289",
+      "gaps": "No qualified repair. Model deleted import os while retaining urllib error reference/conversion; NameError prevents normal business and redirect execution. No same-object public PASS recheck; round closed, NOT_READY_FOR_HANDOFF.",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
-          "sha256": "a3f54573f636aadd84c00ff2aa15a20f2757a08513c3175d47986e8f5781dc84"
+          "sha256": "6c773895255489518339c7abbf296547a36e24d754befc6309807cf3d8b5390d"
         },
         {
           "path": "agent_pilot/bounded_patch.py",
-          "sha256": "0c7b4bb25421da02585a096b403b63e1542e390d45a08bcd87690e85deb94e10"
+          "sha256": "92265dafe67035c3ec0b15f95d59face1620c316c5cb8f7a51c88a68d30342db"
         },
         {
           "path": "credproof_safety/runner.py",
@@ -333,7 +340,7 @@
         },
         {
           "path": "credproof_safety/web_repair.py",
-          "sha256": "e59f4c5b7e8fa5704ecd0ff81577459b97ef963a6d30395acb6580d06af7af13"
+          "sha256": "4d5817fb8363614541a18b01587c77b9b6dec1c7d5bd6990c2fbc41767b120ea"
         },
         {
           "path": "credproof_access/__init__.py",
@@ -490,7 +497,55 @@
         "same_candidate_public_PASS": "UNVERIFIED",
         "failed_candidate_public_delivery": "VERIFIED_SAME_BYTES_FRESH_FAIL_NOT_QUALIFIED_PASS"
       },
-      "posthoc_format_normalized": "Syntax passes after wrapper-only derivation; one original check FAIL; not a new model task, no new inference, no repair acceptance."
+      "posthoc_format_normalized": "Syntax passes after wrapper-only derivation; one original check FAIL; not a new model task, no new inference, no repair acceptance.",
+      "prior_dev33_acceptance": {
+        "source_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
+        "acceptance": "dev33 installed page: 1 generation/usage, 1 accepted candidate, 1 trusted UNKNOWN. JSON is valid, source is not valid Python; no qualifying repair.",
+        "gaps": "Literal Markdown fences caused SyntaxError and zero collected/executed business tests. Current repair and public PASS recheck remain unverified; model comparison closed unsuccessful.",
+        "file_digests": [
+          {
+            "path": "credproof_safety/agent.py",
+            "sha256": "a3f54573f636aadd84c00ff2aa15a20f2757a08513c3175d47986e8f5781dc84"
+          },
+          {
+            "path": "agent_pilot/bounded_patch.py",
+            "sha256": "0c7b4bb25421da02585a096b403b63e1542e390d45a08bcd87690e85deb94e10"
+          },
+          {
+            "path": "credproof_safety/runner.py",
+            "sha256": "6a4593ae37a175c702580a78429d578fb85c1dac3f3de478dc49365f8236575c"
+          },
+          {
+            "path": "credproof_safety/project_bundle.py",
+            "sha256": "ab3d614a5fefe0e477a6f42b82e30a2d3a4eeaa5625c5478b601febf2b74a674"
+          },
+          {
+            "path": "credproof_safety/web_repair.py",
+            "sha256": "e59f4c5b7e8fa5704ecd0ff81577459b97ef963a6d30395acb6580d06af7af13"
+          },
+          {
+            "path": "credproof_access/__init__.py",
+            "sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc"
+          },
+          {
+            "path": "credproof_access/contract.py",
+            "sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+          }
+        ]
+      },
+      "feedback_revision_dev34": {
+        "source_commit": "18533454be948d23fc28236aa4070d63e2e3b289",
+        "status": "CLOSED_FAIL",
+        "qualified_repair": "UNVERIFIED",
+        "format_reception": "INSTALLED_AND_REAL_RESPONSE_VERIFIED",
+        "limits": "1 request, 1 candidate, 1 check, 0 corrections",
+        "evidence": [
+          "acceptance/20261010-feedback-revision/README.md",
+          "acceptance/20261010-feedback-revision/public-evidence/repair.json",
+          "acceptance/20261010-feedback-revision/public-evidence/verification-history/verification-01.json",
+          "acceptance/20261010-feedback-revision/public-evidence/installation-and-protocol/installed-page-view.json"
+        ]
+      }
     },
     {
       "id": "R09",
@@ -874,5 +929,14 @@
     "installed_parser_integration": "NOT_PERFORMED: FAIL stop",
     "handoff_status": "NOT_READY_FOR_HANDOFF",
     "closed": true
+  },
+  "current_linked_revision": {
+    "tested_source_commit": "18533454be948d23fc28236aa4070d63e2e3b289",
+    "evidence": "acceptance/20261010-feedback-revision/README.md",
+    "model_requests": 1,
+    "accepted_candidates": 1,
+    "verifications": 1,
+    "verdict": "FAIL",
+    "handoff_status": "NOT_READY_FOR_HANDOFF"
   }
 }

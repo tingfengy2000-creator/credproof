@@ -1,0 +1,10 @@
+--- source-candidate.py
++++ feedback-candidate.py
+@@ -7,7 +7,6 @@
+ """
+ import json
+ import logging
+-import os
+ from urllib.request import Request, urlopen
+ from credproof_access import read_text, get_json
+ 

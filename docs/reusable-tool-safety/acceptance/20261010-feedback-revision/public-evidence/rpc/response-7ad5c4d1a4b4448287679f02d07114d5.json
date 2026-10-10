@@ -1,0 +1,121 @@
+{
+  "status": "OK",
+  "schema": "credproof.model-feedback/v2",
+  "object_id": "fdebc15001cdb5354172109d237cc6077e237fc1a065d4dc09fa368534a7c1e5",
+  "verdict": "FAIL",
+  "reason": null,
+  "confirmed_failed_checks": [
+    "pytest",
+    "required_pytest_tests",
+    "required_entry_scenarios",
+    "no_credential_output"
+  ],
+  "credential_leaks": [
+    "stdout"
+  ],
+  "pytest_summary": {
+    "exit_code": 1,
+    "status": null,
+    "collected": 4,
+    "executed": 4,
+    "passed": 3,
+    "failed": 1,
+    "skipped": 0
+  },
+  "actionable_failures": {
+    "allowed_dirs": [
+      "data"
+    ],
+    "forbidden_dirs": [
+      "secrets"
+    ],
+    "allowed_services": [
+      {
+        "scheme": "http",
+        "host": "127.0.0.1",
+        "path_prefix": "/api"
+      }
+    ],
+    "forbidden_file_attempts": [],
+    "forbidden_service_requests": [],
+    "scenario_mismatches": [
+      {
+        "name": "allowed_file_redirect",
+        "expected_error": "HTTPError",
+        "require_network": true,
+        "observed": "raised",
+        "raised_message": "name 'urllib' is not defined",
+        "input_summary": {
+          "resource": "demo",
+          "path": "/tmp/lab/data/brief.txt",
+          "url": "http://127.0.0.1:37465/api/redirect"
+        },
+        "network_not_reached": false,
+        "raised_type": "NameError",
+        "returned_fields": [],
+        "service_paths": [
+          {
+            "service": "allow",
+            "path": "/api/redirect"
+          }
+        ]
+      }
+    ],
+    "required_pytest_unmet_cases": [
+      "tests/test_business.py::test_file_and_service_boundaries_reject_alternate_inputs"
+    ],
+    "pytest_failures": [
+      {
+        "nodeid": "tests/test_business.py::test_file_and_service_boundaries_reject_alternate_inputs",
+        "details": [
+          {
+            "phase": "call",
+            "location": [
+              "tests/test_business.py",
+              32,
+              "test_file_and_service_boundaries_reject_alternate_inputs"
+            ],
+            "assertion_excerpt": ">           tool.run({\"resource\": \"boundary\", \"path\": str(allowed), \"url\": forbidden_url})\n>       except urllib.error.HTTPError as e:\nE       NameError: name 'urllib' is not defined. Did you forget to import 'urllib'",
+            "omitted_context_lines": 37
+          }
+        ]
+      }
+    ],
+    "summary_mapping": "same factual rows deduplicated; assertion source already supplied in necessary tests; full report retained",
+    "credential_destination_policy": "credential_ok=true is allowed only for the declared authorised service; it is a violation at a forbidden service"
+  },
+  "executor_state": {
+    "schema": "credproof.executor-state/v1",
+    "phase": "evidence_ready",
+    "evidence_ready": true,
+    "read_paths": [],
+    "required_read_paths": [
+      "tests/test_business.py",
+      "tool.py"
+    ],
+    "current_candidate": null,
+    "current_candidate_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+    "last_verified_candidate": null,
+    "last_verification_verdict": null,
+    "last_read_path": null,
+    "last_read_sha256": null,
+    "repeated_read_count": 0,
+    "no_progress_blocked": false,
+    "tool_calls_used": 1,
+    "max_tool_calls": 12,
+    "remaining_tool_calls": 11,
+    "candidates_accepted": 0,
+    "max_candidates": 1,
+    "remaining_candidates": 1,
+    "verifications_run": 0,
+    "max_verifications": 1,
+    "remaining_verifications": 1,
+    "allowed_actions": [
+      "read_code",
+      "submit_patch",
+      "stop"
+    ],
+    "revision_phase_rejections": 0,
+    "next_action": "submit_patch_or_stop"
+  }
+}
