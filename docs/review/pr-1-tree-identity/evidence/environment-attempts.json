@@ -1,0 +1,28 @@
+{
+  "scope": "software protocol only",
+  "attempts": [
+    {
+      "id": "sandbox-default-temp",
+      "pytest_exit": 1,
+      "result": "filesystem PermissionError before relevant checks; no model/candidate execution"
+    },
+    {
+      "id": "sandbox-workspace-temp",
+      "pytest_exit": 1,
+      "passed": 7,
+      "failed": 11,
+      "errors": 8,
+      "result": "Path.resolve PermissionError in sandbox, including newly created config files"
+    },
+    {
+      "id": "trusted-windows",
+      "pytest_exit": 0,
+      "passed": 26,
+      "failed": 0,
+      "errors": 0,
+      "result": "same code and same 4 test modules; only execution permission and temp directory changed"
+    }
+  ],
+  "raw_failure_logs": "preserved locally outside Git; public receipt retains real failures without unnecessary host paths",
+  "public_logs": "exact local checkout/runtime path prefixes mapped; LF publication; no statuses changed"
+}

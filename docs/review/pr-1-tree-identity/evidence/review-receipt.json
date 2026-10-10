@@ -1,0 +1,73 @@
+{
+  "kind": "PR1_HOST_INDEPENDENT_TREE_IDENTITY_REVIEW",
+  "generated_at_utc": "2026-10-10T09:20:37.823052+00:00",
+  "decision": "FIX_EXPLICIT_WINDOWS_COMPATIBLE_ORDERING",
+  "tested_program_commit": "7bcb65ec9c36dcf02f63ce52452a67508cb969d8",
+  "original_pr_head": "84d918acd23c42e730d005f76d29fc1fb78c88d4",
+  "original_user_pr_commit": "95e2bf0e1c65176f050a55ae3a1064ac807f3d00",
+  "scope": "identity ordering only; AI_ASSISTED_HUMAN_REVIEW unchanged",
+  "software_protocol": {
+    "passed": 26,
+    "failed": 0,
+    "scope": "5 tree-identity, 4 project-bundle, 8 human-review, 9 web-material-binding tests; trusted Windows Python3.12.14/pytest8.4.2; no model/candidate execution",
+    "run_version_note": "same runtime source as frozen commit; unused hashlib import removed from test file before commit; test logic unchanged"
+  },
+  "installed_readonly": {
+    "windows": true,
+    "linux_wsl_on_5090": true,
+    "tests_each": 5,
+    "real_mutating_operations_each": 0
+  },
+  "same_public_bundle_recheck": {
+    "status": "RECHECKED",
+    "verdict": "PASS",
+    "candidate_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+    "project_tree_sha256": "d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b",
+    "prior_report_applicable": true,
+    "required_business_passed": 4,
+    "required_skipped": 0,
+    "required_conditions_met": 14,
+    "environment": "5090 Windows host + existing WSL Ubuntu-24.04/bubblewrap; new installed dev36 and fresh data directory",
+    "source_public_bundle_commit": "2f14774676043770fc6b1821131cab6a136d6678",
+    "original_materials_changed": false
+  },
+  "wheel": {
+    "filename": "credproof_safety-0.3.0.dev36-py3-none-any.whl",
+    "bytes": 321096,
+    "sha256": "f03a4c80d1cc297b311406c1d3ba1f6cbb794c4a78321d2724b98fe9f6442557"
+  },
+  "new_model_calls": 0,
+  "real_approval_actions": 0,
+  "new_model_candidates": 0,
+  "pr_merged": false,
+  "main_modified": false,
+  "old_reports_rewritten": false,
+  "limits": [
+    "Linux HTTP/digest verified in this 5090 WSL, not on another physical 5060",
+    "No macOS execution claim",
+    "Dynamic safety execution remains limited to reviewed 5090 Windows/WSL environment",
+    "Exact candidate/config/test bytes must still match; newline or case spelling change is not ignored",
+    "Existing old POSIX-native reports require fresh checking, no silent digest migration"
+  ],
+  "files": {
+    "environment-attempts.json": "0c95a5679bfaadc956152f6cafb9f96d83dd72679beb5230eead4d2ee12e1971",
+    "installation/credproof_safety-0.3.0.dev36-py3-none-any.whl": "f03a4c80d1cc297b311406c1d3ba1f6cbb794c4a78321d2724b98fe9f6442557",
+    "installation/linux-commands.json": "99e2e305e9eb8d4503bb14aed5a861e11f45e5678b47f478c0679cfb53673083",
+    "installation/linux-origin-and-identity.json": "c8c83a384711a616ea56bfb2fd6ce9ae8932c0fca1ed872636479640b7d7341c",
+    "installation/linux-prepare-with-ensurepip-failed.json": "a184336684798b25c57a4897351dfab006b956bf0ffe6cf8d246a90345472bee",
+    "installation/wheel-comparison.json": "753f15e41f553f040bc423ce806722665424baa5606043ffe1de7496d13a903f",
+    "installation/wheel-manifest.json": "ffb8c602c15944cbfc44b78d8541231440757fe99189ebbbf8000af751fb1cbb",
+    "installation/windows-commands.json": "d597fe51c541eb0167810b5598ad8e3038e5e5279396fa9804f394452b73bbc1",
+    "installation/windows-origin.json": "433311df10e845a0a469a6da29eb51f822cbdcb46a8a77a9370fc16bc1320699",
+    "installation/wsl-process.json": "58102da6508d19ecea7335e4026bf3c8099464ec6bd6606e8d7f609117f40db9",
+    "publication-map.json": "2e3bb6016ba7d83fc801645f7a3dfaa8130670365efd0e70931f36a98a567e7a",
+    "readonly/linux.json": "546c3277ce59dbf43cc9795befba9bd450403bd628802b24e6a13f673d9449c0",
+    "readonly/windows.json": "546c3277ce59dbf43cc9795befba9bd450403bd628802b24e6a13f673d9449c0",
+    "recheck/receipt.json": "de14d948fbac6d28e5b1b723954ccc400ae4a50a06a45c9cee09c6496494e024",
+    "recheck/report.json": "0e890275d2f5b65df7493d76e126067fdf3d1bb2499abfa6a8dbd0f91e78f777",
+    "trusted-windows/command.json": "35556519118a96fcc46d7f9eb339bc3563c61f4fcba3f80bfcc204bc57807319",
+    "trusted-windows/junit.xml": "855eb9aa162ccfbe8fbfae95f4e3ad7686f703bb260e1fc14bf97809a818112d",
+    "trusted-windows/stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "trusted-windows/stdout.txt": "2f4c716977a458d88b13b69fb956ff1ba928d653bcfedbbea46bc49f8c8c1747"
+  }
+}

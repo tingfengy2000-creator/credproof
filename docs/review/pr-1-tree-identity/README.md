@@ -12,6 +12,8 @@
 
 ## 验证范围与取件
 
+实际结果：Windows Python3.12.14 的26项软件协议测试通过；新 dev36 wheel 在 Windows 和本台 WSL Linux Python3.12.3 各通过5项只读 HTTP 测试，所有执行／审批／导出入口调用为0。安装后的 Linux 直接读取正式快照得到原 `d323b459…` 摘要。5090新目录对同一公开 bundle 重新执行隔离检查得到 `RECHECKED/PASS`：4项必要业务测试实际通过、0skip，14项必要条件全部满足。新增模型调用为0；这一次真实候选复检与上面的只读协议测试分开记录。
+
 [新增定向测试](../../../credproof_safety/tests/test_project_tree_identity.py) 使用真实 PureWindowsPath/PurePosixPath 比较及正式快照，核对旧摘要保持、大小写相邻路径、LF/CRLF 字节差异和既有忽略项。已有项目 bundle、人机审阅、材料绑定测试一起运行；它们是软件协议测试，包含替身报告，不是新的安全案例或模型成功。
 
 - [Windows 协议命令和 JUnit](evidence/trusted-windows/)
@@ -23,3 +25,5 @@
 安装与查看命令见 [交接入口](../../handoff/frontend-5060/README.md)。只读查看不需要 GPU、模型、WSL 或候选执行。Linux 验证若通过，只证明本台5090的 WSL Linux 只读链路；不冒称另一台5060已实测、macOS已实测或任意系统均可动态验收。真实动态检查仍使用5090已有 Windows+WSL/bubblewrap 环境。
 
 本修复在独立 `review/pr1-tree-identity` worktree/分支完成；未合并 PR #1、未修改 main、未移动保留基线或旧标签。新增模型调用为0，不替用户采纳任何业务修复。完整结果以总收据为准，不能把源码修复提交当作随后安装测试已发生。
+
+准备阶段原沙箱测试受 `Path.resolve` 文件权限限制；同样测试在可信本机环境通过。Linux 系统 Python 缺 ensurepip，改用新建无pip venv和已有可信pip的 `--python` 离线安装，不修改系统环境。失败位置及后续成功命令分别保留。新 wheel 比旧 wheel 小，是因为干净 worktree 没有旧 wheel 带入的33个未跟踪 `__pycache__/*.pyc`；共同程序文件除本次 `project.py` 外仅有5个LF/CRLF字节差异，详见安装清单和来源说明。没有以新报告覆盖历史失败。

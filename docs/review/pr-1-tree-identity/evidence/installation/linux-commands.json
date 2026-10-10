@@ -1,0 +1,43 @@
+[
+  {
+    "argv": [
+      "<existing-wsl-runtime>/venv/bin/python",
+      "-I",
+      "-m",
+      "pip",
+      "--python",
+      "/tmp/credproof-pr1-dev36-my17bh85/venv/bin/python",
+      "install",
+      "--no-index",
+      "--no-deps",
+      "<review-checkout-linux>/docs/review/pr-1-tree-identity/evidence/installation/credproof_safety-0.3.0.dev36-py3-none-any.whl"
+    ],
+    "returncode": 0,
+    "stdout": "Processing ./docs/review/pr-1-tree-identity/evidence/installation/credproof_safety-0.3.0.dev36-py3-none-any.whl\nInstalling collected packages: credproof-safety\nSuccessfully installed credproof-safety-0.3.0.dev36\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "/tmp/credproof-pr1-dev36-my17bh85/venv/bin/python",
+      "-I",
+      "<review-checkout-linux>/docs/handoff/frontend-5060/test-readonly.py",
+      "--output",
+      "<review-checkout-linux>/docs/review/pr-1-tree-identity/evidence/readonly/linux.json"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "test_all_mutations_and_model_operations_are_rejected (__main__.ReadOnlyTests.test_all_mutations_and_model_operations_are_rejected) ... ok\ntest_assets_and_explicit_history_notice (__main__.ReadOnlyTests.test_assets_and_explicit_history_notice) ... ok\ntest_existing_host_origin_boundary_is_retained (__main__.ReadOnlyTests.test_existing_host_origin_boundary_is_retained) ... ok\ntest_get_cannot_export_or_browse_arbitrary_files (__main__.ReadOnlyTests.test_get_cannot_export_or_browse_arbitrary_files) ... ok\ntest_history_fields_without_model_or_isolation_probe (__main__.ReadOnlyTests.test_history_fields_without_model_or_isolation_probe) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 6.157s\n\nOK\n"
+  },
+  {
+    "argv": [
+      "/tmp/credproof-pr1-dev36-my17bh85/venv/bin/python",
+      "-I",
+      "-c",
+      "import json,sys,platform,hashlib,importlib.metadata;from pathlib import Path;import credproof_safety.project as p; root=Path(sys.argv[1]); folder=root/'docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/workspace/runs/human-review/939e25f42bb142f39567c5cb644ebc6d/versions/v001'; report=json.loads((folder/'reports/check-01.json').read_text()); actual=p._digest_tree(folder/'project'); print(json.dumps({'python':sys.version,'platform':platform.platform(),'package_version':importlib.metadata.version('credproof-safety'),'module_file':p.__file__,'module_sha256':hashlib.sha256(Path(p.__file__).read_bytes()).hexdigest(),'actual_project_tree_sha256':actual,'stored_project_tree_sha256':report['project_tree_sha256'],'matches':actual==report['project_tree_sha256'],'model_calls':0,'candidate_execution':False}));raise SystemExit(0 if actual==report['project_tree_sha256'] else 1)",
+      "<review-checkout-linux>"
+    ],
+    "returncode": 0,
+    "stdout": "{\"python\": \"3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]\", \"platform\": \"Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39\", \"package_version\": \"0.3.0.dev36\", \"module_file\": \"/tmp/credproof-pr1-dev36-my17bh85/venv/lib/python3.12/site-packages/credproof_safety/project.py\", \"module_sha256\": \"ba963bc7f41fde19eca75014f0be46308c7d882b168be15cf4773f50096787fe\", \"actual_project_tree_sha256\": \"d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b\", \"stored_project_tree_sha256\": \"d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b\", \"matches\": true, \"model_calls\": 0, \"candidate_execution\": false}\n",
+    "stderr": ""
+  }
+]

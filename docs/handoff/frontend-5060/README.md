@@ -39,6 +39,16 @@ $wheel = '.\docs\review\pr-1-tree-identity\evidence\installation\credproof_safet
 & $py -I docs/handoff/frontend-5060/view-readonly.py --port 8765
 ```
 
+Linux 使用自己已有的 Python/venv 工具创建新环境，离线安装同一 dev36 wheel，再运行同一个脚本：
+
+```bash
+python3 -m venv /tmp/credproof-frontend-dev36
+/tmp/credproof-frontend-dev36/bin/python -I -m pip install --no-index --no-deps docs/review/pr-1-tree-identity/evidence/installation/credproof_safety-0.3.0.dev36-py3-none-any.whl
+/tmp/credproof-frontend-dev36/bin/python -I docs/handoff/frontend-5060/view-readonly.py --port 8765
+```
+
+选择尚不存在的venv目录；系统缺venv/ensurepip时先准备常规Python环境，不改用源码路径遮蔽安装包，也不执行动态检查作为只读替代。dev36的Windows/Linux只读实测与5090同对象动态复检在PR #1修订收据中单独列明，下面dev35交接收据仍是原历史记录。
+
 打开`http://127.0.0.1:8765/#human-review`，点“读取已有修订”。**READ_ONLY_HISTORY**明确表示5090已有结果，不是5060新验收。Ctrl+C停止。本轮已在5090新建最小venv、仅离线安装原wheel，实际HTTP和浏览器验证：[5项传输检查](evidence/readonly-clean-install.json)、[原始日志](evidence/readonly-clean-install.txt)、[浏览器文字](evidence/readonly-browser.txt)、[画面](evidence/readonly-browser.png)。这不是跨机器验证或新的安全实验。
 
 [view-readonly.py](view-readonly.py)校验27个快照文件后复制到临时数据目录，程序来自安装wheel，仅3个UI文件来自当前前端checkout；改CSS/JS后刷新即可。后端仅允许列明GET，其余请求405；原Host/Origin边界保留。审批、修改、导出按钮即使被触发也不能执行；这是显式安全拒绝，按钮交互呈现可由5060调整。**不要改用普通`agent_pilot.launch --mode view`冒充该只读边界**：旧view模式仅限制动态执行，仍有修订/决策操作。

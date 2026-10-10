@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "wsl.exe",
+    "-d",
+    "Ubuntu-24.04",
+    "--exec",
+    "python3",
+    "-c",
+    "<trusted install/read-only probe>",
+    "<review-checkout-linux>"
+  ],
+  "returncode": 0,
+  "stdout": "{\"python\": \"3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]\", \"platform\": \"Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.39\", \"package_version\": \"0.3.0.dev36\", \"module_file\": \"/tmp/credproof-pr1-dev36-my17bh85/venv/lib/python3.12/site-packages/credproof_safety/project.py\", \"module_sha256\": \"ba963bc7f41fde19eca75014f0be46308c7d882b168be15cf4773f50096787fe\", \"actual_project_tree_sha256\": \"d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b\", \"stored_project_tree_sha256\": \"d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b\", \"matches\": true, \"model_calls\": 0, \"candidate_execution\": false}\n\n",
+  "stderr": "w\u0000s\u0000l\u0000:\u0000 \u0000�hKm0R \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000�N\u0006tM�n\f�FO*g\\��P0R \u0000W\u0000S\u0000L\u0000\u00020N\u0000A\u0000T\u0000 \u0000!j\u000f_\u000bN�v \u0000W\u0000S\u0000L\u0000 \u0000\rN/e\u0001c \u0000l\u0000o\u0000c\u0000a\u0000l\u0000h\u0000o\u0000s\u0000t\u0000 \u0000�N\u0006t\u00020\r\u0000\n\u0000",
+  "scope": "read-only installed HTTP and digest; no candidate execution or inference",
+  "preparation_note": "system ensurepip unavailable; new --without-pip venv installed offline by existing trusted runtime pip --python; no global install"
+}

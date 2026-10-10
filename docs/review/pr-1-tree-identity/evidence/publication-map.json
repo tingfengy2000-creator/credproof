@@ -1,0 +1,108 @@
+{
+  "mapping": {
+    "review-checkout": "absolute review worktree prefix",
+    "review-runtime": "fresh trusted Windows runtime prefix",
+    "original-checkout": "original protected worktree prefix",
+    "review-checkout-linux": "WSL mount of review checkout",
+    "existing-wsl-runtime": "pre-existing trusted WSL runtime prefix"
+  },
+  "files": [
+    {
+      "path": "environment-attempts.json",
+      "local_input_sha256": "0c95a5679bfaadc956152f6cafb9f96d83dd72679beb5230eead4d2ee12e1971",
+      "published_sha256": "0c95a5679bfaadc956152f6cafb9f96d83dd72679beb5230eead4d2ee12e1971",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "installation/linux-commands.json",
+      "local_input_sha256": "5d6a01ad766a03e5b6da321562da755944ec151bd77bcbbf4ae24b73c0b9995e",
+      "published_sha256": "99e2e305e9eb8d4503bb14aed5a861e11f45e5678b47f478c0679cfb53673083",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "installation/linux-origin-and-identity.json",
+      "local_input_sha256": "bed89bd8b87802df61ebb4f0f50662523caf7be41b4d3b8b699c15b2555b82dc",
+      "published_sha256": "c8c83a384711a616ea56bfb2fd6ce9ae8932c0fca1ed872636479640b7d7341c",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "installation/linux-prepare-with-ensurepip-failed.json",
+      "local_input_sha256": "460b90ae28e49eebab47a50985962f27af4f758d2126ef19406c36a40c07d17c",
+      "published_sha256": "a184336684798b25c57a4897351dfab006b956bf0ffe6cf8d246a90345472bee",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "installation/wheel-manifest.json",
+      "local_input_sha256": "ffb8c602c15944cbfc44b78d8541231440757fe99189ebbbf8000af751fb1cbb",
+      "published_sha256": "ffb8c602c15944cbfc44b78d8541231440757fe99189ebbbf8000af751fb1cbb",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "installation/windows-commands.json",
+      "local_input_sha256": "df1cdc43df19da4b104e3ab0bfa18942480c7e5933467d71fbe4d26d154c6db3",
+      "published_sha256": "d597fe51c541eb0167810b5598ad8e3038e5e5279396fa9804f394452b73bbc1",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "installation/windows-origin.json",
+      "local_input_sha256": "1247767122fd6fa8d1b08ceb98bbc06be53e9a7b88e04710fb6a877cd848d825",
+      "published_sha256": "433311df10e845a0a469a6da29eb51f822cbdcb46a8a77a9370fc16bc1320699",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "installation/wsl-process.json",
+      "local_input_sha256": "beb785d88e76f684536d3437ca696a28424096c65383d74fec18d0f300f33021",
+      "published_sha256": "58102da6508d19ecea7335e4026bf3c8099464ec6bd6606e8d7f609117f40db9",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "readonly/linux.json",
+      "local_input_sha256": "546c3277ce59dbf43cc9795befba9bd450403bd628802b24e6a13f673d9449c0",
+      "published_sha256": "546c3277ce59dbf43cc9795befba9bd450403bd628802b24e6a13f673d9449c0",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "readonly/windows.json",
+      "local_input_sha256": "546c3277ce59dbf43cc9795befba9bd450403bd628802b24e6a13f673d9449c0",
+      "published_sha256": "546c3277ce59dbf43cc9795befba9bd450403bd628802b24e6a13f673d9449c0",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "recheck/receipt.json",
+      "local_input_sha256": "b7baa9147b1eeba7c1bd659153d9e89a69f4ad6c3f82d7b677412eee66eef492",
+      "published_sha256": "de14d948fbac6d28e5b1b723954ccc400ae4a50a06a45c9cee09c6496494e024",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "recheck/report.json",
+      "local_input_sha256": "6dcd739b0f2497789fc57b66211fde941b57367cd30873fe71362bb74286a09a",
+      "published_sha256": "0e890275d2f5b65df7493d76e126067fdf3d1bb2499abfa6a8dbd0f91e78f777",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "trusted-windows/command.json",
+      "local_input_sha256": "b2bca501b8ebb983c07fd2f7634082c92301b61a356ff00d3c32554892aac754",
+      "published_sha256": "35556519118a96fcc46d7f9eb339bc3563c61f4fcba3f80bfcc204bc57807319",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "trusted-windows/junit.xml",
+      "local_input_sha256": "855eb9aa162ccfbe8fbfae95f4e3ad7686f703bb260e1fc14bf97809a818112d",
+      "published_sha256": "855eb9aa162ccfbe8fbfae95f4e3ad7686f703bb260e1fc14bf97809a818112d",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "trusted-windows/stderr.txt",
+      "local_input_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    },
+    {
+      "path": "trusted-windows/stdout.txt",
+      "local_input_sha256": "2f4c716977a458d88b13b69fb956ff1ba928d653bcfedbbea46bc49f8c8c1747",
+      "published_sha256": "2f4c716977a458d88b13b69fb956ff1ba928d653bcfedbbea46bc49f8c8c1747",
+      "publication": "exact configured host prefixes mapped; UTF-8 LF; states and candidate bytes unchanged"
+    }
+  ],
+  "note": "Local raw receipts retained outside Git. These digests describe distinct local/public bytes; binary wheel not modified."
+}

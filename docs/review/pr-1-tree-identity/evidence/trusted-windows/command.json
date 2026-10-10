@@ -1,0 +1,17 @@
+{
+  "command": [
+    "<original-checkout>\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "credproof_safety/tests/test_project_tree_identity.py",
+    "credproof_safety/tests/test_project_bundle.py",
+    "agent_pilot/tests/test_human_review.py",
+    "agent_pilot/tests/test_web_material_binding.py",
+    "--basetemp=<review-runtime>/pytest-pr1-trusted",
+    "--junitxml=<review-checkout>\\docs\\review\\pr-1-tree-identity\\evidence\\trusted-windows\\junit.xml"
+  ],
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "returncode": 0,
+  "scope": "software protocol; no model or candidate execution"
+}

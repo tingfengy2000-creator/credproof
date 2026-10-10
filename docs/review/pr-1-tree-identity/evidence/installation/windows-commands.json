@@ -1,0 +1,67 @@
+[
+  {
+    "argv": [
+      "<original-checkout>\\.venv\\Scripts\\python.exe",
+      "-m",
+      "venv",
+      "<review-runtime>\\frontend-venv"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "<review-runtime>\\frontend-venv\\Scripts\\python.exe",
+      "-I",
+      "-m",
+      "pip",
+      "install",
+      "--no-index",
+      "--no-deps",
+      "<review-checkout>\\docs\\review\\pr-1-tree-identity\\evidence\\installation\\credproof_safety-0.3.0.dev36-py3-none-any.whl"
+    ],
+    "returncode": 0,
+    "stdout": "Processing e:\\����\\credproof-review-pr1\\docs\\review\\pr-1-tree-identity\\evidence\\installation\\credproof_safety-0.3.0.dev36-py3-none-any.whl\r\nInstalling collected packages: credproof-safety\r\nSuccessfully installed credproof-safety-0.3.0.dev36\r\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "<review-runtime>\\frontend-venv\\Scripts\\python.exe",
+      "-I",
+      "<review-checkout>\\docs\\handoff\\frontend-5060\\test-readonly.py",
+      "--output",
+      "<review-checkout>\\docs\\review\\pr-1-tree-identity\\evidence\\readonly\\windows.json"
+    ],
+    "returncode": 0,
+    "stdout": "",
+    "stderr": "test_all_mutations_and_model_operations_are_rejected (__main__.ReadOnlyTests.test_all_mutations_and_model_operations_are_rejected) ... ok\r\ntest_assets_and_explicit_history_notice (__main__.ReadOnlyTests.test_assets_and_explicit_history_notice) ... ok\r\ntest_existing_host_origin_boundary_is_retained (__main__.ReadOnlyTests.test_existing_host_origin_boundary_is_retained) ... ok\r\ntest_get_cannot_export_or_browse_arbitrary_files (__main__.ReadOnlyTests.test_get_cannot_export_or_browse_arbitrary_files) ... ok\r\ntest_history_fields_without_model_or_isolation_probe (__main__.ReadOnlyTests.test_history_fields_without_model_or_isolation_probe) ... ok\r\n\r\n----------------------------------------------------------------------\r\nRan 5 tests in 3.165s\r\n\r\nOK\r\n"
+  },
+  {
+    "argv": [
+      "<review-runtime>\\frontend-venv\\Scripts\\python.exe",
+      "-I",
+      "-c",
+      "import sys,platform,importlib.metadata,json,credproof_safety.project as p; print(json.dumps({\"python\":sys.version,\"host\":platform.platform(),\"version\":importlib.metadata.version(\"credproof-safety\"),\"project_file\":p.__file__,\"isolated\":sys.flags.isolated}))"
+    ],
+    "returncode": 0,
+    "stdout": "{\"python\": \"3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]\", \"host\": \"Windows-11-10.0.26200-SP0\", \"version\": \"0.3.0.dev36\", \"project_file\": \"E:\\\\\\u6bd4\\u8d5b\\\\CP36\\\\frontend-venv\\\\Lib\\\\site-packages\\\\credproof_safety\\\\project.py\", \"isolated\": 1}\r\n",
+    "stderr": ""
+  },
+  {
+    "argv": [
+      "<review-runtime>\\frontend-venv\\Scripts\\python.exe",
+      "-I",
+      "<review-checkout>\\scripts\\recheck-component-review.py",
+      "--bundle",
+      "<review-runtime>\\same-public-bundle",
+      "--output",
+      "<review-checkout>\\docs\\review\\pr-1-tree-identity\\evidence\\recheck\\report.json",
+      "--receipt",
+      "<review-checkout>\\docs\\review\\pr-1-tree-identity\\evidence\\recheck\\receipt.json"
+    ],
+    "returncode": 0,
+    "stdout": "{\"status\": \"RECHECKED\", \"verdict\": \"PASS\", \"prior_report_applicable\": true}\r\n",
+    "stderr": ""
+  }
+]

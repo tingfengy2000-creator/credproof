@@ -1,0 +1,26 @@
+{
+  "kind": "READ_ONLY_UI_TRANSPORT_TEST",
+  "tests": 5,
+  "failures": 0,
+  "errors": 0,
+  "success": true,
+  "forbidden_operations_called": {
+    "agent_pilot.web.runtime_observation": 0,
+    "agent_pilot.web.Application.start": 0,
+    "credproof_safety.human_review.check_project": 0,
+    "credproof_safety.human_review.ReviewWorkspace.revise": 0,
+    "credproof_safety.human_review.ReviewWorkspace.decide": 0,
+    "credproof_safety.human_review.ReviewWorkspace.export": 0,
+    "subprocess.run": 0,
+    "subprocess.Popen": 0
+  },
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "real_decisions_written": 0,
+  "real_evidence_exports": 0,
+  "package_version": "0.3.0.dev36",
+  "viewer_sha256": "45b75a3f38b2e034db612888d47542ea042258d39de908822b937954316aec20",
+  "note": "Actual loopback HTTP with copied disclosed history and blocked executor methods; not new security acceptance or model inference.",
+  "installed_web_sha256": "6209f4093e24a19785434d9d736d12421c30df79438c6134cd2347a8d04c9302",
+  "installed_web_origin": "site-packages"
+}
