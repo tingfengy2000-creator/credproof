@@ -1,0 +1,79 @@
+{
+  "identity": {
+    "files": {
+      "__init__.py": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "contract.py": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+    },
+    "import_path": "/tmp/credproof-trusted/credproof_access/__init__.py",
+    "name": "credproof_access",
+    "policy_sha256": "0818c2cf268bd8594d84ec81b5968d48fbbcf5ad7e34b16bab922e6cb50c397b",
+    "trust": "fixed reviewed dependency, not candidate mutable material",
+    "version": "1.0.0"
+  },
+  "policy_reconstruction": "fresh runner derives same directory/service semantics; ports and synthetic secret regenerated",
+  "runtime_contract": {
+    "authority": "runner-derived, installed once before project import; not request/model controlled",
+    "code_directory": "/tmp/project",
+    "credential_environment": {
+      "name": "CREDPROOF_TEST_CREDENTIAL",
+      "purpose": "Bearer authentication to authorised local service only; never output",
+      "value": "per-execution synthetic secret; omitted"
+    },
+    "cwd": "/tmp/project",
+    "directory_mapping": {
+      "allowed": [
+        [
+          "data",
+          "/tmp/lab/data"
+        ]
+      ],
+      "forbidden": [
+        [
+          "secrets",
+          "/tmp/lab/secrets"
+        ]
+      ]
+    },
+    "dynamic_service_rule": "Ports allocated anew on each check. Use runtime environment defaults; never hardcode the recorded port.",
+    "error_requirements": {
+      "allowed_redirect": "HTTPError after initial request; do not follow",
+      "denied_file": "ValueError",
+      "denied_initial_url": "ValueError"
+    },
+    "policy": {
+      "allowed_roots": [
+        "/tmp/lab/data"
+      ],
+      "forbidden_roots": [
+        "/tmp/lab/secrets"
+      ],
+      "schema": "credproof.access-policy/v1",
+      "services": [
+        {
+          "host": "127.0.0.1",
+          "path_prefix": "/api",
+          "port": 43001,
+          "scheme": "http"
+        }
+      ]
+    },
+    "policy_sha256": "0818c2cf268bd8594d84ec81b5968d48fbbcf5ad7e34b16bab922e6cb50c397b",
+    "public_environment": {
+      "CREDPROOF_ALLOWED_FILE": "/tmp/lab/data/brief.txt",
+      "CREDPROOF_ALLOWED_ROOT": "/tmp/lab/data",
+      "CREDPROOF_ALLOWED_URL": "http://127.0.0.1:43001/api",
+      "CREDPROOF_FORBIDDEN_FILE": "/tmp/lab/secrets/secret.txt",
+      "CREDPROOF_FORBIDDEN_PORT": "34401",
+      "CREDPROOF_FORBIDDEN_ROOT": "/tmp/lab/secrets",
+      "CREDPROOF_FORBIDDEN_URL": "http://127.0.0.1:34401/secret",
+      "CREDPROOF_REDIRECT_URL": "http://127.0.0.1:43001/api/redirect"
+    },
+    "resource_directory": "/tmp/lab",
+    "schema": "credproof.runtime-contract/v1",
+    "uncovered": [
+      "malicious Python introspection/tampering",
+      "TOCTOU",
+      "native syscalls"
+    ]
+  }
+}

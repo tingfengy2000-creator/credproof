@@ -57,16 +57,19 @@ def _read_generated_report(root: Path) -> dict:
             'failed_checks': [str(item) for item in failed_checks], 'content': report}
 
 
-def run_case(root: Path, *, mutate=None, repo_root: Path,
+def run_case(root: Path, *, mutate=None, repo_root: Path | None,
              expected_verdict: str, expected_failure_check: str | None = None) -> dict:
     if mutate:
         mutate(root)
     env = dict(os.environ)
     env['CREDPROOF_PROJECT_ROOT'] = str(root)
-    env['PYTHONPATH'] = os.pathsep.join([str(repo_root), env.get('PYTHONPATH', '')]).rstrip(os.pathsep)
+    if repo_root is None:
+        env.pop('PYTHONPATH', None)
+    else:
+        env['PYTHONPATH'] = os.pathsep.join([str(repo_root), env.get('PYTHONPATH', '')]).rstrip(os.pathsep)
     junit = root / '.credproof' / 'consumer-junit.xml'
     junit.parent.mkdir(parents=True, exist_ok=True)
-    command = [sys.executable, '-m', 'pytest', '-q',
+    command = [sys.executable, *(['-I'] if repo_root is None else []), '-m', 'pytest', '-q',
                'tests/credproof-regression/test_credproof_safety.py',
                f'--junitxml={junit}']
     try:
@@ -139,6 +142,7 @@ def run_case(root: Path, *, mutate=None, repo_root: Path,
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument('--output', type=Path, required=True)
+    parser.add_argument('--installed', action='store_true', help='Child uses -I installed package, no checkout PYTHONPATH')
     args = parser.parse_args()
     if args.output.exists():
         raise SystemExit('refuse to overwrite output')
@@ -163,11 +167,12 @@ def main() -> int:
             path.write_text(text.replace(needle, 'if False:'), encoding='utf-8')
         def add_unrelated(copy_root):
             (copy_root / 'REVIEW-NOTE.txt').write_text('unrelated change\n', encoding='utf-8')
+        program_root = None if args.installed else repo_root
         results = {
-            'external_fixed': run_case(fixed, repo_root=repo_root, expected_verdict='PASS'),
-            'reintroduced_defect': run_case(broken, mutate=break_guard, repo_root=repo_root,
+            'external_fixed': run_case(fixed, repo_root=program_root, expected_verdict='PASS'),
+            'reintroduced_defect': run_case(broken, mutate=break_guard, repo_root=program_root,
                                             expected_verdict='FAIL', expected_failure_check='no_forbidden_file_read'),
-            'unrelated_change': run_case(unrelated, mutate=add_unrelated, repo_root=repo_root,
+            'unrelated_change': run_case(unrelated, mutate=add_unrelated, repo_root=program_root,
                                          expected_verdict='PASS'),
         }
     summary = {'schema': 'credproof.safety.exported-regression/v2',

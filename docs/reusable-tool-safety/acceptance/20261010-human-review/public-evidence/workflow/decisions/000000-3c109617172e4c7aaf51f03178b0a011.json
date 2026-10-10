@@ -1,0 +1,38 @@
+{
+  "decision": "REJECTED",
+  "version_id": "v000",
+  "object_sha256": "89d758738b788d476d4a539f342df23c93d970e6fda10569be335f2da187a671",
+  "report_sha256": "d310de8307b1d6150b3fb1c06d9c0741c206a9a7cb65f565bd965d6e10cbcec8",
+  "object_binding": {
+    "validation_project_tree_sha256": "89d758738b788d476d4a539f342df23c93d970e6fda10569be335f2da187a671",
+    "candidate_project_tree_sha256": "89d758738b788d476d4a539f342df23c93d970e6fda10569be335f2da187a671",
+    "config_path": "project/credproof.toml",
+    "config_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+    "required_test_paths": [
+      "tests"
+    ],
+    "entry_path": "project/tool.py",
+    "entry_source_sha256": "fb23b2299729c891dfe071f3a8cc19fd28e38bc676da60dea81a04230ad3ba8c",
+    "entry_candidate_sha256": "fb23b2299729c891dfe071f3a8cc19fd28e38bc676da60dea81a04230ad3ba8c",
+    "entry_source_newline": "LF",
+    "entry_candidate_newline": "LF",
+    "entry_newline_policy": "LF-normalized comparison only; project bytes remain unchanged",
+    "entry_normalized_equal": true
+  },
+  "original_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+  "component": {
+    "name": "credproof_access",
+    "version": "1.0.0",
+    "files": {
+      "__init__.py": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "contract.py": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+    },
+    "trust": "fixed reviewed dependency, not candidate mutable material"
+  },
+  "reason": "审批功能测试：原AI候选缺少os并错误转换HTTPError；拒绝采用。",
+  "at": "2026-10-10T03:48:59.359641+00:00",
+  "operation_source": "local-review-interface",
+  "reviewer": "approval-function-test",
+  "test_operation": true,
+  "trust": "local record; not strong identity, signature or certification"
+}

@@ -36,3 +36,9 @@ docs/reusable-tool-safety/acceptance/20261010-format-normalized/public-evidence/
 # Linked-revision public records retain documented UTF-8 LF bytes.
 docs/reusable-tool-safety/acceptance/20261010-feedback-revision/public-evidence/** text eol=lf whitespace=-blank-at-eol
 docs/reusable-tool-safety/acceptance/20261010-feedback-revision/public-evidence/candidate.diff whitespace=-blank-at-eol,-blank-at-eof
+# Human-review public project publication uses Git LF; historical workspace
+# data is a disclosed exact-byte snapshot, not a checkout-normalized object.
+docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/** text eol=lf whitespace=-blank-at-eol
+docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/workspace/** -text whitespace=-blank-at-eol,cr-at-eol
+docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/**/*.jpg binary
+docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/**/*.whl binary

@@ -1,0 +1,324 @@
+{
+  "policy": "exact explicit prefix substitution, no broad path regex; no status/code edits",
+  "mappings": [
+    [
+      "<INSTALL>",
+      "private prefix 0"
+    ],
+    [
+      "<REPOSITORY>",
+      "private prefix 1"
+    ],
+    [
+      "<RUNTIME_HOME>",
+      "private prefix 2"
+    ],
+    [
+      "<HOST_USER>",
+      "private prefix 3"
+    ],
+    [
+      "REDACTED_HOST",
+      "private prefix 4"
+    ]
+  ],
+  "sources": [
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\meta.json",
+      "path": "workflow/meta.json",
+      "raw_sha256": "34df6133c9f9de61f7ae504ee2a33a37f7e89a0896ce6967f8e4b0996995ba01",
+      "raw_bytes": 474,
+      "public_sha256": "34df6133c9f9de61f7ae504ee2a33a37f7e89a0896ce6967f8e4b0996995ba01",
+      "public_bytes": 474
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\baseline\\candidate.py",
+      "path": "workflow/baseline/candidate.py",
+      "raw_sha256": "fb23b2299729c891dfe071f3a8cc19fd28e38bc676da60dea81a04230ad3ba8c",
+      "raw_bytes": 1253,
+      "public_sha256": "fb23b2299729c891dfe071f3a8cc19fd28e38bc676da60dea81a04230ad3ba8c",
+      "public_bytes": 1253
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\baseline\\original.py",
+      "path": "workflow/baseline/original.py",
+      "raw_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+      "raw_bytes": 1263,
+      "public_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+      "public_bytes": 1263
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\baseline\\report.json",
+      "path": "workflow/baseline/report.json",
+      "raw_sha256": "0cea248c84bbaa871450ff02e3d40e150d7f3e9cc582bb66a163d6a541a0613b",
+      "raw_bytes": 32444,
+      "public_sha256": "e06e35b79b88373cea8941701d4ce1b7b415a28718ef3e0bb2ebf07093a05e07",
+      "public_bytes": 31783
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\versions\\v000\\version.json",
+      "path": "workflow/versions/v000/version.json",
+      "raw_sha256": "2c56ea540e6677920be180f96364cb7d6c9c14d148ba27967cbe9c3e85198caf",
+      "raw_bytes": 340,
+      "public_sha256": "2c56ea540e6677920be180f96364cb7d6c9c14d148ba27967cbe9c3e85198caf",
+      "public_bytes": 340
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\versions\\v001\\version.json",
+      "path": "workflow/versions/v001/version.json",
+      "raw_sha256": "6d2f63a9e32a41236fc4812f8b841241cd9925d6ecc13b87804e45ade1d2f6c5",
+      "raw_bytes": 418,
+      "public_sha256": "6d2f63a9e32a41236fc4812f8b841241cd9925d6ecc13b87804e45ade1d2f6c5",
+      "public_bytes": 418
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\versions\\v001\\format-receipt.json",
+      "path": "workflow/versions/v001/format-receipt.json",
+      "raw_sha256": "b47f77bf2d06476e05602f5e73fdb16952f467c7ae211100458e983f8c7d8089",
+      "raw_bytes": 619,
+      "public_sha256": "b47f77bf2d06476e05602f5e73fdb16952f467c7ae211100458e983f8c7d8089",
+      "public_bytes": 619
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\decisions\\000000-3c109617172e4c7aaf51f03178b0a011.json",
+      "path": "workflow/decisions/000000-3c109617172e4c7aaf51f03178b0a011.json",
+      "raw_sha256": "d95d3cebe167d59f0360292513d45c2a975cae373eae72b8250bd13961fe9b28",
+      "raw_bytes": 1849,
+      "public_sha256": "d95d3cebe167d59f0360292513d45c2a975cae373eae72b8250bd13961fe9b28",
+      "public_bytes": 1849
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\versions\\v001\\reports\\z-2026-10-10T03-51-28.898235+00-00-9783e47573ff4c4390bf448649c94454.json",
+      "path": "workflow/reports/z-2026-10-10T03-51-28.898235+00-00-9783e47573ff4c4390bf448649c94454.json",
+      "raw_sha256": "bde1a66a62c2394cfe1a77a778d901298c9ebf2a8fb3c11e7547832c61ad9583",
+      "raw_bytes": 18267,
+      "public_sha256": "6c56068173c2eecc369d61d98eca72d037213156c93439a598140fb27121d6a2",
+      "public_bytes": 17704
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\e22402b1f6bb41cdb87330dcd53e15f9\\decisions\\000000-3c109617172e4c7aaf51f03178b0a011.json",
+      "path": "approval-function-tests/decisions/000000-3c109617172e4c7aaf51f03178b0a011.json",
+      "raw_sha256": "d95d3cebe167d59f0360292513d45c2a975cae373eae72b8250bd13961fe9b28",
+      "raw_bytes": 1849,
+      "public_sha256": "d95d3cebe167d59f0360292513d45c2a975cae373eae72b8250bd13961fe9b28",
+      "public_bytes": 1849
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\e22402b1f6bb41cdb87330dcd53e15f9\\decisions\\000001-be9859f30e9c48e6950a453ee47a86e2.json",
+      "path": "approval-function-tests/decisions/000001-be9859f30e9c48e6950a453ee47a86e2.json",
+      "raw_sha256": "0cab0fc8cf4b3ba3a45d96cf1c3eae03399fe2f211190244c85690a9c8bd715b",
+      "raw_bytes": 1813,
+      "public_sha256": "0cab0fc8cf4b3ba3a45d96cf1c3eae03399fe2f211190244c85690a9c8bd715b",
+      "public_bytes": 1813
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\e22402b1f6bb41cdb87330dcd53e15f9\\decisions\\000002-0337146849a64ae28cf48e8b44b973b8.json",
+      "path": "approval-function-tests/decisions/000002-0337146849a64ae28cf48e8b44b973b8.json",
+      "raw_sha256": "b90fed5dc6f05a79ff802dbb526ce6b53a16089041f7e9e0422ae81fdf558db0",
+      "raw_bytes": 1854,
+      "public_sha256": "b90fed5dc6f05a79ff802dbb526ce6b53a16089041f7e9e0422ae81fdf558db0",
+      "public_bytes": 1854
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\e22402b1f6bb41cdb87330dcd53e15f9\\decisions\\000003-0405cf6195494c20ac82ed551578601c.json",
+      "path": "approval-function-tests/decisions/000003-0405cf6195494c20ac82ed551578601c.json",
+      "raw_sha256": "d5d41d759369b4fb0487ed7d6800185b3b4831d8f2fcda2ca011f2509766bfad",
+      "raw_bytes": 1888,
+      "public_sha256": "d5d41d759369b4fb0487ed7d6800185b3b4831d8f2fcda2ca011f2509766bfad",
+      "public_bytes": 1888
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\e22402b1f6bb41cdb87330dcd53e15f9\\versions\\v001\\reports\\z-2026-10-10T03-51-28.898235+00-00-9783e47573ff4c4390bf448649c94454.json",
+      "path": "approval-function-tests/reports/z-2026-10-10T03-51-28.898235+00-00-9783e47573ff4c4390bf448649c94454.json",
+      "raw_sha256": "bde1a66a62c2394cfe1a77a778d901298c9ebf2a8fb3c11e7547832c61ad9583",
+      "raw_bytes": 18267,
+      "public_sha256": "6c56068173c2eecc369d61d98eca72d037213156c93439a598140fb27121d6a2",
+      "public_bytes": 17704
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\e22402b1f6bb41cdb87330dcd53e15f9\\versions\\v001\\reports\\z-2026-10-10T03-56-33.443280+00-00-2b7428d070274f0bb2cf81d54b856a1f.json",
+      "path": "approval-function-tests/reports/z-2026-10-10T03-56-33.443280+00-00-2b7428d070274f0bb2cf81d54b856a1f.json",
+      "raw_sha256": "c62e2f6720290e0f7f72cc8daa317a743cfa3f372b1392488f9602e30fc5fcb7",
+      "raw_bytes": 18267,
+      "public_sha256": "7d121ad343dbbc0c354605eaed4fc9508ca703f84cae01fe88849422a619a430",
+      "public_bytes": 17704
+    },
+    {
+      "source": "<INSTALL>\\http-controls\\http-controls.json",
+      "path": "approval-function-tests/http-controls.json",
+      "raw_sha256": "a6d255654bee1c006bc79f2e2b16549dd110f3f1e38ac077fbf35a62c56b48da",
+      "raw_bytes": 283632,
+      "public_sha256": "e230ba31048482cbc2110e2f0d4f66cf3333f02a41bb3aa663c3d9420d3e21f3",
+      "public_bytes": 277964
+    },
+    {
+      "source": "<INSTALL>\\dependency-copy.json",
+      "path": "installation/dependency-copy.json",
+      "raw_sha256": "593df843e5fa4b5b8ebace92df57b82bf9f2bf04d4876d2cabd8503a36c30a01",
+      "raw_bytes": 689,
+      "public_sha256": "dd9e11a13fd0dfa0425505641b3e289d38e9d668525c2e84092d9b3a32aaed53",
+      "public_bytes": 661
+    },
+    {
+      "source": "<INSTALL>\\server-origin.json",
+      "path": "installation/server-origin.json",
+      "raw_sha256": "9af3ac2afef0c5cbabe4cd13eb10307f982789d672c6058b601520cfdf7338ad",
+      "raw_bytes": 1223,
+      "public_sha256": "2dd3a404b41b8de08bbaf3ec01f701a83a960bbaf67cfeec704c7668725bc889",
+      "public_bytes": 1197
+    },
+    {
+      "source": "<INSTALL>\\child-origin-final\\origin-receipt.json",
+      "path": "installation/child-origin-final/origin-receipt.json",
+      "raw_sha256": "d4322ed2330bbfb4aa66337fa180acc0826a0203863eebe1c71db81287dc63a5",
+      "raw_bytes": 1339,
+      "public_sha256": "1057b4cbd9169dd3ba4d057b4a0cabf4f88b04ce244873332e58c157ebd6369a",
+      "public_bytes": 1281
+    },
+    {
+      "source": "<INSTALL>\\build-final.txt",
+      "path": "installation/build-final.txt",
+      "raw_sha256": "ad986463b0003fc5f990432d5f099272cb7d07ddd647e300e2427cd5331f0c47",
+      "raw_bytes": 911,
+      "public_sha256": "1bd12aa2cc3b5dc6e85b2f21be54cb753a6c4ce417bd1e8f58af695e384a9c8d",
+      "public_bytes": 873
+    },
+    {
+      "source": "<REPOSITORY>\\docs\\reusable-tool-safety\\acceptance\\20261010-human-review\\local\\protocol-final-pytest.txt",
+      "path": "protocol/protocol-final-pytest.txt",
+      "raw_sha256": "c2a5b14a0f35a3046449dd6a91252020c11977f6ae11f6292108968b0dd62a6f",
+      "raw_bytes": 256,
+      "public_sha256": "be6c96134be8eb6bcef835c81267e2a202b4b306281983191a1bb1150de23fe7",
+      "public_bytes": 227
+    },
+    {
+      "source": "<REPOSITORY>\\docs\\reusable-tool-safety\\acceptance\\20261010-human-review\\local\\protocol-final-junit.xml",
+      "path": "protocol/protocol-final-junit.xml",
+      "raw_sha256": "08405c11d250092a55973c51bb56e83dadf41a0363417b351d3bdbd7959a9458",
+      "raw_bytes": 6427,
+      "public_sha256": "f348dbbf0d6ee539aec42c53e343068d4096ad3fa7acc805ea9577348ff955c2",
+      "public_bytes": 6425
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\access-dependency.json",
+      "path": "source-bundle/access-dependency.json",
+      "raw_sha256": "814796009bfe4e60c6c47cec88e9a14068aa7e475d0e2d91a5bd964abe7f7071",
+      "raw_bytes": 2835,
+      "public_sha256": "03fa59aca2a24bf7e0304e73c42863ed920de91877dbdb55bfda49147c734ed2",
+      "public_bytes": 2756
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\ai-candidate.py",
+      "path": "source-bundle/ai-candidate.py",
+      "raw_sha256": "fb23b2299729c891dfe071f3a8cc19fd28e38bc676da60dea81a04230ad3ba8c",
+      "raw_bytes": 1253,
+      "public_sha256": "fb23b2299729c891dfe071f3a8cc19fd28e38bc676da60dea81a04230ad3ba8c",
+      "public_bytes": 1253
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\candidate.py",
+      "path": "source-bundle/candidate.py",
+      "raw_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "raw_bytes": 875,
+      "public_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "public_bytes": 875
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\configuration.json",
+      "path": "source-bundle/configuration.json",
+      "raw_sha256": "66063f0cb25ef27da6bd5fda1664dbd4b0e7aa5d79526ca4ebe25a1207335d0b",
+      "raw_bytes": 255,
+      "public_sha256": "ed915d079c6021cbd2b957efaf1b7500c74e8503144be5923960b14ffd10894b",
+      "public_bytes": 248
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\dependencies\\credproof_access\\__init__.py",
+      "path": "source-bundle/dependencies/credproof_access/__init__.py",
+      "raw_sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "raw_bytes": 4276,
+      "public_sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "public_bytes": 4276
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\dependencies\\credproof_access\\contract.py",
+      "path": "source-bundle/dependencies/credproof_access/contract.py",
+      "raw_sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc",
+      "raw_bytes": 2677,
+      "public_sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc",
+      "public_bytes": 2677
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\human-review.json",
+      "path": "source-bundle/human-review.json",
+      "raw_sha256": "ac9d65888cfdaadc27bbffe365de2ef75da815af28e9018049e710f759f63048",
+      "raw_bytes": 3075,
+      "public_sha256": "ac9d65888cfdaadc27bbffe365de2ef75da815af28e9018049e710f759f63048",
+      "public_bytes": 3075
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\NOTICE.md",
+      "path": "source-bundle/NOTICE.md",
+      "raw_sha256": "f68b964019d3e30a2c5f55eebfc3cc5ab1dcf61bdd1f7c3e1a82ee9471056b0c",
+      "raw_bytes": 102,
+      "public_sha256": "ce0f5babd3472e10e43958e2956020a8b62c1dd5bc7fbf285b758ccc63b51953",
+      "public_bytes": 99
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\original.py",
+      "path": "source-bundle/original.py",
+      "raw_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+      "raw_bytes": 1263,
+      "public_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+      "public_bytes": 1263
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\project\\credproof.toml",
+      "path": "source-bundle/project/credproof.toml",
+      "raw_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "raw_bytes": 1161,
+      "public_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "public_bytes": 1161
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\project\\README.md",
+      "path": "source-bundle/project/README.md",
+      "raw_sha256": "f445ce2942d2284777dfb554cba4630af17c9fbb2bc7b8d2475afcb9dff3ea6c",
+      "raw_bytes": 1149,
+      "public_sha256": "f445ce2942d2284777dfb554cba4630af17c9fbb2bc7b8d2475afcb9dff3ea6c",
+      "public_bytes": 1149
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\project\\tests\\test_business.py",
+      "path": "source-bundle/project/tests/test_business.py",
+      "raw_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "raw_bytes": 1850,
+      "public_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "public_bytes": 1850
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\project\\tool.py",
+      "path": "source-bundle/project/tool.py",
+      "raw_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "raw_bytes": 875,
+      "public_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "public_bytes": 875
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\report.json",
+      "path": "source-bundle/report.json",
+      "raw_sha256": "2b3e58e4633a8f20af08f33c263d21eb7e3de4315b5c5e181a9bdbd82f89ab48",
+      "raw_bytes": 21784,
+      "public_sha256": "cd3e9bff58802b928fd6f366745f7c3a0a79c197a4de58a79fc2f937e129c22a",
+      "public_bytes": 21163
+    },
+    {
+      "source": "<INSTALL>\\data\\runs\\human-review\\939e25f42bb142f39567c5cb644ebc6d\\exports\\f952e75076df435095c17002206d8c74\\bundle\\revision.diff",
+      "path": "source-bundle/revision.diff",
+      "raw_sha256": "0ebddf8693ddc52d1160af0d9b42cfad796206d8d49a2c594fc3a0c0c438a78d",
+      "raw_bytes": 1274,
+      "public_sha256": "0ebddf8693ddc52d1160af0d9b42cfad796206d8d49a2c594fc3a0c0c438a78d",
+      "public_bytes": 1274
+    }
+  ],
+  "runtime_model_calls": 0
+}

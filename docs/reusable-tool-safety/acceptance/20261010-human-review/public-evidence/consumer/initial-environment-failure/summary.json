@@ -1,0 +1,58 @@
+{
+  "schema": "credproof.safety.exported-regression/v2",
+  "project": "examples/external/reusable-consumer-fixture",
+  "results": {
+    "external_fixed": {
+      "returncode": 1,
+      "pass": false,
+      "regression_verified": false,
+      "verification_status": "ENVIRONMENT_FAILURE",
+      "test_counts": {
+        "available": false,
+        "reason": "junitxml_missing"
+      },
+      "generated_report": {
+        "available": false,
+        "reason": "generated_report_count",
+        "count": 0
+      },
+      "expected_report_verdict": "PASS",
+      "expected_failure_check": null
+    },
+    "reintroduced_defect": {
+      "returncode": 1,
+      "pass": false,
+      "regression_verified": false,
+      "verification_status": "ENVIRONMENT_FAILURE",
+      "test_counts": {
+        "available": false,
+        "reason": "junitxml_missing"
+      },
+      "generated_report": {
+        "available": false,
+        "reason": "generated_report_count",
+        "count": 0
+      },
+      "expected_report_verdict": "FAIL",
+      "expected_failure_check": "no_forbidden_file_read"
+    },
+    "unrelated_change": {
+      "returncode": 1,
+      "pass": false,
+      "regression_verified": false,
+      "verification_status": "ENVIRONMENT_FAILURE",
+      "test_counts": {
+        "available": false,
+        "reason": "junitxml_missing"
+      },
+      "generated_report": {
+        "available": false,
+        "reason": "generated_report_count",
+        "count": 0
+      },
+      "expected_report_verdict": "PASS",
+      "expected_failure_check": null
+    }
+  },
+  "claim": "The exported check was executed in a separate synthetic consumer fixture; pytest execution and a newly generated internal safety report were checked; no model or real credential was used."
+}

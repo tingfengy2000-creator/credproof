@@ -1,0 +1,38 @@
+{
+  "decision": "APPROVED",
+  "version_id": "v001",
+  "object_sha256": "d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b",
+  "report_sha256": "bde1a66a62c2394cfe1a77a778d901298c9ebf2a8fb3c11e7547832c61ad9583",
+  "object_binding": {
+    "validation_project_tree_sha256": "d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b",
+    "candidate_project_tree_sha256": "d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b",
+    "config_path": "project/credproof.toml",
+    "config_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+    "required_test_paths": [
+      "tests"
+    ],
+    "entry_path": "project/tool.py",
+    "entry_source_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+    "entry_candidate_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+    "entry_source_newline": "LF",
+    "entry_candidate_newline": "LF",
+    "entry_newline_policy": "LF-normalized comparison only; project bytes remain unchanged",
+    "entry_normalized_equal": true
+  },
+  "original_sha256": "01187f74e164d9306758fdd88d244928ea623e1387eead817829fd739aa121ae",
+  "component": {
+    "name": "credproof_access",
+    "version": "1.0.0",
+    "files": {
+      "__init__.py": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "contract.py": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc"
+    },
+    "trust": "fixed reviewed dependency, not candidate mutable material"
+  },
+  "reason": "审批功能测试：仅确认当前PASS、报告及组件对应的修订；不代表用户签字，不应用原仓库。",
+  "at": "2026-10-10T03:56:15.414546+00:00",
+  "operation_source": "local-review-interface",
+  "reviewer": "approval-function-test",
+  "test_operation": true,
+  "trust": "local record; not strong identity, signature or certification"
+}

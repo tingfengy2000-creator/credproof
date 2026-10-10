@@ -1,0 +1,30 @@
+{
+  "execution_mode": "pytest_subprocess",
+  "command": [
+    "<INSTALL>\\venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/credproof-regression/test_credproof_safety.py",
+    "--junitxml=C:\\Users\\ADMINI~1\\AppData\\Local\\Temp\\credproof-runs\\credproof-exported-4308dl9e\\fixed\\.credproof\\consumer-junit.xml"
+  ],
+  "cwd_relative": "fixed",
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 189, in _run_module_as_main\n  File \"<frozen runpy>\", line 148, in _get_module_details\n  File \"<frozen runpy>\", line 112, in _get_module_details\n  File \"E:\\姣旇禌\\CP35\\venv\\Lib\\site-packages\\pytest\\__init__.py\", line 8, in <module>\n    from _pytest._code import ExceptionInfo\n  File \"E:\\姣旇禌\\CP35\\venv\\Lib\\site-packages\\_pytest\\_code\\__init__.py\", line 5, in <module>\n    from .code import Code\n  File \"E:\\姣旇禌\\CP35\\venv\\Lib\\site-packages\\_pytest\\_code\\code.py\", line 44, in <module>\n    from _pytest._io import TerminalWriter\n  File \"E:\\姣旇禌\\CP35\\venv\\Lib\\site-packages\\_pytest\\_io\\__init__.py\", line 3, in <module>\n    from .terminalwriter import get_terminal_width\n  File \"E:\\姣旇禌\\CP35\\venv\\Lib\\site-packages\\_pytest\\_io\\terminalwriter.py\", line 19, in <module>\n    from ..compat import assert_never\n  File \"E:\\姣旇禌\\CP35\\venv\\Lib\\site-packages\\_pytest\\compat.py\", line 19, in <module>\n    import py\nModuleNotFoundError: No module named 'py'\n",
+  "test_counts": {
+    "available": false,
+    "reason": "junitxml_missing"
+  },
+  "generated_report": {
+    "available": false,
+    "reason": "generated_report_count",
+    "count": 0
+  },
+  "junit_xml": null,
+  "expected_report_verdict": "PASS",
+  "expected_failure_check": null,
+  "verification_status": "ENVIRONMENT_FAILURE",
+  "regression_verified": false,
+  "pass": false
+}
