@@ -21,7 +21,13 @@ _IGNORED_PROJECT_NAMES = {".git", ".venv", "__pycache__", ".credproof"}
 
 def _digest_tree(root: Path) -> str:
     rows = []
-    for path in sorted(root.rglob("*")):
+    # Explicit legacy-Windows ordering, independent of the host Path flavour.
+    # Keep the original spelling and exact file bytes in the hashed rows; this
+    # is ordering only, not case folding of identity or newline normalization.
+    # The second key makes POSIX case-only neighbours deterministic as well.
+    order = lambda path: (tuple(part.lower() for part in path.relative_to(root).parts),
+                          path.relative_to(root).as_posix())
+    for path in sorted(root.rglob("*"), key=order):
         # Identity must describe the same reviewable tree that is copied into
         # the disposable checker.  Local VCS, caches and previous reports are
         # deliberately outside the object being accepted.
