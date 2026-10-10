@@ -401,11 +401,11 @@ function renderReview() {
   $('review-load').disabled=state.busy||!$('review-saved').value;
   const r=state.review; $('review-content').hidden=!r;
   if(!r)return;
-  $('review-status').innerHTML=`${badge('程序 '+r.technical_verdict,tone(r.technical_verdict))} ${badge('人工 '+r.decision)} ${r.decision_is_test?'审批功能测试 · 非本人签字':''}<p>${escape(r.version.id)} · ${escape(r.version.source)} · ${escape(r.version.reason)}<br>对象 ${escape(r.object_sha256||'材料缺失')}<br>报告 ${escape(r.report?.checked_at||r.report?.created_at||'未执行')} · ${r.report_applicable?'适用于当前副本':'不适用／未验收'} · 原仓库未应用</p>${escape(r.material_reasons.join('; '))}`;
+  $('review-status').innerHTML=`${badge('程序 '+r.technical_verdict,tone(r.technical_verdict))} ${badge('人工 '+r.decision)} ${r.decision_is_test?'审批功能测试 · 非本人签字':''}<p>${escape(r.version.id)} · ${escape(r.version.source)} · ${escape(r.version.reason)}<br>对象 ${escape(r.object_sha256||'材料缺失')}<br>报告 ${escape(r.report?.checked_at_utc||r.report?.checked_at||r.report?.created_at||'未执行')} · ${r.report_applicable?'适用于当前副本':'不适用／未验收'} · 原仓库未应用</p>${escape(r.material_reasons.join('; '))}`;
   $('review-original').textContent=r.original_code; $('review-ai').textContent=r.ai_code; $('review-diff').textContent=r.diff||'与父候选相同';
   if($('review-code').dataset.identity!==r.id+r.version.id){$('review-code').value=r.code;$('review-code').dataset.identity=r.id+r.version.id;}
-  $('review-report').textContent=text(r.report); $('review-decisions').textContent=text({versions:r.versions,decisions:r.decisions});
-  $('review-checks').innerHTML=Object.entries(r.report?.checks||{}).map(([key,value])=>`<p>${badge(value===true?'PASS':value===false?'FAIL':'UNKNOWN',value===true?'pass':value===false?'fail':'unknown')} ${escape(key)}</p>`).join('');
+  $('review-report').textContent=text(r.report); const po=r.report?.execution?.pytest_observation; if(po)$('review-status').innerHTML+=`<p>必要测试：${escape(text(po.counts||{collected:po.collected,executed:po.executed,passed:po.passed,failed:po.failed,skipped:po.skipped}))}</p>`; $('review-decisions').textContent=text({versions:r.versions,decisions:r.decisions});
+  $('review-checks').innerHTML=Object.entries(r.report?.required_checks||{}).map(([key,value])=>`<p>${badge(value===true?'PASS':value===false?'FAIL':'UNKNOWN',value===true?'pass':value===false?'fail':'unknown')} ${escape(key)}</p>`).join('');
   for(const id of ['review-revise','review-check','review-needs','review-reject','review-diagnostic'])$(id).disabled=state.busy||r.material_reasons.length>0;
   $('review-check').disabled||=state.bootstrap?.access_mode==='view';
   $('review-approve').disabled=state.busy||r.technical_verdict!=='PASS'||!r.report_applicable;
