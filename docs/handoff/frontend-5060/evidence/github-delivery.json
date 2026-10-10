@@ -1,0 +1,173 @@
+{
+  "kind": "HANDOFF_GITHUB_FIXED_BYTES",
+  "checked_at_utc": "2026-10-10T07:09:58.488431+00:00",
+  "program_source_commit": "50e0d694d1c40352b82853fc62d6df0983240d43",
+  "frozen_delivery_commit": "81c289fd71c8839e2c122032fe15a473f4380710",
+  "handoff_material_commit": "f080bb6f764e0a779129688c10ad63cf71ed7407",
+  "receipt_commit_policy": "This receipt is added in a later commit; no tested executable or historical result is changed.",
+  "remote_heads_at_check": {
+    "refs/heads/baseline/human-review-dev35": "81c289fd71c8839e2c122032fe15a473f4380710",
+    "refs/heads/feat/frontend-human-review-5060": "f080bb6f764e0a779129688c10ad63cf71ed7407",
+    "refs/heads/feat/reusable-tool-safety": "f080bb6f764e0a779129688c10ad63cf71ed7407"
+  },
+  "push_exit_code": 0,
+  "push_mode": "normal atomic push, no force; main and tags unchanged",
+  "anonymous_request": {
+    "authorization": false,
+    "cookies": false,
+    "github_login_state": false,
+    "tls_verification": true,
+    "uses_existing_host_proxy": true
+  },
+  "results": [
+    {
+      "path": "docs/handoff/frontend-5060/README.md",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/handoff/frontend-5060/README.md",
+      "http_status": 200,
+      "bytes": 14610,
+      "sha256": "96918eb9094ac0221d3ff64b540656611a15cc39528d03f882217c9e166f881a",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/handoff/frontend-5060/HANDOFF_RECEIPT.json",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/handoff/frontend-5060/HANDOFF_RECEIPT.json",
+      "http_status": 200,
+      "bytes": 10950,
+      "sha256": "8d8b7c71f87488d3b830a6aea99a66b11a5f282c8404cabf613bc5cabf508616",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/handoff/frontend-5060/view-readonly.py",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/handoff/frontend-5060/view-readonly.py",
+      "http_status": 200,
+      "bytes": 4914,
+      "sha256": "45b75a3f38b2e034db612888d47542ea042258d39de908822b937954316aec20",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/handoff/frontend-5060/test-readonly.py",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/handoff/frontend-5060/test-readonly.py",
+      "http_status": 200,
+      "bytes": 6659,
+      "sha256": "065c3c6696601b35880d529a2b371e96499f0ed648b01bc968d7bd293086b640",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/handoff/frontend-5060/verify-evidence.py",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/handoff/frontend-5060/verify-evidence.py",
+      "http_status": 200,
+      "bytes": 8356,
+      "sha256": "e0aba0eccd5b9529abf2a3e824ddf437cf496d54d5f95abde65d2169dbcfbd9b",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/handoff/frontend-5060/evidence/existing-evidence-correspondence.json",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/handoff/frontend-5060/evidence/existing-evidence-correspondence.json",
+      "http_status": 200,
+      "bytes": 2493,
+      "sha256": "bb4f7a5a82bc3cef6a2ed2db5cbdcf771b30f470295b0e98f955a9f3b72441a2",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/handoff/frontend-5060/evidence/readonly-clean-install.json",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/handoff/frontend-5060/evidence/readonly-clean-install.json",
+      "http_status": 200,
+      "bytes": 1045,
+      "sha256": "ce177203eeab970fc05b39c80564e73fff76a934a963f45303c26e2239f4b662",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/handoff/frontend-5060/evidence/readonly-browser.txt",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/handoff/frontend-5060/evidence/readonly-browser.txt",
+      "http_status": 200,
+      "bytes": 18635,
+      "sha256": "2d7d709d6b4e0ebb687ebdf177b5334e09fe82c7eaf753816fafcc5392a3b73a",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/handoff/frontend-5060/evidence/readonly-browser.png",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/handoff/frontend-5060/evidence/readonly-browser.png",
+      "http_status": 200,
+      "bytes": 73224,
+      "sha256": "33598a0081d30c77cc7ed2298311c513e0979526dda26f1ea321a161cb67a2c7",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "credproof_safety/human_review.py",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/credproof_safety/human_review.py",
+      "http_status": 200,
+      "bytes": 16829,
+      "sha256": "d55249a27978cda2502dc0d1b446c9cfaaac1f6b5bf14054a41199eb73129be9",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "agent_pilot/ui/app.js",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/agent_pilot/ui/app.js",
+      "http_status": 200,
+      "bytes": 48441,
+      "sha256": "0af4fed33303564ba55bfac1ed792a67800f1ba1ee40e11d0712db8a365961b1",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/source-bundle/ai-candidate.py",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/source-bundle/ai-candidate.py",
+      "http_status": 200,
+      "bytes": 1253,
+      "sha256": "fb23b2299729c891dfe071f3a8cc19fd28e38bc676da60dea81a04230ad3ba8c",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/public-bundle/candidate.py",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/public-bundle/candidate.py",
+      "http_status": 200,
+      "bytes": 875,
+      "sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/public-bundle/manifest.json",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/public-bundle/manifest.json",
+      "http_status": 200,
+      "bytes": 5221,
+      "sha256": "0996f338e30e797afa18a02d02adcf33ec33b9ff5bb5a32ab564e0ebde8bef54",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/workspace/runs/human-review/939e25f42bb142f39567c5cb644ebc6d/versions/v001/reports/check-01.json",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/workspace/runs/human-review/939e25f42bb142f39567c5cb644ebc6d/versions/v001/reports/check-01.json",
+      "http_status": 200,
+      "bytes": 17704,
+      "sha256": "6c56068173c2eecc369d61d98eca72d037213156c93439a598140fb27121d6a2",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/recheck/report.json",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/recheck/report.json",
+      "http_status": 200,
+      "bytes": 19339,
+      "sha256": "9f89d3db1d08d7cecf3780a8147b65afebc1d32f0eaac49a06582c295fd0b4a3",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/consumer/installed-controls/summary.json",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/consumer/installed-controls/summary.json",
+      "http_status": 200,
+      "bytes": 2158,
+      "sha256": "16e318e69c9a4ac536f31ce4dc9278bc7d4b3e4404503fe4950e37646398a4dd",
+      "equals_fixed_git_blob": true
+    },
+    {
+      "path": "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/installation/credproof_safety-0.3.0.dev35-py3-none-any.whl",
+      "url": "https://raw.githubusercontent.com/tingfengy2000-creator/credproof/f080bb6f764e0a779129688c10ad63cf71ed7407/docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/installation/credproof_safety-0.3.0.dev35-py3-none-any.whl",
+      "http_status": 200,
+      "bytes": 394508,
+      "sha256": "ced6f43361cd3ca483f3ae7a6086383ee5a45edb2999c9a56abb62691ac448b4",
+      "equals_fixed_git_blob": true
+    }
+  ],
+  "success": true,
+  "new_model_calls": 0,
+  "new_candidate_executions": 0,
+  "no_new_safety_experiments": true,
+  "external_independent_code_review": "NOT_COMPLETED"
+}
