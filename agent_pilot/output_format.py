@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import ast
+import difflib
 import hashlib
 import re
 
@@ -68,4 +69,18 @@ def normalize_python_source(source: str) -> tuple[str, dict]:
         receipt['format'] = 'SINGLE_COMPLETE_OUTER_FENCE_REMOVED'
         receipt['body_preserved_exactly'] = True
     receipt.update(normalized_code_sha256=_sha(normalized), normalized_code_bytes=len(normalized.encode('utf8')))
+    return normalized, receipt
+
+
+def receive_python_source(source: str) -> tuple[str, dict]:
+    """Unified reception before a candidate write or dynamic verification."""
+    normalized, receipt = normalize_python_source(source)
+    syntax = check_python_syntax(normalized)
+    receipt['syntax'] = syntax
+    receipt['diff'] = ''.join(difflib.unified_diff(
+        source.splitlines(keepends=True), normalized.splitlines(keepends=True),
+        fromfile='original-model-code', tofile='received-python-code'))
+    if syntax['status'] != 'VALID_SYNTAX':
+        import json
+        raise ValueError('INVALID_SOURCE_SYNTAX:' + json.dumps(syntax, ensure_ascii=False))
     return normalized, receipt

@@ -20,6 +20,7 @@ import time
 import uuid
 
 from agent_pilot.model_config import selected_profile, claim_comparison, finish_comparison
+from agent_pilot.output_format import receive_python_source
 from .config import load_config
 from .project import check_project, _copy_project, _digest_tree
 from agent_pilot.runtime_config import load_config as load_runtime_config
@@ -274,7 +275,11 @@ def _bounded_model_script() -> str:
  show_request=urllib.request.Request('http://127.0.0.1:11435/api/show', data=json.dumps({'model':selected_profile()['name']}).encode(),headers={'Content-Type':'application/json'})
  with opener.open(show_request,timeout=10) as response: model_show=json.loads(response.read())
  (artifact/'model-show.json').write_text(json.dumps(model_show,indent=2)+'\n',encoding='utf8')
- client=BoundedPatchClient(artifact/'model-trace')
+ revision=initial_context.get('_feedback_revision')
+ max_requests=1 if revision else 4
+ max_generations=1 if revision else 3
+ max_corrections=0 if revision else 1
+ client=BoundedPatchClient(artifact/'model-trace',max_calls=max_requests)
  program_trace=[]; generations=0; corrections=0; decoded=[]; terminal=None; error=None
  def program_call(name, arguments):
   value=rpc(name, arguments)
@@ -292,20 +297,20 @@ def _bounded_model_script() -> str:
  feedback={k:v for k,v in evidence.items() if k not in ('status','executor_state')}
  host_state=program_trace[-1]['result']['executor_state']
  try:
-  while generations<3 and not terminal:
+  while generations<max_generations and not terminal:
    work_state={'strategy':'bounded_patch','executor':generation_state(host_state),
-     'remaining_generations':3-generations,'remaining_requests':4-client.calls,
-     'remaining_format_corrections':1-corrections,'max_program_verifications':3}
+     'remaining_generations':max_generations-generations,'remaining_requests':max_requests-client.calls,
+     'remaining_format_corrections':max_corrections-corrections,'max_program_verifications':1 if revision else 3}
    payload=build_payload(initial_context,current_code,sources,feedback,work_state)
    generations+=1
    response=client.request(payload)
    try: obj=parse_response(response)
    except (ValueError,TypeError) as exc:
     client.save('invalid-output-%02d.json'%client.calls,{'reason':str(exc),'candidate_accepted':False})
-    if corrections>=1: terminal='STOPPED_INVALID_OUTPUT'; break
+    if corrections>=max_corrections: terminal='STOPPED_INVALID_OUTPUT'; break
     corrections+=1
-    work_state.update(remaining_generations=3-generations,remaining_requests=4-client.calls,
-                      remaining_format_corrections=1-corrections)
+    work_state.update(remaining_generations=max_generations-generations,remaining_requests=max_requests-client.calls,
+                      remaining_format_corrections=max_corrections-corrections)
     payload=build_payload(initial_context,current_code,sources,feedback,work_state,correction=str(exc))
     response=client.request(payload)
     try: obj=parse_response(response)
@@ -313,6 +318,8 @@ def _bounded_model_script() -> str:
      client.save('invalid-output-%02d.json'%client.calls,{'reason':str(exc),'candidate_accepted':False})
      terminal='STOPPED_INVALID_OUTPUT'; break
    decoded.append({'call_id':client.calls,'output':obj})
+   if obj.get('_source_format'):
+    client.save('source-format-%02d.json'%client.calls,obj['_source_format'])
    if obj['action']=='STOP': terminal='STOPPED_BY_MODEL'; break
    # Only the trusted host writes the permitted entry and runs check_project.
    applied=program_call('submit_patch',{'code':obj['code']})
@@ -320,6 +327,7 @@ def _bounded_model_script() -> str:
    if applied.get('status')!='ACCEPTED_FOR_VERIFICATION':
     if applied.get('reason')=='NO_CHANGE':
      feedback=dict(feedback,proposal_rejection={'status':'REJECTED','reason':'NO_CHANGE'})
+     if revision: terminal='STOPPED_NO_CHANGE'; break
      continue
     terminal='STOPPED_EXECUTOR_REJECTION'; break
    current_code=obj['code']
@@ -339,8 +347,9 @@ def _bounded_model_script() -> str:
    'elapsed_s':round(time.monotonic()-started,3),
    'model_stack':'local Ollama /api/chat format schema + bounded program scheduling',
    'execution_boundary':'existing model bubblewrap/private network + check_project candidate isolation',
-   'budgets':{'max_model_calls':4,'max_generations':3,'max_candidates':3,
-             'max_program_verifications':3,'max_format_corrections':1,
+   'feedback_revision':revision,
+   'budgets':{'max_model_calls':max_requests,'max_generations':max_generations,'max_candidates':1 if revision else 3,
+             'max_program_verifications':1 if revision else 3,'max_format_corrections':max_corrections,
              'request_seconds':120,'task_seconds':900,'context':16384,'output_tokens':2048},
    'paid_api_used':False}
  (artifact/'model-result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
@@ -396,7 +405,7 @@ if not runtime.is_absolute() or not stage_source.is_absolute() or not artifact.i
     raise SystemExit('model boundary paths must be absolute')
 allowed = {'worker.py', 'initial-context.json', 'model-profile.json', 'agent_pilot/model_config.py', 'agent_pilot/__init__.py', 'agent_pilot/tools.py', 'agent_pilot/model_client.py'}
 strategy = json.loads((stage_source/'initial-context.json').read_text(encoding='utf8')).get('_generation_strategy', 'qwen_agent')
-if strategy == 'bounded_patch': allowed.add('agent_pilot/bounded_patch.py')
+if strategy == 'bounded_patch': allowed.update({'agent_pilot/bounded_patch.py','agent_pilot/output_format.py'})
 elif strategy != 'qwen_agent': raise SystemExit('unknown generation strategy')
 found = {p.relative_to(stage_source).as_posix() for p in stage_source.rglob('*') if p.is_file()}
 if found != allowed:
@@ -932,7 +941,8 @@ def _read_progress_update(key, previous_key, previous_count: int, *, limit: int 
     return key, count, count >= limit
 
 
-def _host_repair(config_path: Path, output: str | Path | None, initial: dict, *, strategy='qwen_agent') -> dict:
+def _host_repair(config_path: Path, output: str | Path | None, initial: dict, *, strategy='qwen_agent',
+                 feedback_revision: dict | None = None) -> dict:
     config = load_config(config_path)
     artifact, _ = _artifact_dir(output)
     candidate = artifact / 'candidate'
@@ -963,6 +973,8 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict, *,
                   initial.get('observation_summary', {}).get('classification') == 'ACTUAL_VIOLATION')
     expected_source_digest = hashlib.sha256(module_file.read_bytes()).hexdigest()
     max_tool_calls = 12; max_candidates = 3; max_verifications = 3
+    if feedback_revision:
+        max_candidates = max_verifications = 1
 
     def canonical_source_bytes(value: str | bytes) -> bytes:
         raw = value if isinstance(value, bytes) else value.encode('utf-8')
@@ -1148,16 +1160,26 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict, *,
                         value={'status':'OK',**_model_work_feedback(current, config)}
                     elif name == 'submit_patch':
                         code=args.get('code') if isinstance(args,dict) else None
+                        format_receipt = None; source_error = None
+                        if isinstance(code, str) and len(code.encode('utf8')) <= 65536:
+                            try: code, format_receipt = receive_python_source(code)
+                            except ValueError as exc: source_error = str(exc)
                         if not authorised:
                             value={'status':'REJECTED','reason':'no_current_confirmed_violation'}
                         elif patch_no >= max_candidates:
                             value={'status':'REJECTED','reason':'candidate_budget_exhausted'}
                         elif not isinstance(code,str) or len(code.encode())>65536: value={'status':'REJECTED','reason':'candidate_size_or_type'}
+                        elif source_error:
+                            value={'status':'REJECTED','reason':'candidate_format_or_syntax',
+                                   'detail':source_error,'candidate_written':False}
                         elif canonical_source_bytes(code) == canonical_source_bytes(module_file.read_bytes()):
                             value={'status':'REJECTED','reason':'NO_CHANGE','candidate':patch_no,
                                    'candidate_sha256':candidate_source_digest(code)}
                         else:
                             patch_no += 1
+                            (history / ('source-format-%02d.json' % patch_no)).write_text(
+                                json.dumps(format_receipt, ensure_ascii=False, indent=2)+'\n', encoding='utf8')
+                            (history / ('raw-code-%02d.txt' % patch_no)).write_bytes(args['code'].encode('utf8'))
                             revision_phase_rejections = 0
                             with module_file.open('w', encoding='utf-8', newline='\n') as handle:
                                 handle.write(code.replace('\r\n', '\n').replace('\r', '\n'))
@@ -1207,6 +1229,7 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict, *,
         target = stage / relative; target.write_bytes((repo / relative).read_bytes())
     if strategy == 'bounded_patch':
         (stage/'agent_pilot/bounded_patch.py').write_bytes((repo/'agent_pilot/bounded_patch.py').read_bytes())
+        (stage/'agent_pilot/output_format.py').write_bytes((repo/'agent_pilot/output_format.py').read_bytes())
     (stage / 'model-profile.json').write_text(json.dumps(selected_profile()), encoding='utf8')
     (stage / 'worker.py').write_text(_bounded_model_script() if strategy=='bounded_patch' else _MODEL_SCRIPT, encoding='utf-8')
     # Give the first model request the current bounded index and contract.  It
@@ -1215,7 +1238,8 @@ def _host_repair(config_path: Path, output: str | Path | None, initial: dict, *,
     (stage / 'initial-context.json').write_text(
         json.dumps(dict((_bounded_initial_context(initial, config) if strategy=='bounded_patch'
                         else _model_initial_context(initial, config)),
-                        _generation_strategy=strategy), ensure_ascii=False, sort_keys=True),
+                        _generation_strategy=strategy,
+                        **({'_feedback_revision':feedback_revision} if feedback_revision else {})), ensure_ascii=False, sort_keys=True),
         encoding='utf-8')
     (artifact / 'host-sentinel.txt').write_text('synthetic host boundary sentinel; not a credential\n', encoding='utf-8')
     encoded_bootstrap = __import__('base64').b64encode(_MODEL_BOUNDARY_BOOTSTRAP.encode()).decode()
@@ -1271,4 +1295,48 @@ def request_repair(config_path: str | Path, *, output: str | Path | None = None,
     result=_host_repair(Path(config.config_path),output,initial,strategy=strategy)
     finish_comparison(claim, {'status':result.get('status'),'task_status':result.get('task_status'),
                             'model':result.get('model'),'final_verdict':result.get('final',{}).get('verdict')})
+    return result
+
+
+FEEDBACK_REVISION_LIMITS = {'model_requests': 1, 'generations': 1, 'format_corrections': 0,
+                          'candidates': 1, 'verifications': 1, 'context': 16384,
+                          'output': 2048, 'safety_reserve': 512,
+                          'request_seconds': 120, 'task_seconds': 900}
+
+
+def request_feedback_revision(config_path: str | Path, *, report_path: str | Path,
+                              registration_path: str | Path, output: str | Path) -> dict:
+    """One separately authorised feedback request, never resumes a closed task.
+
+    Local operator paths only. An exclusive durable claim is consumed before
+    launching the same reviewed model boundary. No fresh initial safety run.
+    """
+    config = load_config(config_path)
+    registration_path = Path(registration_path).resolve(strict=True)
+    registration = json.loads(registration_path.read_text(encoding='utf8'))
+    raw_report = Path(report_path).read_bytes()
+    initial = json.loads(raw_report)
+    entry = config.project_root / (config.entry.module.replace('.', '/') + '.py')
+    profile = selected_profile()
+    if (profile['profile'] != 'qwen25' or registration.get('model') != profile
+            or registration.get('limits') != FEEDBACK_REVISION_LIMITS
+            or registration.get('kind') != 'HISTORICAL_CANDIDATE_FEEDBACK_REVISION'
+            or not registration.get('parent_task_id')
+            or registration.get('source_candidate_sha256') != hashlib.sha256(entry.read_bytes()).hexdigest()
+            or registration.get('report_sha256') != hashlib.sha256(raw_report).hexdigest()
+            or initial.get('project_tree_sha256') != _digest_tree(config.project_root)
+            or initial.get('config') != config.to_public_dict()
+            or initial.get('verdict') != 'FAIL'
+            or initial.get('observation_summary', {}).get('classification') != 'ACTUAL_VIOLATION'):
+        raise ValueError('feedback_revision_registration_or_object_mismatch')
+    claim = registration_path.with_suffix('.claim.json')
+    with claim.open('x', encoding='utf8') as handle:
+        json.dump({'kind': registration['kind'], 'registration_sha256': hashlib.sha256(registration_path.read_bytes()).hexdigest(),
+                   'limits': FEEDBACK_REVISION_LIMITS, 'parent_task_id': registration['parent_task_id']}, handle)
+    revision = {key: registration[key] for key in ('kind', 'parent_task_id', 'source_candidate_sha256', 'report_sha256')}
+    result = _host_repair(Path(config.config_path), output, initial, strategy='bounded_patch',
+                          feedback_revision=revision)
+    with claim.with_suffix('.result.json').open('x', encoding='utf8') as handle:
+        json.dump({'status': result.get('status'), 'task_status': result.get('task_status'),
+                   'model': result.get('model'), 'final_verdict': result.get('final', {}).get('verdict')}, handle)
     return result

@@ -177,6 +177,12 @@ def _adapt(config_path: Path, output: Path, project_id: str, case_id: str, repai
         "web_adapter": {"status": "ADAPTED", "source": "credproof_safety.agent.request_repair",
                          "registered_case_only": True, "project_identity": project_id},
     }
+    if repair.get('feedback_revision'):
+        row.update(display_label='基于历史候选的新反馈修订',
+                   feedback_revision=repair['feedback_revision'],
+                   parent_task_id=repair['feedback_revision']['parent_task_id'],
+                   source_candidate_sha256=repair['feedback_revision']['source_candidate_sha256'])
+        row['web_adapter']['source'] = 'credproof_safety.agent.request_feedback_revision'
     _write(method / "result.json", row)
     if initial:
         _write(method / "initial-evidence.json", _observation(initial))

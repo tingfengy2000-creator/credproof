@@ -321,7 +321,7 @@ function renderValidation() {
   $('model-calls').textContent = count(modelCalls);
   $('tool-calls').textContent = count(Array.isArray(toolCalls) ? toolCalls.length : toolCalls);
   $('unknown-count').textContent = count(run?.unknown_count);
-  $('task-identity').textContent = run ? `任务 ${run.id}${run.project?.strategy ? ` · ${run.project.strategy} / ${run.project.profile}` : ''}${run.project?.component_version ? ` · access ${run.project.component_version}` : ''}${run.stop_reason ? ` · ${text(run.stop_reason)}` : ''}` : '未创建任务';
+  $('task-identity').textContent = run ? `${run.display_label ? `${run.display_label} · ` : ''}任务 ${run.id}${run.parent_task_id ? ` · 来源 ${run.parent_task_id}` : ''}${run.project?.strategy ? ` · ${run.project.strategy} / ${run.project.profile}` : ''}${run.project?.component_version ? ` · access ${run.project.component_version}` : ''}${run.stop_reason ? ` · ${text(run.stop_reason)}` : ''}` : '未创建任务';
   $('updated-at').textContent = run ? `最近取得的状态 · ${displayTime(run.updated_at)}` : '状态按请求刷新，不是实时监控。';
 }
 

@@ -13,6 +13,7 @@ import time
 import urllib.request
 
 from .model_client import estimate_input_budget, _NoRedirect
+from .output_format import receive_python_source
 
 from .model_config import selected_profile
 MODEL = selected_profile()['name']
@@ -105,24 +106,29 @@ def parse_response(response: dict) -> dict:
     elif (not isinstance(obj['code'], str) or not obj['code'].strip()
           or len(obj['code'].encode('utf8')) > 65536 or '\0' in obj['code']):
         raise ValueError('patch_code_invalid')
+    if obj['action'] == 'PATCH':
+        obj['code'], obj['_source_format'] = receive_python_source(obj['code'])
     return obj
 
 
 class BoundedPatchClient:
-    def __init__(self, trace: Path):
+    def __init__(self, trace: Path, *, max_calls: int = 4):
+        if type(max_calls) is not int or not 1 <= max_calls <= 4:
+            raise ValueError('invalid_generation_request_cap')
         self.trace = trace
         trace.mkdir(parents=True, exist_ok=False)
         self.started = time.monotonic()
         self.calls = 0
         self.usage = []
         self.poisoned = False
+        self.max_calls = max_calls
 
     def save(self, name, value):
         (self.trace / name).write_text(json.dumps(value, ensure_ascii=False, indent=2) + '\n', encoding='utf8')
 
     def request(self, payload):
         remaining = 900 - (time.monotonic() - self.started)
-        if self.poisoned or self.calls >= 4 or remaining <= 0:
+        if self.poisoned or self.calls >= self.max_calls or remaining <= 0:
             raise RuntimeError('generation_request_or_wall_budget_exhausted')
         if 'tools' in payload:
             raise ValueError('bounded_patch_must_not_send_tools')

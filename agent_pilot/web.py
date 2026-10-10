@@ -668,6 +668,9 @@ class Application:
         public_evidence = [{**item, 'collected_at': item.get('observed_at')} for item in evidence if isinstance(item, dict)]
         unknown_count = sum(item.get('observation', {}).get('verdict') == 'UNKNOWN' for item in public_evidence) if public_evidence else None
         result = {'id': run.id, 'case_id': run.case_id, 'mode': run.mode, 'status': run.status,
+                  'display_label': (row or {}).get('display_label'),
+                  'parent_task_id': (row or {}).get('parent_task_id'),
+                  'feedback_revision': (row or {}).get('feedback_revision'),
                   'task_status': task.get('task_status') or ('FAILED' if run.status == 'ERROR' else 'UNKNOWN'),
                   'started_at': run.started_at, 'updated_at': run.updated_at,
                   'phase': '单 Agent 实际执行中；等待最终记录' if run.status == 'RUNNING' else '读取已保存的实际运行材料',
