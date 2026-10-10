@@ -1,0 +1,203 @@
+{
+  "schema": "credproof.frontend-handoff/v1",
+  "created_at_utc": "2026-10-10T07:00:51.913536+00:00",
+  "status": "READY_FOR_FRONTEND_HANDOFF",
+  "scope": "AI_ASSISTED_HUMAN_REVIEW",
+  "basis": "5090_FIXED_VERSION_SELF_ACCEPTANCE",
+  "external_independent_code_review": "NOT_COMPLETED",
+  "code_commit": "50e0d694d1c40352b82853fc62d6df0983240d43",
+  "delivery_commit": "81c289fd71c8839e2c122032fe15a473f4380710",
+  "delivery_commit_meaning": "Frozen dev35 delivery; current handoff-material and push SHAs are recorded separately in evidence/github-delivery.json after commit, avoiding a self-referential SHA.",
+  "package_version": "0.3.0.dev35",
+  "wheel": {
+    "path": "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/installation/credproof_safety-0.3.0.dev35-py3-none-any.whl",
+    "sha256": "ced6f43361cd3ca483f3ae7a6086383ee5a45edb2999c9a56abb62691ac448b4",
+    "bytes": 394508,
+    "member_hashes_verified": 86
+  },
+  "formal_object": {
+    "id": "939e25f42bb142f39567c5cb644ebc6d",
+    "version": "v001",
+    "source": "DEVELOPER_REVISION_CODEX_ASSISTED",
+    "candidate_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+    "project_tree_sha256": "d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b",
+    "technical_verdict": "PASS",
+    "decision": "PENDING",
+    "application": "NOT_APPLIED"
+  },
+  "evidence_items": [
+    {
+      "id": "R01_HISTORY",
+      "status": "MATCHED_EXISTING_EVIDENCE",
+      "implementation": "credproof_safety/human_review.py:open_method/view",
+      "paths": [
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/workflow/baseline/report.json",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/source-bundle/ai-candidate.py",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/installation/historical-parser-replay.json"
+      ],
+      "finding": "Original AI FAIL retained; prior UNKNOWN remains historical, no new model inference."
+    },
+    {
+      "id": "R02_REVISION_ACCEPTANCE",
+      "status": "MATCHED_EXISTING_EVIDENCE",
+      "implementation": "credproof_safety/human_review.py:revise/check",
+      "paths": [
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/workspace/runs/human-review/939e25f42bb142f39567c5cb644ebc6d/versions/v001/version.json",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/workspace/runs/human-review/939e25f42bb142f39567c5cb644ebc6d/versions/v001/reports/check-01.json"
+      ],
+      "finding": "Generic developer revision; four required cases actually passed and fourteen necessary checks true; real data/allowed authentication and independent redirect observations present."
+    },
+    {
+      "id": "R03_INDEPENDENT_STATES",
+      "status": "MATCHED_EXISTING_EVIDENCE",
+      "implementation": "credproof_safety/human_review.py:view/_expected/decide",
+      "paths": [
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/approval-function-tests/http-controls.json",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/protocol/protocol-final-junit.xml"
+      ],
+      "finding": "PASS/PENDING/NOT_APPLIED; backend denial on unsafe/stale/incomplete approval; test decisions are not owner adoption."
+    },
+    {
+      "id": "R04_CURRENT_OBJECT_BINDING",
+      "status": "MATCHED_EXISTING_EVIDENCE",
+      "implementation": "credproof_safety/human_review.py:_binding/_expected/export",
+      "paths": [
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/approval-function-tests/http-controls.json",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/approval-function-tests/reports"
+      ],
+      "finding": "Code/config/component/test drift rejected; recheck changes report binding, does not restore approval."
+    },
+    {
+      "id": "R05_PUBLIC_RECHECK",
+      "status": "MATCHED_EXISTING_EVIDENCE",
+      "implementation": "credproof_safety/project_bundle.py; scripts/recheck-component-review.py",
+      "paths": [
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/public-bundle/manifest.json",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/recheck/anonymous-retrieval.json",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/recheck/report.json",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/recheck/installed-receipt.json",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/consumer/installed-controls/summary.json"
+      ],
+      "finding": "Same candidate and dependencies; fixed Git bytes fetched and independently re-executed on 5090; consumer controls PASS/FAIL/PASS."
+    },
+    {
+      "id": "R06_INSTALLED_PAGE_RESTART",
+      "status": "MATCHED_EXISTING_EVIDENCE",
+      "implementation": "agent_pilot/web.py; agent_pilot/launch.py",
+      "paths": [
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/installation/wheel-manifest.json",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/installation/server-origin.json",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/installation/child-origin-qwen25.json",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/installation/browser-before-restart.txt",
+        "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/installation/browser-after-restart.txt"
+      ],
+      "finding": "Installed dev35 main/child provenance; real browser and restart same formal object; no owner approval."
+    }
+  ],
+  "current_round": {
+    "new_model_calls": 0,
+    "new_candidate_executions": 0,
+    "new_safety_experiments": 0,
+    "new_real_adoption_decisions": 0,
+    "record_matching": "evidence/existing-evidence-correspondence.json",
+    "read_only_ui_check": "evidence/readonly-clean-install.json",
+    "browser": "evidence/readonly-browser.txt",
+    "installed_minimal_environment": "New 5090 Windows Python3.12.14 venv; offline original wheel only; no cross-machine test.",
+    "test_commands": [
+      {
+        "command": "<VIEW_VENV>/Scripts/python.exe -I docs/handoff/frontend-5060/test-readonly.py --output docs/handoff/frontend-5060/evidence/readonly-clean-install.json",
+        "exit_code": 0,
+        "result": "5 transport tests passed; all blocked execution-side methods had zero calls; not new safety acceptance"
+      },
+      {
+        "command": "<SOURCE_VENV>/Scripts/python.exe docs/handoff/frontend-5060/verify-evidence.py --output docs/handoff/frontend-5060/evidence/existing-evidence-correspondence.json",
+        "exit_code": 0,
+        "result": "Existing report and bytes correspond; no candidate/model execution"
+      },
+      {
+        "command": "<VIEW_VENV>/Scripts/python.exe -I docs/handoff/frontend-5060/view-readonly.py --port 8801",
+        "result": "Browser GET loaded original history; loopback server stopped by operator Ctrl+C; shell exit1 after interruption is not an acceptance failure"
+      }
+    ]
+  },
+  "branches": {
+    "baseline": {
+      "name": "baseline/human-review-dev35",
+      "frozen_sha": "81c289fd71c8839e2c122032fe15a473f4380710",
+      "policy": "Create only if absent; never move or force push"
+    },
+    "frontend": {
+      "name": "feat/frontend-human-review-5060",
+      "program_base": "81c289fd71c8839e2c122032fe15a473f4380710",
+      "initial_material_commit": "Recorded in evidence/github-delivery.json",
+      "policy": "5060 pushes own branch and PR only; 5090 validates final merge tree in independent worktree before merge"
+    }
+  },
+  "responsibility": {
+    "5060": [
+      "HTML/CSS/JavaScript",
+      "copy and forms",
+      "existing API UI wiring",
+      "static and non-executing UI tests"
+    ],
+    "5090": [
+      "judgement and isolation",
+      "access component and binding",
+      "real candidate execution and model inference",
+      "real approval tests, export/recheck",
+      "packaging and integration review"
+    ]
+  },
+  "protected_paths": [
+    "credproof_safety/**",
+    "credproof_access/**",
+    "agent_pilot/*.py",
+    "config/**",
+    "locked dependencies and necessary tests",
+    "docs/reusable-tool-safety/acceptance/**",
+    "experiments/**",
+    "docs/handoff/frontend-5060/view-readonly.py"
+  ],
+  "known_boundaries": [
+    "Only adapted authorised Python-tool scenarios and synthetic credentials; human-provided requirements and trusted checker/component remain necessary.",
+    "Runtime model autonomous repair PASS is outside the user-approved mandatory scope; historical failures are not rewritten.",
+    "Frontend viewer exposes disclosed historical data only; all mutations, model calls, dynamic checks and exports are denied server-side.",
+    "No actual owner adoption; official candidate remains PASS/PENDING/NOT_APPLIED. Local decisions/hashes are not strong identity or third-party certification.",
+    "No WSL/rootfs/model migration to 5060; no new dynamic security/model tests this round. No contest submission or Release.",
+    "If a different actual person develops on 5060, participant must confirm registered team eligibility and contribution disclosure first; contest AI assistance permission remains participant-confirmed."
+  ],
+  "mandatory_handoff_gaps": [],
+  "program_files_verified": [
+    {
+      "path": "agent_pilot/web.py",
+      "sha256": "6209f4093e24a19785434d9d736d12421c30df79438c6134cd2347a8d04c9302"
+    },
+    {
+      "path": "agent_pilot/ui/app.js",
+      "sha256": "0af4fed33303564ba55bfac1ed792a67800f1ba1ee40e11d0712db8a365961b1"
+    },
+    {
+      "path": "credproof_safety/human_review.py",
+      "sha256": "d55249a27978cda2502dc0d1b446c9cfaaac1f6b5bf14054a41199eb73129be9"
+    },
+    {
+      "path": "credproof_safety/project.py",
+      "sha256": "3a92c3674216cfecf976c933bd75e4aea37c12f493a038f50776a5f904e85c68"
+    },
+    {
+      "path": "credproof_safety/runner.py",
+      "sha256": "6a4593ae37a175c702580a78429d578fb85c1dac3f3de478dc49365f8236575c"
+    },
+    {
+      "path": "credproof_safety/project_bundle.py",
+      "sha256": "ab3d614a5fefe0e477a6f42b82e30a2d3a4eeaa5625c5478b601febf2b74a674"
+    }
+  ],
+  "handoff_file_hashes": {
+    "view-readonly.py": "45b75a3f38b2e034db612888d47542ea042258d39de908822b937954316aec20",
+    "test-readonly.py": "065c3c6696601b35880d529a2b371e96499f0ed648b01bc968d7bd293086b640",
+    "verify-evidence.py": "e0aba0eccd5b9529abf2a3e824ddf437cf496d54d5f95abde65d2169dbcfbd9b",
+    "evidence/readonly-clean-install.json": "ce177203eeab970fc05b39c80564e73fff76a934a963f45303c26e2239f4b662",
+    "evidence/existing-evidence-correspondence.json": "bb4f7a5a82bc3cef6a2ed2db5cbdcf771b30f470295b0e98f955a9f3b72441a2"
+  }
+}

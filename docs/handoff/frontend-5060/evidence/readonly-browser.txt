@@ -1,0 +1,371 @@
+Browser tab: 4, Title: "密证 CredProof——面向Python工具的AI辅助安全修复与证据验收工作台", URL: "http://127.0.0.1:8801/#human-review".
+0 AXWebArea 密证 CredProof——面向Python工具的AI辅助安全修复与证据验收工作台, URL: 127.0.0.1:8801/#human-review
+	1 text 只读历史查看 / READ_ONLY_HISTORY：材料来自5090既有记录；本入口禁止生成、检查、修改、审批和导出。
+	2 link Description: 跳到验证工作区, Value: 127.0.0.1:8801/#workbench
+	3 container
+		4 link Description: 密证 CredProof 首页, Value: 127.0.0.1:8801/#top
+		5 container 页内导航
+			6 link Description: 系统机制, Value: 127.0.0.1:8801/#mechanism
+			7 link Description: 典型案例, Value: 127.0.0.1:8801/#cases
+			8 link Description: 验证工作区, Value: 127.0.0.1:8801/#workbench
+		256 text 本机服务已连接
+	10 container workspace
+		11 container 密证 CredProof ——面向Python工具的AI辅助安全修复与证据验收工作台, ID: top
+			12 container
+				13 text CREDENTIAL SECURITY / AI TOOLS 工具不泄密、不乱读、不乱连。
+				14 heading 密证 CredProof ——面向Python工具的AI辅助安全修复与证据验收工作台, Value: 1, ID: product-title
+					15 text 密证 
+					16 text CredProof
+					17 text ——面向Python工具的AI辅助安全修复与证据验收工作台
+				18 text 工具能正常运行，不代表只做了被允许的事。检查密钥输出、目录之外的文件读取和未授权服务请求；同时验收必要业务行为，把可再次运行的安全检查留在项目里。 本地模型 运行不调用付费 API 材料可复检
+				19 link Description: 探索典型案例, Value: 127.0.0.1:8801/#cases
+				20 link Description: 进入验证工作区 ↗, Value: 127.0.0.1:8801/#workbench
+				21 image
+				22 text AI提出建议，程序独立验收，开发者修订并决定是否采纳。采纳不等于已应用原仓库。
+			23 container 机制示意：代码与观测进入受控修复，由程序验收并导出复检材料
+				24 container 受控修复与验证机制示意
+				25 text 机制示意 · 不代表当前任务结果
+		26 container 系统三个特点
+			27 container
+				28 image
+				29 text 01 / GENERATE
+				30 heading 证据驱动的候选生成与反馈调整, Value: 2
+					31 text 证据驱动的候选生成与反馈调整
+				32 text 程序先提供执行证据，模型生成候选；真实失败回执支持后续调整。
+			33 container
+				34 image
+				35 text 02 / VERIFY
+				36 heading 程序控制的修改权限与安全/业务验收, Value: 2
+					37 text 程序控制的修改权限与安全/业务验收
+				38 text 模型可以提出修改，但不能自行批准修改。条件由人工固定，结果由程序计算。
+			39 container
+				40 image
+				41 text 03 / RECHECK
+				42 heading 对应修复对象的材料导出与复检, Value: 2
+					43 text 对应修复对象的材料导出与复检
+				44 text 交付的不只是一份补丁，还有对应副本、条件和可再次执行的验收依据。
+		45 container Description: 系统工作过程, ID: mechanism
+			46 text HOW IT WORKS
+			47 text 从疑点到证据
+			48 text 01
+			49 heading 确认泄露, Value: 3
+				50 text 确认泄露
+			51 text 人工固定条件，程序生成证据
+			52 image
+			53 text 02
+			54 heading 生成候选, Value: 3
+				55 text 生成候选
+			56 text 程序授权修改，模型提出补丁
+			57 image
+			58 text 03
+			59 heading 验证复检, Value: 3
+				60 text 验证复检
+			61 text 检查具体对象，导出对应材料
+		62 container 把检查带回你的 Python 项目, ID: project-entry
+			63 container
+				64 text REUSABLE PROJECT ENTRY / CLI FIRST
+				65 heading 把检查带回你的 Python 项目, Value: 2, ID: project-entry-title
+					66 text 把检查带回你的 Python 项目
+				67 text 同一套固定规则、受控副本和回归测试，不为每个项目重写一套裁判。
+			68 container
+				69 image
+				70 text 四步接入，结果留在项目里
+				71 text 配置文件由开发者确认目录、服务、凭据环境变量和必要业务检查；浏览器只展示入口，不接受任意代码或路径。
+				72 container project-modes
+					257 container
+						258 text 01 接入项目 无需模型 在项目根目录生成配置模板；默认不覆盖已有 credproof.toml。 python -m credproof_safety init --project . --write
+					259 container
+						260 text 02 只做检查 无需模型 在受控副本运行 pytest、文件边界、网络边界和凭据观察。 python -m credproof_safety check --config credproof.toml --output .credproof/report.json
+					261 container
+						262 text 03 请求修复 需要本地模型 仅在当前副本有对应违规证据时请求本地模型提出候选补丁。 python -m credproof_safety repair --strategy bounded_patch --config credproof.toml --output .credproof/repair.json
+					263 container
+						264 text 04 导出测试 无需模型 导出不依赖模型、不信任旧 PASS 的 pytest 回归入口。 python -m credproof_safety export-tests --config credproof.toml --output tests/credproof-regression
+				81 text 体验示例 / 启动时授权项目
+				82 pop up button (collapsed, settable) 体验示例 / 启动时授权项目, Value: 未授权项目；使用 --demo 或 --project-config 启动, ID: project-select, Secondary Actions: Expand
+					83 menu
+						265 (selected) 未授权项目；使用 --demo 或 --project-config 启动
+				85 button (disabled) 查看范围, ID: project-open
+				86 button (disabled) 现场检查 · 无模型, ID: project-check
+				87 button (disabled) 导出安全测试, ID: project-export
+				88 text EXTERNAL FIXTURE
+				266 text 尚未运行
+				90 heading python-dotenv v1.2.2, Value: 3, ID: external-case-name
+					267 text python-dotenv v1.2.2
+				268 text 人工注入的目录越界适配；不是上游漏洞或 CVE。 请用外部案例脚本在声明的 WSL 隔离环境运行。
+				93 image
+				94 text 隔离材料缺失时只返回 UNKNOWN；不在宿主机降级执行。
+				95 link Description: 查看已有证据工作台, Value: 127.0.0.1:8801/#workbench
+		96 container 审阅、修订与人工采纳, ID: human-review
+			97 text AI ASSISTED / HUMAN REVIEW
+			98 heading 审阅、修订与人工采纳, Value: 2, ID: review-title
+				99 text 审阅、修订与人工采纳
+			100 text 不调用模型即可继续
+			101 text 导入真实AI历史候选，查看失败依据。开发者修订保存为新副本；技术检查与人工决定分别记录，原项目和index保持只读。
+			102 text 已登记AI记录（历史响应，不是现场新推理）
+			103 pop up button (collapsed, settable) 已登记AI记录（历史响应，不是现场新推理）, ID: review-history, Secondary Actions: Expand
+			104 button (disabled) 审阅此AI候选, ID: review-open
+			105 text 已保存的审阅工作
+			106 pop up button (collapsed, settable) 已保存的审阅工作, Value: 939e25f4 · AI候选与开发者修订, ID: review-saved, Secondary Actions: Expand
+				107 menu
+					269 (selected) 939e25f4 · AI候选与开发者修订
+			109 button 读取已有修订, ID: review-load
+			270 container review-status
+				271 text 程序 PASS
+				272 text 人工 PENDING
+				273 container
+					274 text v001 · DEVELOPER_REVISION · 开发者修订，Codex辅助：恢复os导入；使用固定访问组件；保留HTTPError/ValueError约定、真实文件读取和授权认证，不输出凭据。
+					275 text 对象 d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b
+					276 text 报告 2026-10-10T03:51:30Z · 适用于当前副本 · 原仓库未应用
+				277 text 必要测试：{ "collected": 4, "executed": 4, "passed": 4, "failed": 0, "skipped": 0 }
+			278 container review-content
+				279 button (collapsed) 原始问题代码, Secondary Actions: Expand
+					280 text 原始问题代码
+				281 button (collapsed) 原AI候选（保持原件）, Secondary Actions: Expand
+					282 text 原AI候选（保持原件）
+				283 container
+					284 button (expanded) 相邻版本差异与来源, Secondary Actions: Collapse
+						285 text 相邻版本差异与来源
+					286 text --- parent.py
++++ revision.py
+@@ -1,13 +1,9 @@
+-"""Small authorised materials assistant used by the reusable-entry example.
++"""Authorised materials assistant: developer revision, Codex assisted.
+ 
+-This initial version is intentionally vulnerable for the local lab: it reads a
+-path supplied by the request, follows a redirect, and includes its credential
+-in a debug message. The lab provides only synthetic material and loopback mock
+-services. The file is never run on a real account.
++Uses the fixed access component; this revision is not runtime-model output.
+ """
+-import json
++import os
+ import logging
+-from urllib.request import Request, urlopen
+ from credproof_access import read_text, get_json
+ 
+ 
+@@ -19,9 +15,6 @@
+     path = request.get("path") or os.environ.get("CREDPROOF_ALLOWED_FILE")
+     material = read_text(path)
+     url = request.get("url") or os.environ["CREDPROOF_ALLOWED_URL"]
+-    try:
+-        service_data = get_json(url, credential)
+-    except urllib.error.HTTPError as e:
+-        raise ValueError(f"HTTP error accessing service: {e}")
++    service_data = get_json(url, credential)
+     logging.info("loaded %s", request["resource"])
+     return {"resource": request["resource"], "material": material, "service": service_data}
+
+				287 text 当前修订完整源码 · 仅允许配置入口文件
+				288 text entry area (settable) 当前修订完整源码 · 仅允许配置入口文件, ID: review-code, Value: """Authorised materials assistant: developer revision, Codex assisted.
+
+Uses the fixed access component; this revision is not runtime-model output.
+"""
+import os
+import logging
+from credproof_access import read_text, get_json
+
+
+def run(request):
+    if not isinstance(request, dict) or not isinstance(request.get("resource"), str):
+        raise ValueError("invalid request")
+    credential_env = os.environ.get("CREDPROOF_CREDENTIAL_ENV", "CREDPROOF_TEST_CREDENTIAL")
+    credential = os.environ[credential_env]
+    path = request.get("path") or os.environ.get("CREDPROOF_ALLOWED_FILE")
+    material = read_text(path)
+    url = request.get("url") or os.environ["CREDPROOF_ALLOWED_URL"]
+    service_data = get_json(url, credential)
+    logging.info("loaded %s", request["resource"])
+    return {"resource": request["resource"], "material": material, "service": service_data}
+
+				289 text 修改或决策理由
+				290 text field (settable) 修改或决策理由, ID: review-reason
+				291 button 提交开发者修订, ID: review-revise
+				292 button (disabled) 重新验收 · 无模型, ID: review-check
+				293 button 需要修改, ID: review-needs
+				294 button 拒绝候选, ID: review-reject
+				295 button 确认采纳, ID: review-approve
+				296 checkbox (settable, integer) Description: 审批功能测试（自动化检查应勾选，不代表本人真实审阅）, Value: 0, ID: review-test
+				297 button 导出诊断／待采纳材料, ID: review-diagnostic
+				298 button (disabled) 导出已验证且已采纳修复, ID: review-adopted
+				299 container review-checks
+					300 container
+						301 text PASS  pytest
+					302 container
+						303 text PASS  required_pytest_tests
+					304 container
+						305 text PASS  entry_completed
+					306 container
+						307 text PASS  required_entry_scenarios
+					308 container
+						309 text PASS  required_allowed_file_read
+					310 container
+						311 text PASS  no_forbidden_file_read
+					312 container
+						313 text PASS  no_out_of_scope_file_read
+					314 container
+						315 text PASS  no_credential_output
+					316 container
+						317 text PASS  allowed_service_receipt
+					318 container
+						319 text PASS  allowed_service_path
+					320 container
+						321 text PASS  required_service_credential
+					322 container
+						323 text PASS  no_forbidden_service_receipt
+					324 container
+						325 text PASS  no_unauthorized_connection
+					326 container
+						327 text PASS  isolation_receipt
+				328 button (collapsed) 完整报告、独立场景与必要测试执行, Secondary Actions: Expand
+					329 text 完整报告、独立场景与必要测试执行
+				330 button (collapsed) 追加的人工决策与版本链, Secondary Actions: Expand
+					331 text 追加的人工决策与版本链
+				332 text PASS不会自动采纳；本机记录不是强身份签名或第三方认证。修改或重新验收后，旧决定不自动恢复。导出副本需由开发者自行应用。
+		111 container Description: 典型案例演示, ID: cases
+			112 text REAL CASES / RECORDED EVIDENCE
+			113 heading 三个案例，看见受控修复, Value: 2
+				114 text 三个案例，看见受控修复
+			115 container
+				116 text REPLAY  典型案例均为真实历史回放
+			333 text 尚未加载精选历史记录。可在服务端启用演示记录，或使用下方工作区选择已审查案例。
+		118 container workbench
+			119 text VERIFICATION WORKSPACE
+			120 heading 让每个结论，都能对应证据。, Value: 2
+				121 text 让每个结论，都能对应证据。
+			122 text 选择已审查案例，查看候选、程序判决与对应的复检材料。
+			334 text 尚未执行
+		124 container 任务操作
+			335 text 等待选择
+			336 text 模型先读取受限代码，再提出可检验的假设。
+			127 button Description: 刷新任务状态, ID: refresh
+				128 image
+				129 text 刷新
+			130 button (disabled) 开始分析与修复, ID: start
+				131 image
+				337 text 开始分析与修复
+		133 container 五项证据状态
+			134 text EVIDENCE AT A GLANCE
+			338 text 尚未执行 · 分项状态独立呈现
+			136 container result-states
+				339 container
+					340 text 泄露确认
+					341 image
+					342 text 尚未确认 等待程序观察，不采用模型文字作为结论。
+				343 container
+					344 text 候选产生
+					345 image
+					346 text 尚无候选记录 候选文件存在，不等于已经提出修改。
+				347 container
+					348 text 安全验收
+					349 image
+					350 text 尚未执行 分别读取禁止通道与源代码边界检查。
+				351 container
+					352 text 业务保持
+					353 image
+					354 text 尚未执行 读取必要业务行为的实际检查。
+				355 container
+					356 text 材料复检
+					357 image
+					358 text 尚未复检 取得任务材料后，可发起独立程序复检。
+		157 container
+			158 text 01 / TASK SCOPE
+			159 heading 本次任务, Value: 2
+				160 text 本次任务
+			161 text 白名单
+			162 text 已审查案例
+			163 pop up button (disabled, collapsed, settable) 已审查案例, Value: 服务端未提供案例, ID: case-select, Secondary Actions: Expand
+				164 menu
+					359 (disabled) 服务端未提供案例
+			360 text 只显示服务端允许选择的任务，页面不会生成测试输入或安全判决。
+			167 image
+			168 text tool.py
+			169 text 候选仅在隔离副本内运行
+			170 button (collapsed) 安全与功能规则 查看约束, Secondary Actions: Expand
+				171 image
+				172 text 安全与功能规则
+				173 text 查看约束
+			174 button (collapsed) 运行设施与模型, Secondary Actions: Expand
+				175 text 运行设施与模型
+			176 button (collapsed) SAVED RUNS 更多历史记录, Secondary Actions: Expand
+				177 text SAVED RUNS
+				178 heading 更多历史记录, Value: 2
+					179 text 更多历史记录
+				180 image
+			181 image
+			182 text 结论只覆盖本次受限任务及实际执行的检查，不代表任意项目或真实凭据已安全。
+		183 container 模型判断与程序结论
+			184 container
+				185 image
+				186 text MODEL HYPOTHESIS
+				187 heading 模型怀疑, Value: 2
+					188 text 模型怀疑
+				361 text 未分析
+				362 text 尚无模型判断
+				191 button (collapsed) 查看模型诊断原文, Secondary Actions: Expand
+					192 text 查看模型诊断原文
+				193 text 假设、原始提案和文字结论均不构成程序确认。
+			194 container program-panel
+				195 image
+				196 text PROGRAM VERDICT
+				197 heading 程序确认, Value: 2
+					198 text 程序确认
+				363 text 未验收
+				364 text 等待真实检查结果
+				365 text 缺少证据时，页面不会显示通过。
+				366 text 尚未取得验收时间
+		203 container
+			204 text 02 / SOURCE & CANDIDATE
+			205 heading 代码与候选差异, Value: 2
+				206 text 代码与候选差异
+			207 tab group 代码视图
+				208 tab (selected, settable, boolean) 原始代码, Value: 1, ID: tab-source
+				209 tab (selectable, settable, boolean) 候选差异, Value: 0, ID: tab-diff
+				210 tab (selectable, settable, boolean) 候选代码, Value: 0, ID: tab-candidate
+			211 text tool.py
+			367 text 原始受限文件
+			368 text identity 未提供
+			214 container Description: 原始代码, ID: code-content
+				369 image
+				370 text 等待加载已审查代码
+			217 image
+			218 text 代码和工具输出作为不可信数据展示，不会在浏览器中执行。页面不接受任意代码上传。
+		219 button (collapsed) 03 / EXECUTION EVIDENCE 实际执行证据 0 条已取得 +, Secondary Actions: Expand
+			220 text 03 / EXECUTION EVIDENCE
+			221 heading 实际执行证据, Value: 2
+				222 text 实际执行证据
+			371 text 0 条已取得
+			224 text +
+		225 container
+			226 text 04 / ACCEPTANCE
+			227 heading 安全、功能与边界检查, Value: 2
+				228 text 安全、功能与边界检查
+			229 button (disabled) 重新验收, ID: recheck
+				230 image
+				231 text 重新验收
+			232 container check-list
+				372 text 尚未取得逐项检查
+				373 text 不会从整体判决反推每项检查都已执行。
+			374 text 验收与模型文字回答分开；缺失、不完整或执行异常均不能推断为通过。
+			236 button (disabled) 导出证据包, ID: export
+				237 image
+				238 text 导出证据包
+		239 container 任务运行状态
+			240 text 任务状态
+			375 text 未启动
+			242 text 模型调用
+			376 text —
+			244 text 工具调用
+			377 text —
+			246 text 未知 / 不完整
+			378 text —
+		248 button (collapsed) 运行身份与记录时间, Secondary Actions: Expand
+			249 text 运行身份与记录时间
+		250 container
+			251 text 密证 CredProof  ·  不泄密、不乱读、不乱连 发现疑点
+			252 image
+			253 text 生成候选
+			254 image
+			255 text 验证复检
+
+The focused UI element is 0 AXWebArea 密证 CredProof——面向Python工具的AI辅助安全修复与证据验收工作台, URL: 127.0.0.1:8801/#human-review
