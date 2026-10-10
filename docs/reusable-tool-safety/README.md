@@ -1,6 +1,18 @@
+# 密证 CredProof——面向Python工具的AI辅助安全修复与证据验收工作台
+
+## 当前dev35：AI建议、程序验收、开发者修订、人工采纳
+
+[本轮唯一评审入口](acceptance/20261010-human-review/README.md)。原AI候选FAIL保留；开发者通过通用页面修订，原完整检查PASS且正式对象PENDING。本轮运行时模型调用0，来源为“开发者修订，Codex辅助”。后端独立执行修订授权、状态与报告适用性、采纳和导出约束；审批功能测试不是本人审阅。查看与修订不依赖模型，动态验收仍要求既有隔离环境。原纯模型PASS要求经用户批准登记OWNER_APPROVED_SCOPE_CHANGE，自动效果没有变成已完成。
+
+当前材料：[正式说明书](../preliminary-candidate/credproof-human-review-dev35.pdf) / [可编辑文件](../preliminary-candidate/credproof-human-review-dev35.docx) / [讲稿](../preliminary-candidate/demo-script.md) / [QA](../preliminary-candidate/qa.md)。
+
+以下是保留的历史版本，不能当作dev35当前状态或拼接总体效果。
+
+---
+
 # CredProof reusable-tool-safety（0.3.0-dev.34）
 
-## 当前dev34：一次定点反馈修订已结束
+## 历史dev34：一次定点反馈修订已结束
 
 [固定证据入口](acceptance/20261010-feedback-revision/README.md)。统一外层围栏归一化及静态语法接收已接入安装程序；实际1次新模型请求、1候选、1次自动验收FAIL。模型仅删import os，正常业务和跳转在NameError处提前结束，不能以零观察宣称安全。原UNKNOWN和上轮FAIL保留。**NOT_READY_FOR_HANDOFF**；本轮不追加调用、不生成PASS bundle、不启动5060。
 

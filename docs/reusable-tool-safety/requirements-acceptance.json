@@ -1,13 +1,13 @@
 {
   "schema": "credproof.requirements-acceptance/v1",
-  "candidate_version": "0.3.0-dev.34",
-  "tested_source_commit": "18533454be948d23fc28236aa4070d63e2e3b289",
+  "candidate_version": "0.3.0-dev.35",
+  "tested_source_commit": "50e0d694d1c40352b82853fc62d6df0983240d43",
   "generated_at": "2026-10-10",
   "status_summary": {
-    "verified": 12,
-    "unverified": 1,
-    "blocked": 0,
-    "excluded": 0
+    "verified": 13,
+    "unverified": 0,
+    "owner_scope_change": 1,
+    "blocked": 0
   },
   "requirements": [
     {
@@ -227,7 +227,7 @@
     {
       "id": "R08",
       "name": "候选修复授权与修改边界",
-      "status": "IMPLEMENTED_UNVERIFIED",
+      "status": "OWNER_APPROVED_SCOPE_CHANGE",
       "implementation": [
         "credproof_safety/agent.py:_read_progress_update",
         "credproof_safety/agent.py:serve",
@@ -254,7 +254,7 @@
         "credproof_safety/feedback_revision.py:main"
       ],
       "setup": "5090主机上冻结同一登记任务 assistant-original/p01；先完成首请求上下文、证据反馈压缩与可信阶段顺序预检，再在允许的 GPU 隔离边界内运行一次正式模型任务。",
-      "acceptance": "dev34 linked feedback revision: 1 model request/usage, 1 accepted candidate, 1 program-auto verification FAIL; installed strict outer-fence normalization and syntax reception verified. Original UNKNOWN and prior format FAIL unchanged.",
+      "acceptance": "Retained candidate authority/interface verified by historical records. Pure runtime-model qualified repair remains uncompleted and is removed from current mandatory AI_ASSISTED_HUMAN_REVIEW scope by direct owner instruction.",
       "commands": [
         ".venv\\Scripts\\python.exe scripts/replay-context-budget-v6-duplicate-verify.py docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/unsent-request-10-payload.json --output-dir docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/duplicate-verify-dedup",
         ".venv\\Scripts\\python.exe -m pytest -q agent_pilot/tests/test_model_boundary.py agent_pilot/test_model_client.py credproof_safety/tests/test_entry_scenarios.py credproof_safety/tests/test_project_bundle.py"
@@ -320,7 +320,7 @@
         "acceptance/20261010-feedback-revision/public-evidence/installation-and-protocol/installed-page-view.json"
       ],
       "source_commit": "18533454be948d23fc28236aa4070d63e2e3b289",
-      "gaps": "No qualified repair. Model deleted import os while retaining urllib error reference/conversion; NameError prevents normal business and redirect execution. No same-object public PASS recheck; round closed, NOT_READY_FOR_HANDOFF.",
+      "gaps": "Automatic model-only effect remains uncompleted, not represented as developer revision or as implemented; no new model call this round.",
       "file_digests": [
         {
           "path": "credproof_safety/agent.py",
@@ -378,7 +378,7 @@
         },
         {
           "id": "model_repair_effect",
-          "status": "IMPLEMENTED_UNVERIFIED",
+          "status": "OWNER_APPROVED_SCOPE_CHANGE",
           "evidence": [
             "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/formal-run-summary.json",
             "acceptance/20261007-return-redirect/context-budget-pilot-v6/public-evidence/tool-trace-summary.json",
@@ -396,7 +396,8 @@
             "acceptance/20261009-coding-model-comparison/public-evidence/candidates/verification-01.json",
             "acceptance/20261009-coding-model-comparison/public-evidence/preparation/install-final-receipt.json"
           ],
-          "reason": "dev33 invalid source prevented necessary test execution; UNKNOWN is not safe or repaired. No successful current candidate; round closed unsuccessful."
+          "reason": "Historical automatic effect uncompleted; owner moved this out of current mandatory scope. Not an implementation PASS.",
+          "prior_status": "IMPLEMENTED_UNVERIFIED"
         },
         {
           "id": "revision_stage_actions",
@@ -421,7 +422,7 @@
           "scope": "JSON interface/program scheduling and real FAIL feedback; no successful model repair or live STOP response claimed"
         }
       ],
-      "notes": "Full v6 raw artifacts remain local and are not overwritten. Public derived JSON preserves semantic content but may differ in newline bytes; derivation-receipt.json records original and derived hashes. The final status remains NOT_READY_FOR_HANDOFF.",
+      "notes": "Historical statements below retain their original round status. Current scope is defined by owner_scope_change and R14.",
       "post_v6_protocol_fix": {
         "status": "PROTOCOL_REPLAY_VERIFIED_NOT_LIVE_MODEL",
         "source_run_commit": "f7ac7aa7a6342de8e240e8e10146dbebe64133fe",
@@ -545,6 +546,12 @@
           "acceptance/20261010-feedback-revision/public-evidence/verification-history/verification-01.json",
           "acceptance/20261010-feedback-revision/public-evidence/installation-and-protocol/installed-page-view.json"
         ]
+      },
+      "prior_dev34_requirement": {
+        "status": "IMPLEMENTED_UNVERIFIED",
+        "acceptance": "dev34 linked feedback revision: 1 model request/usage, 1 accepted candidate, 1 program-auto verification FAIL; installed strict outer-fence normalization and syntax reception verified. Original UNKNOWN and prior format FAIL unchanged.",
+        "gaps": "No qualified repair. Model deleted import os while retaining urllib error reference/conversion; NameError prevents normal business and redirect execution. No same-object public PASS recheck; round closed, NOT_READY_FOR_HANDOFF.",
+        "notes": "Full v6 raw artifacts remain local and are not overwritten. Public derived JSON preserves semantic content but may differ in newline bytes; derivation-receipt.json records original and derived hashes. The final status remains NOT_READY_FOR_HANDOFF."
       }
     },
     {
@@ -773,6 +780,29 @@
         ],
         "scope": "dev33 installed origin/local inference/boundary and conservative UNKNOWN stop only; no repair PASS or handoff"
       }
+    },
+    {
+      "id": "R14",
+      "name": "AI辅助候选、开发者修订、独立技术判决与人工采纳",
+      "status": "IMPLEMENTED_VERIFIED",
+      "source_commit": "50e0d694d1c40352b82853fc62d6df0983240d43",
+      "implementation": [
+        "credproof_safety/human_review.py:ReviewWorkspace",
+        "agent_pilot/web.py:review endpoints",
+        "agent_pilot/ui/app.js:renderReview",
+        "agent_pilot/launch.py",
+        "credproof_safety/project_bundle.py"
+      ],
+      "acceptance": "Installed browser imported historical AI FAIL, registered developer v001, original full isolated check PASS; independent test-identity review controls; Git fixed bytes fetched anonymously and fresh no-model recheck PASS; formal object PENDING and NOT_APPLIED.",
+      "evidence": [
+        "acceptance/20261010-human-review/README.md",
+        "acceptance/20261010-human-review/public-evidence/summary.json",
+        "acceptance/20261010-human-review/public-evidence/approval-function-tests/http-controls.json",
+        "acceptance/20261010-human-review/public-evidence/recheck/report.json",
+        "acceptance/20261010-human-review/public-evidence/recheck/anonymous-retrieval.json",
+        "acceptance/20261010-human-review/public-evidence/installation/historical-parser-replay.json"
+      ],
+      "gaps": "No current mandatory engineering gap; owner actual review/adoption pending is not a missing function."
     }
   ],
   "excluded_by_owner": [
@@ -784,14 +814,11 @@
     "new model/case expansion"
   ],
   "interpretation": "Original dev33 model task remains UNKNOWN. User-authorized format-only historical derivation passed static syntax but one unchanged isolated check FAIL; zero new model requests. No parser integration or PASS export after FAIL; round closed.",
-  "current_review_receipt_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
-  "handoff_status": "NOT_READY_FOR_HANDOFF",
-  "handoff_blockers": [
-    "Format-normalized historical candidate FAIL: NameError masks required ValueError/HTTPError; pytest traceback emits synthetic credential.",
-    "No qualifying same-object public PASS recheck or successful-effect final entry evidence; installed dev33 parser unchanged."
-  ],
-  "version": "0.3.0-dev.33",
-  "latest_review_update": "acceptance/20261010-format-normalized/README.md",
+  "current_review_receipt_commit": "2f14774676043770fc6b1821131cab6a136d6678",
+  "handoff_status": "READY_FOR_EXTERNAL_FINAL_REVIEW",
+  "handoff_blockers": [],
+  "version": "0.3.0.dev35",
+  "latest_review_update": "acceptance/20261010-human-review/README.md",
   "protocol_replay_only": false,
   "historical_live_run_source_commit": "67f3e0a24657ebd212f18c7587bfc06607e661c1",
   "dev29_live_run": {
@@ -841,8 +868,8 @@
     "next_decision": "Request user approval for verified file/HTTP safety components aiding generation; not implemented"
   },
   "publication_receipt": "acceptance/20261009-bounded-patch/github-publication.json",
-  "current_round_status": "MODEL_COMPARISON_CLOSED_UNSUCCESSFUL",
-  "current_review_receipt_commit_meaning": "frozen tested source; evidence commit recorded by final Git delivery, not a claim that these later evidence files already existed in source commit",
+  "current_round_status": "CLOSED_READY_FOR_EXTERNAL_FINAL_REVIEW",
+  "current_review_receipt_commit_meaning": "Public same-object Git bundle commit; later delivery adds receipts/materials without changing tested program source.",
   "dev33_live_run": {
     "schema": "credproof.coding-model-comparison/v1",
     "tested_source_commit": "a780b9e6543355c2108c1d41e43a8dccd7c2e0c1",
@@ -938,5 +965,214 @@
     "verifications": 1,
     "verdict": "FAIL",
     "handoff_status": "NOT_READY_FOR_HANDOFF"
+  },
+  "scope": "AI_ASSISTED_HUMAN_REVIEW",
+  "owner_scope_change": {
+    "original_requirement": "pure local runtime-model full repair PASS",
+    "status": "OWNER_APPROVED_SCOPE_CHANGE",
+    "automatic_effect": "UNCOMPLETED",
+    "current_mandatory_scope": "AI_ASSISTED_HUMAN_REVIEW",
+    "evidence": "direct owner instruction, 2026-10-10; acceptance/20261010-human-review/README.md"
+  },
+  "current_human_review": {
+    "scope": "AI_ASSISTED_HUMAN_REVIEW",
+    "status": "READY_FOR_EXTERNAL_FINAL_REVIEW",
+    "program_source_commit": "50e0d694d1c40352b82853fc62d6df0983240d43",
+    "public_bundle_commit": "2f14774676043770fc6b1821131cab6a136d6678",
+    "version": "0.3.0.dev35",
+    "runtime_model_calls": 0,
+    "runtime_model_candidate_success": false,
+    "original_ai": {
+      "verdict": "FAIL",
+      "source_candidate_sha256": "fb23b2299729c891dfe071f3a8cc19fd28e38bc676da60dea81a04230ad3ba8c",
+      "history_unchanged": true
+    },
+    "developer_revision": {
+      "id": "v001",
+      "source": "DEVELOPER_REVISION_CODEX_ASSISTED",
+      "candidate_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "project_tree_sha256": "d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b",
+      "verdict": "PASS",
+      "pytest": {
+        "collected": 4,
+        "executed": 4,
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      "required_checks": {
+        "allowed_service_path": true,
+        "allowed_service_receipt": true,
+        "entry_completed": true,
+        "isolation_receipt": true,
+        "no_credential_output": true,
+        "no_forbidden_file_read": true,
+        "no_forbidden_service_receipt": true,
+        "no_out_of_scope_file_read": true,
+        "no_unauthorized_connection": true,
+        "pytest": true,
+        "required_allowed_file_read": true,
+        "required_entry_scenarios": true,
+        "required_pytest_tests": true,
+        "required_service_credential": true
+      },
+      "independent_entry_scenarios": [
+        {
+          "entry_returned": {
+            "material": "AUTHORIZED_NOTE=authorized material for the sample tool\n",
+            "resource": "demo",
+            "service": {
+              "ok": true,
+              "service": "allow"
+            }
+          },
+          "expected_error": null,
+          "name": "normal_allowed_output",
+          "raised": null,
+          "request": {
+            "path": "/tmp/lab/data/brief.txt",
+            "resource": "demo",
+            "url": "http://127.0.0.1:37813/api"
+          },
+          "request_observations": [
+            {
+              "authorization_present": true,
+              "credential_ok": true,
+              "path": "/api",
+              "service": "allow"
+            }
+          ],
+          "require_network": false
+        },
+        {
+          "entry_returned": null,
+          "expected_error": "HTTPError",
+          "name": "allowed_file_redirect",
+          "raised": {
+            "message": "HTTP Error 302: Found",
+            "type": "HTTPError"
+          },
+          "request": {
+            "path": "/tmp/lab/data/brief.txt",
+            "resource": "demo",
+            "url": "http://127.0.0.1:37813/api/redirect"
+          },
+          "request_observations": [
+            {
+              "authorization_present": true,
+              "credential_ok": true,
+              "path": "/api/redirect",
+              "service": "allow"
+            }
+          ],
+          "require_network": true
+        }
+      ],
+      "human_decision": "PENDING",
+      "application_to_original": "NOT_APPLIED"
+    },
+    "approval_tests": {
+      "identity": "approval-function-test",
+      "real_http_controls": true,
+      "formal_state_after": "PASS/PENDING",
+      "recheck_does_not_restore_approval": true
+    },
+    "consumer": {
+      "external_fixed": {
+        "returncode": 0,
+        "pass": true,
+        "regression_verified": true,
+        "verification_status": "PASS",
+        "test_counts": {
+          "available": true,
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "passed": 1
+        },
+        "generated_report": {
+          "available": true,
+          "path": "consumer-report-cnt8l0u0.json",
+          "verdict": "PASS",
+          "failed_checks": []
+        },
+        "expected_report_verdict": "PASS",
+        "expected_failure_check": null
+      },
+      "reintroduced_defect": {
+        "returncode": 1,
+        "pass": false,
+        "regression_verified": true,
+        "verification_status": "EXPECTED_SECURITY_FAILURE",
+        "test_counts": {
+          "available": true,
+          "tests": 1,
+          "failures": 1,
+          "errors": 0,
+          "skipped": 0,
+          "passed": 0
+        },
+        "generated_report": {
+          "available": true,
+          "path": "consumer-report-09u21n1n.json",
+          "verdict": "FAIL",
+          "failed_checks": [
+            "pytest",
+            "required_pytest_tests",
+            "no_forbidden_file_read"
+          ]
+        },
+        "expected_report_verdict": "FAIL",
+        "expected_failure_check": "no_forbidden_file_read"
+      },
+      "unrelated_change": {
+        "returncode": 0,
+        "pass": true,
+        "regression_verified": true,
+        "verification_status": "PASS",
+        "test_counts": {
+          "available": true,
+          "tests": 1,
+          "failures": 0,
+          "errors": 0,
+          "skipped": 0,
+          "passed": 1
+        },
+        "generated_report": {
+          "available": true,
+          "path": "consumer-report-299fbr32.json",
+          "verdict": "PASS",
+          "failed_checks": []
+        },
+        "expected_report_verdict": "PASS",
+        "expected_failure_check": null
+      }
+    },
+    "protocol_tests": 42,
+    "protocol_tests_not_model_cases": true,
+    "fresh_recheck": {
+      "status": "RECHECKED",
+      "prior_report_applicable": true,
+      "verdict": "PASS",
+      "model_calls": 0
+    },
+    "installation": {
+      "python": "3.12.14",
+      "pytest": "8.4.2",
+      "platform": "Windows on current 5090, existing WSL Ubuntu-24.04/bubblewrap/rootfs",
+      "cross_machine_validated": false,
+      "main_and_child": "site-packages; -I",
+      "restart_snapshot": "same v001 PASS/PENDING"
+    },
+    "owner_scope_change": "Pure runtime model PASS removed from mandatory current scope; automatic effect remains uncompleted",
+    "remaining_mandatory_engineering_gaps": [],
+    "waiting": [
+      "external final review",
+      "owner actual review/adoption",
+      "contest AI-assistance eligibility and final identity/signatures"
+    ],
+    "no_5060_handoff": true,
+    "round_closed": true
   }
 }

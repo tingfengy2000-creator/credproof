@@ -1,0 +1,66 @@
+{
+  "program_source_commit": "50e0d694d1c40352b82853fc62d6df0983240d43",
+  "runtime_model_calls": 0,
+  "path_mapping": {
+    "<INSTALL>": "new short-path install/data root; original local records preserved",
+    "<REPOSITORY>": "authorised source snapshot"
+  },
+  "records": [
+    {
+      "command": "<REPOSITORY>/.venv/Scripts/python.exe -m pytest -q agent_pilot/tests/test_human_review.py agent_pilot/tests/test_web.py agent_pilot/tests/test_web_material_binding.py agent_pilot/tests/test_output_format.py --junitxml=<ROUND>/local/protocol-final-junit.xml",
+      "exit_code": 0,
+      "result": "42 passed",
+      "raw": "protocol/protocol-final-pytest.txt",
+      "junit": "protocol/protocol-final-junit.xml",
+      "scope": "software protocol, includes stub reports; not 42 security cases"
+    },
+    {
+      "command": "<INSTALL>/venv/Scripts/python.exe -I <INSTALL>/parser-replay.py",
+      "exit_code": 0,
+      "result": "historical response parsed; exact imported AI code; no new inference or execution",
+      "raw": "installation/parser-final-command.txt",
+      "receipt": "installation/historical-parser-replay.json"
+    },
+    {
+      "command": "<INSTALL>/venv/Scripts/python.exe -I -m credproof_safety.web_repair --origin-only (registered request; CREDPROOF_MODEL_PROFILE=qwen25)",
+      "exit_code": 0,
+      "result": "installed child origins, no model",
+      "receipt": "installation/child-origin-qwen25.json"
+    },
+    {
+      "command": "<INSTALL>/venv/Scripts/python.exe -I scripts/run-exported-regression-check.py --installed --output <INSTALL>/consumer-controls-installed",
+      "exit_code": 0,
+      "result": "fixed: 1 collected/executed/passed exit0; reintroduced:1 collected/executed/failed exit1; unrelated:1 collected/executed/passed exit0",
+      "receipt": "consumer/installed-controls/summary.json"
+    },
+    {
+      "command": "<INSTALL>/venv/Scripts/python.exe -I scripts/prepare-human-review-demo.py --snapshot <ROUND>/public-evidence/workspace --workspace <INSTALL>/portable-data",
+      "exit_code": 0,
+      "result": "copies manifest-validated data and installed UI, no execution"
+    },
+    {
+      "command": "<INSTALL>/venv/Scripts/python.exe -I -m agent_pilot.launch --workspace <INSTALL>/portable-data --mode recheck --port 8796",
+      "result": "HTTP available; stopped and restarted once; browser retains same v001 PASS/PENDING",
+      "scope": "long-running server, terminated by operator; no invented final exit code",
+      "receipt": [
+        "installation/browser-before-restart.txt",
+        "installation/browser-after-restart.txt"
+      ]
+    },
+    {
+      "command": "<REPOSITORY>/.venv/Scripts/python.exe scripts/fetch-component-review.py --commit 2f14774676043770fc6b1821131cab6a136d6678 --prefix docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/public-bundle --output <INSTALL>/public-fetched --proxy <LOCAL_PROXY>",
+      "exit_code": 0,
+      "result": "17 files anonymous HTTPS; all actual bytes equal Git blobs and manifest",
+      "raw": "recheck/fetch-command.txt",
+      "receipt": "recheck/anonymous-retrieval.json"
+    },
+    {
+      "command": "<INSTALL>/venv/Scripts/python.exe -I scripts/recheck-component-review.py --bundle <INSTALL>/public-fetched --output <INSTALL>/fresh-recheck.json --receipt <INSTALL>/fresh-recheck-receipt.json",
+      "exit_code": 0,
+      "result": "RECHECKED/PASS; 4 actual required tests and both independent entry scenarios complete",
+      "raw": "recheck/check-command.txt",
+      "receipt": "recheck/installed-receipt.json",
+      "report": "recheck/report.json"
+    }
+  ]
+}

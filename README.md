@@ -1,6 +1,12 @@
-# 密证 CredProof——面向 AI 工具的凭据泄露验证与受控修复系统
+# 密证 CredProof——面向Python工具的AI辅助安全修复与证据验收工作台
 
-最新dev34：[一次定点反馈修订与交付收尾](docs/reusable-tool-safety/acceptance/20261010-feedback-revision/README.md)。统一格式/语法入口已安装接通；唯一新模型请求产生1候选并自动验收FAIL，实际仅删import os，业务1通过3失败。原UNKNOWN及上轮FAIL不改写；**NOT_READY_FOR_HANDOFF**，本轮已结束，无追加生成或5060交接。
+当前主线：AI提出候选，程序独立验收，开发者修订并决定是否采纳。正式修订可保持PASS/PENDING；采纳不自动应用原仓库。
+
+[本轮唯一评审入口](docs/reusable-tool-safety/acceptance/20261010-human-review/README.md) · 本轮运行时模型调用0，历史自动修复失败完整保留。
+
+## 历史主线与交付（保留原结论，不代表dev35当前状态）
+
+历史dev34：[一次定点反馈修订与交付收尾](docs/reusable-tool-safety/acceptance/20261010-feedback-revision/README.md)。统一格式/语法入口已安装接通；唯一新模型请求产生1候选并自动验收FAIL，实际仅删import os，业务1通过3失败。原UNKNOWN及上轮FAIL不改写；**NOT_READY_FOR_HANDOFF**，本轮已结束，无追加生成或5060交接。
 
 历史定向收尾：[已有输出格式归一化与一次事后验收](docs/reusable-tool-safety/acceptance/20261010-format-normalized/README.md)。仅去掉模型原有外层围栏，语法通过；原规则隔离检查 **FAIL**（业务3通过1失败，异常处理错误及回溯凭据输出）。原任务UNKNOWN不变，新增模型调用0，**NOT_READY_FOR_HANDOFF**；本轮已停止，安装版解析流程未改。
 

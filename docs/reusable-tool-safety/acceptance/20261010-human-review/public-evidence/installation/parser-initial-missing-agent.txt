@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "E:\����\CP35\parser-replay.py", line 3, in <module>
+    from agent_pilot.bounded_patch import parse_response
+  File "E:\����\CP35\venv\Lib\site-packages\agent_pilot\bounded_patch.py", line 15, in <module>
+    from .model_client import estimate_input_budget, _NoRedirect
+  File "E:\����\CP35\venv\Lib\site-packages\agent_pilot\model_client.py", line 23, in <module>
+    from qwen_agent.agents import Assistant
+ModuleNotFoundError: No module named 'qwen_agent'

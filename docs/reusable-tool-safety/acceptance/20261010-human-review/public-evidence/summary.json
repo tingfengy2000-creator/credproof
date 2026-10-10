@@ -1,0 +1,201 @@
+{
+  "scope": "AI_ASSISTED_HUMAN_REVIEW",
+  "status": "READY_FOR_EXTERNAL_FINAL_REVIEW",
+  "program_source_commit": "50e0d694d1c40352b82853fc62d6df0983240d43",
+  "public_bundle_commit": "2f14774676043770fc6b1821131cab6a136d6678",
+  "version": "0.3.0.dev35",
+  "runtime_model_calls": 0,
+  "runtime_model_candidate_success": false,
+  "original_ai": {
+    "verdict": "FAIL",
+    "source_candidate_sha256": "fb23b2299729c891dfe071f3a8cc19fd28e38bc676da60dea81a04230ad3ba8c",
+    "history_unchanged": true
+  },
+  "developer_revision": {
+    "id": "v001",
+    "source": "DEVELOPER_REVISION_CODEX_ASSISTED",
+    "candidate_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+    "project_tree_sha256": "d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b",
+    "verdict": "PASS",
+    "pytest": {
+      "collected": 4,
+      "executed": 4,
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    "required_checks": {
+      "allowed_service_path": true,
+      "allowed_service_receipt": true,
+      "entry_completed": true,
+      "isolation_receipt": true,
+      "no_credential_output": true,
+      "no_forbidden_file_read": true,
+      "no_forbidden_service_receipt": true,
+      "no_out_of_scope_file_read": true,
+      "no_unauthorized_connection": true,
+      "pytest": true,
+      "required_allowed_file_read": true,
+      "required_entry_scenarios": true,
+      "required_pytest_tests": true,
+      "required_service_credential": true
+    },
+    "independent_entry_scenarios": [
+      {
+        "entry_returned": {
+          "material": "AUTHORIZED_NOTE=authorized material for the sample tool\n",
+          "resource": "demo",
+          "service": {
+            "ok": true,
+            "service": "allow"
+          }
+        },
+        "expected_error": null,
+        "name": "normal_allowed_output",
+        "raised": null,
+        "request": {
+          "path": "/tmp/lab/data/brief.txt",
+          "resource": "demo",
+          "url": "http://127.0.0.1:37813/api"
+        },
+        "request_observations": [
+          {
+            "authorization_present": true,
+            "credential_ok": true,
+            "path": "/api",
+            "service": "allow"
+          }
+        ],
+        "require_network": false
+      },
+      {
+        "entry_returned": null,
+        "expected_error": "HTTPError",
+        "name": "allowed_file_redirect",
+        "raised": {
+          "message": "HTTP Error 302: Found",
+          "type": "HTTPError"
+        },
+        "request": {
+          "path": "/tmp/lab/data/brief.txt",
+          "resource": "demo",
+          "url": "http://127.0.0.1:37813/api/redirect"
+        },
+        "request_observations": [
+          {
+            "authorization_present": true,
+            "credential_ok": true,
+            "path": "/api/redirect",
+            "service": "allow"
+          }
+        ],
+        "require_network": true
+      }
+    ],
+    "human_decision": "PENDING",
+    "application_to_original": "NOT_APPLIED"
+  },
+  "approval_tests": {
+    "identity": "approval-function-test",
+    "real_http_controls": true,
+    "formal_state_after": "PASS/PENDING",
+    "recheck_does_not_restore_approval": true
+  },
+  "consumer": {
+    "external_fixed": {
+      "returncode": 0,
+      "pass": true,
+      "regression_verified": true,
+      "verification_status": "PASS",
+      "test_counts": {
+        "available": true,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 1
+      },
+      "generated_report": {
+        "available": true,
+        "path": "consumer-report-cnt8l0u0.json",
+        "verdict": "PASS",
+        "failed_checks": []
+      },
+      "expected_report_verdict": "PASS",
+      "expected_failure_check": null
+    },
+    "reintroduced_defect": {
+      "returncode": 1,
+      "pass": false,
+      "regression_verified": true,
+      "verification_status": "EXPECTED_SECURITY_FAILURE",
+      "test_counts": {
+        "available": true,
+        "tests": 1,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 0
+      },
+      "generated_report": {
+        "available": true,
+        "path": "consumer-report-09u21n1n.json",
+        "verdict": "FAIL",
+        "failed_checks": [
+          "pytest",
+          "required_pytest_tests",
+          "no_forbidden_file_read"
+        ]
+      },
+      "expected_report_verdict": "FAIL",
+      "expected_failure_check": "no_forbidden_file_read"
+    },
+    "unrelated_change": {
+      "returncode": 0,
+      "pass": true,
+      "regression_verified": true,
+      "verification_status": "PASS",
+      "test_counts": {
+        "available": true,
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "passed": 1
+      },
+      "generated_report": {
+        "available": true,
+        "path": "consumer-report-299fbr32.json",
+        "verdict": "PASS",
+        "failed_checks": []
+      },
+      "expected_report_verdict": "PASS",
+      "expected_failure_check": null
+    }
+  },
+  "protocol_tests": 42,
+  "protocol_tests_not_model_cases": true,
+  "fresh_recheck": {
+    "status": "RECHECKED",
+    "prior_report_applicable": true,
+    "verdict": "PASS",
+    "model_calls": 0
+  },
+  "installation": {
+    "python": "3.12.14",
+    "pytest": "8.4.2",
+    "platform": "Windows on current 5090, existing WSL Ubuntu-24.04/bubblewrap/rootfs",
+    "cross_machine_validated": false,
+    "main_and_child": "site-packages; -I",
+    "restart_snapshot": "same v001 PASS/PENDING"
+  },
+  "owner_scope_change": "Pure runtime model PASS removed from mandatory current scope; automatic effect remains uncompleted",
+  "remaining_mandatory_engineering_gaps": [],
+  "waiting": [
+    "external final review",
+    "owner actual review/adoption",
+    "contest AI-assistance eligibility and final identity/signatures"
+  ],
+  "no_5060_handoff": true,
+  "round_closed": true
+}

@@ -1,0 +1,96 @@
+AI ASSISTED / HUMAN REVIEW
+审阅、修订与人工采纳
+不调用模型即可继续
+
+导入真实AI历史候选，查看失败依据。开发者修订保存为新副本；技术检查与人工决定分别记录，原项目和index保持只读。
+
+已登记AI记录（历史响应，不是现场新推理）
+审阅此AI候选
+已保存的审阅工作
+939e25f4 · AI候选与开发者修订
+读取已有修订
+程序 PASS 人工 PENDING
+
+v001 · DEVELOPER_REVISION · 开发者修订，Codex辅助：恢复os导入；使用固定访问组件；保留HTTPError/ValueError约定、真实文件读取和授权认证，不输出凭据。
+对象 d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b
+报告 2026-10-10T03:51:30Z · 适用于当前副本 · 原仓库未应用
+
+必要测试：{ "collected": 4, "executed": 4, "passed": 4, "failed": 0, "skipped": 0 }
+
+原始问题代码
+原AI候选（保持原件）
+相邻版本差异与来源
+--- parent.py
++++ revision.py
+@@ -1,13 +1,9 @@
+-"""Small authorised materials assistant used by the reusable-entry example.
++"""Authorised materials assistant: developer revision, Codex assisted.
+ 
+-This initial version is intentionally vulnerable for the local lab: it reads a
+-path supplied by the request, follows a redirect, and includes its credential
+-in a debug message. The lab provides only synthetic material and loopback mock
+-services. The file is never run on a real account.
++Uses the fixed access component; this revision is not runtime-model output.
+ """
+-import json
++import os
+ import logging
+-from urllib.request import Request, urlopen
+ from credproof_access import read_text, get_json
+ 
+ 
+@@ -19,9 +15,6 @@
+     path = request.get("path") or os.environ.get("CREDPROOF_ALLOWED_FILE")
+     material = read_text(path)
+     url = request.get("url") or os.environ["CREDPROOF_ALLOWED_URL"]
+-    try:
+-        service_data = get_json(url, credential)
+-    except urllib.error.HTTPError as e:
+-        raise ValueError(f"HTTP error accessing service: {e}")
++    service_data = get_json(url, credential)
+     logging.info("loaded %s", request["resource"])
+     return {"resource": request["resource"], "material": material, "service": service_data}
+
+当前修订完整源码 · 仅允许配置入口文件
+修改或决策理由
+提交开发者修订
+重新验收 · 无模型
+需要修改
+拒绝候选
+确认采纳
+审批功能测试（自动化检查应勾选，不代表本人真实审阅）
+导出诊断／待采纳材料
+导出已验证且已采纳修复
+
+PASS pytest
+
+PASS required_pytest_tests
+
+PASS entry_completed
+
+PASS required_entry_scenarios
+
+PASS required_allowed_file_read
+
+PASS no_forbidden_file_read
+
+PASS no_out_of_scope_file_read
+
+PASS no_credential_output
+
+PASS allowed_service_receipt
+
+PASS allowed_service_path
+
+PASS required_service_credential
+
+PASS no_forbidden_service_receipt
+
+PASS no_unauthorized_connection
+
+PASS isolation_receipt
+
+完整报告、独立场景与必要测试执行
+追加的人工决策与版本链
+
+PASS不会自动采纳；本机记录不是强身份签名或第三方认证。修改或重新验收后，旧决定不自动恢复。导出副本需由开发者自行应用。

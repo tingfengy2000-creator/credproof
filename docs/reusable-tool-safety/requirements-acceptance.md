@@ -1,3 +1,19 @@
+# 当前验收范围：AI_ASSISTED_HUMAN_REVIEW / dev35
+
+**READY_FOR_EXTERNAL_FINAL_REVIEW**，待外部复核与本人真实审阅；不自动交接5060。程序源码50e0d694d1c40352b82853fc62d6df0983240d43，完整[当前证据](acceptance/20261010-human-review/README.md)与[机器表](requirements-acceptance.json)。
+
+| 当前项 | 结果 | 依据 |
+|---|---|---|
+| R08原纯模型独立修复效果 | OWNER_APPROVED_SCOPE_CHANGE；仍未完成，移出当前必需范围 | 原UNKNOWN/FAIL全部保留；本轮0模型调用 |
+| R14 AI历史→开发者修订→原完整检查 | IMPLEMENTED_VERIFIED | 真实安装页面，v001 4/4必要业务及独立场景PASS |
+| 独立人审与对象适用性 | IMPLEMENTED_VERIFIED | 专用副本测试身份，FAIL/UNKNOWN/旧版本/漂移拒绝；PASS可拒绝；重验不恢复批准 |
+| 同对象公开取件/新目录复检 | IMPLEMENTED_VERIFIED | 固定Git bundle 17文件字节/清单一致；安装版新目录完整PASS |
+| 安装/页面/历史解析/重启 | IMPLEMENTED_VERIFIED | 主/子site-packages；历史响应解析0新推理；重启PASS/PENDING |
+
+正式对象PENDING、NOT_APPLIED，不替本人签署采纳。R01–R13中未变的固定检查/边界证据按各自摘要和原范围沿用；R08保留细项和历史记录，不把旧自动效果改为已实现。完整历史结果、批次分母和关闭状态如下原样保存，只代表当时版本，不是当前范围状态。
+
+---
+
 # CredProof 需求—实现—证据验收表（dev34）
 
 ## 当前dev34：一次关联历史候选的反馈修订，已结束

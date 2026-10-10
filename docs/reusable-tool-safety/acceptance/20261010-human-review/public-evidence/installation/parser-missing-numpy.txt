@@ -1,0 +1,20 @@
+Traceback (most recent call last):
+  File "E:\����\CP35\parser-replay.py", line 3, in <module>
+    from agent_pilot.bounded_patch import parse_response
+  File "E:\����\CP35\venv\Lib\site-packages\agent_pilot\bounded_patch.py", line 15, in <module>
+    from .model_client import estimate_input_budget, _NoRedirect
+  File "E:\����\CP35\venv\Lib\site-packages\agent_pilot\model_client.py", line 23, in <module>
+    from qwen_agent.agents import Assistant
+  File "E:\����\CP35\venv\Lib\site-packages\qwen_agent\__init__.py", line 16, in <module>
+    from .agent import Agent
+  File "E:\����\CP35\venv\Lib\site-packages\qwen_agent\agent.py", line 21, in <module>
+    from qwen_agent.llm import get_chat_model
+  File "E:\����\CP35\venv\Lib\site-packages\qwen_agent\llm\__init__.py", line 18, in <module>
+    from .azure import TextChatAtAzure
+  File "E:\����\CP35\venv\Lib\site-packages\qwen_agent\llm\azure.py", line 20, in <module>
+    from qwen_agent.llm.base import register_llm
+  File "E:\����\CP35\venv\Lib\site-packages\qwen_agent\llm\base.py", line 29, in <module>
+    from qwen_agent.utils.utils import (extract_text_from_message, format_as_multimodal_message, format_as_text_message,
+  File "E:\����\CP35\venv\Lib\site-packages\qwen_agent\utils\utils.py", line 32, in <module>
+    import numpy as np
+ModuleNotFoundError: No module named 'numpy'

@@ -22,7 +22,7 @@ from docx.oxml.ns import qn
 from docx.shared import Cm, Pt, RGBColor
 
 HERE = Path(__file__).resolve().parent
-TITLE = "密证 CredProof——面向 AI 与 Python 工具的安全行为验证与受控修复系统"
+TITLE = "密证 CredProof——面向Python工具的AI辅助安全修复与证据验收工作台"
 
 
 def font(run, name="宋体", size=12, bold=None):
@@ -236,7 +236,7 @@ def build(args):
         if line.startswith("### 2.2"):
             add_figure(doc, args.mechanism, "图 1 运行证据约束下的候选修复与验收流程")
         if line.startswith("### 2.4"):
-            add_figure(doc, args.overview, "图 2 真实工作台中的证据与独立任务状态")
+            add_figure(doc, args.overview, "图 1 技术检查通过仍待本人采纳：已安装工作台真实记录")
         if line.startswith("### 3.5"):
             number = 3 if args.overview else 2
             add_figure(doc, args.trace, f"图 {number} h03 两次候选与真实验证反馈 历史记录回放")
@@ -278,9 +278,9 @@ def build(args):
     receipt = {"source": str(reference), "source_sha256": hashlib.sha256(reference.read_bytes()).hexdigest(),
                "manuscript_sha256": hashlib.sha256((HERE / "manuscript.md").read_bytes()).hexdigest(),
                "output": str(args.output), "assets": {key: str(getattr(args, key)) if getattr(args, key) else None for key in ("mechanism", "overview", "trace")},
-               "historical_result_run": "20260929t095000z-holdout8", "presentation_version": "0.2.0-preliminary.9", "not_final_render_qa": True}
+               "historical_result_run": "20260929t095000z-holdout8", "presentation_version": "0.3.0-dev.35 AI_ASSISTED_HUMAN_REVIEW", "not_final_render_qa": True}
     (HERE / "working").mkdir(exist_ok=True)
-    (HERE / "working/build-receipt.json").write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    (args.output.with_suffix(".build-receipt.json")).write_text(json.dumps(receipt, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(json.dumps(receipt, ensure_ascii=False))
 
 

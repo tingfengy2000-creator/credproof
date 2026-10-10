@@ -1,0 +1,27 @@
+{
+  "kind": "PUBLIC_RETRIEVAL_NO_MODEL_RECHECK",
+  "model_calls": 0,
+  "interpreter": "<INSTALL>\\venv\\Scripts\\python.exe",
+  "isolated_python": 1,
+  "package_version": "0.3.0.dev35",
+  "module_origins": {
+    "credproof_safety.project_bundle": {
+      "file": "<INSTALL>\\venv\\Lib\\site-packages\\credproof_safety\\project_bundle.py",
+      "sha256": "ab3d614a5fefe0e477a6f42b82e30a2d3a4eeaa5625c5478b601febf2b74a674"
+    },
+    "credproof_safety.runner": {
+      "file": "<INSTALL>\\venv\\Lib\\site-packages\\credproof_safety\\runner.py",
+      "sha256": "6a4593ae37a175c702580a78429d578fb85c1dac3f3de478dc49365f8236575c"
+    },
+    "credproof_access": {
+      "file": "<INSTALL>\\venv\\Lib\\site-packages\\credproof_access\\__init__.py",
+      "sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc"
+    }
+  },
+  "candidate_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+  "prior_report_applicable": true,
+  "status": "RECHECKED",
+  "verdict": "PASS",
+  "elapsed_s": 4.375,
+  "note": "Wrapper exit 0 means recheck completed, not a safe repair. Read verdict and real pytest observation."
+}

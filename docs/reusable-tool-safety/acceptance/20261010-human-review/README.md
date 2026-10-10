@@ -2,6 +2,8 @@
 
 正式定位：**密证 CredProof——面向Python工具的AI辅助安全修复与证据验收工作台**。
 
+**READY_FOR_EXTERNAL_FINAL_REVIEW · scope=AI_ASSISTED_HUMAN_REVIEW**。待外部复核与本人真实审阅，不自动交接5060。
+
 本轮运行时模型调用 **0**。历史AI候选仍为FAIL；开发者通过已安装页面提交新修订，来源为“开发者修订，Codex辅助”。技术检查PASS不会自动采纳；正式对象保持PENDING，原仓库和index未应用。纯模型独立修复PASS经用户批准移出当前必需范围，登记OWNER_APPROVED_SCOPE_CHANGE，历史自动效果没有变成已实现。
 
 ## 阅读顺序与版本
@@ -9,7 +11,7 @@
 1. [当前修订源码](public-evidence/source-bundle/candidate.py)、[AI原件](public-evidence/source-bundle/ai-candidate.py)、[精确差异](public-evidence/source-bundle/revision.diff)。
 2. [原AI完整FAIL](public-evidence/workflow/baseline/report.json)、[新修订完整报告](public-evidence/workspace/runs/human-review/939e25f42bb142f39567c5cb644ebc6d/versions/v001/reports/check-01.json)。
 3. [真实HTTP审批控制](public-evidence/approval-function-tests/http-controls.json)、[独立消费者结果](public-evidence/consumer/installed-controls/summary.json)。
-4. [固定Git字节公开bundle](public-evidence/public-bundle/manifest.json)，后续取件/复检收据在本目录追加。`source-bundle`仅为派生输入，不作为Git换行后可直接复检的成品。
+4. [固定Git字节公开bundle](public-evidence/public-bundle/manifest.json)，[17文件匿名取件](public-evidence/recheck/anonymous-retrieval.json)、[新目录完整复检](public-evidence/recheck/report.json)、[安装来源](public-evidence/recheck/installed-receipt.json)均已完成。`source-bundle`仅为派生输入，不作为Git换行后可直接复检的成品。
 5. [正式说明书PDF](../../../preliminary-candidate/credproof-human-review-dev35.pdf)、[可编辑DOCX](../../../preliminary-candidate/credproof-human-review-dev35.docx)、[正文](../../../preliminary-candidate/manuscript.md)、[讲稿](../../../preliminary-candidate/demo-script.md)、[QA](../../../preliminary-candidate/qa.md)。
 
 实际程序/wheel源码：`50e0d694d1c40352b82853fc62d6df0983240d43`；首次完整材料提交：`9c7419fa055b78de7358fb46c31e99b20c39c099`。后续仅材料、取件和收据提交不冒充新的模型任务。版本`0.3.0.dev35`，范围`AI_ASSISTED_HUMAN_REVIEW`。
@@ -47,7 +49,7 @@ $py = 'C:\CP-review\venv\Scripts\python.exe'
 
 打开`http://127.0.0.1:8765/#human-review`，读取已保存工作→查看AI原件/当前修订/报告→输入完整授权入口及理由→提交新修订→重新验收→人工拒绝或确认采纳→导出。演示快照是明确标注的历史材料，没有新模型推理。正式v001可由本人真实审阅；请勿把审批功能测试当本人签字。
 
-运行时位置仍由现有`config/local-runtime.json`或`CREDPROOF_CONFIG`指定，键为`wsl_distribution/wsl_user/runtime_root/program_python`；`runtime_root`须现有可信目录。现场AI建议另需已准备的模型边界和Agent依赖，当前选择使用`CREDPROOF_MODEL_PROFILE=qwen25`，依赖补充见安装收据；本轮只解析历史响应，没有新推理或恢复旧实验预算。
+运行时位置仍由现有`config/local-runtime.json`或`CREDPROOF_CONFIG`指定，键为`wsl_distribution/wsl_user/runtime_root/program_python`；`runtime_root`须现有可信目录。现场AI建议另需已准备的模型边界和Agent依赖，当前选择使用`CREDPROOF_MODEL_PROFILE=qwen25`，[依赖版本清单](public-evidence/installation/agent-replay-lock.txt)及[补充收据](public-evidence/installation/agent-dependency-supplement.json)列明本次历史解析所用版本；本轮只解析历史响应，没有新推理或恢复旧实验预算。
 
 复检公开bundle（不调用模型，但需隔离）：
 
@@ -68,3 +70,11 @@ $py = 'C:\CP-review\venv\Scripts\python.exe'
 首次消费者安装缺py.py的环境失败保留于[原始目录](public-evidence/consumer/initial-environment-failure/)，补齐后使用安装版子进程重新执行；不删失败或将环境阻断当安全检出。历史八例、Twine、python-dotenv结果保持各自版本和分母，不并入当前人工修订效果。
 
 本人待办仅为：真实审阅与决定是否采纳、队伍身份/最终命名/声明签署，以及向指导教师/组委会确认AI辅助开发许可。本轮不代签、不提交赛事、不启动5060；结束状态见本目录closeout.md。
+
+## 最终收尾记录
+
+[本轮收尾](closeout.md) / [汇总及完整场景](public-evidence/summary.json) / [实际命令与退出码](public-evidence/command-record.json) / [最终PDF逐页核对](public-evidence/documents/qa.json) / [收尾脱敏映射](public-evidence/closeout-derivation.json)。
+
+可直接阅读的实现：[修订与采纳](../../../../credproof_safety/human_review.py)、[页面API](../../../../agent_pilot/web.py)、[单页操作](../../../../agent_pilot/ui/app.js)、[对应协议回归](../../../../agent_pilot/tests/test_human_review.py)、[原可信检查](../../../../credproof_safety/project.py)。
+
+本次干净安装采用新虚拟环境与本机既有固定依赖离线复制，未下载或运行模型。最初历史解析缺Qwen-Agent及其间接依赖的失败日志均保留；补齐已有版本后实际解析回放通过。上面的pip命令是供评审者准备环境的说明，不冒称本机实际联网安装记录。查看、修订、审批、无模型验收不导入Qwen-Agent；只有历史生成响应解析或现场AI建议需要Agent依赖。当前安装并未新运行模型，不将依赖可导入写成模型修复成功。

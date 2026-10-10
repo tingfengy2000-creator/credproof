@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "E:\����\CP35\parser-replay.py", line 3, in <module>
+    from agent_pilot.bounded_patch import parse_response
+  File "E:\����\CP35\venv\Lib\site-packages\agent_pilot\bounded_patch.py", line 15, in <module>
+    from .model_client import estimate_input_budget, _NoRedirect
+  File "E:\����\CP35\venv\Lib\site-packages\agent_pilot\model_client.py", line 23, in <module>
+    from qwen_agent.agents import Assistant
+  File "E:\����\CP35\venv\Lib\site-packages\qwen_agent\__init__.py", line 16, in <module>
+    from .agent import Agent
+  File "E:\����\CP35\venv\Lib\site-packages\qwen_agent\agent.py", line 25, in <module>
+    from qwen_agent.tools import TOOL_REGISTRY, BaseTool, MCPManager
+  File "E:\����\CP35\venv\Lib\site-packages\qwen_agent\tools\__init__.py", line 21, in <module>
+    from .python_executor import PythonExecutor
+  File "E:\����\CP35\venv\Lib\site-packages\qwen_agent\tools\python_executor.py", line 28, in <module>
+    from tqdm import tqdm
+ModuleNotFoundError: No module named 'tqdm'
