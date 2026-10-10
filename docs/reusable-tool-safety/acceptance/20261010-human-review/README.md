@@ -78,3 +78,5 @@ $py = 'C:\CP-review\venv\Scripts\python.exe'
 可直接阅读的实现：[修订与采纳](../../../../credproof_safety/human_review.py)、[页面API](../../../../agent_pilot/web.py)、[单页操作](../../../../agent_pilot/ui/app.js)、[对应协议回归](../../../../agent_pilot/tests/test_human_review.py)、[原可信检查](../../../../credproof_safety/project.py)。
 
 本次干净安装采用新虚拟环境与本机既有固定依赖离线复制，未下载或运行模型。最初历史解析缺Qwen-Agent及其间接依赖的失败日志均保留；补齐已有版本后实际解析回放通过。上面的pip命令是供评审者准备环境的说明，不冒称本机实际联网安装记录。查看、修订、审批、无模型验收不导入Qwen-Agent；只有历史生成响应解析或现场AI建议需要Agent依赖。当前安装并未新运行模型，不将依赖可导入写成模型修复成功。
+
+最终材料提交`6c0254e6f493cc9132abe12f53713dcf79fdf425`的50份Raw正文/安装文件/完整快照已[匿名逐字节核验](public-evidence/github-availability.json)，[交付收据](public-evidence/delivery-receipt.json)分别记录程序源码、公开bundle和材料提交；后补收据提交不改变被测程序。最初核验脚本的[本机长路径错误](public-evidence/github-check-initial-local-error.json)已记录，不是产品或网络失败。本轮已结束。
