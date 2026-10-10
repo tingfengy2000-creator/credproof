@@ -1,0 +1,31 @@
+--- baseline.py
++++ revision.py
+@@ -1,14 +1,9 @@
+-"""Small authorised materials assistant used by the reusable-entry example.
++"""Authorised materials assistant: developer revision, Codex assisted.
+ 
+-This initial version is intentionally vulnerable for the local lab: it reads a
+-path supplied by the request, follows a redirect, and includes its credential
+-in a debug message. The lab provides only synthetic material and loopback mock
+-services. The file is never run on a real account.
++Uses the fixed access component; this revision is not runtime-model output.
+ """
+-import json
++import os
+ import logging
+-import os
+-from urllib.request import Request, urlopen
+ from credproof_access import read_text, get_json
+ 
+ 
+@@ -20,9 +15,6 @@
+     path = request.get("path") or os.environ.get("CREDPROOF_ALLOWED_FILE")
+     material = read_text(path)
+     url = request.get("url") or os.environ["CREDPROOF_ALLOWED_URL"]
+-    try:
+-        service_data = get_json(url, credential)
+-    except urllib.error.HTTPError as e:
+-        raise ValueError(f"HTTP error accessing service: {e}")
++    service_data = get_json(url, credential)
+     logging.info("loaded %s", request["resource"])
+     return {"resource": request["resource"], "material": material, "service": service_data}
