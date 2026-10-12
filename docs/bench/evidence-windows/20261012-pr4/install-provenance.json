@@ -1,0 +1,27 @@
+{
+ "kind": "CLEAN_INSTALLED_READONLY_PACKAGE_PROVENANCE",
+ "source_commit": "ad3771cd7182863310f04e7325276cf2cd405017",
+ "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+ "version": "0.3.0.dev37",
+ "interpreter": "<clean-install>/Scripts/python.exe",
+ "modules": {
+  "agent_pilot.web": {
+   "origin": "<clean-install>\\Lib\\site-packages\\agent_pilot\\web.py",
+   "site_packages": true,
+   "sha256": "b61578c9d4bf57d0362e368043c8505a326c7788f073bce7b5169bf06006bf31",
+   "matches_source_bytes": true
+  },
+  "credproof_safety.runner": {
+   "origin": "<clean-install>\\Lib\\site-packages\\credproof_safety\\runner.py",
+   "site_packages": true,
+   "sha256": "13b546a3d63e3d5750f8107450296365c580cc65fe69b20ce431047f8b27d7e3",
+   "matches_source_bytes": true
+  }
+ },
+ "wheel": {
+  "name": "credproof_safety-0.3.0.dev37-py3-none-any.whl",
+  "bytes": 324095,
+  "sha256": "3847a3f5f457378f5fdd34749f4d48005ace5e21a2eda69ce603c8be15eceee2"
+ },
+ "note": "No package dependencies, models or rootfs copied to this read-only environment. Actual HTTP test: installed-readonly.json."
+}

@@ -1,0 +1,101 @@
+{
+ "kind": "BENCH_V1_MODEL_TRANSPORT_BOUNDARY",
+ "models": [
+  {
+   "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+   "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+   "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+  },
+  {
+   "name": "qwen3-coder:30b",
+   "manifest": "models/manifests/registry.ollama.ai/library/qwen3-coder/30b",
+   "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca"
+  }
+ ],
+ "model_files": [
+  {
+   "path": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+   "bytes": 859
+  },
+  {
+   "path": "models/blobs/sha256-f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee",
+   "bytes": 488
+  },
+  {
+   "path": "models/blobs/sha256-ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9",
+   "bytes": 19851336384
+  },
+  {
+   "path": "models/blobs/sha256-66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e",
+   "bytes": 68
+  },
+  {
+   "path": "models/blobs/sha256-1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320",
+   "bytes": 1615
+  },
+  {
+   "path": "models/blobs/sha256-832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+   "bytes": 11343
+  },
+  {
+   "path": "models/manifests/registry.ollama.ai/library/qwen3-coder/30b",
+   "bytes": 711
+  },
+  {
+   "path": "models/blobs/sha256-24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318",
+   "bytes": 542
+  },
+  {
+   "path": "models/blobs/sha256-1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a",
+   "bytes": 18556688736
+  },
+  {
+   "path": "models/blobs/sha256-d18a5cc71b84bc4af394a31116bd3932b42241de70c77d2b76d69a314ec8aa12",
+   "bytes": 11338
+  },
+  {
+   "path": "models/blobs/sha256-69aa441ea44ff5e1e7b56cac4f471e71e8a5e2e3963c29684a9234d5d5e5f7aa",
+   "bytes": 148
+  }
+ ],
+ "stage": [
+  "isolated_worker.py",
+  "registration.json"
+ ],
+ "environment": {
+  "PATH": "/usr/bin:/bin:/usr/lib/wsl/lib",
+  "HOME": "/home/model",
+  "LANG": "C.UTF-8",
+  "OLLAMA_HOST": "127.0.0.1:11435",
+  "OLLAMA_MODELS": "/runtime/models",
+  "OLLAMA_NO_CLOUD": "1",
+  "OLLAMA_LLM_LIBRARY": "cuda_v12",
+  "OLLAMA_CONTEXT_LENGTH": "16384",
+  "OLLAMA_NUM_PARALLEL": "1",
+  "OLLAMA_MAX_LOADED_MODELS": "1",
+  "OLLAMA_KEEP_ALIVE": "-1",
+  "OLLAMA_FLASH_ATTENTION": "1",
+  "OLLAMA_KV_CACHE_TYPE": "q8_0",
+  "LD_LIBRARY_PATH": "/gpu-libs:/runtime/ollama/lib/ollama:/runtime/ollama/lib/ollama/cuda_v12:/runtime/ollama/lib/ollama/cuda_v13",
+  "HTTP_PROXY": "",
+  "HTTPS_PROXY": "",
+  "ALL_PROXY": "",
+  "NO_PROXY": "127.0.0.1,localhost",
+  "CREDPROOF_HOST_SENTINEL": "/mnt/e/\u6bd4\u8d5b/CPBenchV1/model-service-v1/host-sentinel.txt"
+ },
+ "writable": [
+  "/work",
+  "/rpc",
+  "/tmp",
+  "/run",
+  "/home"
+ ],
+ "network": "unshare-all; private loopback, no host/proxy connection",
+ "excludes": [
+  "mounted checkout",
+  "mounted candidate/reference project directories",
+  "host home",
+  "other model weights"
+ ],
+ "supervisor_timeout_seconds": 200000
+}

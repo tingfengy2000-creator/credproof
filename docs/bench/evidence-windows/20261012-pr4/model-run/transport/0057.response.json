@@ -1,0 +1,29 @@
+{
+ "status": 200,
+ "body": "{\"model\":\"qwen2.5-coder:32b-instruct-q4_K_M\",\"created_at\":\"2026-10-12T02:08:46.754214409Z\",\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"verdict\\\": \\\"REJECT\\\", \\\"reasons\\\": [\\\"The credential appears in the exception message when a foreign service is rejected.\\\"]}\"},\"done\":true,\"done_reason\":\"stop\",\"total_duration\":1065329587,\"load_duration\":20796385,\"prompt_eval_count\":1633,\"prompt_eval_cached_count\":207,\"prompt_eval_duration\":437386000,\"eval_count\":29,\"eval_duration\":483934000}",
+ "seconds": 1.0675433740000244,
+ "ps": {
+  "models": [
+   {
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "model": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "size": 22125425458,
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41",
+    "details": {
+     "parent_model": "",
+     "format": "gguf",
+     "family": "qwen2",
+     "families": [
+      "qwen2"
+     ],
+     "parameter_size": "32.8B",
+     "quantization_level": "Q4_K_M"
+    },
+    "expires_at": "2319-01-22T01:56:03.609449854Z",
+    "size_vram": 22125425458,
+    "context_length": 16384
+   }
+  ]
+ },
+ "request_sha256": "651b1847041afab7b7dbcd826f5190794766e020290c19c3ff60ac8c1fec9819"
+}

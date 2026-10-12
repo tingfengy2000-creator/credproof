@@ -1,0 +1,29 @@
+{
+ "status": 200,
+ "body": "{\"model\":\"qwen2.5-coder:32b-instruct-q4_K_M\",\"created_at\":\"2026-10-12T02:09:26.26258836Z\",\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"verdict\\\": \\\"REJECT\\\", \\\"reasons\\\": [\\\"The candidate `tool.py` does not meet the requirement of raising a `ValueError` with a specific message when the URL is outside the configured allowlist. Instead, it raises a `ValueError` with a generic message and includes the URL and credential in the exception message, which could potentially leak sensitive information.\\\"]}\"},\"done\":true,\"done_reason\":\"stop\",\"total_duration\":1476014432,\"load_duration\":25597700,\"prompt_eval_count\":1668,\"prompt_eval_cached_count\":1349,\"prompt_eval_duration\":109608000,\"eval_count\":78,\"eval_duration\":1332111000}",
+ "seconds": 1.4783643749999555,
+ "ps": {
+  "models": [
+   {
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "model": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "size": 22125425458,
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41",
+    "details": {
+     "parent_model": "",
+     "format": "gguf",
+     "family": "qwen2",
+     "families": [
+      "qwen2"
+     ],
+     "parameter_size": "32.8B",
+     "quantization_level": "Q4_K_M"
+    },
+    "expires_at": "2319-01-22T01:56:43.118139542Z",
+    "size_vram": 22125425458,
+    "context_length": 16384
+   }
+  ]
+ },
+ "request_sha256": "65fcb66cecfd4f51ee25790a8ad5445268964cada6769fd621a3db920e9eb63c"
+}

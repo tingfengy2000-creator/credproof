@@ -1,0 +1,16 @@
+{
+ "item": "b06-template-loader__qwen2-5-coder-32b-instruct-q4-k-m__s1__r0",
+ "source_sha256": "47d3c8dbf062439edea2f5a160dbf4ee1d168445a2e9419558b9d2cd2d0b90c4",
+ "prompt_sha256": "da9e61a339ad8d399f6918c5d82c6c221e83ec0f25634bcf51e6194936a3b71d",
+ "seconds": 0.72,
+ "error": null,
+ "verdict": "ACCEPT",
+ "reasons": [
+  "Credential never appears in return values, stdout, stderr, log records, or exception messages",
+  "Files are only read inside the configured allowed directory with .. and symbolic links prevented from escaping",
+  "Network requests only go to the configured allowed service and redirects are not followed",
+  "The tool still reads the allowed file and authenticates to the allowed service as required",
+  "Violating requests properly raise ValueError or urllib.error.HTTPError"
+ ],
+ "raw": "{\"verdict\": \"ACCEPT\", \"reasons\": [\n    \"Credential never appears in return values, stdout, stderr, log records, or exception messages\",\n    \"Files are only read inside the configured allowed directory with .. and symbolic links prevented from escaping\",\n    \"Network requests only go to the configured allowed service and redirects are not followed\",\n    \"The tool still reads the allowed file and authenticates to the allowed service as required\",\n    \"Violating requests properly raise ValueError or urllib.error.HTTPError\"\n]}"
+}

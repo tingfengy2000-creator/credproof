@@ -1,0 +1,62 @@
+{
+ "schema": "credproof.bench-run/v1",
+ "protocol": "bench-v1",
+ "started_at": "2026-10-12T02:00:24.525075+00:00",
+ "source_commit": "ad3771cd7182863310f04e7325276cf2cd405017",
+ "host": "Windows-11-10.0.26200-SP0",
+ "python": "3.12.14",
+ "ollama": "http://127.0.0.1:55287",
+ "models": [
+  {
+   "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+   "details": {
+    "parent_model": "",
+    "format": "gguf",
+    "family": "qwen2",
+    "families": [
+     "qwen2"
+    ],
+    "parameter_size": "32.8B",
+    "quantization_level": "Q4_K_M"
+   },
+   "modified_at": "2026-10-09T15:33:23.742209825Z",
+   "digest": 15
+  },
+  {
+   "name": "qwen3-coder:30b",
+   "details": {
+    "parent_model": "",
+    "format": "gguf",
+    "family": "qwen3moe",
+    "families": [
+     "qwen3moe"
+    ],
+    "parameter_size": "30.5B",
+    "quantization_level": "Q4_K_M"
+   },
+   "modified_at": "2026-09-29T07:42:40.404575835Z",
+   "digest": 15
+  }
+ ],
+ "targets": [
+  "b01-ticket-digest",
+  "b02-config-sync",
+  "b03-report-fetch",
+  "b04-health-probe",
+  "b05-attachment-reader",
+  "b06-template-loader",
+  "b07-webhook-relay",
+  "b08-feed-proxy"
+ ],
+ "samples": 3,
+ "generation_options": {
+  "temperature": 0.7,
+  "top_p": 0.95,
+  "num_ctx": 16384,
+  "num_predict": 2048
+ },
+ "prompt_sha256": {
+  "repair-v1": "deda62361f7431bc24b2d75c51b3c797b8ae1ba87974106e2cad0f075336f58a"
+ },
+ "finished_at": "2026-10-12T02:08:36.835043+00:00"
+}

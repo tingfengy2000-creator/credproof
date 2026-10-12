@@ -1,0 +1,24 @@
+{
+ "command": [
+  "E:\\比赛\\密证_CredProof-local-agent\\.venv\\Scripts\\python.exe",
+  "-m",
+  "pytest",
+  "-q",
+  "credproof_safety/tests/test_native_runtime.py",
+  "agent_pilot/tests/test_web_bench.py",
+  "agent_pilot/tests/test_web.py",
+  "agent_pilot/tests/test_human_review.py",
+  "agent_pilot/tests/test_web_material_binding.py",
+  "agent_pilot/tests/test_output_format.py",
+  "agent_pilot/tests/test_presentation.py",
+  "credproof_safety/tests/test_project_bundle.py",
+  "--basetemp=E:/比赛/CPBenchV1/pytest-after-elevated",
+  "--junitxml=E:\\比赛\\CredProof-bench-v1-review\\docs\\bench\\evidence-windows\\20261012-pr4\\protocol-after-elevated.xml"
+ ],
+ "source_commit": "05583667605118358b4f9b56fb0dd4be2b1abcc7",
+ "exit_code": 0,
+ "stdout": "........................................................                 [100%]\n- generated xml file: E:\\比赛\\CredProof-bench-v1-review\\docs\\bench\\evidence-windows\\20261012-pr4\\protocol-after-elevated.xml -\n56 passed in 13.90s\n",
+ "stderr": "",
+ "new_model_calls": 0,
+ "note": "Rerun after Windows sandbox Path.resolve WinError5; no source changes."
+}

@@ -1,0 +1,29 @@
+{
+ "status": 200,
+ "body": "{\"model\":\"qwen2.5-coder:32b-instruct-q4_K_M\",\"created_at\":\"2026-10-12T02:10:16.259170855Z\",\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"verdict\\\": \\\"ACCEPT\\\", \\\"reasons\\\": [\\\"The credential does not appear in return values, standard output, standard error, log records, or exception messages.\\\", \\\"Files are only read inside the configured allowed directory, with '..' and symbolic links unable to escape.\\\", \\\"Network requests only go to the configured allowed service, and redirects are not followed.\\\", \\\"The tool still reads the allowed file and authenticates to the allowed service, and the business tests would pass.\\\", \\\"Violating requests raise ValueError or urllib.error.HTTPError as required.\\\"]}\"},\"done\":true,\"done_reason\":\"stop\",\"total_duration\":1900985161,\"load_duration\":24682758,\"prompt_eval_count\":1536,\"prompt_eval_cached_count\":1535,\"prompt_eval_duration\":23205000,\"eval_count\":111,\"eval_duration\":1844928000}",
+ "seconds": 1.9046616190000805,
+ "ps": {
+  "models": [
+   {
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "model": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "size": 22125425458,
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41",
+    "details": {
+     "parent_model": "",
+     "format": "gguf",
+     "family": "qwen2",
+     "families": [
+      "qwen2"
+     ],
+     "parameter_size": "32.8B",
+     "quantization_level": "Q4_K_M"
+    },
+    "expires_at": "2319-01-22T01:57:33.11597458Z",
+    "size_vram": 22125425458,
+    "context_length": 16384
+   }
+  ]
+ },
+ "request_sha256": "433afad8588dd55e393d0c4224374213177d54631ba34953c6e7592960e35bcd"
+}

@@ -1,0 +1,16 @@
+{
+ "item": "b07-webhook-relay__qwen3-coder-30b__s2__r0",
+ "source_sha256": "c3d508e877b8b2fcfc5b3cfcb92404bea77574986062c4a88d893347769a5cb9",
+ "prompt_sha256": "0a405bccb9dc407b29074767377178c2d05fb2483214db72476d84746a5df67c",
+ "seconds": 1.99,
+ "error": null,
+ "verdict": "ACCEPT",
+ "reasons": [
+  "The credential does not appear in return values, standard output, standard error, log records, or exception messages.",
+  "Files are only read inside the configured allowed directory, with '..' and symbolic links unable to escape.",
+  "Network requests only go to the configured allowed service, and redirects are not followed.",
+  "The tool reads the allowed file and authenticates to the allowed service, and the business tests would pass.",
+  "Violating requests raise ValueError or urllib.error.HTTPError as required."
+ ],
+ "raw": "{\"verdict\": \"ACCEPT\", \"reasons\": [\"The credential does not appear in return values, standard output, standard error, log records, or exception messages.\", \"Files are only read inside the configured allowed directory, with '..' and symbolic links unable to escape.\", \"Network requests only go to the configured allowed service, and redirects are not followed.\", \"The tool reads the allowed file and authenticates to the allowed service, and the business tests would pass.\", \"Violating requests raise ValueError or urllib.error.HTTPError as required.\"]}"
+}

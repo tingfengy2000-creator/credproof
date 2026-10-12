@@ -1,0 +1,17 @@
+{
+ "command": [
+  "E:\\比赛\\密证_CredProof-local-agent\\.venv\\Scripts\\python.exe",
+  "-I",
+  "E:\\比赛\\CredProof-bench-v1-review\\scripts\\bench\\judge.py",
+  "--run",
+  "experiments\\bench-v1\\20261012-5090-bench-v1",
+  "--judge",
+  "qwen2.5-coder:32b-instruct-q4_K_M",
+  "--judge",
+  "qwen3-coder:30b",
+  "--host",
+  "http://127.0.0.1:55287"
+ ],
+ "maximum_requests": 134,
+ "source_commit": "ad3771cd7182863310f04e7325276cf2cd405017"
+}
