@@ -69,6 +69,23 @@ class BenchEndpointTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertFalse(body['bench_available'])
 
+    def test_missing_selected_file_is_409_instead_of_empty_cache(self):
+        self.start(True)
+        self.app.bench_path.unlink()
+        self.assertEqual(self.get('/api/bench')[0], 409)
+
+    def test_deleted_cached_file_is_not_served_as_current(self):
+        self.start(True)
+        self.assertEqual(self.get('/api/bench')[0], 200)
+        self.app.bench_path.unlink()
+        self.assertEqual(self.get('/api/bench')[0], 409)
+
+    def test_malformed_patch_rows_are_409(self):
+        self.start(True)
+        self.app.bench_path.write_text(json.dumps({
+            'schema': 'credproof.bench-results/v1', 'patches': [None]}), encoding='utf-8')
+        self.assertEqual(self.get('/api/bench')[0], 409)
+
 
 if __name__ == '__main__':
     unittest.main()
