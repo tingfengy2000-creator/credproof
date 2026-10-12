@@ -91,7 +91,7 @@ AI生成代码的安全风险已有大量实证。Veracode 2025年对100多个�
 
 ### 2.1 总体架构
 
-![图2 CredProof总体架构](figures/architecture.png)
+![图2 CredProof总体架构](figures/arch-zh.png)
 
 系统分为五层：
 
