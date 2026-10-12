@@ -1,6 +1,4 @@
 @echo off
 cd /d "%~dp0"
-set "PYTHON=%~dp0.venv\Scripts\python.exe"
-if not exist "%PYTHON%" set "PYTHON=python"
-"%PYTHON%" -m agent_pilot.launch --demo --mode view
+powershell.exe -NoProfile -File "%~dp0scripts\delivery\launch.ps1" %*
 pause

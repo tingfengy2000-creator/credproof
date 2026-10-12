@@ -4,6 +4,79 @@ import difflib
 import hashlib
 import json
 import shutil
+import tempfile
+from pathlib import PurePosixPath
+
+REVIEW_SNAPSHOT = 'docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/workspace'
+
+
+def install_review_demonstration(app):
+    """Validate the frozen disclosure and use only a disposable review workspace.
+
+    This imports data, not project code. Even view-mode revise/decide/export
+    operate on the disposable copy; the frozen source is never a write target.
+    """
+    from .web import confined
+    from credproof_safety.human_review import ReviewWorkspace
+
+    snapshot = confined(app.root / REVIEW_SNAPSHOT, app.root)
+    manifest_path = confined(snapshot / 'snapshot-manifest.json', snapshot)
+    manifest_bytes = manifest_path.read_bytes()
+    manifest = json.loads(manifest_bytes)
+    members = manifest.get('files')
+    if not isinstance(members, dict) or not members or len(members) > 100:
+        raise ValueError('unsupported_review_snapshot')
+    content = {}
+    for name, expected in members.items():
+        if not isinstance(name, str) or not isinstance(expected, str):
+            raise ValueError('invalid_review_snapshot_entry')
+        relative = PurePosixPath(name)
+        if (relative.is_absolute() or '..' in relative.parts or '\\' in name
+                or ':' in name or not name.startswith('runs/human-review/')):
+            raise ValueError('unsafe_review_snapshot_path')
+        source = confined(snapshot / name, snapshot)
+        if not source.is_file() or source.stat().st_size > 4 * 1024 * 1024:
+            raise ValueError('missing_or_oversized_review_snapshot_file')
+        data = source.read_bytes()
+        if hashlib.sha256(data).hexdigest() != expected:
+            raise ValueError('review_snapshot_bytes_changed: ' + name)
+        content[name] = data
+    temporary = tempfile.TemporaryDirectory(prefix='credproof-demo-review-')
+    try:
+        root = Path(temporary.name)
+        for name, data in content.items():
+            target = root / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(data)
+        workspace = ReviewWorkspace(root)
+        for item in workspace.list():
+            meta_path = workspace.folder(item['id']) / 'meta.json'
+            meta = read(meta_path)
+            meta['label'] = '历史回放 · dev35 AI候选与开发者修订（临时演示副本）'
+            meta['presentation_mode'] = 'REPLAY'
+            meta_path.write_text(json.dumps(meta, ensure_ascii=False, indent=2) + '\n',
+                                 encoding='utf-8', newline='\n')
+        if not workspace.list():
+            raise ValueError('review_snapshot_has_no_reviews')
+        app.review_workspace = workspace
+        app.review_demonstration = {
+            'mode': 'REPLAY', 'source': REVIEW_SNAPSHOT,
+            'source_commit': manifest.get('source_commit'),
+            'snapshot_manifest_sha256': hashlib.sha256(manifest_bytes).hexdigest(),
+            'disposable_copy': True, 'new_model_calls': 0,
+            'notice': '历史回放；修订、决定与导出只作用于临时演示副本，不写回冻结材料，不代表本人采纳。',
+        }
+        app._review_demo_temporary = temporary
+    except Exception:
+        temporary.cleanup()
+        raise
+
+
+def close_review_demonstration(app):
+    temporary = getattr(app, '_review_demo_temporary', None)
+    if temporary is not None:
+        temporary.cleanup()
+        del app._review_demo_temporary
 
 BATCH = 'experiments/local-agent-pilot/reliability/20260929t095000z-holdout8/comparison'
 STORIES = (

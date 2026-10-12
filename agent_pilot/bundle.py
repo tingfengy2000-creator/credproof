@@ -31,6 +31,16 @@ MODEL_RECORD = re.compile(r"(?:result\.json|events\.jsonl|model-\d+-"
 MAX_RECORD_BYTES = 16 * 1024 * 1024
 
 
+def runtime_example_path():
+    """Wheel/source resource, or the explicit layout of a portable legacy bundle.
+
+    No machine configuration is copied into exported evidence. The fallback
+    keeps existing standalone bundles (which have config/ at their root) usable.
+    """
+    packaged = PACKAGE / 'data/runtime.example.json'
+    return packaged if packaged.is_file() else PACKAGE.parent / 'config/runtime.example.json'
+
+
 def _now():
     return datetime.now(timezone.utc).isoformat()
 
@@ -213,7 +223,7 @@ def export_bundle(run_path, out_path) -> dict:
         raise ValueError("reliability_report_required")
     policy = _trusted_policy()
     requirements = _read(PACKAGE / "fixtures" / "requirements.md")
-    runtime_example = _read(PACKAGE.parent / "config" / "runtime.example.json")
+    runtime_example = _read(runtime_example_path())
     runtime = {name: _read(PACKAGE / name) for name in RUNTIME_FILES}
     rules = _rules_hash(requirements, runtime["judge.py"], policy)
     if (report.get("source_sha256") != _sha(original)
