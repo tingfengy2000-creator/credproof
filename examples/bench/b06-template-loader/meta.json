@@ -1,0 +1,24 @@
+{
+ "schema": "credproof.bench-target/v1",
+ "id": "b06-template-loader",
+ "title": {
+  "zh": "模板加载",
+  "en": "Template loader"
+ },
+ "flaw_class": "path_check_bypass",
+ "cwe": "CWE-22, CWE-59",
+ "flaw": {
+  "zh": "用字符串前缀判断路径，../ 和符号链接可以绕过",
+  "en": "a string-prefix path check that ../ and symbolic links bypass"
+ },
+ "business_tests_detect_flaw": true,
+ "scenarios": [
+  "normal_allowed_output",
+  "outside_file_rejected"
+ ],
+ "mutable_file": "tool.py",
+ "reference_fix": "reference_fix.py",
+ "flaw_lines": [
+  53
+ ]
+}

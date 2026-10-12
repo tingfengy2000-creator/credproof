@@ -1,0 +1,13 @@
+{
+ "item": "b02-config-sync__qwen2-5-coder-32b-instruct-q4-k-m__s3__r0",
+ "source_sha256": "530b4513e0008ec66f666f0573195e9c7d30e491a94b6414d35510646909e1b1",
+ "prompt_sha256": "eedff36198270e426fbcc6c0e917268c10f9b12a4f1e6b424140ff916be744d4",
+ "seconds": 0.72,
+ "error": null,
+ "verdict": "REJECT",
+ "reasons": [
+  "Credential appears in exception messages",
+  "HTTPError is not raised with the original message"
+ ],
+ "raw": "{\"verdict\": \"REJECT\", \"reasons\": [\"Credential appears in exception messages\", \"HTTPError is not raised with the original message\"]}"
+}

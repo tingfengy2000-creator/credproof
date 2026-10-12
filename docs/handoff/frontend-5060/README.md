@@ -2,6 +2,8 @@
 
 **READY_FOR_FRONTEND_HANDOFF · AI_ASSISTED_HUMAN_REVIEW**。依据是5090固定版本自验收；外部独立源码复核 **NOT_COMPLETED**。本轮新增模型调用、候选执行、安全实验均为0，不恢复已结束的模型任务，不代替本人采纳业务修复。
 
+**PR #1 后端修订：** dev35 的项目树摘要受宿主路径排序影响，Linux 只读查看可能把同一对象显示为 UNKNOWN。新版 `0.3.0.dev36` 显式固定排序，保留原 Windows 摘要、文件原名和精确字节。跨系统查看请安装下面的 dev36 wheel；原 dev35 收据和 5060 失败记录保持原样。修复及实际验证见 [PR #1 定向评审](../../review/pr-1-tree-identity/README.md)。这不扩展动态执行权限，真实验收仍只在5090既有隔离环境进行。
+
 保留基线：`81c289fd71c8839e2c122032fe15a473f4380710`；被测程序：`50e0d694d1c40352b82853fc62d6df0983240d43`；安装版本：`0.3.0.dev35`。这两个提交间的程序目录一致，后者之后的提交增加材料和收据。[交接收据](HANDOFF_RECEIPT.json) / [本轮只读核对](evidence/existing-evidence-correspondence.json)。后补推送记录见本目录`evidence/github-delivery.json`，记录实际交接材料提交，不把收据提交当新程序实测。
 
 正式主线：**AI提出候选 → 开发者审阅并提交修订 → 程序独立验收 → 本人决定采纳 → 同一对象导出、复检**。纯模型独立修复PASS已经由用户移出当前必需范围，历史FAIL/UNKNOWN保留。
@@ -30,9 +32,9 @@
 ```powershell
 py -3.12 -m venv C:\CP-frontend\venv
 $py = 'C:\CP-frontend\venv\Scripts\python.exe'
-$wheel = '.\docs\reusable-tool-safety\acceptance\20261010-human-review\public-evidence\installation\credproof_safety-0.3.0.dev35-py3-none-any.whl'
+$wheel = '.\docs\review\pr-1-tree-identity\evidence\installation\credproof_safety-0.3.0.dev36-py3-none-any.whl'
 (Get-FileHash -Algorithm SHA256 $wheel).Hash
-# 期望 ced6f43361cd3ca483f3ae7a6086383ee5a45edb2999c9a56abb62691ac448b4
+# 与 docs/review/pr-1-tree-identity/evidence/installation/wheel-manifest.json 核对
 & $py -m pip install --no-index --no-deps $wheel
 & $py -I docs/handoff/frontend-5060/view-readonly.py --port 8765
 ```

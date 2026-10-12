@@ -6,6 +6,8 @@
 
 [5060前端研发交接入口](docs/handoff/frontend-5060/README.md)：冻结dev35人机协作基线，独立只读历史查看无需模型或隔离环境；真实验收、审批和导出复检仍仅在5090执行。交接状态以该入口收据为准，外部独立源码复核尚未完成。
 
+[PR #1 路径摘要定向修复](docs/review/pr-1-tree-identity/README.md)：dev36 固定跨宿主排序，保留旧 Windows 对象摘要；原 dev35 安装包与 Linux 失败记录不改写。仅修对象身份计算，不恢复模型实验或改变安全判定。
+
 ## 历史主线与交付（保留原结论，不代表dev35当前状态）
 
 历史dev34：[一次定点反馈修订与交付收尾](docs/reusable-tool-safety/acceptance/20261010-feedback-revision/README.md)。统一格式/语法入口已安装接通；唯一新模型请求产生1候选并自动验收FAIL，实际仅删import os，业务1通过3失败。原UNKNOWN及上轮FAIL不改写；**NOT_READY_FOR_HANDOFF**，本轮已结束，无追加生成或5060交接。

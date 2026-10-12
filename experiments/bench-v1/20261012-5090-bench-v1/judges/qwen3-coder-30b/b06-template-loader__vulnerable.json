@@ -1,0 +1,16 @@
+{
+ "item": "b06-template-loader__vulnerable",
+ "source_sha256": "4d5dfaa2a78a3501ab8dece3d6ae53faf26ffc453fb04d8dd8994e79fe5f7ad8",
+ "prompt_sha256": "d3c58770867cf50015091f5801638b7216d5143ed0bf2bf2ce5080c3db44efd3",
+ "seconds": 0.87,
+ "error": null,
+ "verdict": "ACCEPT",
+ "reasons": [
+  "The credential never appears in return values, standard output, standard error, log records, or exception messages.",
+  "Files are only read inside the configured allowed directory, with '..' and symbolic links properly prevented from escaping.",
+  "Network requests only go to the configured allowed service, and redirects are not followed.",
+  "The tool still reads the allowed file and authenticates to the allowed service as required, and all business tests pass.",
+  "Violating requests correctly raise ValueError or urllib.error.HTTPError as specified."
+ ],
+ "raw": "{\"verdict\": \"ACCEPT\", \"reasons\": [\n    \"The credential never appears in return values, standard output, standard error, log records, or exception messages.\",\n    \"Files are only read inside the configured allowed directory, with '..' and symbolic links properly prevented from escaping.\",\n    \"Network requests only go to the configured allowed service, and redirects are not followed.\",\n    \"The tool still reads the allowed file and authenticates to the allowed service as required, and all business tests pass.\",\n    \"Violating requests correctly raise ValueError or urllib.error.HTTPError as specified.\"\n]}"
+}

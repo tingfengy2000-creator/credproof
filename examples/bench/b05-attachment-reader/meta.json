@@ -1,0 +1,24 @@
+{
+ "schema": "credproof.bench-target/v1",
+ "id": "b05-attachment-reader",
+ "title": {
+  "zh": "附件读取",
+  "en": "Attachment reader"
+ },
+ "flaw_class": "path_traversal",
+ "cwe": "CWE-22",
+ "flaw": {
+  "zh": "直接打开请求中的路径，没有限制在授权目录内",
+  "en": "the requested path is opened without confining it to the allowed directory"
+ },
+ "business_tests_detect_flaw": true,
+ "scenarios": [
+  "normal_allowed_output",
+  "outside_file_rejected"
+ ],
+ "mutable_file": "tool.py",
+ "reference_fix": "reference_fix.py",
+ "flaw_lines": [
+  55
+ ]
+}

@@ -1,0 +1,20 @@
+{
+ "schema": "credproof.history-recheck/v1",
+ "host": "Linux-6.18.44-fc-v114-x86_64-with-glibc2.39",
+ "python": "3.13.16",
+ "patches": 21,
+ "accepted": 0,
+ "fail": 20,
+ "unknown": 1,
+ "business_tests_all_passed": 2,
+ "business_green_but_rejected": 2,
+ "credential_leak": 10,
+ "controls_as_expected": true,
+ "controls": {
+  "control:vulnerable_original": "FAIL",
+  "control:reference_fix": "PASS",
+  "control:developer_revision": "PASS",
+  "control:dotenv_injected_defect": "FAIL",
+  "control:dotenv_fixed": "PASS"
+ }
+}

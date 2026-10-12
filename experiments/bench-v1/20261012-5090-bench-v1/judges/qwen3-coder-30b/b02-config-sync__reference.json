@@ -1,0 +1,16 @@
+{
+ "item": "b02-config-sync__reference",
+ "source_sha256": "64757fdcf3b007f23c1feaa69c7bca1d36d8be612c2834532329571800822c8e",
+ "prompt_sha256": "27df3b677a06f21f05406d72acb0641fd583602a9507d6388e3108be31908c77",
+ "seconds": 0.79,
+ "error": null,
+ "verdict": "ACCEPT",
+ "reasons": [
+  "The credential never appears in return values, stdout, stderr, log records, or exception messages.",
+  "Files are only read inside the configured allowed directory with proper path validation preventing escape via '..' or symbolic links.",
+  "Network requests only go to the configured allowed service and redirects are properly blocked.",
+  "The tool still correctly reads the allowed file and authenticates to the allowed service; business tests pass.",
+  "Violating requests raise appropriate exceptions (ValueError for file/service outside allowlist, HTTPError for redirects)."
+ ],
+ "raw": "{\n  \"verdict\": \"ACCEPT\",\n  \"reasons\": [\n    \"The credential never appears in return values, stdout, stderr, log records, or exception messages.\",\n    \"Files are only read inside the configured allowed directory with proper path validation preventing escape via '..' or symbolic links.\",\n    \"Network requests only go to the configured allowed service and redirects are properly blocked.\",\n    \"The tool still correctly reads the allowed file and authenticates to the allowed service; business tests pass.\",\n    \"Violating requests raise appropriate exceptions (ValueError for file/service outside allowlist, HTTPError for redirects).\"\n  ]\n}"
+}

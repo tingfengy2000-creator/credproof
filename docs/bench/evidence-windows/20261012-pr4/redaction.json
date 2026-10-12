@@ -1,0 +1,36 @@
+{
+ "kind": "STRUCTURED_PUBLIC_DERIVATIVES",
+ "rules": [
+  "Exact Windows operator-home prefixes only; no generic path/code regex.",
+  "One ephemeral Ollama public-key log line; private key is never mounted into a published directory."
+ ],
+ "changed_files": [
+  {
+   "path": "docs/bench/evidence-windows/20261012-pr4/protocol-after-command.json",
+   "original_bytes": 135847,
+   "original_sha256": "8e70baee150eab1994e1b021c3f7157cbb236319b59fb0295413d3d01be65fd7",
+   "published_bytes": 134425,
+   "published_sha256": "06293cd2f4b203e07a203aee1177ab2bc8399f66bc621c4ae45e486ca514ce3f"
+  },
+  {
+   "path": "docs/bench/evidence-windows/20261012-pr4/protocol-after.xml",
+   "original_bytes": 139970,
+   "original_sha256": "ea8b3be72f6e006bb6fd7e0a68403afbbfaf878620b2c7a7441b9ae8bd279e5b",
+   "published_bytes": 138864,
+   "published_sha256": "d9a3c5378aca0dc81f3943814a316e661adf6dbf7b4e91f2e41f2439d8070b1f"
+  },
+  {
+   "path": "docs/bench/evidence-windows/20261012-pr4/model-run/boundary/ollama-stderr.txt",
+   "original_bytes": 737472,
+   "original_sha256": "1c77c797134dce71b58ecca624759a19ed3701c84060b4f151a75a54a80960c0",
+   "published_bytes": 737421,
+   "published_sha256": "2c4451770f0e919cac24dcccabf5b1be4a6b22eabf262d299739c1fcc1e7ce23"
+  }
+ ],
+ "scanned_files": 952,
+ "sensitive_pattern_alert_paths": [],
+ "candidate_python_bytes_changed": false,
+ "source_code_or_verdict_changes": false,
+ "originals_preserved_outside_repository": true,
+ "note": "Synthetic credential full values were already replaced by the checker. JSON request.raw_body_utf8 is unchanged unless listed; recorded body hash and byte length refer to that string, not the enclosing formatted JSON size."
+}

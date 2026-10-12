@@ -1,0 +1,29 @@
+{
+ "status": 200,
+ "body": "{\"model\":\"qwen2.5-coder:32b-instruct-q4_K_M\",\"created_at\":\"2026-10-12T02:09:24.713012468Z\",\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"verdict\\\": \\\"REJECT\\\", \\\"reasons\\\": [\\\"The candidate `tool.py` does not meet the requirement to never appear in return values, standard output, standard error, log records (any level) or exception messages. Specifically, the exception message in `_allowed_url` includes the URL and credential, which could leak sensitive information.\\\"]}\"},\"done\":true,\"done_reason\":\"stop\",\"total_duration\":1495163201,\"load_duration\":21192352,\"prompt_eval_count\":1630,\"prompt_eval_cached_count\":1340,\"prompt_eval_duration\":111155000,\"eval_count\":71,\"eval_duration\":1202383000}",
+ "seconds": 1.4979355030000079,
+ "ps": {
+  "models": [
+   {
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "model": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "size": 22125425458,
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41",
+    "details": {
+     "parent_model": "",
+     "format": "gguf",
+     "family": "qwen2",
+     "families": [
+      "qwen2"
+     ],
+     "parameter_size": "32.8B",
+     "quantization_level": "Q4_K_M"
+    },
+    "expires_at": "2319-01-22T01:56:41.568854319Z",
+    "size_vram": 22125425458,
+    "context_length": 16384
+   }
+  ]
+ },
+ "request_sha256": "4f7ea8bbf3e0e15eb1bfcd501608673f48c238a08c9fe12ff30d0322c99437f5"
+}

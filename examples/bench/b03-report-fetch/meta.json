@@ -1,0 +1,23 @@
+{
+ "schema": "credproof.bench-target/v1",
+ "id": "b03-report-fetch",
+ "title": {
+  "zh": "报表抓取",
+  "en": "Report fetch"
+ },
+ "flaw_class": "credential_return",
+ "cwe": "CWE-201",
+ "flaw": {
+  "zh": "把完整请求（含认证头）放进返回结果供调试",
+  "en": "the full request, including the auth header, is returned for debugging"
+ },
+ "business_tests_detect_flaw": false,
+ "scenarios": [
+  "normal_allowed_output"
+ ],
+ "mutable_file": "tool.py",
+ "reference_fix": "reference_fix.py",
+ "flaw_lines": [
+  61
+ ]
+}

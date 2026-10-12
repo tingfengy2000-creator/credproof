@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>CredProof report figures</title>
+<style>
+  :root { --ink:#1f2937; --muted:#5b6472; --line:#c9cfd6; --soft:#f3f5f7; --teal:#0f766e; --teal-soft:#e6f3f1; --indigo:#3f4a9c; --indigo-soft:#eceefa; --amber:#9a5b00; --amber-soft:#fbf3e6; --red:#b42318; --red-soft:#fdeceb; --gray:#9aa3ae; }
+  * { box-sizing:border-box; }
+  body { margin:0; padding:24px; background:#ffffff; color:var(--ink); font-family:"Noto Sans CJK SC","Noto Sans SC",sans-serif; }
+  .fig { width:1200px; background:#fff; padding:28px 32px; margin-bottom:40px; }
+  h2 { display:none; }
+  /* architecture */
+  .arch { display:grid; grid-template-columns:190px 1fr; gap:10px 16px; }
+  .layer-name { display:flex; flex-direction:column; justify-content:center; border-radius:8px; padding:10px 14px; font-weight:700; font-size:29px; color:#fff; }
+  .layer-name small { font-weight:400; font-size:19px; opacity:.9; margin-top:2px; }
+  .layer { display:flex; gap:10px; align-items:stretch; border:1.5px solid var(--line); border-radius:10px; padding:12px; background:var(--soft); }
+  .box { flex:1; background:#fff; border:1.5px solid var(--line); border-radius:8px; padding:10px 12px; font-size:23px; line-height:1.45; }
+  .box b { display:block; font-size:25px; margin-bottom:3px; }
+  .box span { color:var(--muted); font-size:20px; }
+  .l1 .layer-name { background:#475569; } .l2 .layer-name { background:var(--indigo); } .l3 .layer-name { background:#2f6b8a; } .l4 .layer-name { background:var(--teal); } .l5 .layer-name { background:var(--amber); }
+  .l4 .layer { background:var(--teal-soft); border-color:#9cd0c8; } .l4 .box { border-color:#9cd0c8; }
+  .ai-band { grid-column:1 / span 2; display:flex; align-items:center; gap:14px; border:2px dashed #b9a8e6; border-radius:10px; padding:10px 14px; background:#f6f3fd; font-size:23px; }
+  .ai-band b { color:#5b3fb0; font-size:26px; white-space:nowrap; }
+  /* workflow */
+  .flow { position:relative; }
+  .lane { display:grid; grid-template-columns:130px 1fr; border-top:1.5px solid var(--line); min-height:132px; }
+  .lane:last-of-type { border-bottom:1.5px solid var(--line); }
+  .lane-name { display:flex; align-items:center; justify-content:center; font-weight:700; font-size:28px; border-right:1.5px solid var(--line); background:var(--soft); text-align:center; line-height:1.3; }
+  .lane-body { position:relative; }
+  .step { position:absolute; width:150px; min-height:84px; border-radius:9px; border:2px solid; padding:8px 10px; font-size:22px; line-height:1.4; background:#fff; }
+  .step b { display:block; font-size:24px; }
+  .step i { font-style:normal; display:inline-flex; width:22px; height:22px; border-radius:50%; color:#fff; align-items:center; justify-content:center; font-size:19px; margin-right:4px; vertical-align:1px; }
+  .s-ai { border-color:#8e76d6; } .s-ai i { background:#6d4fc6; }
+  .s-prog { border-color:var(--teal); background:var(--teal-soft);} .s-prog i { background:var(--teal); }
+  .s-dev { border-color:var(--amber); background:var(--amber-soft);} .s-dev i { background:var(--amber); }
+  svg.arrows { position:absolute; inset:0; pointer-events:none; overflow:visible; }
+  .legend { display:flex; gap:22px; margin-top:12px; font-size:22px; color:var(--muted); }
+  /* chart */
+  .chart-title { font-size:30px; font-weight:700; margin:0 0 4px; }
+  .chart-sub { font-size:22px; color:var(--muted); margin:0 0 18px; }
+  .bars { display:grid; grid-template-columns:400px 1fr 150px; row-gap:14px; align-items:center; }
+  .bar-label { font-size:25px; line-height:1.3; }
+  .bar-label small { display:block; color:var(--muted); font-size:20px; }
+  .track { position:relative; height:44px; border-left:2px solid #6b7280; }
+  .fill { height:100%; border-radius:0 4px 4px 0; background:var(--gray); }
+  .fill.hl { background:var(--teal); }
+  .zero { position:absolute; left:6px; top:7px; font-size:20px; color:var(--muted); }
+  .val { font-size:28px; font-weight:700; padding-left:12px; color:var(--ink); }
+  .axis { grid-column:2; display:flex; justify-content:space-between; font-size:19px; color:var(--muted); border-top:1px solid #d6dbe1; padding-top:4px; }
+  .axis2 { grid-column:2; position:relative; height:22px; border-top:1px solid #d6dbe1; font-size:19px; color:var(--muted);} .axis2 span{position:absolute; top:4px; transform:translateX(-50%);} .axis2 span:first-child{transform:none} .axis2 span:last-child{transform:translateX(-100%)}
+  .note { font-size:20px; color:var(--muted); margin-top:16px; line-height:1.5; }
+  .valnote { display:block; font-size:18px; font-weight:400; color:var(--red); }
+  /* deployment */
+  .dep { display:grid; grid-template-columns:1fr 1fr 1.15fr 1fr; gap:0 34px; align-items:stretch; position:relative; }
+  .dbox { border:2px solid var(--line); border-radius:10px; padding:14px 16px; background:#fff; font-size:21px; line-height:1.45; position:relative; }
+  .dbox b { display:block; font-size:24px; margin-bottom:6px; white-space:nowrap; }
+  .dbox span { color:var(--muted); }
+  .dbox.gate { border-color:var(--teal); background:var(--teal-soft); }
+  .dbox.ai { border-color:#8e76d6; background:#f6f3fd; }
+  .dbox.human { border-color:var(--amber); background:var(--amber-soft); }
+  .dbox:not(:last-child)::after { content:"→"; position:absolute; right:-32px; top:42%; font-size:30px; color:#374151; }
+  .dep-row2 { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-top:22px; }
+  .outcome { border-radius:10px; padding:12px 16px; font-size:21px; line-height:1.5; }
+  .outcome b { font-size:23px; }
+  .ok { background:var(--teal-soft); border:2px solid #9cd0c8; } .bad { background:var(--red-soft); border:2px solid #f0b8b2; }
+  .dep-band { margin-top:18px; display:flex; gap:12px; flex-wrap:wrap; }
+  .dep-band span { border:1.5px solid var(--line); border-radius:999px; padding:5px 12px; font-size:18px; background:var(--soft); }
+</style>
+</head>
+<body>
+
+<!-- Figure 0: deployment in a development pipeline -->
+<section class="fig" id="deployment">
+  <div class="dep">
+    <div class="dbox ai"><b>AI编程助手 / 开发者</b><span>提交安全修复补丁<br>AI生成或人工编写</span></div>
+    <div class="dbox"><b>代码托管平台</b><span>合并请求触发流水线<br>或在本机一键检查</span></div>
+    <div class="dbox gate"><b>CredProof 验收闸门</b><span>隔离副本中实际运行<br>不泄密·不乱读·不乱连<br>业务保持 · 秒级完成</span></div>
+    <div class="dbox human"><b>负责人采纳</b><span>只能采纳“通过”版本<br>决定追加留存</span></div>
+  </div>
+  <div class="dep-row2">
+    <div class="outcome ok"><b>通过 →</b> 待人工采纳 → 合并；导出验收报告与复检材料，供审计、交付和等保材料留存；导出的回归测试进入项目，以后每次提交自动重验。</div>
+    <div class="outcome bad"><b>不通过 / 证据不足 →</b> 退回补丁，附具体失败条件和脱敏运行证据（哪个通道泄露、读了哪个文件、连了哪个服务），AI或开发者据此修订后重新验收。</div>
+  </div>
+  <div class="dep-band"><span>私有化部署，代码与凭据不出内网</span><span>本地开源模型，不调用付费API</span><span>与扫描工具、CI互补</span><span>结论绑定版本，代码一变即失效</span></div>
+</section>
+
+<!-- Figure 1: architecture -->
+<section class="fig" id="architecture">
+  <div class="arch">
+    <div class="l1" style="display:contents"><div class="layer-name">接入层<small>开发者确认</small></div>
+      <div class="layer"><div class="box"><b>项目配置 credproof.toml</b><span>入口、允许目录与服务、凭据变量名、必要业务测试</span></div><div class="box"><b>命令行工具</b><span>init / check / repair / export-tests</span></div><div class="box"><b>本地Web工作台</b><span>只接受启动时登记的项目，不接受任意路径或命令</span></div></div></div>
+    <div class="l2" style="display:contents"><div class="layer-name">执行层<small>一次性隔离副本</small></div>
+      <div class="layer"><div class="box"><b>隔离环境</b><span>WSL + bubblewrap；只读系统与项目、无外网、清空环境变量、资源上限</span></div><div class="box"><b>受控访问组件</b><span>read_text / get_json；策略在加载项目代码前一次性安装</span></div><div class="box"><b>本地模拟服务</b><span>允许服务与禁止服务各一个；允许服务的跳转指向禁止服务</span></div></div></div>
+    <div class="l3" style="display:contents"><div class="layer-name">观测层<small>不信任代码自述</small></div>
+      <div class="layer"><div class="box"><b>文件与连接审计</b><span>Python运行时审计钩子，先解析真实路径再分类</span></div><div class="box"><b>凭据通道检查</b><span>返回值、输出、DEBUG日志、异常中的随机合成凭据</span></div><div class="box"><b>服务回执</b><span>谁收到了请求、路径、是否带对凭据</span></div><div class="box"><b>业务测试观察</b><span>逐用例记录收集、执行、通过、跳过、失败</span></div></div></div>
+    <div class="l4" style="display:contents"><div class="layer-name">判定层<small>固定程序</small></div>
+      <div class="layer"><div class="box"><b>14项必要条件 · 双向证据</b><span>不泄密、不乱读、不乱连，同时必须真实读取授权资料、真实完成授权认证、业务测试全部通过</span></div><div class="box"><b>三值结论</b><span>通过 / 不通过 / 证据不足；证据缺失绝不显示通过</span></div></div></div>
+    <div class="l5" style="display:contents"><div class="layer-name">协同层<small>人机协同</small></div>
+      <div class="layer"><div class="box"><b>版本链</b><span>AI原件与每次开发者修订，规则与测试不可改</span></div><div class="box"><b>人工采纳</b><span>程序判定与人工决定分开；AI不能自批，人不能推翻不通过</span></div><div class="box"><b>导出与复检</b><span>结论绑定确切版本，新目录重新执行完整验收</span></div></div></div>
+    <div class="ai-band"><b>AI候选生成（本地大模型）</b><span>独立模型进程边界：仅本地回环网络，看不到仓库与真实凭据；只能读取允许的代码与脱敏证据、提交候选，无判定权。不调用付费API。</span></div>
+  </div>
+</section>
+
+<!-- Figure 2: workflow -->
+<section class="fig" id="workflow">
+<svg viewBox="0 0 1198 580" width="1136" height="550" xmlns="http://www.w3.org/2000/svg" font-family="Noto Sans CJK SC, sans-serif">
+<defs><marker id="mk" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#374151"/></marker><marker id="mr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10z" fill="#b42318"/></marker></defs>
+<path d="M210,152.0 L250,152.0" fill="none" stroke="#374151" stroke-width="2.8"  marker-end="url(#mk)"/><path d="M454,152.0 L494,152.0" fill="none" stroke="#374151" stroke-width="2.8"  marker-end="url(#mk)"/><path d="M698,152.0 L738,152.0" fill="none" stroke="#374151" stroke-width="2.8"  marker-end="url(#mk)"/><path d="M942,152.0 L982,152.0" fill="none" stroke="#374151" stroke-width="2.8"  marker-end="url(#mk)"/><path d="M698,412.0 L738,412.0" fill="none" stroke="#374151" stroke-width="2.8"  marker-end="url(#mk)"/><path d="M842.0,350 L842.0,218" fill="none" stroke="#374151" stroke-width="2.8"  marker-end="url(#mk)"/><path d="M558.0,90 C558.0,35 394.0,35 394.0,86" fill="none" stroke="#b42318" stroke-width="2.8" stroke-dasharray="9 7" marker-end="url(#mr)"/><path d="M598.0,214 L598.0,346" fill="none" stroke="#b42318" stroke-width="2.8" stroke-dasharray="9 7" marker-end="url(#mr)"/><path d="M792.0,474 C792.0,526 648.0,526 648.0,478" fill="none" stroke="#b42318" stroke-width="2.8" stroke-dasharray="9 7" marker-end="url(#mr)"/><g><rect x="10" y="90" width="200" height="124" rx="10" fill="#e6f3f1" stroke="#0f766e" stroke-width="2.4"/>
+<circle cx="35" cy="120" r="15" fill="#0f766e"/><text x="35" y="127" text-anchor="middle" font-size="19" fill="#fff" font-weight="700">1</text>
+<text x="58" y="129" font-size="25" font-weight="700" fill="#1f2937">发现问题</text>
+<text x="24" y="166" font-size="20" fill="#374151">隔离运行原代码</text><text x="24" y="194" font-size="20" fill="#374151">取得违规证据</text></g><g><rect x="254" y="90" width="200" height="124" rx="10" fill="#f4f0fd" stroke="#6d4fc6" stroke-width="2.4"/>
+<circle cx="279" cy="120" r="15" fill="#6d4fc6"/><text x="279" y="127" text-anchor="middle" font-size="19" fill="#fff" font-weight="700">2</text>
+<text x="302" y="129" font-size="25" font-weight="700" fill="#1f2937">AI候选</text>
+<text x="268" y="166" font-size="20" fill="#374151">只能改入口文件</text><text x="268" y="194" font-size="20" fill="#374151">没有判定权</text></g><g><rect x="498" y="90" width="200" height="124" rx="10" fill="#e6f3f1" stroke="#0f766e" stroke-width="2.4"/>
+<circle cx="523" cy="120" r="15" fill="#0f766e"/><text x="523" y="127" text-anchor="middle" font-size="19" fill="#fff" font-weight="700">3</text>
+<text x="546" y="129" font-size="25" font-weight="700" fill="#1f2937">隔离验收</text>
+<text x="512" y="166" font-size="20" fill="#374151">业务测试与场景</text><text x="512" y="194" font-size="20" fill="#374151">14项必要条件</text></g><g><rect x="742" y="90" width="200" height="124" rx="10" fill="#fbf3e6" stroke="#9a5b00" stroke-width="2.4"/>
+<circle cx="767" cy="120" r="15" fill="#9a5b00"/><text x="767" y="127" text-anchor="middle" font-size="19" fill="#fff" font-weight="700">6</text>
+<text x="790" y="129" font-size="25" font-weight="700" fill="#1f2937">人工采纳</text>
+<text x="756" y="166" font-size="20" fill="#374151">只能采纳当前</text><text x="756" y="194" font-size="20" fill="#374151">完整通过版本</text></g><g><rect x="986" y="90" width="200" height="124" rx="10" fill="#e6f3f1" stroke="#0f766e" stroke-width="2.4"/>
+<circle cx="1011" cy="120" r="15" fill="#0f766e"/><text x="1011" y="127" text-anchor="middle" font-size="19" fill="#fff" font-weight="700">7</text>
+<text x="1034" y="129" font-size="25" font-weight="700" fill="#1f2937">导出复检</text>
+<text x="1000" y="166" font-size="20" fill="#374151">新目录重新执行</text><text x="1000" y="194" font-size="20" fill="#374151">不读取旧结论</text></g><g><rect x="498" y="350" width="200" height="124" rx="10" fill="#fbf3e6" stroke="#9a5b00" stroke-width="2.4"/>
+<circle cx="523" cy="380" r="15" fill="#9a5b00"/><text x="523" y="387" text-anchor="middle" font-size="19" fill="#fff" font-weight="700">4</text>
+<text x="546" y="389" font-size="25" font-weight="700" fill="#1f2937">开发者修订</text>
+<text x="512" y="426" font-size="20" fill="#374151">看证据与差异</text><text x="512" y="454" font-size="20" fill="#374151">保存为新版本</text></g><g><rect x="742" y="350" width="200" height="124" rx="10" fill="#e6f3f1" stroke="#0f766e" stroke-width="2.4"/>
+<circle cx="767" cy="380" r="15" fill="#0f766e"/><text x="767" y="387" text-anchor="middle" font-size="19" fill="#fff" font-weight="700">5</text>
+<text x="790" y="389" font-size="25" font-weight="700" fill="#1f2937">重新验收</text>
+<text x="756" y="426" font-size="20" fill="#374151">同一套标准</text><text x="756" y="454" font-size="20" fill="#374151">人也不能绕过</text></g><text x="700" y="140.0" font-size="20" fill="#0f766e" font-weight="700">通过</text><text x="854.0" y="289.0" font-size="20" fill="#0f766e" font-weight="700">通过</text><text x="476.0" y="28" text-anchor="middle" font-size="20" fill="#b42318">不通过：失败证据反馈给AI，再次提出候选</text><text x="610.0" y="289.0" font-size="20" fill="#b42318">不通过：开发者接手</text><text x="720.0" y="550" text-anchor="middle" font-size="20" fill="#b42318">不通过：继续修订</text><g font-size="20" fill="#374151"><rect x="10" y="354" width="22" height="22" rx="4" fill="#f4f0fd" stroke="#6d4fc6" stroke-width="2.4"/><text x="42" y="372">AI：只提建议</text>
+<rect x="10" y="394" width="22" height="22" rx="4" fill="#e6f3f1" stroke="#0f766e" stroke-width="2.4"/><text x="42" y="412">程序：唯一判定者</text>
+<rect x="10" y="434" width="22" height="22" rx="4" fill="#fbf3e6" stroke="#9a5b00" stroke-width="2.4"/><text x="42" y="452">人：修订与采纳</text>
+<text x="10" y="496" fill="#5b6472">结论与决定均绑定确切代码版本</text></g>
+</svg>
+</section>
+
+<!-- Figure 4: comparison chart -->
+<section class="fig" id="comparison">
+<p class="chart-title">A　10份实际泄露凭据的AI补丁：各方法发现了几份</p><p class="chart-sub">凭据泄露由CredProof在运行中实际观测到（返回值、输出、日志或异常中出现本次随机凭据）</p><div class="bars"><div class="bar-label">Gitleaks 密钥扫描<small>默认规则</small></div><div class="track"><span class="zero">一份也没发现</span></div><div class="val">0 / 10</div><div class="bar-label">Bandit 静态分析<small>凭据相关规则</small></div><div class="track"><span class="zero">一份也没发现</span></div><div class="val">0 / 10</div><div class="bar-label">Semgrep 静态分析<small>凭据写入日志规则</small></div><div class="track"><div class="fill" style="width:30.0%"></div></div><div class="val">3 / 10<small class="valnote">另误报3份</small></div><div class="bar-label">业务测试（CI）<small>因功能失败而附带拦下</small></div><div class="track"><div class="fill" style="width:60.0%"></div></div><div class="val">6 / 10</div><div class="bar-label"><b>CredProof 运行时验收</b><small>14项必要条件</small></div><div class="track"><div class="fill hl" style="width:100.0%"></div></div><div class="val">10 / 10</div></div><div style="height:34px"></div><p class="chart-title">B　7份业务测试全部通过、但实际不合格的AI补丁</p><p class="chart-sub">这些补丁在常规CI中显示为绿色；不合格原因包括凭据泄露、越界访问、一刀切拒绝和入口崩溃</p><div class="bars"><div class="bar-label">业务测试（CI）<small>pytest全部通过</small></div><div class="track"><span class="zero">一份也没发现</span></div><div class="val">0 / 7</div><div class="bar-label">Gitleaks 密钥扫描<small>默认规则</small></div><div class="track"><span class="zero">一份也没发现</span></div><div class="val">0 / 7</div><div class="bar-label">Semgrep 静态分析<small>凭据写入日志规则</small></div><div class="track"><div class="fill" style="width:28.6%"></div></div><div class="val">2 / 7</div><div class="bar-label"><b>CredProof 运行时验收</b><small>14项必要条件</small></div><div class="track"><div class="fill hl" style="width:100.0%"></div></div><div class="val">7 / 7</div></div>
+<p class="note">已知正确的5个版本（参考修复、无关修改、python-dotenv修复版及其无关修改、开发者修订版）CredProof全部判定通过，没有误报。Bandit的“URL打开”通用提示同样出现在原始漏洞代码上，且补丁改用其他库后即消失，不能说明补丁是否修好，因此不计为凭据相关发现。数据：21份唯一AI补丁，静态工具只读源码不运行。</p>
+</section>
+
+
+</body>
+</html>

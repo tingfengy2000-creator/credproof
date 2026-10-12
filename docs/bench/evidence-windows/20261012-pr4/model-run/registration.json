@@ -1,0 +1,54 @@
+{
+ "kind": "PRE_REGISTERED_BENCH_V1_WINDOWS",
+ "source_commit": "ad3771cd7182863310f04e7325276cf2cd405017",
+ "run": "experiments\\bench-v1\\20261012-5090-bench-v1",
+ "models": [
+  {
+   "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+   "manifest": "models/manifests/registry.ollama.ai/library/qwen2.5-coder/32b-instruct-q4_K_M",
+   "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41"
+  },
+  {
+   "name": "qwen3-coder:30b",
+   "manifest": "models/manifests/registry.ollama.ai/library/qwen3-coder/30b",
+   "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca"
+  }
+ ],
+ "generation_options": {
+  "temperature": 0.7,
+  "top_p": 0.95,
+  "num_ctx": 16384,
+  "num_predict": 2048
+ },
+ "judge_options": {
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "num_ctx": 16384,
+  "num_predict": 512,
+  "seed": 0
+ },
+ "samples": 3,
+ "generation_maximum": 96,
+ "judge_maximum": 224,
+ "request_timeout_seconds": 600,
+ "supervisor_timeout_seconds": 200000,
+ "new_model_probes": 0,
+ "native_tool_calls": 0,
+ "retries": 0,
+ "file_sha256": {
+  "scripts\\bench\\build_results.py": "cdd6843d652324961fed32575141877468f03c440512fceebe9c4f382905b2c3",
+  "scripts\\bench\\check_variant.py": "a4d16df8ff5ab60a72ef55777be48641941e8e9761d719c4e118b84f7b63f0cd",
+  "scripts\\bench\\common.py": "3fb0083994c1a5e10d3dc1c8448ee48e70da4d681b91b685253ee6dc23488e9c",
+  "scripts\\bench\\generate.py": "1d9802cbff9997125b29f3707d2be28c8d6371b4a99394fc814fbb9f237613f2",
+  "scripts\\bench\\isolated_service.py": "1318aaee2688e104bdd9a546573b74c2716b0289a2ed05a213c5d553f6c96610",
+  "scripts\\bench\\isolated_worker.py": "51ec41aedd21a3003bc03705eac96531fb7e247b7c4806a49f041911edbb4dfc",
+  "scripts\\bench\\judge.py": "cfec9d856456879b183443cc6f4d9fe631eb0d4817659b5354c63b77c1e12740",
+  "scripts\\bench\\recheck_history.py": "57794ab2c8144efc76075f099f65cdbb362f74a54846774e6da77d516b5df075",
+  "scripts\\bench\\review_capture.py": "c17550dc0d9df3788320a991ca6ceedcb82eb78112c32eb8150af50e1ff7a19c",
+  "scripts\\bench\\run_isolated.py": "ac70bde20888fb1c9c81b5b07fba0d2a5cfd047e1bf5bd18381e53b48d2bdfc9",
+  "scripts\\bench\\validate_targets.py": "4f980c35cf8746ad1066fdbed2c43c4384baa33c805987a6d59f837982299f30",
+  "docs\\bench\\prompts\\judge-v1.md": "c85b1455ad8c025d87700cdc7d04bdb16b18b7ebb2ac036ec9660fab9b5e3557",
+  "docs\\bench\\prompts\\repair-v1.md": "deda62361f7431bc24b2d75c51b3c797b8ae1ba87974106e2cad0f075336f58a"
+ },
+ "note": "Only transport differs. Frozen generate.py/judge.py/common.py and prompts are unchanged."
+}

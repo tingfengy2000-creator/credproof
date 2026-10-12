@@ -279,7 +279,8 @@ class Run:
 
 
 class Application:
-    def __init__(self, root=ROOT, histories=(), access_mode='live', project_config=None, project_examples=False):
+    def __init__(self, root=ROOT, histories=(), access_mode='live', project_config=None, project_examples=False,
+                 bench_results=None):
         if access_mode not in ('view', 'recheck', 'live'):
             raise ValueError('Unsupported launch mode')
         self.access_mode = access_mode
@@ -300,6 +301,9 @@ class Application:
         self.project_workspace = ProjectWorkspace(self.root, config_path=project_config, examples=project_examples)
         for entry in histories:
             self.add_history(entry)
+        # Benchmark results are a read-only, operator-selected file; never a request path.
+        self.bench_path = Path(bench_results).absolute() if bench_results else None
+        self._bench_cache = (None, None)
 
     def runtime(self, force=False):
         if self.access_mode == 'view':
@@ -359,10 +363,40 @@ class Application:
                            ] if key in LIVE_PROJECTS else PUBLIC_RULES), 'live_supported': key in LIVE_PROJECTS} for key, path in self.cases.items()],
                 'runtime': self.runtime(), 'access_mode': self.access_mode,
                 'review_session': self.review_session, 'reviews': self.review_workspace.list(),
+                'bench_available': self.bench_path is not None,
                 'demonstrations': getattr(self, 'demonstrations', []),
                 'history': [{'id': run.id, 'case_id': run.case_id, 'created_at': run.started_at,
                              'label': f'{run.case_id.upper()} · {run.started_at or "未提供时间"}'}
                             for run in saved_runs if run.status not in ('QUEUED', 'RUNNING')]}
+
+    def bench(self):
+        """Recorded benchmark results (bench-results/v1); patch code and diff are served per patch."""
+        if self.bench_path is None:
+            raise Problem(404, '没有加载评测数据；启动时用 --bench-results 指定。')
+        try:
+            stamp = self.bench_path.stat().st_mtime_ns
+            if self._bench_cache[1] is None or self._bench_cache[0] != stamp:
+                data = read_json(self.bench_path, 32 * 1024 * 1024)
+                if (not isinstance(data, dict) or data.get('schema') != 'credproof.bench-results/v1'
+                        or not isinstance(data.get('patches'), list)
+                        or any(not isinstance(row, dict) for row in data['patches'])):
+                    raise Problem(409, '评测数据格式不受支持。')
+                self._bench_cache = (stamp, data)
+        except (OSError, ValueError):
+            raise Problem(409, '评测数据缺失、过大或无法解析。')
+        return self._bench_cache[1]
+
+    def bench_overview(self):
+        data = self.bench()
+        rows = [{k: v for k, v in row.items() if k not in ('code', 'diff')} for row in data.get('patches', [])]
+        return {**{k: v for k, v in data.items() if k != 'patches'}, 'patches': rows,
+                'notice': '已记录的评测结果，不是本次现场执行。'}
+
+    def bench_patch(self, identifier):
+        for row in self.bench().get('patches', []):
+            if row.get('id') == identifier:
+                return row
+        raise Problem(404, '没有这份评测补丁记录。')
 
     def project_modes(self):
         """Describe the real CLI project workflow without accepting paths or commands."""
@@ -912,6 +946,11 @@ class Handler(BaseHTTPRequestHandler):
                 raise Problem(409, str(error))
             finally:
                 app.operation.release()
+        if self.command == 'GET' and path == '/api/bench':
+            return self.send_json(200, app.bench_overview())
+        bench_match = re.fullmatch(r'/api/bench/patches/([A-Za-z0-9_.:-]{1,160})', path)
+        if self.command == 'GET' and bench_match:
+            return self.send_json(200, app.bench_patch(bench_match[1]))
         if self.command == 'GET' and path == '/api/project/modes':
             return self.send_json(200, app.project_modes())
         if self.command == 'POST' and path in ('/api/project/select', '/api/project/check', '/api/project/export'):
