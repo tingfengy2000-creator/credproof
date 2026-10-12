@@ -1,0 +1,95 @@
+{
+  "kind": "GIT_PUBLICATION_BYTE_MAPPING",
+  "evidence_parent_commit": "a103c25453b800f39d23468a47e569ec52ec868d",
+  "note": "derivation.json public_sha256/public_bytes describe the pre-Git redacted local derived files; Git normalized CRLF in some text files. Published Git blob hashes are separately recorded here. Original logs and earlier receipt are preserved. No test status or content was changed.",
+  "records": [
+    {
+      "path": "complete-pytest.txt",
+      "local_derived_sha256": "2297ee4f4d542e7950f37d3285e05405111362599f0d9e58a054983db4c7fa7e",
+      "local_derived_bytes": 1061,
+      "published_git_blob_sha256": "6083291aadd0d2d41af4fb5edb9fd6ae7f25f52e3ea647354e54b5519f71d7ff",
+      "published_git_blob_bytes": 1049,
+      "publish_transform": "CRLF_TO_LF_ONLY"
+    },
+    {
+      "path": "complete-pytest.xml",
+      "local_derived_sha256": "f91289749b23dbeae010695b18d84b80974899eb5c758cf4bc2b32ddb8ad44ef",
+      "local_derived_bytes": 38354,
+      "published_git_blob_sha256": "f91289749b23dbeae010695b18d84b80974899eb5c758cf4bc2b32ddb8ad44ef",
+      "published_git_blob_bytes": 38354,
+      "publish_transform": "IDENTITY"
+    },
+    {
+      "path": "maintained-pytest.txt",
+      "local_derived_sha256": "66f51750c997f21d9bed7cc650cd2a62650e4313a01660a1eafefb7c717a1969",
+      "local_derived_bytes": 1073,
+      "published_git_blob_sha256": "3de4a5628c9405243e93b13e0d466cbfbcea00b001e391867c4b75c9d19c7590",
+      "published_git_blob_bytes": 1061,
+      "publish_transform": "CRLF_TO_LF_ONLY"
+    },
+    {
+      "path": "maintained-pytest.xml",
+      "local_derived_sha256": "5245bf0e13dee7ad2c186185b95ae476bc17799da9d0dbebe5ea8076acc0ec3b",
+      "local_derived_bytes": 43620,
+      "published_git_blob_sha256": "5245bf0e13dee7ad2c186185b95ae476bc17799da9d0dbebe5ea8076acc0ec3b",
+      "published_git_blob_bytes": 43620,
+      "publish_transform": "IDENTITY"
+    },
+    {
+      "path": "full-pytest.txt",
+      "local_derived_sha256": "13c4a62ff4bfa25ee8df5b625118613c7971d70697e0403fa2463bdee7c67165",
+      "local_derived_bytes": 42390,
+      "published_git_blob_sha256": "67c676aa0997f18b605766b59f49c33dab858b747aef9b64f09a8018f8a76945",
+      "published_git_blob_bytes": 41951,
+      "publish_transform": "CRLF_TO_LF_ONLY"
+    },
+    {
+      "path": "full-pytest.xml",
+      "local_derived_sha256": "6cd72970e876ad5dc58b1d698ae21c7cd884998b08b19d62da55f4c17e4c37cd",
+      "local_derived_bytes": 38378,
+      "published_git_blob_sha256": "d39cb1d7ad44675480f77ab86ddc88d5baae4ee2be8abc6327a5d178ff618862",
+      "published_git_blob_bytes": 38108,
+      "publish_transform": "CRLF_TO_LF_ONLY"
+    },
+    {
+      "path": "gitleaks-pytest.txt",
+      "local_derived_sha256": "8e125c1ec92a1c8f47db2bf363937be2a6edaa9ca2e6110369cf1da7dbc5c38a",
+      "local_derived_bytes": 193,
+      "published_git_blob_sha256": "46fcb98a90b477cf001bf2db0134c27bcd72fabd9e619171f4f4d921b1c3f936",
+      "published_git_blob_bytes": 190,
+      "publish_transform": "CRLF_TO_LF_ONLY"
+    },
+    {
+      "path": "gitleaks-pytest.xml",
+      "local_derived_sha256": "a0cdd654a58ecb0519486266bf5cab0aefc2e7cbb425cacf41519a6da8d2bab2",
+      "local_derived_bytes": 2372,
+      "published_git_blob_sha256": "a0cdd654a58ecb0519486266bf5cab0aefc2e7cbb425cacf41519a6da8d2bab2",
+      "published_git_blob_bytes": 2372,
+      "publish_transform": "IDENTITY"
+    },
+    {
+      "path": "readonly-http-tests.json",
+      "local_derived_sha256": "f32a2bfb0429c62e658752272e0a2fb5d65ce1608ee5d1939aad5a3c53d7063c",
+      "local_derived_bytes": 1045,
+      "published_git_blob_sha256": "f32a2bfb0429c62e658752272e0a2fb5d65ce1608ee5d1939aad5a3c53d7063c",
+      "published_git_blob_bytes": 1045,
+      "publish_transform": "IDENTITY"
+    },
+    {
+      "path": "readonly-http-tests.txt",
+      "local_derived_sha256": "cb3f543e8a2fe3079cecd9675ef20a17fc4a517578cb084f975accc91d3f221b",
+      "local_derived_bytes": 889,
+      "published_git_blob_sha256": "85a057247dd0968ec788262dbaa964a76b20703f70e685b0cefb418c5a43946c",
+      "published_git_blob_bytes": 878,
+      "publish_transform": "CRLF_TO_LF_ONLY"
+    },
+    {
+      "path": "static-review.json",
+      "local_derived_sha256": "36b23ec1b0282397efa567662704b4f9095d50ff23c52de31186970d3af9626e",
+      "local_derived_bytes": 2355,
+      "published_git_blob_sha256": "2a5765473e24eb04e87a629fb79923d431b4ec43cffbf8567f1e1074258dba90",
+      "published_git_blob_bytes": 2283,
+      "publish_transform": "CRLF_TO_LF_ONLY"
+    }
+  ]
+}

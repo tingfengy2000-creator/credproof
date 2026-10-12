@@ -35,3 +35,7 @@ node agent_pilot/tests/test_ui_project_verdict.js
 本次[安装来源收据](installed-origin.json)对应由 PR #8 源码构建的 dev37 wheel（339898 bytes），`python -I` 加载本次独立 venv 的 site-packages。没有用旧 dev35 包证明新界面可用。
 
 主次分层、印章和打印尚未亲眼核验，不能依据旧截图或 CSS 宣称通过。所有正式人工对象仍保持 PENDING/NOT_APPLIED。用户在本轮明确选择“先发布审查记录，暂不合并”。当前结论：**测试已完成，界面复核未完成，暂不合并**。
+
+## 公开字节与原件
+
+[脱敏派生记录](derivation.json)中的 `public_sha256/public_bytes` 是提交 Git 前本地派生文件的摘要和长度；部分文本入库时仅 CRLF 转为 LF。[发布字节映射](publication-bytes.json)另外列出每份 Git blob 的 SHA-256、长度和精确换行关系。旧收据和本地原始日志保留，不将两种字节混用。匿名取件将按 Git blob 校验。
