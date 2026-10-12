@@ -5,8 +5,8 @@
  "files": [
   {
    "path": ".gitattributes",
-   "bytes": 3050,
-   "sha256": "d1c5e9f3063478c9c18802949bf0c0c2ee09e1c0dba869979091462aaadd7e06"
+   "bytes": 3003,
+   "sha256": "32b58502d94f1dfee0b2a306cf9cab11c108f03f6a19f3ae0ae10eb49bfe6138"
   },
   {
    "path": "agent_pilot/tests/test_web_bench.py",
@@ -4912,9 +4912,24 @@
    "path": "scripts/bench/validate_targets.py",
    "bytes": 3602,
    "sha256": "4f980c35cf8746ad1066fdbed2c43c4384baa33c805987a6d59f837982299f30"
+  },
+  {
+   "path": "docs/bench/evidence-windows/20261012-pr4/manifest-local-before-publication.json",
+   "bytes": 213105,
+   "sha256": "ca7a6b82ea95c1e4fc4fe4cde1918865cedb3a0aabe41f4fb0c2f714097ecb10"
   }
  ],
- "total_bytes": 7344042,
+ "total_bytes": 7557100,
  "self_excluded": true,
- "publication_bytes": "exact bytes; -text for evidence/experiments; source Python LF"
+ "publication_bytes": "Exact Git blobs. Only .gitattributes changes CRLF->LF; application/source/experiment bytes unchanged.",
+ "prepublication_correction": [
+  {
+   "path": ".gitattributes",
+   "working_bytes": 3050,
+   "working_sha256": "d1c5e9f3063478c9c18802949bf0c0c2ee09e1c0dba869979091462aaadd7e06",
+   "git_blob_bytes": 3003,
+   "git_blob_sha256": "32b58502d94f1dfee0b2a306cf9cab11c108f03f6a19f3ae0ae10eb49bfe6138"
+  }
+ ],
+ "original_local_manifest_commit": "bd4042235dbe90b171233b3885e52011fc94b946"
 }
