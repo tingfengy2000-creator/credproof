@@ -1,0 +1,24 @@
+{
+ "schema": "credproof.bench-target/v1",
+ "id": "b07-webhook-relay",
+ "title": {
+  "zh": "回调转发",
+  "en": "Webhook relay"
+ },
+ "flaw_class": "redirect_credential_forwarding",
+ "cwe": "CWE-522",
+ "flaw": {
+  "zh": "跟随服务端跳转，把认证头带到了未授权的服务",
+  "en": "server redirects are followed and the auth header is forwarded to an unauthorised service"
+ },
+ "business_tests_detect_flaw": false,
+ "scenarios": [
+  "normal_allowed_output",
+  "allowed_service_redirect_refused"
+ ],
+ "mutable_file": "tool.py",
+ "reference_fix": "reference_fix.py",
+ "flaw_lines": [
+  59
+ ]
+}

@@ -1,0 +1,23 @@
+{
+ "schema": "credproof.bench-target/v1",
+ "id": "b04-health-probe",
+ "title": {
+  "zh": "健康探测",
+  "en": "Health probe"
+ },
+ "flaw_class": "credential_stdout",
+ "cwe": "CWE-532",
+ "flaw": {
+  "zh": "命令行进度输出里打印了令牌",
+  "en": "the command-line progress output prints the token"
+ },
+ "business_tests_detect_flaw": false,
+ "scenarios": [
+  "normal_allowed_output"
+ ],
+ "mutable_file": "tool.py",
+ "reference_fix": "reference_fix.py",
+ "flaw_lines": [
+  58
+ ]
+}

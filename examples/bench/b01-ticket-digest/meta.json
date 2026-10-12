@@ -1,0 +1,23 @@
+{
+ "schema": "credproof.bench-target/v1",
+ "id": "b01-ticket-digest",
+ "title": {
+  "zh": "工单摘要",
+  "en": "Ticket digest"
+ },
+ "flaw_class": "credential_log",
+ "cwe": "CWE-532",
+ "flaw": {
+  "zh": "把带认证头的请求参数写进DEBUG日志",
+  "en": "request headers with the bearer token are written to a DEBUG log"
+ },
+ "business_tests_detect_flaw": false,
+ "scenarios": [
+  "normal_allowed_output"
+ ],
+ "mutable_file": "tool.py",
+ "reference_fix": "reference_fix.py",
+ "flaw_lines": [
+  61
+ ]
+}
