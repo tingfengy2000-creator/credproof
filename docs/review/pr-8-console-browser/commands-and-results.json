@@ -1,0 +1,72 @@
+{
+  "reviewed_pr_head": "79e6b74627b4001ac071bd831d4133c1ccb10c8a",
+  "review_evidence_parent": "b5523a71e70db39279092d3582d36b07a15f92a5",
+  "commands": [
+    {
+      "command": "npm i --no-save playwright@1.56.1",
+      "cwd": "<review-data>",
+      "exit_code": 0,
+      "note": "No browser download; existing Edge used."
+    },
+    {
+      "command": "node <review-source>/docs/ui/console-v1/check-console.mjs --base http://127.0.0.1:8768 --out ./check-demo",
+      "exit_code": 0,
+      "server": "installed launch --demo --bench-results <review-source>/docs/bench/bench-results.json",
+      "result": "PASS"
+    },
+    {
+      "command": "node <review-source>/docs/ui/console-v1/check-console.mjs --base http://127.0.0.1:8768 --out ./check-readonly",
+      "exit_code": 0,
+      "server": "docs/handoff/frontend-5060/view-readonly.py --bench-results docs/bench/bench-results.json",
+      "result": "PASS"
+    },
+    {
+      "command": "node supplement-browser.mjs ./supplement-recheck",
+      "exit_code": 1,
+      "reason": "Supplement helper read async code tab before it finished loading. Original failing summary retained; not an application verdict."
+    },
+    {
+      "command": "node supplement-browser.mjs ./supplement-recheck-loaded",
+      "exit_code": 0,
+      "change": "Wait for actual empty-diff confirmation and review state before assertions."
+    },
+    {
+      "command": "node supplement-browser.mjs ./supplement-live",
+      "exit_code": 0,
+      "note": "GET only; start enabled, NOT clicked."
+    },
+    {
+      "command": "node capture-review-states.mjs (first attempt)",
+      "exit_code": 1,
+      "reason": "Helper label locator did not match saved-review selector; no POST."
+    },
+    {
+      "command": "node capture-review-states.mjs",
+      "exit_code": 0,
+      "change": "Use observed #review-saved selector; GET only."
+    },
+    {
+      "command": "<installed-venv>/Scripts/python.exe -I - (read bundle required config path via bundle._read)",
+      "exit_code": 1,
+      "stdout": "wheel-config-check.txt",
+      "result": "EXPECTED_REPRODUCTION: installed wheel missing config/runtime.example.json"
+    },
+    {
+      "command": "pdftoppm.exe -scale-to 1500 -png <folder>/report.pdf <folder>/report-page",
+      "exit_code": 0,
+      "folders": [
+        "check-demo",
+        "check-readonly"
+      ]
+    }
+  ],
+  "manual_server": "helpers/serve-manual.py: temporary copied data; original Handler and Application used. Wrapper observes responses and session-header match booleans, never token values.",
+  "manual_modes": {
+    "human_revision_check_decide_export": "installed-wheel; current program and component, real WSL/bubblewrap execution",
+    "h03_installed_recheck": "409 before execution, packaging missing config",
+    "h03_source_recheck_export": "source-launch equivalent, new real independent PASS recheck, export 200",
+    "live": "installed-wheel; read-only readiness inspection, no new inference"
+  },
+  "prior_tests": "42 follow-up tests and 255 earlier maintained Windows tests are referenced at their original fixed evidence entries, NOT rerun or counted as browser cases.",
+  "safety": "Model calls 0; approvals test_operation only, copied data only; original project/index not applied; no PR merge."
+}

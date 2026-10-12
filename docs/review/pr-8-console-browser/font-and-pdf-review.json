@@ -1,0 +1,32 @@
+{
+  "os": "Windows",
+  "edge_version": "155.0.4283.45",
+  "playwright": "1.56.1",
+  "node": "24.19.0",
+  "registry_fonts": {
+    "Microsoft YaHei & Microsoft YaHei UI (TrueType)": "msyh.ttc",
+    "SimSun & NSimSun (TrueType)": "simsun.ttc"
+  },
+  "font_note": "Script width heuristic reports SimSun=false, but registry confirms installed. Equal fallback width is not a reliable font absence assertion. Chinese rendered glyphs reviewed visually.",
+  "pdfs": [
+    {
+      "path": "check-demo/report.pdf",
+      "pages": 2,
+      "size_pt": [
+        594.96,
+        841.92
+      ],
+      "visual_review": "Both rendered pages viewed; Chinese, verdict stamp, repeated table header and pagination legible without clipping."
+    },
+    {
+      "path": "check-readonly/report.pdf",
+      "pages": 2,
+      "size_pt": [
+        594.96,
+        841.92
+      ],
+      "visual_review": "Both rendered pages viewed; Chinese, verdict stamp, repeated table header and pagination legible without clipping."
+    }
+  ],
+  "visual_scope": "Actual report PDF pages and selected desktop/mobile/human-review screenshots; not a general accessibility audit."
+}

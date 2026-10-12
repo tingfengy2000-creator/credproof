@@ -1,0 +1,28 @@
+{
+  "mode": "recheck",
+  "model_calls": 0,
+  "program_source": "source-launch-equivalent-to-start-recheck",
+  "interpreter": "<test-venv>\\Scripts\\python.exe",
+  "isolated": 0,
+  "version": "0.3.0.dev37",
+  "modules": {
+    "agent_pilot.web": {
+      "file": "<review-source>\\agent_pilot\\web.py",
+      "sha256": "b61578c9d4bf57d0362e368043c8505a326c7788f073bce7b5169bf06006bf31"
+    },
+    "credproof_safety.human_review": {
+      "file": "<review-source>\\credproof_safety\\human_review.py",
+      "sha256": "d55249a27978cda2502dc0d1b446c9cfaaac1f6b5bf14054a41199eb73129be9"
+    },
+    "credproof_safety.project": {
+      "file": "<review-source>\\credproof_safety\\project.py",
+      "sha256": "ba963bc7f41fde19eca75014f0be46308c7d882b168be15cf4773f50096787fe"
+    },
+    "agent_pilot.presentation": {
+      "file": "<review-source>\\agent_pilot\\presentation.py",
+      "sha256": "a3d13dfae7f68faefe065c2e8eacf7ef676d8a9c18ad0a6f0150b1927249c1ae"
+    }
+  },
+  "data_workspace": "<review-data>\\manual-data",
+  "source_head": "79e6b74627b4001ac071bd831d4133c1ccb10c8a"
+}

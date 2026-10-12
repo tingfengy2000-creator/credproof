@@ -1,0 +1,19 @@
+{
+  "origin": "http://127.0.0.1:8768",
+  "finding": "Global Browser config allowed the exact origin; the current chat session config independently retained that exact origin in denied.",
+  "global_before": {
+    "approval_mode": "never_ask",
+    "download_approval_mode": "never_ask",
+    "origins_allowed_contains_target": true,
+    "origins_denied_contains_target": false
+  },
+  "chat_before": {
+    "origins_denied_contains_target": true
+  },
+  "action": "Backed up session file; removed only exact stale target from session origins.denied, preserving unrelated settings.",
+  "chat_file": "<codex-home>/browser/sessions/01a0e764-37c5-77c2-bf7c-b4041dbcf8fc.toml",
+  "backup_suffix": ".before-8768-sync-20261012-194321.bak",
+  "chat_file_after_sha256": "318d41b525f16eb4b0e7d9f526c55735e69df5a3eea8faa1b040e33ff0552b81",
+  "actual_result": "Original CUA in-app browser opened same exact origin successfully, then performed review actions. No alternate origin/driver used to evade denial.",
+  "limits": "Observed global/chat setting discrepancy; internal cause of missed synchronization not established. No full browser config, unrelated sites or account data published."
+}

@@ -1,0 +1,203 @@
+{
+  "source": "manual-events.jsonl",
+  "requests": [
+    {
+      "at": "2026-10-12T11:54:47.176020+00:00",
+      "method": "POST",
+      "path": "/api/review/939e25f42bb142f39567c5cb644ebc6d/revise",
+      "status": 200,
+      "session_header_present": true,
+      "session_header_matches": true,
+      "body": {
+        "expected": {
+          "version_id": "v001",
+          "object_sha256": "d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b",
+          "report_sha256": "6c56068173c2eecc369d61d98eca72d037213156c93439a598140fb27121d6a2",
+          "decision_count": 1
+        },
+        "code": "\"\"\"Authorised materials assistant: developer revision, Codex assisted.\n\nUses the fixed access component; this revision is not runtime-model output.\n\"\"\"\nimport os\nimport logging\nfrom credproof_access import read_text, get_json\n\n\ndef run(request):\n    if not isinstance(request, dict) or not isinstance(request.get(\"resource\"), str):\n        raise ValueError(\"invalid request\")\n    credential_env = os.environ.get(\"CREDPROOF_CREDENTIAL_ENV\", \"CREDPROOF_TEST_CREDENTIAL\")\n    credential = os.environ[credential_env]\n    path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\")\n    material = read_text(path)\n    url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"]\n    service_data = get_json(url, credential)\n    logging.info(\"loaded %s\", request[\"resource\"])\n    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": service_data}\n\n# PR8 disposable UI regression: behavior unchanged.\n",
+        "reason": "PR8 独立副本界面测试：仅添加注释，保留全部业务与安全逻辑；不是本人采纳。"
+      },
+      "response_content_type": "application/json; charset=utf-8"
+    },
+    {
+      "at": "2026-10-12T11:55:06.592412+00:00",
+      "method": "POST",
+      "path": "/api/review/939e25f42bb142f39567c5cb644ebc6d/check",
+      "status": 200,
+      "session_header_present": true,
+      "session_header_matches": true,
+      "body": {
+        "expected": {
+          "version_id": "v002",
+          "object_sha256": "7356f8f792ca32cdba61dd77d2806a0f357e9ee326ded4bb97fecc91e3dc0cf4",
+          "report_sha256": null,
+          "decision_count": 1
+        }
+      },
+      "response_content_type": "application/json; charset=utf-8"
+    },
+    {
+      "at": "2026-10-12T11:55:28.363869+00:00",
+      "method": "POST",
+      "path": "/api/review/939e25f42bb142f39567c5cb644ebc6d/decide",
+      "status": 200,
+      "session_header_present": true,
+      "session_header_matches": true,
+      "body": {
+        "expected": {
+          "version_id": "v002",
+          "object_sha256": "7356f8f792ca32cdba61dd77d2806a0f357e9ee326ded4bb97fecc91e3dc0cf4",
+          "report_sha256": "ac7c1da21a131bb16c39c6918d32bd497cafa8ed91d8518a9bcf071d829ca8c6",
+          "decision_count": 1
+        },
+        "decision": "APPROVED",
+        "reason": "PR8 独立副本界面测试：仅添加注释，保留全部业务与安全逻辑；不是本人采纳。",
+        "test_operation": true
+      },
+      "response_content_type": "application/json; charset=utf-8"
+    },
+    {
+      "at": "2026-10-12T11:55:48.523429+00:00",
+      "method": "POST",
+      "path": "/api/review/939e25f42bb142f39567c5cb644ebc6d/export",
+      "status": 200,
+      "session_header_present": true,
+      "session_header_matches": true,
+      "body": {
+        "expected": {
+          "version_id": "v002",
+          "object_sha256": "7356f8f792ca32cdba61dd77d2806a0f357e9ee326ded4bb97fecc91e3dc0cf4",
+          "report_sha256": "ac7c1da21a131bb16c39c6918d32bd497cafa8ed91d8518a9bcf071d829ca8c6",
+          "decision_count": 2
+        },
+        "adopted": false
+      },
+      "response_content_type": "application/zip"
+    },
+    {
+      "at": "2026-10-12T11:55:49.782177+00:00",
+      "method": "POST",
+      "path": "/api/review/939e25f42bb142f39567c5cb644ebc6d/export",
+      "status": 200,
+      "session_header_present": true,
+      "session_header_matches": true,
+      "body": {
+        "expected": {
+          "version_id": "v002",
+          "object_sha256": "7356f8f792ca32cdba61dd77d2806a0f357e9ee326ded4bb97fecc91e3dc0cf4",
+          "report_sha256": "ac7c1da21a131bb16c39c6918d32bd497cafa8ed91d8518a9bcf071d829ca8c6",
+          "decision_count": 2
+        },
+        "adopted": true
+      },
+      "response_content_type": "application/zip"
+    },
+    {
+      "at": "2026-10-12T11:56:18.505107+00:00",
+      "method": "POST",
+      "path": "/api/review/939e25f42bb142f39567c5cb644ebc6d/decide",
+      "status": 200,
+      "session_header_present": true,
+      "session_header_matches": true,
+      "body": {
+        "expected": {
+          "version_id": "v002",
+          "object_sha256": "7356f8f792ca32cdba61dd77d2806a0f357e9ee326ded4bb97fecc91e3dc0cf4",
+          "report_sha256": "ac7c1da21a131bb16c39c6918d32bd497cafa8ed91d8518a9bcf071d829ca8c6",
+          "decision_count": 2
+        },
+        "decision": "NEEDS_CHANGES",
+        "reason": "PR8 跨页面冲突功能测试：第二页标记需要修改，不代表真实审阅。",
+        "test_operation": true
+      },
+      "response_content_type": "application/json; charset=utf-8"
+    },
+    {
+      "at": "2026-10-12T11:56:18.752761+00:00",
+      "method": "POST",
+      "path": "/api/review/939e25f42bb142f39567c5cb644ebc6d/decide",
+      "status": 409,
+      "session_header_present": true,
+      "session_header_matches": true,
+      "body": {
+        "expected": {
+          "version_id": "v002",
+          "object_sha256": "7356f8f792ca32cdba61dd77d2806a0f357e9ee326ded4bb97fecc91e3dc0cf4",
+          "report_sha256": "ac7c1da21a131bb16c39c6918d32bd497cafa8ed91d8518a9bcf071d829ca8c6",
+          "decision_count": 2
+        },
+        "decision": "REJECTED",
+        "reason": "PR8 独立副本界面测试：仅添加注释，保留全部业务与安全逻辑；不是本人采纳。",
+        "test_operation": true
+      },
+      "response_content_type": "application/json; charset=utf-8"
+    },
+    {
+      "at": "2026-10-12T11:56:42.692223+00:00",
+      "method": "POST",
+      "path": "/api/review/939e25f42bb142f39567c5cb644ebc6d/decide",
+      "status": 200,
+      "session_header_present": true,
+      "session_header_matches": true,
+      "body": {
+        "expected": {
+          "version_id": "v002",
+          "object_sha256": "7356f8f792ca32cdba61dd77d2806a0f357e9ee326ded4bb97fecc91e3dc0cf4",
+          "report_sha256": "ac7c1da21a131bb16c39c6918d32bd497cafa8ed91d8518a9bcf071d829ca8c6",
+          "decision_count": 3
+        },
+        "decision": "REJECTED",
+        "reason": "PR8 功能测试：刷新后以当前绑定记录拒绝；不修改正式对象。",
+        "test_operation": true
+      },
+      "response_content_type": "application/json; charset=utf-8"
+    },
+    {
+      "at": "2026-10-12T11:57:32.637611+00:00",
+      "method": "POST",
+      "path": "/api/agent/runs/replay-bc723dd1e1d263531c6de87f/recheck",
+      "status": 409,
+      "session_header_present": false,
+      "session_header_matches": false,
+      "body": {},
+      "response_content_type": "application/json; charset=utf-8"
+    },
+    {
+      "at": "2026-10-12T12:00:42.031358+00:00",
+      "method": "POST",
+      "path": "/api/agent/runs/replay-bc723dd1e1d263531c6de87f/recheck",
+      "status": 200,
+      "session_header_present": false,
+      "session_header_matches": false,
+      "body": {},
+      "response_content_type": "application/json; charset=utf-8"
+    },
+    {
+      "at": "2026-10-12T12:02:13.859102+00:00",
+      "method": "GET",
+      "path": "/api/agent/runs/replay-bc723dd1e1d263531c6de87f/export",
+      "status": 200,
+      "session_header_present": false,
+      "session_header_matches": false,
+      "body": null,
+      "response_content_type": "application/zip"
+    },
+    {
+      "at": "2026-10-12T12:08:21.881947+00:00",
+      "method": "POST",
+      "path": "/api/review/open",
+      "status": 200,
+      "session_header_present": true,
+      "session_header_matches": true,
+      "body": {
+        "run_id": "replay-f4e2083ea20d3be3f017ea0c"
+      },
+      "response_content_type": "application/json; charset=utf-8"
+    }
+  ],
+  "new_model_requests": 0,
+  "real_user_adoption": false,
+  "original_repository_applied": false,
+  "note": "Two GET export/downloads plus review POST exports are observed separately; program judgments are in full response events."
+}
