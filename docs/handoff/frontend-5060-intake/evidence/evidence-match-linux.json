@@ -1,0 +1,68 @@
+{
+  "kind": "READ_ONLY_EXISTING_EVIDENCE_CORRESPONDENCE",
+  "checked_at_utc": "2026-10-10T08:10:56.350542+00:00",
+  "program_source_commit": "50e0d694d1c40352b82853fc62d6df0983240d43",
+  "frozen_delivery_commit": "81c289fd71c8839e2c122032fe15a473f4380710",
+  "success": true,
+  "new_model_calls": 0,
+  "new_candidate_executions": 0,
+  "new_safety_experiments": 0,
+  "protected_program_unchanged": true,
+  "matched_program_files": [
+    {
+      "path": "agent_pilot/web.py",
+      "sha256": "6209f4093e24a19785434d9d736d12421c30df79438c6134cd2347a8d04c9302"
+    },
+    {
+      "path": "agent_pilot/ui/app.js",
+      "sha256": "0af4fed33303564ba55bfac1ed792a67800f1ba1ee40e11d0712db8a365961b1"
+    },
+    {
+      "path": "credproof_safety/human_review.py",
+      "sha256": "d55249a27978cda2502dc0d1b446c9cfaaac1f6b5bf14054a41199eb73129be9"
+    },
+    {
+      "path": "credproof_safety/project.py",
+      "sha256": "3a92c3674216cfecf976c933bd75e4aea37c12f493a038f50776a5f904e85c68"
+    },
+    {
+      "path": "credproof_safety/runner.py",
+      "sha256": "6a4593ae37a175c702580a78429d578fb85c1dac3f3de478dc49365f8236575c"
+    },
+    {
+      "path": "credproof_safety/project_bundle.py",
+      "sha256": "ab3d614a5fefe0e477a6f42b82e30a2d3a4eeaa5625c5478b601febf2b74a674"
+    }
+  ],
+  "wheel": {
+    "path": "docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/installation/credproof_safety-0.3.0.dev35-py3-none-any.whl",
+    "sha256": "ced6f43361cd3ca483f3ae7a6086383ee5a45edb2999c9a56abb62691ac448b4",
+    "bytes": 394508,
+    "member_hashes_verified": 86
+  },
+  "formal_object": {
+    "id": "939e25f42bb142f39567c5cb644ebc6d",
+    "version": "v001",
+    "source": "DEVELOPER_REVISION_CODEX_ASSISTED",
+    "candidate_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+    "project_tree_sha256": "d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b",
+    "technical_verdict": "PASS",
+    "decision": "PENDING",
+    "application": "NOT_APPLIED"
+  },
+  "existing_evidence": {
+    "required_business_cases": 4,
+    "required_checks": 14,
+    "http_events": 21,
+    "denied_unsafe_requests": 11,
+    "material_drift_clones": 4,
+    "public_bundle_files": 16,
+    "history_snapshot_files": 27,
+    "consumer_verdicts": [
+      "PASS",
+      "FAIL",
+      "PASS"
+    ]
+  },
+  "note": "Reads dev35 records and hashes only. Does not rerun their tests, approvals, model, candidate or recheck. External independent code review NOT_COMPLETED."
+}

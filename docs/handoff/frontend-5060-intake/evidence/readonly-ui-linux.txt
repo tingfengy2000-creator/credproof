@@ -1,0 +1,330 @@
+只读历史查看 / READ_ONLY_HISTORY：材料来自5090既有记录；本入口禁止生成、检查、修改、审批和导出。
+跳到验证工作区
+密证 CredProof
+AI TOOL SECURITY
+系统机制
+典型案例
+验证工作区
+本机服务已连接
+CREDENTIAL SECURITY / AI TOOLS
+
+工具不泄密、不乱读、不乱连。
+
+密证 CredProof
+——面向Python工具的AI辅助安全修复与证据验收工作台
+
+工具能正常运行，不代表只做了被允许的事。检查密钥输出、目录之外的文件读取和未授权服务请求；同时验收必要业务行为，把可再次运行的安全检查留在项目里。
+
+本地模型
+运行不调用付费 API
+材料可复检
+探索典型案例
+进入验证工作区
+↗
+
+AI提出建议，程序独立验收，开发者修订并决定是否采纳。采纳不等于已应用原仓库。
+
+CONTROLLED
+代码与观测
+建立可检验的疑点
+候选补丁
+本地模型提出修改
+程序验收
+检查泄露与业务行为
+材料复检
+结论对应具体修复对象
+机制示意 · 不代表当前任务结果
+01 / GENERATE
+证据驱动的候选生成与反馈调整
+
+程序先提供执行证据，模型生成候选；真实失败回执支持后续调整。
+
+02 / VERIFY
+程序控制的修改权限与安全/业务验收
+
+模型可以提出修改，但不能自行批准修改。条件由人工固定，结果由程序计算。
+
+03 / RECHECK
+对应修复对象的材料导出与复检
+
+交付的不只是一份补丁，还有对应副本、条件和可再次执行的验收依据。
+
+HOW IT WORKS
+从疑点到证据
+01
+确认泄露
+
+人工固定条件，程序生成证据
+
+02
+生成候选
+
+程序授权修改，模型提出补丁
+
+03
+验证复检
+
+检查具体对象，导出对应材料
+
+REUSABLE PROJECT ENTRY / CLI FIRST
+把检查带回你的 Python 项目
+
+同一套固定规则、受控副本和回归测试，不为每个项目重写一套裁判。
+
+四步接入，结果留在项目里
+
+配置文件由开发者确认目录、服务、凭据环境变量和必要业务检查；浏览器只展示入口，不接受任意代码或路径。
+
+01
+接入项目
+无需模型
+
+在项目根目录生成配置模板；默认不覆盖已有 credproof.toml。
+
+python -m credproof_safety init --project . --write
+02
+只做检查
+无需模型
+
+在受控副本运行 pytest、文件边界、网络边界和凭据观察。
+
+python -m credproof_safety check --config credproof.toml --output .credproof/report.json
+03
+请求修复
+需要本地模型
+
+仅在当前副本有对应违规证据时请求本地模型提出候选补丁。
+
+python -m credproof_safety repair --strategy bounded_patch --config credproof.toml --output .credproof/repair.json
+04
+导出测试
+无需模型
+
+导出不依赖模型、不信任旧 PASS 的 pytest 回归入口。
+
+python -m credproof_safety export-tests --config credproof.toml --output tests/credproof-regression
+体验示例 / 启动时授权项目
+未授权项目；使用 --demo 或 --project-config 启动
+查看范围
+现场检查 · 无模型
+导出安全测试
+EXTERNAL FIXTURE
+尚未运行
+python-dotenv v1.2.2
+
+人工注入的目录越界适配；不是上游漏洞或 CVE。 请用外部案例脚本在声明的 WSL 隔离环境运行。
+
+隔离材料缺失时只返回 UNKNOWN；不在宿主机降级执行。
+查看已有证据工作台
+AI ASSISTED / HUMAN REVIEW
+审阅、修订与人工采纳
+不调用模型即可继续
+
+导入真实AI历史候选，查看失败依据。开发者修订保存为新副本；技术检查与人工决定分别记录，原项目和index保持只读。
+
+已登记AI记录（历史响应，不是现场新推理）
+审阅此AI候选
+已保存的审阅工作
+939e25f4 · AI候选与开发者修订
+读取已有修订
+程序 UNKNOWN 人工 PENDING
+
+v001 · DEVELOPER_REVISION · 开发者修订，Codex辅助：恢复os导入；使用固定访问组件；保留HTTPError/ValueError约定、真实文件读取和授权认证，不输出凭据。
+对象 材料缺失
+报告 2026-10-10T03:51:30Z · 不适用／未验收 · 原仓库未应用
+
+final_validation_project_tree_mismatch
+
+必要测试：{ "collected": 4, "executed": 4, "passed": 4, "failed": 0, "skipped": 0 }
+
+原始问题代码
+原AI候选（保持原件）
+相邻版本差异与来源
+--- parent.py
++++ revision.py
+@@ -1,13 +1,9 @@
+-"""Small authorised materials assistant used by the reusable-entry example.
++"""Authorised materials assistant: developer revision, Codex assisted.
+ 
+-This initial version is intentionally vulnerable for the local lab: it reads a
+-path supplied by the request, follows a redirect, and includes its credential
+-in a debug message. The lab provides only synthetic material and loopback mock
+-services. The file is never run on a real account.
++Uses the fixed access component; this revision is not runtime-model output.
+ """
+-import json
++import os
+ import logging
+-from urllib.request import Request, urlopen
+ from credproof_access import read_text, get_json
+ 
+ 
+@@ -19,9 +15,6 @@
+     path = request.get("path") or os.environ.get("CREDPROOF_ALLOWED_FILE")
+     material = read_text(path)
+     url = request.get("url") or os.environ["CREDPROOF_ALLOWED_URL"]
+-    try:
+-        service_data = get_json(url, credential)
+-    except urllib.error.HTTPError as e:
+-        raise ValueError(f"HTTP error accessing service: {e}")
++    service_data = get_json(url, credential)
+     logging.info("loaded %s", request["resource"])
+     return {"resource": request["resource"], "material": material, "service": service_data}
+
+当前修订完整源码 · 仅允许配置入口文件
+修改或决策理由
+提交开发者修订
+重新验收 · 无模型
+需要修改
+拒绝候选
+确认采纳
+审批功能测试（自动化检查应勾选，不代表本人真实审阅）
+导出诊断／待采纳材料
+导出已验证且已采纳修复
+
+PASS pytest
+
+PASS required_pytest_tests
+
+PASS entry_completed
+
+PASS required_entry_scenarios
+
+PASS required_allowed_file_read
+
+PASS no_forbidden_file_read
+
+PASS no_out_of_scope_file_read
+
+PASS no_credential_output
+
+PASS allowed_service_receipt
+
+PASS allowed_service_path
+
+PASS required_service_credential
+
+PASS no_forbidden_service_receipt
+
+PASS no_unauthorized_connection
+
+PASS isolation_receipt
+
+完整报告、独立场景与必要测试执行
+追加的人工决策与版本链
+
+PASS不会自动采纳；本机记录不是强身份签名或第三方认证。修改或重新验收后，旧决定不自动恢复。导出副本需由开发者自行应用。
+
+REAL CASES / RECORDED EVIDENCE
+三个案例，看见受控修复
+
+REPLAY 典型案例均为真实历史回放
+
+尚未加载精选历史记录。可在服务端启用演示记录，或使用下方工作区选择已审查案例。
+VERIFICATION WORKSPACE
+让每个结论，都能对应证据。
+
+选择已审查案例，查看候选、程序判决与对应的复检材料。
+
+尚未执行
+等待选择
+模型先读取受限代码，再提出可检验的假设。
+刷新
+开始分析与修复
+EVIDENCE AT A GLANCE
+尚未执行 · 分项状态独立呈现
+泄露确认
+尚未确认
+
+等待程序观察，不采用模型文字作为结论。
+
+候选产生
+尚无候选记录
+
+候选文件存在，不等于已经提出修改。
+
+安全验收
+尚未执行
+
+分别读取禁止通道与源代码边界检查。
+
+业务保持
+尚未执行
+
+读取必要业务行为的实际检查。
+
+材料复检
+尚未复检
+
+取得任务材料后，可发起独立程序复检。
+
+01 / TASK SCOPE
+本次任务
+白名单
+已审查案例
+服务端未提供案例
+
+只显示服务端允许选择的任务，页面不会生成测试输入或安全判决。
+
+tool.py
+候选仅在隔离副本内运行
+安全与功能规则
+查看约束
+运行设施与模型
+SAVED RUNS
+更多历史记录
+
+结论只覆盖本次受限任务及实际执行的检查，不代表任意项目或真实凭据已安全。
+
+MODEL HYPOTHESIS
+模型怀疑
+未分析
+
+尚无模型判断
+
+查看模型诊断原文
+假设、原始提案和文字结论均不构成程序确认。
+PROGRAM VERDICT
+程序确认
+未验收
+
+等待真实检查结果
+
+缺少证据时，页面不会显示通过。
+
+尚未取得验收时间
+02 / SOURCE & CANDIDATE
+代码与候选差异
+原始代码
+候选差异
+候选代码
+tool.py
+原始受限文件
+identity 未提供
+等待加载已审查代码
+代码和工具输出作为不可信数据展示，不会在浏览器中执行。页面不接受任意代码上传。
+03 / EXECUTION EVIDENCE
+实际执行证据
+0 条已取得
+04 / ACCEPTANCE
+安全、功能与边界检查
+重新验收
+尚未取得逐项检查
+不会从整体判决反推每项检查都已执行。
+
+验收与模型文字回答分开；缺失、不完整或执行异常均不能推断为通过。
+
+导出证据包
+任务状态
+未启动
+模型调用
+—
+工具调用
+—
+未知 / 不完整
+—
+运行身份与记录时间
+密证 CredProof · 不泄密、不乱读、不乱连
+发现疑点
+生成候选
+验证复检
