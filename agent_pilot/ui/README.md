@@ -1,8 +1,21 @@
-# 密证 CredProof：作品展示与受控修复工作台
+# 密证 CredProof：AI 补丁验收控制台
 
-本目录是无构建步骤的静态单页：`index.html`、`styles.css`、`app.js`。深蓝、青蓝与紫色的作品首页展示三个特点、主流程与典型案例，下方工作台呈现真实修复依据。原生 SVG 与 CSS 提供图形层次，不依赖 React、CDN、网络字体或第三方脚本。后端以同源标准库 HTTP 服务托管此目录，并实现 `/api/agent`。打开 HTML 文件只能看到真实的连接错误/未执行状态，不会载入模拟结果。
+本目录是无构建步骤的静态单页：`index.html`、`styles.css`、`app.js`。界面为“左侧导航 + 主区”的验收控制台，面向需要决定“AI 补丁能不能合入”的开发负责人与安全负责人。不依赖 React、CDN、网络字体或第三方脚本；CSP 下不使用内联样式与内联脚本。后端以同源标准库 HTTP 服务托管此目录。
 
-当前增强候选版 `0.2.0-preliminary.9` 的推荐顺序为：首页 → h01 有限修复增量 → h03 失败候选与反馈调整 → h07 正常保留 → 项目接入 → 材料复检。所有精选案例标注历史回放，现场分析必须单独发起。原始 JSON、模型长文和研发历史收进展开区域；内容与判决来源不改变。深色首页与工作台统一呈现，分项状态分别取自实际证据。项目接入区显示启动时登记的合成或授权项目，提供范围查看、无模型检查和导出测试；网页不接受任意路径、命令或远程目标。外部项目出现失败对照时显示“已记录 · 含失败对照”，不显示为整组通过。
+导航与路由（哈希路由，可直接分享链接）：
+
+| 路由 | 页面 | 数据来源 |
+| --- | --- | --- |
+| `#overview` | 验收概览：放行矩阵（业务测试、静态扫描、两个大模型裁判与 CredProof 对同一批对象的结论）、关键发现、8 个评测目标、历史补丁复检 | `GET /api/bench` |
+| `#patches?origin=&verdict=&target=&model=&disagree=1` | 补丁记录：可筛选的台账 | `GET /api/bench` |
+| `#patch/<id>` | 补丁详情：印章式结论、五种方法对照、运行证据、14 项条件、差异与完整代码、裁判理由 | `GET /api/bench/patches/<id>` |
+| `#report/<id>` | 可打印的《补丁验收报告》（浏览器打印或存为 PDF） | 同上 |
+| `#human-review` | 人工审阅：程序判定 / 人工决定 / 原仓库三个独立状态与版本链 | `/api/review/*` |
+| `#workbench` | 案例回放（原工作台，全部原有元素 ID 保留） | `/api/agent/*` |
+| `#project-entry` | 接入项目：四步接入、登记项目的无模型检查与回归测试导出 | `/api/project/*` |
+| `#method` | 工作原理与三种结论的定义 | 静态 |
+
+旧锚点 `#cases`、`#projects`、`#mechanism` 自动映射到新路由。评测数据只在 `bootstrap.bench_available` 为真时读取；概览中所有数字都由结果文件现场计算，不写死在页面里。分组依据是 CredProof 观测到的具体事实，因此页面只陈述“其他方法放过了有具体违规事实的对象”，不把 CredProof 一行当作准确率。
 
 本目录没有模型、候选执行、文件上传、任意网络地址或任意命令输入。原工作区 `E:\比赛\密证_CredProof` 仅作只读参考，未修改。
 
@@ -15,6 +28,8 @@
 | `GET /api/agent/runs/{id}` | 返回 RunView；执行中约每 2 秒请求一次 |
 | `POST /api/agent/runs/{id}/recheck` | JSON `{}`；返回含独立 `recheck` 的完整 RunView |
 | `GET /api/agent/runs/{id}/export` | 返回实际文件内容；按 Content-Type 和安全文件名下载 |
+| `GET /api/bench` | bench-results/v1 摘要与逐对象结论（不含代码和差异）；未加载时 409 |
+| `GET /api/bench/patches/{id}` | 单个对象的代码、差异、运行证据与裁判理由 |
 
 ```typescript
 type Verdict = 'PASS' | 'FAIL' | 'UNKNOWN';
