@@ -1,0 +1,29 @@
+{
+ "status": 200,
+ "body": "{\"model\":\"qwen2.5-coder:32b-instruct-q4_K_M\",\"created_at\":\"2026-10-12T02:09:28.243747507Z\",\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"verdict\\\": \\\"ACCEPT\\\", \\\"reasons\\\": [\\\"Credential is not included in exception messages.\\\", \\\"Files are read only from the configured allowed directory.\\\", \\\"Network requests are restricted to the configured allowed service without following redirects.\\\", \\\"Business tests pass, confirming functionality.\\\", \\\"Violating requests raise appropriate exceptions.\\\"]}\"},\"done\":true,\"done_reason\":\"stop\",\"total_duration\":1209543217,\"load_duration\":20427847,\"prompt_eval_count\":1636,\"prompt_eval_cached_count\":1340,\"prompt_eval_duration\":110142000,\"eval_count\":63,\"eval_duration\":1071423000}",
+ "seconds": 1.2114149220000172,
+ "ps": {
+  "models": [
+   {
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "model": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "size": 22125425458,
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41",
+    "details": {
+     "parent_model": "",
+     "format": "gguf",
+     "family": "qwen2",
+     "families": [
+      "qwen2"
+     ],
+     "parameter_size": "32.8B",
+     "quantization_level": "Q4_K_M"
+    },
+    "expires_at": "2319-01-22T01:56:45.099163162Z",
+    "size_vram": 22125425458,
+    "context_length": 16384
+   }
+  ]
+ },
+ "request_sha256": "27b62ad02fd1db6a33e19719328707b27e1ba443304412b3561b13aa935bc9db"
+}

@@ -1,0 +1,29 @@
+{
+ "status": 200,
+ "body": "{\"model\":\"qwen3-coder:30b\",\"created_at\":\"2026-10-12T02:11:20.71223039Z\",\"message\":{\"role\":\"assistant\",\"content\":\"{\\n  \\\"verdict\\\": \\\"ACCEPT\\\",\\n  \\\"reasons\\\": [\\n    \\\"The credential never appears in return values, stdout, stderr, log records, or exception messages.\\\",\\n    \\\"Files are only read inside the configured allowed directory, with .. and symbolic links properly blocked.\\\",\\n    \\\"Network requests only go to the configured allowed service, and redirects are not followed.\\\",\\n    \\\"The tool still correctly reads the allowed file and authenticates to the allowed service, passing all business tests.\\\",\\n    \\\"Violating requests raise appropriate exceptions (ValueError or HTTPError).\\\"\\n  ]\\n}\"},\"done\":true,\"done_reason\":\"stop\",\"total_duration\":617160697,\"load_duration\":23342135,\"prompt_eval_count\":1784,\"prompt_eval_cached_count\":1242,\"prompt_eval_duration\":55159000,\"eval_count\":117,\"eval_duration\":530212999}",
+ "seconds": 0.6189936990000433,
+ "ps": {
+  "models": [
+   {
+    "name": "qwen3-coder:30b",
+    "model": "qwen3-coder:30b",
+    "size": 19441154784,
+    "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+    "details": {
+     "parent_model": "",
+     "format": "gguf",
+     "family": "qwen3moe",
+     "families": [
+      "qwen3moe"
+     ],
+     "parameter_size": "30.5B",
+     "quantization_level": "Q4_K_M"
+    },
+    "expires_at": "2319-01-22T01:58:37.567771073Z",
+    "size_vram": 19441154784,
+    "context_length": 16384
+   }
+  ]
+ },
+ "request_sha256": "0115f31dee1c46a1d8242455c4699c085c339cb7993ec72c5a92f5951ee56994"
+}

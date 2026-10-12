@@ -1,0 +1,26 @@
+{
+ "protocol": "bench-v1",
+ "model": {
+  "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+  "details": {
+   "parent_model": "",
+   "format": "gguf",
+   "family": "qwen2",
+   "families": [
+    "qwen2"
+   ],
+   "parameter_size": "32.8B",
+   "quantization_level": "Q4_K_M"
+  },
+  "modified_at": "2026-10-09T15:33:23.742209825Z",
+  "digest": 15
+ },
+ "options": {
+  "temperature": 0.0,
+  "top_p": 1.0,
+  "num_ctx": 16384,
+  "num_predict": 512,
+  "seed": 0
+ },
+ "prompt_sha256": "c85b1455ad8c025d87700cdc7d04bdb16b18b7ebb2ac036ec9660fab9b5e3557"
+}

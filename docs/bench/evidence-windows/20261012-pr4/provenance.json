@@ -1,0 +1,129 @@
+{
+ "pr4_commit": "8e9dd7bdd8395fabfa488c37a985b50b308864d2",
+ "preflight_source_commit": "05583667605118358b4f9b56fb0dd4be2b1abcc7",
+ "model_run_source_commit": "ad3771cd7182863310f04e7325276cf2cd405017",
+ "source_commit_history": [
+  "8e9dd7bdd8395fabfa488c37a985b50b308864d2",
+  "05583667605118358b4f9b56fb0dd4be2b1abcc7",
+  "ad3771cd7182863310f04e7325276cf2cd405017"
+ ],
+ "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+ "pytest": "8.4.2",
+ "unchanged_checker_bytes": {
+  "credproof_safety/runner.py": {
+   "raw_sha256_at_preflight": "13b546a3d63e3d5750f8107450296365c580cc65fe69b20ce431047f8b27d7e3",
+   "unchanged_from_pr4": true,
+   "unchanged_in_model_run": true
+  },
+  "credproof_safety/project.py": {
+   "raw_sha256_at_preflight": "3a92c3674216cfecf976c933bd75e4aea37c12f493a038f50776a5f904e85c68",
+   "unchanged_from_pr4": true,
+   "unchanged_in_model_run": true
+  },
+  "credproof_safety/config.py": {
+   "raw_sha256_at_preflight": "371ef03e9ae63e2d8991712bf4b0066d39973adbcad16a7744ac6aad6345d4b5",
+   "unchanged_from_pr4": true,
+   "unchanged_in_model_run": true
+  }
+ },
+ "frozen_files_unchanged": {
+  "scripts/bench/common.py": true,
+  "scripts/bench/generate.py": true,
+  "scripts/bench/judge.py": true,
+  "scripts/bench/validate_targets.py": true,
+  "scripts/bench/recheck_history.py": true,
+  "scripts/bench/check_variant.py": true,
+  "docs/bench/prompts/repair-v1.md": true,
+  "docs/bench/prompts/judge-v1.md": true,
+  "docs/bench/CONTRACT.md": true
+ },
+ "Windows_Linux_comparison": {
+  "target-validation": {
+   "schema": {
+    "Windows": "credproof.bench-validation/v1",
+    "Linux": "credproof.bench-validation/v1",
+    "equal": true
+   },
+   "targets": {
+    "Windows": 8,
+    "Linux": 8,
+    "equal": true
+   },
+   "all_valid": {
+    "Windows": true,
+    "Linux": true,
+    "equal": true
+   },
+   "vulnerable_ci_green": {
+    "Windows": 5,
+    "Linux": 5,
+    "equal": true
+   }
+  },
+  "history": {
+   "schema": {
+    "Windows": "credproof.history-recheck/v1",
+    "Linux": "credproof.history-recheck/v1",
+    "equal": true
+   },
+   "patches": {
+    "Windows": 21,
+    "Linux": 21,
+    "equal": true
+   },
+   "accepted": {
+    "Windows": 0,
+    "Linux": 0,
+    "equal": true
+   },
+   "fail": {
+    "Windows": 20,
+    "Linux": 20,
+    "equal": true
+   },
+   "unknown": {
+    "Windows": 1,
+    "Linux": 1,
+    "equal": true
+   },
+   "business_tests_all_passed": {
+    "Windows": 2,
+    "Linux": 2,
+    "equal": true
+   },
+   "business_green_but_rejected": {
+    "Windows": 2,
+    "Linux": 2,
+    "equal": true
+   },
+   "credential_leak": {
+    "Windows": 10,
+    "Linux": 10,
+    "equal": true
+   },
+   "controls_as_expected": {
+    "Windows": true,
+    "Linux": true,
+    "equal": true
+   },
+   "controls": {
+    "Windows": {
+     "control:vulnerable_original": "FAIL",
+     "control:reference_fix": "PASS",
+     "control:developer_revision": "PASS",
+     "control:dotenv_injected_defect": "FAIL",
+     "control:dotenv_fixed": "PASS"
+    },
+    "Linux": {
+     "control:vulnerable_original": "FAIL",
+     "control:reference_fix": "PASS",
+     "control:developer_revision": "PASS",
+     "control:dotenv_injected_defect": "FAIL",
+     "control:dotenv_fixed": "PASS"
+    },
+    "equal": true
+   }
+  }
+ },
+ "source_and_evidence_separate": true
+}

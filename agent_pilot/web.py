@@ -373,15 +373,17 @@ class Application:
         """Recorded benchmark results (bench-results/v1); patch code and diff are served per patch."""
         if self.bench_path is None:
             raise Problem(404, '没有加载评测数据；启动时用 --bench-results 指定。')
-        stamp = self.bench_path.stat().st_mtime_ns if self.bench_path.is_file() else None
-        if self._bench_cache[0] != stamp:
-            try:
+        try:
+            stamp = self.bench_path.stat().st_mtime_ns
+            if self._bench_cache[1] is None or self._bench_cache[0] != stamp:
                 data = read_json(self.bench_path, 32 * 1024 * 1024)
-            except (OSError, ValueError):
-                raise Problem(409, '评测数据缺失、过大或无法解析。')
-            if not isinstance(data, dict) or data.get('schema') != 'credproof.bench-results/v1':
-                raise Problem(409, '评测数据格式不受支持。')
-            self._bench_cache = (stamp, data)
+                if (not isinstance(data, dict) or data.get('schema') != 'credproof.bench-results/v1'
+                        or not isinstance(data.get('patches'), list)
+                        or any(not isinstance(row, dict) for row in data['patches'])):
+                    raise Problem(409, '评测数据格式不受支持。')
+                self._bench_cache = (stamp, data)
+        except (OSError, ValueError):
+            raise Problem(409, '评测数据缺失、过大或无法解析。')
         return self._bench_cache[1]
 
     def bench_overview(self):

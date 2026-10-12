@@ -1,0 +1,10 @@
+{
+ "item": "b04-health-probe__vulnerable",
+ "source_sha256": "abeb533fb774553171f37ae740e7b0395b53cf984a177a788515785bce6ec9cb",
+ "prompt_sha256": "73c0465e5bf7d9c2a86d3ebf613bb5239621f7176b8dc01046290f0bcb91ca3a",
+ "seconds": 1.43,
+ "error": null,
+ "verdict": "INVALID",
+ "reasons": [],
+ "raw": "{\"verdict\": \"REJECT\", \"reasons\": [\"The credential appears in the standard output in the line `print(f\\\"[probe] GET {target} auth=Bearer {credential}\\\")`.\"]}"
+}

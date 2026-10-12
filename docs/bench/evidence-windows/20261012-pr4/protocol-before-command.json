@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "E:\\比赛\\密证_CredProof-local-agent\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "credproof_safety/tests/test_native_runtime.py",
+    "agent_pilot/tests/test_web_bench.py",
+    "agent_pilot/tests/test_web.py",
+    "agent_pilot/tests/test_human_review.py",
+    "agent_pilot/tests/test_web_material_binding.py",
+    "agent_pilot/tests/test_output_format.py",
+    "agent_pilot/tests/test_presentation.py",
+    "credproof_safety/tests/test_project.py",
+    "--basetemp=E:/比赛/CPBenchV1/pytest-before",
+    "--junitxml=docs\\bench\\evidence-windows\\20261012-pr4\\protocol-before.xml"
+  ],
+  "exit": 4,
+  "stdout": "\r\n- generated xml file: E:\\比赛\\CredProof-bench-v1-review\\docs\\bench\\evidence-windows\\20261012-pr4\\protocol-before.xml -\r\nno tests ran in 0.04s\r\n",
+  "stderr": "ERROR: file or directory not found: credproof_safety/tests/test_project.py\r\n\r\n",
+  "source_commit": "8e9dd7bdd8395fabfa488c37a985b50b308864d2",
+  "scope": "software protocol, no candidate/model execution"
+}
