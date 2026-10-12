@@ -105,3 +105,8 @@ Patch = { id, target, project,
 ## 7. 执行环境：Linux 原生模式
 
 `credproof_safety/runner.py` 在非 Windows 主机上直接调用 bubblewrap，不经过 `wsl.exe`；隔离参数与 Windows 路径完全相同。配置仍为 `runtime_root`（`isolation/rootfs`、`isolation/tools/usr/bin/bwrap`、`venv/lib/python3.12/site-packages`）。Windows 行为不变。5060 用这条路径完成了目标验证和历史复检（普通用户身份运行；以 root 运行时，python-dotenv 有 1 项测试会主动跳过，结果为证据不足）。
+
+## 8. 勘误（不改变协议）
+
+- `run.json` / `judge.json` 中 `models[].digest` 字段：`common.model_info` 在 Ollama `/api/show` 不返回摘要时退回到 GGUF `general.file_type`，记录值 `15` **不是模型摘要**。bench-v1 不修改已冻结脚本和已有记录；模型身份以运行登记的 manifest SHA-256 与实际 `/api/ps.digest` 为准（`docs/bench/evidence-windows/20261012-pr4/accounting.json`）。
+- 首次正式运行 `experiments/bench-v1/20261012-5090-bench-v1` 已由 5060 在 Linux 原生后端独立复检，51/51 一致，见 `docs/bench/evidence-linux/run-recheck/`。
