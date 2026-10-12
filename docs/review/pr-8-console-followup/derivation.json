@@ -17,8 +17,8 @@
     {
       "path": "protocol-pytest.xml",
       "local_original_sha256": "8a67f9d61ae8688cb3bcff9a584fe3dbb4ee23c69b92df9c0a2ae9a051ffaa14",
-      "published_derived_sha256": "ccad819fbfa9f7ef66b08052055b2733a29685d1a22b45de917657600a74873b",
-      "published_derived_bytes": 6482
+      "published_derived_sha256": "d55344e07c2dfef3b0d3cf15f93417074f18536b3c4e9234cac08060db7e28f7",
+      "published_derived_bytes": 6480
     },
     {
       "path": "pytest-exit.txt",
@@ -32,5 +32,6 @@
       "published_derived_sha256": "2143972a721ed1560e8f6b6c561ff69e075341805ff045ac65a36f954e893e75",
       "published_derived_bytes": 3157
     }
-  ]
+  ],
+  "correction": "Initial published XML hostname placeholder contained literal angle brackets in an attribute and was invalid XML. Regenerated from the same preserved original with an XML-safe hostname placeholder. No test was rerun and no result changed; initial publication remains in Git history."
 }
