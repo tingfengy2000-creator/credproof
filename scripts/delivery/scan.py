@@ -34,7 +34,7 @@ LICENSE_CONTACTS = {'guido@cwi.nl', 'guido@python.org', 'python@stichting.nl',
                     'python-legal@python.org', 'python-dev@python.org',
                     'tim@lassi.ece.uiuc.edu', 'jheffero@archive.uwaterloo.ca',
                     'legal@cnri.reston.va.us', 'sales@cnri.reston.va.us',
-                    'jones@unico.cwi.nl', 'peter@math.su.oz.au'}
+                    'jones@unico.cwi.nl', 'peter@math.su.oz.au', 'jseward@acm.org'}
 
 
 def scan(root, private_values=()):
@@ -45,18 +45,36 @@ def scan(root, private_values=()):
     patterns = {k: re.compile(v, re.I if k.endswith('path') else 0) for k, v in PATTERNS.items()}
     files = {}
 
-    def text(name, data):
+    def text(name, data, pointer='', depth=0):
         # Decode safely for scanning only; no source or evidence is rewritten.
         if b'\x00' in data[:4096]:
             return
         value = data.decode('utf-8', errors='replace')
+        # JSON escaping is not a filesystem path: e.g. Python "else:\\n".
+        # Inspect decoded fields, including JSON tool payloads nested in strings.
+        if depth < 8:
+            try:
+                parsed = json.loads(value)
+            except (ValueError, TypeError):
+                parsed = None
+            if isinstance(parsed, (dict, list)):
+                def visit(node, at):
+                    if isinstance(node, dict):
+                        for key, child in node.items():
+                            text(name, key.encode(), at+'/key', depth+1)
+                            visit(child, at+'/'+key)
+                    elif isinstance(node, list):
+                        for i, child in enumerate(node):visit(child, at+'/'+str(i))
+                    elif isinstance(node, str):text(name,node.encode(),at,depth+1)
+                visit(parsed,pointer)
+                return
         for kind, pattern in patterns.items():
             for match in pattern.finditer(value):
-                item = {'file': name, 'line': value.count('\n', 0, match.start())+1, 'kind': kind}
+                item = {'file': name, 'field':pointer,'line': value.count('\n', 0, match.start())+1, 'kind': kind}
                 literal = match.group()
-                if kind == 'home_absolute_path' and literal in VIRTUAL_PATHS and name == 'credproof_safety/agent.py':
+                if kind == 'home_absolute_path' and literal in VIRTUAL_PATHS and name in {'credproof_safety/agent.py','scripts/delivery/scan.py'}:
                     reviewed.append({**item, 'classification': 'isolated_virtual_home_literal'})
-                elif kind == 'email' and name == 'runtime/python/LICENSE.txt' and literal in LICENSE_CONTACTS:
+                elif kind == 'email' and name in {'runtime/python/LICENSE.txt','scripts/delivery/scan.py'} and literal in LICENSE_CONTACTS:
                     reviewed.append({**item, 'classification': 'vendor_legal_contact'})
                 else:
                     results.append(item)

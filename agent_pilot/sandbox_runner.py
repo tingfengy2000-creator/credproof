@@ -18,7 +18,9 @@ import tempfile
 import time
 import urllib.request
 
-BASE = Path('/home/tingfeng/credproof-agent-runtime/isolation')
+# The configured bridge overwrites BASE before handling a request. Direct
+# operator use defaults to that user's dedicated runtime, never an author path.
+BASE = Path.home() / 'credproof-agent-runtime' / 'isolation'
 PACKAGE_URL = 'https://archive.ubuntu.com/ubuntu/pool/main/b/bubblewrap/bubblewrap_0.9.0-1ubuntu0.3_amd64.deb'
 PACKAGE_SHA256 = '2461f1beee9cb04c8942739fe1a2b37e7b7c2a3d518f0779dc75f9245baa3094'
 MEMORY = 256 * 1024 * 1024
@@ -250,9 +252,9 @@ def denied(action):
     except OSError as e: return e.errno in (errno.EPERM,errno.EACCES,errno.EROFS,errno.ENOENT)
 status=dict(line.strip().split(':',1) for line in open('/proc/self/status') if ':' in line)
 lib=ctypes.CDLL(None,use_errno=True)
-checks={'no_host_home':not os.path.exists('/home/tingfeng'),
- 'no_windows_mount':not os.path.exists('/mnt/e'), 'no_gpu':not any(os.path.exists(p) for p in ('/dev/dxg','/dev/dri')),
- 'no_host_pid_root':not os.path.exists('/proc/1/root/mnt/e'),
+checks={'no_host_home':not os.path.exists('/home') or not os.listdir('/home'),
+ 'no_windows_mount':not os.path.exists('/mnt') or not os.listdir('/mnt'), 'no_gpu':not any(os.path.exists(p) for p in ('/dev/dxg','/dev/dri')),
+ 'no_host_pid_root':not os.path.exists('/proc/1/root/mnt'),
  'empty_routes':len(open('/proc/net/route').read().splitlines())<=1,
  'capabilities_dropped':int(status['CapEff'].strip(),16)==0,
  'no_new_privileges':status['NoNewPrivs'].strip()=='1',
