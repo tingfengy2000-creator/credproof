@@ -96,20 +96,36 @@ type RunView = {
 
 ## 操作与可访问性
 
-代码视图支持方向键、Home/End，按钮和菜单可键盘操作，有跳至主区域链接及状态播报。遵循 reduced-motion；长代码在自身容器滚动，移动窄屏按单列重排。没有装饰性统计、虚构成功率或定时自动重跑。
+路由、筛选、代码页签和人工审阅页签都可键盘操作：代码视图支持方向键和 Home/End，有“跳到主要内容”链接和状态播报。遵循 reduced-motion；长代码在自身容器内滚动；窄屏（≤860px）改为单列，表格在自身容器内横向滚动，页面本身不横向滚动。深色模式跟随系统。`#report/<id>` 的打印样式只输出报告本身（A4，页边距 18mm/16mm）。
 
-preliminary.2 阶段已执行 `node --check agent_pilot/ui/app.js`；Web、对象绑定和真实历史展示的 20 项必要回归通过。浏览器实际检查首页、三例切换、补丁展开、返回新任务，以及一次 h07 确定性复检和材料下载。该复检得到 13 条件 PASS、历史材料 INTACT、旧报告适用；它不调用模型，也不改变历史实验成绩。原始记录、界面截图和检查范围见 [preliminary.2 展示检查](../../docs/preliminary-candidate/presentation-checks.md)。
+本版（PR #8）在 Linux 上做过的检查：`node --check agent_pilot/ui/app.js`、`node agent_pilot/tests/test_ui_project_verdict.js`；`test_web`、`test_web_bench`、`test_presentation`、`test_human_review` 共 27 项；只读入口与 `--demo --mode view` 下用 Playwright 逐页截图（无 JS 错误、只读入口无 POST），390px 宽度、深色模式、打印 PDF。Windows 维护套件 255 项由 5090 在 PR #8 审查中运行通过。浏览器页面、字体与 recheck/live 按钮链路以 5090 的 Windows 实测为准。截图见 `docs/ui/console-v1/`，可复现的浏览器检查脚本见 `docs/ui/console-v1/check-console.mjs`。
 
 ## 启动本机后端
 
+三种模式共用同一入口 `python -m agent_pilot.launch`，后端只绑定 `127.0.0.1`，使用标准库，不需要 Web 框架。浏览器打开 `http://127.0.0.1:<端口>/`（默认 8765）。
+
+| 模式 | Windows 快捷方式 | 命令 | 能做什么 |
+| --- | --- | --- | --- |
+| view（默认） | `start-credproof.cmd` | `python -m agent_pilot.launch --demo --mode view` | 查看历史与评测结果（概览、补丁记录、验收报告、案例回放）。不启动模型，不检查 WSL，不执行任何代码：重新验收、项目检查和人工审阅的“重新验收”返回 409；人工审阅的保存修订、记录决定、导出，以及接入项目的回归测试导出仍可用，它们只写记录或打包文件、不执行代码，修订后的版本在 recheck 模式验收前保持“证据不足” |
+| recheck | `start-recheck.cmd` | `python -m agent_pilot.launch --demo --mode recheck` | 在此基础上执行代码：案例重新验收、人工审阅的重新验收、接入项目的无模型检查，全部在 WSL/bubblewrap 隔离环境中进行，隔离不可用时拒绝而不在主机上降级执行。不启动模型 |
+| live | `start-live.cmd` | `python -m agent_pilot.launch --demo --mode live` | 在 recheck 基础上允许“开始分析与修复”调用本地模型；需要 qwen-agent 与已就绪的本地模型 |
+
+可选参数：
+
+- `--bench-results <文件>`：评测结果文件（bench-results/v1）。带 `--demo` 且仓库内存在 `docs/bench/bench-results.json` 时自动加载；都没有时概览页显示“没有加载评测数据”。
+- `--project-config <credproof.toml>`：操作者在启动时授权一个已适配项目；网页不接受路径。
+- `--history <runs 下的 case/C-agent 目录>`：显式追加既有运行记录，可重复；HTTP 请求不能提交路径。
+
+只读交接入口 `docs/handoff/frontend-5060/view-readonly.py --bench-results docs/bench/bench-results.json` 只放行 GET，用于在没有隔离环境的机器上查看。
+
+### live 模式的执行边界
+
+点击“开始分析与修复”时，服务端只接受登记的 `case_id`，先读取运行时观察（`config/local-runtime.json` 或 `CREDPROOF_CONFIG` 指定的文件），隔离和模型均就绪才继续。随后用**已核验的安装解释器**启动子进程：
+
 ```text
-python -m agent_pilot.launch --demo --port 8765
+<program_python> -I -m credproof_safety.web_repair --project-id <登记项目> --case-id <case_id> --config <服务端选定的配置> --output runs/ui/live-.../
 ```
 
-浏览器打开 `http://127.0.0.1:8765/`。后端仅绑定该 IPv4 回环地址，使用标准库，不需要安装 Web 框架。当前命令加载三个明确标注的精选回放。高级 `agent_pilot.web` 入口需要展示额外既有运行时，由可信操作者在启动时显式追加 `--history <当前仓库 runs 下的 case/C-agent 目录>`，可重复提供；HTTP 请求不能提交路径。
+`program_python` 来自环境变量 `CREDPROOF_INSTALLED_PYTHON` 或运行时配置中的 `program_python`，必须是存在的绝对路径；未配置时拒绝任务，不回退到源码目录或历史 `_runs` 中的旧包。`web_repair` 调用与命令行相同的 `request_repair`，模型在其进程边界内运行；历史 `agent_pilot.offline_run` 入口不再由网页调用。启动网页本身不运行模型；原始 stdout、stderr 和退出码保留在私有记录目录，不直接发送到浏览器。
 
-新建任务只接受登记的 case_id，使用固定 argv 通过 WSL 的 user/network namespace 启动现有 `agent_pilot.offline_run --reliability --agent-only`。启动网页本身不运行模型；只有点击开始且设施可用才创建独立的 `runs/ui/live-...` 记录。原始 supervisor stdout、stderr、退出码保留在该私有目录，不直接发送到浏览器。
-
-健康接口只报告准备设施与保存门禁身份的只读观察，不代替新的隔离探针或模型验收。模型环境缺失、门禁未就绪或另一个操作占用时拒绝新任务。任务状态、最终协议验收和模型诊断分别保留。
-
-当前判定器若仅提供整体结果，检查区只显示真实的“固定协议完整验收”，不会从整体 PASS 伪造安全、功能、边界三项通过。判定器提供 checks 后，前端将原样展示其逐项状态。
+健康接口只报告准备设施与门禁身份的只读观察，不代替新的隔离探针或模型验收。环境缺失、门禁未就绪或另一个操作占用时拒绝新任务。任务状态、最终验收和模型诊断分别保留；判定器只给整体结果时，检查区不会伪造逐项通过。
