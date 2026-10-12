@@ -10,17 +10,36 @@ import uuid
 import shutil
 
 from agent_pilot.runtime_config import load_config as load_runtime_config
-from agent_pilot.runtime_config import execution_runtime_paths, runtime_temp_root, wsl_prefix
+from agent_pilot.runtime_config import execution_runtime_paths, runtime_paths, runtime_temp_root, wsl_prefix
+
+
+def _native() -> bool:
+    """Linux/WSL host: call bubblewrap directly instead of going through wsl.exe."""
+    return os.name != "nt"
 
 
 def _runtime_settings() -> tuple[list[str], dict[str, str]]:
-    """Load the operator-approved WSL/runtime paths from one source."""
+    """Load the operator-approved runtime paths from one source.
+
+    Windows hosts reach the reviewed Linux runtime through ``wsl.exe``.  A
+    Linux host (including WSL itself, a container or a CI runner) uses the
+    same configured runtime layout with ``~`` expanded locally and no prefix;
+    the bubblewrap profile below is identical in both cases.
+    """
     config = load_runtime_config()
-    return [*wsl_prefix(config), "--exec"], execution_runtime_paths(config)
+    if not _native():
+        return [*wsl_prefix(config), "--exec"], execution_runtime_paths(config)
+    paths = runtime_paths(config)
+    root = os.path.expanduser(paths["root"])
+    if not root.startswith("/"):
+        raise ValueError("runtime_root did not resolve to an absolute Linux path")
+    return [], {key: root + value[len(paths["root"]):] for key, value in paths.items()}
 
 
 def _wsl_path(path: Path) -> str:
     path = path.resolve()
+    if _native():
+        return path.as_posix()
     drive = path.drive.rstrip(":").lower()
     if not drive:
         raise ValueError(f"Only Windows paths can be mounted into WSL: {path}")
@@ -379,7 +398,8 @@ def available() -> tuple[bool, str]:
             return False, "WSL isolation runtime is unavailable"
         if probe.returncode != 0:
             return False, f"missing WSL isolation material: {p}"
-    return True, "reviewed WSL rootfs, bubblewrap and Python site packages present"
+    return True, ("reviewed rootfs, bubblewrap and Python site packages present"
+                  + (" (native Linux)" if _native() else " (WSL)"))
 
 
 def run_sandbox(project: Path, lab: Path, test_args: list[str], entry_module: str,
