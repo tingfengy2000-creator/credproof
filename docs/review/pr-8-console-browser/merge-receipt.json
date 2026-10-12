@@ -1,0 +1,78 @@
+{
+  "status": "MERGED_WITH_DOCUMENTED_EXISTING_PACKAGING_GAP",
+  "project_branch": "feat/frontend-human-review-5060",
+  "final_commit": "c394fc2d5b7e7360065a512958fdef1963d1873e",
+  "final_tree": "6a6f3aed61d4958d6ee99bce2d1d18ca81d12fbc",
+  "premerge_simulated_tree": "6a6f3aed61d4958d6ee99bce2d1d18ca81d12fbc",
+  "final_tree_matches_premerge_simulation": true,
+  "reviewed_ui_head": "79e6b74627b4001ac071bd831d4133c1ccb10c8a",
+  "review_evidence_commit": "a4d15aef05dab325237b75e30aef1d2e01886c94",
+  "local_review_commit": "877185157e40f4db7bb5df6c46dc2c4e0996a8a0",
+  "review_tree": "a71b012aa5010fd35c414a85095f915b344ebe6a",
+  "publication_note": "Git smart-HTTP push failed twice connecting to github.com:443. Existing authorized GitHub connector published byte-identical tree; API commit metadata differs from local commit.",
+  "new_model_requests": 0,
+  "user_authorization": "User requested current-round merging after earlier temporary hold.",
+  "sequence": [
+    {
+      "pr": 8,
+      "head": "79e6b74627b4001ac071bd831d4133c1ccb10c8a",
+      "base_branch": "bench/v1-results-5060",
+      "base_before": "80f0b3955ca777f36a7cea94b1064c42ffae49c6",
+      "merge_commit": "6e0d0d411d62ef922ad2cbe25598e4e8f2458af8",
+      "merged": true
+    },
+    {
+      "pr": 7,
+      "head": "6e0d0d411d62ef922ad2cbe25598e4e8f2458af8",
+      "base_branch": "bench/v1-run-5090",
+      "base_before": "afa7ab48f4298fa55da3c018bcb7346921912ae4",
+      "merge_commit": "28c27887c3e02e2bd4311eaf31598bb23efd35ea",
+      "merged": true
+    },
+    {
+      "pr": 6,
+      "head": "28c27887c3e02e2bd4311eaf31598bb23efd35ea",
+      "base_branch": "bench/v1",
+      "base_before": "8e9dd7bdd8395fabfa488c37a985b50b308864d2",
+      "merge_commit": "4af412d606a42bcb21e3dd6633041605a72ac5fb",
+      "merged": true,
+      "confirmation": "Tool sequence response failed; subsequent GET confirms already merged. Merge was not repeated."
+    },
+    {
+      "pr": 4,
+      "head": "4af412d606a42bcb21e3dd6633041605a72ac5fb",
+      "base_branch": "report/v2-trust-gate",
+      "base_before": "8a64173f9be81589d46dd8a8a47eb73378502367",
+      "merge_commit": "a42f4171bac1a91831ae71fe04d6f59cf101bdbd",
+      "merged": true
+    },
+    {
+      "pr": 3,
+      "head": "a42f4171bac1a91831ae71fe04d6f59cf101bdbd",
+      "base_branch": "feat/frontend-human-review-5060",
+      "base_before": "5b3ff23ee078d9070da5d61cf2bca93d17813465",
+      "merge_commit": "2ad13d82a9b9e84f274cfcebeceb5ab4bbc3cb4e",
+      "merged": true
+    },
+    {
+      "pr": 1,
+      "head": "84d918acd23c42e730d005f76d29fc1fb78c88d4",
+      "base_branch": "feat/frontend-human-review-5060",
+      "base_before": "2ad13d82a9b9e84f274cfcebeceb5ab4bbc3cb4e",
+      "merge_commit": "c394fc2d5b7e7360065a512958fdef1963d1873e",
+      "merged": true,
+      "note": "PR payload base.sha was stale; actual base git ref checked before merge."
+    }
+  ],
+  "main_before": "2d2d81ee3fe9e1869bfca0b160410deaf83c4bca",
+  "main_after": "2d2d81ee3fe9e1869bfca0b160410deaf83c4bca",
+  "main_unchanged": true,
+  "known_gap": {
+    "area": "installed wheel historical h03 export/recheck",
+    "evidence": "wheel-config-check.txt",
+    "reason": "config/runtime.example.json missing from site-packages; source-launch path passes; this PR did not change package exporter",
+    "status": "OPEN"
+  },
+  "source_validation": "Combined PR UI/core source already tested at reviewed head. Final merged tree equals deterministic local merge-tree output of reviewed head + PR1. PR1 adds handoff documents only; human_review.py blob equal to reviewed head. No code conflict resolution or post-test core modification.",
+  "conclusions": "UI/browser/manual-button review completed, not a new model success, external certification or contest release. User original workspace/index and protected baseline not modified."
+}
