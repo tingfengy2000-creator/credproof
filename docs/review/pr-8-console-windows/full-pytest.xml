@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?><testsuites name="pytest tests"><testsuite name="pytest" errors="51" failures="0" skipped="0" tests="51" time="3.358" timestamp="2026-10-12T13:38:15.061731+08:00" hostname="<windows-review-host>"><testcase classname="" name="agent_pilot.isolation-tests.test_isolation" time="0.000"><error message="collection failure">ImportError while importing test module 'E:\比赛\CredProof-console-pr8-review\agent_pilot\isolation-tests\test_isolation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+<operator-home>\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+agent_pilot\isolation-tests\test_isolation.py:13: in &lt;module&gt;
+    from agent_pilot import sandbox_runner as runner
+agent_pilot\sandbox_runner.py:12: in &lt;module&gt;
+    import resource
+E   ModuleNotFoundError: No module named 'resource'</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261006-live-correction.public-project-bundle-dev17.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\public-project-bundle-dev17\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261007-agent-sequencing.formal-p01.evidence.bundle.project-bundle.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261007-agent-sequencing\formal-p01\evidence\bundle\project-bundle\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261007-agent-sequencing.formal-p01.project-bundle.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261007-agent-sequencing\formal-p01\project-bundle\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261007-agent-sequencing.formal-p01.public-project-bundle-dev20.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261007-agent-sequencing\formal-p01\public-project-bundle-dev20\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261007-return-redirect.context-budget-pilot.post-run-verification-candidate02-v1.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261007-return-redirect\context-budget-pilot\post-run-verification-candidate02-v1\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261007-return-redirect.formal-p01-model-result-artifacts.candidate.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261007-return-redirect\formal-p01-model-result-artifacts\candidate\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261007-return-redirect.public-saved-candidate02-bundle-dev21.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261007-return-redirect\public-saved-candidate02-bundle-dev21\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261007-return-redirect.saved-candidate02-project-bundle.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261007-return-redirect\saved-candidate02-project-bundle\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261009-coding-model-comparison.public-evidence.input-materials.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261009-coding-model-comparison\public-evidence\input-materials\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261009-component-assisted.public-evidence.failed-candidate-public-bundle.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261009-component-assisted\public-evidence\failed-candidate-public-bundle\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261009-component-assisted.public-evidence.failed-candidate-source-bundle.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261009-component-assisted\public-evidence\failed-candidate-source-bundle\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261010-feedback-revision.public-evidence.source-project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261010-feedback-revision\public-evidence\source-project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261010-format-normalized.public-evidence.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261010-format-normalized\public-evidence\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261010-human-review.public-evidence.public-bundle.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261010-human-review\public-evidence\public-bundle\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261010-human-review.public-evidence.source-bundle.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261010-human-review\public-evidence\source-bundle\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261010-human-review.public-evidence.workspace.runs.human-review.939e25f42bb142f39567c5cb644ebc6d.baseline.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261010-human-review\public-evidence\workspace\runs\human-review\939e25f42bb142f39567c5cb644ebc6d\baseline\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261010-human-review.public-evidence.workspace.runs.human-review.939e25f42bb142f39567c5cb644ebc6d.versions.v000.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261010-human-review\public-evidence\workspace\runs\human-review\939e25f42bb142f39567c5cb644ebc6d\versions\v000\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="docs.reusable-tool-safety.acceptance.20261010-human-review.public-evidence.workspace.runs.human-review.939e25f42bb142f39567c5cb644ebc6d.versions.v001.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261010-human-review\public-evidence\workspace\runs\human-review\939e25f42bb142f39567c5cb644ebc6d\versions\v001\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="examples.bench.b01-ticket-digest.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\examples\bench\b01-ticket-digest\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="examples.bench.b02-config-sync.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\examples\bench\b02-config-sync\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="examples.bench.b03-report-fetch.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\examples\bench\b03-report-fetch\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="examples.bench.b04-health-probe.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\examples\bench\b04-health-probe\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="examples.bench.b05-attachment-reader.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\examples\bench\b05-attachment-reader\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="examples.bench.b06-template-loader.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\examples\bench\b06-template-loader\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="examples.bench.b07-webhook-relay.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\examples\bench\b07-webhook-relay\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="examples.bench.b08-feed-proxy.project.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\examples\bench\b08-feed-proxy\project\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="examples.external.reusable-consumer-fixture.tests.credproof-regression.test_credproof_safety" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_credproof_safety' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-final\exported-tests\test_credproof_safety.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\examples\external\reusable-consumer-fixture\tests\credproof-regression\test_credproof_safety.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="examples.external.reusable-consumer-fixture.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\examples\external\reusable-consumer-fixture\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="examples.material_assistant.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\examples\material_assistant\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="examples.material_assistant_fixed.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\examples\material_assistant_fixed\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.local-agent-pilot.source-snapshots.219cfe9874be.agent_pilot.test_model_client" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'agent_pilot.test_model_client' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\agent_pilot\test_model_client.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\source-snapshots\219cfe9874be\agent_pilot\test_model_client.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.local-agent-pilot.source-snapshots.6d2bc91b58d2.agent_pilot.test_model_client" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'agent_pilot.test_model_client' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\agent_pilot\test_model_client.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\source-snapshots\6d2bc91b58d2\agent_pilot\test_model_client.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.local-agent-pilot.source-snapshots.9a3fc09134d5.agent_pilot.test_model_client" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'agent_pilot.test_model_client' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\agent_pilot\test_model_client.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\source-snapshots\9a3fc09134d5\agent_pilot\test_model_client.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.local-agent-pilot.source-snapshots.b4cb91ef67ae.agent_pilot.test_model_client" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'agent_pilot.test_model_client' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\agent_pilot\test_model_client.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\source-snapshots\b4cb91ef67ae\agent_pilot\test_model_client.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.local-agent-pilot.source-snapshots.f7aa75702e67.agent_pilot.test_model_client" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'agent_pilot.test_model_client' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\agent_pilot\test_model_client.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\source-snapshots\f7aa75702e67\agent_pilot\test_model_client.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.local-agent-pilot.tool-call-revision.frozen-original6-source.agent_pilot.isolation-tests.test_isolation" time="0.000"><error message="collection failure">ImportError while importing test module 'E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\tool-call-revision\frozen-original6-source\agent_pilot\isolation-tests\test_isolation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+<operator-home>\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\local-agent-pilot\tool-call-revision\frozen-original6-source\agent_pilot\isolation-tests\test_isolation.py:13: in &lt;module&gt;
+    from agent_pilot import sandbox_runner as runner
+agent_pilot\sandbox_runner.py:12: in &lt;module&gt;
+    import resource
+E   ModuleNotFoundError: No module named 'resource'</error></testcase><testcase classname="" name="experiments.local-agent-pilot.tool-call-revision.frozen-original6-source.agent_pilot.test_model_client" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'agent_pilot.test_model_client' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\agent_pilot\test_model_client.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\tool-call-revision\frozen-original6-source\agent_pilot\test_model_client.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.local-agent-pilot.tool-call-revision.frozen-original6-source.agent_pilot.tests.test_judge" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_judge' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\agent_pilot\tests\test_judge.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\tool-call-revision\frozen-original6-source\agent_pilot\tests\test_judge.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.local-agent-pilot.tool-call-revision.frozen-original6-source.agent_pilot.tests.test_reliability" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_reliability' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\agent_pilot\tests\test_reliability.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\tool-call-revision\frozen-original6-source\agent_pilot\tests\test_reliability.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.local-agent-pilot.tool-call-revision.frozen-original6-source-raw.agent_pilot.isolation-tests.test_isolation" time="0.000"><error message="collection failure">ImportError while importing test module 'E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\tool-call-revision\frozen-original6-source-raw\agent_pilot\isolation-tests\test_isolation.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+<operator-home>\.cache\codex-runtimes\codex-primary-runtime\dependencies\python\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+experiments\local-agent-pilot\tool-call-revision\frozen-original6-source-raw\agent_pilot\isolation-tests\test_isolation.py:13: in &lt;module&gt;
+    from agent_pilot import sandbox_runner as runner
+agent_pilot\sandbox_runner.py:12: in &lt;module&gt;
+    import resource
+E   ModuleNotFoundError: No module named 'resource'</error></testcase><testcase classname="" name="experiments.local-agent-pilot.tool-call-revision.frozen-original6-source-raw.agent_pilot.test_model_client" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'agent_pilot.test_model_client' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\agent_pilot\test_model_client.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\tool-call-revision\frozen-original6-source-raw\agent_pilot\test_model_client.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.local-agent-pilot.tool-call-revision.frozen-original6-source-raw.agent_pilot.tests.test_judge" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_judge' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\agent_pilot\tests\test_judge.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\tool-call-revision\frozen-original6-source-raw\agent_pilot\tests\test_judge.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.local-agent-pilot.tool-call-revision.frozen-original6-source-raw.agent_pilot.tests.test_reliability" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_reliability' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\agent_pilot\tests\test_reliability.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\local-agent-pilot\tool-call-revision\frozen-original6-source-raw\agent_pilot\tests\test_reliability.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.reusable-tool-safety.20261003-final.agent-runs.agent-repair-rpc3.candidate.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\reusable-tool-safety\20261003-final\agent-runs\agent-repair-rpc3\candidate\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.reusable-tool-safety.20261003-final.agent-runs.agent-repair-success.candidate.tests.test_business" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_business' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\docs\reusable-tool-safety\acceptance\20261006-live-correction\new-project-bundle\project\tests\test_business.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\reusable-tool-safety\20261003-final\agent-runs\agent-repair-success\candidate\tests\test_business.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.reusable-tool-safety.20261005-pytest-case-fix-v1.pytest-cases.normal_pass.project.tests.test_required" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_required' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\experiments\reusable-tool-safety\20261005-pytest-case-fix-v1\pytest-cases\all_required_skip\project\tests\test_required.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\reusable-tool-safety\20261005-pytest-case-fix-v1\pytest-cases\normal_pass\project\tests\test_required.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.reusable-tool-safety.20261005-pytest-case-fix-v1.pytest-cases.optional_skip.project.tests.test_required" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_required' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\experiments\reusable-tool-safety\20261005-pytest-case-fix-v1\pytest-cases\all_required_skip\project\tests\test_required.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\reusable-tool-safety\20261005-pytest-case-fix-v1\pytest-cases\optional_skip\project\tests\test_required.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.reusable-tool-safety.20261005-pytest-case-fix-v1.pytest-cases.partial_required_skip.project.tests.test_required" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_required' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\experiments\reusable-tool-safety\20261005-pytest-case-fix-v1\pytest-cases\all_required_skip\project\tests\test_required.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\reusable-tool-safety\20261005-pytest-case-fix-v1\pytest-cases\partial_required_skip\project\tests\test_required.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.reusable-tool-safety.20261005-pytest-case-fix-v1.pytest-cases.required_assertion_failure.project.tests.test_required" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_required' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\experiments\reusable-tool-safety\20261005-pytest-case-fix-v1\pytest-cases\all_required_skip\project\tests\test_required.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\reusable-tool-safety\20261005-pytest-case-fix-v1\pytest-cases\required_assertion_failure\project\tests\test_required.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase><testcase classname="" name="experiments.reusable-tool-safety.20261005-pytest-case-fix-v1.pytest-cases.required_xfail.project.tests.test_required" time="0.000"><error message="collection failure">import file mismatch:
+imported module 'test_required' has this __file__ attribute:
+  E:\比赛\CredProof-console-pr8-review\experiments\reusable-tool-safety\20261005-pytest-case-fix-v1\pytest-cases\all_required_skip\project\tests\test_required.py
+which is not the same as the test file we want to collect:
+  E:\比赛\CredProof-console-pr8-review\experiments\reusable-tool-safety\20261005-pytest-case-fix-v1\pytest-cases\required_xfail\project\tests\test_required.py
+HINT: remove __pycache__ / .pyc files and/or use a unique basename for your test file modules</error></testcase></testsuite></testsuites>

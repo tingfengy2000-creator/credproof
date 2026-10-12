@@ -1,0 +1,72 @@
+{
+  "kind": "SOURCE_AND_DATA_REVIEW_NOT_BROWSER_TEST",
+  "head": "af21695c58f8286bc1467405ccf2bb2967e0ea4f",
+  "diff_files": [
+    "README.md",
+    "agent_pilot/ui/README.md",
+    "agent_pilot/ui/app.js",
+    "agent_pilot/ui/index.html",
+    "agent_pilot/ui/styles.css",
+    "credproof_safety/project.py",
+    "credproof_safety/tests/test_project_tree_identity.py",
+    "docs/handoff/frontend-5060/README.md",
+    "docs/review/pr-1-tree-identity/README.md",
+    "docs/ui/console-v1/human_review.jpg",
+    "docs/ui/console-v1/mobile-overview.jpg",
+    "docs/ui/console-v1/overview.jpg",
+    "docs/ui/console-v1/patch-b07.jpg",
+    "docs/ui/console-v1/patches.jpg",
+    "docs/ui/console-v1/project_entry.jpg",
+    "docs/ui/console-v1/report-b07.jpg",
+    "scripts/derive-project-public-bundle.py"
+  ],
+  "pr1_cherry_pick_content_equal": {
+    "README.md": true,
+    "credproof_safety/project.py": true,
+    "credproof_safety/tests/test_project_tree_identity.py": true,
+    "docs/handoff/frontend-5060/README.md": true,
+    "docs/review/pr-1-tree-identity/README.md": true,
+    "scripts/derive-project-public-bundle.py": true
+  },
+  "pr1_version_exception": "PR1 changed dev36; PR8 intentionally keeps dev37",
+  "removed_html_ids": [
+    "art-glow",
+    "cases",
+    "human-review",
+    "i-check",
+    "i-shield",
+    "i-spark",
+    "mechanism",
+    "mechanism-art-title",
+    "product-title",
+    "project-entry-title",
+    "review-ai",
+    "review-diff",
+    "review-original",
+    "review-status",
+    "review-title",
+    "run-details",
+    "shield-fill",
+    "shield-line",
+    "top",
+    "workspace"
+  ],
+  "duplicate_html_ids": [],
+  "inline_scripts": 0,
+  "inline_style_attributes": 0,
+  "benchmark_targets": 8,
+  "patch_records": 88,
+  "selected_patch": {
+    "id": "b07-webhook-relay__qwen3-coder-30b__s1__r0",
+    "verdict": "FAIL",
+    "source_sha256": "c3d508e877b8b2fcfc5b3cfcb92404bea77574986062c4a88d893347769a5cb9",
+    "vulnerable_sha256": "c3d508e877b8b2fcfc5b3cfcb92404bea77574986062c4a88d893347769a5cb9",
+    "same_source_sha256": true,
+    "diff_empty": true
+  },
+  "runtime": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "platform": "win32"
+  },
+  "browser_checks": "BLOCKED_SAVED_BROWSER_PERMISSION_NOT_YET_VERIFIED"
+}
