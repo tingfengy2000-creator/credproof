@@ -1,0 +1,35 @@
+{
+ "kind": "POST_PUBLICATION_RECEIPT",
+ "tested_model_source_commit": "ad3771cd7182863310f04e7325276cf2cd405017",
+ "primary_evidence_commit": "268866edfeae5f1510fe69ba4b7a91a84f8c5555",
+ "result_pr": 6,
+ "result_pr_url": "https://github.com/tingfengy2000-creator/credproof/pull/6",
+ "original_worktree": {
+  "branch": "feat/reusable-tool-safety",
+  "head": "5b3ff23ee078d9070da5d61cf2bca93d17813465",
+  "tracked_changes": "",
+  "new_or_old_untracked_content_not_touched": true
+ },
+ "receipt_files": [
+  {
+   "name": "github-verification-native.json",
+   "bytes": 6524,
+   "sha256": "ec9fb937d3af1235b00c0a57ffd3182da56887d39089cb1ad124065218e01ec7"
+  },
+  {
+   "name": "github-pr.json",
+   "bytes": 336,
+   "sha256": "dfcb5aec5bf1290d50743e65f43a95c6d428341b91f24955f14cd06ae62a5f68"
+  },
+  {
+   "name": "github-discussion.json",
+   "bytes": 264,
+   "sha256": "66647892343477b96080a37b5e34a7178e47c6a69fa08c64b926db48020a8a1c"
+  }
+ ],
+ "network_note": "The GitHub connector transport failed. Publication used existing Git credentials in memory and native TLS; no credential was logged. The Python anonymous Raw route had intermittent disconnect/timeouts and was stopped; separate native-TLS verification retrieved all 14 fixed Git blobs exactly. No model task was restarted.",
+ "main_modified": false,
+ "force_push": false,
+ "release_created": false,
+ "model_calls_after_batch": 0
+}

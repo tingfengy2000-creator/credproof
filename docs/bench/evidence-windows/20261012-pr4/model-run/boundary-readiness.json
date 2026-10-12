@@ -1,0 +1,50 @@
+{
+ "version": {
+  "version": "0.34.4"
+ },
+ "boundary": {
+  "interfaces": [
+   "lo"
+  ],
+  "outside_connect_tests": [
+   {
+    "target": "192.0.2.1",
+    "connected": false,
+    "error": "OSError",
+    "errno": 101
+   },
+   {
+    "target": "198.51.100.1",
+    "connected": false,
+    "error": "OSError",
+    "errno": 101
+   },
+   {
+    "target": "203.0.113.1",
+    "connected": false,
+    "error": "OSError",
+    "errno": 101
+   }
+  ],
+  "namespaces": {
+   "net": {
+    "controller": "net:[4026532233]",
+    "ollama": "net:[4026532233]"
+   },
+   "mnt": {
+    "controller": "mnt:[4026532228]",
+    "ollama": "mnt:[4026532228]"
+   },
+   "pid": {
+    "controller": "pid:[4026532231]",
+    "ollama": "pid:[4026532231]"
+   }
+  },
+  "host_sentinel_visible": false,
+  "host_link_visible": false,
+  "host_mnt_visible": false,
+  "ollama_host_sentinel_visible": false,
+  "cuda_device_visible": true,
+  "passed": true
+ }
+}

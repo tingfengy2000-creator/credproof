@@ -23,7 +23,8 @@ def files(root):
 
 class ReadOnlyTests(unittest.TestCase):
     def setUp(self):
-        self.context = viewer.prepared_view()
+        self.context = viewer.prepared_view(
+            bench_results=viewer.REPOSITORY/'docs/bench/bench-results.json')
         self.app = self.context.__enter__()
         self.before = files(self.app.root)
         self.server = viewer.ReadOnlyServer(('127.0.0.1', 0), self.app)
@@ -91,6 +92,20 @@ class ReadOnlyTests(unittest.TestCase):
     def test_existing_host_origin_boundary_is_retained(self):
         self.assertEqual(self.request('/api/agent/bootstrap', Host='outside.invalid')[0], 403)
         self.assertEqual(self.request('/api/agent/bootstrap', Origin='https://outside.invalid')[0], 403)
+
+    def test_bench_get_is_read_only_and_never_accepts_paths(self):
+        status, body = self.request('/api/bench')
+        self.assertEqual(status, 200)
+        data = json.loads(body)
+        self.assertTrue(data['patches'])
+        self.assertNotIn('code', data['patches'][0])
+        identifier = data['patches'][0]['id']
+        status, body = self.request('/api/bench/patches/'+identifier)
+        self.assertEqual(status, 200)
+        self.assertIn('code', json.loads(body))
+        self.assertEqual(self.request('/api/bench?file=/etc/passwd')[0], 400)
+        self.assertEqual(self.request('/api/bench/patches/..%2Fprivate')[0], 405)
+        self.assertEqual(self.request('/api/bench', 'POST', {})[0], 405)
 
 
 def main():

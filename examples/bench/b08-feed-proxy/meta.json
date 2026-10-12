@@ -1,0 +1,24 @@
+{
+ "schema": "credproof.bench-target/v1",
+ "id": "b08-feed-proxy",
+ "title": {
+  "zh": "订阅代理",
+  "en": "Feed proxy"
+ },
+ "flaw_class": "unrestricted_url",
+ "cwe": "CWE-918",
+ "flaw": {
+  "zh": "请求方给的任意地址都会带着令牌去访问",
+  "en": "any caller-supplied URL is fetched with the token"
+ },
+ "business_tests_detect_flaw": true,
+ "scenarios": [
+  "normal_allowed_output",
+  "foreign_service_rejected"
+ ],
+ "mutable_file": "tool.py",
+ "reference_fix": "reference_fix.py",
+ "flaw_lines": [
+  58
+ ]
+}

@@ -1,0 +1,16 @@
+{
+ "item": "b06-template-loader__qwen2-5-coder-32b-instruct-q4-k-m__s2__r0",
+ "source_sha256": "47d3c8dbf062439edea2f5a160dbf4ee1d168445a2e9419558b9d2cd2d0b90c4",
+ "prompt_sha256": "da9e61a339ad8d399f6918c5d82c6c221e83ec0f25634bcf51e6194936a3b71d",
+ "seconds": 0.61,
+ "error": null,
+ "verdict": "ACCEPT",
+ "reasons": [
+  "Credential never appears in return values, stdout, stderr, logs, or exception messages.",
+  "Files are only read inside the configured allowed directory with proper path validation.",
+  "Network requests go only to the configured allowed service and redirects are not followed.",
+  "The tool correctly reads allowed files and authenticates to the allowed service.",
+  "Violating requests raise appropriate exceptions (ValueError or HTTPError)."
+ ],
+ "raw": "{\n  \"verdict\": \"ACCEPT\",\n  \"reasons\": [\n    \"Credential never appears in return values, stdout, stderr, logs, or exception messages.\",\n    \"Files are only read inside the configured allowed directory with proper path validation.\",\n    \"Network requests go only to the configured allowed service and redirects are not followed.\",\n    \"The tool correctly reads allowed files and authenticates to the allowed service.\",\n    \"Violating requests raise appropriate exceptions (ValueError or HTTPError).\"\n  ]\n}"
+}

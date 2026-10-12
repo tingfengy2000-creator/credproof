@@ -1,0 +1,23 @@
+{
+  "argv": [
+    "E:\\比赛\\密证_CredProof-local-agent\\.venv\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "credproof_safety/tests/test_native_runtime.py",
+    "agent_pilot/tests/test_web_bench.py",
+    "agent_pilot/tests/test_web.py",
+    "agent_pilot/tests/test_human_review.py",
+    "agent_pilot/tests/test_web_material_binding.py",
+    "agent_pilot/tests/test_output_format.py",
+    "agent_pilot/tests/test_presentation.py",
+    "credproof_safety/tests/test_project_bundle.py",
+    "--basetemp=E:/比赛/CPBenchV1/pytest-before2",
+    "--junitxml=docs\\bench\\evidence-windows\\20261012-pr4\\protocol-pr4.xml"
+  ],
+  "exit": 1,
+  "stdout": "FF...................................................                    [100%]\r\n================================== FAILURES ===================================\r\n_______ NativeRuntimeTests.test_linux_host_mounts_posix_paths_directly ________\r\n\r\nself = <test_native_runtime.NativeRuntimeTests testMethod=test_linux_host_mounts_posix_paths_directly>\r\n\r\n    def test_linux_host_mounts_posix_paths_directly(self):\r\n        with mock.patch.object(runner, \"_native\", return_value=True):\r\n>           self.assertEqual(runner._wsl_path(Path(\"/var/tmp/x/../y\")), \"/var/tmp/y\")\r\nE           AssertionError: 'E:/var/tmp/y' != '/var/tmp/y'\r\nE           - E:/var/tmp/y\r\nE           ? --\r\nE           + /var/tmp/y\r\n\r\ncredproof_safety\\tests\\test_native_runtime.py:27: AssertionError\r\n___ NativeRuntimeTests.test_linux_host_uses_no_wsl_prefix_and_expands_home ____\r\n\r\nself = <test_native_runtime.NativeRuntimeTests testMethod=test_linux_host_uses_no_wsl_prefix_and_expands_home>\r\n\r\n    def test_linux_host_uses_no_wsl_prefix_and_expands_home(self):\r\n        with tempfile.TemporaryDirectory() as tmp:\r\n            config = Path(tmp) / \"runtime.json\"\r\n            config.write_text(json.dumps({\"runtime_root\": \"~/credproof-agent-runtime\"}), encoding=\"utf-8\")\r\n            with mock.patch.dict(os.environ, {\"CREDPROOF_CONFIG\": str(config), \"HOME\": tmp}), \\\r\n                    mock.patch.object(runner, \"_native\", return_value=True):\r\n>               prefix, paths = runner._runtime_settings()\r\n                                ^^^^^^^^^^^^^^^^^^^^^^^^^^\r\n\r\ncredproof_safety\\tests\\test_native_runtime.py:19: \r\n_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _\r\n\r\n    def _runtime_settings() -> tuple[list[str], dict[str, str]]:\r\n        \"\"\"Load the operator-approved runtime paths from one source.\r\n    \r\n        Windows hosts reach the reviewed Linux runtime through ``wsl.exe``.  A\r\n        Linux host (including WSL itself, a container or a CI runner) uses the\r\n        same configured runtime layout with ``~`` expanded locally and no prefix;\r\n        the bubblewrap profile below is identical in both cases.\r\n        \"\"\"\r\n        config = load_runtime_config()\r\n        if not _native():\r\n            return [*wsl_prefix(config), \"--exec\"], execution_runtime_paths(config)\r\n        paths = runtime_paths(config)\r\n        root = os.path.expanduser(paths[\"root\"])\r\n        if not root.startswith(\"/\"):\r\n>           raise ValueError(\"runtime_root did not resolve to an absolute Linux path\")\r\nE           ValueError: runtime_root did not resolve to an absolute Linux path\r\n\r\ncredproof_safety\\runner.py:35: ValueError\r\n- generated xml file: E:\\比赛\\CredProof-bench-v1-review\\docs\\bench\\evidence-windows\\20261012-pr4\\protocol-pr4.xml -\r\n=========================== short test summary info ===========================\r\nFAILED credproof_safety/tests/test_native_runtime.py::NativeRuntimeTests::test_linux_host_mounts_posix_paths_directly\r\nFAILED credproof_safety/tests/test_native_runtime.py::NativeRuntimeTests::test_linux_host_uses_no_wsl_prefix_and_expands_home\r\n2 failed, 51 passed in 13.51s\r\n",
+  "stderr": "",
+  "source_commit": "8e9dd7bdd8395fabfa488c37a985b50b308864d2",
+  "scope": "software protocol, no candidate/model execution"
+}

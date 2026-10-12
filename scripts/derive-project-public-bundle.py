@@ -22,7 +22,11 @@ def sha(data: bytes) -> str:
 def digest_tree(root: Path) -> str:
     rows = []
     ignored = {".git", ".venv", "__pycache__", ".credproof"}
-    for path in sorted(root.rglob("*")):
+    # Match the checker's host-independent, legacy-Windows ordering.  Exact
+    # relative spelling and file bytes remain part of the identity.
+    order = lambda path: (tuple(part.lower() for part in path.relative_to(root).parts),
+                          path.relative_to(root).as_posix())
+    for path in sorted(root.rglob("*"), key=order):
         rel = path.relative_to(root)
         if any(part in ignored for part in rel.parts):
             continue

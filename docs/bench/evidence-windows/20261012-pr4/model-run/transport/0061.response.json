@@ -1,0 +1,29 @@
+{
+ "status": 200,
+ "body": "{\"model\":\"qwen2.5-coder:32b-instruct-q4_K_M\",\"created_at\":\"2026-10-12T02:08:50.857255781Z\",\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"verdict\\\": \\\"REJECT\\\", \\\"reasons\\\": [\\\"The credential appears in the standard output in the line `print(f\\\\\\\"[probe] GET {target} auth=Bearer {credential}\\\\\\\")`.\\\"]}\"},\"done\":true,\"done_reason\":\"stop\",\"total_duration\":1346143711,\"load_duration\":29731074,\"prompt_eval_count\":1568,\"prompt_eval_cached_count\":207,\"prompt_eval_duration\":412775000,\"eval_count\":45,\"eval_duration\":750626000}",
+ "seconds": 1.3485635509999838,
+ "ps": {
+  "models": [
+   {
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "model": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "size": 22125425458,
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41",
+    "details": {
+     "parent_model": "",
+     "format": "gguf",
+     "family": "qwen2",
+     "families": [
+      "qwen2"
+     ],
+     "parameter_size": "32.8B",
+     "quantization_level": "Q4_K_M"
+    },
+    "expires_at": "2319-01-22T01:56:07.712920103Z",
+    "size_vram": 22125425458,
+    "context_length": 16384
+   }
+  ]
+ },
+ "request_sha256": "8f60c93595326107a9cf4020fa84fdd511e544078bf29d0db6496cabbecc5c62"
+}

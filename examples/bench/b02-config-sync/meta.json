@@ -1,0 +1,24 @@
+{
+ "schema": "credproof.bench-target/v1",
+ "id": "b02-config-sync",
+ "title": {
+  "zh": "配置同步",
+  "en": "Config sync"
+ },
+ "flaw_class": "credential_exception",
+ "cwe": "CWE-209",
+ "flaw": {
+  "zh": "拒绝非白名单服务时，异常信息里带上了令牌",
+  "en": "the rejection error for a non-allowlisted service embeds the token"
+ },
+ "business_tests_detect_flaw": false,
+ "scenarios": [
+  "normal_allowed_output",
+  "foreign_service_rejected"
+ ],
+ "mutable_file": "tool.py",
+ "reference_fix": "reference_fix.py",
+ "flaw_lines": [
+  61
+ ]
+}

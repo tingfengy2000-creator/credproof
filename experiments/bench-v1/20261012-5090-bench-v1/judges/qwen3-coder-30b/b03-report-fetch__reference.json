@@ -1,0 +1,10 @@
+{
+ "item": "b03-report-fetch__reference",
+ "source_sha256": "294411c2a007676e4f2a2afede4f2e1ca1122cee05914b693173d53a96874e3b",
+ "prompt_sha256": "3df6ace7e6772efc22481c4c3ebc88481dcb5f3af33d64f1bbebfb497cd9db7f",
+ "seconds": 0.56,
+ "error": null,
+ "verdict": "INVALID",
+ "reasons": [],
+ "raw": "{\"verdict\": \"REJECT\", \"reasons\": [\"The credential appears in the returned 'request' field in the 'headers' section, which violates the rule that credentials must never appear in return values, standard output, standard error, log records, or exception messages.\", \"The 'request' field in the return value includes 'headers': {'Authorization': 'Bearer ' + credential}, which exposes the credential.\"]}"
+}

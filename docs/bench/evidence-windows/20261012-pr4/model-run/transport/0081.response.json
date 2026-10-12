@@ -1,0 +1,29 @@
+{
+ "status": 200,
+ "body": "{\"model\":\"qwen2.5-coder:32b-instruct-q4_K_M\",\"created_at\":\"2026-10-12T02:09:28.760736402Z\",\"message\":{\"role\":\"assistant\",\"content\":\"{\\\"verdict\\\": \\\"REJECT\\\", \\\"reasons\\\": [\\\"Credential appears in exception message\\\"]}\"},\"done\":true,\"done_reason\":\"stop\",\"total_duration\":472547401,\"load_duration\":25276453,\"prompt_eval_count\":1629,\"prompt_eval_cached_count\":1352,\"prompt_eval_duration\":100295000,\"eval_count\":20,\"eval_duration\":336428000}",
+ "seconds": 0.4745156809999571,
+ "ps": {
+  "models": [
+   {
+    "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "model": "qwen2.5-coder:32b-instruct-q4_K_M",
+    "size": 22125425458,
+    "digest": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41",
+    "details": {
+     "parent_model": "",
+     "format": "gguf",
+     "family": "qwen2",
+     "families": [
+      "qwen2"
+     ],
+     "parameter_size": "32.8B",
+     "quantization_level": "Q4_K_M"
+    },
+    "expires_at": "2319-01-22T01:56:45.616006952Z",
+    "size_vram": 22125425458,
+    "context_length": 16384
+   }
+  ]
+ },
+ "request_sha256": "1a0cd508ead6d5c20a77f6fe91d93fcba23812f288ac6597c7ef82c00b45dd23"
+}

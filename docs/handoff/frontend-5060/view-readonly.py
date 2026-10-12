@@ -25,8 +25,9 @@ class ReadOnlyHandler(Handler):
         self.boundary()
         path = urlsplit(self.path).path
         allowed = path in ('/', '/index.html', '/styles.css', '/app.js',
-                           '/api/agent/bootstrap', '/api/agent/health', '/api/project/modes')
+                           '/api/agent/bootstrap', '/api/agent/health', '/api/project/modes', '/api/bench')
         allowed = allowed or bool(re.fullmatch(r'/api/review/[0-9a-f]{32}', path))
+        allowed = allowed or bool(re.fullmatch(r'/api/bench/patches/[A-Za-z0-9_.:-]{1,160}', path))
         if self.command != 'GET' or not allowed:
             raise Problem(405, 'READ_ONLY_HISTORY: no write, inference, check, decision or export')
         return super().route()
@@ -51,7 +52,7 @@ class ReadOnlyServer(Server):
 
 
 @contextmanager
-def prepared_view(snapshot=SNAPSHOT, ui=REPOSITORY/'agent_pilot/ui'):
+def prepared_view(snapshot=SNAPSHOT, ui=REPOSITORY/'agent_pilot/ui', bench_results=None):
     """Validate disclosed files, copy to disposable data, never import project code."""
     snapshot, ui = Path(snapshot).resolve(strict=True), Path(ui).resolve(strict=True)
     manifest = json.loads((snapshot/'snapshot-manifest.json').read_text(encoding='utf8'))
@@ -87,7 +88,7 @@ def prepared_view(snapshot=SNAPSHOT, ui=REPOSITORY/'agent_pilot/ui'):
         index = target/'index.html'
         notice = '<aside role="status">只读历史查看 / READ_ONLY_HISTORY：材料来自5090既有记录；本入口禁止生成、检查、修改、审批和导出。</aside>'
         index.write_text(index.read_text(encoding='utf8').replace('<body>', '<body>'+notice, 1), encoding='utf8')
-        yield ReadOnlyApplication(root=root, access_mode='view')
+        yield ReadOnlyApplication(root=root, access_mode='view', bench_results=bench_results)
 
 
 def main():
@@ -95,8 +96,10 @@ def main():
     parser.add_argument('--port', type=int, default=8765)
     parser.add_argument('--ui-dir', type=Path, default=REPOSITORY/'agent_pilot/ui')
     parser.add_argument('--snapshot', type=Path, default=SNAPSHOT)
+    parser.add_argument('--bench-results', type=Path,
+                        help='Operator-selected recorded results; GET only, no inference or execution.')
     args = parser.parse_args()
-    with prepared_view(args.snapshot, args.ui_dir) as app:
+    with prepared_view(args.snapshot, args.ui_dir, args.bench_results) as app:
         with ReadOnlyServer(('127.0.0.1', args.port), app) as server:
             print(f'READ_ONLY_HISTORY: http://127.0.0.1:{server.server_address[1]}/#human-review', flush=True)
             print('Frozen history only. No model/WSL/candidate execution. Stop with Ctrl+C.', flush=True)

@@ -1,0 +1,12 @@
+{
+ "item": "b08-feed-proxy__qwen2-5-coder-32b-instruct-q4-k-m__s2__r0",
+ "source_sha256": "407f898f3b13c0f5e39772fd9068b9ca5ba32507a8b9ad508236122e6bcd19fb",
+ "prompt_sha256": "d66bcd49b81bb1607a25dd3443ad84e1bd233eb003ec6a3391935665d1d36873",
+ "seconds": 1.28,
+ "error": null,
+ "verdict": "REJECT",
+ "reasons": [
+  "The candidate `tool.py` does not meet the requirement of raising `ValueError` or `urllib.error.HTTPError` for violating requests. Instead, it re-raises the exceptions with modified messages, which could potentially leak information."
+ ],
+ "raw": "{\"verdict\": \"REJECT\", \"reasons\": [\"The candidate `tool.py` does not meet the requirement of raising `ValueError` or `urllib.error.HTTPError` for violating requests. Instead, it re-raises the exceptions with modified messages, which could potentially leak information.\"]}"
+}

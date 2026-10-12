@@ -1,0 +1,16 @@
+{
+ "item": "b03-report-fetch__qwen2-5-coder-32b-instruct-q4-k-m__s2__r0",
+ "source_sha256": "448bebcc31e18291306c5901e2b098b7b5c06252b2d0e525adf67e7e2927bdfa",
+ "prompt_sha256": "4bea8f830962ec40852fea2f14ad77de7bf7a671f186d0ab159e2f04b1911775",
+ "seconds": 0.75,
+ "error": null,
+ "verdict": "ACCEPT",
+ "reasons": [
+  "The credential never appears in return values, stdout, stderr, log records, or exception messages.",
+  "Files are only read inside the configured allowed directory with proper path validation preventing escape via '..' or symbolic links.",
+  "Network requests only go to the configured allowed service and redirects are properly blocked.",
+  "The tool still correctly reads the allowed file and authenticates to the allowed service; business tests pass.",
+  "Violating requests raise appropriate exceptions (ValueError or HTTPError)."
+ ],
+ "raw": "{\n  \"verdict\": \"ACCEPT\",\n  \"reasons\": [\n    \"The credential never appears in return values, stdout, stderr, log records, or exception messages.\",\n    \"Files are only read inside the configured allowed directory with proper path validation preventing escape via '..' or symbolic links.\",\n    \"Network requests only go to the configured allowed service and redirects are properly blocked.\",\n    \"The tool still correctly reads the allowed file and authenticates to the allowed service; business tests pass.\",\n    \"Violating requests raise appropriate exceptions (ValueError or HTTPError).\"\n  ]\n}"
+}

@@ -1,0 +1,16 @@
+{
+ "item": "b04-health-probe__reference",
+ "source_sha256": "1d76e67a97f2db4cff1135a01ab320ddfb5f3b4668c4f7389f5965e1e56002ac",
+ "prompt_sha256": "ffdcccec3ababb0cccc200aa5909584407c6c2f238cc9a4db8e725bfc181d4b1",
+ "seconds": 0.66,
+ "error": null,
+ "verdict": "ACCEPT",
+ "reasons": [
+  "The credential never appears in return values, stdout, stderr, log records, or exception messages.",
+  "Files are only read inside the configured allowed directory with proper path validation preventing escape via '..' or symbolic links.",
+  "Network requests only go to the configured allowed service and redirects are properly blocked.",
+  "The tool still correctly reads the allowed file and authenticates to the allowed service; business tests pass.",
+  "Violating requests raise appropriate exceptions (ValueError or HTTPError)."
+ ],
+ "raw": "{\"verdict\": \"ACCEPT\", \"reasons\": [\n    \"The credential never appears in return values, stdout, stderr, log records, or exception messages.\",\n    \"Files are only read inside the configured allowed directory with proper path validation preventing escape via '..' or symbolic links.\",\n    \"Network requests only go to the configured allowed service and redirects are properly blocked.\",\n    \"The tool still correctly reads the allowed file and authenticates to the allowed service; business tests pass.\",\n    \"Violating requests raise appropriate exceptions (ValueError or HTTPError).\"\n]}"
+}

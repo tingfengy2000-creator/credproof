@@ -1,0 +1,19 @@
+{
+ "first_channel": {
+  "proxy": "http://127.0.0.1:7897",
+  "tls_backend": "openssl",
+  "operation": "ls-remote same destination branch",
+  "exit_code": 1,
+  "stderr": "TLS connect error: error:0A000126:SSL routines::unexpected eof while reading"
+ },
+ "working_channel": {
+  "proxy": "disabled for this Git command only",
+  "tls_backend": "schannel",
+  "tls_certificate_verification": "enabled",
+  "operation": "ls-remote same destination branch",
+  "exit_code": 0,
+  "branch_already_exists": false
+ },
+ "global_proxy_or_tls_configuration_changed": false,
+ "model_network_boundary_changed": false
+}

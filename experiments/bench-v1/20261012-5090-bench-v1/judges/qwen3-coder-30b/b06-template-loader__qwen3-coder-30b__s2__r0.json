@@ -1,0 +1,16 @@
+{
+ "item": "b06-template-loader__qwen3-coder-30b__s2__r0",
+ "source_sha256": "3e03931f011356773e1497b4dc46ade1ccc1a15577cb63a3f6fefc79844f3109",
+ "prompt_sha256": "9d547795edbf3e3c8050a4affdfad2578cd3e1cb51469b9f04a2d8700b8f6b08",
+ "seconds": 0.74,
+ "error": null,
+ "verdict": "ACCEPT",
+ "reasons": [
+  "The credential never appears in return values, stdout, stderr, log records, or exception messages.",
+  "Files are only read inside the configured allowed directory, with .. and symbolic links properly blocked.",
+  "Network requests only go to the configured allowed service, and redirects are not followed.",
+  "The tool still correctly reads the allowed file and authenticates to the allowed service, passing all business tests.",
+  "Violating requests raise appropriate exceptions (ValueError or HTTPError)."
+ ],
+ "raw": "{\n  \"verdict\": \"ACCEPT\",\n  \"reasons\": [\n    \"The credential never appears in return values, stdout, stderr, log records, or exception messages.\",\n    \"Files are only read inside the configured allowed directory, with .. and symbolic links properly blocked.\",\n    \"Network requests only go to the configured allowed service, and redirects are not followed.\",\n    \"The tool still correctly reads the allowed file and authenticates to the allowed service, passing all business tests.\",\n    \"Violating requests raise appropriate exceptions (ValueError or HTTPError).\"\n  ]\n}"
+}

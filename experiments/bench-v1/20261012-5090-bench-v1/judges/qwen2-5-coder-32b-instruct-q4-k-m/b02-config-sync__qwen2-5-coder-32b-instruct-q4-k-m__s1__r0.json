@@ -1,0 +1,12 @@
+{
+ "item": "b02-config-sync__qwen2-5-coder-32b-instruct-q4-k-m__s1__r0",
+ "source_sha256": "854eb8c6eccb9b5d85086213a1d22468948ef2f1824bfeab05a03e0ace1cb0a6",
+ "prompt_sha256": "1cc9beb596e5f021e144c36179cd3c3f8961816b21252e4d394a97e0e41e6b65",
+ "seconds": 1.55,
+ "error": null,
+ "verdict": "REJECT",
+ "reasons": [
+  "The candidate `tool.py` does not meet the requirement to never appear in return values, standard output, standard error, log records (any level) or exception messages. Specifically, the exception message in `_allowed_url` includes the URL and credential, which could leak sensitive information."
+ ],
+ "raw": "{\"verdict\": \"REJECT\", \"reasons\": [\"The candidate `tool.py` does not meet the requirement to never appear in return values, standard output, standard error, log records (any level) or exception messages. Specifically, the exception message in `_allowed_url` includes the URL and credential, which could leak sensitive information.\"]}"
+}
