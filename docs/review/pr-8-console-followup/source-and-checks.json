@@ -1,0 +1,88 @@
+{
+  "kind": "STATIC_AND_SOFTWARE_PROTOCOL_REVIEW_NOT_BROWSER_ACCEPTANCE",
+  "reviewed_head": "79e6b74627b4001ac071bd831d4133c1ccb10c8a",
+  "prior_reviewed_head": "af21695c58f8286bc1467405ccf2bb2967e0ea4f",
+  "changed_paths": [
+    "agent_pilot/ui/README.md",
+    "docs/ui/console-v1/check-console.mjs"
+  ],
+  "unchanged_executable_paths": [
+    {
+      "path": "agent_pilot/web.py",
+      "equal_to_previous_review": true,
+      "git_blob_sha256": "b61578c9d4bf57d0362e368043c8505a326c7788f073bce7b5169bf06006bf31"
+    },
+    {
+      "path": "agent_pilot/launch.py",
+      "equal_to_previous_review": true,
+      "git_blob_sha256": "4af52525e29e5624ab28dafa5c91b8c91a328636eb637c5192ef428798d3262b"
+    },
+    {
+      "path": "agent_pilot/runtime_config.py",
+      "equal_to_previous_review": true,
+      "git_blob_sha256": "bdd3325fc9604aefd2f357e015bb9e1dba05da5d58b0c3716b08d6ceb97300e5"
+    },
+    {
+      "path": "agent_pilot/project_workspace.py",
+      "equal_to_previous_review": true,
+      "git_blob_sha256": "6dbb0e11807325f82fa549c17865e8a604389d6eeae7b6a5f9097e5511e5ea6d"
+    },
+    {
+      "path": "credproof_safety/human_review.py",
+      "equal_to_previous_review": true,
+      "git_blob_sha256": "d55249a27978cda2502dc0d1b446c9cfaaac1f6b5bf14054a41199eb73129be9"
+    },
+    {
+      "path": "credproof_safety/web_repair.py",
+      "equal_to_previous_review": true,
+      "git_blob_sha256": "4d5817fb8363614541a18b01587c77b9b6dec1c7d5bd6990c2fbc41767b120ea"
+    },
+    {
+      "path": "agent_pilot/ui/app.js",
+      "equal_to_previous_review": true,
+      "git_blob_sha256": "48cdbae9f0f15b10efc48d5f42d8819d17a8c7bda08e5716bc8faa68fab33596"
+    },
+    {
+      "path": "agent_pilot/ui/index.html",
+      "equal_to_previous_review": true,
+      "git_blob_sha256": "bf6965c6b6238e44f1d1c655387c3b471230dd7b907dc0f0b2ecedaa4d231ddd"
+    },
+    {
+      "path": "agent_pilot/ui/styles.css",
+      "equal_to_previous_review": true,
+      "git_blob_sha256": "9fc30bbf195969a6d58a9e91ce664d575cf7fde040a800f640fa3a79cb15c7d3"
+    },
+    {
+      "path": "docs/handoff/frontend-5060/view-readonly.py",
+      "equal_to_previous_review": true,
+      "git_blob_sha256": "e349b5c87cd7fee5dd3793f5146dbd4993dffce3f3bba31c479a8305a3dad42b"
+    }
+  ],
+  "pytest": {
+    "command": "python -m pytest agent_pilot/tests/test_web.py agent_pilot/tests/test_web_bench.py agent_pilot/tests/test_human_review.py agent_pilot/tests/test_runtime_config.py agent_pilot/tests/test_delivery_modes.py -q -rs --junitxml=protocol-pytest.xml",
+    "cases": 42,
+    "passed": 42,
+    "failed": 0,
+    "skipped": 0,
+    "exit_code": 0,
+    "dynamic_candidate_execution": false,
+    "model_calls": 0
+  },
+  "node": {
+    "syntax_app_js": 0,
+    "syntax_check_console_mjs": 0,
+    "test_ui_project_verdict_js": 0
+  },
+  "browser": {
+    "status": "BLOCKED_SAVED_SITE_DENIAL",
+    "message": "A saved user permission setting blocks this action.",
+    "check_console_executed": false,
+    "manual_buttons_executed": false,
+    "summary_json_generated": false,
+    "report_pdf_generated": false
+  },
+  "merge": {
+    "performed": false,
+    "approval": "USER_DECISION_PENDING"
+  }
+}

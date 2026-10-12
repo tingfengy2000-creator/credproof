@@ -1,0 +1,26 @@
+{
+  "kind": "READ_ONLY_PERMISSION_OBSERVATION_NOT_BROWSER_ACCEPTANCE",
+  "reviewed_head": "79e6b74627b4001ac071bd831d4133c1ccb10c8a",
+  "requested_url": "http://127.0.0.1:8768/#overview",
+  "browser_attempts_this_review": 3,
+  "attempts_after_user_reported_rule_removal": 2,
+  "tool_outcome": "REJECTED_SAVED_USER_PERMISSION",
+  "tool_message": "A saved user permission setting blocks this action.",
+  "read_only_user_config_observation": {
+    "file": "config.toml",
+    "key": "browser_use.origins.http://127.0.0.1:8768.access",
+    "value": "allow",
+    "effective_browser_access_confirmed": false,
+    "other_user_configuration_published": false
+  },
+  "permission_files_modified": false,
+  "alternate_browser_or_playwright_executed": false,
+  "demo_server": "installed dev37, --mode view, loopback 8768; no model startup",
+  "browser_summary_json_generated": false,
+  "browser_report_pdf_generated": false,
+  "new_model_calls": 0,
+  "manual_button_acceptance_completed": false,
+  "merge_performed": false,
+  "official_guidance": "https://learn.chatgpt.com/docs/browser?surface=app",
+  "guidance_note": "Settings > Browser > Agent permissions controls website exceptions. Removing a site's custom permission restores defaults; it does not necessarily grant access."
+}
