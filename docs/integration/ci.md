@@ -24,6 +24,9 @@ Scanning，每个配置的 automationDetails.id 独立；上传失败不改变�
 profile，保留 clone3 的 ENOSYS 回退；仍为非 root、cap-drop ALL、
 no-new-privileges、network none、read-only，有限 rootfs 由内层 bwrap 提供。
 `deploy/apparmor/credproof-bwrap` 的宿主强制执行仍单列为待验证选项。
+Ubuntu 的 unconfined 进程创建 userns 时仍可能进入 unprivileged_userns。
+因此宿主同时为容器内那个固定 bwrap 可执行路径加载 userns 应用例外，
+这是明确记录的外层放宽，不是限定 profile 已通过的证明。
 
 native 仅为 `/opt/credproof-ci-runtime/isolation/tools/usr/bin/bwrap` 这个可信
 执行文件加载 userns 许可 profile（unconfined 应用例外），不改变宿主 sysctl，

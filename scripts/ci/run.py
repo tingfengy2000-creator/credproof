@@ -113,7 +113,8 @@ def native(source, out, rec, commit, data):
     rec.run('runtime-directory',['sudo','install','-d','-o',str(os.getuid()),'-g',str(os.getgid()),RUNTIME])
     rec.run('setup',['/usr/bin/python3',source/'scripts/runtime/setup-linux.py','--runtime-root',RUNTIME])
     os.environ['CREDPROOF_CONFIG']=RUNTIME+'/runtime.json'
-    rec.run('doctor',[python,'-I','-m','credproof_safety','doctor','--output',out/'doctor.json'])
+    rec.run('doctor',[python,'-I','-m','credproof_safety','doctor'])
+    shutil.copyfile(out/'doctor/stdout.txt',out/'doctor.json')
     os.environ['CREDPROOF_REQUIRE_SARIF_SCHEMA']='1'
     rec.run('format-tests',[python,'-m','pytest',str(source/'credproof_safety/tests/test_report_formats.py'),'-q','--junitxml='+str(out/'formats-junit.xml')],cwd=source)
     for i,config in enumerate(targets(source)):
@@ -121,11 +122,17 @@ def native(source, out, rec, commit, data):
         rec.run(f'check-{i}',[python,'-I','-m','credproof_safety',*check_args(str(source/config),str(source),str(folder))])
     rec.run('anchors',[python,'-I',source/'scripts/runtime/verify-anchors.py','--source',source,
         '--source-commit',commit,'--anchors-source',data,'--anchors-commit',ANCHORS_COMMIT,
-        '--runtime',RUNTIME,'--output',out/'anchors','--environment','native'],timeout=1200,cwd=Path(os.environ['RUNNER_TEMP']))
+        '--runtime',RUNTIME,'--output',out/'anchors-results','--environment','native'],timeout=1200,cwd=Path(os.environ['RUNNER_TEMP']))
 
 
 def container(source, out, rec, commit, data):
     image='credproof:ci';out.chmod(0o777)
+    # Ubuntu's unconfined process can still transition to unprivileged_userns
+    # on unshare, denying net_admin/setpcap. Grant userns to this exact trusted
+    # executable via a host-loaded application exception; never change sysctl.
+    profile=out/'container-userns.profile'
+    profile.write_text('abi <abi/4.0>,\n#include <tunables/global>\nprofile credproof-ci-container '+IMAGE_RUNTIME+'/isolation/tools/usr/bin/bwrap flags=(unconfined) { userns, }\n')
+    rec.run('container-apparmor-load',['sudo','apparmor_parser','-r',profile])
     rec.run('build',['docker','build','--build-arg','SOURCE_COMMIT='+commit,'-f',source/'deploy/docker/Dockerfile','-t',image,source],timeout=1200)
     base=json.loads((source/'deploy/docker/base-image.json').read_text())
     save(out/'base-image.json',base)
@@ -145,15 +152,17 @@ def container(source, out, rec, commit, data):
         'reason':'R3 explicit deployment option; private bwrap userns requires AppArmor permission; no sysctl changes'})
     rec.run('container-origin',[*common,*hardened,'--entrypoint',IMAGE_PYTHON,image,'-I','-c',
         "import json,sys,pathlib,credproof_safety.cli as c;print(json.dumps({'python':sys.executable,'cli':c.__file__,'apparmor':pathlib.Path('/proc/self/attr/current').read_text()}))"])
-    rec.run('doctor',[*common,*hardened,image,'doctor','--output','/out/doctor.json'])
+    rec.run('doctor',[*common,*hardened,image,'doctor'])
+    shutil.copyfile(out/'doctor/stdout.txt',out/'doctor.json')
     for i,config in enumerate(targets(source)):
         folder=out/f'target-{i}';folder.mkdir();folder.chmod(0o777)
         rec.run(f'check-{i}',[*common,*hardened,image,*check_args('/workspace/'+config,'/workspace','/out/target-'+str(i))])
     rec.run('anchors',[*common,*hardened,'--entrypoint',IMAGE_PYTHON,image,'-I','/workspace/scripts/runtime/verify-anchors.py',
         '--source','/workspace','--source-commit',commit,'--anchors-source','/anchors','--anchors-commit',ANCHORS_COMMIT,
-        '--runtime',IMAGE_RUNTIME,'--output','/out/anchors','--environment','container'],timeout=1200)
+        '--runtime',IMAGE_RUNTIME,'--output','/out/anchors-results','--environment','container'],timeout=1200)
     blocked=out/'default-blocked';blocked.mkdir();blocked.chmod(0o777)
-    rec.run('default-doctor',[*common,image,'doctor','--output','/out/default-blocked/doctor.json'],expected=(4,))
+    rec.run('default-doctor',[*common,image,'doctor'],expected=(4,))
+    shutil.copyfile(out/'default-doctor/stdout.txt',out/'default-blocked/doctor.json')
     rec.run('default-check',[*common,image,*check_args('/workspace/'+targets(source)[0],'/workspace','/out/default-blocked')],expected=(3,))
     receipt="import pathlib;print(pathlib.Path('/opt/credproof/build-receipt.json').read_text());print(pathlib.Path('/opt/credproof/source-commit.txt').read_text());import hashlib;print(hashlib.sha256(pathlib.Path('/opt/credproof-runtime/rootfs-manifest.json').read_bytes()).hexdigest())"
     rec.run('build-receipt',[*common,*hardened,'--entrypoint',IMAGE_PYTHON,image,'-I','-c',receipt])

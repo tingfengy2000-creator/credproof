@@ -69,7 +69,13 @@ def scan(archive,exceptions=(),private_values=(),*,max_seconds=DEFAULT_SECONDS,m
         def matched(kind,m):
             nonlocal lines
             if lines is None:lines=[x.start() for x in re.finditer('\n',text)]
-            record={'file':name,'kind':kind,'line':bisect_right(lines,m.start())+1}
+            record={'file':name,'file_sha256':digest,'match_sha256':hashlib.sha256(m.group().encode()).hexdigest(),
+                    'kind':kind,'line':bisect_right(lines,m.start())+1}
+            # Public system-package diagnostics only, never emit token/key
+            # matches. These proposals are NOT automatic exceptions.
+            if kind in ('email','windows_absolute_path','home_absolute_path','operator_identity'):
+                begin=text.rfind('\n',0,m.start())+1;end=text.find('\n',m.end())
+                record['review_context']=text[begin:end if end>=0 else len(text)][:400]
             reason=exact.get((name,digest,kind,hashlib.sha256(m.group().encode()).hexdigest()))
             (reviewed if reason else findings).append({**record,**({'reason':reason} if reason else {})})
             if len(findings)+len(reviewed)>MAX_FINDINGS:raise ScanIncomplete('finding_count_limit')
@@ -108,7 +114,7 @@ def scan(archive,exceptions=(),private_values=(),*,max_seconds=DEFAULT_SECONDS,m
                 if not binary:chunks.append(chunk)
             digest=h.hexdigest();files[name]={'bytes':read,'sha256':digest,'binary_text_scan_skipped':binary}
             total+=read;distribution[p.parts[0] if p.parts else '.']+=1
-            if any(x in {'.git','models','ollama','qwen_agent'} for x in p.parts) or any(x in name for x in ('docs/handoff/','docs/review/','experiments/')):
+            if any(x in {'.git','ollama','qwen_agent'} for x in p.parts) or p.suffix in {'.gguf','.safetensors'} or any(x in name for x in ('docs/handoff/','docs/review/','experiments/')):
                 findings.append({'file':name,'kind':'forbidden_image_material'})
             if binary:binary_count+=1
             else:inspect(name,b''.join(chunks),digest)
