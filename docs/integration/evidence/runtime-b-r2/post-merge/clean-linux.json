@@ -1,0 +1,46 @@
+[
+  {
+    "command": [
+      "git",
+      "fetch",
+      "--depth=1",
+      "<git-common-directory>/.git",
+      "a5b51e303315dd2dd3f4671d7a771fb9afab0310"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "From <git-common-directory>/\n * branch            a5b51e303315dd2dd3f4671d7a771fb9afab0310 -> FETCH_HEAD\n"
+  },
+  {
+    "command": [
+      "git",
+      "checkout",
+      "--detach",
+      "FETCH_HEAD"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": "Warning: you are leaving 1 commit behind, not connected to\nany of your branches:\n\n  4eb8d5e Merge reviewed contract A into B for final integration checks\n\nIf you want to keep it by creating a new branch, this may be a good time\nto do so with:\n\n git branch <new-branch-name> 4eb8d5e\n\nHEAD is now at a5b51e3 Merge pull request #12 from <repository-owner>/feat/linux-runtime-5090\n"
+  },
+  {
+    "command": [
+      "git",
+      "status",
+      "--porcelain"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  },
+  {
+    "command": [
+      "git",
+      "diff",
+      "HEAD",
+      "--name-only"
+    ],
+    "exit_code": 0,
+    "stdout": "",
+    "stderr": ""
+  }
+]

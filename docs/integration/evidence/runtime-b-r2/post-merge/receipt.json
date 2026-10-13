@@ -1,0 +1,69 @@
+{
+  "schema": "credproof.r3-final-merge/v1",
+  "tested_source_commit": "a5b51e303315dd2dd3f4671d7a771fb9afab0310",
+  "A_merged": true,
+  "A_merge_commit": "454f1ef00920a05821c4fac9ab4bdc3614691b44",
+  "B_merged": true,
+  "B_merge_commit": "a5b51e303315dd2dd3f4671d7a771fb9afab0310",
+  "target_branch": "feat/frontend-human-review-5060",
+  "main_before_and_after": "2d2d81ee3fe9e1869bfca0b160410deaf83c4bca",
+  "tests": {
+    "windows.xml": {
+      "tests": 253,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "passed": 251
+    },
+    "wsl.xml": {
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 40
+    }
+  },
+  "windows_command": [
+    "python",
+    "-m",
+    "pytest",
+    "agent_pilot/tests",
+    "credproof_safety/tests",
+    "-q",
+    "-ra",
+    "--junitxml=<local-evidence>/r3-final-merged-windows.xml"
+  ],
+  "schema_required": true,
+  "windows_python": "3.12.14",
+  "pytest": "8.4.2",
+  "jsonschema": "4.26.0",
+  "wsl_python": "3.12.3",
+  "windows_clean_status": {
+    "exit_code": 0,
+    "stdout": ""
+  },
+  "program_diff_from_premerge_tested_source": "",
+  "installed_cli_evidence_reused": "../installed-cli/receipt.json; exact package/program bytes unchanged from 4eb8d5e49cfdbe07e2fa6ae49ed29b53f4c92fed",
+  "node_syntax_exit": 0,
+  "node_ui_verdict_exit": 0,
+  "model_calls": 0,
+  "C_started": false,
+  "container_status": "CANDIDATE",
+  "derivatives": [
+    {
+      "file": "windows.xml",
+      "original_sha256": "5713e69a99616257d7be6f0f426fcdfabc5fee885fd2ba7e7ff3bbad2ce1e6f2",
+      "public_sha256": "4c91a765e1854278c67edf81ecfeaf44fd6afd1ccecffa9ee8c89cdb671adb8e"
+    },
+    {
+      "file": "wsl.xml",
+      "original_sha256": "ca800fb4226da43d86bbaa2ebbd47ea80ea2edcf12d6fb7d6c5cc0a9fe7aae3d",
+      "public_sha256": "171ad836be1f6b0d01b71322d701fa8cfe54717b8e472f47933a109b9c9a7173"
+    },
+    {
+      "file": "clean-linux.json",
+      "original_sha256": "14c0762e49c8b8f1b824e5f913ccaf8f997614a91e631412021989a8187140cd",
+      "public_sha256": "27425f19acbc5bd6a0f791a016e9b27e6ed6eb2fb24c04026d4a3e779b6d8d5a"
+    }
+  ]
+}
