@@ -173,14 +173,16 @@ def container(source, out, rec, commit, data):
     rec.run('image-export',['docker','export','-o',archive,name],timeout=180)
     rec.run('image-remove',['docker','rm',name])
     rec.run('image-scan',['/usr/bin/python3',source/'scripts/runtime/scan-image.py',archive,
-        '--output',out/'image-scan.json','--max-seconds','600','--exceptions',source/'deploy/docker/scan-exceptions.json'],timeout=620)
+        '--output',out/'image-scan.json','--max-seconds','600','--exceptions',source/'deploy/docker/scan-exceptions.json',
+        '--private-values-file',private_values_file()],timeout=620)
     rec.run('output-ownership',['sudo','chown','-R','--no-dereference',str(os.getuid())+':'+str(os.getgid()),out])
 
 
 def publish(out, source):
     """Exact known host-field replacements; never rewrite source code syntax."""
     substitutions=[(str(source),'<source>'),(os.environ.get('RUNNER_TEMP',''),'<runner-temp>'),
-        (str(Path.home()),'<runner-home>'),(socket.gethostname(),'<runner-host>')]
+        (str(Path.home()),'<runner-home>'),(socket.gethostname(),'<runner-host>'),
+        (os.environ.get('GITHUB_REPOSITORY_OWNER',''),'<repository-owner>')]
     substitutions=sorted(((a,b) for a,b in substitutions if len(a)>3),key=lambda x:-len(x[0]))
     # Only generated text receipts. Wheels remain byte-identical and their
     # provenance is in wheel.json; project/module files are not rewritten.
@@ -213,6 +215,25 @@ def gate(out):
     return 0 if rows and all(x['matches'] for x in rows) and any(x['name'].startswith('check-') for x in rows) else 1
 
 
+def private_values_file():
+    owner=os.environ.get('GITHUB_REPOSITORY_OWNER','')
+    if not owner:raise ValueError('Hosted repository owner identity required for publication scan')
+    path=Path(os.environ['RUNNER_TEMP'])/'credproof-private-values.json'
+    save(path,[owner]) # Outside the artifact tree; never upload the actual value.
+    path.chmod(0o600)
+    return path
+
+
+def scan_formats(source, out, rec):
+    archive=Path(os.environ['RUNNER_TEMP'])/'credproof-formats.tar'
+    files=[p for p in out.rglob('*') if p.is_file() and p.name in ('report.sarif','junit.xml','summary.md')]
+    if not files:raise ValueError('No derived format files to scan')
+    with tarfile.open(archive,'w') as tf:
+        for path in sorted(files):tf.add(path,arcname=path.relative_to(out).as_posix(),recursive=False)
+    rec.run('formats-scan',['/usr/bin/python3',source/'scripts/runtime/scan-image.py',archive,
+        '--output',out/'formats-scan.json','--private-values-file',private_values_file()],timeout=130)
+
+
 def main(argv=None):
     p=argparse.ArgumentParser();p.add_argument('mode',choices=('native','container','gate'))
     p.add_argument('--out',type=Path,required=True);p.add_argument('--source',type=Path,default=Path.cwd())
@@ -223,6 +244,7 @@ def main(argv=None):
     try:
         frozen_anchors(source,data)
         (native if a.mode=='native' else container)(source,out,rec,commit,data)
+        scan_formats(source,out,rec)
     except Exception as exc:
         save(out/'orchestration-error.json',{'error_type':type(exc).__name__,'reason':str(exc)})
         rec.rows.append({'name':'orchestration','exit_code':4,'expected_exit_codes':[0],'matches':False})
