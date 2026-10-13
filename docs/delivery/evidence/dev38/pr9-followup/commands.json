@@ -1,0 +1,67 @@
+{
+  "source_commit": "1796690644d9e9e2169340a2b85764a5197691bc",
+  "python": "3.12.14",
+  "pytest": "8.4.2",
+  "scope": "software/view/static export only; no model, candidate, WSL, CI or Docker execution",
+  "commands": [
+    {
+      "command": "<test-python> -m pytest agent_pilot/tests/test_demo_review.py agent_pilot/tests/test_delivery_scan.py agent_pilot/tests/test_presentation.py agent_pilot/tests/test_bundle.py agent_pilot/tests/test_delivery_modes.py agent_pilot/tests/test_web.py agent_pilot/tests/test_human_review.py agent_pilot/tests/test_runtime_config.py -q --tb=short --junitxml=<record>/targeted-r2.raw.xml",
+      "exit_code": 0,
+      "passed": 70,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "node --check agent_pilot/ui/app.js",
+      "exit_code": 0
+    },
+    {
+      "command": "node agent_pilot/tests/test_ui_project_verdict.js",
+      "exit_code": 0
+    },
+    {
+      "command": "<test-python> scripts/delivery/build.py --python-zip <official-python-zip> --output <new-output>",
+      "exit_code": 0
+    },
+    {
+      "command": "<clean-installed-python> -I scripts/delivery/check-installed.py --workspace <repository> --output <record>/clean-wheel-http.json",
+      "exit_code": 0
+    },
+    {
+      "command": "cmd /d /c start-credproof.cmd",
+      "working_directory": "<Chinese-and-space-extracted-directory>",
+      "scope": "actual CMD entry; stopped with Ctrl+C; not a physical double-click claim",
+      "harness_exit_code": 0,
+      "server_ready": true,
+      "stop": "Ctrl+C with temporary cleanup verified; no CMD exit-code claim"
+    },
+    {
+      "command": "node check-console.mjs --base <actual-loopback-address> --out <record>/console",
+      "exit_code": 0
+    }
+  ],
+  "prior_attempts": [
+    {
+      "type": "test_fixture_path",
+      "result": "1 failed, 69 passed",
+      "reason": "new owner assertion looked in runs/ instead of actual temporary root; test corrected, production unchanged"
+    },
+    {
+      "type": "test_harness_environment",
+      "result": "KeyError SystemRoot before CMD launch",
+      "reason": "case-sensitive copied environment dictionary; use Windows case-insensitive os.environ lookup"
+    },
+    {
+      "type": "test_harness_process_assertion",
+      "result": "false although browser exit 0",
+      "reason": "Windows conhost.exe is a valid CMD child; later assertion permits conhost alongside Python, never PowerShell"
+    }
+  ],
+  "sandbox": {
+    "feature": "Containers-DisposableClientVM",
+    "state": "Disabled",
+    "run": "NOT_EXECUTED",
+    "strict_python_free_host_validation": "NOT_COMPLETED",
+    "reason": "no host optional-feature change or reboot; current followup tested existing Windows account in new directory, earlier new-user evidence retained separately"
+  }
+}

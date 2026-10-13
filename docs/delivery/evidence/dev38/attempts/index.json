@@ -1,0 +1,47 @@
+[
+  {
+    "attempt": "pth-root",
+    "program_source_commit": "702a3be9d7f720d7288fc983d98f978b77f4ab64",
+    "reason": "Delivery startup: embedded relative root not resolved. ModuleNotFoundError: No module named agent_pilot. Fixed Windows pth separators.",
+    "original_record_sha256": "b3f662cfc09bd39bbd07502aabb9dc8bca8ae68332730f179d5125c1f4ce522f",
+    "public_record_sha256": "e926e37fecafd51f6272e8d84ba66ff59ad1a959bcaf19b767f4860c5a226440",
+    "redaction": "None; JSON contains no account or host path.",
+    "original_preserved_locally": true
+  },
+  {
+    "attempt": "exclusive-port",
+    "program_source_commit": "4bd7476a0cd142a249e7e71f7369dfc4ffa08e74",
+    "reason": "Delivery startup: WinError 10013 on exclusive listener. Fixed fallback only when loopback listener confirmed.",
+    "original_record_sha256": "b3f662cfc09bd39bbd07502aabb9dc8bca8ae68332730f179d5125c1f4ce522f",
+    "public_record_sha256": "e926e37fecafd51f6272e8d84ba66ff59ad1a959bcaf19b767f4860c5a226440",
+    "redaction": "None; JSON contains no account or host path.",
+    "original_preserved_locally": true
+  },
+  {
+    "attempt": "harness-origin",
+    "program_source_commit": "e69c0c7bea6a1bbd328d314e2f998ab49388cd5c",
+    "reason": "Harness cwd used for origin relativization was browser-tools. Product already started and review loaded; node error not a product verdict.",
+    "original_record_sha256": "eec32a7232ef1dc2b723b90f27249dcf050ff610a32d84d01c50a42367a3a595",
+    "public_record_sha256": "3de7671e2e768ecdbd93a805f52ee482d5ce06f7da1f5dd61aec6bda8450fe1d",
+    "redaction": "None; JSON contains no account or host path.",
+    "original_preserved_locally": true
+  },
+  {
+    "attempt": "harness-temp",
+    "program_source_commit": "e69c0c7bea6a1bbd328d314e2f998ab49388cd5c",
+    "reason": "Harness inherited controller TEMP under Start-Process -Credential. Playwright mkdtemp and Add-Type denied. Corrected to current SID profile; no delivery code changed.",
+    "original_record_sha256": "8c34b81b326a5c2be67452b81dc06bdcce8e7d28d96669186e9887901826b757",
+    "public_record_sha256": "52331b47aff6bea34af65751e19c434ab55b7075929c9263984058cb7c4a6519",
+    "redaction": "Only error field private TEMP path replaced. Error type and all other fields unchanged.",
+    "original_preserved_locally": true
+  },
+  {
+    "attempt": "mobile-overflow",
+    "program_source_commit": "e69c0c7bea6a1bbd328d314e2f998ab49388cd5c",
+    "reason": "Product display: frozen review option caused 109px overflow at 390px. Fixed selector max-width; original browser failure preserved.",
+    "original_record_sha256": "4442373bd4e7aaaab022966a51a1fbdda5cba2cdd9fc736328b2efdc7a5008c7",
+    "public_record_sha256": "abdb2875c8a0b85fe44f2a9f36788d6097098088c515b31d0b83a460ba1d2f3a",
+    "redaction": "None; JSON contains no account or host path.",
+    "original_preserved_locally": true
+  }
+]

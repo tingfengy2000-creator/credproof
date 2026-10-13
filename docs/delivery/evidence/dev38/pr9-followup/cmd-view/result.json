@@ -1,0 +1,42 @@
+{
+  "kind": "WINDOWS_CMD_CHINESE_SPACE_FOLLOWUP",
+  "source_commit": "1796690644d9e9e2169340a2b85764a5197691bc",
+  "account": "existing host account, separate test TEMP; not a new-user or Python-free VM claim",
+  "chinese_and_space": true,
+  "model_calls": 0,
+  "candidate_execution": 0,
+  "wsl_probe": 0,
+  "command": "cmd /d /c start-credproof.cmd",
+  "port_8765_reserved_by_test": true,
+  "test_temp": "<test-temp>",
+  "strict_no_preinstalled_python": false,
+  "port_fallback_worked": true,
+  "reviews": 1,
+  "review_state": [
+    "PASS",
+    "PENDING",
+    "NOT_APPLIED"
+  ],
+  "dead_residual_removed": true,
+  "active_owner_retained": true,
+  "unmarked_retained": true,
+  "cleanup_count": 1,
+  "cmd_direct_child_names": [
+    "conhost.exe",
+    "python.exe"
+  ],
+  "direct_python_without_powershell": true,
+  "origin": {
+    "python": "3.12.10",
+    "no_site": 1,
+    "isolated": 1,
+    "presentation": "agent_pilot\\presentation.py",
+    "launch": "agent_pilot\\launch.py"
+  },
+  "console_exit_code": 0,
+  "ctrl_c_sent": true,
+  "frozen_file_count": 28,
+  "frozen_files_unchanged": true,
+  "application_temp_remaining": [],
+  "pass": true
+}

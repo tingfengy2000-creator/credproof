@@ -1,0 +1,14 @@
+{
+  "reason": "Delivery privacy removes author-specific legacy default and replaces author/drive-specific namespace sentinels with empty-home/empty-mount checks. Does not change project safety verdict rules.",
+  "commands": [
+    "python -m agent_pilot.isolation prepare",
+    "python -m agent_pilot.isolation probe"
+  ],
+  "exit_codes": [
+    0,
+    0
+  ],
+  "candidate_executed": false,
+  "model_calls": 0,
+  "new_probe_required": "Legacy runner digest changed; old readiness cannot be silently reused."
+}

@@ -1,13 +1,38 @@
 """Start the candidate single page; real inference remains a separate explicit action."""
 import argparse
+import errno
+import socket
+import signal
+import sys
+import webbrowser
 from pathlib import Path
 from .web import Application, Server
-from .presentation import install_demonstrations
+from .presentation import install_demonstrations, install_review_demonstration, close_review_demonstration
+
+
+def server_for(app, port, auto_port=False):
+    try:
+        return Server(('127.0.0.1', port), app)
+    except OSError as error:
+        occupied = error.errno == errno.EADDRINUSE
+        # Windows exclusive listeners can report WSAEACCES, not WSAEADDRINUSE.
+        # Confirm a listener before treating access denied as a busy port.
+        if not occupied and getattr(error, 'winerror', None) == 10013:
+            try:
+                with socket.create_connection(('127.0.0.1', port), timeout=0.5):
+                    occupied = True
+            except OSError:
+                pass
+        if not auto_port or not occupied:
+            raise
+        return Server(('127.0.0.1', 0), app)
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--port', type=int, default=8765)
+    parser.add_argument('--auto-port', action='store_true', help='Use an available loopback port if the requested port is busy')
+    parser.add_argument('--open-browser', action='store_true', help='Open the actual loopback address in the default browser')
     parser.add_argument('--demo', action='store_true', help='Open curated real history, clearly labelled REPLAY')
     parser.add_argument('--workspace', type=Path, help='Candidate source/material directory (installed wheel may use an extracted package)')
     parser.add_argument('--history', type=Path, action='append', default=[], help='Explicit registered historical method under workspace/runs')
@@ -25,16 +50,40 @@ def main():
     elif args.demo and bundled.is_file():
         options['bench_results'] = bundled
     app = Application(**options)
-    if args.demo:
-        install_demonstrations(app)
-    with Server(('127.0.0.1', args.port), app) as server:
-        print(f'CredProof: http://127.0.0.1:{server.server_address[1]}', flush=True)
-        print('Curated histories are REPLAY. Live inference requires a ready local runtime.', flush=True)
-        print(f'Mode: {args.mode}. Stop this server with Ctrl+C in this terminal.', flush=True)
+    previous_break = None
+    try:
+        if hasattr(signal, 'SIGBREAK'):
+            def interrupt(signum, frame):
+                raise KeyboardInterrupt
+            previous_break = signal.signal(signal.SIGBREAK, interrupt)
+        if args.demo:
+            install_demonstrations(app)
+            install_review_demonstration(app)
+        server = server_for(app, args.port, args.auto_port)
+        with server:
+            url = f'http://127.0.0.1:{server.server_address[1]}'
+            print(f'CredProof: {url}', flush=True)
+            print('Curated histories and dev35 reviews are REPLAY; demo review edits are disposable.', flush=True)
+            print(f'Mode: {args.mode}. Stop this server with Ctrl+C in this terminal.', flush=True)
+            if args.open_browser:
+                try:
+                    if not webbrowser.open(url):
+                        print('Browser did not open. Copy the address above into your browser.', flush=True)
+                except webbrowser.Error:
+                    print('Browser did not open. Copy the address above into your browser.', flush=True)
+            try:
+                server.serve_forever()
+            except KeyboardInterrupt:
+                pass
+    except OSError as error:
+        print(f'CredProof could not start ({type(error).__name__}). Check temporary-folder write permission and the requested port; keep this window open for details.', file=sys.stderr)
+        raise
+    finally:
         try:
-            server.serve_forever()
-        except KeyboardInterrupt:
-            pass
+            close_review_demonstration(app)
+        finally:
+            if previous_break is not None:
+                signal.signal(signal.SIGBREAK, previous_break)
 
 
 if __name__ == '__main__':

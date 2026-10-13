@@ -1,0 +1,133 @@
+{
+  "source_commit": "1796690644d9e9e2169340a2b85764a5197691bc",
+  "original_records": "retained locally, unchanged",
+  "derivations": [
+    {
+      "public_file": "targeted-junit.xml",
+      "source_file": "targeted-r2.raw.xml",
+      "original_sha256": "63b4ab9cc2611d1f5e7e34e9b0eacb408c1dd7e1bc0d0e908c27aafe5f1dc8ad",
+      "public_sha256": "9769f684a2a750297125a9666e4618c6301ccb5f19f6ae80f8032568318c134a",
+      "derivation": "parsed XML: hostname removed, exact host prefixes mapped in text nodes; XML escaping preserved"
+    },
+    {
+      "public_file": "targeted-pytest.txt",
+      "source_file": "pytest-r2.raw.txt",
+      "original_sha256": "e472f84bb18efd59ec226107a862955b891e91ec111b5bd7f0e8c501a6f0b42c",
+      "public_sha256": "a170caee38746bc83260bdb697958910589430b247b6ee2d067ea71488ab53d5",
+      "derivation": "text"
+    },
+    {
+      "public_file": "attempts/initial-test-junit.xml",
+      "source_file": "targeted.raw.xml",
+      "original_sha256": "bbef808816ff5eccab8bd67ef8c3077234f05750074f5a35fdcd430623ed4bd2",
+      "public_sha256": "f3f818307a49a68f2b460a16b1eb7cccdfd611a1dcc1b8a93d52097ddaae6ce4",
+      "derivation": "parsed XML: hostname removed, exact host prefixes mapped in text nodes; XML escaping preserved"
+    },
+    {
+      "public_file": "attempts/initial-test-pytest.txt",
+      "source_file": "pytest.raw.txt",
+      "original_sha256": "5084feecdb37999108f915d22ffd55468548242914e1481051db77cee40bcbbb",
+      "public_sha256": "a56620ab14c6ec087efa6176f517c47f7a6b3193abea296f2d82b685ddc12d88",
+      "derivation": "text"
+    },
+    {
+      "public_file": "attempts/cmd-conhost-assertion.json",
+      "source_file": "result.json",
+      "original_sha256": "13a8b3af459ff4eb27460ed5bac3f63b54fce5f348267818a085b3ad3adf3c11",
+      "public_sha256": "13a8b3af459ff4eb27460ed5bac3f63b54fce5f348267818a085b3ad3adf3c11",
+      "derivation": "unchanged"
+    },
+    {
+      "public_file": "attempts/cmd-conhost-browser-summary.json",
+      "source_file": "summary.json",
+      "original_sha256": "93a679aaaa3df59909fb4ef0d1ccbf2ad4dfad1117e227eb85fd1f48bda7a689",
+      "public_sha256": "93a679aaaa3df59909fb4ef0d1ccbf2ad4dfad1117e227eb85fd1f48bda7a689",
+      "derivation": "unchanged"
+    },
+    {
+      "public_file": "clean-wheel-http.json",
+      "source_file": "clean-wheel-http.json",
+      "original_sha256": "b8485f25a11771ceeae3663810520d308a8bb630715228263f84f7540ed9154e",
+      "public_sha256": "b8485f25a11771ceeae3663810520d308a8bb630715228263f84f7540ed9154e",
+      "derivation": "unchanged"
+    },
+    {
+      "public_file": "cmd-view/result.json",
+      "source_file": "result.json",
+      "original_sha256": "d118520ec049de762aa7788bec05456e53566b6630dea03985838cb188f30e2f",
+      "public_sha256": "d118520ec049de762aa7788bec05456e53566b6630dea03985838cb188f30e2f",
+      "derivation": "text"
+    },
+    {
+      "public_file": "cmd-view/startup.txt",
+      "source_file": "startup.txt",
+      "original_sha256": "b9bcc70b3648e524dab7d0bf02a56e8fc89f35241c55dd80229f7a95d763d0ad",
+      "public_sha256": "523aab2c823214d4496c2c39665b44bcb2fae23fc58f4f63916aa2e7d20fb236",
+      "derivation": "text"
+    },
+    {
+      "public_file": "cmd-view/startup.stderr.txt",
+      "source_file": "startup.stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "derivation": "text"
+    },
+    {
+      "public_file": "cmd-view/console.stdout.txt",
+      "source_file": "console.stdout.txt",
+      "original_sha256": "2a2c64af4b9e94091875f6819c9eab7791d709f73f9811fffab7351b70b5ad34",
+      "public_sha256": "68f6fd16ebca1a0af427a1ee7fc06b6aa0ac66a63959d399b3c928cf3e73a07d",
+      "derivation": "text"
+    },
+    {
+      "public_file": "cmd-view/console.stderr.txt",
+      "source_file": "console.stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "derivation": "text"
+    },
+    {
+      "public_file": "cmd-view/summary.json",
+      "source_file": "summary.json",
+      "original_sha256": "e04c579c94b074d6d7f3750d38fda0dde57dcf1135c742ead61e4b7b3895a122",
+      "public_sha256": "e04c579c94b074d6d7f3750d38fda0dde57dcf1135c742ead61e4b7b3895a122",
+      "derivation": "unchanged"
+    },
+    {
+      "public_file": "cmd-view/desktop-human_review.png",
+      "source_file": "desktop-human_review.png",
+      "original_sha256": "681845698402326d491581025f3e09c6e6722f38718364befcf3316f6f929520",
+      "public_sha256": "681845698402326d491581025f3e09c6e6722f38718364befcf3316f6f929520",
+      "derivation": "unchanged"
+    },
+    {
+      "public_file": "cmd-view/mobile-human_review.png",
+      "source_file": "mobile-human_review.png",
+      "original_sha256": "102e192739cf18fd435bfe5f6ae8e0ebb206158965c664a6973673b890c5c02e",
+      "public_sha256": "102e192739cf18fd435bfe5f6ae8e0ebb206158965c664a6973673b890c5c02e",
+      "derivation": "unchanged"
+    },
+    {
+      "public_file": "cmd-view/report.pdf",
+      "source_file": "report.pdf",
+      "original_sha256": "6b9698b0cd6778c4ca0d36fe0e62a86bfa4b72888cb1ff56fa617d728f5a6c7e",
+      "public_sha256": "6b9698b0cd6778c4ca0d36fe0e62a86bfa4b72888cb1ff56fa617d728f5a6c7e",
+      "derivation": "unchanged"
+    },
+    {
+      "public_file": "viewer-receipt.json",
+      "source_file": "credproof-viewer-0.3.0-dev38-r5-receipt.json",
+      "original_sha256": "6fae27248187db0a6c6534f1e55043ecad9f687b7233c45505523e2441d4e7ee",
+      "public_sha256": "6fae27248187db0a6c6534f1e55043ecad9f687b7233c45505523e2441d4e7ee",
+      "derivation": "unchanged"
+    },
+    {
+      "public_file": "delivery-scan.json",
+      "source_file": "credproof-viewer-0.3.0-dev38-r5-scan.json",
+      "original_sha256": "9aa61ed1d2ad17bf809b21c1a3365afc43b86c300d5a088c8451befa6c07eeda",
+      "public_sha256": "9aa61ed1d2ad17bf809b21c1a3365afc43b86c300d5a088c8451befa6c07eeda",
+      "derivation": "unchanged"
+    }
+  ],
+  "redaction": "Exact local prefixes only; JUnit hostname removed; JSON states unchanged. No broad path or source-code removal."
+}

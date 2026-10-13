@@ -1,0 +1,16 @@
+{
+  "kind": "SOFTWARE_REGRESSION_NO_MODEL_NO_CANDIDATE_EXECUTION",
+  "program_source_commit": "e69c0c7bea6a1bbd328d314e2f998ab49388cd5c",
+  "python": "3.12.14",
+  "pytest": "8.4.2",
+  "command": "python -m pytest agent_pilot/tests/test_demo_review.py agent_pilot/tests/test_delivery_scan.py agent_pilot/tests/test_presentation.py agent_pilot/tests/test_bundle.py agent_pilot/tests/test_delivery_modes.py agent_pilot/tests/test_web.py agent_pilot/tests/test_human_review.py agent_pilot/tests/test_runtime_config.py -q --tb=short --junitxml=<output>/junit.xml",
+  "exit_code": 0,
+  "tests": 65,
+  "passed": 65,
+  "failures": 0,
+  "skipped": 0,
+  "warning_count": 0,
+  "junit_raw_sha256": "a8ca3950aced7b80e65bd3db0ed4c0723ea59a388a9bd24f75d02a97bbe68956",
+  "junit_public_sha256": "1aaca449d05872cafb5df465fbbde2d752fe27ac07e9d5c07e8f68c4317a09bc",
+  "redaction": "Only JUnit hostname removed. Output directory mapped in stdout. Original retained locally."
+}

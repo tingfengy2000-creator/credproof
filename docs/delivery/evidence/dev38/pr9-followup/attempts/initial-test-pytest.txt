@@ -1,0 +1,27 @@
+...F..................................................................   [100%]
+================================== FAILURES ===================================
+_ DemoReviewTests.test_launch_demo_has_real_review_and_frozen_data_survives_writes _
+agent_pilot\tests\test_demo_review.py:95: in test_launch_demo_has_real_review_and_frozen_data_survives_writes
+    launch.main()
+agent_pilot\launch.py:75: in main
+    server.serve_forever()
+agent_pilot\tests\test_demo_review.py:86: in serve_forever
+    owner = json.loads((seen['temporary']/presentation.DEMO_OWNER).read_text(encoding='utf-8'))
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<test-python-runtime>\Lib\pathlib.py:1027: in read_text
+    with self.open(mode='r', encoding=encoding, errors=errors) as f:
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+<test-python-runtime>\Lib\pathlib.py:1013: in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   FileNotFoundError: [Errno 2] No such file or directory: '<system-temp>\\credproof-demo-review-osq3rhkd\\runs\\owner.json'
+---------------------------- Captured stdout call -----------------------------
+CredProof: http://127.0.0.1:8765
+Curated histories and dev35 reviews are REPLAY; demo review edits are disposable.
+Mode: view. Stop this server with Ctrl+C in this terminal.
+---------------------------- Captured stderr call -----------------------------
+CredProof could not start (FileNotFoundError). Check temporary-folder write permission and the requested port; keep this window open for details.
+-------- generated xml file: <validation-record>\targeted.raw.xml ---------
+=========================== short test summary info ===========================
+FAILED agent_pilot/tests/test_demo_review.py::DemoReviewTests::test_launch_demo_has_real_review_and_frozen_data_survives_writes
+1 failed, 69 passed in 11.35s

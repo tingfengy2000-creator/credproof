@@ -365,6 +365,7 @@ class Application:
                 'review_session': self.review_session, 'reviews': self.review_workspace.list(),
                 'bench_available': self.bench_path is not None,
                 'demonstrations': getattr(self, 'demonstrations', []),
+                'review_demonstration': getattr(self, 'review_demonstration', None),
                 'history': [{'id': run.id, 'case_id': run.case_id, 'created_at': run.started_at,
                              'label': f'{run.case_id.upper()} · {run.started_at or "未提供时间"}'}
                             for run in saved_runs if run.status not in ('QUEUED', 'RUNNING')]}
@@ -587,7 +588,7 @@ class Application:
                     paths['run/model/' + path.name] = confined(path, self.root / 'runs')
         for name in (*bundle.RUNTIME_FILES, 'reliability.py', 'fixtures/requirements.md'):
             paths['verifier/' + name] = confined(package / name, package)
-        paths['configuration/runtime.example.json'] = confined(package.parent / 'config/runtime.example.json', package.parent)
+        paths['configuration/runtime.example.json'] = bundle.runtime_example_path()
         return self._hash_material_paths(paths)
 
     @staticmethod

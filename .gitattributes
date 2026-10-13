@@ -11,6 +11,8 @@
 *.css text eol=lf
 *.html text eol=lf
 *.svg text eol=lf
+*.sh text eol=lf
+scripts/delivery/*.ps1 text eol=lf
 *.png binary
 # Preserve experiment exports byte-for-byte, including generated Markdown breaks.
 experiments/results/** -text whitespace=-blank-at-eol,cr-at-eol
@@ -45,3 +47,5 @@ docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/**/*.
 # Windows benchmark receipts and transport logs retain their recorded bytes.
 docs/bench/evidence-windows/** -text whitespace=-blank-at-eol,cr-at-eol
 experiments/bench-v1/** -text whitespace=-blank-at-eol,cr-at-eol
+# Delivery receipts keep their measured bytes (including Windows JSON newlines).
+docs/delivery/evidence/** -text whitespace=-blank-at-eol,cr-at-eol
