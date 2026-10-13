@@ -38,11 +38,12 @@ credproof/
   credproof_access/         # 安全访问组件
   config/runtime.example.json
   runtime/python/           # 官方 embeddable Python，仅 Windows 查看
-  scripts/delivery/         # 启动、白名单构建与脱敏扫描
-  docs/bench/               # 固定结果、逐补丁报告及脱敏证据
+  scripts/delivery/         # 启动与脱敏扫描；构建工具保留在源码仓库
+  docs/bench/bench-results.json # 内含固定结果与逐补丁报告
   docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/workspace/
   experiments/local-agent-pilot/reliability/… # h01/h03/h07 来源
-  docs/delivery/            # 本契约、使用说明、版本和文件摘要
+  docs/delivery/VIEWER.md   # 评委使用说明；契约及审查证据仅在仓库
+  delivery.json            # 来源版本；文件摘要和扫描收据另附包外
 ```
 
 白名单以 `scripts/delivery/build.py` 中的明确根目录和文件类型为准：程序包顶层 .py、UI 的 html/js/css、登记样例 manifest/源码/requirements、两个资料助手项目、bench-results.json、dev35 snapshot-manifest 声明的文件、h01/h03/h07 的 C-agent 与 A-fixed 历史、默认配置、启动/扫描脚本、交付使用说明和官方 Python 运行文件。不会遍历复制整个仓库。

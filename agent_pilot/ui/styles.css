@@ -271,7 +271,8 @@ details.raw pre { max-height: 360px; overflow: auto; background: var(--code-bg);
 
 /* Human review */
 .review-pick { display: flex; flex-wrap: wrap; gap: 10px; align-items: flex-end; }
-.review-pick label { display: flex; flex-direction: column; gap: 4px; }
+.review-pick label { display: flex; flex-direction: column; gap: 4px; min-width: 0; max-width: 100%; }
+.review-pick select { max-width: 100%; }
 .review-pick .muted { flex-basis: 100%; font-size: 13px; }
 .states { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); }
 .state { padding: 20px 22px; display: flex; flex-direction: column; gap: 10px; border-right: 1px solid var(--rule-2); }
