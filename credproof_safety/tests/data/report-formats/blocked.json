@@ -1,0 +1,23 @@
+{
+ "verdict": "UNKNOWN",
+ "reason": "sandbox_execution_incomplete",
+ "observation_summary": {
+  "classification": "OUTER_SANDBOX_BLOCKED",
+  "outer_sandbox_blocked": true,
+  "incomplete": true
+ },
+ "project_tree_sha256": "7919e207b8a78cd84b3e535daf9ac337e6ba1c759f5bd17419def5d776ae6d2d",
+ "duration_ms": 19.42,
+ "checked_at_utc": "2026-10-13T02:06:06Z",
+ "schema": "credproof.safety.report/v1",
+ "execution": {
+  "status": "BLOCKED",
+  "reason": "missing WSL isolation material: /home/alice/rt/isolation/rootfs"
+ },
+ "config": {
+  "project_root": ".",
+  "entry": {
+   "module": "tool"
+  }
+ }
+}

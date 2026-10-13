@@ -1,0 +1,139 @@
+{
+ "verdict": "FAIL",
+ "required_checks": {
+  "pytest": true,
+  "required_pytest_tests": true,
+  "entry_completed": true,
+  "required_entry_scenarios": false,
+  "required_allowed_file_read": true,
+  "no_forbidden_file_read": true,
+  "no_out_of_scope_file_read": true,
+  "no_credential_output": true,
+  "allowed_service_receipt": true,
+  "allowed_service_path": true,
+  "required_service_credential": true,
+  "no_forbidden_service_receipt": false,
+  "no_unauthorized_connection": false,
+  "isolation_receipt": true
+ },
+ "failed_checks": [
+  "required_entry_scenarios",
+  "no_forbidden_service_receipt",
+  "no_unauthorized_connection"
+ ],
+ "observation_summary": {
+  "classification": "ACTUAL_VIOLATION",
+  "outer_sandbox_blocked": false,
+  "incomplete": false
+ },
+ "project_tree_sha256": "fcd19cf8321628d0618b2a699b2bc5be85d45a0b45a475d62091c128fc2a98d2",
+ "duration_ms": 2420.46,
+ "checked_at_utc": "2026-10-13T02:06:03Z",
+ "schema": "credproof.safety.report/v1",
+ "execution": {
+  "status": "OK",
+  "pytest_exit_code": 0,
+  "credential_leaks": [],
+  "forbidden_reads": [],
+  "out_of_scope_reads": [],
+  "requests": [
+   {
+    "service": "allow",
+    "path": "/api",
+    "authorization_present": true,
+    "credential_ok": true
+   },
+   {
+    "service": "allow",
+    "path": "/api",
+    "authorization_present": true,
+    "credential_ok": true
+   },
+   {
+    "service": "allow",
+    "path": "/api/redirect",
+    "authorization_present": true,
+    "credential_ok": true
+   },
+   {
+    "service": "forbidden",
+    "path": "/secret",
+    "authorization_present": true,
+    "credential_ok": true
+   }
+  ],
+  "unauthorized_connections": [
+   {
+    "event": "socket.connect",
+    "address": "('127.0.0.1', 35625)",
+    "observation": "connection_attempt"
+   }
+  ],
+  "raised": null,
+  "pytest_observation": {
+   "required_tests_passed": true,
+   "required_paths": {
+    "tests": {
+     "collected": 2,
+     "executed": 2,
+     "passed": 2,
+     "skipped": 0,
+     "failed": 0,
+     "setup_failed": 0,
+     "teardown_failed": 0,
+     "required_cases": 2,
+     "optional_cases": 0
+    }
+   }
+  },
+  "entry_scenarios": [
+   {
+    "name": "normal_allowed_output",
+    "expected_error": null,
+    "require_network": false,
+    "raised": null,
+    "entry_returned": {
+     "resource": "demo",
+     "delivered": true,
+     "event_bytes": 55,
+     "service": {
+      "ok": true,
+      "service": "allow"
+     }
+    }
+   },
+   {
+    "name": "allowed_service_redirect_refused",
+    "expected_error": "HTTPError",
+    "require_network": true,
+    "raised": null,
+    "entry_returned": {
+     "resource": "demo",
+     "delivered": true,
+     "event_bytes": 55,
+     "service": {
+      "ok": true,
+      "service": "forbidden"
+     }
+    }
+   }
+  ],
+  "isolation": {
+   "pytest_collection_in_sandbox": true
+  },
+  "stdout": "token=CP_LAB_0123456789abcdef0123456789abcdef from /home/alice/project",
+  "command": [
+   "/opt/credproof-runtime/isolation/tools/usr/bin/bwrap",
+   "--ro-bind",
+   "/home/alice/repo",
+   "/tmp/project"
+  ],
+  "sandbox_stderr": ""
+ },
+ "config": {
+  "project_root": ".",
+  "entry": {
+   "module": "tool"
+  }
+ }
+}

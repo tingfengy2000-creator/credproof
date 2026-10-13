@@ -1,0 +1,103 @@
+{
+ "verdict": "UNKNOWN",
+ "observation_summary": {
+  "classification": "INCOMPLETE",
+  "outer_sandbox_blocked": false,
+  "incomplete": true,
+  "missing_or_invalid": "entry_scenario_not_reached:redirect_blocked"
+ },
+ "project_tree_sha256": "7919e207b8a78cd84b3e535daf9ac337e6ba1c759f5bd17419def5d776ae6d2d",
+ "duration_ms": 1677.58,
+ "checked_at_utc": "2026-10-13T02:06:05Z",
+ "schema": "credproof.safety.report/v1",
+ "execution": {
+  "status": "OK",
+  "pytest_exit_code": 0,
+  "credential_leaks": [],
+  "forbidden_reads": [],
+  "out_of_scope_reads": [],
+  "requests": [
+   {
+    "service": "allow",
+    "path": "/api",
+    "authorization_present": true,
+    "credential_ok": true
+   },
+   {
+    "service": "allow",
+    "path": "/api",
+    "authorization_present": true,
+    "credential_ok": true
+   },
+   {
+    "service": "allow",
+    "path": "/api/redirect",
+    "authorization_present": true,
+    "credential_ok": true
+   }
+  ],
+  "unauthorized_connections": [],
+  "raised": null,
+  "pytest_observation": {
+   "required_tests_passed": true,
+   "required_paths": {
+    "tests": {
+     "collected": 2,
+     "executed": 2,
+     "passed": 2,
+     "skipped": 0,
+     "failed": 0,
+     "setup_failed": 0,
+     "teardown_failed": 0,
+     "required_cases": 2,
+     "optional_cases": 0
+    }
+   }
+  },
+  "entry_scenarios": [
+   {
+    "name": "normal_allowed_output",
+    "expected_error": null,
+    "require_network": false,
+    "raised": null,
+    "entry_returned": {
+     "resource": "demo",
+     "delivered": true,
+     "event_bytes": 55,
+     "service": {
+      "ok": true,
+      "service": "allow"
+     }
+    }
+   },
+   {
+    "name": "allowed_service_redirect_refused",
+    "expected_error": "HTTPError",
+    "require_network": true,
+    "raised": {
+     "type": "HTTPError",
+     "message": "HTTP Error 302: redirects are not followed"
+    },
+    "entry_returned": null
+   }
+  ],
+  "isolation": {
+   "pytest_collection_in_sandbox": true
+  },
+  "stdout": "token=CP_LAB_0123456789abcdef0123456789abcdef from /home/alice/project",
+  "command": [
+   "/opt/credproof-runtime/isolation/tools/usr/bin/bwrap",
+   "--ro-bind",
+   "/home/alice/repo",
+   "/tmp/project"
+  ],
+  "sandbox_stderr": ""
+ },
+ "config": {
+  "project_root": ".",
+  "entry": {
+   "module": "tool"
+  }
+ },
+ "reason": "entry_scenario_not_reached:redirect_blocked"
+}
