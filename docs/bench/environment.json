@@ -1,0 +1,107 @@
+{
+  "schema": "credproof.environment/v1",
+  "collected_on": "2026-10-13",
+  "kind": "CURRENT_ENVIRONMENT_INVENTORY_NO_INFERENCE",
+  "gpu": {
+    "model": "NVIDIA GeForce RTX 5090",
+    "memory_mib": 32607,
+    "driver": "610.88"
+  },
+  "cpu": {
+    "model": "Intel Core i9-14900",
+    "physical_cores": 24,
+    "logical_processors": 32
+  },
+  "memory_bytes": 68293918720,
+  "windows": {
+    "name": "Windows 11 Pro",
+    "version": "10.0.26200",
+    "build": "26200"
+  },
+  "wsl": {
+    "distribution": "Ubuntu-24.04",
+    "os_release": "Ubuntu 24.04.4 LTS",
+    "kernel": "6.18.33.2-microsoft-standard-WSL2"
+  },
+  "bubblewrap": "0.9.0",
+  "ollama": {
+    "client_version": "0.34.4",
+    "running_server": "NOT_STARTED_THIS_ROUND"
+  },
+  "python_development": "3.12.14",
+  "pytest": "8.4.2",
+  "embedded_python": "3.12.10",
+  "models": [
+    {
+      "name": "qwen3-coder:30b",
+      "manifest_sha256": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+      "quantization": "Q4_K_M",
+      "blobs": [
+        {
+          "media_type": "application/vnd.docker.container.image.v1+json",
+          "declared_sha256": "24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318",
+          "actual_sha256": "24a94682582c6045f4950846fc7711479dcecb478b86759f0306a2ef8484d318",
+          "size": 542
+        },
+        {
+          "media_type": "application/vnd.ollama.image.model",
+          "declared_sha256": "1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a",
+          "actual_sha256": "1194192cf2a187eb02722edcc3f77b11d21f537048ce04b67ccf8ba78863006a",
+          "size": 18556688736
+        },
+        {
+          "media_type": "application/vnd.ollama.image.license",
+          "declared_sha256": "d18a5cc71b84bc4af394a31116bd3932b42241de70c77d2b76d69a314ec8aa12",
+          "actual_sha256": "d18a5cc71b84bc4af394a31116bd3932b42241de70c77d2b76d69a314ec8aa12",
+          "size": 11338
+        },
+        {
+          "media_type": "application/vnd.ollama.image.params",
+          "declared_sha256": "69aa441ea44ff5e1e7b56cac4f471e71e8a5e2e3963c29684a9234d5d5e5f7aa",
+          "actual_sha256": "69aa441ea44ff5e1e7b56cac4f471e71e8a5e2e3963c29684a9234d5d5e5f7aa",
+          "size": 148
+        }
+      ]
+    },
+    {
+      "name": "qwen2.5-coder:32b-instruct-q4_K_M",
+      "manifest_sha256": "b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41",
+      "quantization": "Q4_K_M",
+      "blobs": [
+        {
+          "media_type": "application/vnd.docker.container.image.v1+json",
+          "declared_sha256": "f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee",
+          "actual_sha256": "f0676bd3c336a0f995e270c5e2c80ce09aa5cfcab0c59ff574088eca52da32ee",
+          "size": 488
+        },
+        {
+          "media_type": "application/vnd.ollama.image.model",
+          "declared_sha256": "ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9",
+          "actual_sha256": "ac3d1ba8aa77755dab3806d9024e9c385ea0d5b412d6bdf9157f8a4a7e9fc0d9",
+          "size": 19851336384
+        },
+        {
+          "media_type": "application/vnd.ollama.image.system",
+          "declared_sha256": "66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e",
+          "actual_sha256": "66b9ea09bd5b7099cbb4fc820f31b575c0366fa439b08245566692c6784e281e",
+          "size": 68
+        },
+        {
+          "media_type": "application/vnd.ollama.image.template",
+          "declared_sha256": "1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320",
+          "actual_sha256": "1e65450c30670713aa47fe23e8b9662bdf4065e81cc8e3cbfaa98924fcc0d320",
+          "size": 1615
+        },
+        {
+          "media_type": "application/vnd.ollama.image.license",
+          "declared_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+          "actual_sha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+          "size": 11343
+        }
+      ]
+    }
+  ],
+  "full_model_blob_rehash": true,
+  "all_blob_hashes_match": true,
+  "scope": "Collected now, not retroactively measured during bench-v1. Historical model/device evidence remains in evidence-windows/20261012-pr4/accounting.json. No hostname, account or local path included."
+}

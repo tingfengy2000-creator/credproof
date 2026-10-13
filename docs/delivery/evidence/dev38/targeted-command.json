@@ -1,0 +1,15 @@
+{
+  "kind": "SOFTWARE_REGRESSION_NO_MODEL_NO_CANDIDATE_EXECUTION",
+  "python": "3.12.14",
+  "pytest": "8.4.2",
+  "command": "python -m pytest agent_pilot/tests/test_demo_review.py agent_pilot/tests/test_delivery_scan.py agent_pilot/tests/test_presentation.py agent_pilot/tests/test_bundle.py agent_pilot/tests/test_delivery_modes.py agent_pilot/tests/test_web.py agent_pilot/tests/test_human_review.py agent_pilot/tests/test_runtime_config.py -q --tb=short --junitxml=<output>/junit.xml",
+  "exit_code": 0,
+  "tests": 62,
+  "passed": 62,
+  "failures": 0,
+  "skipped": 0,
+  "warning_count": 0,
+  "junit_raw_sha256": "e652c489bf0e7392f9b6cddd2909c25c16a6d4e5b52ec7dfb9906f25b2fd2135",
+  "junit_public_sha256": "85c231a596cfd56dbd0c7c8f86a57f0813c29ba8dd75577f6e3b43101f005c65",
+  "redaction": "Only JUnit hostname attribute removed; original preserved locally."
+}
