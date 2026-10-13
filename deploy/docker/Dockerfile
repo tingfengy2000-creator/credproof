@@ -23,7 +23,7 @@ RUN python3 /build/scripts/runtime/setup-linux.py --runtime-root /opt/credproof-
     cd /build && python3 -c 'from credproof_safety.runtime_setup import verify_runtime; verify_runtime("/opt/credproof-runtime")'
 RUN python3 -m venv /opt/credproof/venv \
     && /opt/credproof/venv/bin/pip install --no-cache-dir setuptools wheel \
-    && /opt/credproof/venv/bin/pip wheel --no-deps --no-build-isolation --wheel-dir /build/wheels /build \
+    && SOURCE_DATE_EPOCH=315532800 /opt/credproof/venv/bin/pip wheel --no-deps --no-build-isolation --wheel-dir /build/wheels /build \
     && /opt/credproof/venv/bin/pip install --no-deps /build/wheels/*.whl \
     && /opt/credproof/venv/bin/python -c 'import hashlib,json,pathlib,subprocess; p=next(pathlib.Path("/build/wheels").glob("*.whl")); pathlib.Path("/opt/credproof/build-receipt.json").write_text(json.dumps({"wheel":p.name,"wheel_sha256":hashlib.sha256(p.read_bytes()).hexdigest(),"apt":subprocess.check_output(["dpkg-query","-W","python3","python3-venv","libseccomp2"],text=True)},indent=2))'
 RUN test -n "$SOURCE_COMMIT" && printf '%s\n' "$SOURCE_COMMIT" > /opt/credproof/source-commit.txt
