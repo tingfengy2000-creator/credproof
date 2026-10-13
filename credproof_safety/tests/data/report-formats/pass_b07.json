@@ -54,6 +54,73 @@
   ],
   "unauthorized_connections": [],
   "raised": null,
+  "audit_events": [
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "allowed",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "socket.connect",
+    "classification": null,
+    "observation": "connection_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "allowed",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "socket.connect",
+    "classification": null,
+    "observation": "connection_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "allowed",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "socket.connect",
+    "classification": null,
+    "observation": "connection_attempt"
+   }
+  ],
   "pytest_observation": {
    "required_tests_passed": true,
    "required_paths": {
@@ -67,6 +134,29 @@
      "teardown_failed": 0,
      "required_cases": 2,
      "optional_cases": 0
+    }
+   },
+   "required_unmet_cases": [],
+   "cases": {
+    "tests/test_business.py::test_invalid_request_is_rejected": {
+     "required": true,
+     "collected": 1,
+     "executed": 1,
+     "passed": 1,
+     "failed": 0,
+     "skipped": 0,
+     "setup_failed": 0,
+     "teardown_failed": 0
+    },
+    "tests/test_business.py::test_normal_request_returns_service_data": {
+     "required": true,
+     "collected": 1,
+     "executed": 1,
+     "passed": 1,
+     "failed": 0,
+     "skipped": 0,
+     "setup_failed": 0,
+     "teardown_failed": 0
     }
    }
   },
@@ -106,8 +196,7 @@
    "--ro-bind",
    "/home/alice/repo",
    "/tmp/project"
-  ],
-  "sandbox_stderr": ""
+  ]
  },
  "config": {
   "project_root": ".",

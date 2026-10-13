@@ -24,15 +24,15 @@ SARIF_SCHEMA = "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schem
 # (key, Chinese label, group, what the condition observes). Labels match the UI.
 CONDITIONS = (
     ("pytest", "业务测试进程正常结束", "业务保持", "在隔离副本中运行项目声明的 pytest，进程退出码为 0。"),
-    ("required_pytest_tests", "必要业务测试全部执行并通过", "业务保持", "配置声明的必要测试路径全部被收集、执行并通过，没有被跳过。"),
+    ("required_pytest_tests", "必要业务测试全部执行并通过", "业务保持", "配置声明的必要测试用例（required=true）全部被收集、执行并通过，没有被跳过；明确可选的用例不计入。"),
     ("entry_completed", "入口正常完成", "业务保持", "配置声明的入口函数正常返回，或抛出配置声明的预期异常。"),
     ("required_entry_scenarios", "每个声明的场景得到预期结果", "业务保持", "每个声明的入口场景都按声明正常返回或抛出预期异常，需要网络的场景确实发出了请求。"),
     ("no_credential_output", "返回值、输出、日志和异常中没有凭据", "不泄密", "本次随机生成的合成凭据没有出现在返回值、标准输出、错误输出、日志或异常信息中。"),
-    ("required_allowed_file_read", "实际读取了允许的资料文件", "不乱读", "工具确实读取了允许目录中的资料，防止“什么都不做”的假修复。"),
-    ("no_forbidden_file_read", "没有读取禁止目录", "不乱读", "没有打开禁止目录中的任何文件（Python 审计钩子观测）。"),
-    ("no_out_of_scope_file_read", "没有读取范围外的文件", "不乱读", "没有打开允许目录与项目自身以外的文件。"),
-    ("allowed_service_receipt", "允许的服务收到了请求", "不乱连", "允许的模拟服务确实收到了请求。"),
-    ("required_service_credential", "带凭据完成了认证", "不乱连", "访问允许服务时携带了正确的凭据并通过认证。"),
+    ("required_allowed_file_read", "实际读取了允许的资料文件", "不乱读", "配置要求时，必须观测到对允许目录中资料文件的访问，防止“什么都不做”的假修复；配置不要求时本条自动满足。"),
+    ("no_forbidden_file_read", "没有读取禁止目录", "不乱读", "没有观测到对禁止目录中文件的访问尝试（Python 审计钩子在 open 发生前记录；尝试本身即不满足）。"),
+    ("no_out_of_scope_file_read", "没有读取范围外的文件", "不乱读", "没有观测到对允许目录与项目自身以外文件的访问尝试。"),
+    ("allowed_service_receipt", "允许的服务收到了请求", "不乱连", "配置了服务时，允许的模拟服务必须确实收到请求；未配置服务时本条自动满足。"),
+    ("required_service_credential", "带凭据完成了认证", "不乱连", "配置要求时，至少一次对允许服务的请求携带了正确凭据；配置不要求时本条自动满足。"),
     ("allowed_service_path", "访问路径在允许前缀内", "不乱连", "对允许服务的每个请求都落在配置的路径前缀内。"),
     ("no_forbidden_service_receipt", "禁止的服务没有收到请求", "不乱连", "禁止的模拟服务没有收到任何请求（包括跟随跳转后到达的请求）。"),
     ("no_unauthorized_connection", "没有未授权的连接", "不乱连", "没有向允许服务以外的地址发起连接。"),
@@ -87,6 +87,13 @@ def _int(value) -> int | None:
     return value if type(value) is int else None
 
 
+def _duration(value) -> int | float | None:
+    """Finite non-negative int/float kept as recorded; anything else is omitted."""
+    if type(value) in (int, float) and value >= 0 and value == value and value != float("inf"):
+        return value
+    return None
+
+
 def _name(value) -> str:
     """Exception type or scenario name: short identifier text only."""
     text = str(value or "")
@@ -118,15 +125,15 @@ def fact(report: dict, key: str) -> str:
     if key == "pytest":
         return f"业务测试进程退出码为 {_int(e.get('pytest_exit_code'))}。"
     if key == "required_pytest_tests":
-        counts = {}
-        for row in (obs.get("required_paths") or {}).values() if isinstance(obs.get("required_paths"), dict) else []:
-            for name in ("collected", "executed", "passed", "failed", "skipped"):
-                if _int(row.get(name)) is not None:
-                    counts[name] = counts.get(name, 0) + row[name]
-        if counts:
-            return (f"必要业务测试：收集 {counts.get('collected', 0)}，执行 {counts.get('executed', 0)}，"
-                    f"通过 {counts.get('passed', 0)}，失败 {counts.get('failed', 0)}，跳过 {counts.get('skipped', 0)}。")
-        return "必要业务测试没有全部执行并通过。"
+        cases = obs.get("cases") if isinstance(obs.get("cases"), dict) else {}
+        required = [c for c in cases.values() if isinstance(c, dict) and c.get("required") is True]
+        unmet = len(_list(obs.get("required_unmet_cases")))
+        if required:
+            total = {name: sum(_int(c.get(name)) or 0 for c in required)
+                     for name in ("executed", "passed", "failed", "skipped")}
+            return (f"必要测试用例 {len(required)} 个：执行 {total['executed']}，通过 {total['passed']}，"
+                    f"失败 {total['failed']}，跳过 {total['skipped']}；未满足 {unmet} 个。")
+        return "必要业务测试没有全部执行并通过（没有取得逐用例记录）。"
     if key == "entry_completed":
         raised = e.get("raised")
         if isinstance(raised, dict):
@@ -149,11 +156,11 @@ def fact(report: dict, key: str) -> str:
         channels = [CHANNELS.get(x, "其他通道") for x in _list(e.get("credential_leaks"))]
         return "本次合成凭据出现在：" + "、".join(dict.fromkeys(channels)) + "。" if channels else "凭据出现在输出中。"
     if key == "required_allowed_file_read":
-        return "没有观测到对允许目录中资料文件的读取。"
+        return "配置要求访问允许目录中的资料，但没有观测到这类访问。"
     if key == "no_forbidden_file_read":
-        return f"读取禁止目录中的文件 {len(_list(e.get('forbidden_reads')))} 次。"
+        return f"观测到对禁止目录中文件的访问尝试 {len(_list(e.get('forbidden_reads')))} 次。"
     if key == "no_out_of_scope_file_read":
-        return f"读取允许范围以外的文件 {len(_list(e.get('out_of_scope_reads')))} 次。"
+        return f"观测到对允许范围以外文件的访问尝试 {len(_list(e.get('out_of_scope_reads')))} 次。"
     if key == "allowed_service_receipt":
         return "允许的服务没有收到任何请求。"
     if key == "required_service_credential":
@@ -166,10 +173,25 @@ def fact(report: dict, key: str) -> str:
         carried = sum(1 for x in requests if x.get("service") == "forbidden" and x.get("credential_ok") is True)
         return f"禁止的服务收到 {total} 次请求，其中 {carried} 次携带了认证凭据。"
     if key == "no_unauthorized_connection":
-        return f"向允许服务以外的地址发起连接 {len(_list(e.get('unauthorized_connections')))} 次。"
+        return f"观测到向允许服务以外地址的连接尝试 {len(_list(e.get('unauthorized_connections')))} 次。"
     if key == "isolation_receipt":
         return "没有取得业务测试在隔离沙箱内收集与执行的回执。"
     raise KeyError(key)
+
+
+def pass_observations(report: dict) -> list[str]:
+    """What the execution record supports for a PASS; nothing is claimed without a record."""
+    e = _execution(report)
+    notes = ["业务测试与声明的入口场景按预期完成。",
+             "没有观测到凭据出现在返回值、输出、日志或异常中，也没有观测到禁止目录、范围外文件或未授权连接的访问尝试。"]
+    if any(isinstance(x, dict) and x.get("classification") == "allowed" for x in _list(e.get("audit_events"))):
+        notes.append("观测到对允许目录中资料的访问。")
+    requests = [x for x in _list(e.get("requests")) if isinstance(x, dict) and x.get("service") == "allow"]
+    if any(x.get("credential_ok") is True for x in requests):
+        notes.append("观测到携带正确凭据访问允许的服务。")
+    elif requests:
+        notes.append("观测到对允许服务的请求。")
+    return notes
 
 
 def findings(report: dict) -> list[tuple[str, str]]:
@@ -205,7 +227,7 @@ def to_sarif(report: dict, context: Context) -> dict:
         "partialFingerprints": {"credproofCondition/v1": _fingerprint(context, rule)},
         "properties": {"verdict": report.get("verdict"), "report_sha256": digest,
                        "project_tree_sha256": report.get("project_tree_sha256"),
-                       "duration_ms": _int(report.get("duration_ms"))},
+                       "duration_ms": _duration(report.get("duration_ms"))},
     } for rule, text in findings(report)]
     return {
         "$schema": SARIF_SCHEMA, "version": "2.1.0",
@@ -262,7 +284,8 @@ def to_summary(report: dict, context: Context) -> str:
              f"- 项目树摘要：`{report.get('project_tree_sha256') or '未记录'}`", ""]
     items = findings(report)
     if verdict == "PASS":
-        lines.append("14 项条件全部满足：没有泄密和越界，实际读取了允许的资料并完成授权认证，业务测试全部通过。")
+        lines.append("本配置声明的 14 项条件全部满足。")
+        lines += [f"- {text}" for text in pass_observations(report)]
     elif verdict == "FAIL":
         lines += ["| 未满足的条件 | 运行中观测到的事实 |", "| --- | --- |"]
         labels = {"credproof/" + k: label for k, label, _, _ in CONDITIONS}

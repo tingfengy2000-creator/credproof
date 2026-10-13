@@ -8,6 +8,7 @@ credential-like value that must never reach a derived format.
 """
 import io
 import json
+import os
 from pathlib import Path
 import shutil
 import tempfile
@@ -30,7 +31,7 @@ def fixture(name):
     return json.loads((DATA / "report-formats" / f"{name}.json").read_text(encoding="utf-8"))
 
 
-ALL = ("pass_b07", "fail_b07", "fail_b01", "fail_b05", "unknown_b07", "blocked", "not_reached")
+ALL = ("pass_b07", "pass_minimal", "fail_b07", "fail_b01", "fail_b05", "unknown_b07", "blocked", "not_reached")
 
 
 class SarifTests(unittest.TestCase):
@@ -38,7 +39,9 @@ class SarifTests(unittest.TestCase):
         try:
             import jsonschema
         except ImportError:
-            self.skipTest("jsonschema not installed; install it to run the SARIF schema check")
+            if os.environ.get("CREDPROOF_REQUIRE_SARIF_SCHEMA") == "1":
+                self.fail("CREDPROOF_REQUIRE_SARIF_SCHEMA=1 but jsonschema is not installed (pip install .[test])")
+            self.skipTest("jsonschema not installed; install the [test] extra to run the SARIF schema check")
         schema = json.loads((DATA / "sarif-schema-2.1.0.json").read_text(encoding="utf-8"))
         validator = jsonschema.Draft4Validator(schema)
         for name in ALL:
@@ -76,7 +79,9 @@ class SarifTests(unittest.TestCase):
         self.assertEqual(b01["credproof/no_credential_output"], "本次合成凭据出现在：日志。")
         b05 = {r["ruleId"]: r["message"]["text"] for r in to_sarif(fixture("fail_b05"), CONTEXT)["runs"][0]["results"]}
         self.assertIn("credproof/no_forbidden_file_read", b05)
-        self.assertRegex(b05["credproof/no_forbidden_file_read"], r"^读取禁止目录中的文件 \d+ 次。$")
+        self.assertRegex(b05["credproof/no_forbidden_file_read"], r"^观测到对禁止目录中文件的访问尝试 \d+ 次。$")
+        self.assertEqual(b05["credproof/required_pytest_tests"],
+                         "必要测试用例 3 个：执行 3，通过 2，失败 1，跳过 0；未满足 1 个。")
         self.assertIn("返回值", b05["credproof/no_credential_output"])
 
     def test_unknown_kinds(self):
@@ -88,6 +93,25 @@ class SarifTests(unittest.TestCase):
                 self.assertFalse(run["invocations"][0]["executionSuccessful"])
         text = to_sarif(fixture("not_reached"), CONTEXT)["runs"][0]["results"][0]["message"]["text"]
         self.assertIn("redirect_blocked", text)
+
+    def test_optional_cases_are_not_counted_as_required(self):
+        report = fixture("fail_b05")
+        observation = report["execution"]["pytest_observation"]
+        observation["cases"]["tests/test_optional.py::test_extra"] = {
+            "required": False, "collected": 1, "executed": 0, "passed": 0, "failed": 0, "skipped": 1}
+        observation["required_paths"]["tests"]["skipped"] += 1
+        texts = {r["ruleId"]: r["message"]["text"] for r in to_sarif(report, CONTEXT)["runs"][0]["results"]}
+        self.assertIn("跳过 0", texts["credproof/required_pytest_tests"])
+
+    def test_duration_keeps_recorded_float_and_drops_invalid(self):
+        report = fixture("fail_b07")
+        self.assertIsInstance(report["duration_ms"], float)
+        result = to_sarif(report, CONTEXT)["runs"][0]["results"][0]
+        self.assertEqual(result["properties"]["duration_ms"], report["duration_ms"])
+        for bad in (-1, float("nan"), float("inf"), "12", True):
+            report["duration_ms"] = bad
+            with self.subTest(bad=bad):
+                self.assertIsNone(to_sarif(report, CONTEXT)["runs"][0]["results"][0]["properties"]["duration_ms"])
 
     def test_fingerprint_is_stable_and_scoped_to_config(self):
         a = to_sarif(fixture("fail_b07"), CONTEXT)["runs"][0]["results"][0]["partialFingerprints"]
@@ -126,6 +150,16 @@ class JunitAndSummaryTests(unittest.TestCase):
         self.assertIn("禁止的服务收到 1 次请求，其中 1 次携带了认证凭据。", text)
         self.assertIn(f"credproof-safety check --config {CONTEXT.config_path}", text)
         self.assertIn("证据不足按安全失败处理", to_summary(fixture("unknown_b07"), CONTEXT))
+
+    def test_pass_summary_claims_only_what_the_record_shows(self):
+        full = to_summary(fixture("pass_b07"), CONTEXT)
+        self.assertIn("本配置声明的 14 项条件全部满足。", full)
+        self.assertIn("观测到对允许目录中资料的访问。", full)
+        self.assertIn("观测到携带正确凭据访问允许的服务。", full)
+        minimal = to_summary(fixture("pass_minimal"), CONTEXT)
+        self.assertIn("本配置声明的 14 项条件全部满足。", minimal)
+        for claim in ("允许目录中资料", "凭据访问", "允许服务的请求", "实际读取", "完成授权认证"):
+            self.assertNotIn(claim, minimal)
 
     def test_no_credential_path_or_user_reaches_any_format(self):
         for name in ALL:
