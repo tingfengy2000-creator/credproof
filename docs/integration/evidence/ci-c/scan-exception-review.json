@@ -1,0 +1,20 @@
+{
+  "source_run": 38408550985,
+  "source_sha256": "28187cbaa02593ab3a8fe0cc3d711e52f3e963ecb6df34cf69cd8143a997fc46",
+  "status": "EXACT_VENDOR_MATCH_CATALOG_REVIEWED",
+  "observed_matches": 4046,
+  "unique_exact_exceptions": 2920,
+  "excluded_real_author_references": [
+    {
+      "file": "opt/credproof/venv/lib/python3.12/site-packages/agent_pilot/ui/README.md",
+      "reason": "Real author workspace reference: remove unused documentation from image build context, not exempt."
+    }
+  ],
+  "counts_by_kind": {
+    "windows_absolute_path": 131,
+    "email": 2674,
+    "home_absolute_path": 19,
+    "operator_identity": 96
+  },
+  "policy": "No future auto-approval. Changed file bytes or match produce a new finding. No key/token patterns exempted."
+}

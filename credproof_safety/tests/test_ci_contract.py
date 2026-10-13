@@ -71,5 +71,28 @@ class CIContractTests(unittest.TestCase):
                 member=tarfile.TarInfo('etc/example');member.size=5;tf.addfile(member,io.BytesIO(b'plain'))
             self.assertEqual(SCAN.scan(archive)['status'],'COMPLETED')
 
+    def test_vendor_exception_never_accepts_changed_bytes(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive=Path(tmp)/'image.tar'
+            def write(data):
+                with tarfile.open(archive,'w') as tf:
+                    member=tarfile.TarInfo('usr/share/doc/vendor/copyright');member.size=len(data);tf.addfile(member,io.BytesIO(data))
+            write(b'Legal contact public@example.com')
+            finding=SCAN.scan(archive)['findings'][0]
+            exception={k:finding[k] for k in ('file','file_sha256','kind','match_sha256')}
+            exception['reason']='Public vendor legal contact, exact bytes only'
+            self.assertEqual(SCAN.scan(archive,[exception])['sensitive_hits'],0)
+            write(b'Changed bytes public@example.com')
+            self.assertGreater(SCAN.scan(archive,[exception])['sensitive_hits'],0)
+
+    def test_pip_python_models_are_not_model_weights(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive=Path(tmp)/'image.tar'
+            with tarfile.open(archive,'w') as tf:
+                for name in ['opt/app/site-packages/pip/_internal/models/x.py','opt/models/weights.bin']:
+                    member=tarfile.TarInfo(name);member.size=5;tf.addfile(member,io.BytesIO(b'plain'))
+            findings=SCAN.scan(archive)['findings']
+            self.assertEqual([x['file'] for x in findings if x['kind']=='forbidden_image_material'],['opt/models/weights.bin'])
+
 
 if __name__=='__main__':unittest.main()

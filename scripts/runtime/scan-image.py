@@ -114,7 +114,8 @@ def scan(archive,exceptions=(),private_values=(),*,max_seconds=DEFAULT_SECONDS,m
                 if not binary:chunks.append(chunk)
             digest=h.hexdigest();files[name]={'bytes':read,'sha256':digest,'binary_text_scan_skipped':binary}
             total+=read;distribution[p.parts[0] if p.parts else '.']+=1
-            if any(x in {'.git','ollama','qwen_agent'} for x in p.parts) or p.suffix in {'.gguf','.safetensors'} or any(x in name for x in ('docs/handoff/','docs/review/','experiments/')):
+            pip_source_models='/site-packages/pip/_internal/models/' in name
+            if any(x in {'.git','ollama','qwen_agent'} for x in p.parts) or ('models' in p.parts and not pip_source_models) or p.suffix in {'.gguf','.safetensors'} or any(x in name for x in ('docs/handoff/','docs/review/','experiments/')):
                 findings.append({'file':name,'kind':'forbidden_image_material'})
             if binary:binary_count+=1
             else:inspect(name,b''.join(chunks),digest)

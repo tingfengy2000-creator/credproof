@@ -21,7 +21,9 @@ checks['proc_mounted'] = Path('/proc/self/status').is_file()
 checks['namespaces_distinct'] = all(os.readlink('/proc/self/ns/'+n) != v for n,v in json.loads(sys.argv[1]).items())
 checks['capabilities_dropped'] = 'CapEff:\\t0000000000000000' in Path('/proc/self/status').read_text()
 checks['root_readonly'] = next(x for x in Path('/proc/mounts').read_text().splitlines() if x.split()[1]=='/').split()[3].split(',')[0]=='ro'
-print(json.dumps({'checks':checks,'pytest_version':pytest.__version__}))
+try: apparmor_profile = Path('/proc/self/attr/current').read_text().strip()
+except OSError: apparmor_profile = 'unavailable'
+print(json.dumps({'checks':checks,'pytest_version':pytest.__version__,'apparmor_profile':apparmor_profile}))
 '''
 
 
@@ -62,6 +64,7 @@ def doctor(root=None):
             observed = json.loads(result.stdout)
             report['checks'].update(observed['checks'])
             report['pytest_version'] = observed['pytest_version']
+            report['sandbox_apparmor_profile'] = observed.get('apparmor_profile', 'unavailable')
             report['ready'] = all(v is True for v in report['checks'].values())
     except (OSError, ValueError, KeyError, subprocess.SubprocessError) as exc:
         report['checks']['preconditions'] = False

@@ -99,7 +99,7 @@ def native(source, out, rec, commit, data):
     app=Path(os.environ['RUNNER_TEMP'])/'credproof-app';python=app/'bin/python'
     rec.run('venv',['/usr/bin/python3','-m','venv',app])
     rec.run('build-dependencies',[python,'-m','pip','install','setuptools','wheel'])
-    wheels=out/'wheels';wheels.mkdir()
+    wheels=Path(os.environ['RUNNER_TEMP'])/'credproof-wheels';wheels.mkdir()
     rec.run('build-wheel',[python,'-m','pip','wheel','--no-deps','--no-build-isolation','-w',wheels,source])
     wheel=next(wheels.glob('*.whl'))
     save(out/'wheel.json',{'file':wheel.name,'bytes':wheel.stat().st_size,'sha256':hashlib.sha256(wheel.read_bytes()).hexdigest(),'source_commit':commit})
@@ -148,6 +148,7 @@ def container(source, out, rec, commit, data):
     hardened=['--security-opt','seccomp='+str(source/'deploy/docker/seccomp-credproof.json'),
               '--security-opt','systempaths=unconfined','--security-opt','apparmor=unconfined']
     save(out/'apparmor-policy.json',{'mode':'explicit_outer_unconfined','host_profile_loaded':False,
+        'userns_application_exception':'credproof-ci-container','userns_exception_load_exit_code':rec.rows[0]['exit_code'],
         'candidate_profile':'deploy/apparmor/credproof-bwrap','candidate_enforcement_verified':False,
         'reason':'R3 explicit deployment option; private bwrap userns requires AppArmor permission; no sysctl changes'})
     rec.run('container-origin',[*common,*hardened,'--entrypoint',IMAGE_PYTHON,image,'-I','-c',
