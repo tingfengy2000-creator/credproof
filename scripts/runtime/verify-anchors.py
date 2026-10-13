@@ -39,12 +39,16 @@ def execution_environment(declared=None):
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source',type=Path,required=True)
+    p.add_argument('--anchors-source',type=Path,help='Optional separate frozen benchmark data tree; installed program still matches --source')
+    p.add_argument('--anchors-commit',help='Full commit of the separately frozen anchor data')
     p.add_argument('--runtime',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--source-commit',required=True,help='Full SHA verified by the source host Git; Windows worktree .git paths are not Linux Git paths')
     p.add_argument('--environment',choices=('wsl','native','container'),help='Execution environment; otherwise detect container markers then WSL kernel')
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
     if not re.fullmatch('[0-9a-f]{40}',a.source_commit):raise ValueError('Full source commit required')
+    if a.anchors_source and not re.fullmatch('[0-9a-f]{40}',a.anchors_commit or ''):raise ValueError('Frozen anchor data commit required')
+    anchors_source=a.anchors_source or a.source
     os.environ['CREDPROOF_CONFIG']=str(a.runtime/'runtime.json')
     import credproof_safety.cli as cli
     import credproof_safety.doctor as doctor_module
@@ -79,13 +83,13 @@ def main():
             'sentinel_preserved':(mismatch/'preserve.txt').read_bytes()==b'preserve'})
     else:
         raise RuntimeError('Invalid runtime accepted')
-    bench=json.loads((a.source/'docs/bench/bench-results.json').read_text('utf8'))
+    bench=json.loads((anchors_source/'docs/bench/bench-results.json').read_text('utf8'))
     anchors=[x for x in bench['patches'] if x['origin']['kind'] in ('vulnerable','reference')]
     if len(anchors)!=16:raise RuntimeError('Expected frozen 16-anchor set')
     rows=[]
     for anchor in anchors:
         target=anchor['target'];kind=anchor['origin']['kind'];name=target+'__'+kind
-        data=a.source/'examples/bench'/target
+        data=anchors_source/'examples/bench'/target
         meta=json.loads((data/'meta.json').read_text('utf8'))
         work=a.output/name;work.mkdir();copy=work/'project'
         shutil.copytree(data/'project',copy,ignore=shutil.ignore_patterns('.credproof','__pycache__','*.pyc'))
@@ -108,6 +112,7 @@ def main():
         print(json.dumps({k:row[k] for k in ('id','actual','exit_code','matches')}),flush=True)
     save(a.output/'summary.json',{'kind':'INSTALLED_WHEEL_ANCHOR_CHECK',
         'environment':execution_environment(a.environment),'environment_source':'declared' if a.environment else 'detected','model_calls':0,
+        'source_commit':a.source_commit,'anchors_commit':a.anchors_commit or a.source_commit,
         'expected_count':16,'matched':sum(x['matches'] for x in rows),'rows':rows})
     return 0 if all(x['matches'] for x in rows) else 1
 

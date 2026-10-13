@@ -34,7 +34,9 @@ TRIGGERS={'windows_absolute_path':(':',),'home_absolute_path':('/home/',),
 
 
 class ScanIncomplete(ValueError):
-    pass
+    def __init__(self, reason, *, member=None, size=None, limit=None):
+        super().__init__(reason)
+        self.details = {k:v for k,v in {'member':member,'member_bytes':size,'limit_bytes':limit}.items() if v is not None}
 
 
 def private_list(value):
@@ -93,11 +95,11 @@ def scan(archive,exceptions=(),private_values=(),*,max_seconds=DEFAULT_SECONDS,m
             if member.isdir():continue
             if not member.isfile():skipped.append({'file':name,'type':'special_member_not_read'});continue
             if name in files:raise ValueError('Duplicate archive file')
-            if member.size>max_member_bytes:raise ScanIncomplete('member_size_limit')
+            if member.size>max_member_bytes:raise ScanIncomplete('member_size_limit',member=name,size=member.size,limit=max_member_bytes)
             if total+member.size>MAX_TOTAL:raise ScanIncomplete('total_size_limit')
             stream=tf.extractfile(member);sample=stream.read(min(4096,member.size));read=len(sample)
             binary=b'\x00' in sample or sample.startswith((b'\x7fELF',b'\x89PNG',b'\xff\xd8',b'PK\x03\x04'))
-            if not binary and member.size>MAX_TEXT:raise ScanIncomplete('text_size_limit')
+            if not binary and member.size>MAX_TEXT:raise ScanIncomplete('text_size_limit',member=name,size=member.size,limit=MAX_TEXT)
             h=hashlib.sha256(sample);chunks=[] if binary else [sample]
             while read<member.size:
                 check_time();chunk=stream.read(min(1024*1024,member.size-read))
@@ -112,7 +114,7 @@ def scan(archive,exceptions=(),private_values=(),*,max_seconds=DEFAULT_SECONDS,m
             else:inspect(name,b''.join(chunks),digest)
     check_time()
     if not files or not text_count:raise ValueError('Empty or anomalous scan coverage')
-    return {'schema':'credproof.image-scan/v2','files_scanned':len(files),'bytes_scanned':total,
+    return {'schema':'credproof.image-scan/v2','status':'COMPLETED','files_scanned':len(files),'bytes_scanned':total,
             'text_files_scanned':text_count,'binary_files_hashed':binary_count,'directory_distribution':dict(distribution),
             'duration_seconds':round(time.monotonic()-started,3),'sensitive_hits':len(findings),'findings':findings,
             'reviewed_exceptions':reviewed,'files':files,'links':links,'special_members':skipped,
@@ -127,6 +129,7 @@ def worker(archive,exceptions,values,seconds,member_limit,result_file):
     except (OSError,ValueError,tarfile.TarError) as exc:
         r={'status':'SCAN_INCOMPLETE','error_type':type(exc).__name__,
            'reason':str(exc) if isinstance(exc,ValueError) else type(exc).__name__};code=4
+        if isinstance(exc,ScanIncomplete):r.update(exc.details)
     Path(result_file).write_text(json.dumps({'report':r,'exit_code':code}),encoding='utf8')
 
 
