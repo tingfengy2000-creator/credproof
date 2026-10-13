@@ -64,9 +64,11 @@ def build(output, embedded):
         for name in archive.namelist():
             if '/' in name or '\\' in name or name in ('.','..'): raise ValueError('unexpected_python_zip_layout')
         archive.extractall(runtime)
-    (runtime/'python312._pth').write_text('python312.zip\n.\n../..\n',encoding='utf8',newline='\n')
+    # Windows embeddable getpath needs Windows separators for a two-parent
+    # path; '../..' resolved to only one parent in the 3.12.10 real probe.
+    (runtime/'python312._pth').write_text('python312.zip\n.\n..\\..\n',encoding='utf8',newline='\n')
     receipt={'schema':'credproof.judge-viewer/v1','source_commit':source_sha,'python':{'version':'3.12.10',
-             'source':PYTHON_URL,'download_sha256':PYTHON_SHA,'pth':'python312.zip; .; ../..; no site'},
+             'source':PYTHON_URL,'download_sha256':PYTHON_SHA,'pth':'python312.zip; .; Windows two-parent relative root; no site'},
              'mode':'view','model_calls':0,'whitelist_files':[p.relative_to(ROOT).as_posix() for p in inventory()]}
     (output/'delivery.json').write_text(json.dumps(receipt,ensure_ascii=False,indent=2)+'\n',encoding='utf8')
     report=scan(output,['tingfengy2000-creator','tingfeng'])

@@ -4,7 +4,7 @@
 
 ## 1. 默认交付与启动
 
-采用**源码及已脱敏展示材料目录 + 官方 Windows embeddable Python 3.12（64 位）**，评委不需要预装 Python、仓库 `.venv`、WSL 或模型。Python 从 python.org 官方发布页取得，原 ZIP 摘要与来源登记；解压到 `runtime/python/`，保留官方许可。`python312._pth` 加入相对源码根 `../..`，不依赖 PYTHONPATH，不加载 site-packages。
+采用**源码及已脱敏展示材料目录 + 官方 Windows embeddable Python 3.12（64 位）**，评委不需要预装 Python、仓库 `.venv`、WSL 或模型。Python 从 python.org 官方发布页取得，原 ZIP 摘要与来源登记；解压到 `runtime/python/`，保留官方许可。`python312._pth` 加入 Windows 相对源码根 `..\..`，不依赖 PYTHONPATH，不加载 site-packages。
 
 评委双击根目录 `start-credproof.cmd`，查找顺序为随包 Python → `py -3.12` → 经实际版本检查的 Python ≥3.11。不会执行 Microsoft Store 的 WindowsApps 占位程序。最低 3.11（tomllib），随包版本 3.12.10；开发测试版本 3.12.14，均以实际收据为准。
 
