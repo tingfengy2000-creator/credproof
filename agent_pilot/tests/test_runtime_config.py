@@ -81,6 +81,7 @@ class RuntimeConfigTests(unittest.TestCase):
     def test_windows_bridge_passes_trusted_runtime_without_pinned_username(self):
         response = types.SimpleNamespace(returncode=0, stdout=b'{"status":"TEST_MOCK"}')
         with patch.object(isolation.sys, 'platform', 'win32'), patch.object(isolation.os, 'name', 'nt'), \
+                patch.object(isolation, 'load_config', return_value=dict(runtime_config.DEFAULTS)), \
                 patch.object(isolation.subprocess, 'run', return_value=response) as child:
             result = isolation._dispatch({'operation': 'run'})
         self.assertEqual(result['status'], 'TEST_MOCK')
@@ -115,7 +116,7 @@ class RuntimeConfigTests(unittest.TestCase):
         self.assertIn('credproof_safety.web_repair', argv)
         self.assertEqual(argv[argv.index('--case-id') + 1], 'p01')
         self.assertEqual(argv[argv.index('--project-id') + 1], 'assistant-original')
-        self.assertIn('examples\\material_assistant\\credproof.toml', argv[argv.index('--config') + 1])
+        self.assertTrue(argv[argv.index('--config') + 1].endswith(str(Path('examples') / 'material_assistant' / 'credproof.toml')))
         self.assertNotIn('tingfeng', argv)
         self.assertNotIn('sh', argv)
         with patch.object(web, 'runtime_observation', return_value={**observation, 'isolation_ready': False}):

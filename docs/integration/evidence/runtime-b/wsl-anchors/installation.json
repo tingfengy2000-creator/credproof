@@ -1,0 +1,30 @@
+{
+  "python": "3.12.3",
+  "executable": "<linux-installation>/bin/python",
+  "cwd": "/var/tmp",
+  "modules": {
+    "credproof_safety.cli": {
+      "path": "<linux-installation>/lib/python3.12/site-packages/credproof_safety/cli.py",
+      "sha256": "b5cb9b1cb5a37fd0aca9382e78cc3bd3df3722be066a9f39b9abafd7e1431ea4"
+    },
+    "credproof_safety.doctor": {
+      "path": "<linux-installation>/lib/python3.12/site-packages/credproof_safety/doctor.py",
+      "sha256": "f0f0073d72f9ecf10ec9e5c7538c4ca058d8359d253a582e8d139098e286998d"
+    },
+    "credproof_safety.runtime_setup": {
+      "path": "<linux-installation>/lib/python3.12/site-packages/credproof_safety/runtime_setup.py",
+      "sha256": "bd999c5aed00129799f5f6b05da3d2d75edadb795fdfa49a4784e0f2e9e6f1aa"
+    },
+    "credproof_safety.runner": {
+      "path": "<linux-installation>/lib/python3.12/site-packages/credproof_safety/runner.py",
+      "sha256": "13b546a3d63e3d5750f8107450296365c580cc65fe69b20ce431047f8b27d7e3"
+    },
+    "credproof_safety.project": {
+      "path": "<linux-installation>/lib/python3.12/site-packages/credproof_safety/project.py",
+      "sha256": "ba963bc7f41fde19eca75014f0be46308c7d882b168be15cf4773f50096787fe"
+    }
+  },
+  "version": "0.3.0.dev38",
+  "source_commit": "1b56c7fdc52042c5e9250c1446f17637805c8683",
+  "model_calls": 0
+}

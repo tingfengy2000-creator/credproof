@@ -1,0 +1,43 @@
+{
+  "source_commit": "1b56c7fdc52042c5e9250c1446f17637805c8683",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "executable": "<windows-installation>\\Scripts\\python.exe",
+  "module": "<windows-installation>\\Lib\\site-packages\\credproof_safety\\project.py",
+  "module_sha256": "ba963bc7f41fde19eca75014f0be46308c7d882b168be15cf4773f50096787fe",
+  "version": "0.3.0.dev38",
+  "rows": [
+    {
+      "kind": "vulnerable",
+      "command": [
+        "<windows-installation>\\Scripts\\python.exe",
+        "-I",
+        "-m",
+        "credproof_safety",
+        "check",
+        "--config",
+        "<windows-bridge-run>\\vulnerable\\credproof.toml",
+        "--output",
+        "<windows-bridge-run>\\vulnerable.json"
+      ],
+      "exit_code": 2,
+      "verdict": "FAIL"
+    },
+    {
+      "kind": "reference",
+      "command": [
+        "<windows-installation>\\Scripts\\python.exe",
+        "-I",
+        "-m",
+        "credproof_safety",
+        "check",
+        "--config",
+        "<windows-bridge-run>\\reference\\credproof.toml",
+        "--output",
+        "<windows-bridge-run>\\reference.json"
+      ],
+      "exit_code": 0,
+      "verdict": "PASS"
+    }
+  ],
+  "model_calls": 0
+}

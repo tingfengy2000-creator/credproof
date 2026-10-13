@@ -1,0 +1,855 @@
+{
+  "schema": "credproof.runtime-b-evidence/v1",
+  "source_commit": "1b56c7fdc52042c5e9250c1446f17637805c8683",
+  "wheel_built_at": "7261e4c936f8ff15460de022ee7a9ccdd3690cc3",
+  "note": "Only verification helper and host-independent software tests differ at source_commit; installed core module bytes checked against that source. Wheel binary is not committed.",
+  "wheel": {
+    "name": "credproof_safety-0.3.0.dev38-py3-none-any.whl",
+    "bytes": 349987,
+    "sha256": "2cdd2a1030853c2d68e54dc7b7cf25a5c4c9543e1981d45ffc516ab421c77486"
+  },
+  "model_calls": 0,
+  "software_junit": {
+    "b-windows-final.xml": {
+      "tests": 32,
+      "errors": 0,
+      "failures": 1,
+      "skipped": 1,
+      "passed": 30
+    },
+    "b-windows-final3.xml": {
+      "tests": 32,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 2,
+      "passed": 30
+    },
+    "b-windows.xml": {
+      "tests": 0,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "passed": 0
+    },
+    "b-wsl-final.xml": {
+      "tests": 32,
+      "errors": 0,
+      "failures": 2,
+      "skipped": 0,
+      "passed": 30
+    },
+    "b-wsl-final2.xml": {
+      "tests": 32,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "passed": 32
+    },
+    "pr11-windows.xml": {
+      "tests": 15,
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "passed": 15
+    }
+  },
+  "anchor_summary": "wsl-anchors/summary.json",
+  "windows_bridge": "windows-bridge/receipt.json",
+  "pending": [
+    "Docker build/doctor/16 anchors/default-block control/export-tar scan",
+    "Host-loaded AppArmor validation",
+    "Native non-WSL hosted Ubuntu validation in C",
+    "Combined A+B CLI and browser acceptance after integration"
+  ],
+  "redaction": {
+    "mapping": "Exact known source/installation/run prefixes replaced with named placeholders; JSON decoded before mapping. No broad code/path regex. JUnit hostname mapped to a named placeholder. UTF-16 shell outputs derived as UTF-8. WSL launcher warning summarized, originals retained.",
+    "not_original_wire_bytes": true,
+    "publication_policy": "UTF-8 LF, derived from exact Git blob bytes of 15406e407677ca2401f8b255a2819b6d38f0160f; original local bytes/hashes retained separately. Receipt metadata updated, no experimental verdicts changed."
+  },
+  "artifact_provenance": [
+    {
+      "source_label": "wsl-anchors/doctor.json",
+      "original_sha256": "cf72fc11b25c4896bea5de6ccef2b71d4460b483b578ea2d0f6c510b3faa61b6",
+      "original_bytes": 1034,
+      "published_sha256": "cf72fc11b25c4896bea5de6ccef2b71d4460b483b578ea2d0f6c510b3faa61b6",
+      "published_bytes": 1034,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/installation.json",
+      "original_sha256": "adc805ab382bb17a5810ca636695861d065456a9c0a662af9be95d013eacab3e",
+      "original_bytes": 1406,
+      "published_sha256": "309620cb23923f30498726a6ca102d3dc1863796c2356596f4ca752e7df477ff",
+      "published_bytes": 1322,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/mismatch.json",
+      "original_sha256": "253f751cd1392ccc8c18bba97b4bfcc4df545a168536fcf6ec1f69b0496ac83a",
+      "original_bytes": 90,
+      "published_sha256": "253f751cd1392ccc8c18bba97b4bfcc4df545a168536fcf6ec1f69b0496ac83a",
+      "published_bytes": 90,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/reuse.json",
+      "original_sha256": "e793e5a1acf2cd84eeb33fe5b34e81d78b2d3660f024ca847a3d27341a53b29c",
+      "original_bytes": 882,
+      "published_sha256": "e793e5a1acf2cd84eeb33fe5b34e81d78b2d3660f024ca847a3d27341a53b29c",
+      "published_bytes": 882,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/summary.json",
+      "original_sha256": "0b45ce78edf55767f8ac81ed53e5a00a588611e71735434b84363b6b449e04da",
+      "original_bytes": 57960,
+      "published_sha256": "eb2a716a4d8168e9e873f523ee7d7cbb5569f939c4481f80500a9938725f5f70",
+      "published_bytes": 56936,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b01-ticket-digest__reference/command.json",
+      "original_sha256": "1241d74a80d551d409c35c6b3320d1a554ec5c7c38f63afe327b51d6f155e5e9",
+      "original_bytes": 3025,
+      "published_sha256": "3a0ec9eaf7d7b05202ffb872725a58f6de5c68d7d1778f7fc9e1ad1e87ee1475",
+      "published_bytes": 2961,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b01-ticket-digest__reference/report.json",
+      "original_sha256": "859771064595e7b030033ae9f417ab44b63cf654f2c811e3e7a8e17695bd502b",
+      "original_bytes": 15169,
+      "published_sha256": "859771064595e7b030033ae9f417ab44b63cf654f2c811e3e7a8e17695bd502b",
+      "published_bytes": 15169,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b01-ticket-digest__reference/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b01-ticket-digest__reference/stdout.txt",
+      "original_sha256": "859771064595e7b030033ae9f417ab44b63cf654f2c811e3e7a8e17695bd502b",
+      "original_bytes": 15169,
+      "published_sha256": "859771064595e7b030033ae9f417ab44b63cf654f2c811e3e7a8e17695bd502b",
+      "published_bytes": 15169,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b01-ticket-digest__vulnerable/command.json",
+      "original_sha256": "54c29fd7be0902687fd151e5e6c8f68495429f4652fdb56bedff381d4fbb0e3f",
+      "original_bytes": 3052,
+      "published_sha256": "291b90bdcdd5fe03c42b4c714aae26e67d8761ea4697cf396c082029e205473e",
+      "published_bytes": 2988,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b01-ticket-digest__vulnerable/report.json",
+      "original_sha256": "64e3b97041dbe115a87e26dd94016a075cab05d1e69bd3a8c34ad798576b22fe",
+      "original_bytes": 15389,
+      "published_sha256": "64e3b97041dbe115a87e26dd94016a075cab05d1e69bd3a8c34ad798576b22fe",
+      "published_bytes": 15389,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b01-ticket-digest__vulnerable/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b01-ticket-digest__vulnerable/stdout.txt",
+      "original_sha256": "64e3b97041dbe115a87e26dd94016a075cab05d1e69bd3a8c34ad798576b22fe",
+      "original_bytes": 15389,
+      "published_sha256": "64e3b97041dbe115a87e26dd94016a075cab05d1e69bd3a8c34ad798576b22fe",
+      "published_bytes": 15389,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b02-config-sync__reference/command.json",
+      "original_sha256": "397e7e5ac7385008e1e7392f8cf27a89c6b7a4ef685aff1d002c4fe9879004c3",
+      "original_bytes": 3008,
+      "published_sha256": "6c31cb59e48068cf5ff1fb1aeadb585cc99017b35cd4e4da295f3efeb95cd7c4",
+      "published_bytes": 2944,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b02-config-sync__reference/report.json",
+      "original_sha256": "956a4530c8a2d2e5eb024f7eb470db2e8e70049860030f9e7b109f60714ffe5a",
+      "original_bytes": 15907,
+      "published_sha256": "956a4530c8a2d2e5eb024f7eb470db2e8e70049860030f9e7b109f60714ffe5a",
+      "published_bytes": 15907,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b02-config-sync__reference/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b02-config-sync__reference/stdout.txt",
+      "original_sha256": "956a4530c8a2d2e5eb024f7eb470db2e8e70049860030f9e7b109f60714ffe5a",
+      "original_bytes": 15907,
+      "published_sha256": "956a4530c8a2d2e5eb024f7eb470db2e8e70049860030f9e7b109f60714ffe5a",
+      "published_bytes": 15907,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b02-config-sync__vulnerable/command.json",
+      "original_sha256": "e4f178c26ca9dae7813e5babfb7da67eac4d36683b4b675295f2d776e19ea7af",
+      "original_bytes": 3035,
+      "published_sha256": "2b1e6ecd4a5e5db26696c51b22d9356bab71f0ce221fd9f35975a012256fef38",
+      "published_bytes": 2971,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b02-config-sync__vulnerable/report.json",
+      "original_sha256": "7925b0713d0b987e1395625360865fa5c4719f8cb8fad2890508b0110a09b9a1",
+      "original_bytes": 15989,
+      "published_sha256": "7925b0713d0b987e1395625360865fa5c4719f8cb8fad2890508b0110a09b9a1",
+      "published_bytes": 15989,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b02-config-sync__vulnerable/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b02-config-sync__vulnerable/stdout.txt",
+      "original_sha256": "7925b0713d0b987e1395625360865fa5c4719f8cb8fad2890508b0110a09b9a1",
+      "original_bytes": 15989,
+      "published_sha256": "7925b0713d0b987e1395625360865fa5c4719f8cb8fad2890508b0110a09b9a1",
+      "published_bytes": 15989,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b03-report-fetch__reference/command.json",
+      "original_sha256": "426e7adb23881969565f7c40056649fa639833cf5c4da57d9169acf8774fff10",
+      "original_bytes": 2509,
+      "published_sha256": "291b2e3463edaa5b5e15770d437b3759cbd08dd8f8fa826b9b80c1826e12477e",
+      "published_bytes": 2445,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b03-report-fetch__reference/report.json",
+      "original_sha256": "520816475477491f800f5d8003a40a23ca6c75258bda0617658f6234bace7c23",
+      "original_bytes": 14191,
+      "published_sha256": "520816475477491f800f5d8003a40a23ca6c75258bda0617658f6234bace7c23",
+      "published_bytes": 14191,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b03-report-fetch__reference/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b03-report-fetch__reference/stdout.txt",
+      "original_sha256": "520816475477491f800f5d8003a40a23ca6c75258bda0617658f6234bace7c23",
+      "original_bytes": 14191,
+      "published_sha256": "520816475477491f800f5d8003a40a23ca6c75258bda0617658f6234bace7c23",
+      "published_bytes": 14191,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b03-report-fetch__vulnerable/command.json",
+      "original_sha256": "5e78e3484c74e03a1825bb9e09bd5d064a21ee694f0e8348ff0fadb27736348b",
+      "original_bytes": 2536,
+      "published_sha256": "d484eb39456c5149346b5df1215cbb60c4b6df6ed9c5993b364f3506a021d377",
+      "published_bytes": 2472,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b03-report-fetch__vulnerable/report.json",
+      "original_sha256": "da2758a54b9f44b04a0817184a355a4d19c2848b4b5dd19b3d388d6adec7fbf7",
+      "original_bytes": 14431,
+      "published_sha256": "da2758a54b9f44b04a0817184a355a4d19c2848b4b5dd19b3d388d6adec7fbf7",
+      "published_bytes": 14431,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b03-report-fetch__vulnerable/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b03-report-fetch__vulnerable/stdout.txt",
+      "original_sha256": "da2758a54b9f44b04a0817184a355a4d19c2848b4b5dd19b3d388d6adec7fbf7",
+      "original_bytes": 14431,
+      "published_sha256": "da2758a54b9f44b04a0817184a355a4d19c2848b4b5dd19b3d388d6adec7fbf7",
+      "published_bytes": 14431,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b04-health-probe__reference/command.json",
+      "original_sha256": "da63333bc1338c8d10a2279c346a9bc8f4465ad8d7690075c7991c36b4c24d8c",
+      "original_bytes": 3022,
+      "published_sha256": "7707c84a33495cb6cee9ec02ee34b13da69ea4a391e4d7933ee75093183b71cc",
+      "published_bytes": 2958,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b04-health-probe__reference/report.json",
+      "original_sha256": "3287a5c2f95b6e14b1d1dd4d354e48c0c8bf5c67c1a7f288b273ad8c8ca872b9",
+      "original_bytes": 15223,
+      "published_sha256": "3287a5c2f95b6e14b1d1dd4d354e48c0c8bf5c67c1a7f288b273ad8c8ca872b9",
+      "published_bytes": 15223,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b04-health-probe__reference/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b04-health-probe__reference/stdout.txt",
+      "original_sha256": "3287a5c2f95b6e14b1d1dd4d354e48c0c8bf5c67c1a7f288b273ad8c8ca872b9",
+      "original_bytes": 15223,
+      "published_sha256": "3287a5c2f95b6e14b1d1dd4d354e48c0c8bf5c67c1a7f288b273ad8c8ca872b9",
+      "published_bytes": 15223,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b04-health-probe__vulnerable/command.json",
+      "original_sha256": "2e9c918f2b5064c25a4eefe148977d7ea3a2b4f90866329b03e29ea8ccf2ae51",
+      "original_bytes": 3049,
+      "published_sha256": "613c629912b00fe99162b34a0f61b8e452b9bebb80bbeda6fd6bdd9c29389682",
+      "published_bytes": 2985,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b04-health-probe__vulnerable/report.json",
+      "original_sha256": "b3668beec25409b5af18c2e15879fddb2ce7ee86d02ede02aaff2aa95e3eaa67",
+      "original_bytes": 15373,
+      "published_sha256": "b3668beec25409b5af18c2e15879fddb2ce7ee86d02ede02aaff2aa95e3eaa67",
+      "published_bytes": 15373,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b04-health-probe__vulnerable/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b04-health-probe__vulnerable/stdout.txt",
+      "original_sha256": "b3668beec25409b5af18c2e15879fddb2ce7ee86d02ede02aaff2aa95e3eaa67",
+      "original_bytes": 15373,
+      "published_sha256": "b3668beec25409b5af18c2e15879fddb2ce7ee86d02ede02aaff2aa95e3eaa67",
+      "published_bytes": 15373,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b05-attachment-reader__reference/command.json",
+      "original_sha256": "75b31d858a2dedd2879adac6b1a38754c259e517fcbce88cb1e937ec4b622e4a",
+      "original_bytes": 3037,
+      "published_sha256": "43bab8143cd732bcecc20d4fa46161f23cddf48ee2419d6d0d76876ff92bdd4d",
+      "published_bytes": 2973,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b05-attachment-reader__reference/report.json",
+      "original_sha256": "fb612e7b3e8a94c3517e3593d2f93820152f5c41d54c5ff9e1649fef36fe8bfe",
+      "original_bytes": 15390,
+      "published_sha256": "fb612e7b3e8a94c3517e3593d2f93820152f5c41d54c5ff9e1649fef36fe8bfe",
+      "published_bytes": 15390,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b05-attachment-reader__reference/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b05-attachment-reader__reference/stdout.txt",
+      "original_sha256": "fb612e7b3e8a94c3517e3593d2f93820152f5c41d54c5ff9e1649fef36fe8bfe",
+      "original_bytes": 15390,
+      "published_sha256": "fb612e7b3e8a94c3517e3593d2f93820152f5c41d54c5ff9e1649fef36fe8bfe",
+      "published_bytes": 15390,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b05-attachment-reader__vulnerable/command.json",
+      "original_sha256": "76d7adfc34dfab2ee758d847b69c219c2b0efa37ee94dc4818a42fea6c7b22ca",
+      "original_bytes": 3933,
+      "published_sha256": "6191835b86ef9b881d48029deb6f20504bae960e963e99d6804c24b04657ecaf",
+      "published_bytes": 3869,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b05-attachment-reader__vulnerable/report.json",
+      "original_sha256": "f399e62cd55150d6bd4496fc5edd092c54a6dada76c52eae87602ccd1c2767fd",
+      "original_bytes": 19736,
+      "published_sha256": "f399e62cd55150d6bd4496fc5edd092c54a6dada76c52eae87602ccd1c2767fd",
+      "published_bytes": 19736,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b05-attachment-reader__vulnerable/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b05-attachment-reader__vulnerable/stdout.txt",
+      "original_sha256": "f399e62cd55150d6bd4496fc5edd092c54a6dada76c52eae87602ccd1c2767fd",
+      "original_bytes": 19736,
+      "published_sha256": "f399e62cd55150d6bd4496fc5edd092c54a6dada76c52eae87602ccd1c2767fd",
+      "published_bytes": 19736,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b06-template-loader__reference/command.json",
+      "original_sha256": "aa60b8e24abb4cd65be56a4770c65b6376f1e4697c2f2c7c535b718813484444",
+      "original_bytes": 3538,
+      "published_sha256": "d172cf906db0ca48774c61faf9c6d38b0da692b6a7fe632779663f81c7b4d54c",
+      "published_bytes": 3474,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b06-template-loader__reference/report.json",
+      "original_sha256": "c8329b26eb25228d684091f5bcb8fd7265cf911e30c38aac6d4fb1a7f0796942",
+      "original_bytes": 16122,
+      "published_sha256": "c8329b26eb25228d684091f5bcb8fd7265cf911e30c38aac6d4fb1a7f0796942",
+      "published_bytes": 16122,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b06-template-loader__reference/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b06-template-loader__reference/stdout.txt",
+      "original_sha256": "c8329b26eb25228d684091f5bcb8fd7265cf911e30c38aac6d4fb1a7f0796942",
+      "original_bytes": 16122,
+      "published_sha256": "c8329b26eb25228d684091f5bcb8fd7265cf911e30c38aac6d4fb1a7f0796942",
+      "published_bytes": 16122,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b06-template-loader__vulnerable/command.json",
+      "original_sha256": "b91fd115053b61c67ebaae80eebca60cf03e55b978fab9cdb9aff65e7f11cc46",
+      "original_bytes": 4672,
+      "published_sha256": "bb7a3dc3e36d386b09a1fc98540f3769fff916a4536455036efcf7011fb77fdd",
+      "published_bytes": 4608,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b06-template-loader__vulnerable/report.json",
+      "original_sha256": "3888110cb8984d032a3d38b1a8fe91dce9dffc4987dfddcc1f4b4f7d0abe05f6",
+      "original_bytes": 19899,
+      "published_sha256": "3888110cb8984d032a3d38b1a8fe91dce9dffc4987dfddcc1f4b4f7d0abe05f6",
+      "published_bytes": 19899,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b06-template-loader__vulnerable/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b06-template-loader__vulnerable/stdout.txt",
+      "original_sha256": "3888110cb8984d032a3d38b1a8fe91dce9dffc4987dfddcc1f4b4f7d0abe05f6",
+      "original_bytes": 19899,
+      "published_sha256": "3888110cb8984d032a3d38b1a8fe91dce9dffc4987dfddcc1f4b4f7d0abe05f6",
+      "published_bytes": 19899,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b07-webhook-relay__reference/command.json",
+      "original_sha256": "ee1cf7b89ed0003058ff057e635fbe9f2b4c26386f4a2004ad69e49247e386af",
+      "original_bytes": 2512,
+      "published_sha256": "9ce4f3f4fd974a6f11c8120c89bd7bd61c9fd2c65357c5ebf49d12fc440bce50",
+      "published_bytes": 2448,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b07-webhook-relay__reference/report.json",
+      "original_sha256": "45cee457b67dfd846f9e265af8ef5f362fd6d3d7593dbf3633c5623456ea1112",
+      "original_bytes": 15551,
+      "published_sha256": "45cee457b67dfd846f9e265af8ef5f362fd6d3d7593dbf3633c5623456ea1112",
+      "published_bytes": 15551,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b07-webhook-relay__reference/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b07-webhook-relay__reference/stdout.txt",
+      "original_sha256": "45cee457b67dfd846f9e265af8ef5f362fd6d3d7593dbf3633c5623456ea1112",
+      "original_bytes": 15551,
+      "published_sha256": "45cee457b67dfd846f9e265af8ef5f362fd6d3d7593dbf3633c5623456ea1112",
+      "published_bytes": 15551,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b07-webhook-relay__vulnerable/command.json",
+      "original_sha256": "bea83dd5bef2175a77ae7516db7cf96bda7a5472188b76a16bbb64cb673f5d87",
+      "original_bytes": 2613,
+      "published_sha256": "c20ba7a60d2828e2057f06bd303c376334c54de25b4b46a5e9e2356696cbc3f5",
+      "published_bytes": 2549,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b07-webhook-relay__vulnerable/report.json",
+      "original_sha256": "59a7ee42aa0899cdc503ccbc68579a67c2fe2e6daf11e82b4ef49749c98903b9",
+      "original_bytes": 16333,
+      "published_sha256": "59a7ee42aa0899cdc503ccbc68579a67c2fe2e6daf11e82b4ef49749c98903b9",
+      "published_bytes": 16333,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b07-webhook-relay__vulnerable/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b07-webhook-relay__vulnerable/stdout.txt",
+      "original_sha256": "59a7ee42aa0899cdc503ccbc68579a67c2fe2e6daf11e82b4ef49749c98903b9",
+      "original_bytes": 16333,
+      "published_sha256": "59a7ee42aa0899cdc503ccbc68579a67c2fe2e6daf11e82b4ef49749c98903b9",
+      "published_bytes": 16333,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b08-feed-proxy__reference/command.json",
+      "original_sha256": "5d696fe895c1c9b20d80c9683ceca75e1e46de5104a3385ab0242669c4e26a71",
+      "original_bytes": 3005,
+      "published_sha256": "7512b54adfe9a652c04fa806d6ba251bb0dbed8efa75625b69c1ba4b90c20d02",
+      "published_bytes": 2941,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b08-feed-proxy__reference/report.json",
+      "original_sha256": "d6965320448be5d3df22577416a7f270089b18dd17e5f3501797ff719d04d880",
+      "original_bytes": 15842,
+      "published_sha256": "d6965320448be5d3df22577416a7f270089b18dd17e5f3501797ff719d04d880",
+      "published_bytes": 15842,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b08-feed-proxy__reference/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b08-feed-proxy__reference/stdout.txt",
+      "original_sha256": "d6965320448be5d3df22577416a7f270089b18dd17e5f3501797ff719d04d880",
+      "original_bytes": 15842,
+      "published_sha256": "d6965320448be5d3df22577416a7f270089b18dd17e5f3501797ff719d04d880",
+      "published_bytes": 15842,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b08-feed-proxy__vulnerable/command.json",
+      "original_sha256": "75e4d70741526069195de4ee6e6c30bb1c04b1fd6a63b7b48e5c8571e2a8f01c",
+      "original_bytes": 3872,
+      "published_sha256": "9abf26ff0689a73673c6ef75c632a7d5d848b32f4393fc2b851c03965a325b70",
+      "published_bytes": 3808,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b08-feed-proxy__vulnerable/report.json",
+      "original_sha256": "d9d1b63d19d406e1e085f8aa1b3990711a98bce1ad4d5f153d72b702bdf90d9d",
+      "original_bytes": 19212,
+      "published_sha256": "d9d1b63d19d406e1e085f8aa1b3990711a98bce1ad4d5f153d72b702bdf90d9d",
+      "published_bytes": 19212,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b08-feed-proxy__vulnerable/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/b08-feed-proxy__vulnerable/stdout.txt",
+      "original_sha256": "d9d1b63d19d406e1e085f8aa1b3990711a98bce1ad4d5f153d72b702bdf90d9d",
+      "original_bytes": 19212,
+      "published_sha256": "d9d1b63d19d406e1e085f8aa1b3990711a98bce1ad4d5f153d72b702bdf90d9d",
+      "published_bytes": 19212,
+      "derived": true
+    },
+    {
+      "source_label": "wsl-anchors/mismatched-runtime/preserve.txt",
+      "original_sha256": "1daf82f62247f3a1d148c2d88b1828c9efa2d5f087d7059e98650aafe7afdea3",
+      "original_bytes": 8,
+      "published_sha256": "1daf82f62247f3a1d148c2d88b1828c9efa2d5f087d7059e98650aafe7afdea3",
+      "published_bytes": 8,
+      "derived": true
+    },
+    {
+      "source_label": "windows-bridge/receipt.json",
+      "original_sha256": "f04b9d7d0e2da44d45a745e9eb1bef3bb12444894ae7c82c2f6585406b4784cf",
+      "original_bytes": 1571,
+      "published_sha256": "9e18349ea42849db5d67c2ed7ab1d00bca269ca777cfeb0a822277fd7d412617",
+      "published_bytes": 1228,
+      "derived": true
+    },
+    {
+      "source_label": "windows-bridge/reference.json",
+      "original_sha256": "e63ba56fba115594c2494b0048ada0d668408cdc3190b6bb2c1c63b8fb8a2d5b",
+      "original_bytes": 16164,
+      "published_sha256": "138d820ba81bf2846a3003ebef6e77e9b6833a37d84f5df7955a552e316eb925",
+      "published_bytes": 15666,
+      "derived": true
+    },
+    {
+      "source_label": "windows-bridge/reference.stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "windows-bridge/reference.stdout.txt",
+      "original_sha256": "3df0cefbc717b1a85005e4b00abb3b4a73f449a414b072511fcc98cebb26b8c0",
+      "original_bytes": 16236,
+      "published_sha256": "138d820ba81bf2846a3003ebef6e77e9b6833a37d84f5df7955a552e316eb925",
+      "published_bytes": 15666,
+      "derived": true
+    },
+    {
+      "source_label": "windows-bridge/vulnerable.json",
+      "original_sha256": "88a41959b54ebeef4fbfd6cea3816299edf55f72763446432c4bb1c097eaf011",
+      "original_bytes": 16979,
+      "published_sha256": "0636fad434ab9cbfbb4ffb661670748c073d132d819d5641f51a226f9b7adeba",
+      "published_bytes": 16449,
+      "derived": true
+    },
+    {
+      "source_label": "windows-bridge/vulnerable.stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "windows-bridge/vulnerable.stdout.txt",
+      "original_sha256": "790b13fa542f9357d503b8909461c4329cb28649b99f19a834d05c9ea8e0fc50",
+      "original_bytes": 17051,
+      "published_sha256": "0636fad434ab9cbfbb4ffb661670748c073d132d819d5641f51a226f9b7adeba",
+      "published_bytes": 16449,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-doctor-wsl.stdout.txt",
+      "original_sha256": "cf72fc11b25c4896bea5de6ccef2b71d4460b483b578ea2d0f6c510b3faa61b6",
+      "original_bytes": 1034,
+      "published_sha256": "cf72fc11b25c4896bea5de6ccef2b71d4460b483b578ea2d0f6c510b3faa61b6",
+      "published_bytes": 1034,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-doctor-wsl.stderr.txt",
+      "original_sha256": "e816706cd44ce0c6c65a7a7938be8103514f7c899694c8240d844f74319b7f98",
+      "original_bytes": 153,
+      "published_sha256": "d9de28ffe879b9f2663d5bba07e5dc19c869176e0b50ee538d508b4b4da839f9",
+      "published_bytes": 66,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-doctor-windows.stdout.txt",
+      "original_sha256": "7f629f0d59a3e3a280f477ddd2d9d4ff63a8e0654d1ae91762db843cea41fba7",
+      "original_bytes": 283,
+      "published_sha256": "64296280156b0ec3ce8a810d69f86f8eba3273ff5f3250c8b2271fb68637b578",
+      "published_bytes": 272,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-doctor-windows.stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "published_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "published_bytes": 0,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-setup.stderr.txt",
+      "original_sha256": "678941937fa5ee2b31a37c7abbae67ec219a8acf39267197d22df1794efed480",
+      "original_bytes": 437,
+      "published_sha256": "d9de28ffe879b9f2663d5bba07e5dc19c869176e0b50ee538d508b4b4da839f9",
+      "published_bytes": 66,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-setup.stdout.txt",
+      "original_sha256": "83c70e790886e14d3685bb6c59189f1d186b8163ea4076311becf2551a402053",
+      "original_bytes": 420,
+      "published_sha256": "83c70e790886e14d3685bb6c59189f1d186b8163ea4076311becf2551a402053",
+      "published_bytes": 420,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-venv-install.txt",
+      "original_sha256": "0e73cdbfc53ac9dafed58133e776dcad3cf5af2c0a132187066c45ca1d0e07dd",
+      "original_bytes": 181,
+      "published_sha256": "d9de28ffe879b9f2663d5bba07e5dc19c869176e0b50ee538d508b4b4da839f9",
+      "published_bytes": 66,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-venv-install-root.txt",
+      "original_sha256": "71c0f044df4fa61f4c9bd20a0db920bd4e0019deba7977235ab9dfb660d78fb6",
+      "original_bytes": 2379,
+      "published_sha256": "f64283f8041f463c0d6965f2c06c0243448a3f4600539c0ea56d606ecd6f86a4",
+      "published_bytes": 2178,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-setup-c.stdout.txt",
+      "original_sha256": "f76b57cb74df5e2752c8c6d441d2eac588c0b70e628d70ad1597f5eab20abf84",
+      "original_bytes": 1753,
+      "published_sha256": "639b883a2944df85e886766494d3a9e30e61d4b664635847895459b527f2af71",
+      "published_bytes": 1583,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-setup-d.stderr.txt",
+      "original_sha256": "39b5e8a91db1b71bc2c019baece9728a74f5485f309f16cba29171ae1209a5c2",
+      "original_bytes": 408,
+      "published_sha256": "d9de28ffe879b9f2663d5bba07e5dc19c869176e0b50ee538d508b4b4da839f9",
+      "published_bytes": 66,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-setup-e.stdout.txt",
+      "original_sha256": "56ff576f84e580e9627c6fa11ca222cae70abbd2e8c5703a3cc0b3bf48b68883",
+      "original_bytes": 2069,
+      "published_sha256": "a406415a798b5b8413b02362bb37761d8deaed9f652d931d8c4cdd789c3ba823",
+      "published_bytes": 1899,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-setup-e.stderr.txt",
+      "original_sha256": "e816706cd44ce0c6c65a7a7938be8103514f7c899694c8240d844f74319b7f98",
+      "original_bytes": 153,
+      "published_sha256": "d9de28ffe879b9f2663d5bba07e5dc19c869176e0b50ee538d508b4b4da839f9",
+      "published_bytes": 66,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-anchors.stderr.txt",
+      "original_sha256": "f16b923ba466c7c992dc1464a93771e636d4aaaad13f482b1e35c9776888c12a",
+      "original_bytes": 1349,
+      "published_sha256": "65944f7efc6d427d13583bb905e3b19ef8895208c28698f3160b2340bb3f3ce4",
+      "published_bytes": 939,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-anchors-final.stdout.txt",
+      "original_sha256": "257723dd247cbefd0f5ee5b78bccc8701ec2ffacc092327604ab59591f430aca",
+      "original_bytes": 1446,
+      "published_sha256": "257723dd247cbefd0f5ee5b78bccc8701ec2ffacc092327604ab59591f430aca",
+      "published_bytes": 1446,
+      "derived": true
+    },
+    {
+      "source_label": "preparation/b-anchors-final.stderr.txt",
+      "original_sha256": "e816706cd44ce0c6c65a7a7938be8103514f7c899694c8240d844f74319b7f98",
+      "original_bytes": 153,
+      "published_sha256": "d9de28ffe879b9f2663d5bba07e5dc19c869176e0b50ee538d508b4b4da839f9",
+      "published_bytes": 66,
+      "derived": true
+    },
+    {
+      "source_label": "software/b-windows.xml",
+      "original_sha256": "92f2c214701aeb2ff3b885eacd3ddfc54446057d5894407d0a52ca9d602fc7b6",
+      "original_bytes": 241,
+      "published_sha256": "83c5c89a17e850cf0875175bf401674e8508bfa99e32e6222195ddd19cb28dda",
+      "published_bytes": 201,
+      "derived": true
+    },
+    {
+      "source_label": "software/b-windows-final.xml",
+      "original_sha256": "eb83fedf3fd2c943353f3474367ead8a036f5aafebe214dc92f39e6a3079c11c",
+      "original_bytes": 6674,
+      "published_sha256": "ce4927398761af3c457c70ef569c8df75fb23a4fc81812e497021b716abcda59",
+      "published_bytes": 6581,
+      "derived": true
+    },
+    {
+      "source_label": "software/b-wsl-final.xml",
+      "original_sha256": "8a909804cf80ef79a64412c21603b5a55d09bc6ea5d9ca094738de70fd1c2647",
+      "original_bytes": 7112,
+      "published_sha256": "c606507aa6e9ab2e6e1529cfb41d396ffe307bcc6219870a5b8e36eb275a536d",
+      "published_bytes": 7024,
+      "derived": true
+    },
+    {
+      "source_label": "software/b-windows-final3.xml",
+      "original_sha256": "2949c615acca4cdce72d731f76d48110e07452e31e1a065883ae591658a7c6f5",
+      "original_bytes": 5530,
+      "published_sha256": "190373a81bb8eb5025fe65681cd8e55fcb7f05fbd65d01aa67ef91576992ee40",
+      "published_bytes": 5442,
+      "derived": true
+    },
+    {
+      "source_label": "software/b-wsl-final2.xml",
+      "original_sha256": "3e8910a5cf3ba598de7869c5d1a859729550a8485595d18b77f78dea5b5524fe",
+      "original_bytes": 5058,
+      "published_sha256": "c58055b316e229fdfd4fa69b981f2ceaf5190c4a472b5e1bd0bd8f175526867c",
+      "published_bytes": 5018,
+      "derived": true
+    },
+    {
+      "source_label": "software/pr11-windows.xml",
+      "original_sha256": "a7a9195be1a4f8ade0a1a4604bea80b7f1a86189b8ec049ee1232ca44e605d53",
+      "original_bytes": 2398,
+      "published_sha256": "cf683a4833163fbdb7bc55b064cbcde79a8af78f6972a649a7c31ef775b477ef",
+      "published_bytes": 2358,
+      "derived": true
+    }
+  ]
+}

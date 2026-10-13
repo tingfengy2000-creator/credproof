@@ -1,0 +1,67 @@
+{
+  "source_commit": "4eb8d5e49cfdbe07e2fa6ae49ed29b53f4c92fed",
+  "runs": [
+    {
+      "command": [
+        "git",
+        "init",
+        "/var/tmp/credproof-r3-ab-clean-linux"
+      ],
+      "exit_code": 0,
+      "stdout": "Initialized empty Git repository in /var/tmp/credproof-r3-ab-clean-linux/.git/\n",
+      "stderr": "hint: Using 'master' as the name for the initial branch. This default branch name\nhint: is subject to change. To configure the initial branch name to use in all\nhint: of your new repositories, which will suppress this warning, call:\nhint: \nhint: \tgit config --global init.defaultBranch <name>\nhint: \nhint: Names commonly chosen instead of 'master' are 'main', 'trunk' and\nhint: 'development'. The just-created branch can be renamed via this command:\nhint: \nhint: \tgit branch -m <name>\n"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/var/tmp/credproof-r3-ab-clean-linux",
+        "fetch",
+        "--depth=1",
+        "<git-common-directory>/.git",
+        "4eb8d5e49cfdbe07e2fa6ae49ed29b53f4c92fed"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "From <git-common-directory>/\n * branch            4eb8d5e49cfdbe07e2fa6ae49ed29b53f4c92fed -> FETCH_HEAD\n"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/var/tmp/credproof-r3-ab-clean-linux",
+        "checkout",
+        "--detach",
+        "FETCH_HEAD"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 4eb8d5e Merge reviewed contract A into B for final integration checks\n"
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/var/tmp/credproof-r3-ab-clean-linux",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "-C",
+        "/var/tmp/credproof-r3-ab-clean-linux",
+        "diff",
+        "HEAD",
+        "--name-only"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

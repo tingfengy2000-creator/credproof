@@ -1,8 +1,6 @@
-# Minimal project-test dependencies installed in the reviewed WSL runtime.
-# The model runtime remains the existing agent_pilot lock; model weights are
-# outside Git and are not required for `check` or exported regression tests.
-pytest==8.4.2
-iniconfig==2.3.0
-packaging==26.3
-pluggy==1.6.0
-Pygments==2.21.0
+# Official PyPI wheel bytes; complete Linux Python 3.12 pytest dependency closure.
+pytest==8.4.2 --hash=sha256:872f880de3fc3a5bdc88a11b39c9710c3497a547cfa9320bc3c5e62fbf272e79
+iniconfig==2.3.0 --hash=sha256:f631c04d2c48c52b84d0d0549c99ff3859c98df65b3101406327ecc7d53fbf12
+packaging==26.3 --hash=sha256:d7193f7c8e4e93f444fde0262bf90af30e16fa0ad0ad44cb553c87339b23cd1c
+pluggy==1.6.0 --hash=sha256:e920276dd6813095e9377c0bc5566d94c932c33b27a3e3945d8389c374dd4746
+Pygments==2.21.0 --hash=sha256:2363c69b61c4a97c838da3b130dcd6468f4848992b21a82f2a63ec34377137d9

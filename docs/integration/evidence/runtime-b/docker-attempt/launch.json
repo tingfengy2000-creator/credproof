@@ -1,0 +1,19 @@
+{
+  "command": [
+    "<docker-test>/bin/docker/dockerd",
+    "--host=unix://<docker-test>/docker.sock",
+    "--data-root=<docker-test>/data",
+    "--exec-root=<docker-test>/exec",
+    "--pidfile=<docker-test>/dockerd.pid",
+    "--bridge=none",
+    "--iptables=false",
+    "--ip6tables=false",
+    "--ip-forward=false",
+    "--ip-masq=false",
+    "--feature=containerd-snapshotter=false",
+    "--storage-driver=overlay2"
+  ],
+  "pid": 366,
+  "system_service_installed": false,
+  "global_network_settings_changed": false
+}

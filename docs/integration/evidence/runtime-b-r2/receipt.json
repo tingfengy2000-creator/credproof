@@ -1,0 +1,247 @@
+{
+  "schema": "credproof.r3-ab-followup/v1",
+  "A_reviewed_head": "1b11425fe0414f13a89ef4d47bad95709f9e4e0e",
+  "A_merged_commit": "454f1ef00920a05821c4fac9ab4bdc3614691b44",
+  "B_fix_commit": "c72b9606ae003937762ad18ca14dcaf8c5351bb2",
+  "tested_merge_commit": "4eb8d5e49cfdbe07e2fa6ae49ed29b53f4c92fed",
+  "wheel": {
+    "name": "credproof_safety-0.3.0.dev38-py3-none-any.whl",
+    "bytes": 363034,
+    "sha256": "b7b6ae1968d94433083ff370f0f725f60db28807cba6a7d1a1d35bac6e77f670"
+  },
+  "model_calls": 0,
+  "software": {
+    "b-r2-windows.xml": {
+      "tests": 22,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "passed": 20
+    },
+    "pr11-r2-windows.xml": {
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 18
+    },
+    "r3-ab-windows-installed.xml": {
+      "tests": 253,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "passed": 251
+    },
+    "r3-ab-windows.xml": {
+      "tests": 253,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 2,
+      "passed": 250
+    },
+    "r3-ab-wsl.xml": {
+      "tests": 40,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "passed": 40
+    }
+  },
+  "test_environment": "Dedicated Windows venv has this wheel installed and references the existing approved test-dependency site-packages read-only; source tests intentionally import the same checkout. WSL CLI uses separate clean wheel installation with -I, no dependency path override.",
+  "initial_failure": "One metadata-dependent test failed before installing package metadata. Original JUnit preserved; no core logic changed to hide it.",
+  "warning": "dashscope SDK import deprecation; no model/API call",
+  "AppArmor_compile_only": {
+    "parser": "4.0.1",
+    "command": [
+      "/usr/sbin/apparmor_parser",
+      "-Q",
+      "-K",
+      "deploy/apparmor/credproof-bwrap"
+    ],
+    "exit_code": 0,
+    "first_attempt_exit": 1,
+    "first_error": "unsupported mount option value 'rec'",
+    "fix": "Removed invalid rec spelling; rbind remains.",
+    "stderr": "Cache read/write disabled: interface file missing. (Kernel needs AppArmor 2.4 compatibility patch.)",
+    "kernel_profile_loaded": false
+  },
+  "C_status": "NOT_STARTED_CONTAINER_CANDIDATE",
+  "reviewer_container_report": {
+    "source": "PR12 comment6145012068",
+    "local_reproduced": false,
+    "base": "debootstrap noble, not pinned Ubuntu digest",
+    "claim": "doctor 4/4/0, anchors16/16",
+    "formal_acceptance": false
+  },
+  "derivatives": [
+    {
+      "file": "software/pr11-r2-windows.xml",
+      "original_sha256": "da79f30f32f6d0fc587b85741ba51dacb1b04a996eadb79b954e57b024f04e29",
+      "original_bytes": 2855,
+      "public_sha256": "1c7ca2a20ec436099a8e956e86639d29856b3d84671ad35aa4de1e59674fa283",
+      "public_bytes": 2815
+    },
+    {
+      "file": "software/b-r2-windows.xml",
+      "original_sha256": "ad1c7a40e69bf290588a462bc112628ade2597e4aba64263c868e5147053291f",
+      "original_bytes": 3768,
+      "public_sha256": "17eab248ac2f39c36084cddea35f2586e87502bec98ca43f767dae5b26731ed4",
+      "public_bytes": 3684
+    },
+    {
+      "file": "software/r3-ab-windows.xml",
+      "original_sha256": "c30c6dad9619294d42e4a19a09fe0f5fe778e3c5d2608433d5e5871e274be579",
+      "original_bytes": 42052,
+      "public_sha256": "6da9585611e74576b47b1aa20629e87e1eb5c5919e961d94753cc842ae2407fb",
+      "public_bytes": 41615
+    },
+    {
+      "file": "software/r3-ab-windows-installed.xml",
+      "original_sha256": "d320644b606a43df214160ac0de59139724cf2abea455797c46b6067777b05a7",
+      "original_bytes": 38268,
+      "public_sha256": "30361ee8f7e62ae393cb4ede4628b279a6fe4ded9c991bd611994140ef1beb25",
+      "public_bytes": 38172
+    },
+    {
+      "file": "software/r3-ab-wsl.xml",
+      "original_sha256": "de81b4bb663a32f1a9768530506601c519ce322ce15ead62ddbf6943547004a0",
+      "original_bytes": 6215,
+      "public_sha256": "170fa3562f8f2c09946e5399bd3a99f83cad7e18a4844f193d2ca64de353cc3f",
+      "public_bytes": 6175
+    },
+    {
+      "file": "software/r3-cli-schema.json",
+      "original_sha256": "989fb174e7b302d89bcd5d0f88e0484b9ffbf1e9b9320fc4bc966b303229d4c7",
+      "original_bytes": 245,
+      "public_sha256": "e32162ad6e5829fc1a0bc7e84c2eb758f6c11c2cdcf1365b43e3491ac35a1c36",
+      "public_bytes": 230
+    },
+    {
+      "file": "software/r3-linux-clean.json",
+      "original_sha256": "2915faf5f040dcb830170fc43d15e94de521972e398b62c06e5be37140321e42",
+      "original_bytes": 2071,
+      "public_sha256": "4596e86daa73b81f7a566a3c48084b1a15b964cc22faf46a0d652435dc686a4e",
+      "public_bytes": 2031
+    },
+    {
+      "file": "installed-cli/doctor.stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_bytes": 0
+    },
+    {
+      "file": "installed-cli/doctor.stdout.txt",
+      "original_sha256": "cf72fc11b25c4896bea5de6ccef2b71d4460b483b578ea2d0f6c510b3faa61b6",
+      "original_bytes": 1034,
+      "public_sha256": "cf72fc11b25c4896bea5de6ccef2b71d4460b483b578ea2d0f6c510b3faa61b6",
+      "public_bytes": 1034
+    },
+    {
+      "file": "installed-cli/receipt.json",
+      "original_sha256": "939c1a545b307ef2d5e949ef7bd8e0a4ca3011b5740d152e9396ce71876db1f4",
+      "original_bytes": 7344,
+      "public_sha256": "1efbb25b03b336e97cd34a22ada25a3d6cdac2825b0966a9262772b1d91baf16",
+      "public_bytes": 7060
+    },
+    {
+      "file": "installed-cli/usage-error.stderr.txt",
+      "original_sha256": "df4d7d6016c82720bd1d233e13b19cf8fb89e0a990c3b4b32f7b502e04d78e5c",
+      "original_bytes": 130,
+      "public_sha256": "df4d7d6016c82720bd1d233e13b19cf8fb89e0a990c3b4b32f7b502e04d78e5c",
+      "public_bytes": 130
+    },
+    {
+      "file": "installed-cli/usage-error.stdout.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_bytes": 0
+    },
+    {
+      "file": "installed-cli/reference-out/junit.xml",
+      "original_sha256": "57956ca7e453326b5d21f88a105044614ea7f6e346429c809bab3ec3b24f46ac",
+      "original_bytes": 2151,
+      "public_sha256": "540a920990bb0eaf502c440c8dfd5cdceadd7a7b05140a6900c50836e05fb3dc",
+      "public_bytes": 2112
+    },
+    {
+      "file": "installed-cli/reference-out/report.json",
+      "original_sha256": "f909b20a20468a05daaa92b1b939cdb5f3e4ed942b594282c19f829e0c567256",
+      "original_bytes": 15551,
+      "public_sha256": "f909b20a20468a05daaa92b1b939cdb5f3e4ed942b594282c19f829e0c567256",
+      "public_bytes": 15551
+    },
+    {
+      "file": "installed-cli/reference-out/report.sarif",
+      "original_sha256": "7685b9e88f555a20cfa6ad1c9583f5ca10e9319d0fec749e90f6498fbc778b54",
+      "original_bytes": 11295,
+      "public_sha256": "7685b9e88f555a20cfa6ad1c9583f5ca10e9319d0fec749e90f6498fbc778b54",
+      "public_bytes": 11295
+    },
+    {
+      "file": "installed-cli/reference-out/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_bytes": 0
+    },
+    {
+      "file": "installed-cli/reference-out/stdout.txt",
+      "original_sha256": "f909b20a20468a05daaa92b1b939cdb5f3e4ed942b594282c19f829e0c567256",
+      "original_bytes": 15551,
+      "public_sha256": "f909b20a20468a05daaa92b1b939cdb5f3e4ed942b594282c19f829e0c567256",
+      "public_bytes": 15551
+    },
+    {
+      "file": "installed-cli/reference-out/summary.md",
+      "original_sha256": "a929b6dcd410982ba78c18e66699a0054bc8574b658ffe68dc6e29924e6f55c3",
+      "original_bytes": 845,
+      "public_sha256": "a929b6dcd410982ba78c18e66699a0054bc8574b658ffe68dc6e29924e6f55c3",
+      "public_bytes": 845
+    },
+    {
+      "file": "installed-cli/vulnerable-out/junit.xml",
+      "original_sha256": "8df872ad6a6914d664b25a194e81b3745cdaa3a4b0ec7776f98b62059b492ff9",
+      "original_bytes": 2810,
+      "public_sha256": "5fcd4659de2a9b3040f9063fcd9cba3e482a491fe7e84cc9bc79f84a106f64c4",
+      "public_bytes": 2771
+    },
+    {
+      "file": "installed-cli/vulnerable-out/report.json",
+      "original_sha256": "0763b0920faa98256c8d19c950971c9a08e3763d0d93b716e5cb1e2731f8c9dc",
+      "original_bytes": 16333,
+      "public_sha256": "0763b0920faa98256c8d19c950971c9a08e3763d0d93b716e5cb1e2731f8c9dc",
+      "public_bytes": 16333
+    },
+    {
+      "file": "installed-cli/vulnerable-out/report.sarif",
+      "original_sha256": "6fac449da6bc13ff9aa944f9f5ecf3b288008898a44332563f843d1bf382019b",
+      "original_bytes": 14280,
+      "public_sha256": "6fac449da6bc13ff9aa944f9f5ecf3b288008898a44332563f843d1bf382019b",
+      "public_bytes": 14280
+    },
+    {
+      "file": "installed-cli/vulnerable-out/stderr.txt",
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "original_bytes": 0,
+      "public_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "public_bytes": 0
+    },
+    {
+      "file": "installed-cli/vulnerable-out/stdout.txt",
+      "original_sha256": "0763b0920faa98256c8d19c950971c9a08e3763d0d93b716e5cb1e2731f8c9dc",
+      "original_bytes": 16333,
+      "public_sha256": "0763b0920faa98256c8d19c950971c9a08e3763d0d93b716e5cb1e2731f8c9dc",
+      "public_bytes": 16333
+    },
+    {
+      "file": "installed-cli/vulnerable-out/summary.md",
+      "original_sha256": "d9399c1e5c54d4bca79ee037ce6450d74aa9a32e78f56e9a0e1d7cb587ef8e76",
+      "original_bytes": 910,
+      "public_sha256": "d9399c1e5c54d4bca79ee037ce6450d74aa9a32e78f56e9a0e1d7cb587ef8e76",
+      "public_bytes": 910
+    }
+  ],
+  "publication": "UTF-8 LF derivatives with -text, originals retained locally; no experiment result overwritten"
+}
