@@ -1,0 +1,416 @@
+{
+  "$schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
+  "version": "2.1.0",
+  "runs": [
+    {
+      "tool": {
+        "driver": {
+          "name": "CredProof",
+          "version": "0.3.0.dev38",
+          "rules": [
+            {
+              "id": "credproof/pytest",
+              "name": "pytest",
+              "shortDescription": {
+                "text": "业务测试进程正常结束"
+              },
+              "fullDescription": {
+                "text": "在隔离副本中运行项目声明的 pytest，进程退出码为 0。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "业务保持"
+                ]
+              }
+            },
+            {
+              "id": "credproof/required_pytest_tests",
+              "name": "required_pytest_tests",
+              "shortDescription": {
+                "text": "必要业务测试全部执行并通过"
+              },
+              "fullDescription": {
+                "text": "配置声明的必要测试用例（required=true）全部被收集、执行并通过，没有被跳过；明确可选的用例不计入。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "业务保持"
+                ]
+              }
+            },
+            {
+              "id": "credproof/entry_completed",
+              "name": "entry_completed",
+              "shortDescription": {
+                "text": "入口正常完成"
+              },
+              "fullDescription": {
+                "text": "配置声明的入口函数正常返回，或抛出配置声明的预期异常。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "业务保持"
+                ]
+              }
+            },
+            {
+              "id": "credproof/required_entry_scenarios",
+              "name": "required_entry_scenarios",
+              "shortDescription": {
+                "text": "每个声明的场景得到预期结果"
+              },
+              "fullDescription": {
+                "text": "每个声明的入口场景都按声明正常返回或抛出预期异常，需要网络的场景确实发出了请求。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "业务保持"
+                ]
+              }
+            },
+            {
+              "id": "credproof/no_credential_output",
+              "name": "no_credential_output",
+              "shortDescription": {
+                "text": "返回值、输出、日志和异常中没有凭据"
+              },
+              "fullDescription": {
+                "text": "本次随机生成的合成凭据没有出现在返回值、标准输出、错误输出、日志或异常信息中。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "不泄密"
+                ]
+              }
+            },
+            {
+              "id": "credproof/required_allowed_file_read",
+              "name": "required_allowed_file_read",
+              "shortDescription": {
+                "text": "实际读取了允许的资料文件"
+              },
+              "fullDescription": {
+                "text": "配置要求时，必须观测到对允许目录中资料文件的访问，防止“什么都不做”的假修复；配置不要求时本条自动满足。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "不乱读"
+                ]
+              }
+            },
+            {
+              "id": "credproof/no_forbidden_file_read",
+              "name": "no_forbidden_file_read",
+              "shortDescription": {
+                "text": "没有读取禁止目录"
+              },
+              "fullDescription": {
+                "text": "没有观测到对禁止目录中文件的访问尝试（Python 审计钩子在 open 发生前记录；尝试本身即不满足）。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "不乱读"
+                ]
+              }
+            },
+            {
+              "id": "credproof/no_out_of_scope_file_read",
+              "name": "no_out_of_scope_file_read",
+              "shortDescription": {
+                "text": "没有读取范围外的文件"
+              },
+              "fullDescription": {
+                "text": "没有观测到对允许目录与项目自身以外文件的访问尝试。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "不乱读"
+                ]
+              }
+            },
+            {
+              "id": "credproof/allowed_service_receipt",
+              "name": "allowed_service_receipt",
+              "shortDescription": {
+                "text": "允许的服务收到了请求"
+              },
+              "fullDescription": {
+                "text": "配置了服务时，允许的模拟服务必须确实收到请求；未配置服务时本条自动满足。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "不乱连"
+                ]
+              }
+            },
+            {
+              "id": "credproof/required_service_credential",
+              "name": "required_service_credential",
+              "shortDescription": {
+                "text": "带凭据完成了认证"
+              },
+              "fullDescription": {
+                "text": "配置要求时，至少一次对允许服务的请求携带了正确凭据；配置不要求时本条自动满足。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "不乱连"
+                ]
+              }
+            },
+            {
+              "id": "credproof/allowed_service_path",
+              "name": "allowed_service_path",
+              "shortDescription": {
+                "text": "访问路径在允许前缀内"
+              },
+              "fullDescription": {
+                "text": "对允许服务的每个请求都落在配置的路径前缀内。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "不乱连"
+                ]
+              }
+            },
+            {
+              "id": "credproof/no_forbidden_service_receipt",
+              "name": "no_forbidden_service_receipt",
+              "shortDescription": {
+                "text": "禁止的服务没有收到请求"
+              },
+              "fullDescription": {
+                "text": "禁止的模拟服务没有收到任何请求（包括跟随跳转后到达的请求）。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "不乱连"
+                ]
+              }
+            },
+            {
+              "id": "credproof/no_unauthorized_connection",
+              "name": "no_unauthorized_connection",
+              "shortDescription": {
+                "text": "没有未授权的连接"
+              },
+              "fullDescription": {
+                "text": "没有向允许服务以外的地址发起连接。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "不乱连"
+                ]
+              }
+            },
+            {
+              "id": "credproof/isolation_receipt",
+              "name": "isolation_receipt",
+              "shortDescription": {
+                "text": "业务测试在隔离环境中执行"
+              },
+              "fullDescription": {
+                "text": "业务测试的收集与执行确实发生在隔离沙箱内。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "隔离"
+                ]
+              }
+            },
+            {
+              "id": "credproof/evidence_incomplete",
+              "name": "evidence_incomplete",
+              "shortDescription": {
+                "text": "证据不完整"
+              },
+              "fullDescription": {
+                "text": "必要的观测缺失或执行未完成，无法确认安全；按安全失败处理。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "证据"
+                ]
+              }
+            },
+            {
+              "id": "credproof/environment_unavailable",
+              "name": "environment_unavailable",
+              "shortDescription": {
+                "text": "隔离环境不可用"
+              },
+              "fullDescription": {
+                "text": "隔离运行时缺失或不可用，检查没有执行；按安全失败处理。"
+              },
+              "defaultConfiguration": {
+                "level": "error"
+              },
+              "properties": {
+                "tags": [
+                  "security",
+                  "证据"
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "automationDetails": {
+        "id": "credproof/examples/bench/b07-webhook-relay/project/credproof.toml/"
+      },
+      "invocations": [
+        {
+          "executionSuccessful": true
+        }
+      ],
+      "results": [
+        {
+          "ruleId": "credproof/required_entry_scenarios",
+          "ruleIndex": 3,
+          "level": "error",
+          "message": {
+            "text": "场景结果不符：“allowed_service_redirect_refused”预期抛出 HTTPError，实际正常返回。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bench/b07-webhook-relay/project/tool.py",
+                  "uriBaseId": "%SRCROOT%"
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "credproofCondition/v1": "5f662654f79d3446a3a394c405c28cfb83e3507f194b6efdee8643d3d756f91f"
+          },
+          "properties": {
+            "verdict": "FAIL",
+            "report_sha256": "f8b042c49854e63e2e20dd81aadebb43eb9e869c5fa2ba0f4b89f2425e632d32",
+            "project_tree_sha256": "fcd19cf8321628d0618b2a699b2bc5be85d45a0b45a475d62091c128fc2a98d2",
+            "duration_ms": 1030.72
+          }
+        },
+        {
+          "ruleId": "credproof/no_forbidden_service_receipt",
+          "ruleIndex": 11,
+          "level": "error",
+          "message": {
+            "text": "禁止的服务收到 1 次请求，其中 1 次携带了认证凭据。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bench/b07-webhook-relay/project/tool.py",
+                  "uriBaseId": "%SRCROOT%"
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "credproofCondition/v1": "44ea266c8aceafcf2950a2af06ab0d16091ac976e7b86b6346b6ee1168a6e835"
+          },
+          "properties": {
+            "verdict": "FAIL",
+            "report_sha256": "f8b042c49854e63e2e20dd81aadebb43eb9e869c5fa2ba0f4b89f2425e632d32",
+            "project_tree_sha256": "fcd19cf8321628d0618b2a699b2bc5be85d45a0b45a475d62091c128fc2a98d2",
+            "duration_ms": 1030.72
+          }
+        },
+        {
+          "ruleId": "credproof/no_unauthorized_connection",
+          "ruleIndex": 12,
+          "level": "error",
+          "message": {
+            "text": "观测到向允许服务以外地址的连接尝试 1 次。"
+          },
+          "locations": [
+            {
+              "physicalLocation": {
+                "artifactLocation": {
+                  "uri": "examples/bench/b07-webhook-relay/project/tool.py",
+                  "uriBaseId": "%SRCROOT%"
+                }
+              }
+            }
+          ],
+          "partialFingerprints": {
+            "credproofCondition/v1": "d7daf6fa086bccb2dfeed723589d2a13dfa3dd69a48456bcfe47088bc8969e6a"
+          },
+          "properties": {
+            "verdict": "FAIL",
+            "report_sha256": "f8b042c49854e63e2e20dd81aadebb43eb9e869c5fa2ba0f4b89f2425e632d32",
+            "project_tree_sha256": "fcd19cf8321628d0618b2a699b2bc5be85d45a0b45a475d62091c128fc2a98d2",
+            "duration_ms": 1030.72
+          }
+        }
+      ],
+      "properties": {
+        "verdict": "FAIL",
+        "report_sha256": "f8b042c49854e63e2e20dd81aadebb43eb9e869c5fa2ba0f4b89f2425e632d32",
+        "project_tree_sha256": "fcd19cf8321628d0618b2a699b2bc5be85d45a0b45a475d62091c128fc2a98d2"
+      }
+    }
+  ]
+}

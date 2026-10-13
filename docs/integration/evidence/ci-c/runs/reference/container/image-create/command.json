@@ -1,0 +1,17 @@
+{
+  "name": "image-create",
+  "command": [
+    "docker",
+    "create",
+    "--name",
+    "credproof-ci-scan-2412",
+    "credproof:ci",
+    "--help"
+  ],
+  "exit_code": 0,
+  "expected_exit_codes": [
+    0
+  ],
+  "matches": true,
+  "duration_seconds": 0.022
+}

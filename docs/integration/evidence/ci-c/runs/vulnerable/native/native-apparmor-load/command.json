@@ -1,0 +1,15 @@
+{
+  "name": "native-apparmor-load",
+  "command": [
+    "sudo",
+    "apparmor_parser",
+    "-r",
+    "<source>/credproof-out/native/native-userns.profile"
+  ],
+  "exit_code": 0,
+  "expected_exit_codes": [
+    0
+  ],
+  "matches": true,
+  "duration_seconds": 0.009
+}

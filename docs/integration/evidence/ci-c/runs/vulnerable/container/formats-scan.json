@@ -1,0 +1,58 @@
+{
+  "schema": "credproof.image-scan/v2",
+  "status": "COMPLETED",
+  "files_scanned": 6,
+  "bytes_scanned": 32728,
+  "text_files_scanned": 6,
+  "binary_files_hashed": 0,
+  "directory_distribution": {
+    "default-blocked": 3,
+    "target-0": 3
+  },
+  "duration_seconds": 0.005,
+  "sensitive_hits": 0,
+  "findings": [],
+  "reviewed_exceptions": [],
+  "files": {
+    "default-blocked/junit.xml": {
+      "bytes": 904,
+      "sha256": "67b05decfc6a6775441b380f809402ba149dd99e5dfed15c60bbf29a44f7aca5",
+      "binary_text_scan_skipped": false
+    },
+    "default-blocked/report.sarif": {
+      "bytes": 12404,
+      "sha256": "11c007f0a8755965f7a85858b502086f9c1b84eb9485c69978e6051dc0cc2e16",
+      "binary_text_scan_skipped": false
+    },
+    "default-blocked/summary.md": {
+      "bytes": 787,
+      "sha256": "67f415ac695bbcb99b3abb93ed33f2bfb89319db1adee98398911e8a545cf274",
+      "binary_text_scan_skipped": false
+    },
+    "target-0/junit.xml": {
+      "bytes": 3230,
+      "sha256": "c5a9505eabcb4bd387afb578dd64027943f34dfe59d8e158dddf901caeed9a74",
+      "binary_text_scan_skipped": false
+    },
+    "target-0/report.sarif": {
+      "bytes": 14403,
+      "sha256": "03bd1683d4267de9b65aea9465b376b49e157483c5590115f9733cbdd0bd6b46",
+      "binary_text_scan_skipped": false
+    },
+    "target-0/summary.md": {
+      "bytes": 1000,
+      "sha256": "88c735c60c5e93c3a9abbb83d624e47213e81ccd49658c0fae585366699d0b04",
+      "binary_text_scan_skipped": false
+    }
+  },
+  "links": [],
+  "special_members": [],
+  "limits": {
+    "member_bytes": 67108864,
+    "text_bytes": 8388608,
+    "total_bytes": 8589934592,
+    "members": 200000,
+    "seconds": 120
+  },
+  "limitations": "Pattern check. Binary bodies hashed but not decoded; links not followed; not universal credential discovery."
+}

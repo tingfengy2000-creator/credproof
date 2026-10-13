@@ -2,7 +2,7 @@
   "commit": "6fe7deb1b9fb7c0397a4593480d7d22b9ee8caef",
   "url": "https://raw.githubusercontent.com/moby/profiles/6fe7deb1b9fb7c0397a4593480d7d22b9ee8caef/seccomp/default.json",
   "sha256": "6416b47770785a41ac59073cdc77d9fe98517df2799dc83ef207e622de3053f6",
-  "status": "CANDIDATE_NOT_CONTAINER_VALIDATED",
+  "status": "VERIFIED_IN_DECLARED_HOSTED_ENVIRONMENT",
   "added_syscalls": [
     "unshare",
     "mount",
@@ -19,5 +19,8 @@
     1845624832,
     1812070400
   ],
-  "clone3": "unchanged ENOSYS fallback"
+  "clone3": "unchanged ENOSYS fallback",
+  "verified_program_source": "466534c79eacf8dc9e59d267c9ee5e614b0f4a0f",
+  "evidence": "docs/integration/evidence/ci-c/README.md",
+  "apparmor_option": "Explicit outer unconfined plus exact bwrap-path host-loaded userns application exception; limited candidate profile not enforced."
 }

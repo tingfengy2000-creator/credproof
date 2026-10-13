@@ -1,0 +1,43 @@
+{
+  "name": "default-check",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--network",
+    "none",
+    "--read-only",
+    "--tmpfs",
+    "/tmp:exec",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "-v",
+    "<source>:/workspace:ro",
+    "-v",
+    "<source>/credproof-out/container:/out",
+    "-v",
+    "<runner-temp>/credproof-frozen-anchors:/anchors:ro",
+    "credproof:ci",
+    "check",
+    "--config",
+    "/workspace/examples/bench/b07-webhook-relay/project/credproof.toml",
+    "--source-root",
+    "/workspace",
+    "--output",
+    "/out/default-blocked/report.json",
+    "--sarif",
+    "/out/default-blocked/report.sarif",
+    "--junit",
+    "/out/default-blocked/junit.xml",
+    "--summary",
+    "/out/default-blocked/summary.md"
+  ],
+  "exit_code": 3,
+  "expected_exit_codes": [
+    3
+  ],
+  "matches": true,
+  "duration_seconds": 0.281
+}

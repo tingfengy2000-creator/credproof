@@ -1,0 +1,9 @@
+{
+  "mode": "explicit_outer_unconfined",
+  "host_profile_loaded": false,
+  "userns_application_exception": "credproof-ci-container",
+  "userns_exception_load_exit_code": 0,
+  "candidate_profile": "deploy/apparmor/credproof-bwrap",
+  "candidate_enforcement_verified": false,
+  "reason": "R3 explicit deployment option; private bwrap userns requires AppArmor permission; no sysctl changes"
+}

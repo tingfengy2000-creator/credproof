@@ -1,0 +1,17 @@
+{
+  "name": "format-tests",
+  "command": [
+    "<runner-temp>/credproof-app/bin/python",
+    "-m",
+    "pytest",
+    "<source>/credproof_safety/tests/test_report_formats.py",
+    "-q",
+    "--junitxml=<source>/credproof-out/native/formats-junit.xml"
+  ],
+  "exit_code": 0,
+  "expected_exit_codes": [
+    0
+  ],
+  "matches": true,
+  "duration_seconds": 0.268
+}

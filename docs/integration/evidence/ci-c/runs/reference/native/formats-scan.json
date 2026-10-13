@@ -1,0 +1,42 @@
+{
+  "schema": "credproof.image-scan/v2",
+  "status": "COMPLETED",
+  "files_scanned": 3,
+  "bytes_scanned": 14849,
+  "text_files_scanned": 3,
+  "binary_files_hashed": 0,
+  "directory_distribution": {
+    "target-0": 3
+  },
+  "duration_seconds": 0.004,
+  "sensitive_hits": 0,
+  "findings": [],
+  "reviewed_exceptions": [],
+  "files": {
+    "target-0/junit.xml": {
+      "bytes": 2585,
+      "sha256": "069de1db7a587d240e3eacf4df2c3bfb23678fbb21f34257de086c92cebb9215",
+      "binary_text_scan_skipped": false
+    },
+    "target-0/report.sarif": {
+      "bytes": 11326,
+      "sha256": "2eb1619f18513480fa9098d6af462d4047e6e8281df9bcc7fbeeb133372381ea",
+      "binary_text_scan_skipped": false
+    },
+    "target-0/summary.md": {
+      "bytes": 938,
+      "sha256": "66eb8508bac409055daa40ecd87fa27c7182c8d8ce10173502960717320a8c24",
+      "binary_text_scan_skipped": false
+    }
+  },
+  "links": [],
+  "special_members": [],
+  "limits": {
+    "member_bytes": 67108864,
+    "text_bytes": 8388608,
+    "total_bytes": 8589934592,
+    "members": 200000,
+    "seconds": 120
+  },
+  "limitations": "Pattern check. Binary bodies hashed but not decoded; links not followed; not universal credential discovery."
+}

@@ -1,0 +1,58 @@
+{
+  "screenshots": [
+    {
+      "file": "failure-checks-final.jpg",
+      "mime": "image/jpeg",
+      "bytes": 56238,
+      "sha256": "9fd26f83db551095d5255ec921c212d237b23abf64ac0f5ae6169337c1645a2d",
+      "run_id": 38414183954,
+      "kind": "failed_checks",
+      "visible_facts": "native / container red; CredProof 不通过",
+      "source": "Actual signed-in GitHub browser page",
+      "anonymity": "Scroll excludes account/repository navigation; no reconstruction or image compositing.",
+      "viewport_note": "Alert: temporary 1000x550 viewport, reset after capture; other pages default viewport.",
+      "source_url": "https://github.com/tingfengy2000-creator/credproof/actions/runs/38414183954"
+    },
+    {
+      "file": "failure-summary-final.jpg",
+      "mime": "image/jpeg",
+      "bytes": 71878,
+      "sha256": "49cbe08bc9e39a1365ff2320c203057b6915d2c59ef957a3c3f3097b2a51bec5",
+      "run_id": 38414183954,
+      "kind": "failed_job_summary",
+      "visible_facts": "场景预期 HTTPError 实际返回；禁止服务收到认证凭据；未授权连接尝试",
+      "source": "Actual signed-in GitHub browser page",
+      "anonymity": "Scroll excludes account/repository navigation; no reconstruction or image compositing.",
+      "viewport_note": "Alert: temporary 1000x550 viewport, reset after capture; other pages default viewport.",
+      "source_url": "https://github.com/tingfengy2000-creator/credproof/actions/runs/38414183954"
+    },
+    {
+      "file": "success-checks-final.jpg",
+      "mime": "image/jpeg",
+      "bytes": 70588,
+      "sha256": "3e503eb19b882454af3ad9c3cb157d60ee612a0df97e4a51c84a484b8d020221",
+      "run_id": 38414202492,
+      "kind": "passed_checks",
+      "visible_facts": "native / container green; CredProof 通过；14 项条件满足",
+      "source": "Actual signed-in GitHub browser page",
+      "anonymity": "Scroll excludes account/repository navigation; no reconstruction or image compositing.",
+      "viewport_note": "Alert: temporary 1000x550 viewport, reset after capture; other pages default viewport.",
+      "source_url": "https://github.com/tingfengy2000-creator/credproof/actions/runs/38414202492"
+    },
+    {
+      "file": "failure-alerts.jpg",
+      "mime": "image/jpeg",
+      "bytes": 50474,
+      "sha256": "2cf9b3d4a98ffe086791e56c71f30373215072317830d0c78ac0d5bd4cd31790",
+      "run_id": 38414183954,
+      "kind": "actual_code_scanning_alert",
+      "visible_facts": "refs/pull/14/merge; credproof/no_forbidden_service_receipt; 禁止服务收到 1 次请求，其中 1 次携带认证凭据",
+      "source": "Actual signed-in GitHub browser page",
+      "anonymity": "Scroll excludes account/repository navigation; no reconstruction or image compositing.",
+      "viewport_note": "Alert: temporary 1000x550 viewport, reset after capture; other pages default viewport.",
+      "source_url": "https://github.com/tingfengy2000-creator/credproof/security/code-scanning/3"
+    }
+  ],
+  "pixel_review": "Manually inspected all four captures: no account or repository identifier visible.",
+  "caveat": "GitHub file-level :1 fallback is not a claimed source-line precision. No alert was dismissed."
+}

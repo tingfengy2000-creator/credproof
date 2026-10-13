@@ -1,0 +1,15 @@
+{
+  "name": "docker-security",
+  "command": [
+    "docker",
+    "info",
+    "--format",
+    "{{json .SecurityOptions}}"
+  ],
+  "exit_code": 0,
+  "expected_exit_codes": [
+    0
+  ],
+  "matches": true,
+  "duration_seconds": 4.463
+}

@@ -1,0 +1,31 @@
+{
+  "name": "default-doctor",
+  "command": [
+    "docker",
+    "run",
+    "--rm",
+    "--network",
+    "none",
+    "--read-only",
+    "--tmpfs",
+    "/tmp:exec",
+    "--cap-drop",
+    "ALL",
+    "--security-opt",
+    "no-new-privileges",
+    "-v",
+    "<source>:/workspace:ro",
+    "-v",
+    "<source>/credproof-out/container:/out",
+    "-v",
+    "<runner-temp>/credproof-frozen-anchors:/anchors:ro",
+    "credproof:ci",
+    "doctor"
+  ],
+  "exit_code": 4,
+  "expected_exit_codes": [
+    4
+  ],
+  "matches": true,
+  "duration_seconds": 0.679
+}

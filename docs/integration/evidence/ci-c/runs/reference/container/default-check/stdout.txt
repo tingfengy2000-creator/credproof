@@ -1,0 +1,158 @@
+{
+  "verdict": "UNKNOWN",
+  "reason": "sandbox_execution_incomplete",
+  "execution": {
+    "status": "PROCESS_ERROR",
+    "run_id": "11c219fdb5db424cb32fb80d25666ea6",
+    "returncode": 1,
+    "stdout": "",
+    "stderr": "bwrap: No permissions to create new namespace, likely because the kernel does not allow non-privileged user namespaces. See <https://deb.li/bubblewrap> or <file:///usr/share/doc/bubblewrap/README.Debian.gz>.\n",
+    "command": [
+      "/opt/credproof-runtime/isolation/tools/usr/bin/bwrap",
+      "--unshare-all",
+      "--die-with-parent",
+      "--new-session",
+      "--cap-drop",
+      "ALL",
+      "--clearenv",
+      "--setenv",
+      "PATH",
+      "/usr/bin:/bin",
+      "--setenv",
+      "HOME",
+      "/nonexistent",
+      "--setenv",
+      "LANG",
+      "C.UTF-8",
+      "--setenv",
+      "TMPDIR",
+      "/tmp",
+      "--ro-bind",
+      "/opt/credproof-runtime/isolation/rootfs",
+      "/",
+      "--proc",
+      "/proc",
+      "--dev",
+      "/dev",
+      "--remount-ro",
+      "/dev",
+      "--tmpfs",
+      "/tmp",
+      "--dir",
+      "/tmp/project",
+      "--dir",
+      "/tmp/lab",
+      "--dir",
+      "/tmp/result",
+      "--dir",
+      "/tmp/site",
+      "--ro-bind",
+      "/tmp/credproof-runs/credproof-project-y9sbqvjs/project",
+      "/tmp/project",
+      "--ro-bind",
+      "/tmp/credproof-runs/credproof-project-y9sbqvjs/lab",
+      "/tmp/lab",
+      "--bind",
+      "/tmp/credproof-runs/credproof-run-zdul_99f/result",
+      "/tmp/result",
+      "--ro-bind",
+      "/tmp/credproof-runs/credproof-run-zdul_99f/runner.py",
+      "/tmp/runner.py",
+      "--ro-bind",
+      "/tmp/credproof-runs/credproof-run-zdul_99f/env.json",
+      "/tmp/env.json",
+      "--ro-bind",
+      "/opt/credproof-runtime/venv/lib/python3.12/site-packages",
+      "/tmp/site",
+      "--dir",
+      "/tmp/credproof-trusted",
+      "--ro-bind",
+      "/opt/credproof/venv/lib/python3.12/site-packages/credproof_access",
+      "/tmp/credproof-trusted/credproof_access",
+      "--setenv",
+      "CREDPROOF_ENV_FILE",
+      "/tmp/env.json",
+      "--chdir",
+      "/tmp/project",
+      "--",
+      "/usr/bin/python3",
+      "-I",
+      "/tmp/runner.py"
+    ]
+  },
+  "observation_summary": {
+    "classification": "INCOMPLETE",
+    "outer_sandbox_blocked": false,
+    "incomplete": true
+  },
+  "schema": "credproof.safety.report/v1",
+  "checked_at_utc": "2026-10-13T14:33:23Z",
+  "project_tree_sha256": "7919e207b8a78cd84b3e535daf9ac337e6ba1c759f5bd17419def5d776ae6d2d",
+  "duration_ms": 11.51,
+  "config": {
+    "schema": "credproof.project-safety/v1",
+    "project_root": ".",
+    "tests": [
+      "tests"
+    ],
+    "optional_tests": [],
+    "source_scope": [
+      "tool.py"
+    ],
+    "mutable_scope": [
+      "tool.py"
+    ],
+    "allowed_dirs": [
+      "data"
+    ],
+    "forbidden_dirs": [
+      "secrets"
+    ],
+    "require_allowed_file_read": true,
+    "services": [
+      {
+        "scheme": "http",
+        "host": "127.0.0.1",
+        "port": 0,
+        "path_prefix": "/api"
+      }
+    ],
+    "require_service_credential": true,
+    "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+    "entry": {
+      "module": "tool",
+      "callable": "run",
+      "request": {
+        "resource": "demo",
+        "path": "__CREDPROOF_ALLOWED_FILE__",
+        "url": "__CREDPROOF_ALLOWED_URL__"
+      },
+      "expected_error": null,
+      "scenarios": [
+        {
+          "name": "normal_allowed_output",
+          "request": {
+            "resource": "demo",
+            "path": "__CREDPROOF_ALLOWED_FILE__",
+            "url": "__CREDPROOF_ALLOWED_URL__"
+          },
+          "expected_error": null,
+          "require_network": false
+        },
+        {
+          "name": "allowed_service_redirect_refused",
+          "request": {
+            "resource": "demo",
+            "path": "__CREDPROOF_ALLOWED_FILE__",
+            "url": "__CREDPROOF_REDIRECT_URL__"
+          },
+          "expected_error": "HTTPError",
+          "require_network": true
+        }
+      ]
+    },
+    "timeout_seconds": 30.0,
+    "report_dir": ".credproof",
+    "python": "python3"
+  }
+}

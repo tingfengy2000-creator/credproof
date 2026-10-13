@@ -1,0 +1,22 @@
+{
+  "name": "image-scan",
+  "command": [
+    "/usr/bin/python3",
+    "<source>/scripts/runtime/scan-image.py",
+    "<runner-temp>/credproof-image.tar",
+    "--output",
+    "<source>/credproof-out/container/image-scan.json",
+    "--max-seconds",
+    "600",
+    "--exceptions",
+    "<source>/deploy/docker/scan-exceptions.json",
+    "--private-values-file",
+    "<runner-temp>/credproof-private-values.json"
+  ],
+  "exit_code": 0,
+  "expected_exit_codes": [
+    0
+  ],
+  "matches": true,
+  "duration_seconds": 8.519
+}

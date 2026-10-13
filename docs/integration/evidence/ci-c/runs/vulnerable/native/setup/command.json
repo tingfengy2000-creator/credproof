@@ -1,0 +1,15 @@
+{
+  "name": "setup",
+  "command": [
+    "/usr/bin/python3",
+    "<source>/scripts/runtime/setup-linux.py",
+    "--runtime-root",
+    "/opt/credproof-ci-runtime"
+  ],
+  "exit_code": 0,
+  "expected_exit_codes": [
+    0
+  ],
+  "matches": true,
+  "duration_seconds": 7.956
+}

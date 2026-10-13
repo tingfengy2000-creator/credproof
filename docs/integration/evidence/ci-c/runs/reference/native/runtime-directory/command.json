@@ -1,0 +1,19 @@
+{
+  "name": "runtime-directory",
+  "command": [
+    "sudo",
+    "install",
+    "-d",
+    "-o",
+    "1001",
+    "-g",
+    "1001",
+    "/opt/credproof-ci-runtime"
+  ],
+  "exit_code": 0,
+  "expected_exit_codes": [
+    0
+  ],
+  "matches": true,
+  "duration_seconds": 0.011
+}

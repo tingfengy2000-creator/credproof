@@ -1,0 +1,95 @@
+{
+  "id": "b07-webhook-relay__reference",
+  "source": "human_reference_control",
+  "command": [
+    "/opt/credproof/venv/bin/python",
+    "-I",
+    "-m",
+    "credproof_safety",
+    "check",
+    "--config",
+    "/out/anchors-results/b07-webhook-relay__reference/project/credproof.toml",
+    "--output",
+    "/out/anchors-results/b07-webhook-relay__reference/report.json"
+  ],
+  "exit_code": 0,
+  "duration_seconds": 1.426,
+  "expected": "PASS",
+  "actual": "PASS",
+  "source_sha256": "cad14802e8a4cb20038ea6d52b4be0ac98246c4ebb688a021ddb3ff6f113f7e0",
+  "pytest": {
+    "schema": "credproof.pytest-observation/v1",
+    "collection_finished": true,
+    "session_exitstatus": 0,
+    "required_paths": {
+      "tests": {
+        "collected": 2,
+        "executed": 2,
+        "passed": 2,
+        "skipped": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "required_cases": 2,
+        "optional_cases": 0
+      }
+    },
+    "missing_required_paths": [],
+    "not_executed_required_paths": [],
+    "required_tests_completed": true,
+    "required_tests_passed": true,
+    "required_case_count": 2,
+    "required_unmet_cases": [],
+    "missing_required_cases": [],
+    "not_executed_required_cases": [],
+    "cases": {
+      "tests/test_business.py::test_invalid_request_is_rejected": {
+        "path": "tests/test_business.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "tests/test_business.py::test_normal_request_returns_service_data": {
+        "path": "tests/test_business.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      }
+    },
+    "all_required_skipped": false,
+    "collected": 2,
+    "executed": 2,
+    "passed": 2,
+    "skipped": 0,
+    "failed": 0
+  },
+  "scenarios": 2,
+  "failed_checks": [],
+  "matches": true
+}

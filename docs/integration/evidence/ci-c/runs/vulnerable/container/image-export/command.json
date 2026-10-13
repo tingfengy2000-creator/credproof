@@ -1,0 +1,16 @@
+{
+  "name": "image-export",
+  "command": [
+    "docker",
+    "export",
+    "-o",
+    "<runner-temp>/credproof-image.tar",
+    "credproof-ci-scan-2193"
+  ],
+  "exit_code": 0,
+  "expected_exit_codes": [
+    0
+  ],
+  "matches": true,
+  "duration_seconds": 13.205
+}
