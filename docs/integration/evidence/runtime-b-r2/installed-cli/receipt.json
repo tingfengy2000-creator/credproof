@@ -1,0 +1,244 @@
+{
+  "source_commit": "4eb8d5e49cfdbe07e2fa6ae49ed29b53f4c92fed",
+  "version": "0.3.0.dev38",
+  "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+  "executable": "<installed-python>/bin/python",
+  "modules": {
+    "credproof_safety.cli": {
+      "file": "<installed-python>/lib/python3.12/site-packages/credproof_safety/cli.py",
+      "sha256": "d614599ec9cd399da6f7bcf68053ee29846e9d39d654ab6c5f22626a95e92c34"
+    },
+    "credproof_safety.report_formats": {
+      "file": "<installed-python>/lib/python3.12/site-packages/credproof_safety/report_formats.py",
+      "sha256": "3db235a0710947a24573c97bb0e3002f86737002ac71c206bc87d030c7e861d4"
+    },
+    "credproof_safety.doctor": {
+      "file": "<installed-python>/lib/python3.12/site-packages/credproof_safety/doctor.py",
+      "sha256": "f0f0073d72f9ecf10ec9e5c7538c4ca058d8359d253a582e8d139098e286998d"
+    }
+  },
+  "rows": [
+    {
+      "name": "doctor",
+      "command": [
+        "<installed-python>/bin/python",
+        "-I",
+        "-m",
+        "credproof_safety",
+        "doctor"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0
+    },
+    {
+      "name": "usage-error",
+      "command": [
+        "<installed-python>/bin/python",
+        "-I",
+        "-m",
+        "credproof_safety",
+        "doctor",
+        "--bogus"
+      ],
+      "exit_code": 4,
+      "expected_exit": 4
+    },
+    {
+      "name": "vulnerable",
+      "command": [
+        "<installed-python>/bin/python",
+        "-I",
+        "-m",
+        "credproof_safety",
+        "check",
+        "--config",
+        "<cli-workspace>/vulnerable/credproof.toml",
+        "--source-root",
+        "<cli-workspace>",
+        "--output",
+        "<cli-workspace>/vulnerable-out/report.json",
+        "--sarif",
+        "<cli-workspace>/vulnerable-out/report.sarif",
+        "--junit",
+        "<cli-workspace>/vulnerable-out/junit.xml",
+        "--summary",
+        "<cli-workspace>/vulnerable-out/summary.md"
+      ],
+      "exit_code": 2,
+      "expected_exit": 2,
+      "verdict": "FAIL",
+      "sarif_results": 3,
+      "pytest": {
+        "schema": "credproof.pytest-observation/v1",
+        "collection_finished": true,
+        "session_exitstatus": 0,
+        "required_paths": {
+          "tests": {
+            "collected": 2,
+            "executed": 2,
+            "passed": 2,
+            "skipped": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "required_cases": 2,
+            "optional_cases": 0
+          }
+        },
+        "missing_required_paths": [],
+        "not_executed_required_paths": [],
+        "required_tests_completed": true,
+        "required_tests_passed": true,
+        "required_case_count": 2,
+        "required_unmet_cases": [],
+        "missing_required_cases": [],
+        "not_executed_required_cases": [],
+        "cases": {
+          "tests/test_business.py::test_invalid_request_is_rejected": {
+            "path": "tests/test_business.py",
+            "required": true,
+            "collected": 1,
+            "executed": 1,
+            "passed": 1,
+            "skipped": 0,
+            "xfail": 0,
+            "xpass": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "phases": {
+              "setup": "passed",
+              "call": "passed",
+              "teardown": "passed"
+            },
+            "failure_details": []
+          },
+          "tests/test_business.py::test_normal_request_returns_service_data": {
+            "path": "tests/test_business.py",
+            "required": true,
+            "collected": 1,
+            "executed": 1,
+            "passed": 1,
+            "skipped": 0,
+            "xfail": 0,
+            "xpass": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "phases": {
+              "setup": "passed",
+              "call": "passed",
+              "teardown": "passed"
+            },
+            "failure_details": []
+          }
+        },
+        "all_required_skipped": false,
+        "collected": 2,
+        "executed": 2,
+        "passed": 2,
+        "skipped": 0,
+        "failed": 0
+      }
+    },
+    {
+      "name": "reference",
+      "command": [
+        "<installed-python>/bin/python",
+        "-I",
+        "-m",
+        "credproof_safety",
+        "check",
+        "--config",
+        "<cli-workspace>/reference/credproof.toml",
+        "--source-root",
+        "<cli-workspace>",
+        "--output",
+        "<cli-workspace>/reference-out/report.json",
+        "--sarif",
+        "<cli-workspace>/reference-out/report.sarif",
+        "--junit",
+        "<cli-workspace>/reference-out/junit.xml",
+        "--summary",
+        "<cli-workspace>/reference-out/summary.md"
+      ],
+      "exit_code": 0,
+      "expected_exit": 0,
+      "verdict": "PASS",
+      "sarif_results": 0,
+      "pytest": {
+        "schema": "credproof.pytest-observation/v1",
+        "collection_finished": true,
+        "session_exitstatus": 0,
+        "required_paths": {
+          "tests": {
+            "collected": 2,
+            "executed": 2,
+            "passed": 2,
+            "skipped": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "required_cases": 2,
+            "optional_cases": 0
+          }
+        },
+        "missing_required_paths": [],
+        "not_executed_required_paths": [],
+        "required_tests_completed": true,
+        "required_tests_passed": true,
+        "required_case_count": 2,
+        "required_unmet_cases": [],
+        "missing_required_cases": [],
+        "not_executed_required_cases": [],
+        "cases": {
+          "tests/test_business.py::test_invalid_request_is_rejected": {
+            "path": "tests/test_business.py",
+            "required": true,
+            "collected": 1,
+            "executed": 1,
+            "passed": 1,
+            "skipped": 0,
+            "xfail": 0,
+            "xpass": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "phases": {
+              "setup": "passed",
+              "call": "passed",
+              "teardown": "passed"
+            },
+            "failure_details": []
+          },
+          "tests/test_business.py::test_normal_request_returns_service_data": {
+            "path": "tests/test_business.py",
+            "required": true,
+            "collected": 1,
+            "executed": 1,
+            "passed": 1,
+            "skipped": 0,
+            "xfail": 0,
+            "xpass": 0,
+            "failed": 0,
+            "setup_failed": 0,
+            "teardown_failed": 0,
+            "phases": {
+              "setup": "passed",
+              "call": "passed",
+              "teardown": "passed"
+            },
+            "failure_details": []
+          }
+        },
+        "all_required_skipped": false,
+        "collected": 2,
+        "executed": 2,
+        "passed": 2,
+        "skipped": 0,
+        "failed": 0
+      }
+    }
+  ],
+  "model_calls": 0
+}

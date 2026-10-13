@@ -89,9 +89,14 @@ On an AppArmor host, an operator may review/load the candidate:
 sudo apparmor_parser -r deploy/apparmor/credproof-bwrap
 ```
 
-Then explicitly add `--security-opt apparmor=credproof-bwrap`. This profile
-allows namespace/mount work, while cap-drop and inner rootfs provide the
-documented boundary. It has not been validated on an AppArmor Docker host.
+Then explicitly add `--security-opt apparmor=credproof-bwrap`. This candidate
+preserves the Docker-default proc/sys/network denials recorded in
+`deploy/apparmor/source.json`, with explicit runtime/scratch file access and
+namespace mount operations instead of blanket file/capability grants. Its
+candidate capabilities are sys_admin/setuid/setgid inside bwrap's private user
+namespace, never container cap-add. ABI 4.0 and explicit Unix networking need
+host parser support. Compile-only parsing is not host enforcement; host
+loading and actual doctor/anchor validation remain C work.
 If blocked, record attached profile and kernel denial events. Do not change
 sysctl or silently choose apparmor=unconfined. Any explicit unconfined option
 must have its own deployment evidence and scope stated before use.
@@ -113,6 +118,17 @@ binary internals are not claimed to be decoded source. Sensitive text uses the
 existing delivery patterns. Exact vendor exceptions require file path, file
 SHA256, match kind/hash and reason; no directory-wide exclusion is allowed.
 Use `--private-values-file` for operator-known identities; never publish it.
+It must contain a UTF-8 **JSON list of non-empty strings**, for example
+`["review-host", "operator-id"]`; plain lines or a JSON object are rejected.
+Regular members are chunk-hashed; known binary headers/NUL prefixes bypass
+text matching. Necessary-character prefilters preserve the delivery patterns;
+line indexes are built only after a hit. Defaults: 64 MiB per member, 8 MiB
+per text member, 8 GiB total, 200,000 members, 20,000 findings and 120 seconds.
+The CLI uses a separate process watchdog. Any exceeded limit is
+`SCAN_INCOMPLETE`/4, never zero-hit success. `--max-seconds` (at most 600) and
+`--max-member-bytes` record explicit operator limits; do not silently increase
+them in CI to hide a failure. The small software performance fixture is not
+a scan of the real exported image.
 Return codes: 0 no unexcepted hits, 1 hits, 4 incomplete scan. Do not claim a
 zero-hit image based on fixture tests or a scan that never ran on image bytes.
 
@@ -121,3 +137,8 @@ zero-hit image based on fixture tests or a scan that never ran on image bytes.
 See [B evidence](evidence/runtime-b/README.md). Windows software tests, Linux
 fixed-payload doctor, real WSL project checks, and future Docker/hosted VM
 checks are separate evidence classes. No model calls are added by B.
+
+The anchor helper accepts `--environment wsl|native|container`; otherwise it
+detects container markers before the WSL kernel. Current summary kind is
+`INSTALLED_WHEEL_ANCHOR_CHECK`, with environment stored separately. Historical
+WSL-labelled summaries remain unchanged.

@@ -1,0 +1,38 @@
+{
+  "source_commit": "4eb8d5e49cfdbe07e2fa6ae49ed29b53f4c92fed",
+  "fresh_checkout": true,
+  "commands": [
+    {
+      "command": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "HEAD",
+        "--name-only"
+      ],
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "git",
+        "ls-files",
+        "--eol",
+        "docs/integration/evidence/runtime-b/docker-attempt/build.stdout.txt"
+      ],
+      "exit_code": 0,
+      "stdout": "i/mixed w/mixed attr/-text            \tdocs/integration/evidence/runtime-b/docker-attempt/build.stdout.txt\n",
+      "stderr": ""
+    }
+  ]
+}

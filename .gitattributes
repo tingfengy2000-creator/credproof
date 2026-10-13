@@ -18,6 +18,7 @@ docs/integration/evidence/runtime-b/** text eol=lf whitespace=-blank-at-eol,-bla
 # Preserve this historical Docker progress receipt's exact mixed terminal bytes.
 # Its blob/manifest are immutable; do not normalize again during checkout.
 docs/integration/evidence/runtime-b/docker-attempt/build.stdout.txt -text
+docs/integration/evidence/runtime-b-r2/** -text whitespace=-blank-at-eol,-blank-at-eof
 scripts/delivery/*.ps1 text eol=lf
 *.png binary
 # Preserve experiment exports byte-for-byte, including generated Markdown breaks.
