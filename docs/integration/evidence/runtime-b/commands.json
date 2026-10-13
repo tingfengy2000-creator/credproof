@@ -1,0 +1,121 @@
+{
+  "source_commit": "1b56c7fdc52042c5e9250c1446f17637805c8683",
+  "model_calls": 0,
+  "command_representation": "Exact arguments with known operator paths mapped; shell launcher warnings retained separately",
+  "runs": [
+    {
+      "kind": "software",
+      "environment": "Windows / Python 3.12.14 / pytest 8.4.2",
+      "command": [
+        "<existing-python>",
+        "-m",
+        "pytest",
+        "credproof_safety/tests/test_linux_runtime.py",
+        "credproof_safety/tests/test_native_runtime.py",
+        "agent_pilot/tests/test_runtime_config.py",
+        "-q",
+        "-ra",
+        "--junitxml=<local-evidence>/b-windows-final3.xml"
+      ],
+      "exit_code": 0,
+      "evidence": "software/b-windows-final3.xml"
+    },
+    {
+      "kind": "software",
+      "environment": "WSL Ubuntu 24.04 / Python 3.12.3 / pytest 8.4.2",
+      "command": [
+        "<runtime>/venv/bin/python",
+        "-m",
+        "pytest",
+        "credproof_safety/tests/test_linux_runtime.py",
+        "credproof_safety/tests/test_native_runtime.py",
+        "agent_pilot/tests/test_runtime_config.py",
+        "-q",
+        "-ra",
+        "--junitxml=<local-evidence>/b-wsl-final2.xml"
+      ],
+      "exit_code": 0,
+      "evidence": "software/b-wsl-final2.xml"
+    },
+    {
+      "kind": "A format review",
+      "source_commit": "fa2fb83907eda04290e96a1a4a5f53a1f8fd2fa3",
+      "command": [
+        "<existing-python>",
+        "-m",
+        "pytest",
+        "credproof_safety/tests/test_report_formats.py",
+        "-q",
+        "-ra",
+        "--junitxml=<local-evidence>/pr11-windows.xml"
+      ],
+      "exit_code": 0,
+      "python": "3.12.14",
+      "pytest": "8.4.2",
+      "jsonschema": "4.26.0",
+      "evidence": "software/pr11-windows.xml"
+    },
+    {
+      "kind": "installed doctor",
+      "command": [
+        "env",
+        "CREDPROOF_CONFIG=/var/tmp/credproof-runtime-b-r3-20261013-e/runtime.json",
+        "<linux-installation>/bin/python",
+        "-I",
+        "-m",
+        "credproof_safety",
+        "doctor"
+      ],
+      "exit_code": 0,
+      "evidence": "preparation/b-doctor-wsl.stdout.txt"
+    },
+    {
+      "kind": "unsupported native Windows doctor",
+      "command": [
+        "<windows-installation>/Scripts/python.exe",
+        "-I",
+        "-m",
+        "credproof_safety",
+        "doctor"
+      ],
+      "exit_code": 4,
+      "evidence": "preparation/b-doctor-windows.stdout.txt"
+    },
+    {
+      "kind": "installed WSL 16 anchors",
+      "command": [
+        "<linux-installation>/bin/python",
+        "-I",
+        "<source>/scripts/runtime/verify-anchors.py",
+        "--source",
+        "<source>",
+        "--source-commit",
+        "1b56c7fdc52042c5e9250c1446f17637805c8683",
+        "--runtime",
+        "/var/tmp/credproof-runtime-b-r3-20261013-e",
+        "--output",
+        "<anchor-run>"
+      ],
+      "exit_code": 0,
+      "evidence": "wsl-anchors/summary.json"
+    },
+    {
+      "kind": "JS syntax",
+      "command": [
+        "node",
+        "--check",
+        "agent_pilot/ui/app.js"
+      ],
+      "exit_code": 0
+    },
+    {
+      "kind": "UI verdict software",
+      "command": [
+        "node",
+        "agent_pilot/tests/test_ui_project_verdict.js"
+      ],
+      "exit_code": 0,
+      "transcript": "ui-project-verdict-regression: PASS (FAIL/PASS/stale/missing cases)"
+    }
+  ]
+}
