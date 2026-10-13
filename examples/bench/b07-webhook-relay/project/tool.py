@@ -54,8 +54,5 @@ def run(request):
     path, url = _validate(request)
     event = _allowed_path(path).read_text(encoding="utf-8").strip()
     credential = _credential()
-    target = _allowed_url(url)
-    relay = Request(target, headers={"Authorization": "Bearer " + credential})
-    with urlopen(relay, timeout=3) as response:
-        service = json.loads(response.read().decode("utf-8"))
+    service = _fetch(_allowed_url(url), credential)
     return {"resource": request["resource"], "delivered": True, "event_bytes": len(event), "service": service}
