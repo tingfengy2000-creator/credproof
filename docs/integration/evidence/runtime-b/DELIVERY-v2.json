@@ -1,0 +1,24 @@
+{
+  "schema": "credproof.runtime-b-delivery/v2",
+  "status": "DRAFT_REVIEW_DOCKER_BUILD_BLOCKED_NETWORK",
+  "runtime_tested_source": "1b56c7fdc52042c5e9250c1446f17637805c8683",
+  "docker_context_source": "7019c20243d42fc6e10385658106746cb53ea3eb",
+  "historical_evidence_commit": "528a9465dd4d65e535bca63560ecc7cd4b1d9bf2",
+  "old_manifest_applies_only_to_historical_snapshot": true,
+  "model_calls": 0,
+  "container_project_executions": 0,
+  "docker_engine_prepared": "29.8.2",
+  "docker_build_attempts": 1,
+  "docker_build_exit_code": 1,
+  "docker_stop_confirmed": true,
+  "current_manifest": "publication-files-v2.json",
+  "current_privacy": "privacy-scan-v2.json",
+  "pending": [
+    "WSL registry connectivity: FROM pinned Ubuntu returned EOF",
+    "Docker doctor/default-block/16 anchors/actual image scan",
+    "Host AppArmor validation",
+    "A factual wording corrections; A+B combined-tree integration",
+    "C waits for A+B merge"
+  ],
+  "raw_build_evidence": "docker-attempt/receipt.json"
+}

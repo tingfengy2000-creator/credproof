@@ -1,6 +1,6 @@
 # R3 B：Linux 运行时与 Docker 候选配置评审
 
-状态：**实现及本机 WSL 验证已交付；Docker / AppArmor 验收待具备环境后完成。**
+状态：**实现及本机 WSL 验证已交付；独立 Docker 引擎准备成功，镜像构建被注册表网络 EOF 阻断，容器/AppArmor 验收未完成。**
 本目录不宣称第三、四步已全部通过。没有启动 C、模型推理或新的模型实验。
 
 - 契约合并基线：`2a94ef8d6777676aba22e3ed68c23817c5f6aed2`。
@@ -8,6 +8,7 @@
 - wheel 构建于 `7261e4c936f8ff15460de022ee7a9ccdd3690cc3`；后续只增加验证脚本、修正软件测试的主机假设。安装后的五个核心模块逐文件与被测源码核对相同，详见 [安装来源](wsl-anchors/installation.json)。
 - wheel：`credproof_safety-0.3.0.dev38-py3-none-any.whl`，349,987 bytes，SHA256 `2cdd2a1030853c2d68e54dc7b7cf25a5c4c9543e1981d45ffc516ab421c77486`。wheel 本身不入 Git。
 - 后续交付提交增加文档、许可和脱敏证据，不混作另一轮安全实验。
+- Docker 构建上下文白名单源码：`7019c20243d42fc6e10385658106746cb53ea3eb`；运行时及检查器模块仍与上述被测版本相同。原 `publication-files.json` 对应 `528a9465dd4d65e535bca63560ecc7cd4b1d9bf2` 的已发布快照；当前新增材料使用 `publication-files-v2.json`，不把旧清单当作新字节的依据。
 
 ## 实现与对应证据
 
@@ -53,7 +54,8 @@ python -m pytest credproof_safety/tests/test_linux_runtime.py \
 
 ## 尚未验证 / 合并条件
 
-- 本机 Windows 与 WSL 均无 Docker/dockerd，见 [环境记录](environment.json)。因此 Docker 构建、候选 seccomp 实际充分性、默认参数阻断、容器 16 锚点、真实镜像导出/扫描 **未执行**。tar 无害协议样例不是镜像零命中证明。
+- 初始环境确无 Docker/dockerd，见原 [环境记录](environment.json)。随后按官方静态二进制测试安装方法，在独立目录准备 Docker 29.8.2：引擎成功启动，单次镜像构建在固定 Ubuntu 基镜像 `FROM` 阶段返回注册表 EOF / exit 1。详见 [完整构建收据](docker-attempt/receipt.json)、[stdout](docker-attempt/build.stdout.txt)、[stderr](docker-attempt/build.stderr.txt)、[引擎版本](docker-attempt/version.json)、[停止确认](docker-attempt/shutdown.json)。未安装系统服务，未改全局防火墙/代理/转发，已停止本次独立引擎。
+- 此次没有进入镜像内准备或项目执行。候选 seccomp 实际充分性、默认参数阻断、容器 16 锚点、真实镜像导出/扫描仍 **未执行**。tar 无害协议样例不是镜像零命中证明。现有代理只监听 Windows 回环地址，WSL 无代理配置；没有为构建扩大其监听权限、切换 WSL 网络模式或关闭 TLS。
 - AppArmor 配置仅是待宿主加载验证的候选；没有关闭宿主 LSM、没有改全局 sysctl，没有把文件存在当作已启用。
 - 非 WSL 的托管 Ubuntu、两个 Actions job、SARIF 实际显示及演示 PR 属于后续 C；A、B 集成前不启动。契约 §6 不标为全部完成。
 - A/B 的 CLI 合并冲突及最终合并树的回归仍需集成方执行。本 PR 不合并、不修改 main。

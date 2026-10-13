@@ -49,8 +49,10 @@ violation is FAIL (2). Do not interpret either as a successful safety check.
 
 The Docker recipe and security profiles are **candidate configurations**.
 Local WSL execution is not evidence that custom seccomp or AppArmor works in
-Docker. This machine has no available Docker command; native/container hosted
-VM acceptance belongs to C after A+B merge. Do not mark §6 complete yet.
+Docker. A separate official Docker 29.8.2 test engine was prepared on this
+machine, but the one build stopped at the pinned base-image pull with registry
+EOF. No project ran in a container. See the B build receipt; native/container
+hosted VM acceptance still belongs to C after A+B merge. Do not mark §6 complete.
 
 ```sh
 docker build --platform linux/amd64 -f deploy/docker/Dockerfile \

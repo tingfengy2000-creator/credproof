@@ -1,0 +1,21 @@
+{
+  "command": [
+    "<docker-test>/bin/docker/docker",
+    "--host=unix://<docker-test>/docker.sock",
+    "build",
+    "--network",
+    "host",
+    "--build-arg",
+    "SOURCE_COMMIT=7019c20243d42fc6e10385658106746cb53ea3eb",
+    "-t",
+    "credproof:0.3.0.dev38-b-r3",
+    "-f",
+    "<docker-test>/context/deploy/docker/Dockerfile",
+    "<docker-test>/context"
+  ],
+  "exit_code": 1,
+  "duration_seconds": 5.0792090300000154,
+  "source_commit": "7019c20243d42fc6e10385658106746cb53ea3eb",
+  "build_network": "host preparation downloads only; no project or candidate execution",
+  "model_calls": 0
+}
