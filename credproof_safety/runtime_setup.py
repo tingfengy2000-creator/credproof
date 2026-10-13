@@ -90,7 +90,7 @@ def verify_runtime(root):
     return receipt
 
 
-def setup(root):
+def setup(root, package_cache=None):
     supported()
     root = safe_root(root)
     if root.exists() and any(root.iterdir()):
@@ -103,6 +103,17 @@ def setup(root):
     previous = sandbox_runner.BASE
     try:
         sandbox_runner.BASE = root / 'isolation'
+        if package_cache is not None:
+            # Preparation-only cache: identical pinned official package bytes,
+            # never an unchecked executable or a modified existing runtime.
+            cached = Path(package_cache).read_bytes()
+            if hashlib.sha256(cached).hexdigest() != sandbox_runner.PACKAGE_SHA256:
+                raise ValueError('Cached official Ubuntu package checksum mismatch')
+            sandbox_runner.BASE.mkdir(parents=True)
+            deb = sandbox_runner.BASE / 'bubblewrap.deb'
+            deb.write_bytes(cached)
+            subprocess.run(['dpkg-deb', '-x', str(deb), str(sandbox_runner.BASE / 'tools')],
+                           check=True, capture_output=True, timeout=15)
         preparation = sandbox_runner.prepare('linux-runtime-v1')
     finally:
         sandbox_runner.BASE = previous
@@ -128,9 +139,10 @@ def main(argv=None):
     import argparse
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument('--runtime-root', default='~/credproof-agent-runtime')
+    p.add_argument('--package-cache', type=Path, help='Optional exact pinned Ubuntu .deb; hash checked before extraction')
     args = p.parse_args(argv)
     try:
-        root, status = setup(args.runtime_root)
+        root, status = setup(args.runtime_root, args.package_cache)
         from .doctor import doctor
         report = doctor(root)
         print(json.dumps({'preparation': status, **report}, sort_keys=True))

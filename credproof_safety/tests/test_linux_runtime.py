@@ -30,6 +30,15 @@ class RuntimeTests(unittest.TestCase):
                 root,status=setup(tmp)
             verify.assert_called_once();self.assertEqual(status,'REUSED');self.assertEqual(file.read_bytes(),b'original')
 
+    def test_untrusted_cached_package_is_not_extracted(self):
+        if __import__('os').name=='nt':self.skipTest('Linux preparation imports resource; checked in WSL')
+        with tempfile.TemporaryDirectory() as tmp:
+            cache=Path(tmp)/'wrong.deb';cache.write_bytes(b'not an official package')
+            with patch('credproof_safety.runtime_setup.supported'), patch('credproof_safety.runtime_setup.subprocess.run') as run:
+                with self.assertRaisesRegex(ValueError,'checksum mismatch'):
+                    setup(Path(tmp)/'fresh',cache)
+            run.assert_not_called()
+
     def test_inventory_binds_bytes_and_ignores_only_bytecode(self):
         with tempfile.TemporaryDirectory() as tmp:
             p=Path(tmp)/'code.py';p.write_bytes(b'a');first=inventory(tmp)

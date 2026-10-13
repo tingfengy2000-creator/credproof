@@ -50,10 +50,12 @@ def doctor(root=None):
             result = subprocess.run(cmd, capture_output=True, text=True, timeout=30,
                                     env={'PATH':'/usr/bin:/bin','LANG':'C.UTF-8'})
         report['probe_exit_code'] = result.returncode
+        # Fixed trusted probe output only. Preserve it for namespace failures;
+        # no arbitrary project or model output is run by this command.
+        report['probe_stdout'] = result.stdout[-16384:]
+        report['probe_stderr'] = result.stderr[-16384:]
         if result.returncode:
             report['checks']['namespace_probe'] = False
-            # Preserve raw stderr locally in the command receipt; structured
-            # diagnostics contain no operator path or arbitrary payload text.
             report['hints'].append('Namespace/proc probe failed. Check Docker systempaths/seccomp and host AppArmor; see docs/integration/linux.md.')
             report['diagnostic_code'] = 'namespace_probe_failed'
         else:

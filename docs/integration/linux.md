@@ -20,6 +20,10 @@ python3 -m credproof_safety check --config examples/bench/b07-webhook-relay/proj
 
 Preparation alone downloads the pinned official bwrap package and hashed
 PyPI wheels. Check/doctor do not need model weights or a model service.
+If the official download is temporarily unavailable, preparation can use
+`--package-cache <official-bubblewrap.deb>`; its full bytes must match the
+same fixed Ubuntu package SHA256 before extraction. This does not reuse or
+alter an older runtime, disable TLS, or accept a substitute executable.
 The lock is included in wheels. Use a persistent, operator-selected directory
 instead of `/tmp` for routine deployment.
 
