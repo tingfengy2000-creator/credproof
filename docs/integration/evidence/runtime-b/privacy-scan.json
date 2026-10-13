@@ -1,11 +1,11 @@
 {
   "schema": "credproof.delivery-scan/v1",
-  "files_scanned": 105,
+  "files_scanned": 107,
   "sensitive_hits": 0,
   "findings": [],
   "reviewed_non_host_literals": [],
   "file_sha256": {
-    "commands.json": "d430605f9c75c852ed5b2ab56e1cd959ac2a1388ae0d57bbf251b2835653cf95",
+    "commands.json": "0c7901bd3aff787147bf2cdfc36fcf7da63724baa42711e3d291dca758747508",
     "dependency-sources.json": "396fd85d5b95c91549624ee000bc0be54c859bbf884a3e4014c8774d1b76dfdd",
     "environment.json": "295375561ffc256e1e6b05bfde8ec26e8114a7e265ded8b433b216258841419e",
     "preparation/b-anchors-final.stderr.txt": "d9de28ffe879b9f2663d5bba07e5dc19c869176e0b50ee538d508b4b4da839f9",
@@ -24,7 +24,7 @@
     "preparation/b-venv-install-root.txt": "f64283f8041f463c0d6965f2c06c0243448a3f4600539c0ea56d606ecd6f86a4",
     "preparation/b-venv-install.txt": "d9de28ffe879b9f2663d5bba07e5dc19c869176e0b50ee538d508b4b4da839f9",
     "README.md": "fd7aae4607e2cb463392f1a9c22cc9659cd239e7b1f34bef188205d842829f25",
-    "receipt.json": "22e354da98c19a3ce7022d0b2439a802a94a4852fb193a8f1a11575eb39d209f",
+    "receipt.json": "30192b3f58afa29ee784f3778956a217919647d388ffa70b79138d9c41d9a1cb",
     "rootfs-manifest.json": "7afe34d51b50c99fd0fb094c8056bad13d82e1c739a5cafe70cafb98bfb536ab",
     "software/b-windows-final.xml": "ce4927398761af3c457c70ef569c8df75fb23a4fc81812e497021b716abcda59",
     "software/b-windows-final3.xml": "190373a81bb8eb5025fe65681cd8e55fcb7f05fbd65d01aa67ef91576992ee40",
@@ -32,7 +32,7 @@
     "software/b-wsl-final.xml": "c606507aa6e9ab2e6e1529cfb41d396ffe307bcc6219870a5b8e36eb275a536d",
     "software/b-wsl-final2.xml": "c58055b316e229fdfd4fa69b981f2ceaf5190c4a472b5e1bd0bd8f175526867c",
     "software/pr11-windows.xml": "cf683a4833163fbdb7bc55b064cbcde79a8af78f6972a649a7c31ef775b477ef",
-    "unchanged-modules.json": "dbed756e6b1d25546d2fe5e0d883ae9dce93f13752327eb40904652b7904f575",
+    "unchanged-modules.json": "5bda7ed9c221c427443d8242377044a37ecfb018e6d91d244fe1dada84fe3485",
     "windows-bridge/receipt.json": "9e18349ea42849db5d67c2ed7ab1d00bca269ca777cfeb0a822277fd7d412617",
     "windows-bridge/reference.json": "138d820ba81bf2846a3003ebef6e77e9b6833a37d84f5df7955a552e316eb925",
     "windows-bridge/reference.stderr.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
@@ -111,5 +111,6 @@
     "wsl-anchors/reuse.json": "e793e5a1acf2cd84eeb33fe5b34e81d78b2d3660f024ca847a3d27341a53b29c",
     "wsl-anchors/summary.json": "eb2a716a4d8168e9e873f523ee7d7cbb5569f939c4481f80500a9938725f5f70"
   },
-  "limitations": "Pattern check; not a universal secret detector. Binary executable internals are not decoded as source."
+  "limitations": "Pattern check; not a universal secret detector. Binary executable internals are not decoded as source.",
+  "scope_note": "Scanned this full evidence directory before regenerating scan and file-manifest receipts; their old contents also had zero hits. Final byte integrity uses publication-files.json."
 }
