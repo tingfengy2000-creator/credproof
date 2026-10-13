@@ -1,4 +1,27 @@
-**/__pycache__
+# Allow only build inputs; author reports, git state and runtimes never enter
+# the build context. The image is the model-free CLI, not the viewer archive.
+**
+!agent_pilot/
+!agent_pilot/**
+!credproof_safety/
+!credproof_safety/**
+!credproof_access/
+!credproof_access/**
+!credproof/
+!credproof/**
+!pyproject.toml
+!scripts/
+!scripts/runtime/
+!scripts/runtime/setup-linux.py
+!deploy/
+!deploy/docker/
+!deploy/docker/Dockerfile
+!deploy/docker/Dockerfile.dockerignore
+**/tests/**
+agent_pilot/fixtures/**
+agent_pilot/holdout-v1/**
+agent_pilot/isolation-tests/**
+**/__pycache__/**
 **/*.pyc
-**/.venv
-**/.git
+**/.venv/**
+**/.git/**
