@@ -2,7 +2,7 @@
 # Contract R3: candidate Docker build; container acceptance is recorded separately.
 FROM ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55 AS base
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3 python3-venv bubblewrap ca-certificates libseccomp2 \
+    python3 python3-venv ca-certificates libseccomp2 \
     && rm -rf /var/lib/apt/lists/*
 RUN useradd --uid 10001 --create-home --shell /usr/sbin/nologin checker \
     && mkdir -p /opt/credproof-runtime /opt/credproof /out \
@@ -25,7 +25,7 @@ RUN python3 -m venv /opt/credproof/venv \
     && /opt/credproof/venv/bin/pip install --no-cache-dir setuptools wheel \
     && /opt/credproof/venv/bin/pip wheel --no-deps --no-build-isolation --wheel-dir /build/wheels /build \
     && /opt/credproof/venv/bin/pip install --no-deps /build/wheels/*.whl \
-    && /opt/credproof/venv/bin/python -c 'import hashlib,json,pathlib,subprocess; p=next(pathlib.Path("/build/wheels").glob("*.whl")); pathlib.Path("/opt/credproof/build-receipt.json").write_text(json.dumps({"wheel":p.name,"wheel_sha256":hashlib.sha256(p.read_bytes()).hexdigest(),"apt":subprocess.check_output(["dpkg-query","-W","python3","python3-venv","bubblewrap","libseccomp2"],text=True)},indent=2))'
+    && /opt/credproof/venv/bin/python -c 'import hashlib,json,pathlib,subprocess; p=next(pathlib.Path("/build/wheels").glob("*.whl")); pathlib.Path("/opt/credproof/build-receipt.json").write_text(json.dumps({"wheel":p.name,"wheel_sha256":hashlib.sha256(p.read_bytes()).hexdigest(),"apt":subprocess.check_output(["dpkg-query","-W","python3","python3-venv","libseccomp2"],text=True)},indent=2))'
 RUN test -n "$SOURCE_COMMIT" && printf '%s\n' "$SOURCE_COMMIT" > /opt/credproof/source-commit.txt
 
 FROM base AS final

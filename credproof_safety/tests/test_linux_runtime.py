@@ -121,3 +121,78 @@ class TarTests(unittest.TestCase):
         self.assertTrue(any(x['names']==['clone3'] and x.get('errnoRet')==38 for x in profile['syscalls']))
         original=json.loads(source)
         self.assertEqual(profile['syscalls'][:len(original['syscalls'])],original['syscalls'])
+
+    def test_binary_is_stream_hashed_and_text_patterns_not_run(self):
+        import hashlib
+        binary=b'\x7fELF'+b'\x00'*8192
+        with tempfile.TemporaryDirectory() as tmp:
+            r=SCAN.scan(self.archive(tmp,[('lib/binary',binary),('notice',b'safe')]))
+        self.assertEqual(r['binary_files_hashed'],1)
+        self.assertEqual(r['text_files_scanned'],1)
+        self.assertEqual(r['files']['lib/binary']['sha256'],hashlib.sha256(binary).hexdigest())
+
+    def test_size_and_time_limits_are_incomplete(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive=self.archive(tmp,[('large',b'a'*33)])
+            with self.assertRaisesRegex(SCAN.ScanIncomplete,'member_size_limit'):
+                SCAN.scan(archive,max_member_bytes=32)
+            with patch.object(SCAN,'MAX_TEXT',32):
+                with self.assertRaisesRegex(SCAN.ScanIncomplete,'text_size_limit'):
+                    SCAN.scan(archive)
+            with patch.object(SCAN.time,'monotonic',side_effect=[0,2]):
+                with self.assertRaisesRegex(SCAN.ScanIncomplete,'deadline_exceeded'):
+                    SCAN.scan(archive,max_seconds=1)
+
+    def test_case_insensitive_path_pattern_survives_prefilter(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            r=SCAN.scan(self.archive(tmp,[('text',b'/HOME/example/private')]))
+        self.assertTrue(any(x['kind']=='home_absolute_path' for x in r['findings']))
+
+    def test_private_values_must_be_json_list(self):
+        for value in ('plain text',{'name':'value'},[42],['']):
+            with self.assertRaises(ValueError):SCAN.private_list(value)
+
+    def test_cli_watchdog_is_real_and_fail_closed(self):
+        import subprocess,sys
+        with tempfile.TemporaryDirectory() as tmp:
+            archive=self.archive(tmp,[('text',b'safe')]);out=Path(tmp)/'result.json'
+            result=subprocess.run([sys.executable,str(Path(SCAN.__file__)),str(archive),
+                '--output',str(out),'--max-seconds','0.000001'],capture_output=True,text=True,timeout=15)
+            r=json.loads(out.read_text('utf8'))
+        self.assertEqual(result.returncode,4)
+        self.assertEqual(r['status'],'SCAN_INCOMPLETE')
+        self.assertEqual(r['reason'],'hard_deadline_exceeded')
+        self.assertNotIn('sensitive_hits',r)
+
+    def test_long_text_without_at_and_binary_complete_within_limit(self):
+        import subprocess,sys
+        with tempfile.TemporaryDirectory() as tmp:
+            archive=self.archive(tmp,[('data/base64',b'A'*1024**2),('lib/binary',b'\x00'*16*1024**2)])
+            out=Path(tmp)/'result.json'
+            result=subprocess.run([sys.executable,str(Path(SCAN.__file__)),str(archive),
+                '--output',str(out),'--max-seconds','10'],capture_output=True,text=True,timeout=15)
+            r=json.loads(out.read_text('utf8'))
+        self.assertEqual(result.returncode,0,result.stderr)
+        self.assertEqual(r['bytes_scanned'],17*1024**2)
+        self.assertEqual(r['binary_files_hashed'],1)
+        self.assertEqual(r['sensitive_hits'],0)
+
+    def test_anchor_environment_is_not_hardcoded_wsl(self):
+        spec=importlib.util.spec_from_file_location('anchors',Path(__file__).parents[2]/'scripts/runtime/verify-anchors.py')
+        anchors=importlib.util.module_from_spec(spec);spec.loader.exec_module(anchors)
+        for label in ('wsl','native','container'):
+            self.assertEqual(anchors.execution_environment(label),label)
+
+    def test_apparmor_preserves_default_denials_without_blanket_grants(self):
+        import hashlib
+        root=Path(__file__).parents[2]/'deploy/apparmor'
+        source=(root/'docker-default-template.go').read_bytes()
+        metadata=json.loads((root/'source.json').read_text())
+        self.assertEqual(hashlib.sha256(source).hexdigest(),metadata['source_sha256'])
+        profile=(root/'credproof-bwrap').read_text()
+        for line in metadata['denial_rules_preserved']:
+            self.assertIn(line,profile)
+        self.assertNotIn('\n  file,',profile)
+        self.assertNotIn('\n  capability,',profile)
+        self.assertNotIn('\n  mount,',profile)
+        self.assertEqual(metadata['status'],'CANDIDATE_NOT_HOST_ENFORCEMENT_VALIDATED')

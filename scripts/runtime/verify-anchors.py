@@ -26,12 +26,23 @@ def save(path, value):
     path.write_text(json.dumps(value, ensure_ascii=False, indent=2)+'\n', encoding='utf8')
 
 
+def execution_environment(declared=None):
+    if declared:
+        return declared
+    if Path('/.dockerenv').exists() or Path('/run/.containerenv').exists():
+        return 'container'
+    if 'microsoft' in platform.release().lower():
+        return 'wsl'
+    return 'native'
+
+
 def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--source',type=Path,required=True)
     p.add_argument('--runtime',type=Path,required=True)
     p.add_argument('--output',type=Path,required=True)
     p.add_argument('--source-commit',required=True,help='Full SHA verified by the source host Git; Windows worktree .git paths are not Linux Git paths')
+    p.add_argument('--environment',choices=('wsl','native','container'),help='Execution environment; otherwise detect container markers then WSL kernel')
     a=p.parse_args();a.output.mkdir(parents=True,exist_ok=False)
     if not re.fullmatch('[0-9a-f]{40}',a.source_commit):raise ValueError('Full source commit required')
     os.environ['CREDPROOF_CONFIG']=str(a.runtime/'runtime.json')
@@ -95,7 +106,8 @@ def main():
         row['matches']=row['actual']==row['expected'] and r.returncode==expected_code
         save(work/'command.json',row);rows.append(row)
         print(json.dumps({k:row[k] for k in ('id','actual','exit_code','matches')}),flush=True)
-    save(a.output/'summary.json',{'kind':'WSL_INSTALLED_WHEEL_ANCHOR_CHECK','model_calls':0,
+    save(a.output/'summary.json',{'kind':'INSTALLED_WHEEL_ANCHOR_CHECK',
+        'environment':execution_environment(a.environment),'environment_source':'declared' if a.environment else 'detected','model_calls':0,
         'expected_count':16,'matched':sum(x['matches'] for x in rows),'rows':rows})
     return 0 if all(x['matches'] for x in rows) else 1
 
