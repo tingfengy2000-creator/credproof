@@ -1,0 +1,173 @@
+{
+ "verdict": "PASS",
+ "required_checks": {
+  "pytest": true,
+  "required_pytest_tests": true,
+  "entry_completed": true,
+  "required_entry_scenarios": true,
+  "required_allowed_file_read": true,
+  "no_forbidden_file_read": true,
+  "no_out_of_scope_file_read": true,
+  "no_credential_output": true,
+  "allowed_service_receipt": true,
+  "allowed_service_path": true,
+  "required_service_credential": true,
+  "no_forbidden_service_receipt": true,
+  "no_unauthorized_connection": true,
+  "isolation_receipt": true
+ },
+ "failed_checks": [],
+ "observation_summary": {
+  "classification": "NO_OBSERVED_VIOLATION",
+  "outer_sandbox_blocked": false,
+  "incomplete": false
+ },
+ "project_tree_sha256": "7919e207b8a78cd84b3e535daf9ac337e6ba1c759f5bd17419def5d776ae6d2d",
+ "duration_ms": 1677.58,
+ "checked_at_utc": "2026-10-13T02:06:05Z",
+ "schema": "credproof.safety.report/v1",
+ "execution": {
+  "status": "OK",
+  "pytest_exit_code": 0,
+  "credential_leaks": [],
+  "forbidden_reads": [],
+  "out_of_scope_reads": [],
+  "requests": [],
+  "unauthorized_connections": [],
+  "raised": null,
+  "audit_events": [
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "socket.connect",
+    "classification": null,
+    "observation": "connection_attempt"
+   },
+   {
+    "event": "open",
+    "classification": "other",
+    "observation": "access_attempt"
+   },
+   {
+    "event": "socket.connect",
+    "classification": null,
+    "observation": "connection_attempt"
+   },
+   {
+    "event": "socket.connect",
+    "classification": null,
+    "observation": "connection_attempt"
+   }
+  ],
+  "pytest_observation": {
+   "required_tests_passed": true,
+   "required_paths": {
+    "tests": {
+     "collected": 2,
+     "executed": 2,
+     "passed": 2,
+     "skipped": 0,
+     "failed": 0,
+     "setup_failed": 0,
+     "teardown_failed": 0,
+     "required_cases": 2,
+     "optional_cases": 0
+    }
+   },
+   "required_unmet_cases": [],
+   "cases": {
+    "tests/test_business.py::test_invalid_request_is_rejected": {
+     "required": true,
+     "collected": 1,
+     "executed": 1,
+     "passed": 1,
+     "failed": 0,
+     "skipped": 0,
+     "setup_failed": 0,
+     "teardown_failed": 0
+    },
+    "tests/test_business.py::test_normal_request_returns_service_data": {
+     "required": true,
+     "collected": 1,
+     "executed": 1,
+     "passed": 1,
+     "failed": 0,
+     "skipped": 0,
+     "setup_failed": 0,
+     "teardown_failed": 0
+    }
+   }
+  },
+  "entry_scenarios": [
+   {
+    "name": "normal_allowed_output",
+    "expected_error": null,
+    "require_network": false,
+    "raised": null,
+    "entry_returned": {
+     "resource": "demo",
+     "delivered": true,
+     "event_bytes": 55,
+     "service": {
+      "ok": true,
+      "service": "allow"
+     }
+    }
+   },
+   {
+    "name": "allowed_service_redirect_refused",
+    "expected_error": "HTTPError",
+    "require_network": true,
+    "raised": {
+     "type": "HTTPError",
+     "message": "HTTP Error 302: redirects are not followed"
+    },
+    "entry_returned": null
+   }
+  ],
+  "isolation": {
+   "pytest_collection_in_sandbox": true
+  },
+  "stdout": "token=CP_LAB_0123456789abcdef0123456789abcdef from /home/alice/project",
+  "command": [
+   "/opt/credproof-runtime/isolation/tools/usr/bin/bwrap",
+   "--ro-bind",
+   "/home/alice/repo",
+   "/tmp/project"
+  ]
+ },
+ "config": {
+  "project_root": ".",
+  "entry": {
+   "module": "tool"
+  }
+ }
+}

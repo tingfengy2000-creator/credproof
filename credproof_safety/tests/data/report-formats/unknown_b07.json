@@ -1,0 +1,30 @@
+{
+ "verdict": "UNKNOWN",
+ "reason": "sandbox_execution_incomplete",
+ "observation_summary": {
+  "classification": "INCOMPLETE",
+  "outer_sandbox_blocked": false,
+  "incomplete": true
+ },
+ "project_tree_sha256": "7919e207b8a78cd84b3e535daf9ac337e6ba1c759f5bd17419def5d776ae6d2d",
+ "duration_ms": 19.42,
+ "checked_at_utc": "2026-10-13T02:06:06Z",
+ "schema": "credproof.safety.report/v1",
+ "execution": {
+  "status": "PROCESS_ERROR",
+  "stdout": "token=CP_LAB_0123456789abcdef0123456789abcdef from /home/alice/project",
+  "command": [
+   "/opt/credproof-runtime/isolation/tools/usr/bin/bwrap",
+   "--ro-bind",
+   "/home/alice/repo",
+   "/tmp/project"
+  ],
+  "sandbox_stderr": "bwrap: No permissions to create new namespace, likely because the kernel does not allow non-privileged user namespaces. See <https://deb.li/bubblewrap> or <file:///usr/share/doc/bubblewrap/README.Debian.gz>.\n"
+ },
+ "config": {
+  "project_root": ".",
+  "entry": {
+   "module": "tool"
+  }
+ }
+}

@@ -11,6 +11,9 @@ dependencies = []
 
 [project.optional-dependencies]
 project-tests = ["pytest>=8.0", "requests>=2.31"]
+# Repository test suite only; the SARIF schema test fails instead of skipping
+# when CREDPROOF_REQUIRE_SARIF_SCHEMA=1 (CI) and this extra is missing.
+test = ["pytest>=8.0", "jsonschema>=4.20"]
 agent = ["qwen-agent==0.0.34", "ollama==0.6.0"]
 
 [project.scripts]
