@@ -1,8 +1,8 @@
 # 第三、四步契约：Linux / Docker 运行时与 CI 接入
 
-状态：`DRAFT_R2_FOR_TINGFENG`（5060 起草，按 5090 评审意见修订，2026-10-13）。tingfeng 确认后冻结；实现中如需改动，先改本文档、再改代码。
+状态：`DRAFT_R3_FOR_TINGFENG`（5060 起草，按 5090 两轮评审修订，2026-10-13）。tingfeng 确认后冻结；实现中如需改动，先改本文档、再改代码。
 适用主线：`feat/frontend-human-review-5060` @ `37b03f7`。
-评审记录：PR #10 评论 6136161052。
+评审记录：PR #10 评论 6136161052（R1 意见）、6136283652（R2 复核）。
 
 ## 0. 目标与非目标
 
@@ -235,8 +235,10 @@ CI 闸门：`check` 退出码非 0 即失败。UNKNOWN 也失败（安全失败�
   - 每个 `check` 的退出码先记录下来，后续步骤照常执行：生成并上传已有的报告、JUnit、摘要和 SARIF，最后一步再统一判定 job 失败。
   - `doctor` 失败时同样上传其诊断输出。
   - 不得因 shell 遇到第一个非零退出码就提前结束，导致后续构件丢失。
+- **两个 job 各自独立**：各自执行闸门（退出码非 0 即该 job 失败），各自保存完整证据。构件名称带 job 名区分，例如 `credproof-native-<配置>`、`credproof-container-<配置>`，避免互相覆盖。
 - **SARIF 上传**：
-  - 每个配置一个 category。
+  - **只由 `container` job 正式上传**到 Code Scanning，每个配置一个 category（即 `automationDetails.id`）。
+  - `native` job 生成的 SARIF 只作为构件保存，不上传。原因：同一提交、同一 category 重复上传会互相覆盖或报错。
   - 上传是否可用，取决于事件类型、令牌权限以及仓库的 Code Scanning 是否可用（fork PR、私有仓库是否开启 GitHub Advanced Security 都有影响），按 GitHub 当前规则如实处理，不作统一假设。
   - 上传步骤失败不影响闸门：**闸门只以检查器退出码为准**。JUnit 和摘要构件始终上传。
 - **扫描清单**：`.credproof/targets.txt`，每行一个配置路径。
