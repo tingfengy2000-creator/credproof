@@ -1,11 +1,30 @@
 """Start the candidate single page; real inference remains a separate explicit action."""
 import argparse
 import errno
+import socket
 import sys
 import webbrowser
 from pathlib import Path
 from .web import Application, Server
 from .presentation import install_demonstrations, install_review_demonstration, close_review_demonstration
+
+
+def server_for(app, port, auto_port=False):
+    try:
+        return Server(('127.0.0.1', port), app)
+    except OSError as error:
+        occupied = error.errno == errno.EADDRINUSE
+        # Windows exclusive listeners can report WSAEACCES, not WSAEADDRINUSE.
+        # Confirm a listener before treating access denied as a busy port.
+        if not occupied and getattr(error, 'winerror', None) == 10013:
+            try:
+                with socket.create_connection(('127.0.0.1', port), timeout=0.5):
+                    occupied = True
+            except OSError:
+                pass
+        if not auto_port or not occupied:
+            raise
+        return Server(('127.0.0.1', 0), app)
 
 
 def main():
@@ -34,12 +53,7 @@ def main():
         if args.demo:
             install_demonstrations(app)
             install_review_demonstration(app)
-        try:
-            server = Server(('127.0.0.1', args.port), app)
-        except OSError as error:
-            if not args.auto_port or error.errno != errno.EADDRINUSE:
-                raise
-            server = Server(('127.0.0.1', 0), app)
+        server = server_for(app, args.port, args.auto_port)
         with server:
             url = f'http://127.0.0.1:{server.server_address[1]}'
             print(f'CredProof: {url}', flush=True)

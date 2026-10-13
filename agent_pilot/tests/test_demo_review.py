@@ -1,5 +1,6 @@
 """Frozen dev35 data + actual demo startup; no candidate execution/inference."""
 import hashlib
+import errno
 import json
 from pathlib import Path
 import tempfile
@@ -18,6 +19,29 @@ def frozen_bytes():
 
 
 class DemoReviewTests(unittest.TestCase):
+    def test_busy_port_falls_back_without_changing_application(self):
+        app = object()
+        with patch.object(launch, 'Server', side_effect=[OSError(errno.EADDRINUSE, 'busy'), 'server']) as server:
+            self.assertEqual(launch.server_for(app, 8765, True), 'server')
+            self.assertEqual(server.call_args.args, (('127.0.0.1', 0), app))
+
+    def test_windows_exclusive_listener_falls_back_only_when_confirmed(self):
+        error = OSError(errno.EACCES, 'exclusive listener')
+        error.winerror = 10013
+        with patch.object(launch, 'Server', side_effect=[error, 'server']), \
+             patch.object(launch.socket, 'create_connection'):
+            self.assertEqual(launch.server_for(object(), 8765, True), 'server')
+        with patch.object(launch, 'Server', side_effect=error), \
+             patch.object(launch.socket, 'create_connection', side_effect=OSError('no listener')):
+            with self.assertRaises(OSError):
+                launch.server_for(object(), 8765, True)
+
+    def test_explicit_port_without_auto_does_not_fallback(self):
+        with patch.object(launch, 'Server', side_effect=OSError(errno.EADDRINUSE, 'busy')) as server:
+            with self.assertRaises(OSError):
+                launch.server_for(object(), 8765, False)
+            self.assertEqual(server.call_count, 1)
+
     def test_launch_demo_has_real_review_and_frozen_data_survives_writes(self):
         before = frozen_bytes()
         seen = {}
