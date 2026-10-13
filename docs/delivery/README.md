@@ -1,8 +1,14 @@
 # 默认演示与评委交付修正（dev38）
 
-本 PR 基于 `feat/frontend-human-review-5060` 的 `c394fc2d5b7e7360065a512958fdef1963d1873e`。最终程序/交付包源码为 **`81426186841919d7c7750ee1cdc2e20b608a1988`**，后续提交只补证据、本索引及证据原字节保留属性。没有启动模型、执行新候选、改 bench-v1 冻结契约、CI、Docker 或报告正文。
+本 PR 基于 `feat/frontend-human-review-5060` 的 `c394fc2d5b7e7360065a512958fdef1963d1873e`。首轮程序为 `81426186841919d7c7750ee1cdc2e20b608a1988`；合并前两项小修后的程序/新交付包源码为 **`1796690644d9e9e2169340a2b85764a5197691bc`**，后续提交只补证据及索引。没有启动模型、执行新候选、改 bench-v1 冻结契约、CI、Docker 或报告正文。
 
 用户确认的交付约定见 [CONTRACT.md](CONTRACT.md)，评委使用说明为 [VIEWER.md](VIEWER.md)。下列状态是本机研发验证，不是外部验收。
+
+## PR #9 合并前小修
+
+默认 cmd **直接启动随包 Python，不经过 PowerShell，也没有 ExecutionPolicy Bypass**；仅运行时缺失才调用 `launch.ps1` 查找系统解释器。演示副本写入 owner 标记，下次启动只清理确认原进程已退出的本程序临时目录；活跃、未知、无标记和链接目录保留。增加 Windows Ctrl+Break 的正常清理，不承诺强制结束时立即清理。
+
+本次 **70 项定向测试通过**；真实中文加空格目录中，cmd 直接子进程为 Python 和 Windows conhost，无 PowerShell。模拟遗留目录被清理，超过 12 小时的活跃实例保留；浏览器检查 exit 0，人工审阅显示 PASS / PENDING / NOT_APPLIED，冻结 28 文件（27 件材料及清单）字节不变。新 wheel 的真实 HTTP h03 导出 200、42 项清单匹配。命令、JUnit、扫描、安装来源与截图见 [合并前证据](evidence/dev38/pr9-followup/README.md)。严格无预装 Python 的 Windows Sandbox 未执行（功能未启用）；不把本次现有账户的独立目录检查说成新用户或纯净虚拟机。
 
 | 项目 | 处理及实际结果 | 证据 |
 |---|---|---|
@@ -33,4 +39,4 @@
 
 `scan.py` 扫描整棵交付树及可读 ZIP 内件，**261 文件、敏感命中 0**。官方许可中的公开法律联系邮箱和受控模型命名空间 `/home/model` 是精确位置/字面值白名单，单列 `reviewed_non_host_literals`；没有删许可、宽泛忽略文件或声称检测所有秘密。二进制内部不当成源码解码。机器代称不出现在交付 HTML/JS/CSS 的页面文案；内部 UI README 不入包。
 
-最终本地文件 `credproof-viewer-0.3.0-dev38-r4.zip`：**11,640,265 bytes**，SHA-256 **`75ba9d6997eaccb37ad04bd3906d0a88beb77c41c24eda0877a9c9a8b7260f4c`**。不将 ZIP/解释器/第三方二进制提交 Git，不创建 Release；GitHub 提供构建脚本、固定来源与完整收据，自动源码 ZIP 不等于该运行包。前序包保留，不能使用其失败启动记录证明最终包。
+小修后的本地文件 `credproof-viewer-0.3.0-dev38-r5.zip`：**11,642,060 bytes**，SHA-256 **`feb0b1ba0b11ede1825c772fca43531ab2ee75e2227fd71b337ee8fef15d9107`**，源码为上述 1796690。旧 r4 包（11,640,265 bytes，SHA-256 `75ba9d6997eaccb37ad04bd3906d0a88beb77c41c24eda0877a9c9a8b7260f4c`）保留。不将 ZIP/解释器/第三方二进制提交 Git，不创建 Release；GitHub 提供构建脚本、固定来源与完整收据，自动源码 ZIP 不等于该运行包。
