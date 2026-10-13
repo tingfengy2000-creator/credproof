@@ -13,6 +13,7 @@ from .agent import request_repair
 def build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(prog="credproof-safety", description="受控 Python 工具安全检查")
     sub = p.add_subparsers(dest="command", required=True)
+    sub.add_parser("doctor", help="固定无害载荷检查 Linux 隔离运行时，不执行项目")
     init = sub.add_parser("init", help="预览或创建项目配置；默认不覆盖")
     init.add_argument("--project", type=Path, required=True)
     init.add_argument("--config", type=Path)
@@ -33,6 +34,11 @@ def build_parser() -> argparse.ArgumentParser:
 def main(argv=None) -> int:
     args = build_parser().parse_args(argv)
     try:
+        if args.command == "doctor":
+            from .doctor import doctor
+            result = doctor()
+            print(json.dumps(result, ensure_ascii=True, indent=2))
+            return 0 if result['ready'] else 4
         if args.command == "init":
             root = args.project.resolve(strict=True)
             cfg = (args.config or root / "credproof.toml").resolve()

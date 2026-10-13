@@ -1,0 +1,20 @@
+# Candidate host profile; NOT YET VALIDATED on an AppArmor Docker host.
+# Load only after operator review: sudo apparmor_parser -r <this-file>
+# Container --cap-drop ALL and dedicated inner rootfs remain mandatory.
+#include <tunables/global>
+profile credproof-bwrap flags=(attach_disconnected,mediate_deleted) {
+  #include <abstractions/base>
+  userns,
+  file,
+  network inet stream,
+  network inet6 stream,
+  capability,
+  mount,
+  umount,
+  pivot_root,
+  signal,
+  deny /sys/kernel/security/** rwklx,
+  deny /proc/sys/** w,
+  deny /proc/sysrq-trigger rwklx,
+  deny /proc/kcore rwklx,
+}

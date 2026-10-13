@@ -25,6 +25,7 @@ include = ["credproof*", "credproof_safety*", "agent_pilot*"]
 # package.  Reviewed synthetic fixtures remain package data for the same
 # reason; no model weights or local runtime files are included.
 [tool.setuptools.package-data]
+credproof_safety = ["requirements-lock.txt"]
 agent_pilot = [
   "data/*.json",
   "ui/*.html",
