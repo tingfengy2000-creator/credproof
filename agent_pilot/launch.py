@@ -2,6 +2,7 @@
 import argparse
 import errno
 import socket
+import signal
 import sys
 import webbrowser
 from pathlib import Path
@@ -49,7 +50,12 @@ def main():
     elif args.demo and bundled.is_file():
         options['bench_results'] = bundled
     app = Application(**options)
+    previous_break = None
     try:
+        if hasattr(signal, 'SIGBREAK'):
+            def interrupt(signum, frame):
+                raise KeyboardInterrupt
+            previous_break = signal.signal(signal.SIGBREAK, interrupt)
         if args.demo:
             install_demonstrations(app)
             install_review_demonstration(app)
@@ -73,7 +79,11 @@ def main():
         print(f'CredProof could not start ({type(error).__name__}). Check temporary-folder write permission and the requested port; keep this window open for details.', file=sys.stderr)
         raise
     finally:
-        close_review_demonstration(app)
+        try:
+            close_review_demonstration(app)
+        finally:
+            if previous_break is not None:
+                signal.signal(signal.SIGBREAK, previous_break)
 
 
 if __name__ == '__main__':

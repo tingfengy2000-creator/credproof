@@ -3,11 +3,86 @@ from pathlib import Path
 import difflib
 import hashlib
 import json
+import math
+import os
 import shutil
+import stat
 import tempfile
+import time
 from pathlib import PurePosixPath
 
 REVIEW_SNAPSHOT = 'docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/workspace'
+DEMO_PREFIX = 'credproof-demo-review-'
+DEMO_OWNER = 'owner.json'
+DEMO_OWNER_SCHEMA = 'credproof.demo-review-owner/v1'
+
+
+def _process_running(pid):
+    """Read-only liveness probe; uncertainty preserves the directory.
+
+    os.kill(pid, 0) is NOT a harmless probe on Windows. Query a process handle
+    there instead, without termination rights or invoking a shell.
+    """
+    if os.name == 'nt':
+        import ctypes
+        from ctypes import wintypes
+        kernel = ctypes.WinDLL('kernel32', use_last_error=True)
+        kernel.OpenProcess.argtypes = [wintypes.DWORD, wintypes.BOOL, wintypes.DWORD]
+        kernel.OpenProcess.restype = wintypes.HANDLE
+        kernel.GetExitCodeProcess.argtypes = [wintypes.HANDLE, ctypes.POINTER(wintypes.DWORD)]
+        kernel.GetExitCodeProcess.restype = wintypes.BOOL
+        kernel.CloseHandle.argtypes = [wintypes.HANDLE]
+        kernel.CloseHandle.restype = wintypes.BOOL
+        handle = kernel.OpenProcess(0x1000, False, pid)  # QUERY_LIMITED_INFORMATION
+        if not handle:
+            return ctypes.get_last_error() != 87  # invalid PID; denied/unknown => keep
+        try:
+            code = wintypes.DWORD()
+            return not kernel.GetExitCodeProcess(handle, ctypes.byref(code)) or code.value == 259
+        finally:
+            kernel.CloseHandle(handle)
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except OSError:
+        return True
+    return True
+
+
+def _linked(path):
+    info = path.lstat()
+    return stat.S_ISLNK(info.st_mode) or bool(getattr(info, 'st_file_attributes', 0) & 0x400)
+
+
+def cleanup_stale_review_demonstrations(temp_root=None):
+    """Remove only marked immediate temp children with a confirmed dead owner.
+
+    Live owners (even older than 12 hours), inaccessible owners, invalid markers
+    and unmarked legacy folders are kept. This never kills any process.
+    """
+    root = Path(temp_root if temp_root is not None else tempfile.gettempdir())
+    removed = []
+    for directory in root.glob(DEMO_PREFIX + '*'):
+        marker = directory / DEMO_OWNER
+        try:
+            if _linked(directory) or not directory.is_dir() or _linked(marker):
+                continue
+            if not marker.is_file() or marker.stat().st_size > 4096:
+                continue
+            owner = json.loads(marker.read_text(encoding='utf-8'))
+            pid, started = owner.get('pid'), owner.get('started_at')
+            if (owner.get('schema') != DEMO_OWNER_SCHEMA or type(pid) is not int
+                    or not 0 < pid <= 0xffffffff or type(started) not in (int, float)
+                    or not math.isfinite(started) or started <= 0 or started > time.time() + 60):
+                continue
+            if _process_running(pid):
+                continue
+            shutil.rmtree(directory)
+            removed.append(directory.name)
+        except (OSError, ValueError, TypeError, AttributeError):
+            continue  # unrelated, busy or damaged temp content is not ours to delete
+    return removed
 
 
 def install_review_demonstration(app):
@@ -41,9 +116,13 @@ def install_review_demonstration(app):
         if hashlib.sha256(data).hexdigest() != expected:
             raise ValueError('review_snapshot_bytes_changed: ' + name)
         content[name] = data
-    temporary = tempfile.TemporaryDirectory(prefix='credproof-demo-review-')
+    removed = cleanup_stale_review_demonstrations()
+    temporary = tempfile.TemporaryDirectory(prefix=DEMO_PREFIX)
     try:
         root = Path(temporary.name)
+        (root / DEMO_OWNER).write_text(json.dumps({
+            'schema': DEMO_OWNER_SCHEMA, 'pid': os.getpid(), 'started_at': time.time(),
+        }) + '\n', encoding='utf-8', newline='\n')
         for name, data in content.items():
             target = root / name
             target.parent.mkdir(parents=True, exist_ok=True)
@@ -64,6 +143,7 @@ def install_review_demonstration(app):
             'source_commit': manifest.get('source_commit'),
             'snapshot_manifest_sha256': hashlib.sha256(manifest_bytes).hexdigest(),
             'disposable_copy': True, 'new_model_calls': 0,
+            'stale_demo_directories_removed': len(removed),
             'notice': '历史回放；修订、决定与导出只作用于临时演示副本，不写回冻结材料，不代表本人采纳。',
         }
         app._review_demo_temporary = temporary
