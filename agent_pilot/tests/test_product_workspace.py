@@ -271,6 +271,16 @@ class WorkspaceFlowTests(unittest.TestCase):
 
 
 class EvidenceViewTests(unittest.TestCase):
+    def test_page_ids_are_unique(self):
+        from collections import Counter
+        from html.parser import HTMLParser
+        identifiers = []
+        class IDs(HTMLParser):
+            def handle_starttag(self, tag, attrs):
+                identifiers.extend(value for key, value in attrs if key == 'id')
+        IDs().feed((REPOSITORY / 'agent_pilot/ui/index.html').read_text('utf-8'))
+        self.assertEqual([name for name, count in Counter(identifiers).items() if count > 1], [])
+
     def test_recorded_case_reads_as_the_story(self):
         states = lambda path, **kw: [q['state'] for q in five_questions(json.loads(path.read_text('utf-8')), **kw)['questions']]
         self.assertEqual(states(ORIGINAL_REPORT), ['bad', 'bad', 'bad', 'bad', 'bad'])

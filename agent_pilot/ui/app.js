@@ -520,7 +520,7 @@ function renderProjectModes() {
   $('project-select').innerHTML = projects.map(item => `<option value="${escape(item.id)}">${escape(item.label)}</option>`).join('') || '<option value="">未授权项目；使用 --demo 或 --project-config 启动</option>';
   if (projects.some(p => p.id === selected)) $('project-select').value = selected;
   $('project-open').disabled = state.busy || !projects.length;
-  $('project-check').disabled = state.busy || !state.project || state.bootstrap?.access_mode === 'view';
+  $('registered-project-check').disabled = state.busy || !state.project || state.bootstrap?.access_mode === 'view';
   $('project-export').disabled = state.busy || !state.project;
   $('project-current').hidden = !state.project;
   const p = state.project;
@@ -1493,7 +1493,7 @@ $('project-open').addEventListener('click', () => busyAction(async () => {
   state.project = await request('/api/project/select', { project_id: $('project-select').value });
   announce('已读取启动时登记的配置；尚未执行新的安全检查。');
 }));
-$('project-check').addEventListener('click', () => busyAction(async () => {
+$('registered-project-check').addEventListener('click', () => busyAction(async () => {
   state.project = await request('/api/project/check', { project_id: state.project.id });
   announce(`新的隔离检查结束：${state.project.last_report?.verdict || 'UNKNOWN'}。没有调用模型。`);
 }));

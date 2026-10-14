@@ -1,6 +1,7 @@
 """Serve editable UI against a temporary, read-only copy of disclosed history.
 
-No model, WSL probe, candidate execution, decisions or exports are available.
+No model, candidate execution, decisions or exports are available. The status
+GET may probe the operator-configured runtime's material availability only.
 Use the frozen installed wheel; only UI assets come from the frontend checkout.
 """
 import argparse

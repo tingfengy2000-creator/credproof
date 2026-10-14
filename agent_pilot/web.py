@@ -1,6 +1,7 @@
 """Loopback-only, standard-library UI bridge for one reviewed local Agent task.
 
-HTTP callers select registry IDs, never paths, commands, code or verdicts.
+HTTP callers select registry IDs or upload bounded project/source data; they
+cannot select host paths, shell commands or technical verdicts.
 Raw supervisor streams remain private; live repair is delegated to the reviewed
 ``credproof_safety.agent`` boundary launcher and adapted into the UI record
 shape.  Historical records remain replay-only.
