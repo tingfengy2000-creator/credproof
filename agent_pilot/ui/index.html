@@ -618,7 +618,7 @@
 
       <!-- Reference: comparison table and external onboarding (docs/compare) -->
       <section class="view" data-view="compare" hidden>
-        <div class="page-intro"><p>同一批冻结样本上，各方法放过了哪些有违规事实的对象、拦错了哪些合格对象；以及把一个真实开源项目接进工作台的完整记录。数据由脚本从冻结文件复算，不是本次运行。</p></div>
+        <div class="page-intro"><p>同一批冻结样本上，各方法放过了哪些未满足声明条件的对象、拦错了哪些合格对象；以及把一个真实开源项目接进工作台的完整记录。FAIL 分组同时包括安全违规、业务破坏与过度拒绝。数据由脚本从冻结文件复算，不是本次运行。</p></div>
         <div id="compare-empty" class="empty-block" hidden></div>
         <section id="compare-table" class="panel" aria-labelledby="compare-title" hidden>
           <div class="panel-head">
@@ -626,7 +626,7 @@
             <div class="tabs" role="tablist" aria-label="样本批次" id="compare-batches"></div>
           </div>
           <div class="table-wrap"><table class="ledger compare-ledger" id="compare-numbers"></table></div>
-          <p class="small muted">“放过不安全”与“拦错合格”的分母是该方法实际覆盖的对象数；没有记录的对象不算放行也不算拦下。“拦错合格”含没有有效回答（无效）的次数，括号内是明确拒绝的次数。</p>
+          <p class="small muted">“放过不合格”与“拦错合格”的分母分别是该方法覆盖的不合格、合格对象数；没有记录的对象不算放行也不算拦下。“拦错合格”沿用冻结汇总的非放行口径，包含合格对象上的无效回答；“无效回答”列统计全部覆盖对象，是交叉计数，不可与前两列相加。</p>
           <h3 class="sub-h">各方法看什么、看不到什么</h3>
           <dl id="compare-methods" class="method-defs"></dl>
           <h3 class="sub-h">口径与局限</h3>

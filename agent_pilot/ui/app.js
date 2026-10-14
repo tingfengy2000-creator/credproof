@@ -1556,15 +1556,16 @@ function renderCompare() {
     const current = batches.find(b => b.id === state.compareBatch) || batches[0];
     $('compare-batches').innerHTML = batches.map(b => `<button type="button" role="tab" data-compare-batch="${escape(b.id)}" aria-selected="${b.id === current.id}">${escape(b.label)}</button>`).join('');
     const d = current.denominators;
-    $('compare-denominator').textContent = `${current.label || '全部'}：有违规事实 ${d.unsafe}，合格 ${d.good}${d.unknown ? `，证据不足 ${d.unknown}（单列）` : ''}。${current.id === 'all' ? c.denominators.note : ''}`;
+    $('compare-denominator').textContent = `${current.label || '全部'}：未满足声明条件 ${d.unsafe}，合格 ${d.good}${d.unknown ? `，证据不足 ${d.unknown}（单列）` : ''}。${current.id === 'all' ? c.denominators.note : ''}`;
     const meta = Object.fromEntries(array(c.methods).map(m => [m.id, m]));
-    $('compare-numbers').innerHTML = `<thead><tr><th>方法</th><th class="num">放过不安全</th><th class="num">拦错合格</th><th class="num">没有记录</th><th>需要模型</th><th>例子</th></tr></thead><tbody>${array(current.methods).map(row => {
+    $('compare-numbers').innerHTML = `<thead><tr><th>方法</th><th class="num">放过不合格</th><th class="num">拦错合格</th><th class="num">无效回答</th><th class="num">没有记录</th><th>需要模型</th><th>例子</th></tr></thead><tbody>${array(current.methods).map(row => {
       const m = { ...meta[row.id], ...row };
       const cov = m.coverage || {};
       const gate = m.id === 'credproof';
       return `<tr class="${gate ? 'is-gate-row' : ''}"><td><strong>${escape(methodLabel(m))}</strong>${gate ? '<span class="sub">分组依据就是它自己的观察，本行按定义一致，不是独立准确率</span>' : ''}</td>
         <td class="num ${m.accepted_unsafe ? 'bad-ink' : 'ok-ink'}"><b>${m.accepted_unsafe}</b> / ${cov.unsafe ?? '—'}</td>
-        <td class="num ${m.rejected_good ? 'bad-ink' : 'ok-ink'}"><b>${m.rejected_good}</b> / ${cov.good ?? '—'}${m.rejected_good ? `<span class="sub">明确拒绝 ${m.explicit_rejected_good}，无效 ${m.invalid}</span>` : ''}</td>
+        <td class="num ${m.rejected_good ? 'bad-ink' : 'ok-ink'}"><b>${m.rejected_good}</b> / ${cov.good ?? '—'}${m.rejected_good ? `<span class="sub">其中明确拒绝 ${m.explicit_rejected_good}</span>` : ''}</td>
+        <td class="num">${m.invalid || 0}<span class="sub">覆盖 ${cov.rows ?? '—'} 份</span></td>
         <td class="num">${m.missing || 0}${m.unknown ? `<span class="sub">证据不足 ${m.unknown}</span>` : ''}</td>
         <td>${m.model_required ? '需要' : '不需要'}</td>
         <td>${m.example_patch_id ? `<a href="#patch/${encodeURIComponent(m.example_patch_id)}">查看补丁</a>` : '—'}</td></tr>`;
