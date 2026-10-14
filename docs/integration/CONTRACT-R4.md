@@ -16,7 +16,7 @@
 {
   "schema": "credproof.comparison/v1",
   "generated_from": [{"path": "docs/bench/bench-results.json", "sha256": "…"}],
-  "denominators": {"unsafe": 22, "good": 53, "note": "…分组依据与口径…"},
+  "denominators": {"unsafe": "<由脚本计算>", "good": "<由脚本计算>", "note": "…分组依据与口径…"},
   "methods": [
     {"id": "ci", "label": "业务测试（CI 中的 pytest）",
      "observes": "测试断言是否通过", "does_not_observe": "测试没写到的文件、请求、凭据去向",
