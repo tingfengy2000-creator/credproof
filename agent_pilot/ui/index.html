@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="color-scheme" content="light dark">
   <meta name="referrer" content="no-referrer">
-  <title>密证 CredProof · AI 补丁验收控制台</title>
+  <title>密证 CredProof · Python 工具安全修改验收</title>
   <link rel="stylesheet" href="./styles.css">
   <script src="./app.js" type="module"></script>
 </head>
@@ -31,30 +31,43 @@
   <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z"/></symbol>
   <symbol id="i-gate" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="12" r="2.2"/><path d="M6 7.2v9.6M8 6.2c5 1 7.8 2.6 8.3 3.9M8 17.8c5-1 7.8-2.6 8.3-3.9"/></symbol>
   <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m5-5-5 5 5 5"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11 12 4l8 7"/><path d="M6 10v10h12V10"/><path d="M10 20v-5h4v5"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3.5 6.5h6l2 2h9v10.5h-17z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12.5 4.2 4.2L19 7"/></symbol>
+  <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V4m-5 5 5-5 5 5M5 15v5h14v-5"/></symbol>
+  <symbol id="i-server" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="7" rx="1.5"/><rect x="4" y="13" width="16" height="7" rx="1.5"/><path d="M8 7.5h.01M8 16.5h.01"/></symbol>
 </svg>
 
 <div class="shell">
   <aside class="sidebar" aria-label="主导航">
-    <a class="brand" href="#overview">
+    <a class="brand" href="#home">
       <span class="brand-mark" aria-hidden="true">证</span>
-      <span class="brand-text"><strong>密证 CredProof</strong><small>AI 补丁可信验收</small></span>
+      <span class="brand-text"><strong>密证 CredProof</strong><small>Python 工具安全修改验收</small></span>
     </a>
-    <nav class="nav">
-      <a href="#overview" data-nav="overview"><svg class="icon"><use href="#i-grid"/></svg>验收概览</a>
+    <nav class="nav" aria-label="页面">
+      <a href="#home" data-nav="home"><svg class="icon"><use href="#i-home"/></svg>首页</a>
+      <p class="nav-group">工作台</p>
+      <a href="#projects" data-nav="projects"><svg class="icon"><use href="#i-folder"/></svg>我的项目</a>
+      <a href="#new" data-nav="new"><svg class="icon"><use href="#i-plus"/></svg>新建检查</a>
+      <a href="#recheck" data-nav="recheck"><svg class="icon"><use href="#i-refresh"/></svg>复检导出包</a>
+      <a href="#environment" data-nav="environment"><svg class="icon"><use href="#i-server"/></svg>运行环境</a>
+      <p class="nav-group">参考材料</p>
+      <a href="#overview" data-nav="overview"><svg class="icon"><use href="#i-grid"/></svg>对照评测</a>
       <a href="#patches" data-nav="patches"><svg class="icon"><use href="#i-list"/></svg>补丁记录</a>
       <a href="#pipeline" data-nav="pipeline"><svg class="icon"><use href="#i-gate"/></svg>流水线闸门</a>
-      <a href="#human-review" data-nav="human-review"><svg class="icon"><use href="#i-person"/></svg>人工审阅</a>
       <a href="#workbench" data-nav="workbench"><svg class="icon"><use href="#i-replay"/></svg>案例回放</a>
-      <a href="#project-entry" data-nav="project-entry"><svg class="icon"><use href="#i-plug"/></svg>接入项目</a>
+      <a href="#project-entry" data-nav="project-entry"><svg class="icon"><use href="#i-plug"/></svg>命令行接入</a>
       <a href="#method" data-nav="method"><svg class="icon"><use href="#i-flow"/></svg>工作原理</a>
     </nav>
-    <p class="sidebar-scope">结论只覆盖已适配的 Python 工具、合成凭据和本地模拟服务，不代表任意项目已安全。</p>
+    <p class="sidebar-scope">结论只覆盖配置声明的入口、必要测试、合成凭据和本地模拟服务，不代表任意项目已安全。</p>
   </aside>
 
   <div class="frame">
     <header class="topbar">
-      <h1 id="page-title" class="page-title">验收概览</h1>
+      <h1 id="page-title" class="page-title">首页</h1>
       <div class="topbar-meta">
+        <a id="env-chip" class="env-chip" href="#environment">正在读取运行环境</a>
         <span id="mode-chip" class="mode-chip">正在读取运行模式</span>
         <span id="connection" class="connection"><i></i>正在连接本机服务</span>
       </div>
@@ -64,7 +77,543 @@
 
     <main id="main" class="main" tabindex="-1">
 
-      <!-- Overview -->
+      <!-- Home: the product story on one real case -->
+      <section class="view home" data-view="home" aria-labelledby="home-title">
+        <div class="home-hero">
+          <div class="home-hero-text">
+            <h2 id="home-title" class="home-h1">AI 说修好了，<br>凭什么采纳？</h2>
+            <p class="home-lead">功能跑通，不等于修复合格。AI 提出建议，开发者审阅；安全与业务，用实际证据核验。</p>
+            <p class="home-sub">密证面向会读本地文件、带凭据调用服务的 Python 工具。它在隔离环境里真正运行修改后的代码，记录文件读了哪里、请求去了哪里、凭据出现在哪里，再把技术结论、人工决定和可复查的材料交给负责合并的人。</p>
+            <div class="action-row home-cta">
+              <a class="button big" href="#new"><svg class="icon"><use href="#i-plus"/></svg>检查一个项目</a>
+              <a class="button secondary big" href="#home" data-scroll="home-case">看真实案例</a>
+            </div>
+          </div>
+          <figure class="exhibit" aria-label="一次真实的 AI 修复：说明与实际改动不一致">
+            <figcaption><strong>一次真实的 AI 修复，本案例 v000</strong><span>本地 Qwen2.5-Coder 32B 历史输出</span></figcaption>
+            <div class="exhibit-body">
+              <div class="exhibit-row r1"><span class="exhibit-label ai">模型的说明</span><div><p lang="en" class="mono exhibit-quote">“The current code is missing the import for urllib.error … Adding the import should resolve this issue.”</p><p class="muted small">缺少 urllib.error 的导入，补上就能解决。</p></div></div>
+              <div class="exhibit-row r2"><span class="exhibit-label ai">实际改动</span><pre class="exhibit-diff"><span> import json</span><span> import logging</span><span class="del">-import os<i aria-hidden="true"></i></span><span> from urllib.request import Request, urlopen</span></pre></div>
+              <div class="exhibit-row r3"><span class="exhibit-label">检查器看到</span><ul><li>第 17 行 <code>NameError: name 'os' is not defined</code></li><li>必要业务测试 4 项执行，只通过 1 项</li><li>允许的资料读取 0 次，带凭据的服务请求 0 次</li><li>没有越界、没有泄露，因为它什么都没做成</li></ul></div>
+              <div class="exhibit-verdict r4"><span class="verdict-tag fail">FAIL</span><span>未观察到违规，但必要行为没有发生，不能采纳。</span></div>
+            </div>
+          </figure>
+        </div>
+
+        <dl class="four-q" aria-label="四个问题">
+          <div><dt>谁在用？</dt><dd>给 Python 工具做安全修改的开发者，以及决定是否合并的负责人。这类工具会读本地资料、带凭据调用服务，常由 AI 帮忙修改。</dd></div>
+          <div><dt>遇到了什么风险？</dt><dd>修改后测试变绿，工具却可能读出允许目录、跟着跳转把凭据带到别处、把凭据写进日志；也可能什么都没做，所以“看起来安全”。</dd></div>
+          <div><dt>比普通测试报告多什么？</dt><dd>实际运行时的行为证据：读了哪些文件、请求去了哪里、凭据出现在哪里，以及必要的业务行为是否真的发生。</dd></div>
+          <div><dt>最后拿到什么？</dt><dd>一份绑定到确切代码的验收报告和独立的人工决定，加上一个别人能在新目录重做检查的导出包。</dd></div>
+        </dl>
+
+        <section id="home-case" class="home-case" aria-labelledby="home-case-title">
+          <h2 id="home-case-title" class="home-h2">一个真实案例：资料助手</h2>
+          <p class="home-intro">资料助手是一个小型 Python 工具：按请求读取一份资料，再带着凭据调用一个服务。实验只使用每次随机生成的合成凭据和本机模拟服务。下面六步全部来自已保存的真实记录；你也可以在“新建检查”里选择这个示例，自己走一遍。</p>
+          <ol class="stage-rail" aria-label="案例流程">
+            <li><a href="#home" data-scroll="stage-1"><span>1</span>原问题</a></li>
+            <li><a href="#home" data-scroll="stage-2"><span>2</span>AI 候选及遗漏</a></li>
+            <li><a href="#home" data-scroll="stage-3"><span>3</span>开发者修订</a></li>
+            <li><a href="#home" data-scroll="stage-4"><span>4</span>安全与业务验收</a></li>
+            <li><a href="#home" data-scroll="stage-5"><span>5</span>待人工采纳</a></li>
+            <li><a href="#home" data-scroll="stage-6"><span>6</span>导出复检</a></li>
+          </ol>
+
+          <article id="stage-1" class="story-stage two-col">
+            <div>
+              <p class="stage-no">第 1 步</p>
+              <h3>原问题：三条风险路径</h3>
+              <p class="stage-text">原版 tool.py 是实验室里故意留下漏洞的示例。业务测试 4 项中能通过 2 项，看上去“基本能用”。</p>
+              <pre class="story-code" aria-label="原版 tool.py 第 8 至 27 行"><span><i>8</i>import json</span><span><i>9</i>import logging</span><span><i>10</i>import os</span><span><i>11</i>from urllib.request import Request, urlopen</span><span><i>14</i>def run(request):</span><span><i>15</i>    if not isinstance(request, dict) or ...:</span><span><i>16</i>        raise ValueError("invalid request")</span><span><i>17</i>    credential_env = os.environ.get("CREDPROOF_CREDENTIAL_ENV", ...)</span><span><i>18</i>    credential = os.environ[credential_env]</span><span><i>19</i>    path = request.get("path") or os.environ.get(...)</span><span class="risk"><i>20</i>    with open(path, "r", encoding="utf-8") as handle:<b>1</b></span><span class="risk"><i>21</i>        material = handle.read()</span><span><i>22</i>    url = request.get("url") or os.environ[...]</span><span class="risk"><i>23</i>    response = urlopen(Request(url, headers={"Authorization":<b>2</b></span><span class="risk"><i></i>                       "Bearer " + credential}), timeout=2)</span><span><i>24</i>    body = response.read().decode("utf-8")</span><span class="risk"><i>25</i>    logging.info("loaded %s with credential=%s", ..., credential)<b>3</b></span><span><i>26</i>    return {"resource": ..., "material": material, ...,</span><span class="risk"><i>27</i>            "credential": credential}<b>3</b></span></pre>
+            </div>
+            <div class="stage-side">
+              <svg class="risk-map" viewBox="0 0 540 250" role="img" aria-label="风险路径：工具带凭据请求允许服务，被 302 跳转到禁止服务；读取了禁止目录文件；凭据出现在输出、日志和返回值中">
+                <defs>
+                  <marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="rm-arrow"/></marker>
+                  <marker id="ahr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="rm-arrow-bad"/></marker>
+                </defs>
+                <rect x="4" y="96" width="128" height="58" rx="6" class="rm-tool"/>
+                <text x="68" y="121" text-anchor="middle" class="rm-tool-text">资料助手</text>
+                <text x="68" y="141" text-anchor="middle" class="rm-tool-sub">tool.py</text>
+                <rect x="200" y="6" width="150" height="52" rx="6" class="rm-ok"/>
+                <text x="275" y="28" text-anchor="middle" class="rm-ok-title">允许服务</text>
+                <text x="275" y="47" text-anchor="middle" class="rm-mono">/api/redirect</text>
+                <rect x="392" y="6" width="140" height="52" rx="6" class="rm-bad rm-hit"/>
+                <text x="462" y="28" text-anchor="middle" class="rm-bad-title">禁止服务</text>
+                <text x="462" y="47" text-anchor="middle" class="rm-mono">/secret</text>
+                <path d="M132 112 C 165 90, 170 40, 198 34" class="rm-line" marker-end="url(#ah)"/>
+                <path d="M350 32 L 390 32" class="rm-line-bad" marker-end="url(#ahr)"/>
+                <text x="371" y="76" text-anchor="middle" class="rm-bad-note">302 跳转</text>
+                <rect x="200" y="104" width="150" height="40" rx="6" class="rm-ok"/>
+                <text x="275" y="129" text-anchor="middle" class="rm-mono rm-ok-text">data/brief.txt</text>
+                <rect x="392" y="104" width="140" height="40" rx="6" class="rm-bad-fill"/>
+                <text x="462" y="129" text-anchor="middle" class="rm-mono rm-bad-text">secrets/secret.txt</text>
+                <path d="M132 124 L 198 124" class="rm-line" marker-end="url(#ah)"/>
+                <path d="M132 136 C 260 170, 360 160, 400 146" class="rm-line-bad rm-dash" marker-end="url(#ahr)"/>
+                <rect x="200" y="196" width="332" height="44" rx="6" class="rm-bad-fill"/>
+                <text x="366" y="223" text-anchor="middle" class="rm-bad-text">凭据出现在：标准输出、日志、返回值</text>
+                <path d="M68 154 L 68 218 L 198 218" class="rm-line-bad" marker-end="url(#ahr)"/>
+                <g class="rm-token"><rect x="104" y="84" width="74" height="22" rx="11"/><text x="141" y="99" text-anchor="middle">Bearer ••••</text></g>
+              </svg>
+              <ul class="numbered-notes bad">
+                <li><b>1</b><span><strong>路径不设限：</strong>按请求给的路径直接打开文件，检查中实际读到了 secrets/secret.txt。</span></li>
+                <li><b>2</b><span><strong>跟随跳转：</strong>允许服务返回 302 后，urlopen 自动跟到禁止服务 /secret，认证头一起带过去。</span></li>
+                <li><b>3</b><span><strong>凭据外流：</strong>凭据写进日志，又作为返回值交出去；标准输出里也能看到。</span></li>
+              </ul>
+              <p class="muted small">依据：原版完整检查报告，判定 FAIL，7 项必要条件未满足。</p>
+            </div>
+          </article>
+
+          <article id="stage-2" class="story-stage two-col">
+            <div>
+              <p class="stage-no">第 2 步</p>
+              <h3>AI 候选：方向对了，但漏了东西</h3>
+              <p class="stage-text">这是本地模型给出的历史候选，演示中原样导入为 v000，没有重新推理。</p>
+              <pre class="story-code" aria-label="AI 候选 v000 第 8 至 27 行"><span class="miss"><i>8</i>import json<b>c</b></span><span><i>9</i>import logging</span><span class="miss"><i>10</i>from urllib.request import Request, urlopen<b>c</b></span><span class="good"><i>11</i>from credproof_access import read_text, get_json</span><span><i>14</i>def run(request):</span><span><i>15</i>    if not isinstance(request, dict) or ...:</span><span><i>16</i>        raise ValueError("invalid request")</span><span class="miss"><i>17</i>    credential_env = os.environ.get(...)<b>a</b></span><span><i>18</i>    credential = os.environ[credential_env]</span><span><i>19</i>    path = request.get("path") or os.environ.get(...)</span><span class="good"><i>20</i>    material = read_text(path)</span><span><i>21</i>    url = request.get("url") or os.environ[...]</span><span><i>22</i>    try:</span><span class="good"><i>23</i>        service_data = get_json(url, credential)</span><span class="miss"><i>24</i>    except urllib.error.HTTPError as e:<b>b</b></span><span class="miss"><i>25</i>        raise ValueError(f"HTTP error ...: {e}")</span><span class="good"><i>26</i>    logging.info("loaded %s", request["resource"])</span><span class="good"><i>27</i>    return {"resource": ..., "material": ..., "service": ...}</span></pre>
+            </div>
+            <div class="stage-side">
+              <h4 class="ok-ink">做对的部分</h4>
+              <p>读文件和调服务改成了固定访问组件 <code>read_text</code> 与 <code>get_json</code>，日志和返回值里也不再放凭据。三条风险路径的修改方向都对。</p>
+              <h4 class="miss-ink">遗漏的部分</h4>
+              <ul class="numbered-notes miss">
+                <li><b>a</b><span><strong>删掉了 import os：</strong>模型说要补 urllib.error 的导入，实际却删除了 os 的导入，第 17 行一运行就报 NameError。</span></li>
+                <li><b>b</b><span><strong>异常转换不对：</strong>引用了没有导入的 urllib，并把跳转产生的 HTTPError 改成 ValueError，与“遇到跳转应抛出 HTTPError、不跟随”的要求冲突。</span></li>
+                <li><b>c</b><span><strong>残留无用导入：</strong>json、Request、urlopen 都已不再使用。</span></li>
+              </ul>
+              <div class="callout">
+                <p><strong>只找违规的检查，在这一版上什么也找不到：没有越界、没有禁止请求、没有泄露。</strong></p>
+                <p>密证仍判 FAIL，理由是应该发生的事没有发生：资料没读、服务没认证、必要测试 3 项失败。</p>
+              </div>
+            </div>
+          </article>
+
+          <article id="stage-3" class="story-stage two-col">
+            <div>
+              <p class="stage-no">第 3 步</p>
+              <h3>开发者修订：v000 到 v001 的真实差异</h3>
+              <p class="stage-text">开发者在 Codex 辅助下修订，来源记为“开发者修订”，不算作运行时模型的输出。文档字符串的改写此处略去。</p>
+              <pre class="story-code diff" aria-label="v000 到 v001 的差异"><span><i>7 7</i> """</span><span class="del"><i>8</i>-import json</span><span class="add"><i>8</i>+import os</span><span><i>9 9</i> import logging</span><span class="del"><i>10</i>-from urllib.request import Request, urlopen</span><span><i>11 10</i> from credproof_access import read_text, get_json</span><span class="gap"><i></i> …</span><span><i>19 15</i>     path = request.get("path") or os.environ.get(...)</span><span><i>20 16</i>     material = read_text(path)</span><span><i>21 17</i>     url = request.get("url") or os.environ[...]</span><span class="del"><i>22</i>-    try:</span><span class="del"><i>23</i>-        service_data = get_json(url, credential)</span><span class="del"><i>24</i>-    except urllib.error.HTTPError as e:</span><span class="del"><i>25</i>-        raise ValueError(f"HTTP error accessing service: {e}")</span><span class="add"><i>18</i>+    service_data = get_json(url, credential)</span><span><i>26 19</i>     logging.info("loaded %s", request["resource"])</span></pre>
+            </div>
+            <div class="stage-side">
+              <dl class="kv">
+                <dt>修订理由</dt><dd>恢复 os 导入；使用固定访问组件；保留 HTTPError 与 ValueError 的约定、真实文件读取和授权认证，不输出凭据。</dd>
+                <dt>能改什么</dt><dd>只能改授权入口文件 tool.py。业务测试、检查规则、访问组件全部冻结，改了就不再是同一份验收。</dd>
+                <dt>谁来判定</dt><dd>提交后由原检查器重新运行，开发者不能改写判定。</dd>
+                <dt>代码摘要</dt><dd><code>v001 7a7dcaf75275…</code></dd>
+              </dl>
+            </div>
+          </article>
+
+          <article id="stage-4" class="story-stage">
+            <p class="stage-no">第 4 步</p>
+            <h3>安全与业务验收：选一个版本，看五个问题</h3>
+            <p class="stage-text">三个版本用同一份配置、同一组必要测试、同一个检查器运行。凭据在页面上一律脱敏。工作台里的检查结果用的是同一套呈现。</p>
+            <div class="version-tabs" role="tablist" aria-label="选择版本">
+              <button type="button" role="tab" data-story-version="original" aria-selected="false"><strong>原问题</strong><span>实验室示例</span></button>
+              <button type="button" role="tab" data-story-version="v000" aria-selected="true"><strong>AI 候选 v000</strong><span>本地模型历史输出</span></button>
+              <button type="button" role="tab" data-story-version="v001" aria-selected="false"><strong>开发者修订 v001</strong><span>Codex 辅助</span></button>
+            </div>
+            <div id="story-evidence" class="evidence-board" role="tabpanel"></div>
+          </article>
+
+          <article id="stage-5" class="story-stage two-col">
+            <div>
+              <p class="stage-no">第 5 步</p>
+              <h3>技术通过，仍待人工采纳</h3>
+              <p class="stage-text">v001 的检查通过了，但这只是三个状态中的一个。页面把它们分开显示，任何一个都不会替另一个做决定。</p>
+              <div id="story-states" class="states compact-states"></div>
+              <ul class="plain-list stage-list">
+                <li>FAIL 的版本不能被批准：对 v000 提交批准，服务端返回 409。</li>
+                <li>批准后再次运行检查，结果仍是 PASS，但批准不会自动恢复，需要重新决定。</li>
+                <li>每次决定追加保存，历史保留；本机记录不是强身份签名。</li>
+              </ul>
+            </div>
+            <div class="stage-side">
+              <h4>批准的是哪一份？</h4>
+              <p class="muted small">选一种变化，看旧批准还算不算数。结果取自已记录的审批功能测试。</p>
+              <div class="chip-row" role="group" aria-label="模拟变化">
+                <button type="button" class="chip" data-story-change="none" aria-pressed="true">没有变化</button>
+                <button type="button" class="chip" data-story-change="code" aria-pressed="false">改了代码</button>
+                <button type="button" class="chip" data-story-change="config" aria-pressed="false">改了配置</button>
+                <button type="button" class="chip" data-story-change="component" aria-pressed="false">换了访问组件</button>
+                <button type="button" class="chip" data-story-change="tests" aria-pressed="false">删了必要测试</button>
+              </div>
+              <table class="ledger compact binding-table"><caption>决定绑定的对象</caption><tbody id="story-binding"></tbody></table>
+              <div id="story-outcome" class="outcome"></div>
+            </div>
+          </article>
+
+          <article id="stage-6" class="story-stage">
+            <p class="stage-no">第 6 步</p>
+            <h3>导出复检：材料移走后，别人能不能重做？</h3>
+            <p class="stage-text">导出的是同一个对象：代码、配置、必要测试、访问组件和报告摘要。复检方重新执行完整检查，得到新的运行证据，而不是信任一份保存的“通过”。导出不会自动把代码应用到原项目。</p>
+            <ol class="export-steps">
+              <li><strong>导出同一对象</strong><span>代码、配置、必要测试、访问组件和报告摘要一起导出。</span><em>导出不应用代码，收据追加保存</em></li>
+              <li><strong>匿名取件</strong><span>不带账号凭据，从固定提交逐字节取回公开包并核对清单。</span><em>17 个文件全部一致</em></li>
+              <li><strong>新目录完整复检</strong><span>在新目录用原检查器重新运行，生成新的报告。</span><em>复检完成，原报告仍然适用</em></li>
+              <li><strong>导出的回归测试</strong><span>用普通 pytest 检验导出测试能否发现缺陷。</span><em>修复版 0 项失败；重新引入缺陷 1 项失败；无关改动 0 项失败</em></li>
+            </ol>
+            <p class="small muted">在工作台里，“复检导出包”页面可以直接上传导出的 zip，在新目录重新执行完整检查。命令退出码为 0 不等于 PASS，要读新报告里的判定、逐项测试和场景完成情况。</p>
+          </article>
+        </section>
+
+        <section class="home-section" aria-labelledby="contrib-title">
+          <h2 id="contrib-title" class="home-h2">两个贡献</h2>
+          <p class="home-intro">目前主要是工程与场景创新，不是已经建立强算法壁垒的项目。</p>
+          <div class="two-col wide-gap">
+            <div>
+              <p class="stage-no">贡献一</p>
+              <h3 class="contrib-h">不只看有没有出事，还检查该做的事是否真正发生</h3>
+              <table class="ledger contrast-table">
+                <caption>同一个 v000，两种看法</caption>
+                <thead><tr><th scope="col">只看有没有出事</th><th scope="col">还看该做的做了没有</th></tr></thead>
+                <tbody>
+                  <tr><td>越界读取 0 次</td><td class="miss-ink">允许资料读取 0 次</td></tr>
+                  <tr><td>禁止服务回执 0 次</td><td class="miss-ink">带凭据的认证请求 0 次</td></tr>
+                  <tr><td>凭据泄露 0 处</td><td class="miss-ink">必要测试 4 项只过 1 项</td></tr>
+                  <tr class="total"><td>看起来安全</td><td class="bad-ink">FAIL：修复不合格</td></tr>
+                </tbody>
+              </table>
+              <p class="small muted">适用范围：结论只在已实现、已验证的观察范围内有效，包括 Python 审计钩子、模拟服务回执、输出与日志捕获和隔离运行。报告会列出未覆盖项，不能推广成任意 Python 执行的完整安全证明。</p>
+            </div>
+            <div>
+              <p class="stage-no">贡献二</p>
+              <h3 class="contrib-h">技术结果与人工采纳分开，并对应同一份修改</h3>
+              <dl class="qa-list">
+                <div><dt>批准的是哪份代码？</dt><dd>决定绑定代码摘要、项目树摘要和报告摘要，提交时三者都要核对。</dd></div>
+                <div><dt>依据哪些检查？</dt><dd>绑定那一份报告：14 项必要条件、逐项测试结果，以及冻结的配置与测试。</dd></div>
+                <div><dt>配置或组件变化后，旧批准还算不算数？</dt><dd>不算。结论回到 UNKNOWN、决定回到待定，旧页面的提交返回 409；重新检查也不会自动恢复批准。</dd></div>
+                <div><dt>材料移走后，别人能不能重做检查？</dt><dd>能。导出包可以在新目录重新执行完整检查，产生新的运行证据。</dd></div>
+              </dl>
+            </div>
+          </div>
+        </section>
+
+        <section class="home-section" aria-labelledby="faq-title">
+          <h2 id="faq-title" class="home-h2">常见质疑</h2>
+          <div class="faq">
+            <details open><summary>为什么不用现有 CI 或安全扫描器？</summary><p>现有工具擅长的事我们照用：业务测试仍由 pytest 运行，检查结果也能以 SARIF 和 JUnit 交给现有 CI 和代码扫描界面。</p><p>区别在观察对象。静态扫描读的是代码文本，CI 看的是测试是否通过；密证在隔离环境里实际运行修改后的代码，记录文件访问、请求去向、服务回执和凭据出现的通道，并要求必要行为确实发生。最后交付的是别人能重做的检查，而不是一句“通过”。</p></details>
+            <details><summary>最后还是人工改代码，AI 有什么作用？</summary><p>在这个案例里，AI 给出了真实的候选：改用固定访问组件，方向正确；但删掉了 os 的导入，也转错了异常。开发者在 Codex 辅助下，对照这份候选和它的差异完成修订，再交给检查器独立验收。</p><p>我们没有证明模型能独立修复，也没有测量节省了多少时间。产品的主要价值不依赖 AI 每次都成功：AI 的候选错了，检查器同样会拦下。</p></details>
+            <details><summary>这不就是 CI 加审批吗？</summary><p>规范的 CI 确实能实现其中一部分，甚至相同的判定。我们不是发明 CI，而是针对 Python 工具的安全修改，提供现成的行为观察、验收条件、对象绑定和复检流程。</p><p>目标是减少每个项目从零组织这些能力的工作。这是产品目标，目前还不是测量过的收益。</p></details>
+            <details><summary>你们自己做了什么？</summary><p>访问组件、检查器、人工决定约束、对象绑定和导出复检入口由参赛团队实现。下面逐项列出源码位置，并和第三方库、运行时模型分开写明。</p></details>
+          </div>
+        </section>
+
+        <section class="home-section" aria-labelledby="ours-title">
+          <h2 id="ours-title" class="home-h2">我们做了什么，哪些来自别处</h2>
+          <div class="two-col wide-gap ours">
+            <div>
+              <h3 class="ours-h">参赛团队实现</h3>
+              <ul class="ours-list">
+                <li><strong>访问组件</strong><span>读文件、调服务的固定接口：拒绝越界路径，遇到跳转不跟随。</span><code>credproof_access/</code></li>
+                <li><strong>检查器</strong><span>隔离运行，审计钩子与模拟服务观察，14 项必要条件，PASS、FAIL、UNKNOWN 三值判定。</span><code>credproof_safety/project.py</code></li>
+                <li><strong>人工决定约束与对象绑定</strong><span>三个状态分开；FAIL 不能批准；决定绑定代码、配置、测试、组件和报告，变化即失效。</span><code>credproof_safety/human_review.py</code></li>
+                <li><strong>导出与复检入口</strong><span>导出包、新目录复检、导出回归测试，以及 SARIF 和 JUnit 报告。</span><code>credproof_safety/project_bundle.py</code></li>
+                <li><strong>工作台</strong><span>本页面、项目接入与配置向导、检查结果阅读、修订与审阅。</span><code>agent_pilot/</code></li>
+              </ul>
+            </div>
+            <div>
+              <h3 class="ours-h other">第三方与运行环境</h3>
+              <ul class="ours-list">
+                <li><strong>bubblewrap</strong><span>Linux 隔离沙箱；Windows 上经 WSL 运行，也可在 Docker 中运行。</span></li>
+                <li><strong>pytest 与 Python 标准库</strong><span>运行业务测试；审计钩子、urllib 等来自标准库。</span></li>
+                <li><strong>Qwen-Agent、Ollama、本地 Qwen 模型（可选）</strong><span>只用来产生候选，不参与判定；查看、修订和验收都不需要模型。</span></li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section class="home-start" aria-labelledby="start-title">
+          <div>
+            <h2 id="start-title" class="home-h2">用你自己的项目走一遍</h2>
+            <p>上传项目文件夹或 zip，填写入口、必要测试和资料目录；检查在隔离环境中运行，不调用模型。</p>
+          </div>
+          <div class="action-row">
+            <a class="button big" href="#new"><svg class="icon"><use href="#i-plus"/></svg>新建检查</a>
+            <a class="button secondary big" href="#environment">先确认运行环境</a>
+          </div>
+        </section>
+      </section>
+
+      <!-- Projects list -->
+      <section class="view" data-view="projects" hidden>
+        <div class="page-intro">
+          <p>每个项目是一条审阅记录：第 0 版是接入时的代码，之后每次修订都是新版本。检查、决定和导出都只针对当前版本。</p>
+          <a class="button" href="#new"><svg class="icon"><use href="#i-plus"/></svg>新建检查</a>
+        </div>
+        <section class="panel">
+          <div class="panel-head"><div><h2>审阅记录</h2><p id="projects-note" class="muted small"></p></div></div>
+          <div class="table-wrap"><table class="ledger" id="projects-table"></table></div>
+        </section>
+        <section id="drafts-panel" class="panel" hidden>
+          <div class="panel-head"><div><h2>未完成的接入</h2><p class="muted small">配置还没有冻结，可以继续填写。</p></div></div>
+          <div class="table-wrap"><table class="ledger" id="drafts-table"></table></div>
+        </section>
+        <details id="import-history" class="panel" hidden>
+          <summary>从 AI 历史记录导入审阅</summary>
+          <p class="muted small">导入已登记的 AI 历史候选作为第 0 版，不会重新推理。</p>
+          <div class="action-row"><select id="history-review-select" aria-label="AI 历史记录"></select><button id="history-review-open" class="button secondary" type="button">导入</button></div>
+        </details>
+      </section>
+
+      <!-- New check: source selection and configuration wizard -->
+      <section class="view" data-view="new" hidden>
+        <ol class="wizard-steps" aria-label="新建检查的步骤">
+          <li id="wiz-step-1" aria-current="step"><span>1</span>选择项目</li>
+          <li id="wiz-step-2"><span>2</span>填写检查配置</li>
+          <li id="wiz-step-3"><span>3</span>冻结配置，开始检查</li>
+        </ol>
+        <div id="new-env" class="banner banner-info" hidden></div>
+
+        <div id="new-source">
+          <div class="source-grid">
+            <section class="panel source-card">
+              <h2>上传你的项目</h2>
+              <p class="muted small">选择项目根目录，或上传项目的 zip。只在本机保存一份副本；不会上传到网络。上限：16 MiB，2000 个文件，单个文件 4 MiB；自动忽略 .git、虚拟环境和缓存。</p>
+              <div class="drop-zone" id="drop-zone">
+                <svg class="icon icon-lg"><use href="#i-upload"/></svg>
+                <p>把 zip 拖到这里，或</p>
+                <div class="action-row">
+                  <label class="button file-button">选择项目文件夹<input id="pick-folder" type="file" webkitdirectory directory multiple></label>
+                  <label class="button secondary file-button">选择 zip 文件<input id="pick-zip" type="file" accept=".zip,application/zip"></label>
+                </div>
+              </div>
+              <label for="upload-label">显示名（可选）</label>
+              <input id="upload-label" maxlength="80" placeholder="例如：报表下载工具">
+              <p id="upload-status" class="small muted" role="status"></p>
+            </section>
+            <section class="panel source-card">
+              <h2>或者用示例项目</h2>
+              <p class="muted small">首页案例的原始代码，以及对照评测的 8 个漏洞原版。示例已带配置，可以直接开始。</p>
+              <ul id="example-list" class="example-list"><li class="muted">正在读取示例</li></ul>
+            </section>
+          </div>
+        </div>
+
+        <div id="new-config" hidden>
+          <section class="panel intake-head">
+            <div class="panel-head">
+              <div><h2 id="intake-title">配置</h2><p id="intake-meta" class="muted small"></p></div>
+              <a class="button secondary compact" href="#new">换一个项目</a>
+            </div>
+            <p id="intake-origin" class="small"></p>
+          </section>
+          <div class="config-grid">
+            <form id="config-form" class="config-form" novalidate>
+              <fieldset class="panel">
+                <legend>入口</legend>
+                <p class="muted small">检查器会在隔离环境里用每个场景的请求参数调用这个函数。</p>
+                <label for="cfg-entry-pick">检测到的函数</label>
+                <select id="cfg-entry-pick"></select>
+                <div class="field-row">
+                  <div><label for="cfg-module">模块</label><input id="cfg-module" required placeholder="tool"></div>
+                  <div><label for="cfg-callable">函数</label><input id="cfg-callable" required placeholder="run"></div>
+                </div>
+              </fieldset>
+              <fieldset class="panel">
+                <legend>必要业务测试</legend>
+                <p class="muted small">这些测试必须全部执行并通过。每行一个相对路径，可以是目录或文件。</p>
+                <textarea id="cfg-tests" rows="2" spellcheck="false"></textarea>
+                <details><summary>可选测试与源码范围</summary>
+                  <label for="cfg-optional">可选测试（每行一个，可留空）</label><textarea id="cfg-optional" rows="2" spellcheck="false"></textarea>
+                  <label for="cfg-source">源码范围（每行一个通配符）</label><textarea id="cfg-source" rows="2" spellcheck="false"></textarea>
+                </details>
+              </fieldset>
+              <fieldset class="panel">
+                <legend>文件与服务边界</legend>
+                <p class="muted small">检查时会生成一个允许目录（放一份资料）和一个禁止目录（放本次的合成凭据），以及一对本机模拟服务。</p>
+                <div class="field-row">
+                  <div><label for="cfg-allowed">允许目录名</label><input id="cfg-allowed" placeholder="data"></div>
+                  <div><label for="cfg-forbidden">禁止目录名</label><input id="cfg-forbidden" placeholder="secrets"></div>
+                </div>
+                <label class="check"><input id="cfg-require-read" type="checkbox">必须实际读取允许目录里的资料</label>
+                <label class="check"><input id="cfg-service" type="checkbox">工具会调用一个需要认证的服务</label>
+                <div class="field-row" id="cfg-service-fields">
+                  <div><label for="cfg-prefix">允许的路径前缀</label><input id="cfg-prefix" placeholder="/api"></div>
+                  <div class="align-end"><label class="check"><input id="cfg-require-cred" type="checkbox">必须带凭据完成认证</label></div>
+                </div>
+                <label for="cfg-env">凭据环境变量名</label>
+                <input id="cfg-env" list="cfg-env-list" placeholder="CREDPROOF_TEST_CREDENTIAL"><datalist id="cfg-env-list"></datalist>
+              </fieldset>
+              <fieldset class="panel">
+                <legend>入口场景</legend>
+                <p class="muted small">每个场景调用一次入口。请求参数是 JSON 对象；可以用下面的占位符，检查时替换成真实路径和地址。</p>
+                <ul id="placeholder-list" class="placeholder-list"></ul>
+                <div id="scenario-list" class="scenario-list"></div>
+                <div class="action-row">
+                  <button type="button" class="button secondary compact" data-add-scenario="blank"><svg class="icon"><use href="#i-plus"/></svg>空白场景</button>
+                  <button type="button" class="button secondary compact" data-add-scenario="normal">正常读资料并调服务</button>
+                  <button type="button" class="button secondary compact" data-add-scenario="forbidden_file">请求禁止文件应被拒绝</button>
+                  <button type="button" class="button secondary compact" data-add-scenario="redirect">遇到跳转应停下</button>
+                  <button type="button" class="button secondary compact" data-add-scenario="forbidden_service">请求禁止服务应被拒绝</button>
+                </div>
+                <label for="cfg-timeout">超时（秒）</label>
+                <input id="cfg-timeout" type="number" min="1" max="120" step="1">
+              </fieldset>
+              <div class="action-row sticky-actions">
+                <button id="config-save" class="button secondary" type="submit">校验配置</button>
+                <button id="config-start" class="button" type="button">冻结配置并开始</button>
+                <span id="config-dirty" class="small muted" role="status"></span>
+              </div>
+            </form>
+            <aside class="config-side">
+              <section class="panel">
+                <h2>校验结果</h2>
+                <ul id="config-errors" class="issue-list bad"></ul>
+                <ul id="config-warnings" class="issue-list warn"></ul>
+                <p id="config-ok" class="ok-ink" hidden>配置有效，可以开始。</p>
+              </section>
+              <section class="panel">
+                <div class="panel-head"><h2>credproof.toml 预览</h2><button id="toml-download" class="button secondary compact" type="button"><svg class="icon"><use href="#i-download"/></svg>下载</button></div>
+                <pre id="toml-preview" class="cmd toml"></pre>
+                <p class="muted small">这是服务端最近一次校验的结果。开始后它和测试一起冻结。</p>
+              </section>
+              <section class="panel">
+                <h2>项目文件</h2>
+                <p id="intake-files-note" class="muted small"></p>
+                <ul id="intake-files" class="file-list"></ul>
+              </section>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- One project: check, read evidence, revise, decide, export -->
+      <section class="view" data-view="project" hidden>
+        <a class="back-link" href="#projects"><svg class="icon"><use href="#i-back"/></svg>返回我的项目</a>
+        <div id="project-empty" class="empty-block" hidden></div>
+        <div id="project-body" hidden>
+          <header class="project-head">
+            <div>
+              <h2 id="project-title"></h2>
+              <p id="project-meta" class="muted small"></p>
+            </div>
+            <div id="project-next" class="next-step"></div>
+          </header>
+          <div id="project-states" class="states" aria-label="三个独立状态"></div>
+          <div id="project-material" class="banner banner-error" hidden></div>
+
+          <section class="panel" aria-labelledby="result-title">
+            <div class="panel-head">
+              <div><h2 id="result-title">检查结果</h2><p id="result-meta" class="muted small"></p></div>
+              <div class="action-row">
+                <button id="project-check" class="button" type="button"><svg class="icon"><use href="#i-play"/></svg>运行检查</button>
+              </div>
+            </div>
+            <p id="check-blocker" class="small muted"></p>
+            <div id="project-evidence" class="evidence-board"></div>
+            <details class="conditions-details">
+              <summary>14 项必要条件</summary>
+              <div id="project-conditions" class="conditions"></div>
+            </details>
+            <div class="action-row downloads" id="report-downloads">
+              <span class="small muted">下载报告：</span>
+              <a class="button secondary compact" data-report="json" href="#">JSON</a>
+              <a class="button secondary compact" data-report="sarif" href="#">SARIF（代码扫描）</a>
+              <a class="button secondary compact" data-report="junit" href="#">JUnit</a>
+              <a class="button secondary compact" data-report="md" href="#">中文摘要</a>
+            </div>
+            <details class="raw"><summary>完整检查报告（原始数据，凭据已脱敏）</summary><pre id="project-report"></pre></details>
+          </section>
+
+          <section class="panel" aria-labelledby="code-title">
+            <div class="panel-head">
+              <div><h2 id="code-title">代码与修订</h2><p class="muted small">只允许修改入口文件 <code id="project-entry-path"></code>；测试、配置和访问组件与冻结基线逐字节比对。</p></div>
+              <div class="tabs" role="tablist" aria-label="代码视图">
+                <button type="button" role="tab" data-project-tab="edit" aria-selected="true">当前版本</button>
+                <button type="button" role="tab" data-project-tab="diff" aria-selected="false">与上一版差异</button>
+                <button type="button" role="tab" data-project-tab="original" aria-selected="false">接入时的代码</button>
+                <button type="button" role="tab" data-project-tab="ai" aria-selected="false" id="project-ai-tab" hidden>AI 原件</button>
+              </div>
+            </div>
+            <div id="project-code-view" class="code-box" hidden></div>
+            <textarea id="project-code" class="code-editor" spellcheck="false" rows="24" aria-label="当前版本的入口文件源码"></textarea>
+            <div class="revise-row">
+              <label for="revise-reason">修订理由（必填）</label>
+              <input id="revise-reason" maxlength="1000" placeholder="例如：改用受控访问组件，跳转时抛出 HTTPError">
+              <button id="project-revise" class="button secondary" type="button">提交为新版本</button>
+              <p id="revise-hint" class="small muted">提交后是一个尚未检查的新版本，需要重新运行检查。</p>
+            </div>
+            <h3 class="sub-h">版本链</h3>
+            <ol id="project-versions" class="version-chain"></ol>
+          </section>
+
+          <section class="panel actions-panel" aria-labelledby="decide-title">
+            <h2 id="decide-title">人工决定</h2>
+            <p class="muted small">技术结论由检查器给出，人不能改写；是否采纳由人决定，并绑定到当前版本、项目树和报告。</p>
+            <label for="decide-reason">决定理由（必填）</label>
+            <input id="decide-reason" maxlength="1000" placeholder="例如：审阅差异，确认只改了访问方式">
+            <div class="action-row">
+              <button id="decide-approve" class="button good" type="button">确认采纳</button>
+              <button id="decide-needs" class="button secondary" type="button">需要修改</button>
+              <button id="decide-reject" class="button secondary" type="button">拒绝</button>
+              <label class="check"><input id="decide-test" type="checkbox">这是功能测试，不代表本人真实审阅</label>
+            </div>
+            <ul id="project-blockers" class="blockers"></ul>
+            <h3 class="sub-h">决定记录</h3>
+            <ol id="project-decisions" class="decision-log"></ol>
+          </section>
+
+          <section class="panel" aria-labelledby="export-title">
+            <h2 id="export-title">导出与接入</h2>
+            <div class="export-grid">
+              <div>
+                <h3>交给别人复检</h3>
+                <p class="small muted">已采纳修复包含代码、冻结配置、测试、访问组件和报告；在“复检导出包”上传，或用命令在新目录重新检查。导出不会修改你的原项目。</p>
+                <div class="action-row">
+                  <button id="export-adopted" class="button" type="button"><svg class="icon"><use href="#i-download"/></svg>导出已采纳修复</button>
+                  <button id="export-diagnostic" class="button secondary" type="button"><svg class="icon"><use href="#i-download"/></svg>导出诊断材料</button>
+                </div>
+              </div>
+              <div>
+                <h3>接进流水线</h3>
+                <p class="small muted">把冻结的 credproof.toml 放进仓库，在 PR 上运行同一检查；退出码 0 放行，2 不通过，3 证据不足，4 运行错误。</p>
+                <pre id="ci-command" class="cmd"></pre>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <!-- Recheck an exported bundle -->
+      <section class="view" data-view="recheck" hidden>
+        <div class="page-intro"><p>把“导出已采纳修复”得到的 zip 交给这里。服务端在新目录解压，核对清单，然后重新执行完整检查；结论来自这次运行，不读取包里保存的“通过”。</p></div>
+        <section class="panel">
+          <div class="drop-zone" id="recheck-drop">
+            <svg class="icon icon-lg"><use href="#i-upload"/></svg>
+            <p>把导出包拖到这里，或</p>
+            <label class="button file-button">选择导出包<input id="recheck-file" type="file" accept=".zip,application/zip"></label>
+          </div>
+          <p id="recheck-status" class="small muted" role="status"></p>
+        </section>
+        <section id="recheck-output" class="panel" hidden>
+          <div class="panel-head"><div><h2>复检结果</h2><p id="recheck-meta" class="muted small"></p></div><div id="recheck-seal"></div></div>
+          <dl id="recheck-facts" class="fact-grid"></dl>
+          <div id="recheck-evidence" class="evidence-board"></div>
+          <details class="raw"><summary>原始复检记录</summary><pre id="recheck-raw"></pre></details>
+        </section>
+      </section>
+
+      <!-- Runtime environment -->
+      <section class="view" data-view="environment" hidden>
+        <div class="page-intro"><p>检查只在隔离环境里运行项目代码；环境没准备好时，结论是“证据不足”，不会在本机直接执行。这一页只读取环境材料，不运行任何项目。</p></div>
+        <section class="panel">
+          <div class="panel-head"><div><h2>当前状态</h2><p id="env-observed" class="muted small"></p></div><button id="env-refresh" class="button secondary compact" type="button"><svg class="icon"><use href="#i-refresh"/></svg>重新读取</button></div>
+          <dl id="env-facts" class="fact-grid env-grid"></dl>
+          <ul id="env-reasons" class="issue-list warn"></ul>
+        </section>
+        <section class="panel">
+          <h2>三种启动方式</h2>
+          <table class="ledger"><thead><tr><th>入口</th><th>能做什么</th><th>需要</th></tr></thead><tbody>
+            <tr><td><code>start-credproof.cmd</code></td><td>阅读首页案例、已保存的审阅和评测记录；可以接入项目、填写配置，不执行检查</td><td>无</td></tr>
+            <tr><td><code>start-recheck.cmd</code></td><td>以上全部，加上隔离检查、修订后重新检查、复检导出包</td><td>已准备的 WSL / Linux 隔离环境</td></tr>
+            <tr><td><code>start-live.cmd</code></td><td>以上全部，加上本地模型生成候选</td><td>隔离环境和本地模型</td></tr>
+          </tbody></table>
+          <p class="small muted">Linux 或 WSL 上准备隔离环境：<code>python3 scripts/runtime/setup-linux.py --runtime-root &lt;目录&gt;</code>，然后 <code>python3 -m credproof_safety doctor</code> 应返回就绪。详见 docs/integration/linux.md。</p>
+        </section>
+      </section>
+
+      <!-- Reference: recorded benchmark -->
       <section class="view" data-view="overview" aria-labelledby="page-title">
         <div class="lede">
           <p class="lede-title">AI 说“已修复”，要看运行证据。</p>
@@ -197,70 +746,6 @@
             <p id="pipeline-apparmor" class="footnote"></p>
           </section>
           <p id="pipeline-provenance" class="provenance"></p>
-        </div>
-      </section>
-
-      <section class="view" data-view="human-review" hidden>
-        <div class="lede">
-          <p class="lede-title">AI 修不好时由开发者接手，修订同样要过闸门。</p>
-          <p>程序判定、人工决定和是否应用到原仓库是三个独立状态：程序通过不等于已采纳，已采纳也不等于已修改原仓库。</p>
-        </div>
-        <div class="review-pick">
-          <label>已保存的审阅<select id="review-saved"></select></label>
-          <button id="review-load" class="button secondary" type="button">打开</button>
-          <label>从 AI 历史记录新建<select id="review-history"></select></label>
-          <button id="review-open" class="button secondary" type="button">新建审阅</button>
-          <p id="review-pick-note" class="muted"></p>
-        </div>
-        <div id="review-empty" class="empty-block">还没有打开审阅。选择一份已保存的审阅，或从 AI 历史记录新建。</div>
-        <div id="review-content" hidden>
-          <div id="review-states" class="states" aria-label="三个独立状态"></div>
-          <section class="panel">
-            <div class="panel-head"><div><h2>版本链</h2><p class="muted">AI 原件保存为第 0 版；每次开发者修订都是新版本，不覆盖之前的版本。</p></div></div>
-            <ol id="review-versions" class="version-chain"></ol>
-          </section>
-          <section class="panel">
-            <div class="panel-head">
-              <div><h2>代码</h2><p class="muted">只允许修改配置的入口文件；测试、配置和访问组件与冻结基线逐字节比对。</p></div>
-              <div class="tabs" role="tablist" aria-label="代码视图">
-                <button type="button" role="tab" data-review-tab="diff" aria-selected="true">相邻版本差异</button>
-                <button type="button" role="tab" data-review-tab="edit" aria-selected="false">当前修订</button>
-                <button type="button" role="tab" data-review-tab="ai" aria-selected="false">AI 原件</button>
-                <button type="button" role="tab" data-review-tab="original" aria-selected="false">原始问题代码</button>
-              </div>
-            </div>
-            <div id="review-code-view" class="code-box"></div>
-            <textarea id="review-code" class="code-editor" spellcheck="false" rows="22" aria-label="当前修订的完整源码" hidden></textarea>
-          </section>
-          <section class="panel">
-            <div class="panel-head"><div><h2>14 项必要条件</h2><p id="review-checks-note" class="muted"></p></div></div>
-            <div id="review-checks" class="conditions"></div>
-          </section>
-          <section class="panel actions-panel">
-            <h2>审阅操作</h2>
-            <label for="review-reason">修改或决定的理由（必填）</label>
-            <input id="review-reason" maxlength="1000" placeholder="例如：恢复缺失的导入，改用受控访问组件">
-            <div class="action-row">
-              <button id="review-revise" class="button" type="button">提交开发者修订</button>
-              <button id="review-check" class="button" type="button">重新验收（不调用模型）</button>
-            </div>
-            <div class="action-row">
-              <button id="review-approve" class="button good" type="button">确认采纳</button>
-              <button id="review-needs" class="button secondary" type="button">需要修改</button>
-              <button id="review-reject" class="button secondary" type="button">拒绝</button>
-            </div>
-            <label class="check"><input id="review-test" type="checkbox">这是审批功能测试，不代表本人真实审阅</label>
-            <div class="action-row">
-              <button id="review-diagnostic" class="button secondary" type="button"><svg class="icon"><use href="#i-download"/></svg>导出诊断材料</button>
-              <button id="review-adopted" class="button secondary" type="button"><svg class="icon"><use href="#i-download"/></svg>导出已采纳修复</button>
-            </div>
-            <ul id="review-blockers" class="blockers"></ul>
-          </section>
-          <section class="panel">
-            <div class="panel-head"><div><h2>人工决定记录</h2><p class="muted">只追加，不覆盖。本机记录不是强身份签名或第三方认证。</p></div></div>
-            <ol id="review-decisions" class="decision-log"></ol>
-            <details class="raw"><summary>完整检查报告（原始数据）</summary><pre id="review-report"></pre></details>
-          </section>
         </div>
       </section>
 

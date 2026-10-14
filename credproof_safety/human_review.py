@@ -54,9 +54,14 @@ class ReviewWorkspace:
         return folder
 
     def list(self):
-        return [{'id': p.parent.name, 'project_id': read(p)['project_id'],
-                 'label': read(p)['label']} for p in sorted(self.root.glob('*/meta.json'))
-                if not p.parent.is_symlink()]
+        rows = []
+        for p in sorted(self.root.glob('*/meta.json')):
+            if p.parent.is_symlink():
+                continue
+            meta = read(p)
+            rows.append({'id': p.parent.name, 'project_id': meta['project_id'], 'label': meta['label'],
+                         'kind': meta.get('kind', 'AI_HISTORY'), 'created_at': meta.get('created_at')})
+        return rows
 
     @staticmethod
     def version(folder):
@@ -83,6 +88,59 @@ class ReviewWorkspace:
              'origin_id': origin_id, 'label': 'AI候选与开发者修订', 'created_at': now(),
              'original_sha256': sha((folder/'baseline/original.py').read_bytes()),
              'source_candidate_sha256': sha((folder/'baseline/candidate.py').read_bytes()),
+             'application_to_original': 'NOT_APPLIED'})
+        return self.view(identifier)
+
+    def open_project(self, project, origin_id, label):
+        """Freeze one configured project as v000; no execution, no model output.
+
+        The baseline uses the same layout as an imported AI history so every
+        later revise/check/decide/export goes through the unchanged binding.
+        ``original.py`` and ``candidate.py`` are both the imported entry: there
+        is no AI candidate in this record and the view reports ``ai_code`` as
+        ``None``.
+        """
+        from .access_dependency import dependency_receipt
+        from .project_bundle import _files
+        project = Path(project)
+        if not isinstance(label, str) or not label.strip() or len(label) > 80:
+            raise ValueError('project_label_required')
+        if not isinstance(origin_id, str) or not origin_id or len(origin_id) > 80:
+            raise ValueError('project_origin_required')
+        identifier = uuid.uuid4().hex
+        folder = self.root/identifier
+        folder.mkdir()
+        baseline = folder/'baseline'
+        _copy_project(project, baseline/'project')
+        cfg = load_config(baseline/'project/credproof.toml', project_root=baseline/'project')
+        entry = cfg.entry.module.replace('.', '/')+'.py'
+        if not cfg.matches_source(entry) or not cfg.matches_mutable(entry):
+            raise ValueError('entry_outside_source_or_mutable_scope')
+        if not (baseline/'project'/entry).is_file():
+            raise ValueError('entry_file_missing')
+        if any(not (baseline/'project'/name).exists() for name in cfg.tests):
+            raise ValueError('required_tests_missing')
+        entry_bytes = (baseline/'project'/entry).read_bytes()
+        (baseline/'original.py').write_bytes(entry_bytes)
+        (baseline/'candidate.py').write_bytes(entry_bytes)
+        source = Path(__file__).resolve().parents[1]/'credproof_access'
+        dependency = baseline/'dependencies/credproof_access'
+        dependency.mkdir(parents=True)
+        for name in dependency_receipt(source)['files']:
+            (dependency/name).write_bytes((source/name).read_bytes())
+        save(baseline/'access-dependency.json', {'identity': dependency_receipt(dependency),
+             'policy_reconstruction': 'fresh runner derives directory/service semantics from credproof.toml'})
+        save(baseline/'manifest.json', {'schema': 'credproof.project-review-baseline/v1',
+             'files': _files(baseline), 'execution_performed': False})
+        version = folder/'versions/v000'
+        _copy_project(baseline/'project', version/'project')
+        save(version/'version.json', {'id': 'v000', 'parent': None, 'source': 'PROJECT_IMPORT',
+             'origin_id': origin_id, 'created_at': now(),
+             'reason': '导入项目当前代码，配置与测试一并冻结',
+             'entry_path': entry, 'code_sha256': sha((version/'project'/entry).read_bytes())})
+        save(folder/'meta.json', {'id': identifier, 'kind': 'PROJECT', 'project_id': origin_id,
+             'origin_id': origin_id, 'label': label.strip(), 'created_at': now(),
+             'original_sha256': sha(entry_bytes), 'source_candidate_sha256': sha(entry_bytes),
              'application_to_original': 'NOT_APPLIED'})
         return self.view(identifier)
 
@@ -144,11 +202,13 @@ class ReviewWorkspace:
         state = latest['decision'] if decision_applicable else 'PENDING'
         source_path = version/'project'/meta['entry_path']
         code = source_path.read_text(encoding='utf8') if source_path.is_file() else ''
+        meta_record = read(folder/'meta.json')
+        is_project = meta_record.get('kind') == 'PROJECT'
         ai = (folder/'baseline/candidate.py').read_text(encoding='utf8')
         parent_code = ai if meta['id']=='v000' else (folder/'versions'/meta['parent']/'project'/meta['entry_path']).read_text(encoding='utf8')
-        return {'id':identifier, 'meta':read(folder/'meta.json'), 'version':meta,
+        return {'id':identifier, 'meta':{**meta_record, 'kind':meta_record.get('kind','AI_HISTORY')}, 'version':meta,
                 'original_code':(folder/'baseline/original.py').read_text(encoding='utf8'),
-                'ai_code':ai, 'code':code, 'diff':''.join(difflib.unified_diff(parent_code.splitlines(True),code.splitlines(True),fromfile='parent.py',tofile='revision.py')),
+                'ai_code':None if is_project else ai, 'code':code, 'diff':''.join(difflib.unified_diff(parent_code.splitlines(True),code.splitlines(True),fromfile='parent.py',tofile='revision.py')),
                 'object_sha256':obj,'report_sha256':report_sha,'report':report,
                 'technical_verdict':report['verdict'] if applicable else 'UNKNOWN',
                 'report_applicable':applicable,'material_reasons':reasons,
@@ -257,8 +317,10 @@ class ReviewWorkspace:
             (dest/'bundle').mkdir()
             _copy_project(version/'project', dest/'bundle/project')
         bundle=dest/'bundle'
-        (bundle/'ai-candidate.py').write_bytes((folder/'baseline/candidate.py').read_bytes())
-        save(bundle/'human-review.json', {'scope':'AI_ASSISTED_HUMAN_REVIEW','kind':'ADOPTED_REPAIR' if adopted else 'DIAGNOSTIC_OR_PENDING_REPAIR',
+        is_project = state['meta']['kind'] == 'PROJECT'
+        if not is_project:
+            (bundle/'ai-candidate.py').write_bytes((folder/'baseline/candidate.py').read_bytes())
+        save(bundle/'human-review.json', {'scope':'PROJECT_REVIEW' if is_project else 'AI_ASSISTED_HUMAN_REVIEW','kind':'ADOPTED_REPAIR' if adopted else 'DIAGNOSTIC_OR_PENDING_REPAIR',
              'original_sha256':state['meta']['original_sha256'],'source_candidate_sha256':state['meta']['source_candidate_sha256'],
              'version':meta,'technical_verdict':state['technical_verdict'],'report_sha256':state['report_sha256'],
              'decision':state['decision'],'decision_is_test':state['decision_is_test'],

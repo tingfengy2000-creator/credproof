@@ -299,6 +299,14 @@ class Application:
         self._runtime_at = 0.0
         from .project_workspace import ProjectWorkspace
         self.project_workspace = ProjectWorkspace(self.root, config_path=project_config, examples=project_examples)
+        from .intake import IntakeWorkspace
+        authorized = {}
+        if 'authorized-project' in self.project_workspace.projects:
+            path, label, _ = self.project_workspace.projects['authorized-project']
+            authorized['project'] = (path, label)
+        self.intake = IntakeWorkspace(self.root, authorized=authorized)
+        self._checker = None
+        self._checker_at = 0.0
         for entry in histories:
             self.add_history(entry)
         # Benchmark results are a read-only, operator-selected file; never a request path.
@@ -324,6 +332,122 @@ class Application:
         if self.operation.locked():
             data.update(ready=False, reasons=[*data.get('reasons', []), 'another_local_operation_is_running'])
         return data
+
+    def checker(self, force=False):
+        """Project checker materials (bubblewrap, rootfs, site packages); no execution."""
+        if force or self._checker is None or time.monotonic() - self._checker_at > 5:
+            try:
+                from credproof_safety.runner import available
+                ready, detail = available()
+            except Exception as error:  # never infer readiness from an exception
+                ready, detail = False, 'checker_runtime_unavailable: ' + type(error).__name__
+            self._checker = {'ready': bool(ready), 'detail': str(detail)[:300]}
+            self._checker_at = time.monotonic()
+        return dict(self._checker)
+
+    def can_check(self):
+        return self.access_mode != 'view' and self.checker()['ready'] and not self.operation.locked()
+
+    def workspace_status(self):
+        from .intake import LIMITS
+        checker = self.checker()
+        runtime = self.runtime()
+        reasons = []
+        if self.access_mode == 'view':
+            reasons.append('只读回放模式不执行检查。要检查项目，请用隔离验收入口（start-recheck）启动。')
+        if not checker['ready']:
+            reasons.append('隔离检查环境没有准备好：' + checker['detail'] + '。检查会返回“证据不足”，不会在本机直接运行项目。')
+        if self.operation.locked():
+            reasons.append('另一项检查或任务正在执行。')
+        return {'schema': 'credproof.workspace-status/v1', 'access_mode': self.access_mode, 'checker': checker,
+                'model': {'ready': runtime.get('ready') is True and self.access_mode == 'live',
+                          'label': runtime.get('model_label'), 'reasons': runtime.get('reasons', [])},
+                'can_check': self.access_mode != 'view' and checker['ready'],
+                'can_use_model': self.access_mode == 'live' and runtime.get('ready') is True,
+                'reasons': reasons, 'limits': LIMITS}
+
+    def review_public(self, view):
+        """Add the five reader questions; the 14 conditions remain the decision."""
+        from .evidence_view import five_questions
+        if isinstance(view, dict) and 'technical_verdict' in view:
+            view = {**view, 'evidence': five_questions(view.get('report'), decision=view.get('decision', 'PENDING'),
+                                                       application=view.get('application_to_original', 'NOT_APPLIED'),
+                                                       applicable=view.get('report_applicable') is True)}
+        return view
+
+    def review_summaries(self):
+        """One row per saved review for the project list; failures are shown, never hidden."""
+        rows = []
+        for item in self.review_workspace.list()[-100:]:
+            row = dict(item)
+            try:
+                view = self.review_workspace.view(item['id'])
+                report = view.get('report') if view.get('report_applicable') else None
+                row.update(version_id=view['version']['id'], versions=len(view['versions']),
+                           version_source=view['version'].get('source'),
+                           technical_verdict=view['technical_verdict'], decision=view['decision'],
+                           decision_is_test=view['decision_is_test'],
+                           checked_at=(report or {}).get('checked_at_utc'),
+                           material_ok=not view['material_reasons'])
+            except (ValueError, OSError, KeyError) as error:
+                row.update(technical_verdict='UNKNOWN', decision='PENDING', material_ok=False,
+                           error=str(error)[:200])
+            rows.append(row)
+        rows.sort(key=lambda r: r.get('created_at') or '', reverse=True)
+        return rows
+
+    def review_report(self, identifier, kind):
+        from credproof_safety.report_formats import Context, to_junit, to_sarif, to_summary
+        from credproof_safety.cli import _version
+        view = self.review_workspace.view(identifier)
+        if not view.get('report_applicable') or not isinstance(view.get('report'), dict):
+            raise Problem(409, '当前版本没有适用的检查报告；请先运行检查。')
+        report = view['report']
+        if kind == 'json':
+            return json.dumps(report, ensure_ascii=False, indent=2) + '\n', 'application/json'
+        context = Context(config_path='credproof.toml', entry_path=view['version']['entry_path'], version=_version())
+        if kind == 'sarif':
+            return json.dumps(to_sarif(report, context), ensure_ascii=False, indent=2) + '\n', 'application/sarif+json'
+        if kind == 'junit':
+            return to_junit(report, context), 'application/xml'
+        return to_summary(report, context), 'text/markdown'
+
+    def recheck_upload(self, data):
+        """Unpack an exported review bundle into a new folder and run a fresh check."""
+        from .intake import unpack_archive
+        from .evidence_view import five_questions
+        from credproof_safety.project_bundle import recheck_project_bundle
+        if self.access_mode == 'view':
+            raise Problem(409, '只读回放模式不执行复检。请用隔离验收入口启动。')
+        if not self.operation.acquire(blocking=False):
+            raise Problem(409, '另一项检查或任务正在执行。')
+        try:
+            folder = confined(self.runs_root / ('recheck-upload-' + uuid.uuid4().hex), self.runs_root)
+            bundle = unpack_archive(data, folder / 'bundle')
+            review = None
+            record = bundle / 'human-review.json'
+            if record.is_file() and record.stat().st_size < 1024 * 1024:
+                try:
+                    raw = json.loads(record.read_text(encoding='utf-8'))
+                    review = {k: raw.get(k) for k in ('scope', 'kind', 'decision', 'decision_is_test',
+                                                        'technical_verdict', 'application_to_original')}
+                    review['version_id'] = (raw.get('version') or {}).get('id')
+                except (OSError, ValueError, AttributeError):
+                    review = None
+            if not (bundle / 'manifest.json').is_file():
+                result = {'schema': 'credproof.project-recheck/v1', 'status': 'BLOCKED',
+                          'validation': {'verdict': 'UNKNOWN', 'reasons': ['MATERIAL_UNAVAILABLE'], 'checks': []},
+                          'prior_report_applicable': False,
+                          'prior_report_reasons': ['NO_MANIFEST: 诊断材料没有绑定检查报告，不能复检'],
+                          'historical_task_status_rewritten': False}
+            else:
+                result = recheck_project_bundle(bundle, folder / 'recheck.json')
+            validation = result.get('validation') if isinstance(result.get('validation'), dict) else {}
+            return {**result, 'human_review': review,
+                    'evidence': five_questions(validation, decision=(review or {}).get('decision') or 'PENDING')
+                    if validation.get('execution') else None}
+        finally:
+            self.operation.release()
 
     def add_history(self, entry):
         method = confined(Path(entry).absolute(), self.root / 'runs')
@@ -901,6 +1025,104 @@ class Handler(BaseHTTPRequestHandler):
             raise Problem(400, '请求体必须是对象。')
         return data
 
+    def raw_zip(self, limit):
+        if self.headers.get_content_type() not in ('application/zip', 'application/x-zip-compressed'):
+            raise Problem(415, '请求体必须是 zip 压缩包。')
+        lengths = self.headers.get_all('Content-Length', [])
+        if len(lengths) != 1 or not lengths[0].isdigit():
+            raise Problem(400, '缺少明确的请求体长度。')
+        size = int(lengths[0])
+        if size > limit:
+            raise Problem(413, '压缩包超过 16 MiB。')
+        self.connection.settimeout(30)
+        data, remaining = bytearray(), size
+        while remaining:
+            chunk = self.rfile.read(min(remaining, 1024 * 1024))
+            if not chunk:
+                raise Problem(400, '请求体不完整。')
+            data += chunk
+            remaining -= len(chunk)
+        return bytes(data)
+
+    def require_session(self):
+        sessions = self.headers.get_all('X-CredProof-Review-Session', [])
+        if len(sessions) != 1 or not secrets.compare_digest(sessions[0], self.server.application.review_session):
+            raise Problem(403, 'review_session_required')
+
+    def route_workspace(self, path, app):
+        """Product workspace endpoints (docs/ui/PRODUCT-API.md). Returns True when handled."""
+        from .intake import IntakeError, LIMITS
+        from urllib.parse import unquote
+        if self.command == 'GET' and path == '/api/workspace/status':
+            self.send_json(200, app.workspace_status())
+            return True
+        if self.command == 'GET' and path == '/api/reviews':
+            self.send_json(200, {'reviews': app.review_summaries()})
+            return True
+        if self.command == 'GET' and path == '/api/intake':
+            self.send_json(200, {'intakes': app.intake.list()})
+            return True
+        if self.command == 'GET' and path == '/api/intake/examples':
+            self.send_json(200, {'examples': app.intake.examples()})
+            return True
+        report_match = re.fullmatch(r'/api/review/([0-9a-f]{32})/report\.(json|sarif|junit|md)', path)
+        if self.command == 'GET' and report_match:
+            try:
+                body, kind = app.review_report(report_match[1], report_match[2])
+            except (ValueError, OSError) as error:
+                raise Problem(409, str(error))
+            payload = body.encode('utf-8')
+            names = {'json': 'credproof-report.json', 'sarif': 'credproof.sarif', 'junit': 'credproof-junit.xml', 'md': 'credproof-summary.md'}
+            self.write_headers(200, kind + '; charset=utf-8', len(payload),
+                               [('Content-Disposition', f'attachment; filename="{names[report_match[2]]}"')])
+            self.wfile.write(payload)
+            return True
+        intake_match = re.fullmatch(r'/api/intake/([0-9a-f]{32})(/config|/start)?', path)
+        if self.command == 'GET' and intake_match and not intake_match[2]:
+            try:
+                self.send_json(200, app.intake.view(intake_match[1]))
+            except IntakeError as error:
+                raise Problem(404, str(error))
+            return True
+        writes = path in ('/api/intake/upload', '/api/intake/example', '/api/recheck/upload') or bool(intake_match and intake_match[2])
+        if self.command != 'POST' or not writes:
+            return False
+        self.require_session()
+        try:
+            if path == '/api/intake/upload':
+                data = self.raw_zip(LIMITS['upload_bytes'])
+                label = unquote(self.headers.get('X-CredProof-Label', '') or '')[:80]
+                self.send_json(201, app.intake.from_upload(data, label))
+            elif path == '/api/intake/example':
+                body = self.body()
+                if set(body) != {'example_id'} or not isinstance(body['example_id'], str):
+                    raise Problem(400, '只接受 example_id。')
+                self.send_json(201, app.intake.from_example(body['example_id']))
+            elif path == '/api/recheck/upload':
+                data = self.raw_zip(LIMITS['upload_bytes'])
+                self.send_json(200, app.recheck_upload(data))
+            elif intake_match[2] == '/config':
+                body = self.body(64 * 1024)
+                if set(body) != {'config'}:
+                    raise Problem(400, '只接受 config。')
+                self.send_json(200, app.intake.save_config(intake_match[1], body['config']))
+            else:
+                body = self.body()
+                if not set(body) <= {'label'}:
+                    raise Problem(400, '只接受可选的 label。')
+                if not app.operation.acquire(blocking=False):
+                    raise Problem(409, '另一项检查或任务正在执行。')
+                try:
+                    result = app.intake.start(intake_match[1], app.review_workspace, body.get('label'))
+                finally:
+                    app.operation.release()
+                self.send_json(201, {**result, 'review': app.review_public(result['review'])})
+        except IntakeError as error:
+            raise Problem(404 if str(error).startswith('没有这个') else 409, str(error))
+        except (ValueError, OSError) as error:
+            raise Problem(409, '无法处理：' + str(error)[:300])
+        return True
+
     def route(self):
         self.boundary()
         parsed = urlsplit(self.path)
@@ -920,10 +1142,12 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_json(200, app.runtime())
         if self.command == 'GET' and path == '/api/agent/bootstrap':
             return self.send_json(200, app.bootstrap())
+        if self.route_workspace(path, app):
+            return
         review_match = re.fullmatch(r'/api/review/([0-9a-f]{32})(/revise|/check|/decide|/export)?', path)
         if self.command == 'GET' and review_match and not review_match[2]:
             try:
-                return self.send_json(200, app.review_workspace.view(review_match[1]))
+                return self.send_json(200, app.review_public(app.review_workspace.view(review_match[1])))
             except (ValueError, OSError) as error:
                 raise Problem(409, str(error))
         if self.command == 'POST' and (path == '/api/review/open' or review_match):
@@ -947,7 +1171,7 @@ class Handler(BaseHTTPRequestHandler):
                     if operation == '/revise' and set(data)=={'expected','code','reason'}:
                         result = app.review_workspace.revise(identifier, expected, data['code'], data['reason'])
                     elif operation == '/check' and set(data)=={'expected'}:
-                        if app.access_mode=='view' or not runtime_observation(app.root).get('isolation_ready'):
+                        if app.access_mode=='view' or not app.checker(force=True)['ready']:
                             raise Problem(409, 'isolation_required_no_host_fallback')
                         result = app.review_workspace.check(identifier, expected)
                     elif operation == '/decide' and set(data)=={'expected','decision','reason','test_operation'}:
@@ -960,7 +1184,7 @@ class Handler(BaseHTTPRequestHandler):
                         return
                     else:
                         raise ValueError('unsupported_review_operation_or_fields')
-                return self.send_json(200, result)
+                return self.send_json(200, app.review_public(result))
             except (ValueError, OSError, KeyError, TypeError) as error:
                 raise Problem(409, str(error))
             finally:
