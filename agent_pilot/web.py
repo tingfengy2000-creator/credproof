@@ -280,7 +280,7 @@ class Run:
 
 class Application:
     def __init__(self, root=ROOT, histories=(), access_mode='live', project_config=None, project_examples=False,
-                 bench_results=None):
+                 bench_results=None, integration_results=None):
         if access_mode not in ('view', 'recheck', 'live'):
             raise ValueError('Unsupported launch mode')
         self.access_mode = access_mode
@@ -304,6 +304,11 @@ class Application:
         # Benchmark results are a read-only, operator-selected file; never a request path.
         self.bench_path = Path(bench_results).absolute() if bench_results else None
         self._bench_cache = (None, None)
+        # CI gate demonstration (credproof.ci-demo/v1): derived from committed
+        # hosted-runner evidence; a fixed file under the workspace, never a request path.
+        default_integration = self.root / 'docs/integration/ci-demo.json'
+        self.integration_path = (Path(integration_results).absolute() if integration_results
+                                 else default_integration if default_integration.is_file() else None)
 
     def runtime(self, force=False):
         if self.access_mode == 'view':
@@ -364,6 +369,7 @@ class Application:
                 'runtime': self.runtime(), 'access_mode': self.access_mode,
                 'review_session': self.review_session, 'reviews': self.review_workspace.list(),
                 'bench_available': self.bench_path is not None,
+                'integration_available': self.integration_path is not None,
                 'demonstrations': getattr(self, 'demonstrations', []),
                 'review_demonstration': getattr(self, 'review_demonstration', None),
                 'history': [{'id': run.id, 'case_id': run.case_id, 'created_at': run.started_at,
@@ -386,6 +392,18 @@ class Application:
         except (OSError, ValueError):
             raise Problem(409, '评测数据缺失、过大或无法解析。')
         return self._bench_cache[1]
+
+    def integration(self):
+        """Recorded CI gate demonstration; read-only, no live GitHub access."""
+        if self.integration_path is None:
+            raise Problem(404, '没有流水线演示数据（docs/integration/ci-demo.json）。')
+        try:
+            data = read_json(self.integration_path, 1024 * 1024)
+        except (OSError, ValueError):
+            raise Problem(409, '流水线演示数据缺失、过大或无法解析。')
+        if not isinstance(data, dict) or data.get('schema') != 'credproof.ci-demo/v1' or not isinstance(data.get('controls'), list):
+            raise Problem(409, '流水线演示数据格式不受支持。')
+        return {**data, 'notice': '已记录的托管 runner 运行结果，不是本次现场执行。'}
 
     def bench_overview(self):
         data = self.bench()
@@ -949,6 +967,8 @@ class Handler(BaseHTTPRequestHandler):
                 app.operation.release()
         if self.command == 'GET' and path == '/api/bench':
             return self.send_json(200, app.bench_overview())
+        if self.command == 'GET' and path == '/api/integration':
+            return self.send_json(200, app.integration())
         bench_match = re.fullmatch(r'/api/bench/patches/([A-Za-z0-9_.:-]{1,160})', path)
         if self.command == 'GET' and bench_match:
             return self.send_json(200, app.bench_patch(bench_match[1]))

@@ -1,0 +1,184 @@
+{
+ "schema": "credproof.ci-demo/v1",
+ "source": {
+  "evidence": "docs/integration/evidence/ci-c",
+  "results_sha256": "bdf5fa72afbf8bda7a1e9de145e370af0b8812551fedb32782bd492afa8c3d2e",
+  "program_source_commit": "466534c79eacf8dc9e59d267c9ee5e614b0f4a0f",
+  "anchors_commit": "a5b51e303315dd2dd3f4671d7a771fb9afab0310",
+  "workflow_sha256": "85b26317c35cc848b00529700b4696501118fb2ea79eee97ca75a18a7dd87b15"
+ },
+ "environment": {
+  "runner": "GitHub 托管 ubuntu-24.04 虚拟机",
+  "kernel": "6.17.0-1022-azure",
+  "python": "3.12.3",
+  "base_image_digest": "sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55",
+  "jobs": {
+   "native": "直接在 Linux 上准备运行时并检查（不用 Docker）",
+   "container": "从同一提交构建镜像，在容器内检查"
+  }
+ },
+ "workflow": {
+  "trigger": "pull_request（只针对配置的目标分支）",
+  "permissions": [
+   "contents: read",
+   "security-events: write"
+  ],
+  "targets": [
+   "examples/bench/b07-webhook-relay/project/credproof.toml"
+  ],
+  "steps": [
+   "检出代码",
+   "准备运行时或构建镜像",
+   "doctor 自检隔离环境",
+   "逐个配置运行 check",
+   "上传报告、JUnit、摘要和 SARIF",
+   "按退出码判定是否放行"
+  ],
+  "sarif_upload": "仅 container job 上传到代码扫描；native 的 SARIF 作为构件保存"
+ },
+ "exit_codes": [
+  {
+   "code": 0,
+   "meaning": "通过"
+  },
+  {
+   "code": 2,
+   "meaning": "不通过"
+  },
+  {
+   "code": 3,
+   "meaning": "证据不足（按不通过处理）"
+  },
+  {
+   "code": 4,
+   "meaning": "配置、参数或环境错误"
+  }
+ ],
+ "controls": [
+  {
+   "id": "vulnerable",
+   "title": "提交漏洞补丁的 PR",
+   "origin": "入口文件与 Qwen3-Coder 30B 在评测中交回的“修复”逐字节相同，即未修改的漏洞原版。",
+   "jobs": [
+    {
+     "environment": "native",
+     "verdict": "FAIL",
+     "exit_code": 2,
+     "business_tests": {
+      "required": 2,
+      "passed": 2,
+      "all_passed": true
+     },
+     "failed_checks": [
+      "required_entry_scenarios",
+      "no_forbidden_service_receipt",
+      "no_unauthorized_connection"
+     ],
+     "doctor_ready": true,
+     "anchors_matched": 16,
+     "check_duration_ms": 1495.19
+    },
+    {
+     "environment": "container",
+     "verdict": "FAIL",
+     "exit_code": 2,
+     "business_tests": {
+      "required": 2,
+      "passed": 2,
+      "all_passed": true
+     },
+     "failed_checks": [
+      "required_entry_scenarios",
+      "no_forbidden_service_receipt",
+      "no_unauthorized_connection"
+     ],
+     "doctor_ready": true,
+     "anchors_matched": 16,
+     "check_duration_ms": 1030.72
+    }
+   ],
+   "sarif_results": [
+    {
+     "rule": "credproof/required_entry_scenarios",
+     "condition": "每个声明的场景得到预期结果",
+     "fact": "场景结果不符：“allowed_service_redirect_refused”预期抛出 HTTPError，实际正常返回。",
+     "level": "error"
+    },
+    {
+     "rule": "credproof/no_forbidden_service_receipt",
+     "condition": "禁止的服务没有收到请求",
+     "fact": "禁止的服务收到 1 次请求，其中 1 次携带了认证凭据。",
+     "level": "error"
+    },
+    {
+     "rule": "credproof/no_unauthorized_connection",
+     "condition": "没有未授权的连接",
+     "fact": "观测到向允许服务以外地址的连接尝试 1 次。",
+     "level": "error"
+    }
+   ],
+   "sarif_category": "credproof/examples/bench/b07-webhook-relay/project/credproof.toml/",
+   "tool_version": "0.3.0.dev38"
+  },
+  {
+   "id": "reference",
+   "title": "提交参考修复的 PR",
+   "origin": "人工编写的参考修复，不是新的 AI 输出。",
+   "jobs": [
+    {
+     "environment": "native",
+     "verdict": "PASS",
+     "exit_code": 0,
+     "business_tests": {
+      "required": 2,
+      "passed": 2,
+      "all_passed": true
+     },
+     "failed_checks": [],
+     "doctor_ready": true,
+     "anchors_matched": 16,
+     "check_duration_ms": 1353.69
+    },
+    {
+     "environment": "container",
+     "verdict": "PASS",
+     "exit_code": 0,
+     "business_tests": {
+      "required": 2,
+      "passed": 2,
+      "all_passed": true
+     },
+     "failed_checks": [],
+     "doctor_ready": true,
+     "anchors_matched": 16,
+     "check_duration_ms": 1363.54
+    }
+   ],
+   "sarif_results": [],
+   "sarif_category": "credproof/examples/bench/b07-webhook-relay/project/credproof.toml/",
+   "tool_version": "0.3.0.dev38"
+  }
+ ],
+ "acceptance": {
+  "anchors": {
+   "expected": 16,
+   "native": 16,
+   "container": 16
+  },
+  "default_container": {
+   "doctor_exit": 4,
+   "check_exit": 3,
+   "check_verdict": "UNKNOWN"
+  },
+  "image_scan": {
+   "completed": true,
+   "files": 8960,
+   "bytes": 204822007,
+   "unexempted_hits": 0,
+   "reviewed_matches": 4045
+  },
+  "model_calls": 0,
+  "apparmor": "容器以显式选择的外层 AppArmor unconfined 方式运行，并为固定 bwrap 加载 userns 例外；限定版 AppArmor profile 尚未验收。"
+ },
+ "limits": "只覆盖已适配配置声明的入口、必要测试和访问组件，使用合成凭据与本地模拟服务；两条演示只证明闸门给出一红一绿，不代表全项目安全。"
+}

@@ -113,9 +113,9 @@ function failure(error) {
 }
 
 /* ---------- Routing ---------- */
-const routes = { overview: '验收概览', patches: '补丁记录', patch: '补丁详情', report: '验收报告',
+const routes = { overview: '验收概览', patches: '补丁记录', patch: '补丁详情', report: '验收报告', pipeline: '流水线闸门',
   'human-review': '人工审阅', workbench: '案例回放', 'project-entry': '接入项目', method: '工作原理' };
-const aliases = { cases: 'workbench', projects: 'project-entry', top: 'overview', mechanism: 'method', main: null };
+const aliases = { cases: 'workbench', projects: 'project-entry', top: 'overview', mechanism: 'method', ci: 'pipeline', main: null };
 const navOf = { patch: 'patches', report: 'patches' };
 
 function parseRoute() {
@@ -195,7 +195,7 @@ function methodList() {
 
 function reasonText(patch) {
   const c = patch?.credproof || {};
-  if (c.verdict === 'PASS') return '14 项条件全部满足：没有泄密和越界，实际读取了允许的资料并完成授权认证，业务测试全部通过。';
+  if (c.verdict === 'PASS') return '本配置声明的 14 项条件全部满足：没有观测到泄密和越界，业务测试全部通过。';
   if (c.verdict === 'UNKNOWN') return `证据不足：${unknownReasons[c.reason] || (patch.extraction?.status === 'SYNTAX_ERROR' ? '补丁有语法错误，业务测试无法执行' : c.reason || '必要的观测不完整')}。提前报错或无法执行不能当作安全。`;
   if (c.verdict !== 'FAIL') return '尚未检查。';
   const failed = new Set(array(c.failed_checks));
@@ -850,6 +850,105 @@ function autoLoadReview() {
 function render() {
   renderConnection(); renderProjectModes(); renderScope(); renderActions(); renderDecisions(); renderCode(); renderEvidence();
   renderValidation(); renderResultStates(); renderStories(); renderReview(); renderOverview(); renderPatchList(); renderPatchDetail(); renderReportDoc();
+  renderPipeline();
+}
+
+/* ---------- CI pipeline gate (recorded hosted-runner runs) ---------- */
+const PIPELINE_COMMAND = `docker run --rm \\
+  --network none --read-only --tmpfs /tmp:exec \\
+  --cap-drop ALL --security-opt no-new-privileges \\
+  --security-opt seccomp=deploy/docker/seccomp-credproof.json \\
+  --security-opt systempaths=unconfined \\
+  -v "$PWD:/workspace:ro" -v "$PWD/credproof-out:/out" \\
+  credproof:<版本> check --config /workspace/<配置路径> \\
+    --source-root /workspace --sarif /out/credproof.sarif \\
+    --junit /out/junit.xml --summary /out/summary.md`;
+const jobNames = { native: 'Linux 直接运行', container: 'Docker 容器' };
+
+async function loadIntegration() {
+  state.integrationError = '';
+  if (!state.bootstrap?.integration_available) { state.integration = null; return; }
+  try {
+    const data = await request('/api/integration');
+    if (!data || data.schema !== 'credproof.ci-demo/v1' || !Array.isArray(data.controls)) throw new Error('流水线演示数据格式不受支持。');
+    state.integration = data;
+  } catch (error) {
+    state.integration = null;
+    state.integrationError = error instanceof Error ? error.message : text(error);
+  }
+}
+
+function controlVerdict(control) {
+  const jobs = array(control.jobs);
+  if (!jobs.length) return 'UNKNOWN';
+  if (jobs.some(job => job.exit_code !== 0)) return jobs.every(job => job.verdict === 'FAIL') ? 'FAIL' : 'UNKNOWN';
+  return 'PASS';
+}
+
+function prCard(control) {
+  const verdict = controlVerdict(control);
+  const blocked = verdict !== 'PASS';
+  const rows = array(control.jobs).map(job => {
+    const tests = job.business_tests || {};
+    const testsText = tests.required ? `${tests.passed}/${tests.required} ${tests.all_passed ? '全部通过' : '未全部通过'}` : '无记录';
+    return `<tr><td>${escape(jobNames[job.environment] || job.environment)}</td><td class="${tests.all_passed ? 'mark-ok' : 'mark-bad'}">${escape(testsText)}</td>`
+      + `<td>${seal(job.verdict, 'seal-sm')}</td><td class="num">${escape(job.exit_code)}</td></tr>`;
+  }).join('');
+  const results = array(control.sarif_results);
+  const findings = results.length
+    ? `<ol class="alert-list">${results.map(item => `<li><strong>${escape(item.condition)}</strong><span>${escape(item.fact)}</span></li>`).join('')}</ol>`
+    : '<p class="small muted">没有代码扫描告警：本配置声明的 14 项条件全部满足。</p>';
+  return `<article class="pr-card ${blocked ? 'is-fail' : 'is-pass'}">
+    <header class="pr-head"><div><p class="small-label">拉取请求</p><h3>${escape(control.title)}</h3><p class="small muted">${escape(control.origin)}</p></div>${seal(verdict, 'seal-lg')}</header>
+    <table class="ledger compact job-table"><thead><tr><th>检查任务</th><th>业务测试</th><th>CredProof</th><th class="num">退出码</th></tr></thead><tbody>${rows}</tbody></table>
+    <div class="pr-alerts"><h4>${results.length ? `代码扫描告警 ${results.length} 条` : '代码扫描告警'}</h4>${findings}</div>
+    <p class="pr-merge ${blocked ? 'bad' : 'ok'}">${blocked ? '合并被闸门拦下：业务测试通过，但运行中观测到上述违规。' : '闸门放行：可以进入人工审阅与合并。'}</p>
+  </article>`;
+}
+
+function renderPipeline() {
+  const data = state.integration;
+  $('pipeline-body').hidden = !data;
+  $('pipeline-empty').hidden = !!data;
+  const strip = $('overview-pipeline');
+  if (!data) {
+    $('pipeline-empty').textContent = state.integrationError ? `流水线演示数据无法读取：${state.integrationError}`
+      : state.bootstrap ? '没有找到流水线演示数据（docs/integration/ci-demo.json）。' : '正在连接本机服务。';
+    strip.hidden = true;
+    return;
+  }
+  const controls = array(data.controls);
+  $('pipeline-controls').innerHTML = controls.map(prCard).join('');
+  const env = data.environment || {};
+  $('pipeline-jobs').textContent = `每次 PR 运行两个互相独立的检查任务：${Object.entries(env.jobs || {}).map(([key, value]) => `${jobNames[key] || key}（${value}）`).join('；')}。两个任务各自判定、各自保留完整证据。`;
+  $('pipeline-steps').innerHTML = array(data.workflow?.steps).map(step => `<li><strong>${escape(step)}</strong></li>`).join('');
+  $('pipeline-targets').textContent = array(data.workflow?.targets).join('\n') || '（未配置）';
+  $('pipeline-command').textContent = PIPELINE_COMMAND;
+  $('pipeline-exit-codes').innerHTML = array(data.exit_codes).map(row =>
+    `<tr><td class="num">${escape(row.code)}</td><td>${escape(row.meaning)}</td><td class="${row.code === 0 ? 'mark-ok' : 'mark-bad'}">${row.code === 0 ? '放行' : '拦下'}</td></tr>`).join('');
+  const acceptance = data.acceptance || {};
+  const anchors = acceptance.anchors || {};
+  const blocked = acceptance.default_container || {};
+  const scan = acceptance.image_scan || {};
+  const durations = controls.flatMap(control => array(control.jobs).map(job => job.check_duration_ms)).filter(value => typeof value === 'number');
+  const facts = [
+    ['冻结锚点（Linux 直接运行）', `${anchors.native}/${anchors.expected} 一致`, anchors.native !== anchors.expected],
+    ['冻结锚点（Docker 容器）', `${anchors.container}/${anchors.expected} 一致`, anchors.container !== anchors.expected],
+    ['Docker 默认参数下', `自检退出 ${blocked.doctor_exit}，结论${sealNames[blocked.check_verdict] || blocked.check_verdict}（退出 ${blocked.check_exit}）`, false],
+    ['镜像隐私扫描', scan.completed ? `${Number(scan.files).toLocaleString('zh-CN')} 个文件，未豁免命中 ${scan.unexempted_hits}` : '未完成', !scan.completed || scan.unexempted_hits !== 0],
+    ['单次检查耗时', durations.length ? `${(Math.min(...durations) / 1000).toFixed(1)}–${(Math.max(...durations) / 1000).toFixed(1)} 秒` : '—', false],
+    ['模型调用', `${acceptance.model_calls} 次`, acceptance.model_calls !== 0],
+  ];
+  $('pipeline-acceptance').innerHTML = facts.map(([label, value, bad]) => `<div class="fact"><dt>${escape(label)}</dt><dd${bad ? ' class="bad"' : ''}>${escape(value)}</dd></div>`).join('');
+  $('pipeline-apparmor').textContent = `${acceptance.apparmor || ''} 默认参数下判“证据不足”是预期的安全失败：沙箱建不起来时不会给出通过。`;
+  const source = data.source || {};
+  $('pipeline-provenance').textContent = `数据来源：${env.runner || '托管 runner'}（内核 ${env.kernel || '—'}，Python ${env.python || '—'}），基础镜像 ${short(env.base_image_digest?.replace('sha256:', ''))}；程序提交 ${short(source.program_source_commit)}，冻结锚点提交 ${short(source.anchors_commit)}。${data.limits || ''}`;
+  const red = controls.find(control => controlVerdict(control) !== 'PASS');
+  strip.hidden = !red;
+  if (red) {
+    const tests = red.jobs?.[0]?.business_tests || {};
+    $('overview-pipeline-line').textContent = `在 GitHub 托管 Ubuntu 24.04 上，b07 的漏洞补丁以 PR 形式提交：业务测试 ${tests.passed}/${tests.required} 通过，CredProof 在 Linux 直接运行和 Docker 容器两个任务中都判不通过，并以代码扫描告警列出 ${array(red.sarif_results).length} 项运行事实；参考修复的 PR 两个任务都放行。`;
+  }
 }
 
 /* ---------- Polling, loading and events ---------- */
@@ -884,6 +983,7 @@ async function loadBootstrap() {
     if (record.mode === 'REPLAY') state.demoRuns[item.run_id] = record;
   }));
   await loadBench();
+  await loadIntegration();
 }
 
 async function busyAction(action) {
