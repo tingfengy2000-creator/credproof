@@ -267,13 +267,13 @@ class ReviewWorkspace:
         self._expected(identifier, expected)
         public={k:v for k,v in result.items() if k in ('status','reason','model','strategy','model_requests',
                  'native_tool_calls','verifications','request_sha256','response_sha256','boundary_status')}
+        if result.get('status')=='CANDIDATE' and result['code']==state['code']:
+            public.update(status='NO_CANDIDATE',reason='NO_CHANGE')
         save(folder/'proposals'/proposal_id/'review-receipt.json',{'proposal_id':proposal_id,
              'source_version':meta['id'],'source_object_sha256':state['object_sha256'],
              'source_report_sha256':state['report_sha256'],**public})
-        if result.get('status')!='CANDIDATE':
+        if public.get('status')!='CANDIDATE':
             return {**public,'status':'NO_CANDIDATE','review':self.view(identifier)}
-        if result['code']==state['code']:
-            return {**public,'status':'NO_CANDIDATE','reason':'NO_CHANGE','review':self.view(identifier)}
         provenance={k:result[k] for k in ('model','request_sha256','response_sha256','strategy')}
         provenance['proposal_id']=proposal_id
         provenance['model_format']=result.get('format_receipt')

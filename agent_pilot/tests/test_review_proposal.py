@@ -42,6 +42,8 @@ def test_no_change_consumes_receipt_but_creates_no_version(review):
         result=w.propose(s['id'],expected(s))
     assert result['reason']=='NO_CHANGE' and len(result['review']['versions'])==1
     assert len(list(w.folder(s['id']).glob('proposals/*/review-receipt.json')))==1
+    receipt=json.loads(next(w.folder(s['id']).glob('proposals/*/review-receipt.json')).read_text('utf8'))
+    assert receipt['status']=='NO_CANDIDATE' and receipt['reason']=='NO_CHANGE'
 
 
 def test_stale_and_no_current_fail_are_rejected_before_generation(review):
