@@ -1,0 +1,70 @@
+{
+  "kind": "WORKFLOW_BRANCH_FILTER_PROTOCOL_AND_ACTUAL_PR_METADATA",
+  "source_before": "83f21d78edc356f8f2e4ce94064afefd983c07fc",
+  "workflow_sha256": "85b26317c35cc848b00529700b4696501118fb2ea79eee97ca75a18a7dd87b15",
+  "events": [
+    "pull_request"
+  ],
+  "branches": [
+    "demo/ci-gate-base"
+  ],
+  "pull_requests": [
+    {
+      "number": 13,
+      "base": "feat/frontend-human-review-5060",
+      "base_sha": "a5b51e303315dd2dd3f4671d7a771fb9afab0310",
+      "head_sha": "83f21d78edc356f8f2e4ce94064afefd983c07fc",
+      "state": "open",
+      "merged": false,
+      "matches_branch_filter": false
+    },
+    {
+      "number": 14,
+      "base": "demo/ci-gate-base",
+      "base_sha": "466534c79eacf8dc9e59d267c9ee5e614b0f4a0f",
+      "head_sha": "01ce1d9f613186c369b46e6c70054ce6dbce8cf6",
+      "state": "open",
+      "merged": false,
+      "matches_branch_filter": true
+    },
+    {
+      "number": 15,
+      "base": "demo/ci-gate-base",
+      "base_sha": "466534c79eacf8dc9e59d267c9ee5e614b0f4a0f",
+      "head_sha": "e6f03b02eeb795cc44edb33deddbf61bdc1df987",
+      "state": "open",
+      "merged": false,
+      "matches_branch_filter": true
+    }
+  ],
+  "parse_method": "Exact supported workflow-header structure plus whole-file old-to-new byte comparison; no general YAML parser dependency.",
+  "main_branch_matches": false,
+  "mainline_pr_triggers": false,
+  "jobs_unchanged": true,
+  "jobs_sha256_before": "f687419c86c1ede181afa58562c61ea079d2e7c09999c2a3898d584cd2a99d81",
+  "jobs_sha256_after": "f687419c86c1ede181afa58562c61ea079d2e7c09999c2a3898d584cd2a99d81",
+  "test": {
+    "command": [
+      "<test-python>",
+      "-m",
+      "pytest",
+      "credproof_safety/tests/test_ci_contract.py",
+      "-q",
+      "--junitxml=<temp-receipt>"
+    ],
+    "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "pytest": "8.4.2",
+    "exit_code": 0,
+    "passed": 7,
+    "skipped": 0,
+    "junit_original_sha256": "4f08a0087e36c382af3ae49a9714e2c6a1264011ae53cb08106123359e912243",
+    "junit_public_sha256": "773edbe812d614f8409966850cdf4523b80ff38597d034567ae5f57adb5b7cf8",
+    "redaction": "JUnit hostname attribute only; exact temporary receipt/source path substitution in console output."
+  },
+  "hosted_reruns": 0,
+  "model_calls": 0,
+  "candidate_execution": 0,
+  "container_builds": 0,
+  "evidence_boundary": "Actual PR base fields and workflow parse/match test; not a new Actions event or safety experiment.",
+  "prior_acceptance": "docs/integration/evidence/ci-c/README.md"
+}

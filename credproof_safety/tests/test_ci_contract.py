@@ -39,7 +39,7 @@ class CIContractTests(unittest.TestCase):
 
     def test_workflow_order_permissions_and_pins(self):
         value=(ROOT/'.github/workflows/credproof.yml').read_text()
-        self.assertIn('on: pull_request\n',value)
+        self.assertIn('on:\n  pull_request:\n    branches: [demo/ci-gate-base]\n',value)
         self.assertNotIn('pull_request_target',value)
         self.assertNotIn('workflow_dispatch',value)
         self.assertEqual(value.count('runs-on: ubuntu-24.04'),2)

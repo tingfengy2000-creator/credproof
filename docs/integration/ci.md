@@ -6,8 +6,19 @@
 
 ## GitHub 拉取请求
 
-`.github/workflows/credproof.yml` 只响应 pull_request，两个独立 job 使用
-ubuntu-24.04。权限仅 contents:read、security-events:write；动作使用固定提交。
+`.github/workflows/credproof.yml` 只响应目标分支为 `demo/ci-gate-base` 的
+pull_request。主线 PR 不触发：提向 `feat/frontend-human-review-5060` 的普通
+开发 PR 不运行这个包含已知漏洞原版的演示闸门，避免持续出现无关红叉。
+演示 #14、#15 的 base 都是 `demo/ci-gate-base`，仍匹配该触发范围；已有
+红/绿运行及验收记录保留，本次仅修改调度范围，不重新运行安全验收。
+范围核对见 [触发条件证据](evidence/ci-trigger-scope/README.md)。
+
+接入其他仓库时，把 workflow 中 `pull_request.branches` 改成自己的受检
+目标分支，并将 `.credproof/targets.txt` 换成自己的项目配置路径。不要直接
+把本仓库的漏洞演示目标当作所有业务 PR 的默认闸门。
+
+两个独立 job 使用 ubuntu-24.04。权限仅 contents:read、security-events:write；
+动作使用固定提交。
 目标由 `.credproof/targets.txt` 的相对配置路径决定。实际检查使用当前提交
 构建并安装的 wheel，不以源码目录遮蔽安装来源。
 

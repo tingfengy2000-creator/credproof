@@ -1,5 +1,7 @@
 name: CredProof
-on: pull_request
+on:
+  pull_request:
+    branches: [demo/ci-gate-base]
 permissions:
   contents: read
   security-events: write
