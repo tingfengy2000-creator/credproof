@@ -305,6 +305,18 @@ class EvidenceViewTests(unittest.TestCase):
 
 
 class HttpBoundaryTests(unittest.TestCase):
+    def test_readonly_whitelist_allows_intake_list_but_no_write(self):
+        import importlib.util
+        spec = importlib.util.spec_from_file_location('product_readonly', REPOSITORY / 'docs/handoff/frontend-5060/view-readonly.py')
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        self.server.RequestHandlerClass = module.ReadOnlyHandler
+        status, body = self.call('GET', '/api/intake')
+        self.assertEqual((status, body), (200, {'intakes': []}))
+        status, _ = self.call('POST', '/api/intake/example', json.dumps({'example_id': 'material-assistant'}),
+                              self.session({'Content-Type': 'application/json'}))
+        self.assertEqual(status, 405)
+
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.root = Path(self.tmp.name)
