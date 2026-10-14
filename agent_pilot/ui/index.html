@@ -53,6 +53,7 @@
       <a href="#recheck" data-nav="recheck"><svg class="icon"><use href="#i-refresh"/></svg>复检导出包</a>
       <a href="#environment" data-nav="environment"><svg class="icon"><use href="#i-server"/></svg>运行环境</a>
       <p class="nav-group">参考材料</p>
+      <a href="#compare" data-nav="compare"><svg class="icon"><use href="#i-list"/></svg>对照与接入</a>
       <a href="#overview" data-nav="overview"><svg class="icon"><use href="#i-grid"/></svg>对照评测</a>
       <a href="#patches" data-nav="patches"><svg class="icon"><use href="#i-list"/></svg>补丁记录</a>
       <a href="#pipeline" data-nav="pipeline"><svg class="icon"><use href="#i-gate"/></svg>流水线闸门</a>
@@ -532,8 +533,8 @@
               <label for="revise-reason">修订理由（必填）</label>
               <input id="revise-reason" maxlength="1000" placeholder="例如：改用受控访问组件，跳转时抛出 HTTPError">
               <button id="project-revise" class="button secondary" type="button">提交为新版本</button>
-              <button id="project-propose" class="button secondary" type="button">请本地模型提出候选</button>
-              <p id="propose-blocker" class="small muted" role="status"></p>
+              <div class="propose-row"><button id="project-propose" class="button secondary" type="button">请本地模型提出候选</button>
+              <p id="propose-blocker" class="small muted" role="status"></p></div>
               <p id="revise-hint" class="small muted">提交后是一个尚未检查的新版本，需要重新运行检查。</p>
             </div>
             <h3 class="sub-h">版本链</h3>
@@ -612,6 +613,38 @@
             <tr><td><code>start-live.cmd</code></td><td>以上全部，加上本地模型生成候选</td><td>隔离环境和本地模型</td></tr>
           </tbody></table>
           <p class="small muted">Linux 或 WSL 上准备隔离环境：<code>python3 scripts/runtime/setup-linux.py --runtime-root &lt;目录&gt;</code>，然后 <code>python3 -m credproof_safety doctor</code> 应返回就绪。详见 docs/integration/linux.md。</p>
+        </section>
+      </section>
+
+      <!-- Reference: comparison table and external onboarding (docs/compare) -->
+      <section class="view" data-view="compare" hidden>
+        <div class="page-intro"><p>同一批冻结样本上，各方法放过了哪些有违规事实的对象、拦错了哪些合格对象；以及把一个真实开源项目接进工作台的完整记录。数据由脚本从冻结文件复算，不是本次运行。</p></div>
+        <div id="compare-empty" class="empty-block" hidden></div>
+        <section id="compare-table" class="panel" aria-labelledby="compare-title" hidden>
+          <div class="panel-head">
+            <div><h2 id="compare-title">真实对照表</h2><p id="compare-denominator" class="muted small"></p></div>
+            <div class="tabs" role="tablist" aria-label="样本批次" id="compare-batches"></div>
+          </div>
+          <div class="table-wrap"><table class="ledger compare-ledger" id="compare-numbers"></table></div>
+          <p class="small muted">“放过不安全”与“拦错合格”的分母是该方法实际覆盖的对象数；没有记录的对象不算放行也不算拦下。“拦错合格”含没有有效回答（无效）的次数，括号内是明确拒绝的次数。</p>
+          <h3 class="sub-h">各方法看什么、看不到什么</h3>
+          <dl id="compare-methods" class="method-defs"></dl>
+          <h3 class="sub-h">口径与局限</h3>
+          <ul id="compare-limits" class="plain-list small"></ul>
+          <p id="compare-provenance" class="provenance"></p>
+        </section>
+        <section id="onboarding" class="panel" aria-labelledby="onboarding-title" hidden>
+          <div class="panel-head"><div><h2 id="onboarding-title">外部项目接入：python-dotenv</h2><p id="onboarding-meta" class="muted small"></p></div></div>
+          <p id="onboarding-scope"></p>
+          <ol id="onboarding-steps" class="onboard-steps"></ol>
+          <h3 class="sub-h">四个版本的检查结果</h3>
+          <div class="table-wrap"><table class="ledger" id="onboarding-results"></table></div>
+          <p id="onboarding-export" class="small"></p>
+          <div class="two-col">
+            <div><h3 class="sub-h">配置时做的决定</h3><dl id="onboarding-decisions" class="kv"></dl></div>
+            <div><h3 class="sub-h">需要人判断的地方</h3><ul id="onboarding-manual" class="plain-list small"></ul>
+              <h3 class="sub-h">没有覆盖</h3><ul id="onboarding-uncovered" class="plain-list small"></ul></div>
+          </div>
         </section>
       </section>
 

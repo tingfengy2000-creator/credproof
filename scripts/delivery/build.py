@@ -41,7 +41,7 @@ def inventory():
     for case in ('h01','h03','h07'):
         for method in ('C-agent','A-fixed'):
             paths.update(p for p in (ROOT/BATCH/case/method).rglob('*') if p.is_file() and p.suffix in {'.py','.json','.jsonl'} and '__pycache__' not in p.parts)
-    paths.update(ROOT/name for name in ('docs/bench/bench-results.json','docs/integration/ci-demo.json','config/runtime.example.json',
+    paths.update(ROOT/name for name in ('docs/bench/bench-results.json','docs/integration/ci-demo.json','docs/compare/comparison.json','docs/compare/onboarding-dotenv.json','config/runtime.example.json',
                 'agent_pilot/data/runtime.example.json','start-credproof.cmd','start-credproof.sh',
                 'start-recheck.cmd','start-live.cmd','scripts/delivery/launch.ps1','scripts/delivery/scan.py'))
     # The judge gets usage, not internal review/handoff documents or the build tool.

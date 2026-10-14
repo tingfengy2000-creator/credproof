@@ -27,7 +27,7 @@ class ReadOnlyHandler(Handler):
         path = urlsplit(self.path).path
         allowed = path in ('/', '/index.html', '/styles.css', '/app.js',
                            '/api/agent/bootstrap', '/api/agent/health', '/api/project/modes', '/api/bench',
-                           '/api/integration', '/api/workspace/status', '/api/reviews', '/api/intake', '/api/intake/examples')
+                           '/api/integration', '/api/compare', '/api/workspace/status', '/api/reviews', '/api/intake', '/api/intake/examples')
         allowed = allowed or bool(re.fullmatch(r'/api/review/[0-9a-f]{32}', path))
         allowed = allowed or bool(re.fullmatch(r'/api/bench/patches/[A-Za-z0-9_.:-]{1,160}', path))
         if self.command != 'GET' or not allowed:

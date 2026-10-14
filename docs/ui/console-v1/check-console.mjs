@@ -22,7 +22,7 @@ const executable = arg('executable', null);
 const patchId = arg('patch', 'b07-webhook-relay__qwen3-coder-30b__s1__r0');
 mkdirSync(out, { recursive: true });
 
-const routes = ['home', 'projects', 'new', 'recheck', 'environment', 'overview', 'patches', 'patches?origin=history',
+const routes = ['home', 'projects', 'new', 'recheck', 'environment', 'compare', 'overview', 'patches', 'patches?origin=history',
   `patch/${patchId}`, `report/${patchId}`, 'pipeline', 'ci', 'human-review', 'workbench', 'project-entry', 'method', 'cases', 'mechanism'];
 const summary = { base, channel, started_at: new Date().toISOString(), routes: {}, failures: [] };
 const fail = (where, what) => summary.failures.push(`${where}: ${what}`);
