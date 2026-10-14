@@ -1,0 +1,62 @@
+{
+  "kind": "SOFTWARE_AND_READ_ONLY_PROTOCOL_TESTS",
+  "model_calls": 0,
+  "candidate_executions": 0,
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "checks": [
+    {
+      "name": "pytest",
+      "command": [
+        "<test-environment>\\Scripts\\python.exe",
+        "-m",
+        "pytest",
+        "agent_pilot/tests/test_product_workspace.py",
+        "agent_pilot/tests/test_delivery_modes.py",
+        "agent_pilot/tests/test_delivery_scan.py",
+        "agent_pilot/tests/test_presentation.py",
+        "agent_pilot/tests/test_web_bench.py",
+        "agent_pilot/tests/test_review_proposal.py",
+        "docs/handoff/frontend-5060/test-readonly.py",
+        "tests/test_comparison.py",
+        "tests/test_onboarding_data.py",
+        "-q",
+        "--junitxml=<review-state>\\fixed-source-checks\\pytest.xml"
+      ],
+      "cwd": "<review-worktree>",
+      "exit_code": 0,
+      "elapsed_s": 18.797
+    },
+    {
+      "name": "comparison-check",
+      "command": [
+        "<test-environment>\\Scripts\\python.exe",
+        "scripts/compare/build_comparison.py",
+        "--check"
+      ],
+      "cwd": "<review-worktree>",
+      "exit_code": 0,
+      "elapsed_s": 0.062
+    },
+    {
+      "name": "node-syntax",
+      "command": [
+        "node",
+        "--check",
+        "agent_pilot/ui/app.js"
+      ],
+      "cwd": "<review-worktree>",
+      "exit_code": 0,
+      "elapsed_s": 0.047
+    },
+    {
+      "name": "node-project-verdict",
+      "command": [
+        "node",
+        "agent_pilot/tests/test_ui_project_verdict.js"
+      ],
+      "cwd": "<review-worktree>",
+      "exit_code": 0,
+      "elapsed_s": 0.047
+    }
+  ]
+}
