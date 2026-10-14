@@ -305,6 +305,18 @@ class EvidenceViewTests(unittest.TestCase):
 
 
 class HttpBoundaryTests(unittest.TestCase):
+    def test_propose_requires_live_session_and_operation_lock(self):
+        from unittest.mock import patch
+        body=json.dumps({'expected': {}})
+        path='/api/review/'+'a'*32+'/propose'
+        with patch.object(self.app.review_workspace,'propose') as generate, patch.object(self.app,'runtime',return_value={'model_ready':True,'isolation_ready':True}):
+            self.assertEqual(self.call('POST',path,body,{'Content-Type':'application/json'})[0],403)
+            self.assertEqual(self.call('POST',path,body,self.session({'Content-Type':'application/json'}))[0],409)
+            self.app.access_mode='live';self.app.operation.acquire()
+            try:self.assertEqual(self.call('POST',path,body,self.session({'Content-Type':'application/json'}))[0],409)
+            finally:self.app.operation.release()
+            generate.assert_not_called()
+
     def test_readonly_whitelist_allows_intake_list_but_no_write(self):
         import importlib.util
         spec = importlib.util.spec_from_file_location('product_readonly', REPOSITORY / 'docs/handoff/frontend-5060/view-readonly.py')

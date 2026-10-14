@@ -17,7 +17,7 @@
 | 8 导出、接入 CI | 同上 | 既有 `POST /api/review/<id>/export`；新增 `GET /api/review/<id>/report.{json,sarif,junit,md}` | 否 |
 | 9 别人复检 | `#recheck` | `POST /api/recheck/upload` | 是，只在隔离沙箱内 |
 
-AI 候选（本地模型）进入同一审阅链属于 P2，需要现场模式和模型，由 5090 在有模型的机器上验收后再接入；P1 不展示无法执行的按钮。
+AI 候选（P2）使用第 5.2 节接口；仅现场模式且模型边界就绪、当前对象具有适用 FAIL 报告时可请求。
 
 ## 2. 通用约束
 
@@ -150,6 +150,16 @@ AI 候选（本地模型）进入同一审阅链属于 P2，需要现场模式�
 ### 5.1 报告下载
 
 `GET /api/review/<id>/report.json | report.sarif | report.junit | report.md`：当前版本适用报告的派生格式（与 `credproof-safety check --sarif/--junit/--summary` 同一实现）。没有适用报告时 409。只读，不需要会话头。
+
+### 5.2 请求本地模型候选（P2）
+
+`POST /api/review/<id>/propose`，只允许 `{"expected": {"version_id", "object_sha256", "report_sha256", "decision_count"}}`，沿用会话头、Host/Origin 校验和共同 operation 锁。只在 live 且当前配置的模型/隔离材料就绪时可用，否则 409 `live_model_boundary_required`。缺适用 FAIL 报告为 409 `propose_requires_current_FAIL`，过期绑定为 409。
+
+每次操作最多 **1 个模型请求、1 个候选、0 次格式重试、0 次自动检查**；16K 上下文、2048 输出、512 安全预留、单请求120秒、总900秒，预算不满足明确拒绝。使用当前明确配置的固定模型，不下载或回退。输入只由冻结入口、必要测试、公开配置/组件约定和脱敏当前失败事实构造；模型在既有只读白名单/私有网络边界中运行，无原生工具或任意执行。
+
+返回 `{"status":"CANDIDATE","review":<新审阅视图>,"model_requests":1,...}` 或 `{"status":"NO_CANDIDATE","reason":"...","review":<原视图>,...}`。STOP、超时、格式不合格或 NO_CHANGE 不新增版本。原始请求/响应、输入预算、模型边界、使用量及接收格式收据留在该审阅对象的 `proposals/<opaque-id>`。
+
+有效的不同源码仅写入新版本入口，来源 `AI_CANDIDATE`；版本记录固定模型名称/digest、请求/响应文件 SHA-256、策略和提议 ID。技术结论 UNKNOWN、人工 PENDING、NOT_APPLIED；**不自动检查、采纳或写回**。用户需另点“运行检查”，任何模型 reason 都不能决定 PASS。推理后再核对当前绑定，材料变化时不创建新版本。
 
 ## 6. 复检导出包
 

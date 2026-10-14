@@ -231,6 +231,9 @@ class ReviewWorkspace:
         state = self._expected(identifier, expected)
         if not isinstance(reason, str) or not reason.strip() or len(reason)>1000:
             raise ValueError('revision_reason_required')
+        return self._append_version(identifier, state, code, reason, 'DEVELOPER_REVISION')
+
+    def _append_version(self, identifier, state, code, reason, source_kind, provenance=None):
         source, receipt = receive_python_source(code)
         if source == state['code']:
             raise ValueError('NO_CHANGE')
@@ -243,11 +246,39 @@ class ReviewWorkspace:
         entry = version/'project'/parent_meta['entry_path']
         entry.write_text(source, encoding='utf8', newline='\n')
         save(version/'version.json', {'id':version.name,'parent':parent_meta['id'],
-             'source':'DEVELOPER_REVISION','reason':reason,'created_at':now(),
-             'entry_path':parent_meta['entry_path'],'code_sha256':sha(entry.read_bytes())})
+             'source':source_kind,'reason':reason,'created_at':now(),
+             'entry_path':parent_meta['entry_path'],'code_sha256':sha(entry.read_bytes()), **(provenance or {})})
         save(version/'format-receipt.json', receipt)
         self._binding(folder, version, read(version/'version.json'))
         return self.view(identifier)
+
+    def propose(self, identifier, expected):
+        """One model proposal; new object UNKNOWN/PENDING, never auto-check/adopt."""
+        from .proposal import generate_proposal
+        state=self._expected(identifier, expected)
+        if state['technical_verdict']!='FAIL' or not state['report_applicable']:
+            raise ValueError('propose_requires_current_FAIL')
+        folder=self.folder(identifier);version,meta=self.version(folder)
+        self._binding(folder,version,meta)
+        proposal_id=uuid.uuid4().hex
+        result=generate_proposal(version/'project/credproof.toml',state['report'],folder/'proposals'/proposal_id)
+        # Recheck after inference: a moving source/report cannot authorize a
+        # new version, even if a caller bypasses the server's operation lock.
+        self._expected(identifier, expected)
+        public={k:v for k,v in result.items() if k in ('status','reason','model','strategy','model_requests',
+                 'native_tool_calls','verifications','request_sha256','response_sha256','boundary_status')}
+        save(folder/'proposals'/proposal_id/'review-receipt.json',{'proposal_id':proposal_id,
+             'source_version':meta['id'],'source_object_sha256':state['object_sha256'],
+             'source_report_sha256':state['report_sha256'],**public})
+        if result.get('status')!='CANDIDATE':
+            return {**public,'status':'NO_CANDIDATE','review':self.view(identifier)}
+        if result['code']==state['code']:
+            return {**public,'status':'NO_CANDIDATE','reason':'NO_CHANGE','review':self.view(identifier)}
+        provenance={k:result[k] for k in ('model','request_sha256','response_sha256','strategy')}
+        provenance['proposal_id']=proposal_id
+        provenance['model_format']=result.get('format_receipt')
+        view=self._append_version(identifier,state,result['code'],result['reason'],'AI_CANDIDATE',provenance)
+        return {**public,'status':'CANDIDATE','review':view}
 
     def check(self, identifier, expected):
         self._expected(identifier, expected)

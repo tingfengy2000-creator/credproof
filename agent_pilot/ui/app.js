@@ -785,7 +785,7 @@ function renderStories() {
 
 /* ---------- Product workspace (docs/ui/PRODUCT-API.md) ---------- */
 const decisionSeal = { PENDING: ['待决定', 'pending'], APPROVED: ['已采纳', 'pass'], REJECTED: ['已拒绝', 'fail'], NEEDS_CHANGES: ['需要修改', 'unknown'] };
-const versionSource = { AI_HISTORY: 'AI 原件（历史响应导入，未重新推理）', DEVELOPER_REVISION: '开发者修订', PROJECT_IMPORT: '接入时的代码' };
+const versionSource = { AI_HISTORY: 'AI 原件（历史响应导入，未重新推理）', AI_CANDIDATE: 'AI 候选（本次现场生成）', DEVELOPER_REVISION: '开发者修订', PROJECT_IMPORT: '接入时的代码' };
 const kindNames = { PROJECT: '项目检查', AI_HISTORY: 'AI 候选审阅' };
 const conditionLabel = key => conditionGroups.flatMap(([, items]) => items).find(([k]) => k === key)?.[1] || key;
 const unknownReasonText = { ...unknownReasons, entry_scenario_observation_incomplete: '入口场景的观测不完整',
@@ -1213,6 +1213,9 @@ function renderProject() {
   const ro = readOnly() ? '只读入口：服务端拒绝一切修订、检查、决定和导出。' : '';
   $('project-code').readOnly = !!ro;
   $('project-revise').disabled = state.busy || !!ro || !materialOk;
+  const proposeReason = ro || (state.status?.access_mode !== 'live' ? '仅现场模式可请求本地模型。' : !state.status?.can_use_model ? '本地模型或隔离边界未就绪。' : !materialOk || !r.report_applicable || tv !== 'FAIL' ? '需要当前对象适用的 FAIL 报告。' : '');
+  $('project-propose').disabled = state.busy || !!proposeReason;
+  $('propose-blocker').textContent = proposeReason || '一次受控生成；新候选尚未检查，不自动采纳。随后请手动运行检查并审阅。';
   $('revise-reason').disabled = !!ro;
   $('project-versions').innerHTML = array(r.versions).map(v => `<li class="${v.id === r.version.id ? 'is-current' : ''}"><strong>${escape(v.id)}　${escape(versionSource[v.source] || v.source)}</strong><p>${escape(v.reason || '')}</p><code title="${escape(v.code_sha256 || '')}">${escape(short(v.code_sha256))}</code> <span class="muted small">${escape(displayTime(v.created_at))}</span>${v.id === r.version.id ? `<p>当前版本，技术结论：${escape(sealNames[tv] || tv)}</p>` : ''}</li>`).join('');
   const blockers = [];
@@ -1648,6 +1651,13 @@ $('project-revise').addEventListener('click', () => busyAction(async () => {
   await projectAction('revise', { code: $('project-code').value, reason: $('revise-reason').value });
   $('revise-reason').value = ''; state.projectTab = 'diff';
   announce(`已保存为 ${state.projectView.version.id}，尚未检查。`);
+}));
+$('project-propose').addEventListener('click', () => busyAction(async () => {
+  announce('本地模型正在提出候选；本操作不运行检查或采纳。');
+  const result = await request(`/api/review/${state.projectView.id}/propose`, { expected: projectExpected() });
+  state.projectView = result.review; state.reviewsStale = true; state.projectTab = 'diff';
+  if (result.status === 'CANDIDATE') announce(`AI 候选 ${result.review.version.id} 已保存：尚未检查，请运行检查。`);
+  else announce(`未创建候选：${result.reason || '模型未返回有效修改'}。`);
 }));
 for (const [id, decision] of [['decide-needs', 'NEEDS_CHANGES'], ['decide-reject', 'REJECTED'], ['decide-approve', 'APPROVED']]) {
   $(id).addEventListener('click', () => busyAction(async () => {

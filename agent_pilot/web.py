@@ -1145,7 +1145,7 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_json(200, app.bootstrap())
         if self.route_workspace(path, app):
             return
-        review_match = re.fullmatch(r'/api/review/([0-9a-f]{32})(/revise|/check|/decide|/export)?', path)
+        review_match = re.fullmatch(r'/api/review/([0-9a-f]{32})(/revise|/check|/decide|/export|/propose)?', path)
         if self.command == 'GET' and review_match and not review_match[2]:
             try:
                 return self.send_json(200, app.review_public(app.review_workspace.view(review_match[1])))
@@ -1171,6 +1171,12 @@ class Handler(BaseHTTPRequestHandler):
                     expected = data.get('expected')
                     if operation == '/revise' and set(data)=={'expected','code','reason'}:
                         result = app.review_workspace.revise(identifier, expected, data['code'], data['reason'])
+                    elif operation == '/propose' and set(data)=={'expected'}:
+                        runtime = app.runtime(force=True)
+                        if app.access_mode!='live' or not runtime.get('model_ready') or not runtime.get('isolation_ready'):
+                            raise Problem(409, 'live_model_boundary_required')
+                        result = app.review_workspace.propose(identifier, expected)
+                        result['review'] = app.review_public(result['review'])
                     elif operation == '/check' and set(data)=={'expected'}:
                         if app.access_mode=='view' or not app.checker(force=True)['ready']:
                             raise Problem(409, 'isolation_required_no_host_fallback')
