@@ -87,7 +87,10 @@ def unpack_archive(data, destination):
         raise IntakeError('压缩包条目过多。')
     accepted, total, seen = [], 0, set()
     for info in infos:
-        parts = _safe_member(info.filename)
+        # ZipInfo.filename normalizes backslashes on Windows and truncates at
+        # NUL. Validate the original central-directory name before either
+        # transformation can hide a forbidden archive character.
+        parts = _safe_member(info.orig_filename)
         if info.is_dir():
             continue
         if info.flag_bits & 0x1:

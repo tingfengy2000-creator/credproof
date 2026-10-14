@@ -54,7 +54,11 @@ def zip_bytes(entries, *, symlink=None):
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, 'w') as archive:
         for name, data in entries.items():
-            archive.writestr(name, data)
+            info = zipfile.ZipInfo(name)
+            # Preserve deliberately malformed names in the actual ZIP bytes;
+            # ZipInfo's Windows constructor otherwise normalizes backslashes.
+            info.filename = name
+            archive.writestr(info, data)
         if symlink:
             info = zipfile.ZipInfo(symlink)
             info.external_attr = (stat.S_IFLNK | 0o777) << 16
@@ -99,7 +103,7 @@ class ArchiveTests(unittest.TestCase):
         self.assertEqual(names, ['fetcher.py', 'tests/test_fetcher.py'])
 
     def test_unsafe_members_are_refused(self):
-        for entries in ({'../escape.py': 'x'}, {'/abs.py': 'x'}, {'a\\b.py': 'x'}, {'C:/x.py': 'x'},
+        for entries in ({'../escape.py': 'x'}, {'/abs.py': 'x'}, {'a\\b.py': 'x'}, {'C:/x.py': 'x'}, {'nul\x00.py': 'x'},
                         {'ok/x.py': 'a', 'ok/X.py': 'b'}):
             with self.assertRaises(IntakeError, msg=entries):
                 unpack_archive(zip_bytes(entries), self.root / ('o' + str(len(list(self.root.iterdir())))))
