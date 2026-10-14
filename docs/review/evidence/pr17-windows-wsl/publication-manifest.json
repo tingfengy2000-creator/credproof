@@ -1,0 +1,742 @@
+{
+  "policy": "Exact path-prefix and host-field redaction only; screenshots unchanged; originals retained locally; no statuses or code semantics rewritten.",
+  "source_commit": "9f83f84d73c924b19742e42bd2f826c1dad3e057",
+  "records": [
+    {
+      "source": "pr16-browser/summary.json",
+      "published": "pr16-browser/summary.json",
+      "original_sha256": "2136d14c6d73ef4393f4d797b049b958e132861e87244efba047c0137a819e9e",
+      "published_sha256": "ae04748943c9b9ff9d50f3868f83b466ed5fdd9e9c9b616a7f1eca775ff13eb0",
+      "original_bytes": 8218,
+      "published_bytes": 9744
+    },
+    {
+      "source": "product-final/summary.json",
+      "published": "product-final/summary.json",
+      "original_sha256": "ed86ad1b32a3aa5aed4a574ddd7be12daa771679e09785c6d25aad920953b58d",
+      "published_sha256": "d3e9b6f295e62f84638c89328a8e1d503b484e92c61a447e2e92ae6b6ae357d4",
+      "original_bytes": 311,
+      "published_bytes": 312
+    },
+    {
+      "source": "strict-readonly-final/summary.json",
+      "published": "strict-readonly-final/summary.json",
+      "original_sha256": "d27ed9ad8fa7769400ca97d125f65da12de656c3256b03405366628ae7ac1aa8",
+      "published_sha256": "bf2f4c1b5f9b82ead6f06b2af7bdd5b57e469972a33cffb21e4c63643121ca10",
+      "original_bytes": 10635,
+      "published_bytes": 12647
+    },
+    {
+      "source": "delivery-current-browser/summary.json",
+      "published": "delivery-current-browser/summary.json",
+      "original_sha256": "fe4d45371efb161b52b5ed79d129a15f646058bb2e1bffcd190292270a40589f",
+      "published_sha256": "d2e757338ab7c30f80fc056f4c4837dd087ee465999b8eb8a2f46ddba55f3c02",
+      "original_bytes": 10635,
+      "published_bytes": 12647
+    },
+    {
+      "source": "delivery-current-view/summary.json",
+      "published": "delivery-current-view/summary.json",
+      "original_sha256": "406f0bf1be823dda8f3ad8daaa7a2c8bdccc1c861bbcb4be49b34da07086cc2c",
+      "published_sha256": "341b259e81ea1d4af19476808984a5a096b4725116647014bb7fa9027747187c",
+      "original_bytes": 1205,
+      "published_bytes": 1206
+    },
+    {
+      "source": "boundaries/summary.json",
+      "published": "boundaries/summary.json",
+      "original_sha256": "091d4375f1a4979cfddd61eab44a61b3a6d2d93dccdfdb493e0f979c4e69c433",
+      "published_sha256": "99be3ed0bafe7c537c126215c3c87fa315602d1e16803e7c22f7a22e6fd1e2ef",
+      "original_bytes": 491,
+      "published_bytes": 492
+    },
+    {
+      "source": "boundaries/http.json",
+      "published": "boundaries/http.json",
+      "original_sha256": "5781f735a41cbe363751bd77ee792394f0a8fc24fb1aa59e46c42eed7240e8ad",
+      "published_sha256": "5781f735a41cbe363751bd77ee792394f0a8fc24fb1aa59e46c42eed7240e8ad",
+      "original_bytes": 537,
+      "published_bytes": 537
+    },
+    {
+      "source": "software-current.xml",
+      "published": "receipts/software-current.xml",
+      "original_sha256": "cddd5399b5df2036849bc7b85b96296e524ae7d4d1cca903a74f9a69b5b0685e",
+      "published_sha256": "82ac55b188307deab1ef8b14167297cd7be0529814f0b054d3a2cd3933f3e9da",
+      "original_bytes": 52872,
+      "published_bytes": 52577
+    },
+    {
+      "source": "software-current.stdout.txt",
+      "published": "receipts/software-current.stdout.txt",
+      "original_sha256": "e49da79ae512c983c5a693fb4878cbc045d630ad3277cceadfe36aa31d54baf5",
+      "published_sha256": "1ffc19b566de7daab7fc6049b91db3b86bc5972b230c437fbc0666be7314a909",
+      "original_bytes": 1213,
+      "published_bytes": 1155
+    },
+    {
+      "source": "software-final.xml",
+      "published": "receipts/software-final.xml",
+      "original_sha256": "9466d9c892c88e3ab07dd535c0f2abb6305e533a76a05db1fab0269e13dfad04",
+      "published_sha256": "4a867726ade3e7be4942c036d816827013b295902e1b5e0df996f87d13e5653a",
+      "original_bytes": 52713,
+      "published_bytes": 52418
+    },
+    {
+      "source": "wsl-unit-readonly.xml",
+      "published": "receipts/wsl-unit-readonly.xml",
+      "original_sha256": "b6b984cb4aed739416ef0ab66f08728c43570e8d8f90d627b804ab3eee690ffd",
+      "published_sha256": "ce3eb83a1d9bde47b1d604eb5f45a6c0e7865998c1707be6b8f2db6bea43d0a1",
+      "original_bytes": 3786,
+      "published_bytes": 3778
+    },
+    {
+      "source": "readonly-fixed-unit.xml",
+      "published": "receipts/readonly-fixed-unit.xml",
+      "original_sha256": "af33e09c1d08ae3ab49692e31e05678ae6247b1c5b1ef41abf3162102b37ef33",
+      "published_sha256": "b5cd9596d5c27770a42a984f4a1f0b98841aa48d684923e514f4192238e0a78d",
+      "original_bytes": 3786,
+      "published_bytes": 3778
+    },
+    {
+      "source": "installed-current-origin.json",
+      "published": "receipts/installed-current-origin.json",
+      "original_sha256": "2204ed183b772cd34bd2a22d6310d02ed3a816738f5b592f852fc679183dcf80",
+      "published_sha256": "cee6d352b4b0b37f35f9cf34fdae2dd6ec1d72257dfc4ac23888dfc86f3fd4bf",
+      "original_bytes": 1026,
+      "published_bytes": 985
+    },
+    {
+      "source": "wheel-current.stdout.txt",
+      "published": "receipts/wheel-current.stdout.txt",
+      "original_sha256": "b27c8b23c0b201a43d43a96c460174bbcc13029f3c5a4ceb14823b9d3a580e6d",
+      "published_sha256": "1528ce65f34c58362def10514817f8b87408c17a9e0c052d7467d4aef351596e",
+      "original_bytes": 926,
+      "published_bytes": 857
+    },
+    {
+      "source": "install-current.stdout.txt",
+      "published": "receipts/install-current.stdout.txt",
+      "original_sha256": "d307aa5e2d6386c3db23f1d87f3d8b0abaffe06528fa6ccba0af2a15afe35bc3",
+      "published_sha256": "61b38bd2f5152143e7b3ccde20c9190584d898e5bc4e2177041f96c65f141f3b",
+      "original_bytes": 636,
+      "published_bytes": 566
+    },
+    {
+      "source": "package-byte-reuse.json",
+      "published": "receipts/package-byte-reuse.json",
+      "original_sha256": "b24285e5e5fd4f343b48fa78da87a76934aa694cd42fa79bd552098e90c6a33a",
+      "published_sha256": "405ade61289c33d59ca935b66558da585312044147c75bc6dce4915cfdfe8c64",
+      "original_bytes": 48182,
+      "published_bytes": 47850
+    },
+    {
+      "source": "pr16-software.xml",
+      "published": "receipts/pr16-software.xml",
+      "original_sha256": "15484da0291e17145575c59ee634980db231a25e19a8398a7c0c81333774f5ff",
+      "published_sha256": "562dc8a8ebfd3008ea45a16e22398c33fc1cbb972915b9d9c3a3666946b38450",
+      "original_bytes": 1000,
+      "published_bytes": 992
+    },
+    {
+      "source": "pr17-software-valid.xml",
+      "published": "prior-failures/windows-raw-zip-failure.xml",
+      "original_sha256": "d58ccfbf2446e97c17ace71e42e0bc4ff9c2d793789714d6250c8c89dafe8d48",
+      "published_sha256": "fd476c77994773dcbc1907331ff6d4742f6a43c7af12927b02d11ca5dd73015e",
+      "original_bytes": 53252,
+      "published_bytes": 52948
+    },
+    {
+      "source": "strict-readonly-browser/summary.json",
+      "published": "prior-failures/readonly-missing-intake.json",
+      "original_sha256": "e67696c8daf67c2ecf53f6cefecf4075227c76498033beba62f73b0a9c2bac61",
+      "published_sha256": "8d12a0f22d0b8883c25ff588d56bf5e7ecd7cda93ea66fa62b0dc898d8818c23",
+      "original_bytes": 13603,
+      "published_bytes": 15778
+    },
+    {
+      "source": "product-final/reviews.json",
+      "published": "product-final/reviews.json",
+      "original_sha256": "b90137867913b1d0d797434e5845e74de0e1e23c91e718d8975faf05f402a363",
+      "published_sha256": "b90137867913b1d0d797434e5845e74de0e1e23c91e718d8975faf05f402a363",
+      "original_bytes": 1485,
+      "published_bytes": 1485
+    },
+    {
+      "source": "product-final/review-PROJECT-a8aba1a17b9b470abe12842bc95a9157.json",
+      "published": "product-final/review-PROJECT-a8aba1a17b9b470abe12842bc95a9157.json",
+      "original_sha256": "13e47a3e630c8601b525ac4525a64eb5afe7369052c0c1b9ad83cc8ef2b27f33",
+      "published_sha256": "13e47a3e630c8601b525ac4525a64eb5afe7369052c0c1b9ad83cc8ef2b27f33",
+      "original_bytes": 29510,
+      "published_bytes": 29510
+    },
+    {
+      "source": "product-final/review-PROJECT-1a64f06f9c9146399ea8bb327588b5c9.json",
+      "published": "product-final/review-PROJECT-1a64f06f9c9146399ea8bb327588b5c9.json",
+      "original_sha256": "844190bd463969b2d3bc133ca993830d6f0b8dac36cb1fe5192a9d5ab99e0ab4",
+      "published_sha256": "844190bd463969b2d3bc133ca993830d6f0b8dac36cb1fe5192a9d5ab99e0ab4",
+      "original_bytes": 23454,
+      "published_bytes": 23454
+    },
+    {
+      "source": "product-final/review-AI_HISTORY-939e25f42bb142f39567c5cb644ebc6d.json",
+      "published": "product-final/review-AI_HISTORY-939e25f42bb142f39567c5cb644ebc6d.json",
+      "original_sha256": "c0b506ad5e842686ce0ac6049c3f698259d2570f1ef5a91d5d0b03ce2296d05d",
+      "published_sha256": "c0b506ad5e842686ce0ac6049c3f698259d2570f1ef5a91d5d0b03ce2296d05d",
+      "original_bytes": 30534,
+      "published_bytes": 30534
+    },
+    {
+      "source": "product-final/workspace-status.json",
+      "published": "product-final/workspace-status.json",
+      "original_sha256": "877e5f0ff501d9b7c248b22ee1e37d0269dff1b83500c03c9d52fd865ce574d9",
+      "published_sha256": "877e5f0ff501d9b7c248b22ee1e37d0269dff1b83500c03c9d52fd865ce574d9",
+      "original_bytes": 791,
+      "published_bytes": 791
+    },
+    {
+      "source": "product-final/recheck-report-latest.json",
+      "published": "product-final/recheck-report-latest.json",
+      "original_sha256": "442aad204928a1fbda6161b2ed01adc17e0b14524a00ce09bc091da4a7fcb9bc",
+      "published_sha256": "476fb6a7f228b0d468024cd746ff33587b6121acf8708574299b333e4caf93d9",
+      "original_bytes": 19913,
+      "published_bytes": 19339
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/meta.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/meta.json",
+      "original_sha256": "ddce019e2a1bf26d2d3885b7e7612fdc7ebb1524bf436b6741f9205e08819a02",
+      "published_sha256": "ddce019e2a1bf26d2d3885b7e7612fdc7ebb1524bf436b6741f9205e08819a02",
+      "original_bytes": 512,
+      "published_bytes": 512
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/baseline/access-dependency.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/baseline/access-dependency.json",
+      "original_sha256": "00c4572160f84f687a41db2702e6552702faffcc26386a0aa48680c0c570e663",
+      "published_sha256": "00c4572160f84f687a41db2702e6552702faffcc26386a0aa48680c0c570e663",
+      "original_bytes": 451,
+      "published_bytes": 451
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/baseline/candidate.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/baseline/candidate.py",
+      "original_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "published_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "original_bytes": 1324,
+      "published_bytes": 1324
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/baseline/manifest.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/baseline/manifest.json",
+      "original_sha256": "8c1dbcae9dadd0a8434a5b7b843b03a48c8b0e7d860f0f2e60ba7762c529f600",
+      "published_sha256": "8c1dbcae9dadd0a8434a5b7b843b03a48c8b0e7d860f0f2e60ba7762c529f600",
+      "original_bytes": 999,
+      "published_bytes": 999
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/baseline/original.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/baseline/original.py",
+      "original_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "published_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "original_bytes": 1324,
+      "published_bytes": 1324
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/decisions/000000-fc7eb2daa58042b79bcfec90324028f7.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/decisions/000000-fc7eb2daa58042b79bcfec90324028f7.json",
+      "original_sha256": "fdb37bc00d09f6600eb3dc41c49f9148d88260c3aa6e89f811b416b3fa6c60a7",
+      "published_sha256": "fdb37bc00d09f6600eb3dc41c49f9148d88260c3aa6e89f811b416b3fa6c60a7",
+      "original_bytes": 1821,
+      "published_bytes": 1821
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/baseline/project/credproof.toml",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/baseline/project/credproof.toml",
+      "original_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "published_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "original_bytes": 1161,
+      "published_bytes": 1161
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/baseline/project/tool.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/baseline/project/tool.py",
+      "original_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "published_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "original_bytes": 1324,
+      "published_bytes": 1324
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/baseline/dependencies/credproof_access/contract.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/baseline/dependencies/credproof_access/contract.py",
+      "original_sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc",
+      "published_sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc",
+      "original_bytes": 2677,
+      "published_bytes": 2677
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/baseline/dependencies/credproof_access/__init__.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/baseline/dependencies/credproof_access/__init__.py",
+      "original_sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "published_sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "original_bytes": 4276,
+      "published_bytes": 4276
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/baseline/project/tests/test_business.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/baseline/project/tests/test_business.py",
+      "original_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "published_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "original_bytes": 1850,
+      "published_bytes": 1850
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/access-dependency.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/access-dependency.json",
+      "original_sha256": "95a7f1bd9d62c722f953446c0c68d162fbdded84b698e4803321530e0994f5b7",
+      "published_sha256": "58986e9076852bd2c9aae45735a46c8f0efc6db0962015d014cdcd98b717275c",
+      "original_bytes": 2835,
+      "published_bytes": 2756
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/candidate.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/candidate.py",
+      "original_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "published_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "original_bytes": 875,
+      "published_bytes": 875
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/configuration.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/configuration.json",
+      "original_sha256": "66063f0cb25ef27da6bd5fda1664dbd4b0e7aa5d79526ca4ebe25a1207335d0b",
+      "published_sha256": "ed915d079c6021cbd2b957efaf1b7500c74e8503144be5923960b14ffd10894b",
+      "original_bytes": 255,
+      "published_bytes": 248
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/human-review.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/human-review.json",
+      "original_sha256": "a0a78c457f800ec580c244c996dd807bba544f2772aaf513790e365ccaf24b5d",
+      "published_sha256": "a0a78c457f800ec580c244c996dd807bba544f2772aaf513790e365ccaf24b5d",
+      "original_bytes": 2928,
+      "published_bytes": 2928
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/manifest.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/manifest.json",
+      "original_sha256": "240f6b18e8f92e876876e25b8542ecf88e2c5ce739a3cb834abaa3e5233a38f1",
+      "published_sha256": "67745c7452629bcbb971a099f426ef6cb9d831f61ebc73d37772bab08807f730",
+      "original_bytes": 2722,
+      "published_bytes": 2681
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/original.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/original.py",
+      "original_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "published_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "original_bytes": 1324,
+      "published_bytes": 1324
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/report.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/report.json",
+      "original_sha256": "4df18ffe4b78b128cc242edfa469da67315b1672a27d63e6a52495bb12bfe382",
+      "published_sha256": "85184f071dd2b153cb5417d49546345075d3703f26b8517a983364dcf5e067c6",
+      "original_bytes": 21789,
+      "published_bytes": 21168
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/method/final-candidate.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/method/final-candidate.py",
+      "original_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "published_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "original_bytes": 875,
+      "published_bytes": 875
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/method/original.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/method/original.py",
+      "original_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "published_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "original_bytes": 1324,
+      "published_bytes": 1324
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/method/result.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/method/result.json",
+      "original_sha256": "9fa53b13e968e9b66b9ad33083f1f6f8dcf12972b0b4cf876994d3e08233db00",
+      "published_sha256": "fb25023b6c40c6bea99c12b41206f77475efbf9b6e95ef8960193181dceb2408",
+      "original_bytes": 20050,
+      "published_bytes": 19446
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/artifact/candidate/credproof.toml",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/artifact/candidate/credproof.toml",
+      "original_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "published_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "original_bytes": 1161,
+      "published_bytes": 1161
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/artifact/candidate/tool.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/artifact/candidate/tool.py",
+      "original_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "published_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "original_bytes": 875,
+      "published_bytes": 875
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/artifact/candidate/tests/test_business.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/artifact/candidate/tests/test_business.py",
+      "original_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "published_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "original_bytes": 1850,
+      "published_bytes": 1850
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/project/credproof.toml",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/project/credproof.toml",
+      "original_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "published_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "original_bytes": 1161,
+      "published_bytes": 1161
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/project/tool.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/project/tool.py",
+      "original_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "published_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "original_bytes": 875,
+      "published_bytes": 875
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/dependencies/credproof_access/contract.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/dependencies/credproof_access/contract.py",
+      "original_sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc",
+      "published_sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc",
+      "original_bytes": 2677,
+      "published_bytes": 2677
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/dependencies/credproof_access/__init__.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/dependencies/credproof_access/__init__.py",
+      "original_sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "published_sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "original_bytes": 4276,
+      "published_bytes": 4276
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/project/tests/test_business.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/exports/33a532181f5b4d79b118f20bad5e6d73/bundle/project/tests/test_business.py",
+      "original_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "published_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "original_bytes": 1850,
+      "published_bytes": 1850
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/versions/v000/version.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v000/version.json",
+      "original_sha256": "c97e2099cc98a354eed34e1c29d1d490b543c490d1426e4e4b03540d3bbc2a45",
+      "published_sha256": "c97e2099cc98a354eed34e1c29d1d490b543c490d1426e4e4b03540d3bbc2a45",
+      "original_bytes": 359,
+      "published_bytes": 359
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/versions/v001/format-receipt.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v001/format-receipt.json",
+      "original_sha256": "b47f77bf2d06476e05602f5e73fdb16952f467c7ae211100458e983f8c7d8089",
+      "published_sha256": "b47f77bf2d06476e05602f5e73fdb16952f467c7ae211100458e983f8c7d8089",
+      "original_bytes": 619,
+      "published_bytes": 619
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/versions/v001/version.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v001/version.json",
+      "original_sha256": "ea98b803bd24d1caac11e614f67426507d3ee10008c880fe48a2af4938d17360",
+      "published_sha256": "ea98b803bd24d1caac11e614f67426507d3ee10008c880fe48a2af4938d17360",
+      "original_bytes": 323,
+      "published_bytes": 323
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/versions/v000/project/credproof.toml",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v000/project/credproof.toml",
+      "original_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "published_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "original_bytes": 1161,
+      "published_bytes": 1161
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/versions/v000/project/tool.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v000/project/tool.py",
+      "original_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "published_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "original_bytes": 1324,
+      "published_bytes": 1324
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/versions/v000/reports/z-2026-10-14T03-07-44.759070+00-00-ce30195bc38447f3aa78f9e528679085.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v000/reports/z-2026-10-14T03-07-44.759070+00-00-ce30195bc38447f3aa78f9e528679085.json",
+      "original_sha256": "5f0c23fd99fb2531c87e8d158050f26b31cf276804065c01027b2cfa3ddbeb31",
+      "published_sha256": "ddb046e2f72d1d66a52e6deadf1d806c60c220fb7c96d1f890737bc3c104eed0",
+      "original_bytes": 25676,
+      "published_bytes": 25018
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/versions/v000/project/tests/test_business.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v000/project/tests/test_business.py",
+      "original_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "published_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "original_bytes": 1850,
+      "published_bytes": 1850
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/versions/v001/project/credproof.toml",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v001/project/credproof.toml",
+      "original_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "published_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+      "original_bytes": 1161,
+      "published_bytes": 1161
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/versions/v001/project/tool.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v001/project/tool.py",
+      "original_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "published_sha256": "7a7dcaf75275c539ef217a1c6f5feafd8bf2d472b2a9a9188ecfcc46fcc22756",
+      "original_bytes": 875,
+      "published_bytes": 875
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/versions/v001/reports/z-2026-10-14T03-07-47.443838+00-00-3fc8c5b8c40c454c8f2778d0388c36f0.json",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v001/reports/z-2026-10-14T03-07-47.443838+00-00-3fc8c5b8c40c454c8f2778d0388c36f0.json",
+      "original_sha256": "cdcd79b0420f89149a5003d988711c76acce3120bd7688c67e8d05ddb9cf8417",
+      "published_sha256": "0f1c7b72c24c8c98a9a096104325f0939de97b0340b4b455e8e1ffa59c234cc5",
+      "original_bytes": 18267,
+      "published_bytes": 17704
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/a8aba1a17b9b470abe12842bc95a9157/versions/v001/project/tests/test_business.py",
+      "published": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v001/project/tests/test_business.py",
+      "original_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "published_sha256": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356",
+      "original_bytes": 1850,
+      "published_bytes": 1850
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/meta.json",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/meta.json",
+      "original_sha256": "c140768b321b1adc0f90b9246521ba1d65e26dfac5d3a30a3794653d338c2f5b",
+      "published_sha256": "c140768b321b1adc0f90b9246521ba1d65e26dfac5d3a30a3794653d338c2f5b",
+      "original_bytes": 500,
+      "published_bytes": 500
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/baseline/access-dependency.json",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/baseline/access-dependency.json",
+      "original_sha256": "00c4572160f84f687a41db2702e6552702faffcc26386a0aa48680c0c570e663",
+      "published_sha256": "00c4572160f84f687a41db2702e6552702faffcc26386a0aa48680c0c570e663",
+      "original_bytes": 451,
+      "published_bytes": 451
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/baseline/candidate.py",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/baseline/candidate.py",
+      "original_sha256": "0ed1dbde19d006172cbb7e7eb8e521bc0929624aac36c2cb55b9d1da3810d0a1",
+      "published_sha256": "0ed1dbde19d006172cbb7e7eb8e521bc0929624aac36c2cb55b9d1da3810d0a1",
+      "original_bytes": 783,
+      "published_bytes": 783
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/baseline/manifest.json",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/baseline/manifest.json",
+      "original_sha256": "3eefe371a7b7e499dc654217c0691e6a0159cc12d521ae8bd541f0334aa0ec06",
+      "published_sha256": "3eefe371a7b7e499dc654217c0691e6a0159cc12d521ae8bd541f0334aa0ec06",
+      "original_bytes": 906,
+      "published_bytes": 906
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/baseline/original.py",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/baseline/original.py",
+      "original_sha256": "0ed1dbde19d006172cbb7e7eb8e521bc0929624aac36c2cb55b9d1da3810d0a1",
+      "published_sha256": "0ed1dbde19d006172cbb7e7eb8e521bc0929624aac36c2cb55b9d1da3810d0a1",
+      "original_bytes": 783,
+      "published_bytes": 783
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/baseline/project/credproof.toml",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/baseline/project/credproof.toml",
+      "original_sha256": "e155f860837e7236120e9e8665283c6eea533cd7a7790b087202ab8ea1b1ea09",
+      "published_sha256": "e155f860837e7236120e9e8665283c6eea533cd7a7790b087202ab8ea1b1ea09",
+      "original_bytes": 1083,
+      "published_bytes": 1083
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/baseline/project/tool.py",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/baseline/project/tool.py",
+      "original_sha256": "0ed1dbde19d006172cbb7e7eb8e521bc0929624aac36c2cb55b9d1da3810d0a1",
+      "published_sha256": "0ed1dbde19d006172cbb7e7eb8e521bc0929624aac36c2cb55b9d1da3810d0a1",
+      "original_bytes": 783,
+      "published_bytes": 783
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/baseline/dependencies/credproof_access/contract.py",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/baseline/dependencies/credproof_access/contract.py",
+      "original_sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc",
+      "published_sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc",
+      "original_bytes": 2677,
+      "published_bytes": 2677
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/baseline/dependencies/credproof_access/__init__.py",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/baseline/dependencies/credproof_access/__init__.py",
+      "original_sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "published_sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "original_bytes": 4276,
+      "published_bytes": 4276
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/baseline/project/tests/test_business.py",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/baseline/project/tests/test_business.py",
+      "original_sha256": "8ac5b8120c710601731531a93632a769d6aee155bc7c55861009426b56cf9245",
+      "published_sha256": "8ac5b8120c710601731531a93632a769d6aee155bc7c55861009426b56cf9245",
+      "original_bytes": 402,
+      "published_bytes": 402
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/versions/v000/version.json",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/versions/v000/version.json",
+      "original_sha256": "7097d1ada4bda09594aa8038bbc0a417d5bc140c0676172c9a073c370ac9154f",
+      "published_sha256": "7097d1ada4bda09594aa8038bbc0a417d5bc140c0676172c9a073c370ac9154f",
+      "original_bytes": 359,
+      "published_bytes": 359
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/versions/v000/project/credproof.toml",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/versions/v000/project/credproof.toml",
+      "original_sha256": "e155f860837e7236120e9e8665283c6eea533cd7a7790b087202ab8ea1b1ea09",
+      "published_sha256": "e155f860837e7236120e9e8665283c6eea533cd7a7790b087202ab8ea1b1ea09",
+      "original_bytes": 1083,
+      "published_bytes": 1083
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/versions/v000/project/tool.py",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/versions/v000/project/tool.py",
+      "original_sha256": "0ed1dbde19d006172cbb7e7eb8e521bc0929624aac36c2cb55b9d1da3810d0a1",
+      "published_sha256": "0ed1dbde19d006172cbb7e7eb8e521bc0929624aac36c2cb55b9d1da3810d0a1",
+      "original_bytes": 783,
+      "published_bytes": 783
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/versions/v000/reports/z-2026-10-14T03-07-57.176651+00-00-4f3df69a5fb14dfab5aeb2af052bd94e.json",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/versions/v000/reports/z-2026-10-14T03-07-57.176651+00-00-4f3df69a5fb14dfab5aeb2af052bd94e.json",
+      "original_sha256": "1ebac1e152f03c12f232ac2920fec502efdde0535b5186e64cf62ce67017e7d5",
+      "published_sha256": "79f307d19c23d2c8c5b2fd730ea49b51b7098b7beb0317324dce24a5f56a0a81",
+      "original_bytes": 16924,
+      "published_bytes": 16401
+    },
+    {
+      "source": "final-demo-raw-snapshot/credproof-demo-review-4k6i6y3_/runs/human-review/1a64f06f9c9146399ea8bb327588b5c9/versions/v000/project/tests/test_business.py",
+      "published": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/versions/v000/project/tests/test_business.py",
+      "original_sha256": "8ac5b8120c710601731531a93632a769d6aee155bc7c55861009426b56cf9245",
+      "published_sha256": "8ac5b8120c710601731531a93632a769d6aee155bc7c55861009426b56cf9245",
+      "original_bytes": 402,
+      "published_bytes": 402
+    },
+    {
+      "source": "sample-upload/tool.py",
+      "published": "sample-upload/tool.py",
+      "original_sha256": "0ed1dbde19d006172cbb7e7eb8e521bc0929624aac36c2cb55b9d1da3810d0a1",
+      "published_sha256": "0ed1dbde19d006172cbb7e7eb8e521bc0929624aac36c2cb55b9d1da3810d0a1",
+      "original_bytes": 783,
+      "published_bytes": 783
+    },
+    {
+      "source": "sample-upload/tests/test_business.py",
+      "published": "sample-upload/tests/test_business.py",
+      "original_sha256": "8ac5b8120c710601731531a93632a769d6aee155bc7c55861009426b56cf9245",
+      "published_sha256": "8ac5b8120c710601731531a93632a769d6aee155bc7c55861009426b56cf9245",
+      "original_bytes": 402,
+      "published_bytes": 402
+    },
+    {
+      "source": "pr16-browser/desktop-pipeline.png",
+      "published": "pr16-browser/desktop-pipeline.png",
+      "original_sha256": "ca58d453730c994aabb20af832aea113349ac2c81444dae46d4d061dd6da3896",
+      "published_sha256": "ca58d453730c994aabb20af832aea113349ac2c81444dae46d4d061dd6da3896",
+      "original_bytes": 292567,
+      "published_bytes": 292567
+    },
+    {
+      "source": "product-final/07-project-fail.png",
+      "published": "product-final/07-project-fail.png",
+      "original_sha256": "552ce16c5ba1b89a9768b30c52f53f4d46cfefea825a8f8beeaec9ab0faad517",
+      "published_sha256": "552ce16c5ba1b89a9768b30c52f53f4d46cfefea825a8f8beeaec9ab0faad517",
+      "original_bytes": 349345,
+      "published_bytes": 349345
+    },
+    {
+      "source": "product-final/08-project-pass.png",
+      "published": "product-final/08-project-pass.png",
+      "original_sha256": "e1534599f08c91883593b2b652cc1f1483938fbc199872d9f5e8e6fdd667d7fb",
+      "published_sha256": "e1534599f08c91883593b2b652cc1f1483938fbc199872d9f5e8e6fdd667d7fb",
+      "original_bytes": 344498,
+      "published_bytes": 344498
+    },
+    {
+      "source": "product-final/09-project-approved.png",
+      "published": "product-final/09-project-approved.png",
+      "original_sha256": "db9c23c5b667919622254c2e932d820ae705a7f87e1c34803855a7de3294e082",
+      "published_sha256": "db9c23c5b667919622254c2e932d820ae705a7f87e1c34803855a7de3294e082",
+      "original_bytes": 345350,
+      "published_bytes": 345350
+    },
+    {
+      "source": "product-final/10-recheck.png",
+      "published": "product-final/10-recheck.png",
+      "original_sha256": "d0d1d4f07d154efca75c6a7d80050a5575292bae5ebb35ba8931d9b87edbc3fa",
+      "published_sha256": "d0d1d4f07d154efca75c6a7d80050a5575292bae5ebb35ba8931d9b87edbc3fa",
+      "original_bytes": 156570,
+      "published_bytes": 156570
+    },
+    {
+      "source": "product-final/12-wizard-valid.png",
+      "published": "product-final/12-wizard-valid.png",
+      "original_sha256": "d7b7ad883cc536aa4c9e86021d4a7e63e35d5c96d5ceda1ccbd46cd324e6ea99",
+      "published_sha256": "d7b7ad883cc536aa4c9e86021d4a7e63e35d5c96d5ceda1ccbd46cd324e6ea99",
+      "original_bytes": 259695,
+      "published_bytes": 259695
+    },
+    {
+      "source": "product-final/13-sample-checked.png",
+      "published": "product-final/13-sample-checked.png",
+      "original_sha256": "7da04eda46df466871f7ff35b11026296ea93cea21f3be3a8e2a57f270146eda",
+      "published_sha256": "7da04eda46df466871f7ff35b11026296ea93cea21f3be3a8e2a57f270146eda",
+      "original_bytes": 264931,
+      "published_bytes": 264931
+    },
+    {
+      "source": "delivery-current-view/human-review-view.png",
+      "published": "delivery-current-view/human-review-view.png",
+      "original_sha256": "c9af70f1ca580b53333b37ec24edd5492d186ebd1cf58819ffe4befca1174a0c",
+      "published_sha256": "c9af70f1ca580b53333b37ec24edd5492d186ebd1cf58819ffe4befca1174a0c",
+      "original_bytes": 348525,
+      "published_bytes": 348525
+    },
+    {
+      "source": "比赛 材料/cp17-9f83f84-receipt.json",
+      "published": "delivery/cp17-9f83f84-receipt.json",
+      "original_sha256": "d1b5d07135467dca3786bb1aab316063413de66abf7d15bc5c7a24363a606eeb",
+      "published_sha256": "c6ba8a13ef06f3fb0f53e5ca3563aff0b1fd3869d551589f95f447373e3c0731",
+      "original_bytes": 25695,
+      "published_bytes": 25406
+    },
+    {
+      "source": "比赛 材料/cp17-9f83f84-scan.json",
+      "published": "delivery/cp17-9f83f84-scan.json",
+      "original_sha256": "a25b821c43650c3243cb966b567a0d3d69abbd5d9cca9e80d05c7e7beb9643ed",
+      "published_sha256": "c7b6034dfa5fa36f7390a2dda1f0322bba41783400c7be38f10767f55b7d0119",
+      "original_bytes": 50077,
+      "published_bytes": 49654
+    }
+  ]
+}
