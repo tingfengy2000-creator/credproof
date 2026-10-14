@@ -29,6 +29,7 @@
   <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
   <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6m0-10v1"/></symbol>
   <symbol id="i-print" viewBox="0 0 24 24"><path d="M7 9V3h10v6M7 17H4v-7h16v7h-3M7 14h10v7H7z"/></symbol>
+  <symbol id="i-gate" viewBox="0 0 24 24"><circle cx="6" cy="5" r="2.2"/><circle cx="6" cy="19" r="2.2"/><circle cx="18" cy="12" r="2.2"/><path d="M6 7.2v9.6M8 6.2c5 1 7.8 2.6 8.3 3.9M8 17.8c5-1 7.8-2.6 8.3-3.9"/></symbol>
   <symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5m5-5-5 5 5 5"/></symbol>
 </svg>
 
@@ -41,6 +42,7 @@
     <nav class="nav">
       <a href="#overview" data-nav="overview"><svg class="icon"><use href="#i-grid"/></svg>验收概览</a>
       <a href="#patches" data-nav="patches"><svg class="icon"><use href="#i-list"/></svg>补丁记录</a>
+      <a href="#pipeline" data-nav="pipeline"><svg class="icon"><use href="#i-gate"/></svg>流水线闸门</a>
       <a href="#human-review" data-nav="human-review"><svg class="icon"><use href="#i-person"/></svg>人工审阅</a>
       <a href="#workbench" data-nav="workbench"><svg class="icon"><use href="#i-replay"/></svg>案例回放</a>
       <a href="#project-entry" data-nav="project-entry"><svg class="icon"><use href="#i-plug"/></svg>接入项目</a>
@@ -101,6 +103,11 @@
             <p id="history-line"></p>
             <a class="text-link" href="#patches?origin=history">查看这 21 份补丁</a>
           </section>
+          <section id="overview-pipeline" class="panel history-strip" aria-labelledby="overview-pipeline-title" hidden>
+            <h2 id="overview-pipeline-title">同一道检查，已经接进 PR 流水线</h2>
+            <p id="overview-pipeline-line"></p>
+            <a class="text-link" href="#pipeline">查看流水线闸门的实际运行</a>
+          </section>
           <p id="overview-provenance" class="provenance"></p>
         </div>
       </section>
@@ -141,6 +148,58 @@
       </section>
 
       <!-- Human review -->
+      <!-- CI pipeline gate -->
+      <section class="view" data-view="pipeline" hidden>
+        <div class="lede">
+          <p class="lede-title">合并之前，流水线先看运行证据。</p>
+          <p>CredProof 作为拉取请求（PR）上的一道检查运行：业务测试全部通过，也拦得住会把凭据送到禁止服务的补丁。下面是在 GitHub 托管的 Ubuntu 24.04 虚拟机上实际运行的记录，不是本次现场执行。</p>
+        </div>
+        <div id="pipeline-empty" class="empty-block" hidden></div>
+        <div id="pipeline-body" hidden>
+          <div id="pipeline-controls" class="pr-pair"></div>
+
+          <section class="panel" aria-labelledby="pipeline-steps-title">
+            <div class="panel-head"><div><h2 id="pipeline-steps-title">一次 PR 检查做了什么</h2><p id="pipeline-jobs" class="muted"></p></div></div>
+            <ol id="pipeline-steps" class="flow flow-steps"></ol>
+          </section>
+
+          <section class="panel" aria-labelledby="pipeline-setup-title">
+            <div class="panel-head"><div><h2 id="pipeline-setup-title">接进自己的仓库</h2><p class="muted">不需要模型，也不需要 GPU。一个检查清单、一条命令，结论按退出码交给流水线。</p></div></div>
+            <div class="setup-grid">
+              <div class="setup-item">
+                <h3>检查哪些项目</h3>
+                <p class="small muted">在 <code>.credproof/targets.txt</code> 中每行写一个已适配项目的配置。</p>
+                <pre id="pipeline-targets" class="cmd"></pre>
+              </div>
+              <div class="setup-item">
+                <h3>在容器中运行检查</h3>
+                <p class="small muted">非 root、不加能力、断网、只读根文件系统；隔离由容器内的沙箱完成。</p>
+                <pre id="pipeline-command" class="cmd"></pre>
+              </div>
+              <div class="setup-item">
+                <h3>按退出码决定能否合并</h3>
+                <table class="ledger compact"><thead><tr><th>退出码</th><th>含义</th><th>闸门</th></tr></thead><tbody id="pipeline-exit-codes"></tbody></table>
+              </div>
+              <div class="setup-item">
+                <h3>结果出现在哪里</h3>
+                <ul class="plain-list small">
+                  <li><strong>SARIF</strong>：GitHub 代码扫描告警，逐条写明未满足的条件和事实。</li>
+                  <li><strong>JUnit</strong>：GitLab、Jenkins 等通用的测试报告，14 项条件各一个用例。</li>
+                  <li><strong>摘要</strong>：流水线页面上的一页中文结论，附本地复现命令。</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="pipeline-acceptance-title">
+            <div class="panel-head"><div><h2 id="pipeline-acceptance-title">这套运行环境本身的验收</h2><p class="muted">两次 PR 运行中同时完成；结论只依据实际退出码和报告。</p></div></div>
+            <dl id="pipeline-acceptance" class="fact-grid"></dl>
+            <p id="pipeline-apparmor" class="footnote"></p>
+          </section>
+          <p id="pipeline-provenance" class="provenance"></p>
+        </div>
+      </section>
+
       <section class="view" data-view="human-review" hidden>
         <div class="lede">
           <p class="lede-title">AI 修不好时由开发者接手，修订同样要过闸门。</p>
@@ -338,7 +397,7 @@
         <section class="panel">
           <div class="panel-head"><div><h2>三种结论</h2></div></div>
           <dl class="verdict-defs">
-            <div><dt><span class="seal seal-sm is-pass">通过</span></dt><dd>14 项条件全部满足：没有泄密、没有越界，并且实际读取了允许的资料、实际带凭据访问了允许的服务，业务测试全部通过。</dd></div>
+            <div><dt><span class="seal seal-sm is-pass">通过</span></dt><dd>本配置声明的 14 项条件全部满足：没有泄密、没有越界，业务测试全部通过；配置要求时，还必须实际读取允许的资料、实际带凭据访问允许的服务。</dd></div>
             <div><dt><span class="seal seal-sm is-fail">不通过</span></dt><dd>至少有一项明确反例，例如凭据出现在日志里，或禁止的服务收到了请求。一刀切地拒绝所有访问同样不通过。</dd></div>
             <div><dt><span class="seal seal-sm is-unknown">证据不足</span></dt><dd>隔离环境不可用、必要测试被跳过，或者需要网络的场景在发出请求前就报错。提前报错不能当作安全。</dd></div>
           </dl>

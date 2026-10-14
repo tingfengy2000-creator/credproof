@@ -10,6 +10,7 @@
 | `#patches?origin=&verdict=&target=&model=&disagree=1` | 补丁记录：可筛选的台账 | `GET /api/bench` |
 | `#patch/<id>` | 补丁详情：印章式结论、五种方法对照、运行证据、14 项条件、差异与完整代码、裁判理由 | `GET /api/bench/patches/<id>` |
 | `#report/<id>` | 可打印的《补丁验收报告》（浏览器打印或存为 PDF） | 同上 |
+| `#pipeline`（别名 `#ci`） | 流水线闸门：两条演示 PR 在 GitHub 托管 Ubuntu 24.04 上的实际红/绿结果、代码扫描告警事实、接入方式（targets、容器命令、退出码、三种输出）和运行环境验收 | `GET /api/integration` |
 | `#human-review` | 人工审阅：程序判定 / 人工决定 / 原仓库三个独立状态与版本链 | `/api/review/*` |
 | `#workbench` | 案例回放（原工作台，全部原有元素 ID 保留） | `/api/agent/*` |
 | `#project-entry` | 接入项目：四步接入、登记项目的无模型检查与回归测试导出 | `/api/project/*` |
@@ -30,6 +31,7 @@
 | `GET /api/agent/runs/{id}/export` | 返回实际文件内容；按 Content-Type 和安全文件名下载 |
 | `GET /api/bench` | bench-results/v1 摘要与逐对象结论（不含代码和差异）；未加载时 409 |
 | `GET /api/bench/patches/{id}` | 单个对象的代码、差异、运行证据与裁判理由 |
+| `GET /api/integration` | credproof.ci-demo/v1：由 `scripts/integration/build_ci_demo.py` 从 `docs/integration/evidence/ci-c` 派生的流水线演示数据；工作区内固定文件，不接受请求路径；不存在时 404 |
 
 ```typescript
 type Verdict = 'PASS' | 'FAIL' | 'UNKNOWN';

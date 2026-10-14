@@ -25,7 +25,8 @@ class ReadOnlyHandler(Handler):
         self.boundary()
         path = urlsplit(self.path).path
         allowed = path in ('/', '/index.html', '/styles.css', '/app.js',
-                           '/api/agent/bootstrap', '/api/agent/health', '/api/project/modes', '/api/bench')
+                           '/api/agent/bootstrap', '/api/agent/health', '/api/project/modes', '/api/bench',
+                           '/api/integration')
         allowed = allowed or bool(re.fullmatch(r'/api/review/[0-9a-f]{32}', path))
         allowed = allowed or bool(re.fullmatch(r'/api/bench/patches/[A-Za-z0-9_.:-]{1,160}', path))
         if self.command != 'GET' or not allowed:
@@ -88,7 +89,9 @@ def prepared_view(snapshot=SNAPSHOT, ui=REPOSITORY/'agent_pilot/ui', bench_resul
         index = target/'index.html'
         notice = '<aside role="status">只读历史查看 / READ_ONLY_HISTORY：材料来自5090既有记录；本入口禁止生成、检查、修改、审批和导出。</aside>'
         index.write_text(index.read_text(encoding='utf8').replace('<body>', '<body>'+notice, 1), encoding='utf8')
-        yield ReadOnlyApplication(root=root, access_mode='view', bench_results=bench_results)
+        integration = REPOSITORY / 'docs/integration/ci-demo.json'
+        yield ReadOnlyApplication(root=root, access_mode='view', bench_results=bench_results,
+                                  integration_results=integration if integration.is_file() else None)
 
 
 def main():
