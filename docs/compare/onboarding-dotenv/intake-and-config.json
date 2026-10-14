@@ -1,0 +1,1169 @@
+[
+  {
+    "path": "/api/intake/upload",
+    "status": 201,
+    "response": {
+      "schema": "credproof.intake/v1",
+      "id": "ddb96f0035254833a1e17f1cb4c23a72",
+      "label": "python-dotenv v1.2.2（人工注入适配）",
+      "source": "upload",
+      "created_at": "2026-10-14T14:41:42.116982+00:00",
+      "status": "DRAFT",
+      "review_id": null,
+      "tree_sha256": "31ff6edadacd93feffbe7fee283696c4b2dae9e2896df16934b3b4db8adbf887",
+      "files": [
+        {
+          "path": "CHANGELOG.md",
+          "bytes": 18261
+        },
+        {
+          "path": "credproof-fixed.toml",
+          "bytes": 650
+        },
+        {
+          "path": "credproof.toml",
+          "bytes": 616
+        },
+        {
+          "path": "credproof_entry.py",
+          "bytes": 297
+        },
+        {
+          "path": "credproof_entry_fixed.py",
+          "bytes": 486
+        },
+        {
+          "path": "LICENSE",
+          "bytes": 1583
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 635
+        },
+        {
+          "path": "pyproject.toml",
+          "bytes": 2131
+        },
+        {
+          "path": "README-credproof.md",
+          "bytes": 1264
+        },
+        {
+          "path": "README.md",
+          "bytes": 7974
+        },
+        {
+          "path": "src/dotenv/__init__.py",
+          "bytes": 1230
+        },
+        {
+          "path": "src/dotenv/__main__.py",
+          "bytes": 129
+        },
+        {
+          "path": "src/dotenv/cli.py",
+          "bytes": 6542
+        },
+        {
+          "path": "src/dotenv/ipython.py",
+          "bytes": 1326
+        },
+        {
+          "path": "src/dotenv/main.py",
+          "bytes": 14683
+        },
+        {
+          "path": "src/dotenv/parser.py",
+          "bytes": 5179
+        },
+        {
+          "path": "src/dotenv/py.typed",
+          "bytes": 27
+        },
+        {
+          "path": "src/dotenv/variables.py",
+          "bytes": 2348
+        },
+        {
+          "path": "src/dotenv/version.py",
+          "bytes": 22
+        },
+        {
+          "path": "tests/conftest.py",
+          "bytes": 529
+        },
+        {
+          "path": "tests/test_credproof_adapter.py",
+          "bytes": 1180
+        },
+        {
+          "path": "tests/test_main.py",
+          "bytes": 19504
+        }
+      ],
+      "files_truncated": false,
+      "file_count": 22,
+      "detected": {
+        "python_files": [
+          "credproof_entry.py",
+          "credproof_entry_fixed.py",
+          "src/dotenv/__init__.py",
+          "src/dotenv/__main__.py",
+          "src/dotenv/cli.py",
+          "src/dotenv/ipython.py",
+          "src/dotenv/main.py",
+          "src/dotenv/parser.py",
+          "src/dotenv/variables.py",
+          "src/dotenv/version.py",
+          "tests/conftest.py",
+          "tests/test_credproof_adapter.py",
+          "tests/test_main.py"
+        ],
+        "test_paths": [
+          "tests"
+        ],
+        "entry_candidates": [
+          {
+            "module": "credproof_entry",
+            "callable": "run",
+            "params": 1,
+            "file": "credproof_entry.py"
+          },
+          {
+            "module": "credproof_entry_fixed",
+            "callable": "run",
+            "params": 1,
+            "file": "credproof_entry_fixed.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "run",
+            "params": 3,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv",
+            "callable": "get_cli_string",
+            "params": 5,
+            "file": "src/dotenv/__init__.py"
+          },
+          {
+            "module": "src.dotenv",
+            "callable": "load_ipython_extension",
+            "params": 1,
+            "file": "src/dotenv/__init__.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "cli",
+            "params": 4,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "get",
+            "params": 2,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "list_values",
+            "params": 2,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "run_command",
+            "params": 2,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "set_value",
+            "params": 3,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "stream_file",
+            "params": 1,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "unset",
+            "params": 2,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.ipython",
+            "callable": "load_ipython_extension",
+            "params": 1,
+            "file": "src/dotenv/ipython.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "dotenv_values",
+            "params": 5,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "find_dotenv",
+            "params": 3,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "get_key",
+            "params": 3,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "load_dotenv",
+            "params": 6,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "resolve_variables",
+            "params": 2,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "rewrite",
+            "params": 3,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "set_key",
+            "params": 7,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "unset_key",
+            "params": 5,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "with_warn_for_invalid_lines",
+            "params": 1,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "decode_escapes",
+            "params": 2,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "make_regex",
+            "params": 2,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "parse_binding",
+            "params": 1,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "parse_key",
+            "params": 1,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "parse_stream",
+            "params": 1,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "parse_unquoted_value",
+            "params": 1,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "parse_value",
+            "params": 1,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.variables",
+            "callable": "parse_variables",
+            "params": 1,
+            "file": "src/dotenv/variables.py"
+          }
+        ],
+        "credential_env_candidates": [],
+        "unparsed_files": [],
+        "file_count": 22,
+        "existing_config": {
+          "present": true,
+          "valid": true,
+          "error": null
+        }
+      },
+      "config": {
+        "tests": [
+          "tests/test_main.py",
+          "tests/test_credproof_adapter.py"
+        ],
+        "optional_tests": [],
+        "source_scope": [
+          "credproof_entry.py",
+          "src/**/*.py"
+        ],
+        "entry": {
+          "module": "credproof_entry",
+          "callable": "run",
+          "scenarios": [
+            {
+              "name": "primary",
+              "request": {
+                "path": "__CREDPROOF_FORBIDDEN_FILE__"
+              },
+              "expected_error": "ValueError",
+              "require_network": false
+            }
+          ]
+        },
+        "allowed_dir": "data",
+        "forbidden_dir": "secrets",
+        "require_allowed_file_read": true,
+        "service": {
+          "enabled": false,
+          "path_prefix": "/api",
+          "require_credential": false
+        },
+        "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+        "timeout_seconds": 30
+      },
+      "config_origin": "existing",
+      "toml": "schema = \"credproof.project-safety/v1\"\n\n[project]\nroot = \".\"\ntests = [\"tests/test_main.py\", \"tests/test_credproof_adapter.py\"]\nsource_scope = [\"credproof_entry.py\", \"src/**/*.py\"]\nmutable_scope = [\"credproof_entry.py\", \"credproof_entry_fixed.py\"]\n\n[files]\nallowed_dirs = [\"data\"]\nforbidden_dirs = [\"secrets\"]\nrequire_allowed_file_read = true\n\n[network]\nallowed_services = []\n\n[credentials]\nenv = \"CREDPROOF_TEST_CREDENTIAL\"\n\n[entry]\nmodule = \"credproof_entry\"\ncallable = \"run\"\nexpected_error = \"ValueError\"\nrequest = { path = \"__CREDPROOF_FORBIDDEN_FILE__\" }\n\n[limits]\ntimeout_seconds = 30\nreport_dir = \".credproof\"\n",
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "入口文件里没有出现凭据变量名 CREDPROOF_TEST_CREDENTIAL；如果工具从别处读取凭据，可以忽略。"
+      ],
+      "placeholders": {
+        "__CREDPROOF_ALLOWED_FILE__": "允许目录中的资料文件（检查时自动生成）",
+        "__CREDPROOF_FORBIDDEN_FILE__": "禁止目录中的文件，里面是本次的合成凭据",
+        "__CREDPROOF_ALLOWED_URL__": "允许的模拟服务地址（检查时分配端口）",
+        "__CREDPROOF_REDIRECT_URL__": "允许服务上会返回 302、跳往禁止服务的地址",
+        "__CREDPROOF_FORBIDDEN_URL__": "禁止的模拟服务地址"
+      },
+      "limits": {
+        "upload_bytes": 16777216,
+        "files": 2000,
+        "file_bytes": 4194304,
+        "expanded_bytes": 67108864
+      }
+    }
+  },
+  {
+    "path": "/api/intake/ddb96f0035254833a1e17f1cb4c23a72/config",
+    "status": 200,
+    "response": {
+      "schema": "credproof.intake/v1",
+      "id": "ddb96f0035254833a1e17f1cb4c23a72",
+      "label": "python-dotenv v1.2.2（人工注入适配）",
+      "source": "upload",
+      "created_at": "2026-10-14T14:41:42.116982+00:00",
+      "status": "DRAFT",
+      "review_id": null,
+      "tree_sha256": "31ff6edadacd93feffbe7fee283696c4b2dae9e2896df16934b3b4db8adbf887",
+      "files": [
+        {
+          "path": "CHANGELOG.md",
+          "bytes": 18261
+        },
+        {
+          "path": "credproof-fixed.toml",
+          "bytes": 650
+        },
+        {
+          "path": "credproof.toml",
+          "bytes": 616
+        },
+        {
+          "path": "credproof_entry.py",
+          "bytes": 297
+        },
+        {
+          "path": "credproof_entry_fixed.py",
+          "bytes": 486
+        },
+        {
+          "path": "LICENSE",
+          "bytes": 1583
+        },
+        {
+          "path": "provenance.json",
+          "bytes": 635
+        },
+        {
+          "path": "pyproject.toml",
+          "bytes": 2131
+        },
+        {
+          "path": "README-credproof.md",
+          "bytes": 1264
+        },
+        {
+          "path": "README.md",
+          "bytes": 7974
+        },
+        {
+          "path": "src/dotenv/__init__.py",
+          "bytes": 1230
+        },
+        {
+          "path": "src/dotenv/__main__.py",
+          "bytes": 129
+        },
+        {
+          "path": "src/dotenv/cli.py",
+          "bytes": 6542
+        },
+        {
+          "path": "src/dotenv/ipython.py",
+          "bytes": 1326
+        },
+        {
+          "path": "src/dotenv/main.py",
+          "bytes": 14683
+        },
+        {
+          "path": "src/dotenv/parser.py",
+          "bytes": 5179
+        },
+        {
+          "path": "src/dotenv/py.typed",
+          "bytes": 27
+        },
+        {
+          "path": "src/dotenv/variables.py",
+          "bytes": 2348
+        },
+        {
+          "path": "src/dotenv/version.py",
+          "bytes": 22
+        },
+        {
+          "path": "tests/conftest.py",
+          "bytes": 529
+        },
+        {
+          "path": "tests/test_credproof_adapter.py",
+          "bytes": 1180
+        },
+        {
+          "path": "tests/test_main.py",
+          "bytes": 19504
+        }
+      ],
+      "files_truncated": false,
+      "file_count": 22,
+      "detected": {
+        "python_files": [
+          "credproof_entry.py",
+          "credproof_entry_fixed.py",
+          "src/dotenv/__init__.py",
+          "src/dotenv/__main__.py",
+          "src/dotenv/cli.py",
+          "src/dotenv/ipython.py",
+          "src/dotenv/main.py",
+          "src/dotenv/parser.py",
+          "src/dotenv/variables.py",
+          "src/dotenv/version.py",
+          "tests/conftest.py",
+          "tests/test_credproof_adapter.py",
+          "tests/test_main.py"
+        ],
+        "test_paths": [
+          "tests"
+        ],
+        "entry_candidates": [
+          {
+            "module": "credproof_entry",
+            "callable": "run",
+            "params": 1,
+            "file": "credproof_entry.py"
+          },
+          {
+            "module": "credproof_entry_fixed",
+            "callable": "run",
+            "params": 1,
+            "file": "credproof_entry_fixed.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "run",
+            "params": 3,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv",
+            "callable": "get_cli_string",
+            "params": 5,
+            "file": "src/dotenv/__init__.py"
+          },
+          {
+            "module": "src.dotenv",
+            "callable": "load_ipython_extension",
+            "params": 1,
+            "file": "src/dotenv/__init__.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "cli",
+            "params": 4,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "get",
+            "params": 2,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "list_values",
+            "params": 2,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "run_command",
+            "params": 2,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "set_value",
+            "params": 3,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "stream_file",
+            "params": 1,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.cli",
+            "callable": "unset",
+            "params": 2,
+            "file": "src/dotenv/cli.py"
+          },
+          {
+            "module": "src.dotenv.ipython",
+            "callable": "load_ipython_extension",
+            "params": 1,
+            "file": "src/dotenv/ipython.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "dotenv_values",
+            "params": 5,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "find_dotenv",
+            "params": 3,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "get_key",
+            "params": 3,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "load_dotenv",
+            "params": 6,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "resolve_variables",
+            "params": 2,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "rewrite",
+            "params": 3,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "set_key",
+            "params": 7,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "unset_key",
+            "params": 5,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.main",
+            "callable": "with_warn_for_invalid_lines",
+            "params": 1,
+            "file": "src/dotenv/main.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "decode_escapes",
+            "params": 2,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "make_regex",
+            "params": 2,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "parse_binding",
+            "params": 1,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "parse_key",
+            "params": 1,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "parse_stream",
+            "params": 1,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "parse_unquoted_value",
+            "params": 1,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.parser",
+            "callable": "parse_value",
+            "params": 1,
+            "file": "src/dotenv/parser.py"
+          },
+          {
+            "module": "src.dotenv.variables",
+            "callable": "parse_variables",
+            "params": 1,
+            "file": "src/dotenv/variables.py"
+          }
+        ],
+        "credential_env_candidates": [],
+        "unparsed_files": [],
+        "file_count": 22,
+        "existing_config": {
+          "present": true,
+          "valid": true,
+          "error": null
+        }
+      },
+      "config": {
+        "tests": [
+          "tests/test_main.py",
+          "tests/test_credproof_adapter.py"
+        ],
+        "optional_tests": [],
+        "source_scope": [
+          "credproof_entry.py",
+          "src/**/*.py"
+        ],
+        "entry": {
+          "module": "credproof_entry",
+          "callable": "run",
+          "scenarios": [
+            {
+              "name": "primary",
+              "request": {
+                "path": "__CREDPROOF_FORBIDDEN_FILE__"
+              },
+              "expected_error": "ValueError",
+              "require_network": false
+            }
+          ]
+        },
+        "allowed_dir": "data",
+        "forbidden_dir": "secrets",
+        "require_allowed_file_read": true,
+        "service": {
+          "enabled": false,
+          "path_prefix": "/api",
+          "require_credential": false
+        },
+        "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+        "timeout_seconds": 30
+      },
+      "config_origin": "form",
+      "toml": "# Generated by the CredProof workbench configuration wizard.\n# Only the entry file may change during review; tests and this file are frozen.\nschema = \"credproof.project-safety/v1\"\n\n[project]\nroot = \".\"\ntests = [\"tests/test_main.py\", \"tests/test_credproof_adapter.py\"]\noptional_tests = []\nsource_scope = [\"credproof_entry.py\", \"src/**/*.py\"]\nmutable_scope = [\"credproof_entry.py\"]\n\n[files]\nallowed_dirs = [\"data\"]\nforbidden_dirs = [\"secrets\"]\nrequire_allowed_file_read = true\n\n[network]\nrequire_service_credential = false\nallowed_services = []\n\n[credentials]\nenv = \"CREDPROOF_TEST_CREDENTIAL\"\n\n[entry]\nmodule = \"credproof_entry\"\ncallable = \"run\"\nexpected_error = \"ValueError\"\nrequest = { path = \"__CREDPROOF_FORBIDDEN_FILE__\" }\n\n[[entry.scenarios]]\nname = \"primary\"\nexpected_error = \"ValueError\"\nrequest = { path = \"__CREDPROOF_FORBIDDEN_FILE__\" }\n\n[limits]\ntimeout_seconds = 30\nreport_dir = \".credproof\"\n",
+      "valid": true,
+      "errors": [],
+      "warnings": [
+        "入口文件里没有出现凭据变量名 CREDPROOF_TEST_CREDENTIAL；如果工具从别处读取凭据，可以忽略。"
+      ],
+      "placeholders": {
+        "__CREDPROOF_ALLOWED_FILE__": "允许目录中的资料文件（检查时自动生成）",
+        "__CREDPROOF_FORBIDDEN_FILE__": "禁止目录中的文件，里面是本次的合成凭据",
+        "__CREDPROOF_ALLOWED_URL__": "允许的模拟服务地址（检查时分配端口）",
+        "__CREDPROOF_REDIRECT_URL__": "允许服务上会返回 302、跳往禁止服务的地址",
+        "__CREDPROOF_FORBIDDEN_URL__": "禁止的模拟服务地址"
+      },
+      "limits": {
+        "upload_bytes": 16777216,
+        "files": 2000,
+        "file_bytes": 4194304,
+        "expanded_bytes": 67108864
+      }
+    }
+  },
+  {
+    "path": "/api/intake/ddb96f0035254833a1e17f1cb4c23a72/start",
+    "status": 201,
+    "response": {
+      "intake": {
+        "schema": "credproof.intake/v1",
+        "id": "ddb96f0035254833a1e17f1cb4c23a72",
+        "label": "python-dotenv v1.2.2（人工注入适配）",
+        "source": "upload",
+        "created_at": "2026-10-14T14:41:42.116982+00:00",
+        "status": "STARTED",
+        "review_id": "92f6c32a51f34a00b8f6a6131a52db44",
+        "tree_sha256": "31ff6edadacd93feffbe7fee283696c4b2dae9e2896df16934b3b4db8adbf887",
+        "files": [
+          {
+            "path": "CHANGELOG.md",
+            "bytes": 18261
+          },
+          {
+            "path": "credproof-fixed.toml",
+            "bytes": 650
+          },
+          {
+            "path": "credproof.toml",
+            "bytes": 616
+          },
+          {
+            "path": "credproof_entry.py",
+            "bytes": 297
+          },
+          {
+            "path": "credproof_entry_fixed.py",
+            "bytes": 486
+          },
+          {
+            "path": "LICENSE",
+            "bytes": 1583
+          },
+          {
+            "path": "provenance.json",
+            "bytes": 635
+          },
+          {
+            "path": "pyproject.toml",
+            "bytes": 2131
+          },
+          {
+            "path": "README-credproof.md",
+            "bytes": 1264
+          },
+          {
+            "path": "README.md",
+            "bytes": 7974
+          },
+          {
+            "path": "src/dotenv/__init__.py",
+            "bytes": 1230
+          },
+          {
+            "path": "src/dotenv/__main__.py",
+            "bytes": 129
+          },
+          {
+            "path": "src/dotenv/cli.py",
+            "bytes": 6542
+          },
+          {
+            "path": "src/dotenv/ipython.py",
+            "bytes": 1326
+          },
+          {
+            "path": "src/dotenv/main.py",
+            "bytes": 14683
+          },
+          {
+            "path": "src/dotenv/parser.py",
+            "bytes": 5179
+          },
+          {
+            "path": "src/dotenv/py.typed",
+            "bytes": 27
+          },
+          {
+            "path": "src/dotenv/variables.py",
+            "bytes": 2348
+          },
+          {
+            "path": "src/dotenv/version.py",
+            "bytes": 22
+          },
+          {
+            "path": "tests/conftest.py",
+            "bytes": 529
+          },
+          {
+            "path": "tests/test_credproof_adapter.py",
+            "bytes": 1180
+          },
+          {
+            "path": "tests/test_main.py",
+            "bytes": 19504
+          }
+        ],
+        "files_truncated": false,
+        "file_count": 22,
+        "detected": {
+          "python_files": [
+            "credproof_entry.py",
+            "credproof_entry_fixed.py",
+            "src/dotenv/__init__.py",
+            "src/dotenv/__main__.py",
+            "src/dotenv/cli.py",
+            "src/dotenv/ipython.py",
+            "src/dotenv/main.py",
+            "src/dotenv/parser.py",
+            "src/dotenv/variables.py",
+            "src/dotenv/version.py",
+            "tests/conftest.py",
+            "tests/test_credproof_adapter.py",
+            "tests/test_main.py"
+          ],
+          "test_paths": [
+            "tests"
+          ],
+          "entry_candidates": [
+            {
+              "module": "credproof_entry",
+              "callable": "run",
+              "params": 1,
+              "file": "credproof_entry.py"
+            },
+            {
+              "module": "credproof_entry_fixed",
+              "callable": "run",
+              "params": 1,
+              "file": "credproof_entry_fixed.py"
+            },
+            {
+              "module": "src.dotenv.cli",
+              "callable": "run",
+              "params": 3,
+              "file": "src/dotenv/cli.py"
+            },
+            {
+              "module": "src.dotenv",
+              "callable": "get_cli_string",
+              "params": 5,
+              "file": "src/dotenv/__init__.py"
+            },
+            {
+              "module": "src.dotenv",
+              "callable": "load_ipython_extension",
+              "params": 1,
+              "file": "src/dotenv/__init__.py"
+            },
+            {
+              "module": "src.dotenv.cli",
+              "callable": "cli",
+              "params": 4,
+              "file": "src/dotenv/cli.py"
+            },
+            {
+              "module": "src.dotenv.cli",
+              "callable": "get",
+              "params": 2,
+              "file": "src/dotenv/cli.py"
+            },
+            {
+              "module": "src.dotenv.cli",
+              "callable": "list_values",
+              "params": 2,
+              "file": "src/dotenv/cli.py"
+            },
+            {
+              "module": "src.dotenv.cli",
+              "callable": "run_command",
+              "params": 2,
+              "file": "src/dotenv/cli.py"
+            },
+            {
+              "module": "src.dotenv.cli",
+              "callable": "set_value",
+              "params": 3,
+              "file": "src/dotenv/cli.py"
+            },
+            {
+              "module": "src.dotenv.cli",
+              "callable": "stream_file",
+              "params": 1,
+              "file": "src/dotenv/cli.py"
+            },
+            {
+              "module": "src.dotenv.cli",
+              "callable": "unset",
+              "params": 2,
+              "file": "src/dotenv/cli.py"
+            },
+            {
+              "module": "src.dotenv.ipython",
+              "callable": "load_ipython_extension",
+              "params": 1,
+              "file": "src/dotenv/ipython.py"
+            },
+            {
+              "module": "src.dotenv.main",
+              "callable": "dotenv_values",
+              "params": 5,
+              "file": "src/dotenv/main.py"
+            },
+            {
+              "module": "src.dotenv.main",
+              "callable": "find_dotenv",
+              "params": 3,
+              "file": "src/dotenv/main.py"
+            },
+            {
+              "module": "src.dotenv.main",
+              "callable": "get_key",
+              "params": 3,
+              "file": "src/dotenv/main.py"
+            },
+            {
+              "module": "src.dotenv.main",
+              "callable": "load_dotenv",
+              "params": 6,
+              "file": "src/dotenv/main.py"
+            },
+            {
+              "module": "src.dotenv.main",
+              "callable": "resolve_variables",
+              "params": 2,
+              "file": "src/dotenv/main.py"
+            },
+            {
+              "module": "src.dotenv.main",
+              "callable": "rewrite",
+              "params": 3,
+              "file": "src/dotenv/main.py"
+            },
+            {
+              "module": "src.dotenv.main",
+              "callable": "set_key",
+              "params": 7,
+              "file": "src/dotenv/main.py"
+            },
+            {
+              "module": "src.dotenv.main",
+              "callable": "unset_key",
+              "params": 5,
+              "file": "src/dotenv/main.py"
+            },
+            {
+              "module": "src.dotenv.main",
+              "callable": "with_warn_for_invalid_lines",
+              "params": 1,
+              "file": "src/dotenv/main.py"
+            },
+            {
+              "module": "src.dotenv.parser",
+              "callable": "decode_escapes",
+              "params": 2,
+              "file": "src/dotenv/parser.py"
+            },
+            {
+              "module": "src.dotenv.parser",
+              "callable": "make_regex",
+              "params": 2,
+              "file": "src/dotenv/parser.py"
+            },
+            {
+              "module": "src.dotenv.parser",
+              "callable": "parse_binding",
+              "params": 1,
+              "file": "src/dotenv/parser.py"
+            },
+            {
+              "module": "src.dotenv.parser",
+              "callable": "parse_key",
+              "params": 1,
+              "file": "src/dotenv/parser.py"
+            },
+            {
+              "module": "src.dotenv.parser",
+              "callable": "parse_stream",
+              "params": 1,
+              "file": "src/dotenv/parser.py"
+            },
+            {
+              "module": "src.dotenv.parser",
+              "callable": "parse_unquoted_value",
+              "params": 1,
+              "file": "src/dotenv/parser.py"
+            },
+            {
+              "module": "src.dotenv.parser",
+              "callable": "parse_value",
+              "params": 1,
+              "file": "src/dotenv/parser.py"
+            },
+            {
+              "module": "src.dotenv.variables",
+              "callable": "parse_variables",
+              "params": 1,
+              "file": "src/dotenv/variables.py"
+            }
+          ],
+          "credential_env_candidates": [],
+          "unparsed_files": [],
+          "file_count": 22,
+          "existing_config": {
+            "present": true,
+            "valid": true,
+            "error": null
+          }
+        },
+        "config": {
+          "tests": [
+            "tests/test_main.py",
+            "tests/test_credproof_adapter.py"
+          ],
+          "optional_tests": [],
+          "source_scope": [
+            "credproof_entry.py",
+            "src/**/*.py"
+          ],
+          "entry": {
+            "module": "credproof_entry",
+            "callable": "run",
+            "scenarios": [
+              {
+                "name": "primary",
+                "request": {
+                  "path": "__CREDPROOF_FORBIDDEN_FILE__"
+                },
+                "expected_error": "ValueError",
+                "require_network": false
+              }
+            ]
+          },
+          "allowed_dir": "data",
+          "forbidden_dir": "secrets",
+          "require_allowed_file_read": true,
+          "service": {
+            "enabled": false,
+            "path_prefix": "/api",
+            "require_credential": false
+          },
+          "credential_env": "CREDPROOF_TEST_CREDENTIAL",
+          "timeout_seconds": 30
+        },
+        "config_origin": "form",
+        "toml": "# Generated by the CredProof workbench configuration wizard.\n# Only the entry file may change during review; tests and this file are frozen.\nschema = \"credproof.project-safety/v1\"\n\n[project]\nroot = \".\"\ntests = [\"tests/test_main.py\", \"tests/test_credproof_adapter.py\"]\noptional_tests = []\nsource_scope = [\"credproof_entry.py\", \"src/**/*.py\"]\nmutable_scope = [\"credproof_entry.py\"]\n\n[files]\nallowed_dirs = [\"data\"]\nforbidden_dirs = [\"secrets\"]\nrequire_allowed_file_read = true\n\n[network]\nrequire_service_credential = false\nallowed_services = []\n\n[credentials]\nenv = \"CREDPROOF_TEST_CREDENTIAL\"\n\n[entry]\nmodule = \"credproof_entry\"\ncallable = \"run\"\nexpected_error = \"ValueError\"\nrequest = { path = \"__CREDPROOF_FORBIDDEN_FILE__\" }\n\n[[entry.scenarios]]\nname = \"primary\"\nexpected_error = \"ValueError\"\nrequest = { path = \"__CREDPROOF_FORBIDDEN_FILE__\" }\n\n[limits]\ntimeout_seconds = 30\nreport_dir = \".credproof\"\n",
+        "valid": true,
+        "errors": [],
+        "warnings": [
+          "入口文件里没有出现凭据变量名 CREDPROOF_TEST_CREDENTIAL；如果工具从别处读取凭据，可以忽略。"
+        ],
+        "placeholders": {
+          "__CREDPROOF_ALLOWED_FILE__": "允许目录中的资料文件（检查时自动生成）",
+          "__CREDPROOF_FORBIDDEN_FILE__": "禁止目录中的文件，里面是本次的合成凭据",
+          "__CREDPROOF_ALLOWED_URL__": "允许的模拟服务地址（检查时分配端口）",
+          "__CREDPROOF_REDIRECT_URL__": "允许服务上会返回 302、跳往禁止服务的地址",
+          "__CREDPROOF_FORBIDDEN_URL__": "禁止的模拟服务地址"
+        },
+        "limits": {
+          "upload_bytes": 16777216,
+          "files": 2000,
+          "file_bytes": 4194304,
+          "expanded_bytes": 67108864
+        }
+      },
+      "review": {
+        "id": "92f6c32a51f34a00b8f6a6131a52db44",
+        "meta": {
+          "id": "92f6c32a51f34a00b8f6a6131a52db44",
+          "kind": "PROJECT",
+          "project_id": "intake-ddb96f0035254833a1e17f1cb4c23a72",
+          "origin_id": "intake-ddb96f0035254833a1e17f1cb4c23a72",
+          "label": "python-dotenv v1.2.2（人工注入适配）",
+          "created_at": "2026-10-14T14:41:42.634665+00:00",
+          "original_sha256": "9c744ebb657311c09963fda1738a883cd11f415451b447842ce2caafae66c502",
+          "source_candidate_sha256": "9c744ebb657311c09963fda1738a883cd11f415451b447842ce2caafae66c502",
+          "application_to_original": "NOT_APPLIED"
+        },
+        "version": {
+          "id": "v000",
+          "parent": null,
+          "source": "PROJECT_IMPORT",
+          "origin_id": "intake-ddb96f0035254833a1e17f1cb4c23a72",
+          "created_at": "2026-10-14T14:41:42.633666+00:00",
+          "reason": "导入项目当前代码，配置与测试一并冻结",
+          "entry_path": "credproof_entry.py",
+          "code_sha256": "9c744ebb657311c09963fda1738a883cd11f415451b447842ce2caafae66c502"
+        },
+        "original_code": "\"\"\"人工注入的读取适配层，不是 python-dotenv 的上游漏洞或 CVE。\"\"\"\nfrom dotenv import dotenv_values\n\n\ndef run(request):\n    path = request[\"path\"]\n    # Injection for the controlled CredProof case: no configured directory check.\n    return {\"values\": dict(dotenv_values(path))}\n",
+        "ai_code": null,
+        "code": "\"\"\"人工注入的读取适配层，不是 python-dotenv 的上游漏洞或 CVE。\"\"\"\nfrom dotenv import dotenv_values\n\n\ndef run(request):\n    path = request[\"path\"]\n    # Injection for the controlled CredProof case: no configured directory check.\n    return {\"values\": dict(dotenv_values(path))}\n",
+        "diff": "",
+        "object_sha256": "988daede9def1d957f1bc12aaf55b9d74d87150cd04ab3b5c85884264f9c2172",
+        "report_sha256": null,
+        "report": null,
+        "technical_verdict": "UNKNOWN",
+        "report_applicable": false,
+        "material_reasons": [],
+        "decision": "PENDING",
+        "decision_applicable": false,
+        "decision_is_test": false,
+        "decisions": [],
+        "application_to_original": "NOT_APPLIED",
+        "versions": [
+          {
+            "id": "v000",
+            "parent": null,
+            "source": "PROJECT_IMPORT",
+            "origin_id": "intake-ddb96f0035254833a1e17f1cb4c23a72",
+            "created_at": "2026-10-14T14:41:42.633666+00:00",
+            "reason": "导入项目当前代码，配置与测试一并冻结",
+            "entry_path": "credproof_entry.py",
+            "code_sha256": "9c744ebb657311c09963fda1738a883cd11f415451b447842ce2caafae66c502"
+          }
+        ],
+        "evidence": null
+      }
+    }
+  }
+]
