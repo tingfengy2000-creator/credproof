@@ -81,6 +81,7 @@ node docs/ui/console-v1/check-console.mjs --base <view或严格只读服务实�
 - **11,740,057 bytes**；SHA-256 **`30fb9386885dc104e1749ca21ce6ab49a178d9a278f909daf19d5054f22082ef`**。
 - 附带官方 Python ZIP SHA-256 `4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3`。包内源码 `9f83f84...`，非后补收据 SHA；没有覆盖旧包。
 - [匿名附件取件收据](delivery/anonymous-download.json)：未发送 Authorization/Cookie，实际取回 **11,740,057 bytes**，ZIP CRC、源码标识、8 个配置及 SHA-256 均匹配。
+- [固定证据提交的匿名 Raw 正文及字节核验](delivery/github-raw-byte-check.json)：`4deb83648ce50caad0893bacbf13dae39b5701ae` 的 README、核心源码和原报告等 9 文件与 Git blob 完全一致；本条及取件收据为后补文档，不改变被测程序。
 - [原始与公开派生文件摘要](publication-manifest.json)：原件本地保留，公开只替换精确已知主机路径/hostname 和合成凭据完整值，JSON 正文与源码保留。截图未改动。
 - [公开文本扫描](receipts/publication-scan.json) 有 **1 个受控测试字面量命中**：旧失败 JUnit 中 ZIP 拒绝测试输入 `C:/x.py`，不是作者路径，保留其证据语义。评委运行 ZIP 扫描命中为 **0**；不把二者口径混用。
 
