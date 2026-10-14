@@ -1,0 +1,20 @@
+{
+  "name": "build",
+  "command": [
+    "docker",
+    "build",
+    "--build-arg",
+    "SOURCE_COMMIT=60e684efda5e4efe39055463a92c351dd4a69ec0",
+    "-f",
+    "<source>/deploy/docker/Dockerfile",
+    "-t",
+    "credproof:ci",
+    "<source>"
+  ],
+  "exit_code": 0,
+  "expected_exit_codes": [
+    0
+  ],
+  "matches": true,
+  "duration_seconds": 35.797
+}

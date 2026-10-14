@@ -142,3 +142,18 @@ The anchor helper accepts `--environment wsl|native|container`; otherwise it
 detects container markers before the WSL kernel. Current summary kind is
 `INSTALLED_WHEEL_ANCHOR_CHECK`, with environment stored separately. Historical
 WSL-labelled summaries remain unchanged.
+
+## C hosted acceptance update
+
+The declared container option is now verified on GitHub-hosted Ubuntu 24.04
+with Docker 28.0.4: see [C receipts](evidence/ci-c/README.md) and
+[exact deployment boundary](../../deploy/docker/README.md).
+Native/container each match all 16 frozen anchors. Default Docker isolation
+blocks safely (doctor 4 / check UNKNOWN 3). Complete image and format scans
+have zero unexcepted hits; all exact reviewed vendor matches remain visible.
+
+On this host, AppArmor's userns restriction is 1. The explicitly selected
+outer AppArmor-unconfined deployment ALSO loads a userns application exception
+for the exact trusted bwrap path on the host. The recorded profile/load
+commands are in the C receipts. No sysctl is modified. This is not proof of
+enforcement of the separately retained limited credproof-bwrap candidate.

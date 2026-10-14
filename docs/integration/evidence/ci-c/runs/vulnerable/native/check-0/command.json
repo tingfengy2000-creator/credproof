@@ -1,0 +1,28 @@
+{
+  "name": "check-0",
+  "command": [
+    "<runner-temp>/credproof-app/bin/python",
+    "-I",
+    "-m",
+    "credproof_safety",
+    "check",
+    "--config",
+    "<source>/examples/bench/b07-webhook-relay/project/credproof.toml",
+    "--source-root",
+    "<source>",
+    "--output",
+    "<source>/credproof-out/native/target-0/report.json",
+    "--sarif",
+    "<source>/credproof-out/native/target-0/report.sarif",
+    "--junit",
+    "<source>/credproof-out/native/target-0/junit.xml",
+    "--summary",
+    "<source>/credproof-out/native/target-0/summary.md"
+  ],
+  "exit_code": 2,
+  "expected_exit_codes": [
+    0
+  ],
+  "matches": false,
+  "duration_seconds": 1.56
+}

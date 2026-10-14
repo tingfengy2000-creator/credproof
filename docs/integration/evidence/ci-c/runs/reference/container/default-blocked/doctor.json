@@ -1,0 +1,20 @@
+{
+  "schema": "credproof.doctor/v1",
+  "ready": false,
+  "checks": {
+    "materials_verified": true,
+    "namespace_probe": false
+  },
+  "hints": [
+    "Namespace/proc probe failed. Check Docker systempaths/seccomp and host AppArmor; see docs/integration/linux.md."
+  ],
+  "runtime_identity": {
+    "lock_sha256": "15700a39ce01bef3df4f7b659a3acb985d3af6f6ae0d56f1d1e18ca82e90ebdd",
+    "manifest_sha256": "1d401148d292adca0fd736062e70e2a386d17b4b1e27517bc153055e992dfb2d",
+    "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71"
+  },
+  "probe_exit_code": 1,
+  "probe_stdout": "",
+  "probe_stderr": "bwrap: No permissions to create new namespace, likely because the kernel does not allow non-privileged user namespaces. See <https://deb.li/bubblewrap> or <file:///usr/share/doc/bubblewrap/README.Debian.gz>.\n",
+  "diagnostic_code": "namespace_probe_failed"
+}

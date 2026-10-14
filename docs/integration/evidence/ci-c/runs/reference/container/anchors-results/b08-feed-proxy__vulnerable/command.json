@@ -1,0 +1,132 @@
+{
+  "id": "b08-feed-proxy__vulnerable",
+  "source": "frozen_vulnerable",
+  "command": [
+    "/opt/credproof/venv/bin/python",
+    "-I",
+    "-m",
+    "credproof_safety",
+    "check",
+    "--config",
+    "/out/anchors-results/b08-feed-proxy__vulnerable/project/credproof.toml",
+    "--output",
+    "/out/anchors-results/b08-feed-proxy__vulnerable/report.json"
+  ],
+  "exit_code": 2,
+  "duration_seconds": 1.295,
+  "expected": "FAIL",
+  "actual": "FAIL",
+  "source_sha256": "a0add7007271b9f48608d8e3f0f81ada5f06399ea4ebc2e250d954647e26be51",
+  "pytest": {
+    "schema": "credproof.pytest-observation/v1",
+    "collection_finished": true,
+    "session_exitstatus": 1,
+    "required_paths": {
+      "tests": {
+        "collected": 3,
+        "executed": 3,
+        "passed": 2,
+        "skipped": 0,
+        "failed": 1,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "required_cases": 3,
+        "optional_cases": 0
+      }
+    },
+    "missing_required_paths": [],
+    "not_executed_required_paths": [],
+    "required_tests_completed": true,
+    "required_tests_passed": false,
+    "required_case_count": 3,
+    "required_unmet_cases": [
+      "tests/test_business.py::test_foreign_service_is_rejected"
+    ],
+    "missing_required_cases": [],
+    "not_executed_required_cases": [],
+    "cases": {
+      "tests/test_business.py::test_invalid_request_is_rejected": {
+        "path": "tests/test_business.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "tests/test_business.py::test_normal_request_returns_service_data": {
+        "path": "tests/test_business.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 1,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 0,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "passed",
+          "teardown": "passed"
+        },
+        "failure_details": []
+      },
+      "tests/test_business.py::test_foreign_service_is_rejected": {
+        "path": "tests/test_business.py",
+        "required": true,
+        "collected": 1,
+        "executed": 1,
+        "passed": 0,
+        "skipped": 0,
+        "xfail": 0,
+        "xpass": 0,
+        "failed": 1,
+        "setup_failed": 0,
+        "teardown_failed": 0,
+        "phases": {
+          "setup": "passed",
+          "call": "failed",
+          "teardown": "passed"
+        },
+        "failure_details": [
+          {
+            "phase": "call",
+            "location": [
+              "tests/test_business.py",
+              27,
+              "test_foreign_service_is_rejected"
+            ],
+            "excerpt": "def test_foreign_service_is_rejected():\n        request = dict(normal_request(), url=os.environ[\"CREDPROOF_FORBIDDEN_URL\"])\n        try:\n            tool.run(request)\n        except ValueError:\n            return\n>       raise AssertionError(\"a service outside the allowlist was contacted\")\nE       AssertionError: a service outside the allowlist was contacted\n\ntests/test_business.py:34: AssertionError"
+          }
+        ]
+      }
+    },
+    "all_required_skipped": false,
+    "collected": 3,
+    "executed": 3,
+    "passed": 2,
+    "skipped": 0,
+    "failed": 1
+  },
+  "scenarios": 2,
+  "failed_checks": [
+    "pytest",
+    "required_pytest_tests",
+    "required_entry_scenarios",
+    "no_forbidden_service_receipt",
+    "no_unauthorized_connection"
+  ],
+  "matches": true
+}

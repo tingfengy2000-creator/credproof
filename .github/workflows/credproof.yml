@@ -1,0 +1,70 @@
+name: CredProof
+on:
+  pull_request:
+    branches: [demo/ci-gate-base]
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  native:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Native preparation packages (no sysctl changes)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y python3-venv libseccomp2 apparmor-utils
+      - name: Prepare, doctor, checks and frozen anchors
+        if: always()
+        run: /usr/bin/python3 scripts/ci/run.py native --out credproof-out/native
+      - name: Upload native evidence, including failed checks
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: credproof-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: credproof-out/native/
+          if-no-files-found: error
+      - name: Native gate (after evidence upload)
+        if: always()
+        run: /usr/bin/python3 scripts/ci/run.py gate --out credproof-out/native
+
+  container:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Build, doctor, checks, anchors, default rejection and image scan
+        run: /usr/bin/python3 scripts/ci/run.py container --out credproof-out/container
+      - name: Collect target SARIF files (one existing automationDetails.id per config)
+        if: always()
+        run: |
+          mkdir -p credproof-out/container/sarif
+          for p in credproof-out/container/target-*/report.sarif; do
+            [ -f "$p" ] || continue
+            cp "$p" "credproof-out/container/sarif/$(basename "$(dirname "$p")").sarif"
+          done
+      - name: Upload container SARIF (non-gating)
+        if: always()
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4, resolved 2026-10-13
+        with:
+          sarif_file: credproof-out/container/sarif
+          wait-for-processing: true
+      - name: Upload container evidence, including failed checks
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: credproof-container-${{ github.run_id }}-${{ github.run_attempt }}
+          path: credproof-out/container/
+          if-no-files-found: error
+      - name: Container gate (after evidence upload)
+        if: always()
+        run: /usr/bin/python3 scripts/ci/run.py gate --out credproof-out/container

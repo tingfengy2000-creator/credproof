@@ -1,0 +1,137 @@
+{
+  "kind": "SOFTWARE_REGRESSION_AND_EXPLICIT_REUSE",
+  "model_calls": 0,
+  "current_tested_program": "466534c79eacf8dc9e59d267c9ee5e614b0f4a0f",
+  "records": [
+    {
+      "file": "local/windows-full.xml",
+      "source_original_sha256": "2ca1c1afc88181e5e6e6b1b0d76eaf8e30c457ce034fd26b56d9131209ac8ce0",
+      "public_sha256": "7b4c1ea0b69846c23279456bc01c6cd548d192a1139c1b1ad80626c1b19d81aa",
+      "redaction": [
+        "hostname attribute",
+        "exact source prefix in JUnit text",
+        "exact source prefix in JUnit text"
+      ],
+      "passed": 258,
+      "skipped": 2,
+      "exit_code": 0,
+      "python": "3.12.14",
+      "pytest": "8.4.2",
+      "tests_recorded": 260,
+      "duration_seconds": 28.863
+    },
+    {
+      "file": "local/wsl-protocol.xml",
+      "source_original_sha256": "43468aef606c57c763c5d0ca3b393c282d463129c35988189a26cc32ca4c095f",
+      "public_sha256": "6f2572268948b32cf17cfedecde8d10d828d3f17b6051e2689db24f86d72dcdc",
+      "redaction": [
+        "hostname attribute"
+      ],
+      "passed": 30,
+      "skipped": 0,
+      "exit_code": 0,
+      "python": "3.12.3",
+      "pytest": "8.4.2",
+      "tests_recorded": 30,
+      "duration_seconds": 0.6
+    }
+  ],
+  "windows": {
+    "jsonschema": "4.26.0",
+    "schema_required": true,
+    "scope": "Full agent_pilot/tests, credproof_safety/tests and credproof_access/tests; includes qwen_agent-dependent modules.",
+    "command_display": "python -m pytest agent_pilot/tests credproof_safety/tests credproof_access/tests -q --junitxml=<receipt>",
+    "command_note": "Normalized reproduction command; original local console transcript is not republished. Per-test collected results are in the JUnit receipt.",
+    "source_note": "Full suite ran at cf4b7455de7b8c556796df55be3de0584faa8ec1. Subsequent tested program changes are CI driver, deterministic image packaging and exact exception catalog; not the Python application/test suite.",
+    "warning": "One dependency-import DeprecationWarning: qwen_agent imports dashscope, whose Assistants API is deprecated (dashscope/__init__.py:63). Confirmed by local import-only probe, exit 0; no inference or API call."
+  },
+  "wsl": {
+    "scope": "CI contract and Linux-runtime protocol tests only; no model or candidate execution.",
+    "command": "python -m pytest credproof_safety/tests/test_ci_contract.py credproof_safety/tests/test_linux_runtime.py -q --junitxml=<receipt>",
+    "source_commit": "466534c79eacf8dc9e59d267c9ee5e614b0f4a0f",
+    "stderr_note": "WSL reported existing localhost proxy/NAT mirroring warning; pytest returned 0."
+  },
+  "hosted_format_tests": {
+    "passed": 18,
+    "subtests": 222,
+    "source": "runs/reference/native/format-tests/stdout.txt",
+    "schema_required": true
+  },
+  "reused_viewer_evidence": [
+    "docs/delivery/evidence/dev38/pr9-followup/cmd-view/summary.json",
+    "docs/delivery/evidence/dev38/new-user-view/summary.json"
+  ],
+  "unchanged_modules": [
+    {
+      "path": "agent_pilot/web.py",
+      "git_blob_sha256": "9812c05fce8106f2a0e0176b4d1191447187cf0fa7484fa4ac4bb793488e44a2",
+      "working_tree_sha256": "9812c05fce8106f2a0e0176b4d1191447187cf0fa7484fa4ac4bb793488e44a2",
+      "checkout_mapping": "exact bytes",
+      "equals_ab_baseline": true
+    },
+    {
+      "path": "agent_pilot/launch.py",
+      "git_blob_sha256": "2d244b81d7ab076950139e4df5f1080b9fcaaa5c6b4c94e286722e7b2b4cb776",
+      "working_tree_sha256": "2d244b81d7ab076950139e4df5f1080b9fcaaa5c6b4c94e286722e7b2b4cb776",
+      "checkout_mapping": "exact bytes",
+      "equals_ab_baseline": true
+    },
+    {
+      "path": "agent_pilot/ui/index.html",
+      "git_blob_sha256": "bf6965c6b6238e44f1d1c655387c3b471230dd7b907dc0f0b2ecedaa4d231ddd",
+      "working_tree_sha256": "bf6965c6b6238e44f1d1c655387c3b471230dd7b907dc0f0b2ecedaa4d231ddd",
+      "checkout_mapping": "exact bytes",
+      "equals_ab_baseline": true
+    },
+    {
+      "path": "agent_pilot/ui/styles.css",
+      "git_blob_sha256": "f61cee0c3ce33bec4abb037d56fcb1f73d90d8956bc70e20e351bddad3d82b5a",
+      "working_tree_sha256": "f61cee0c3ce33bec4abb037d56fcb1f73d90d8956bc70e20e351bddad3d82b5a",
+      "checkout_mapping": "exact bytes",
+      "equals_ab_baseline": true
+    },
+    {
+      "path": "agent_pilot/ui/app.js",
+      "git_blob_sha256": "48cdbae9f0f15b10efc48d5f42d8819d17a8c7bda08e5716bc8faa68fab33596",
+      "working_tree_sha256": "9ff9e9ed6b8f0509fa6d116fb403e0822c5afd14bc17fc6705d094efffa9fbfd",
+      "checkout_mapping": "CRLF to LF only",
+      "equals_ab_baseline": true
+    },
+    {
+      "path": "credproof_safety/project.py",
+      "git_blob_sha256": "ba963bc7f41fde19eca75014f0be46308c7d882b168be15cf4773f50096787fe",
+      "working_tree_sha256": "ba963bc7f41fde19eca75014f0be46308c7d882b168be15cf4773f50096787fe",
+      "checkout_mapping": "exact bytes",
+      "equals_ab_baseline": true
+    },
+    {
+      "path": "credproof_safety/runner.py",
+      "git_blob_sha256": "13b546a3d63e3d5750f8107450296365c580cc65fe69b20ce431047f8b27d7e3",
+      "working_tree_sha256": "13b546a3d63e3d5750f8107450296365c580cc65fe69b20ce431047f8b27d7e3",
+      "checkout_mapping": "exact bytes",
+      "equals_ab_baseline": true
+    },
+    {
+      "path": "credproof_access/contract.py",
+      "git_blob_sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc",
+      "working_tree_sha256": "21c387b37ff16f41811cfb79ecd695495e923ba6d6c15372ed3ad40fb8f14ebc",
+      "checkout_mapping": "exact bytes",
+      "equals_ab_baseline": true
+    },
+    {
+      "path": "credproof_access/__init__.py",
+      "git_blob_sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "working_tree_sha256": "2740715ee6520a6de50216866407e7baa4973f7995271e06914e944e15fafbdc",
+      "checkout_mapping": "exact bytes",
+      "equals_ab_baseline": true
+    }
+  ],
+  "browser_status": "Prior applicable viewer acceptance reused; no new viewer/live model claim.",
+  "collector": {
+    "first_local_attempt": "Failed parsing blank lines in build receipt; no checker/model executed.",
+    "correction": "Ignore empty separator lines after decoded JSON; original artifact unchanged.",
+    "actual_success_command": "python scripts/ci/collect-evidence.py --downloads <download-directory> --output docs/integration/evidence/ci-c",
+    "exit_code": 0,
+    "rows_verified": 4
+  }
+}

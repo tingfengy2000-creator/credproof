@@ -1,0 +1,415 @@
+#0 building with "default" instance using docker driver
+
+#1 [internal] load build definition from Dockerfile
+#1 transferring dockerfile:
+#1 transferring dockerfile: 3.33kB 0.1s done
+#1 DONE 0.9s
+
+#2 [auth] docker/dockerfile:pull token for registry-1.docker.io
+#2 DONE 0.0s
+
+#3 resolve image config for docker-image://docker.io/docker/dockerfile:1
+#3 DONE 0.5s
+
+#4 docker-image://docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e
+#4 resolve docker.io/docker/dockerfile:1@sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e done
+#4 sha256:4edf897a3ffa55b89f906fc8cc78afdb3f1834cc9c7083565e611a8a7d5fe99e 9.08kB / 9.08kB done
+#4 sha256:7b32114e84ca21aeb2d6f871a0b62b3a0762193f75d9afd048ee4cbe889f3148 1.13kB / 1.13kB done
+#4 sha256:528c92d70d7e39dbb3dd1c6681f6750c565c7e45b70527cda47c1a61495c1b6a 1.41kB / 1.41kB done
+#4 sha256:9d2b4f57f9e20f33279375ce25c6ff14f30f64270ed5c7b613b2b30256754f62 14.28MB / 14.28MB 0.1s
+#4 sha256:9d2b4f57f9e20f33279375ce25c6ff14f30f64270ed5c7b613b2b30256754f62 14.28MB / 14.28MB 0.1s done
+#4 extracting sha256:9d2b4f57f9e20f33279375ce25c6ff14f30f64270ed5c7b613b2b30256754f62 0.1s done
+#4 DONE 0.2s
+
+#5 [internal] load metadata for docker.io/library/ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55
+#5 ...
+
+#6 [auth] library/ubuntu:pull token for registry-1.docker.io
+#6 DONE 0.0s
+
+#5 [internal] load metadata for docker.io/library/ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55
+#5 DONE 0.4s
+
+#7 [base 1/3] FROM docker.io/library/ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55
+#7 resolve docker.io/library/ubuntu:24.04@sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55 0.0s done
+#7 sha256:f610ab94648195aa356059f5b41d6085c9d4d903c072430cdd1af7bdb646106b 424B / 424B done
+#7 sha256:69f919497cada9a8611f3de61df902d9f94bf20f84552ef5bd93125c38608ef9 2.05kB / 2.05kB done
+#7 sha256:534baea6a22c03a63003dbc8dbe78fe34bc0d7e595d9a9dc9834884ff530eb55 6.69kB / 6.69kB done
+#7 DONE 0.0s
+
+#8 [internal] load build context
+#8 transferring context: 838.26kB 0.0s done
+#8 DONE 0.2s
+
+#9 [base 2/3] RUN apt-get update && apt-get install -y --no-install-recommends     python3 python3-venv ca-certificates libseccomp2     && rm -rf /var/lib/apt/lists/*
+#9 1.071 Get:1 http://archive.ubuntu.com/ubuntu noble InRelease [256 kB]
+#9 1.071 Get:2 http://security.ubuntu.com/ubuntu noble-security InRelease [126 kB]
+#9 1.295 Get:3 http://archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]
+#9 1.341 Get:4 http://archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]
+#9 1.637 Get:5 http://security.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [2122 kB]
+#9 1.676 Get:6 http://archive.ubuntu.com/ubuntu noble/universe amd64 Packages [19.3 MB]
+#9 2.077 Get:7 http://security.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1548 kB]
+#9 2.149 Get:8 http://archive.ubuntu.com/ubuntu noble/multiverse amd64 Packages [331 kB]
+#9 2.151 Get:9 http://archive.ubuntu.com/ubuntu noble/main amd64 Packages [1808 kB]
+#9 2.157 Get:10 http://security.ubuntu.com/ubuntu noble-security/main amd64 Packages [1409 kB]
+#9 2.161 Get:11 http://archive.ubuntu.com/ubuntu noble/restricted amd64 Packages [117 kB]
+#9 2.162 Get:12 http://archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [61.7 kB]
+#9 2.162 Get:13 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [2166 kB]
+#9 2.171 Get:14 http://archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [2231 kB]
+#9 2.181 Get:15 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1728 kB]
+#9 2.197 Get:16 http://archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [36.0 kB]
+#9 2.198 Get:17 http://archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Packages [669 B]
+#9 2.198 Get:18 http://archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [49.0 kB]
+#9 2.199 Get:19 http://security.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [55.6 kB]
+#9 3.064 Fetched 33.6 MB in 2s (15.7 MB/s)
+#9 3.064 Reading package lists...
+#9 3.735 Reading package lists...
+#9 4.344 Building dependency tree...
+#9 4.518 Reading state information...
+#9 4.664 libseccomp2 is already the newest version (2.5.5-1ubuntu3.1).
+#9 4.664 The following additional packages will be installed:
+#9 4.665   libexpat1 libpython3-stdlib libpython3.12-minimal libpython3.12-stdlib
+#9 4.665   libreadline8t64 libsqlite3-0 libssl3t64 media-types netbase openssl
+#9 4.665   python3-minimal python3-pip-whl python3-setuptools-whl python3.12
+#9 4.665   python3.12-minimal python3.12-venv readline-common tzdata
+#9 4.665 Suggested packages:
+#9 4.665   python3-doc python3-tk python3.12-doc binutils binfmt-support readline-doc
+#9 4.724 The following NEW packages will be installed:
+#9 4.724   ca-certificates libexpat1 libpython3-stdlib libpython3.12-minimal
+#9 4.725   libpython3.12-stdlib libreadline8t64 libsqlite3-0 media-types netbase
+#9 4.725   openssl python3 python3-minimal python3-pip-whl python3-setuptools-whl
+#9 4.725   python3-venv python3.12 python3.12-minimal python3.12-venv readline-common
+#9 4.725   tzdata
+#9 4.726 The following packages will be upgraded:
+#9 4.726   libssl3t64
+#9 4.925 1 upgraded, 20 newly installed, 0 to remove and 2 not upgraded.
+#9 4.925 Need to get 12.8 MB of archives.
+#9 4.925 After this operation, 33.0 MB of additional disk space will be used.
+#9 4.925 Get:1 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libssl3t64 amd64 3.0.13-0ubuntu3.16 [1945 kB]
+#9 5.868 Get:2 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libpython3.12-minimal amd64 3.12.3-1ubuntu0.17 [839 kB]
+#9 5.909 Get:3 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libexpat1 amd64 2.6.1-2ubuntu0.6 [98.9 kB]
+#9 5.958 Get:4 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 python3.12-minimal amd64 3.12.3-1ubuntu0.17 [2335 kB]
+#9 6.093 Get:5 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 python3-minimal amd64 3.12.3-0ubuntu2.1 [27.4 kB]
+#9 6.093 Get:6 http://archive.ubuntu.com/ubuntu noble/main amd64 media-types all 10.1.0 [27.5 kB]
+#9 6.094 Get:7 http://archive.ubuntu.com/ubuntu noble/main amd64 netbase all 6.4 [13.1 kB]
+#9 6.095 Get:8 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 tzdata all 2026c-0ubuntu0.24.04.1 [280 kB]
+#9 6.104 Get:9 http://archive.ubuntu.com/ubuntu noble/main amd64 readline-common all 8.2-4build1 [56.5 kB]
+#9 6.135 Get:10 http://archive.ubuntu.com/ubuntu noble/main amd64 libreadline8t64 amd64 8.2-4build1 [153 kB]
+#9 6.140 Get:11 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libsqlite3-0 amd64 3.45.1-1ubuntu2.8 [702 kB]
+#9 6.159 Get:12 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libpython3.12-stdlib amd64 3.12.3-1ubuntu0.17 [2071 kB]
+#9 6.241 Get:13 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 python3.12 amd64 3.12.3-1ubuntu0.17 [651 kB]
+#9 6.252 Get:14 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 libpython3-stdlib amd64 3.12.3-0ubuntu2.1 [10.1 kB]
+#9 6.252 Get:15 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 python3 amd64 3.12.3-0ubuntu2.1 [23.0 kB]
+#9 6.252 Get:16 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 openssl amd64 3.0.13-0ubuntu3.16 [1004 kB]
+#9 6.268 Get:17 http://archive.ubuntu.com/ubuntu noble-updates/main amd64 ca-certificates all 20260601~24.04.1 [139 kB]
+#9 6.270 Get:18 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 python3-pip-whl all 24.0+dfsg-1ubuntu1.3 [1707 kB]
+#9 6.328 Get:19 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 python3-setuptools-whl all 68.1.2-2ubuntu1.2 [716 kB]
+#9 6.337 Get:20 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 python3.12-venv amd64 3.12.3-1ubuntu0.17 [5684 B]
+#9 6.337 Get:21 http://archive.ubuntu.com/ubuntu noble-updates/universe amd64 python3-venv amd64 3.12.3-0ubuntu2.1 [1032 B]
+#9 7.130 debconf: delaying package configuration, since apt-utils is not installed
+#9 7.157 Fetched 12.8 MB in 2s (8002 kB/s)
+#9 7.261 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 4381 files and directories currently installed.)
+#9 7.546 Preparing to unpack .../libssl3t64_3.0.13-0ubuntu3.16_amd64.deb ...
+#9 7.551 Unpacking libssl3t64:amd64 (3.0.13-0ubuntu3.16) over (3.0.13-0ubuntu3.15) ...
+#9 8.021 Setting up libssl3t64:amd64 (3.0.13-0ubuntu3.16) ...
+#9 8.054 Selecting previously unselected package libpython3.12-minimal:amd64.
+#9 8.054 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 4381 files and directories currently installed.)
+#9 8.057 Preparing to unpack .../libpython3.12-minimal_3.12.3-1ubuntu0.17_amd64.deb ...
+#9 8.058 Unpacking libpython3.12-minimal:amd64 (3.12.3-1ubuntu0.17) ...
+#9 8.114 Selecting previously unselected package libexpat1:amd64.
+#9 8.115 Preparing to unpack .../libexpat1_2.6.1-2ubuntu0.6_amd64.deb ...
+#9 8.115 Unpacking libexpat1:amd64 (2.6.1-2ubuntu0.6) ...
+#9 8.127 Selecting previously unselected package python3.12-minimal.
+#9 8.128 Preparing to unpack .../python3.12-minimal_3.12.3-1ubuntu0.17_amd64.deb ...
+#9 8.177 Unpacking python3.12-minimal (3.12.3-1ubuntu0.17) ...
+#9 8.251 Setting up libpython3.12-minimal:amd64 (3.12.3-1ubuntu0.17) ...
+#9 8.255 Setting up libexpat1:amd64 (2.6.1-2ubuntu0.6) ...
+#9 8.256 Setting up python3.12-minimal (3.12.3-1ubuntu0.17) ...
+#9 8.895 Selecting previously unselected package python3-minimal.
+#9 8.895 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 4700 files and directories currently installed.)
+#9 8.900 Preparing to unpack .../0-python3-minimal_3.12.3-0ubuntu2.1_amd64.deb ...
+#9 8.902 Unpacking python3-minimal (3.12.3-0ubuntu2.1) ...
+#9 8.913 Selecting previously unselected package media-types.
+#9 8.914 Preparing to unpack .../1-media-types_10.1.0_all.deb ...
+#9 8.915 Unpacking media-types (10.1.0) ...
+#9 8.929 Selecting previously unselected package netbase.
+#9 8.930 Preparing to unpack .../2-netbase_6.4_all.deb ...
+#9 8.930 Unpacking netbase (6.4) ...
+#9 8.941 Selecting previously unselected package tzdata.
+#9 8.942 Preparing to unpack .../3-tzdata_2026c-0ubuntu0.24.04.1_all.deb ...
+#9 8.942 Unpacking tzdata (2026c-0ubuntu0.24.04.1) ...
+#9 9.129 Selecting previously unselected package readline-common.
+#9 9.130 Preparing to unpack .../4-readline-common_8.2-4build1_all.deb ...
+#9 9.131 Unpacking readline-common (8.2-4build1) ...
+#9 9.153 Selecting previously unselected package libreadline8t64:amd64.
+#9 9.154 Preparing to unpack .../5-libreadline8t64_8.2-4build1_amd64.deb ...
+#9 9.203 Adding 'diversion of /lib/x86_64-linux-gnu/libhistory.so.8 to /lib/x86_64-linux-gnu/libhistory.so.8.usr-is-merged by libreadline8t64'
+#9 9.206 Adding 'diversion of /lib/x86_64-linux-gnu/libhistory.so.8.2 to /lib/x86_64-linux-gnu/libhistory.so.8.2.usr-is-merged by libreadline8t64'
+#9 9.209 Adding 'diversion of /lib/x86_64-linux-gnu/libreadline.so.8 to /lib/x86_64-linux-gnu/libreadline.so.8.usr-is-merged by libreadline8t64'
+#9 9.212 Adding 'diversion of /lib/x86_64-linux-gnu/libreadline.so.8.2 to /lib/x86_64-linux-gnu/libreadline.so.8.2.usr-is-merged by libreadline8t64'
+#9 9.213 Unpacking libreadline8t64:amd64 (8.2-4build1) ...
+#9 9.227 Selecting previously unselected package libsqlite3-0:amd64.
+#9 9.228 Preparing to unpack .../6-libsqlite3-0_3.45.1-1ubuntu2.8_amd64.deb ...
+#9 9.229 Unpacking libsqlite3-0:amd64 (3.45.1-1ubuntu2.8) ...
+#9 9.245 Selecting previously unselected package libpython3.12-stdlib:amd64.
+#9 9.246 Preparing to unpack .../7-libpython3.12-stdlib_3.12.3-1ubuntu0.17_amd64.deb ...
+#9 9.246 Unpacking libpython3.12-stdlib:amd64 (3.12.3-1ubuntu0.17) ...
+#9 9.423 Selecting previously unselected package python3.12.
+#9 9.424 Preparing to unpack .../8-python3.12_3.12.3-1ubuntu0.17_amd64.deb ...
+#9 9.424 Unpacking python3.12 (3.12.3-1ubuntu0.17) ...
+#9 9.436 Selecting previously unselected package libpython3-stdlib:amd64.
+#9 9.437 Preparing to unpack .../9-libpython3-stdlib_3.12.3-0ubuntu2.1_amd64.deb ...
+#9 9.438 Unpacking libpython3-stdlib:amd64 (3.12.3-0ubuntu2.1) ...
+#9 9.462 Setting up python3-minimal (3.12.3-0ubuntu2.1) ...
+#9 9.583 Selecting previously unselected package python3.
+#9 9.583 (Reading database ... 
+(Reading database ... 5%
+(Reading database ... 10%
+(Reading database ... 15%
+(Reading database ... 20%
+(Reading database ... 25%
+(Reading database ... 30%
+(Reading database ... 35%
+(Reading database ... 40%
+(Reading database ... 45%
+(Reading database ... 50%
+(Reading database ... 55%
+(Reading database ... 60%
+(Reading database ... 65%
+(Reading database ... 70%
+(Reading database ... 75%
+(Reading database ... 80%
+(Reading database ... 85%
+(Reading database ... 90%
+(Reading database ... 95%
+(Reading database ... 100%
+(Reading database ... 5706 files and directories currently installed.)
+#9 9.588 Preparing to unpack .../0-python3_3.12.3-0ubuntu2.1_amd64.deb ...
+#9 9.636 Unpacking python3 (3.12.3-0ubuntu2.1) ...
+#9 9.648 Selecting previously unselected package openssl.
+#9 9.648 Preparing to unpack .../1-openssl_3.0.13-0ubuntu3.16_amd64.deb ...
+#9 9.649 Unpacking openssl (3.0.13-0ubuntu3.16) ...
+#9 9.677 Selecting previously unselected package ca-certificates.
+#9 9.678 Preparing to unpack .../2-ca-certificates_20260601~24.04.1_all.deb ...
+#9 9.679 Unpacking ca-certificates (20260601~24.04.1) ...
+#9 9.714 Selecting previously unselected package python3-pip-whl.
+#9 9.715 Preparing to unpack .../3-python3-pip-whl_24.0+dfsg-1ubuntu1.3_all.deb ...
+#9 9.715 Unpacking python3-pip-whl (24.0+dfsg-1ubuntu1.3) ...
+#9 9.728 Selecting previously unselected package python3-setuptools-whl.
+#9 9.729 Preparing to unpack .../4-python3-setuptools-whl_68.1.2-2ubuntu1.2_all.deb ...
+#9 9.730 Unpacking python3-setuptools-whl (68.1.2-2ubuntu1.2) ...
+#9 9.886 Selecting previously unselected package python3.12-venv.
+#9 9.887 Preparing to unpack .../5-python3.12-venv_3.12.3-1ubuntu0.17_amd64.deb ...
+#9 9.887 Unpacking python3.12-venv (3.12.3-1ubuntu0.17) ...
+#9 9.897 Selecting previously unselected package python3-venv.
+#9 9.898 Preparing to unpack .../6-python3-venv_3.12.3-0ubuntu2.1_amd64.deb ...
+#9 9.898 Unpacking python3-venv (3.12.3-0ubuntu2.1) ...
+#9 9.914 Setting up media-types (10.1.0) ...
+#9 9.979 Setting up python3-setuptools-whl (68.1.2-2ubuntu1.2) ...
+#9 9.981 Setting up libsqlite3-0:amd64 (3.45.1-1ubuntu2.8) ...
+#9 9.982 Setting up tzdata (2026c-0ubuntu0.24.04.1) ...
+#9 10.09 debconf: unable to initialize frontend: Dialog
+#9 10.09 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#9 10.09 debconf: falling back to frontend: Readline
+#9 10.10 debconf: unable to initialize frontend: Readline
+#9 10.10 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.38.2 /usr/local/share/perl/5.38.2 /usr/lib/x86_64-linux-gnu/perl5/5.38 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.38 /usr/share/perl/5.38 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8.)
+#9 10.10 debconf: falling back to frontend: Teletype
+#9 10.13 Configuring tzdata
+#9 10.13 ------------------
+#9 10.13 
+#9 10.13 Please select the geographic area in which you live. Subsequent configuration
+#9 10.13 questions will narrow this down by presenting a list of cities, representing
+#9 10.13 the time zones in which they are located.
+#9 10.13 
+#9 10.13   1. Africa      4. Arctic    7. Australia  10. Pacific
+#9 10.13   2. America     5. Asia      8. Europe     11. Etc
+#9 10.13   3. Antarctica  6. Atlantic  9. Indian     12. Legacy
+#9 10.13 Geographic area: 
+#9 10.13 Use of uninitialized value $_[1] in join or string at /usr/share/perl5/Debconf/DbDriver/Stack.pm line 112.
+#9 10.13 
+#9 10.13 Current default time zone: '/UTC'
+#9 10.14 Local time is now:      Tue Oct 13 14:32:33 UTC 2026.
+#9 10.14 Universal Time is now:  Tue Oct 13 14:32:33 UTC 2026.
+#9 10.14 Run 'dpkg-reconfigure tzdata' if you wish to change it.
+#9 10.14 
+#9 10.15 Use of uninitialized value $val in substitution (s///) at /usr/share/perl5/Debconf/Format/822.pm line 84, <GEN6> line 4.
+#9 10.15 Use of uninitialized value $val in concatenation (.) or string at /usr/share/perl5/Debconf/Format/822.pm line 85, <GEN6> line 4.
+#9 10.15 Setting up netbase (6.4) ...
+#9 10.16 Setting up openssl (3.0.13-0ubuntu3.16) ...
+#9 10.16 Setting up readline-common (8.2-4build1) ...
+#9 10.17 Setting up ca-certificates (20260601~24.04.1) ...
+#9 10.25 debconf: unable to initialize frontend: Dialog
+#9 10.25 debconf: (TERM is not set, so the dialog frontend is not usable.)
+#9 10.25 debconf: falling back to frontend: Readline
+#9 10.25 debconf: unable to initialize frontend: Readline
+#9 10.25 debconf: (Can't locate Term/ReadLine.pm in @INC (you may need to install the Term::ReadLine module) (@INC entries checked: /etc/perl /usr/local/lib/x86_64-linux-gnu/perl/5.38.2 /usr/local/share/perl/5.38.2 /usr/lib/x86_64-linux-gnu/perl5/5.38 /usr/share/perl5 /usr/lib/x86_64-linux-gnu/perl-base /usr/lib/x86_64-linux-gnu/perl/5.38 /usr/share/perl/5.38 /usr/local/lib/site_perl) at /usr/share/perl5/Debconf/FrontEnd/Readline.pm line 8.)
+#9 10.25 debconf: falling back to frontend: Teletype
+#9 10.52 Updating certificates in /etc/ssl/certs...
+#9 10.87 121 added, 0 removed; done.
+#9 10.95 Setting up libreadline8t64:amd64 (8.2-4build1) ...
+#9 10.95 Setting up libpython3.12-stdlib:amd64 (3.12.3-1ubuntu0.17) ...
+#9 10.95 Setting up python3-pip-whl (24.0+dfsg-1ubuntu1.3) ...
+#9 10.95 Setting up python3.12 (3.12.3-1ubuntu0.17) ...
+#9 11.58 Setting up libpython3-stdlib:amd64 (3.12.3-0ubuntu2.1) ...
+#9 11.60 Setting up python3.12-venv (3.12.3-1ubuntu0.17) ...
+#9 11.64 Setting up python3 (3.12.3-0ubuntu2.1) ...
+#9 11.64 running python rtupdate hooks for python3.12...
+#9 11.64 running python post-rtupdate hooks for python3.12...
+#9 11.70 Setting up python3-venv (3.12.3-0ubuntu2.1) ...
+#9 11.70 Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
+#9 12.07 Processing triggers for ca-certificates (20260601~24.04.1) ...
+#9 12.07 Updating certificates in /etc/ssl/certs...
+#9 12.35 0 added, 0 removed; done.
+#9 12.35 Running hooks in /etc/ca-certificates/update.d...
+#9 12.35 done.
+#9 DONE 12.8s
+
+#10 [base 3/3] RUN useradd --uid 10001 --create-home --shell /usr/sbin/nologin checker     && mkdir -p /opt/credproof-runtime /opt/credproof /out     && chown -R checker:checker /opt/credproof-runtime /opt/credproof /out
+#10 DONE 0.2s
+
+#11 [runtime 1/9] COPY --chown=checker:checker agent_pilot /build/agent_pilot
+#11 DONE 0.0s
+
+#12 [runtime 2/9] COPY --chown=checker:checker credproof_safety /build/credproof_safety
+#12 DONE 0.0s
+
+#13 [runtime 3/9] COPY --chown=checker:checker credproof_access /build/credproof_access
+#13 DONE 0.0s
+
+#14 [runtime 4/9] COPY --chown=checker:checker credproof /build/credproof
+#14 DONE 0.0s
+
+#15 [runtime 5/9] COPY --chown=checker:checker pyproject.toml /build/pyproject.toml
+#15 DONE 0.0s
+
+#16 [runtime 6/9] COPY --chown=checker:checker scripts/runtime/setup-linux.py /build/scripts/runtime/setup-linux.py
+#16 DONE 0.0s
+
+#17 [runtime 7/9] RUN python3 /build/scripts/runtime/setup-linux.py --runtime-root /opt/credproof-runtime;     cd /build && python3 -c 'from credproof_safety.runtime_setup import verify_runtime; verify_runtime("/opt/credproof-runtime")'
+#17 3.384 Collecting pytest==8.4.2 (from -r /build/credproof_safety/requirements-lock.txt (line 2))
+#17 3.410   Downloading pytest-8.4.2-py3-none-any.whl (365 kB)
+#17 3.429      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 365.8/365.8 kB 21.3 MB/s eta 0:00:00
+#17 3.441 Collecting iniconfig==2.3.0 (from -r /build/credproof_safety/requirements-lock.txt (line 3))
+#17 3.445   Downloading iniconfig-2.3.0-py3-none-any.whl (7.5 kB)
+#17 3.462 Collecting packaging==26.3 (from -r /build/credproof_safety/requirements-lock.txt (line 4))
+#17 3.466   Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#17 3.470      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 130.0/130.0 kB 48.6 MB/s eta 0:00:00
+#17 3.483 Collecting pluggy==1.6.0 (from -r /build/credproof_safety/requirements-lock.txt (line 5))
+#17 3.486   Downloading pluggy-1.6.0-py3-none-any.whl (20 kB)
+#17 3.508 Collecting Pygments==2.21.0 (from -r /build/credproof_safety/requirements-lock.txt (line 6))
+#17 3.511   Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#17 3.528      ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 82.0 MB/s eta 0:00:00
+#17 3.557 Installing collected packages: Pygments, pluggy, packaging, iniconfig, pytest
+#17 4.355 Successfully installed Pygments-2.21.0 iniconfig-2.3.0 packaging-26.3 pluggy-1.6.0 pytest-8.4.2
+#17 5.423 {"checks": {"materials_verified": true, "namespace_probe": false}, "diagnostic_code": "namespace_probe_failed", "hints": ["Namespace/proc probe failed. Check Docker systempaths/seccomp and host AppArmor; see docs/integration/linux.md."], "preparation": "CREATED", "probe_exit_code": 1, "probe_stderr": "bwrap: No permissions to create new namespace, likely because the kernel does not allow non-privileged user namespaces. See <https://deb.li/bubblewrap> or <file:///usr/share/doc/bubblewrap/README.Debian.gz>.\n", "probe_stdout": "", "ready": false, "runtime_identity": {"bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71", "lock_sha256": "15700a39ce01bef3df4f7b659a3acb985d3af6f6ae0d56f1d1e18ca82e90ebdd", "manifest_sha256": "1d401148d292adca0fd736062e70e2a386d17b4b1e27517bc153055e992dfb2d"}, "schema": "credproof.doctor/v1"}
+#17 DONE 6.3s
+
+#18 [runtime 8/9] RUN python3 -m venv /opt/credproof/venv     && /opt/credproof/venv/bin/pip install --no-cache-dir setuptools wheel     && SOURCE_DATE_EPOCH=315532800 /opt/credproof/venv/bin/pip wheel --no-deps --no-build-isolation --wheel-dir /build/wheels /build     && /opt/credproof/venv/bin/pip install --no-deps /build/wheels/*.whl     && /opt/credproof/venv/bin/python -c 'import hashlib,json,pathlib,subprocess; p=next(pathlib.Path("/build/wheels").glob("*.whl")); pathlib.Path("/opt/credproof/build-receipt.json").write_text(json.dumps({"wheel":p.name,"wheel_sha256":hashlib.sha256(p.read_bytes()).hexdigest(),"apt":subprocess.check_output(["dpkg-query","-W","python3","python3-venv","libseccomp2"],text=True)},indent=2))'
+#18 2.873 Collecting setuptools
+#18 2.900   Downloading setuptools-84.0.0-py3-none-any.whl.metadata (6.6 kB)
+#18 2.923 Collecting wheel
+#18 2.927   Downloading wheel-0.48.0-py3-none-any.whl.metadata (2.3 kB)
+#18 2.967 Collecting packaging>=24.0 (from wheel)
+#18 2.971   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+#18 2.975 Downloading setuptools-84.0.0-py3-none-any.whl (818 kB)
+#18 2.992    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 818.2/818.2 kB 52.9 MB/s eta 0:00:00
+#18 2.996 Downloading wheel-0.48.0-py3-none-any.whl (33 kB)
+#18 3.000 Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#18 3.001    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 130.0/130.0 kB 483.3 MB/s eta 0:00:00
+#18 3.033 Installing collected packages: setuptools, packaging, wheel
+#18 3.598 Successfully installed packaging-26.3 setuptools-84.0.0 wheel-0.48.0
+#18 3.886 Processing /build
+#18 3.888   Preparing metadata (pyproject.toml): started
+#18 4.035   Preparing metadata (pyproject.toml): finished with status 'done'
+#18 4.040 Building wheels for collected packages: credproof-safety
+#18 4.041   Building wheel for credproof-safety (pyproject.toml): started
+#18 4.247   Building wheel for credproof-safety (pyproject.toml): finished with status 'done'
+#18 4.248   Created wheel for credproof-safety: filename=credproof_safety-0.3.0.dev38-py3-none-any.whl size=254856 sha256=b9f83f7f9fe921edd1f6aacf426c37a1c8a490654ef67a5f2e2474566486f944
+#18 4.248   Stored in directory: /tmp/pip-ephem-wheel-cache-e8l4rxyd/wheels/7f/5c/67/61a4ca28ccbc7df61f55a044560f100aa81c66ef20585de495
+#18 4.250 Successfully built credproof-safety
+#18 4.532 Processing /build/wheels/credproof_safety-0.3.0.dev38-py3-none-any.whl
+#18 4.536 Installing collected packages: credproof-safety
+#18 4.773 Successfully installed credproof-safety-0.3.0.dev38
+#18 DONE 5.3s
+
+#19 [runtime 9/9] RUN test -n "60e684efda5e4efe39055463a92c351dd4a69ec0" && printf '%s\n' "60e684efda5e4efe39055463a92c351dd4a69ec0" > /opt/credproof/source-commit.txt
+#19 DONE 0.1s
+
+#20 [final 1/3] COPY --from=runtime /opt/credproof-runtime /opt/credproof-runtime
+#20 DONE 0.7s
+
+#21 [final 2/3] COPY --from=runtime /opt/credproof /opt/credproof
+#21 DONE 0.4s
+
+#22 [final 3/3] WORKDIR /workspace
+#22 DONE 0.0s
+
+#23 exporting to image
+#23 exporting layers
+#23 exporting layers 1.3s done
+#23 writing image sha256:76b7334ac230c539971954027d1a14289a91a847d912e66a7aa0683519205087 done
+#23 naming to docker.io/library/credproof:ci done
+#23 DONE 1.4s

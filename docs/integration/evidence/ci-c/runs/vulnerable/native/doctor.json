@@ -1,0 +1,27 @@
+{
+  "schema": "credproof.doctor/v1",
+  "ready": true,
+  "checks": {
+    "materials_verified": true,
+    "/home": true,
+    "/workspace": true,
+    "/opt/credproof": true,
+    "pytest_import": true,
+    "private_scratch": true,
+    "proc_mounted": true,
+    "namespaces_distinct": true,
+    "capabilities_dropped": true,
+    "root_readonly": true
+  },
+  "hints": [],
+  "runtime_identity": {
+    "lock_sha256": "15700a39ce01bef3df4f7b659a3acb985d3af6f6ae0d56f1d1e18ca82e90ebdd",
+    "manifest_sha256": "3ca6f49a45c8800bddb9b064b5ee8fd36cbc6ae45c2f28aaa99981d8351034e0",
+    "bwrap_sha256": "e318903862396f96de3df57264e0158682b952fd3fb53ac23d876413e7b30f71"
+  },
+  "probe_exit_code": 0,
+  "probe_stdout": "{\"checks\": {\"/home\": true, \"/workspace\": true, \"/opt/credproof\": true, \"pytest_import\": true, \"private_scratch\": true, \"proc_mounted\": true, \"namespaces_distinct\": true, \"capabilities_dropped\": true, \"root_readonly\": true}, \"pytest_version\": \"8.4.2\", \"apparmor_profile\": \"credproof-ci-native (unconfined)\"}\n",
+  "probe_stderr": "",
+  "pytest_version": "8.4.2",
+  "sandbox_apparmor_profile": "credproof-ci-native (unconfined)"
+}

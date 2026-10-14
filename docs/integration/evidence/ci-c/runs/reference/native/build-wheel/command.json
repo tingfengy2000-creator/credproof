@@ -1,0 +1,20 @@
+{
+  "name": "build-wheel",
+  "command": [
+    "<runner-temp>/credproof-app/bin/python",
+    "-m",
+    "pip",
+    "wheel",
+    "--no-deps",
+    "--no-build-isolation",
+    "-w",
+    "<runner-temp>/credproof-wheels",
+    "<source>"
+  ],
+  "exit_code": 0,
+  "expected_exit_codes": [
+    0
+  ],
+  "matches": true,
+  "duration_seconds": 0.899
+}

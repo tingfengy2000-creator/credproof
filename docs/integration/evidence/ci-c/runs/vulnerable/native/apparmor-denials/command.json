@@ -1,0 +1,20 @@
+{
+  "name": "apparmor-denials",
+  "command": [
+    "sudo",
+    "journalctl",
+    "-k",
+    "--since",
+    "30 minutes ago",
+    "--grep",
+    "apparmor=\"DENIED\"",
+    "--no-pager"
+  ],
+  "exit_code": 1,
+  "expected_exit_codes": [
+    0,
+    1
+  ],
+  "matches": true,
+  "duration_seconds": 0.012
+}

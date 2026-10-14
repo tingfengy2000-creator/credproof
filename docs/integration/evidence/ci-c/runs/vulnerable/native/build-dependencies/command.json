@@ -1,0 +1,17 @@
+{
+  "name": "build-dependencies",
+  "command": [
+    "<runner-temp>/credproof-app/bin/python",
+    "-m",
+    "pip",
+    "install",
+    "setuptools",
+    "wheel"
+  ],
+  "exit_code": 0,
+  "expected_exit_codes": [
+    0
+  ],
+  "matches": true,
+  "duration_seconds": 1.433
+}

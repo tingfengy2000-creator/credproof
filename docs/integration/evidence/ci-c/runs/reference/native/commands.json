@@ -1,0 +1,246 @@
+[
+  {
+    "name": "venv",
+    "command": [
+      "/usr/bin/python3",
+      "-m",
+      "venv",
+      "<runner-temp>/credproof-app"
+    ],
+    "exit_code": 0,
+    "expected_exit_codes": [
+      0
+    ],
+    "matches": true,
+    "duration_seconds": 3.09
+  },
+  {
+    "name": "build-dependencies",
+    "command": [
+      "<runner-temp>/credproof-app/bin/python",
+      "-m",
+      "pip",
+      "install",
+      "setuptools",
+      "wheel"
+    ],
+    "exit_code": 0,
+    "expected_exit_codes": [
+      0
+    ],
+    "matches": true,
+    "duration_seconds": 1.366
+  },
+  {
+    "name": "build-wheel",
+    "command": [
+      "<runner-temp>/credproof-app/bin/python",
+      "-m",
+      "pip",
+      "wheel",
+      "--no-deps",
+      "--no-build-isolation",
+      "-w",
+      "<runner-temp>/credproof-wheels",
+      "<source>"
+    ],
+    "exit_code": 0,
+    "expected_exit_codes": [
+      0
+    ],
+    "matches": true,
+    "duration_seconds": 0.899
+  },
+  {
+    "name": "install",
+    "command": [
+      "<runner-temp>/credproof-app/bin/python",
+      "-m",
+      "pip",
+      "install",
+      "<runner-temp>/credproof-wheels/credproof_safety-0.3.0.dev38-py3-none-any.whl[test]"
+    ],
+    "exit_code": 0,
+    "expected_exit_codes": [
+      0
+    ],
+    "matches": true,
+    "duration_seconds": 2.729
+  },
+  {
+    "name": "native-apparmor-load",
+    "command": [
+      "sudo",
+      "apparmor_parser",
+      "-r",
+      "<source>/credproof-out/native/native-userns.profile"
+    ],
+    "exit_code": 0,
+    "expected_exit_codes": [
+      0
+    ],
+    "matches": true,
+    "duration_seconds": 0.011
+  },
+  {
+    "name": "runtime-directory",
+    "command": [
+      "sudo",
+      "install",
+      "-d",
+      "-o",
+      "1001",
+      "-g",
+      "1001",
+      "/opt/credproof-ci-runtime"
+    ],
+    "exit_code": 0,
+    "expected_exit_codes": [
+      0
+    ],
+    "matches": true,
+    "duration_seconds": 0.011
+  },
+  {
+    "name": "setup",
+    "command": [
+      "/usr/bin/python3",
+      "<source>/scripts/runtime/setup-linux.py",
+      "--runtime-root",
+      "/opt/credproof-ci-runtime"
+    ],
+    "exit_code": 0,
+    "expected_exit_codes": [
+      0
+    ],
+    "matches": true,
+    "duration_seconds": 9.191
+  },
+  {
+    "name": "doctor",
+    "command": [
+      "<runner-temp>/credproof-app/bin/python",
+      "-I",
+      "-m",
+      "credproof_safety",
+      "doctor"
+    ],
+    "exit_code": 0,
+    "expected_exit_codes": [
+      0
+    ],
+    "matches": true,
+    "duration_seconds": 0.992
+  },
+  {
+    "name": "format-tests",
+    "command": [
+      "<runner-temp>/credproof-app/bin/python",
+      "-m",
+      "pytest",
+      "<source>/credproof_safety/tests/test_report_formats.py",
+      "-q",
+      "--junitxml=<source>/credproof-out/native/formats-junit.xml"
+    ],
+    "exit_code": 0,
+    "expected_exit_codes": [
+      0
+    ],
+    "matches": true,
+    "duration_seconds": 0.443
+  },
+  {
+    "name": "check-0",
+    "command": [
+      "<runner-temp>/credproof-app/bin/python",
+      "-I",
+      "-m",
+      "credproof_safety",
+      "check",
+      "--config",
+      "<source>/examples/bench/b07-webhook-relay/project/credproof.toml",
+      "--source-root",
+      "<source>",
+      "--output",
+      "<source>/credproof-out/native/target-0/report.json",
+      "--sarif",
+      "<source>/credproof-out/native/target-0/report.sarif",
+      "--junit",
+      "<source>/credproof-out/native/target-0/junit.xml",
+      "--summary",
+      "<source>/credproof-out/native/target-0/summary.md"
+    ],
+    "exit_code": 0,
+    "expected_exit_codes": [
+      0
+    ],
+    "matches": true,
+    "duration_seconds": 1.448
+  },
+  {
+    "name": "anchors",
+    "command": [
+      "<runner-temp>/credproof-app/bin/python",
+      "-I",
+      "<source>/scripts/runtime/verify-anchors.py",
+      "--source",
+      "<source>",
+      "--source-commit",
+      "ce7ae493878552af0f121834dc995d44467a7718",
+      "--anchors-source",
+      "<runner-temp>/credproof-frozen-anchors",
+      "--anchors-commit",
+      "a5b51e303315dd2dd3f4671d7a771fb9afab0310",
+      "--runtime",
+      "/opt/credproof-ci-runtime",
+      "--output",
+      "<source>/credproof-out/native/anchors-results",
+      "--environment",
+      "native"
+    ],
+    "exit_code": 0,
+    "expected_exit_codes": [
+      0
+    ],
+    "matches": true,
+    "duration_seconds": 24.022
+  },
+  {
+    "name": "formats-scan",
+    "command": [
+      "/usr/bin/python3",
+      "<source>/scripts/runtime/scan-image.py",
+      "<runner-temp>/credproof-formats.tar",
+      "--output",
+      "<source>/credproof-out/native/formats-scan.json",
+      "--private-values-file",
+      "<runner-temp>/credproof-private-values.json"
+    ],
+    "exit_code": 0,
+    "expected_exit_codes": [
+      0
+    ],
+    "matches": true,
+    "duration_seconds": 0.134
+  },
+  {
+    "name": "apparmor-denials",
+    "command": [
+      "sudo",
+      "journalctl",
+      "-k",
+      "--since",
+      "30 minutes ago",
+      "--grep",
+      "apparmor=\"DENIED\"",
+      "--no-pager"
+    ],
+    "exit_code": 1,
+    "expected_exit_codes": [
+      0,
+      1
+    ],
+    "matches": true,
+    "duration_seconds": 0.016
+  }
+]
