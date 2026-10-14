@@ -1,0 +1,22 @@
+{
+  "schema": "credproof.workspace-status/v1",
+  "access_mode": "live",
+  "checker": {
+    "ready": true,
+    "detail": "reviewed rootfs, bubblewrap and Python site packages present (WSL)"
+  },
+  "model": {
+    "ready": true,
+    "label": "qwen3-coder:30b · 本地服务",
+    "reasons": []
+  },
+  "can_check": true,
+  "can_use_model": true,
+  "reasons": [],
+  "limits": {
+    "upload_bytes": 16777216,
+    "files": 2000,
+    "file_bytes": 4194304,
+    "expanded_bytes": 67108864
+  }
+}

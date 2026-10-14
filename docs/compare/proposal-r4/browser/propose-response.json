@@ -1,0 +1,131 @@
+{
+  "status": "CANDIDATE",
+  "reason": "The patch addresses two main issues: 1) It prevents logging or returning the credential in the result by removing the logging line and excluding 'credential' from the returned dictionary. 2) It adds a check to ensure that the URL is within the allowed service boundaries, preventing access to forbidden services even if a redirect occurs.",
+  "model": {
+    "profile": "qwen3",
+    "name": "qwen3-coder:30b",
+    "manifest": "models/manifests/registry.ollama.ai/library/qwen3-coder/30b",
+    "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca"
+  },
+  "strategy": "bounded_patch",
+  "model_requests": 1,
+  "native_tool_calls": 0,
+  "verifications": 0,
+  "boundary_status": "VERIFIED_FOR_THIS_CALL",
+  "request_sha256": "7ec44895acdbfea044508f14305e30c8a8c8474096df4c25bd99d61a98c4ec8d",
+  "response_sha256": "665b0ec8a1ffac01fc44507cd8122f31177c5fc2c5c1fe71fa0fc94079808799",
+  "review": {
+    "id": "d1c539f4a1e64050a37fdc0b9607d30c",
+    "meta": {
+      "id": "d1c539f4a1e64050a37fdc0b9607d30c",
+      "kind": "PROJECT",
+      "project_id": "intake-7f97c741a6ca453ea91fd6b8dd12b017",
+      "origin_id": "intake-7f97c741a6ca453ea91fd6b8dd12b017",
+      "label": "资料助手（问题版本）",
+      "created_at": "2026-10-14T14:59:59.620831+00:00",
+      "original_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "source_candidate_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "application_to_original": "NOT_APPLIED"
+    },
+    "version": {
+      "id": "v001",
+      "parent": "v000",
+      "source": "AI_CANDIDATE",
+      "reason": "The patch addresses two main issues: 1) It prevents logging or returning the credential in the result by removing the logging line and excluding 'credential' from the returned dictionary. 2) It adds a check to ensure that the URL is within the allowed service boundaries, preventing access to forbidden services even if a redirect occurs.",
+      "created_at": "2026-10-14T15:02:17.118347+00:00",
+      "entry_path": "tool.py",
+      "code_sha256": "0d2b2f510d40b97b0a5ad67d0154bf74bdb3ad607605a67f49edc749b69941ae",
+      "model": {
+        "profile": "qwen3",
+        "name": "qwen3-coder:30b",
+        "manifest": "models/manifests/registry.ollama.ai/library/qwen3-coder/30b",
+        "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca"
+      },
+      "request_sha256": "7ec44895acdbfea044508f14305e30c8a8c8474096df4c25bd99d61a98c4ec8d",
+      "response_sha256": "665b0ec8a1ffac01fc44507cd8122f31177c5fc2c5c1fe71fa0fc94079808799",
+      "strategy": "bounded_patch",
+      "proposal_id": "ab75e9ed524b45588788bb2b96a4f286",
+      "model_format": {
+        "rule_version": "credproof.python-outer-fence/v1",
+        "original_code_sha256": "0d2b2f510d40b97b0a5ad67d0154bf74bdb3ad607605a67f49edc749b69941ae",
+        "original_code_bytes": 1038,
+        "deletions": [],
+        "source": "model_generated_then_format_normalized",
+        "semantic_edits": false,
+        "format": "PURE_PYTHON_UNCHANGED",
+        "normalized_code_sha256": "0d2b2f510d40b97b0a5ad67d0154bf74bdb3ad607605a67f49edc749b69941ae",
+        "normalized_code_bytes": 1038,
+        "syntax": {
+          "status": "VALID_SYNTAX",
+          "source_sha256": "0d2b2f510d40b97b0a5ad67d0154bf74bdb3ad607605a67f49edc749b69941ae",
+          "executed": false
+        },
+        "diff": ""
+      }
+    },
+    "original_code": "\"\"\"Small authorised materials assistant used by the reusable-entry example.\n\nThis initial version is intentionally vulnerable for the local lab: it reads a\npath supplied by the request, follows a redirect, and includes its credential\nin a debug message. The lab provides only synthetic material and loopback mock\nservices. The file is never run on a real account.\n\"\"\"\nimport json\nimport logging\nimport os\nfrom urllib.request import Request, urlopen\n\n\ndef run(request):\n    if not isinstance(request, dict) or not isinstance(request.get(\"resource\"), str):\n        raise ValueError(\"invalid request\")\n    credential_env = os.environ.get(\"CREDPROOF_CREDENTIAL_ENV\", \"CREDPROOF_TEST_CREDENTIAL\")\n    credential = os.environ[credential_env]\n    path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\")\n    with open(path, \"r\", encoding=\"utf-8\") as handle:\n        material = handle.read()\n    url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"]\n    response = urlopen(Request(url, headers={\"Authorization\": \"Bearer \" + credential}), timeout=2)\n    body = response.read().decode(\"utf-8\")\n    logging.info(\"loaded %s with credential=%s\", request[\"resource\"], credential)\n    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": json.loads(body),\n            \"credential\": credential}\n",
+    "ai_code": null,
+    "code": "import json\nimport logging\nimport os\nfrom urllib.request import Request, urlopen\n\n\ndef run(request):\n    if not isinstance(request, dict) or not isinstance(request.get(\"resource\"), str):\n        raise ValueError(\"invalid request\")\n    credential_env = os.environ.get(\"CREDPROOF_TEST_CREDENTIAL\", \"CREDPROOF_TEST_CREDENTIAL\")\n    credential = os.environ[credential_env]\n    path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\")\n    with open(path, \"r\", encoding=\"utf-8\") as handle:\n        material = handle.read()\n    url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"]\n    # Ensure the URL is within allowed service boundaries\n    if not url.startswith(\"http://127.0.0.1:37305/api\"):\n        raise ValueError(\"URL not allowed\")\n    response = urlopen(Request(url, headers={\"Authorization\": \"Bearer \" + credential}), timeout=2)\n    body = response.read().decode(\"utf-8\")\n    # Do not log or return the credential\n    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": json.loads(body)}\n",
+    "diff": "--- parent.py\n+++ revision.py\n@@ -1,10 +1,3 @@\n-\"\"\"Small authorised materials assistant used by the reusable-entry example.\n-\n-This initial version is intentionally vulnerable for the local lab: it reads a\n-path supplied by the request, follows a redirect, and includes its credential\n-in a debug message. The lab provides only synthetic material and loopback mock\n-services. The file is never run on a real account.\n-\"\"\"\n import json\n import logging\n import os\n@@ -14,14 +7,16 @@\n def run(request):\n     if not isinstance(request, dict) or not isinstance(request.get(\"resource\"), str):\n         raise ValueError(\"invalid request\")\n-    credential_env = os.environ.get(\"CREDPROOF_CREDENTIAL_ENV\", \"CREDPROOF_TEST_CREDENTIAL\")\n+    credential_env = os.environ.get(\"CREDPROOF_TEST_CREDENTIAL\", \"CREDPROOF_TEST_CREDENTIAL\")\n     credential = os.environ[credential_env]\n     path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\")\n     with open(path, \"r\", encoding=\"utf-8\") as handle:\n         material = handle.read()\n     url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"]\n+    # Ensure the URL is within allowed service boundaries\n+    if not url.startswith(\"http://127.0.0.1:37305/api\"):\n+        raise ValueError(\"URL not allowed\")\n     response = urlopen(Request(url, headers={\"Authorization\": \"Bearer \" + credential}), timeout=2)\n     body = response.read().decode(\"utf-8\")\n-    logging.info(\"loaded %s with credential=%s\", request[\"resource\"], credential)\n-    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": json.loads(body),\n-            \"credential\": credential}\n+    # Do not log or return the credential\n+    return {\"resource\": request[\"resource\"], \"material\": material, \"service\": json.loads(body)}\n",
+    "object_sha256": "16f5d7b426a9ff0f84471f11a743140f09b0670a628212331b672ffb491953b7",
+    "report_sha256": null,
+    "report": null,
+    "technical_verdict": "UNKNOWN",
+    "report_applicable": false,
+    "material_reasons": [],
+    "decision": "PENDING",
+    "decision_applicable": false,
+    "decision_is_test": false,
+    "decisions": [],
+    "application_to_original": "NOT_APPLIED",
+    "versions": [
+      {
+        "id": "v000",
+        "parent": null,
+        "source": "PROJECT_IMPORT",
+        "origin_id": "intake-7f97c741a6ca453ea91fd6b8dd12b017",
+        "created_at": "2026-10-14T14:59:59.619832+00:00",
+        "reason": "导入项目当前代码，配置与测试一并冻结",
+        "entry_path": "tool.py",
+        "code_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106"
+      },
+      {
+        "id": "v001",
+        "parent": "v000",
+        "source": "AI_CANDIDATE",
+        "reason": "The patch addresses two main issues: 1) It prevents logging or returning the credential in the result by removing the logging line and excluding 'credential' from the returned dictionary. 2) It adds a check to ensure that the URL is within the allowed service boundaries, preventing access to forbidden services even if a redirect occurs.",
+        "created_at": "2026-10-14T15:02:17.118347+00:00",
+        "entry_path": "tool.py",
+        "code_sha256": "0d2b2f510d40b97b0a5ad67d0154bf74bdb3ad607605a67f49edc749b69941ae",
+        "model": {
+          "profile": "qwen3",
+          "name": "qwen3-coder:30b",
+          "manifest": "models/manifests/registry.ollama.ai/library/qwen3-coder/30b",
+          "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca"
+        },
+        "request_sha256": "7ec44895acdbfea044508f14305e30c8a8c8474096df4c25bd99d61a98c4ec8d",
+        "response_sha256": "665b0ec8a1ffac01fc44507cd8122f31177c5fc2c5c1fe71fa0fc94079808799",
+        "strategy": "bounded_patch",
+        "proposal_id": "ab75e9ed524b45588788bb2b96a4f286",
+        "model_format": {
+          "rule_version": "credproof.python-outer-fence/v1",
+          "original_code_sha256": "0d2b2f510d40b97b0a5ad67d0154bf74bdb3ad607605a67f49edc749b69941ae",
+          "original_code_bytes": 1038,
+          "deletions": [],
+          "source": "model_generated_then_format_normalized",
+          "semantic_edits": false,
+          "format": "PURE_PYTHON_UNCHANGED",
+          "normalized_code_sha256": "0d2b2f510d40b97b0a5ad67d0154bf74bdb3ad607605a67f49edc749b69941ae",
+          "normalized_code_bytes": 1038,
+          "syntax": {
+            "status": "VALID_SYNTAX",
+            "source_sha256": "0d2b2f510d40b97b0a5ad67d0154bf74bdb3ad607605a67f49edc749b69941ae",
+            "executed": false
+          },
+          "diff": ""
+        }
+      }
+    ],
+    "evidence": null
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "kind": "R4_P2_SINGLE_PROPOSAL",
+  "program_source_commit": "66b6f9dbc13f40102fa421905f592fa21a64feee",
+  "id": "d1c539f4a1e64050a37fdc0b9607d30c",
+  "model": {
+    "profile": "qwen3",
+    "name": "qwen3-coder:30b",
+    "manifest": "models/manifests/registry.ollama.ai/library/qwen3-coder/30b",
+    "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca"
+  },
+  "limits": {
+    "model_requests": 1,
+    "format_corrections": 0,
+    "candidates": 1,
+    "verifications": 0,
+    "context": 16384,
+    "output": 2048,
+    "safety_reserve": 512,
+    "request_seconds": 120,
+    "task_seconds": 900
+  },
+  "input_budget": {
+    "method": "UTF8_WIRE_BYTES",
+    "reuse_reason": "no_previous_measured_request",
+    "request_bytes": 12681,
+    "prefix_call_id": null,
+    "prefix_prompt_tokens": null,
+    "suffix_json_bytes": null,
+    "new_message_count": null,
+    "new_message_reserve_tokens": 0,
+    "global_reserve_tokens": 512,
+    "max_output_tokens": 2048,
+    "input_token_upper_bound": 12681,
+    "input_token_limit": 13824,
+    "context_token_upper_bound": 15241,
+    "context_token_limit": 16384,
+    "within_context_budget": true,
+    "within_wire_limit": true
+  },
+  "entry_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+  "config_sha256": "c7956e3fe051fce1f87e83a7f6ea77dae85ea1f80eb080e3c7b73ad302182161",
+  "tests": {
+    "tests/test_business.py": "b1fcc2d5dd2fffd7149ab46741bd0cb5ccf7b2ecaa49e196fbf5bb8d79e6c356"
+  },
+  "initial_report_sha256": "75d115149d14a5f49959646b775d8483a9d31c0131b9b679090808c8e9016f7c",
+  "object_sha256": "d664dacfd4bf85ba8bff5bc7b0c038c288cc838c2157df69c55286c05d80c5c5",
+  "runtime": "existing reviewed 5090 WSL model boundary; actual device to be read from service receipt",
+  "model_calls_planned": 1,
+  "format_retries": 0,
+  "automatic_verifications": 0,
+  "manual_checks_planned_after_candidate": 1,
+  "note": "Candidate PASS is not required for this integration; no retry or best-result selection."
+}

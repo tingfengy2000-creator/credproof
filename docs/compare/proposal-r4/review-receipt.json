@@ -1,0 +1,21 @@
+{
+  "proposal_id": "ab75e9ed524b45588788bb2b96a4f286",
+  "source_version": "v000",
+  "source_object_sha256": "d664dacfd4bf85ba8bff5bc7b0c038c288cc838c2157df69c55286c05d80c5c5",
+  "source_report_sha256": "75d115149d14a5f49959646b775d8483a9d31c0131b9b679090808c8e9016f7c",
+  "status": "CANDIDATE",
+  "reason": "The patch addresses two main issues: 1) It prevents logging or returning the credential in the result by removing the logging line and excluding 'credential' from the returned dictionary. 2) It adds a check to ensure that the URL is within the allowed service boundaries, preventing access to forbidden services even if a redirect occurs.",
+  "model": {
+    "profile": "qwen3",
+    "name": "qwen3-coder:30b",
+    "manifest": "models/manifests/registry.ollama.ai/library/qwen3-coder/30b",
+    "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca"
+  },
+  "strategy": "bounded_patch",
+  "model_requests": 1,
+  "native_tool_calls": 0,
+  "verifications": 0,
+  "boundary_status": "VERIFIED_FOR_THIS_CALL",
+  "request_sha256": "7ec44895acdbfea044508f14305e30c8a8c8474096df4c25bd99d61a98c4ec8d",
+  "response_sha256": "665b0ec8a1ffac01fc44507cd8122f31177c5fc2c5c1fe71fa0fc94079808799"
+}

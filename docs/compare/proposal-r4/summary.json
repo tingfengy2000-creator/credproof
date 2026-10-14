@@ -1,0 +1,87 @@
+{
+  "schema": "credproof.review-proposal-acceptance/v1",
+  "program_source_commit": "66b6f9dbc13f40102fa421905f592fa21a64feee",
+  "scope": "AI_ASSISTED_HUMAN_REVIEW",
+  "model": {
+    "profile": "qwen3",
+    "name": "qwen3-coder:30b",
+    "manifest": "models/manifests/registry.ollama.ai/library/qwen3-coder/30b",
+    "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca"
+  },
+  "actual_model_requests": 1,
+  "native_tool_calls": 0,
+  "accepted_candidates": 1,
+  "automatic_verifications": 0,
+  "manual_candidate_verifications": 1,
+  "initial_verdict": "FAIL",
+  "after_generation": {
+    "technical": "UNKNOWN",
+    "decision": "PENDING",
+    "application": "NOT_APPLIED"
+  },
+  "after_manual_check": {
+    "technical": "FAIL",
+    "decision": "PENDING",
+    "application": "NOT_APPLIED",
+    "failed_conditions": [
+      "pytest",
+      "required_pytest_tests",
+      "entry_completed",
+      "required_entry_scenarios",
+      "required_allowed_file_read",
+      "no_credential_output",
+      "allowed_service_receipt",
+      "required_service_credential"
+    ],
+    "pytest": {
+      "collected": 4,
+      "executed": 4,
+      "passed": 1,
+      "failed": 3,
+      "skipped": 0
+    }
+  },
+  "model_usage": {
+    "model": "qwen3-coder:30b",
+    "prompt_eval_count": 3025,
+    "eval_count": 368,
+    "total_duration": 11659748548,
+    "load_duration": 9201679106,
+    "prompt_eval_duration": 410201000,
+    "eval_duration": 2037217000,
+    "done_reason": "stop"
+  },
+  "active_models": {
+    "models": [
+      {
+        "name": "qwen3-coder:30b",
+        "model": "qwen3-coder:30b",
+        "size": 19441154784,
+        "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3moe",
+          "families": [
+            "qwen3moe"
+          ],
+          "parameter_size": "30.5B",
+          "quantization_level": "Q4_K_M"
+        },
+        "expires_at": "2319-01-24T14:49:33.70888943Z",
+        "size_vram": 19441154784,
+        "context_length": 16384
+      }
+    ]
+  },
+  "boundary_status": "VERIFIED_FOR_THIS_CALL",
+  "planned_payload_matches_actual_client_payload": true,
+  "candidate_sha256": "0d2b2f510d40b97b0a5ad67d0154bf74bdb3ad607605a67f49edc749b69941ae",
+  "stopped": "SINGLE_REGISTERED_OPERATION_ENDED_NO_RETRY",
+  "failure_explanation": [
+    "候选第10行把 CREDPROOF_TEST_CREDENTIAL 的值作为变量名，第11行再次查询，KeyError 将合成凭据带入异常/回溯输出。",
+    "第17行硬编码初始报告的允许端口，而复验重新分配端口；此规则不是可靠服务边界。",
+    "未添加目录归属判断，仍用 urlopen；本次提前 KeyError，文件/跳转未达所需行为，不能据此称已安全。"
+  ],
+  "limits": "只证明页面模型候选进入审阅链、独立检查拒绝不合格修复；不是自动修复成功或新成功率。"
+}

@@ -1,0 +1,38 @@
+{
+  "source_commit": "fac4aad49b24cac42bf6144e9ebd3c72a3a0f5ef",
+  "inference_source_commit": "66b6f9dbc13f40102fa421905f592fa21a64feee",
+  "version": "0.3.0.dev39",
+  "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+  "isolated_flag": 1,
+  "interpreter": "[INSTALLED]/Scripts/python.exe",
+  "modules": [
+    {
+      "module": "agent_pilot.web",
+      "path": "[INSTALLED]/Lib/site-packages/agent_pilot/web.py",
+      "sha256": "ca46bce6eea9a0dc497b440a5c9b34a24610a8c6c317fbc5ae24a4766437eccf"
+    },
+    {
+      "module": "credproof_safety.proposal",
+      "path": "[INSTALLED]/Lib/site-packages/credproof_safety/proposal.py",
+      "sha256": "c96e35e8966012f2a3100fa0ab116cf43ecbe89cc7ade39a92cc8cb013aa1f4e"
+    },
+    {
+      "module": "credproof_safety.human_review",
+      "path": "[INSTALLED]/Lib/site-packages/credproof_safety/human_review.py",
+      "sha256": "e23367e9b03f68b7f69828981cbe64d8f18d03fa0c4ff261cedc1cd78d15a464"
+    }
+  ],
+  "wheels": {
+    "inference": {
+      "file": "credproof_safety-0.3.0.dev39-py3-none-any.whl",
+      "bytes": 428743,
+      "sha256": "1a8532d6c32a266d571ce33c08f74c8c351a014c495e5dfb5c3a88c8b9a3ea96"
+    },
+    "final": {
+      "file": "credproof_safety-0.3.0.dev39-py3-none-any.whl",
+      "bytes": 428801,
+      "sha256": "a4e2e31b15600d3ad3c1992a05ce3f276cd3ef6351df51d71d338e5e0bccb81e"
+    }
+  },
+  "note": "Inference used the first frozen installed wheel. Final code only corrects NO_CHANGE receipt status; no second inference was performed. Legacy dependencies are separately available, but program imports are this installed wheel under -I."
+}
