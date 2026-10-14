@@ -1,0 +1,221 @@
+{
+  "schema": "credproof.onboarding/v1",
+  "program_source_commit": "5211f98f96cd11913c4f6c1e04bbde3f726959a1",
+  "project": {
+    "name": "python-dotenv",
+    "upstream": "https://github.com/theskumar/python-dotenv",
+    "ref": "v1.2.2",
+    "commit": "36004e0e34be7665ff2b11a8a4005144f76f176d",
+    "license": "BSD-3-Clause",
+    "scope": "人工注入的目录越界适配；不是上游漏洞；保留 dotenv 解析、114 上游与3适配测试"
+  },
+  "environment": {
+    "os": "Windows 11 + WSL Ubuntu-24.04",
+    "python": "3.12.14 (controller); 3.12 (existing isolated runtime)",
+    "browser": "Edge 155.0.4283.45",
+    "model_calls": 0
+  },
+  "steps": [
+    {
+      "id": "upload",
+      "what_user_does": "选择已固定外部组件文件夹上传",
+      "time_minutes": null,
+      "artifact": "docs/compare/onboarding-dotenv/intake-and-config.json",
+      "result": "UPLOADED"
+    },
+    {
+      "id": "configure",
+      "what_user_does": "向导核对入口、两个必要测试路径、目录和禁止文件负例，点击校验配置",
+      "time_minutes": null,
+      "artifact": "docs/compare/onboarding-dotenv/config.png",
+      "result": "VALID"
+    },
+    {
+      "id": "check",
+      "what_user_does": "冻结配置并运行问题版",
+      "time_minutes": null,
+      "artifact": "docs/compare/onboarding-dotenv/before-review.json",
+      "result": "FAIL"
+    },
+    {
+      "id": "revise",
+      "what_user_does": "人工提交已标识的受控修复；不是模型生成",
+      "time_minutes": null,
+      "artifact": "docs/compare/onboarding-dotenv/after-review.json",
+      "result": "PASS"
+    },
+    {
+      "id": "controls",
+      "what_user_does": "重新引入同一边界缺陷，再验证无关注释变更",
+      "time_minutes": null,
+      "artifact": "docs/compare/onboarding-dotenv/resume-driver-summary.json",
+      "result": "FAIL / PASS"
+    },
+    {
+      "id": "export_recheck",
+      "what_user_does": "导出最后 v003 的诊断材料，在新目录完整复检；未审批或写回原件",
+      "time_minutes": null,
+      "artifact": "docs/compare/onboarding-dotenv/recheck.json",
+      "result": "PASS"
+    }
+  ],
+  "config": {
+    "toml_path": "examples/external/python-dotenv-v1.2.2/credproof.toml",
+    "intake_id": "ddb96f0035254833a1e17f1cb4c23a72",
+    "decisions": [
+      {
+        "field": "entry",
+        "why": "credproof_entry.run 是项目旁的薄适配，实际调用 dotenv_values"
+      },
+      {
+        "field": "tests",
+        "why": "保留 tests/test_main.py 与 tests/test_credproof_adapter.py，114+3，不把适配测试算上游"
+      },
+      {
+        "field": "network",
+        "why": "此组件只测试文件读取，服务未启用，不以空网络项声称网络修复"
+      },
+      {
+        "field": "mutable_scope",
+        "why": "向导仅允许当前入口文件；测试、配置和上游 src 冻结"
+      }
+    ]
+  },
+  "results": [
+    {
+      "case": "before",
+      "version": "v000",
+      "candidate_source": "PROJECT_IMPORT",
+      "verdict": "FAIL",
+      "failed_conditions": [
+        "pytest",
+        "required_pytest_tests",
+        "required_entry_scenarios",
+        "no_forbidden_file_read",
+        "no_credential_output"
+      ],
+      "report": "docs/compare/onboarding-dotenv/before-review.json",
+      "pytest": {
+        "collected": 117,
+        "executed": 117,
+        "passed": 116,
+        "failed": 1,
+        "skipped": 0,
+        "required_tests_passed": false
+      },
+      "upstream_tests": 114,
+      "adapter_tests": 3,
+      "source_sha256": "9c744ebb657311c09963fda1738a883cd11f415451b447842ce2caafae66c502",
+      "project_tree_sha256": "988daede9def1d957f1bc12aaf55b9d74d87150cd04ab3b5c85884264f9c2172",
+      "observations": {
+        "classification": "ACTUAL_VIOLATION",
+        "outer_sandbox_blocked": false,
+        "incomplete": false
+      }
+    },
+    {
+      "case": "after",
+      "version": "v001",
+      "candidate_source": "DEVELOPER_REVISION",
+      "verdict": "PASS",
+      "failed_conditions": [],
+      "report": "docs/compare/onboarding-dotenv/after-review.json",
+      "pytest": {
+        "collected": 117,
+        "executed": 117,
+        "passed": 117,
+        "failed": 0,
+        "skipped": 0,
+        "required_tests_passed": true
+      },
+      "upstream_tests": 114,
+      "adapter_tests": 3,
+      "source_sha256": "e5980c5ad7d6cc6b5b2a73f7e79c204f44a515ade421b7df2df72c9219df8a6b",
+      "project_tree_sha256": "7d05df74ba7fe909c843c0b5c97199d257bf3ba2ab77e75b9acda4db689bb0cb",
+      "observations": {
+        "classification": "NO_OBSERVED_VIOLATION",
+        "outer_sandbox_blocked": false,
+        "incomplete": false
+      }
+    },
+    {
+      "case": "reintroduced_defect",
+      "version": "v002",
+      "candidate_source": "DEVELOPER_REVISION",
+      "verdict": "FAIL",
+      "failed_conditions": [
+        "required_entry_scenarios",
+        "no_forbidden_file_read",
+        "no_credential_output"
+      ],
+      "report": "docs/compare/onboarding-dotenv/reintroduced_defect-review.json",
+      "pytest": {
+        "collected": 117,
+        "executed": 117,
+        "passed": 117,
+        "failed": 0,
+        "skipped": 0,
+        "required_tests_passed": true
+      },
+      "upstream_tests": 114,
+      "adapter_tests": 3,
+      "source_sha256": "c4575c78dce8a181b9d83088765325a5a2938e07aa99058c57edd97565ed1129",
+      "project_tree_sha256": "52632f983f2d4c3001d886a23802775f94d25abec77a8380938c78727d14197c",
+      "observations": {
+        "classification": "ACTUAL_VIOLATION",
+        "outer_sandbox_blocked": false,
+        "incomplete": false
+      }
+    },
+    {
+      "case": "unrelated_change",
+      "version": "v003",
+      "candidate_source": "DEVELOPER_REVISION",
+      "verdict": "PASS",
+      "failed_conditions": [],
+      "report": "docs/compare/onboarding-dotenv/unrelated_change-review.json",
+      "pytest": {
+        "collected": 117,
+        "executed": 117,
+        "passed": 117,
+        "failed": 0,
+        "skipped": 0,
+        "required_tests_passed": true
+      },
+      "upstream_tests": 114,
+      "adapter_tests": 3,
+      "source_sha256": "f31c86d4d249a8a3b634e563038325f4f5d5b087ef30e2dec2e64445924cda85",
+      "project_tree_sha256": "cb486f7b26c0eaad724d1efdcd70a9d2d4bcfac1cbec3958974a6c0b4dc9473c",
+      "observations": {
+        "classification": "NO_OBSERVED_VIOLATION",
+        "outer_sandbox_blocked": false,
+        "incomplete": false
+      }
+    }
+  ],
+  "exported": {
+    "version": "v003",
+    "candidate_sha256": "f31c86d4d249a8a3b634e563038325f4f5d5b087ef30e2dec2e64445924cda85",
+    "decision": "PENDING",
+    "application": "NOT_APPLIED",
+    "recheck_verdict": "PASS"
+  },
+  "manual_judgement": [
+    "入口、必要测试与目录由开发者声明；系统静态检测不替代人工业务规则",
+    "修复为已保存的人工作品，非本轮 AI 输出；重新引入和无关修改是明确的人工控制"
+  ],
+  "not_covered": [
+    "不是任意开源仓库自动适配或泛化实验",
+    "不覆盖真实凭据、真实云服务或其他 dotenv 功能",
+    "首次浏览器驱动在 v001 PASS 后因 diff 页签隐藏编辑器而停止；保留错误，只续行剩余步骤，未重做已完成检查",
+    "任务操作未单独测量分钟数，time_minutes 为 null，不宣称节时"
+  ],
+  "screenshots": [
+    "docs/compare/onboarding-dotenv/config.png",
+    "docs/compare/onboarding-dotenv/before.png",
+    "docs/compare/onboarding-dotenv/after.png",
+    "docs/compare/onboarding-dotenv/reintroduced_defect.png",
+    "docs/compare/onboarding-dotenv/unrelated_change.png",
+    "docs/compare/onboarding-dotenv/recheck.png"
+  ]
+}
