@@ -57,3 +57,5 @@ docs/bench/evidence-windows/** -text whitespace=-blank-at-eol,cr-at-eol
 experiments/bench-v1/** -text whitespace=-blank-at-eol,cr-at-eol
 # Delivery receipts keep their measured bytes (including Windows JSON newlines).
 docs/delivery/evidence/** -text whitespace=-blank-at-eol,cr-at-eol
+# R4 acceptance receipts preserve exact published bytes and terminal spacing.
+docs/compare/proposal-r4/** -text whitespace=-blank-at-eol,cr-at-eol

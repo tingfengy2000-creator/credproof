@@ -1,0 +1,45 @@
+{
+  "status": "RESPONSE_RECEIVED",
+  "reason": null,
+  "model_requests": 1,
+  "usage": [
+    {
+      "call_id": 1,
+      "usage": {
+        "prompt_eval_count": 3025,
+        "eval_count": 368,
+        "prompt_eval_duration": 410201000,
+        "eval_duration": 2037217000,
+        "total_duration": 11659748548,
+        "load_duration": 9201679106,
+        "done_reason": "stop"
+      },
+      "elapsed_s": 11.664210655
+    }
+  ],
+  "native_tool_calls": 0,
+  "verifications": 0,
+  "active_models": {
+    "models": [
+      {
+        "name": "qwen3-coder:30b",
+        "model": "qwen3-coder:30b",
+        "size": 19441154784,
+        "digest": "06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca",
+        "details": {
+          "parent_model": "",
+          "format": "gguf",
+          "family": "qwen3moe",
+          "families": [
+            "qwen3moe"
+          ],
+          "parameter_size": "30.5B",
+          "quantization_level": "Q4_K_M"
+        },
+        "expires_at": "2319-01-24T14:49:33.70888943Z",
+        "size_vram": 19441154784,
+        "context_length": 16384
+      }
+    ]
+  }
+}

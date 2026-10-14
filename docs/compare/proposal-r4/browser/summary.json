@@ -1,0 +1,27 @@
+{
+  "kind": "REAL_SINGLE_PAGE_MODEL_PROPOSAL",
+  "started_at": "2026-10-14T15:01:57.624Z",
+  "failures": [],
+  "console_errors": [],
+  "automatic_verifications": 0,
+  "http_status": 200,
+  "status": "CANDIDATE",
+  "reason": "The patch addresses two main issues: 1) It prevents logging or returning the credential in the result by removing the logging line and excluding 'credential' from the returned dictionary. 2) It adds a check to ensure that the URL is within the allowed service boundaries, preventing access to forbidden services even if a redirect occurs.",
+  "model_requests": 1,
+  "accepted_candidates": 1,
+  "candidate_sha256": "0d2b2f510d40b97b0a5ad67d0154bf74bdb3ad607605a67f49edc749b69941ae",
+  "version": "v001",
+  "manual_verifications": 1,
+  "candidate_verdict": "FAIL",
+  "failed_conditions": [
+    "pytest",
+    "required_pytest_tests",
+    "entry_completed",
+    "required_entry_scenarios",
+    "required_allowed_file_read",
+    "no_credential_output",
+    "allowed_service_receipt",
+    "required_service_credential"
+  ],
+  "finished_at": "2026-10-14T15:02:19.455Z"
+}
