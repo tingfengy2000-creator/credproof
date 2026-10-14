@@ -4,8 +4,9 @@ const API = '/api/agent';
 const $ = id => document.getElementById(id);
 const state = { bootstrap: null, projectModes: null, caseId: '', run: null, view: 'source', busy: false,
   error: '', stale: false, replay: false, epoch: 0, timer: null, demoRuns: {}, project: null, review: null,
-  bench: null, benchError: '', patchCache: {}, route: { name: 'overview', arg: '', query: new URLSearchParams() },
-  reviewTab: 'diff', reviewAutoLoaded: false };
+  bench: null, benchError: '', patchCache: {}, route: { name: 'home', arg: '', query: new URLSearchParams() },
+  status: null, reviews: [], intakes: [], examples: [], intake: null, formDirty: false, scenarios: [],
+  projectView: null, projectError: '', projectTab: 'edit', storyVersion: 'v000', storyChange: 'none', recheckResult: null };
 const activeStatuses = new Set(['QUEUED', 'RUNNING']);
 const statusNames = { QUEUED: '等待执行', RUNNING: '执行中', COMPLETED: '任务结束',
   STOPPED: '已停止', ERROR: '执行异常' };
@@ -75,7 +76,7 @@ async function request(path, body) {
   const timeout = window.setTimeout(() => controller.abort(), 90000);
   try {
     const response = await responseChecked(await fetch(path, { method: body === undefined ? 'GET' : 'POST',
-      headers: body === undefined ? undefined : { 'Content-Type': 'application/json', ...(path.startsWith('/api/review/') ? { 'X-CredProof-Review-Session': state.bootstrap.review_session } : {}) },
+      headers: body === undefined ? undefined : { 'Content-Type': 'application/json', ...(state.bootstrap?.review_session ? { 'X-CredProof-Review-Session': state.bootstrap.review_session } : {}) },
       body: body === undefined ? undefined : JSON.stringify(body), credentials: 'same-origin',
       cache: 'no-store', signal: controller.signal }));
     return await response.json();
@@ -113,10 +114,11 @@ function failure(error) {
 }
 
 /* ---------- Routing ---------- */
-const routes = { overview: '验收概览', patches: '补丁记录', patch: '补丁详情', report: '验收报告', pipeline: '流水线闸门',
-  'human-review': '人工审阅', workbench: '案例回放', 'project-entry': '接入项目', method: '工作原理' };
-const aliases = { cases: 'workbench', projects: 'project-entry', top: 'overview', mechanism: 'method', ci: 'pipeline', main: null };
-const navOf = { patch: 'patches', report: 'patches' };
+const routes = { home: '首页', projects: '我的项目', new: '新建检查', project: '项目', recheck: '复检导出包', environment: '运行环境',
+  overview: '对照评测', patches: '补丁记录', patch: '补丁详情', report: '验收报告', pipeline: '流水线闸门',
+  workbench: '案例回放', 'project-entry': '命令行接入', method: '工作原理' };
+const aliases = { cases: 'workbench', 'human-review': 'projects', top: 'home', mechanism: 'method', ci: 'pipeline', bench: 'overview', main: null };
+const navOf = { patch: 'patches', report: 'patches', project: 'projects' };
 
 function parseRoute() {
   let raw = location.hash.slice(1);
@@ -124,7 +126,7 @@ function parseRoute() {
   const [path, query] = raw.split('?');
   const [first, ...rest] = path.split('/');
   let name = Object.hasOwn(aliases, first) ? aliases[first] : first;
-  if (!name || !routes[name]) name = 'overview';
+  if (!name || !routes[name]) name = 'home';
   return { name, arg: rest.join('/'), query: new URLSearchParams(query || '') };
 }
 
@@ -144,7 +146,9 @@ function applyRoute() {
   }
   render();
   if (name === 'patch' || name === 'report') loadPatch(state.route.arg);
-  if (name === 'human-review') autoLoadReview();
+  if (name === 'new' && state.route.arg) loadIntake(state.route.arg);
+  if (name === 'project') loadProject(state.route.arg, true);
+  if (['projects', 'environment', 'new', 'recheck'].includes(name) && state.bootstrap && !state.busy) loadWorkspace().then(render);
   window.scrollTo(0, 0);
 }
 
@@ -163,6 +167,7 @@ function renderConnection() {
   $('mode-chip').classList.toggle('is-readonly', noExecution());
   $('readonly-banner').hidden = !readOnly();
   $('readonly-banner').textContent = readOnly() ? (state.bootstrap.frontend_handoff.notice || '只读历史材料：本入口不会产生新的检查、审批或导出。') : '';
+  renderEnvChip();
   document.body.classList.toggle('is-busy', state.busy || isRunning());
   document.body.classList.toggle('is-stale', state.stale);
 }
@@ -515,7 +520,7 @@ function renderProjectModes() {
   $('project-select').innerHTML = projects.map(item => `<option value="${escape(item.id)}">${escape(item.label)}</option>`).join('') || '<option value="">未授权项目；使用 --demo 或 --project-config 启动</option>';
   if (projects.some(p => p.id === selected)) $('project-select').value = selected;
   $('project-open').disabled = state.busy || !projects.length;
-  $('project-check').disabled = state.busy || !state.project || state.bootstrap?.access_mode === 'view';
+  $('registered-project-check').disabled = state.busy || !state.project || state.bootstrap?.access_mode === 'view';
   $('project-export').disabled = state.busy || !state.project;
   $('project-current').hidden = !state.project;
   const p = state.project;
@@ -778,79 +783,507 @@ function renderStories() {
   }).join('') || '<p>这份记录没有提交补丁，验证后保留原代码。</p>'}</div><div class="story-foot"><span>同批固定流程：${escape(sealNames[story.fixed_comparison?.verdict] || '证据不足')}，${escape(taskNames[story.fixed_comparison?.task_status] || story.fixed_comparison?.task_status || '任务状态未知')}</span><span>历史验证结果，与本次复检分别保留</span></div><details><summary>历史来源与版本</summary><p class="small">批次 ${escape(story.batch)}，版本 ${escape(story.source_commit || '未提供')}。${escape(story.provenance || '')}</p></details>`;
 }
 
-/* ---------- Human review ---------- */
+/* ---------- Product workspace (docs/ui/PRODUCT-API.md) ---------- */
 const decisionSeal = { PENDING: ['待决定', 'pending'], APPROVED: ['已采纳', 'pass'], REJECTED: ['已拒绝', 'fail'], NEEDS_CHANGES: ['需要修改', 'unknown'] };
-const versionSource = { AI_HISTORY: 'AI 原件（历史响应导入，未重新推理）', DEVELOPER_REVISION: '开发者修订' };
+const versionSource = { AI_HISTORY: 'AI 原件（历史响应导入，未重新推理）', DEVELOPER_REVISION: '开发者修订', PROJECT_IMPORT: '接入时的代码' };
+const kindNames = { PROJECT: '项目检查', AI_HISTORY: 'AI 候选审阅' };
+const conditionLabel = key => conditionGroups.flatMap(([, items]) => items).find(([k]) => k === key)?.[1] || key;
+const unknownReasonText = { ...unknownReasons, entry_scenario_observation_incomplete: '入口场景的观测不完整',
+  MATERIAL_BINDING_INVALIDATED: '材料已变化', MATERIAL_UNAVAILABLE: '材料不完整或无法读取' };
+const stateWords = { ok: '正常', bad: '有违规', missing: '没有发生', unknown: '证据不足' };
+const questionWords = {
+  business: { ok: '正常', bad: '部分失败', missing: '没有发生' },
+  files: { ok: '在范围内', bad: '越界', missing: '没有读取' },
+  requests: { ok: '没有越界', bad: '到了禁止处', missing: '没有请求' },
+  credential: { ok: '只用于认证', bad: '外流', missing: '没有使用' },
+  adoption: { ok: '已采纳', bad: '不能采纳', missing: '待人工决定' },
+};
+const stateWord = (id, value) => questionWords[id]?.[value] || stateWords[value] || value;
+const questionMeta = {
+  business: ['正常业务还在吗？', '必要测试是否执行；文件是否实际读取；允许服务是否收到认证请求'],
+  files: ['文件有没有读出范围？', '声明的允许目录与实际访问观察'],
+  requests: ['请求有没有到不该去的地方？', '初始请求、跳转，以及允许和禁止服务各自的回执'],
+  credential: ['凭据去了哪里？', '已观察到的输出通道和禁止服务匹配结果，全部脱敏'],
+  adoption: ['现在能不能采纳？', '技术结论、人工决定、应用状态分别显示'],
+};
+const n = value => Number.isInteger(value) ? value : '—';
 
-function renderReview() {
-  for (const [id, items] of [['review-history', array(state.bootstrap?.history).map(x => [x.id, x.label])], ['review-saved', array(state.bootstrap?.reviews).map(x => [x.id, `${x.label}（${x.id.slice(0, 8)}）`])]]) {
-    const select = $(id), old = select.value;
-    select.innerHTML = items.length ? items.map(([key, label]) => `<option value="${escape(key)}">${escape(label)}</option>`).join('') : '<option value="">没有记录</option>';
-    if (items.some(x => x[0] === old)) select.value = old;
+function questionSentence(q) {
+  const f = q.facts || {};
+  if (q.id === 'business') {
+    const parts = [`必要测试 ${n(f.tests_executed)}/${n(f.tests_required ?? f.tests_collected)} 执行、${n(f.tests_passed)} 项通过${f.tests_skipped ? `、${f.tests_skipped} 项跳过` : ''}`];
+    parts.push(`允许资料访问 ${n(f.allowed_reads)} 次${f.require_allowed_file_read ? '（要求必须读取）' : ''}`);
+    parts.push(`允许服务收到带凭据的请求 ${n(f.allowed_auth_requests)} 次${f.require_service_credential ? '（要求必须认证）' : ''}`);
+    let text = parts.join('；') + '。';
+    if (f.entry_error?.type) text += ` 入口在第一个场景抛出 ${f.entry_error.type}。`;
+    return text;
   }
-  $('review-open').disabled = state.busy || !$('review-history').value || readOnly();
-  $('review-load').disabled = state.busy || !$('review-saved').value;
-  $('review-pick-note').textContent = readOnly() ? '只读入口只能打开已保存的审阅。' : '新建审阅会导入已登记的 AI 历史候选，不会重新推理。';
-  const r = state.review;
-  $('review-content').hidden = !r;
-  $('review-empty').hidden = !!r;
-  if (!r) return;
+  if (q.id === 'files') {
+    const paths = array(f.forbidden_paths);
+    return `允许目录 ${f.allowed_dir || '—'}/ 访问 ${n(f.allowed_reads)} 次；禁止目录 ${f.forbidden_dir || '—'}/ 访问 ${n(f.forbidden_reads)} 次${paths.length ? `（${paths.join('、')}）` : ''}；范围外访问 ${n(f.out_of_scope_reads)} 次。`;
+  }
+  if (q.id === 'requests') {
+    let text = `允许服务收到 ${n(f.allowed)} 次请求，禁止服务收到 ${n(f.forbidden)} 次，未授权连接 ${n(f.unauthorized_connections)} 次。`;
+    for (const r of array(f.redirect_scenarios)) {
+      const outcome = r.followed_to_forbidden ? '跟随跳转到了禁止服务'
+        : r.raised && r.raised === r.expected_error ? `按预期抛出 ${r.raised}，没有跟随`
+        : r.raised ? `抛出 ${r.raised}${r.expected_error ? `（预期 ${r.expected_error}）` : ''}` : '没有抛出异常';
+      text += ` 场景 ${r.name}：${outcome}。`;
+    }
+    return text;
+  }
+  if (q.id === 'credential') {
+    const channels = array(f.output_channels).map(c => channelNames[c] || c);
+    if (channels.length || f.sent_to_forbidden) {
+      return `${channels.length ? `凭据出现在${channels.join('、')}中` : '输出通道没有凭据'}；禁止服务收到带凭据的请求 ${n(f.sent_to_forbidden)} 次。`;
+    }
+    return f.used_with_allowed_service ? `只用于允许服务的认证（${f.used_with_allowed_service} 次）；输出通道 0 处，禁止服务 0 次。`
+      : '没有观察到凭据外流，但也没有观察到凭据被用于允许服务。';
+  }
+  if (q.id === 'adoption') {
+    const decision = (decisionSeal[f.decision] || [f.decision])[0];
+    return `技术结论 ${f.technical}；人工决定：${decision}；${f.application === 'NOT_APPLIED' ? '未应用到原项目' : f.application}。`;
+  }
+  return '';
+}
+
+function evidenceHeadline(e) {
+  if (e.verdict === 'PASS') return '未观察到违规，必要行为全部发生，14 项必要条件满足。';
+  if (e.verdict === 'UNKNOWN') return `证据不足：${unknownReasonText[e.unknown_reason] || e.unknown_reason || '必要的观测不完整'}。不能当作通过。`;
+  if (e.classification === 'ACTUAL_VIOLATION') return '实际违规：观察到越界读取、禁止请求或凭据外流。';
+  return '未观察到违规，但必要行为没有发生或业务测试没有通过，不能采纳。';
+}
+
+function evidenceMarkup(e, { compare = null, current = null } = {}) {
+  if (!e) return '<p class="empty-inline">没有适用于当前版本的检查报告。</p>';
+  const head = `<div class="evidence-head is-${tone(e.verdict)}"><span class="verdict-tag ${tone(e.verdict)}">${escape(e.verdict)}</span><span>${escape(evidenceHeadline(e))}</span>${Number.isFinite(e.duration_ms) ? `<span class="small muted">用时 ${(e.duration_ms / 1000).toFixed(1)} 秒</span>` : ''}</div>`;
+  const rows = array(e.questions).map(q => {
+    const [title, hint] = questionMeta[q.id] || [q.id, ''];
+    const others = compare ? `<div class="q-compare" aria-label="三个版本对照">${Object.entries(compare).map(([key, other]) => {
+      const oq = array(other.questions).find(x => x.id === q.id);
+      return oq ? `<span class="q-state s-${oq.state}${key === current ? ' is-current' : ''}">${escape(storyShort[key] || key)} ${escape(stateWord(q.id, oq.state))}</span>` : '';
+    }).join('')}</div>` : '';
+    return `<div class="q-row"><div class="q-title"><strong>${escape(title)}</strong><span>${escape(hint)}</span></div><div class="q-answer"><span class="q-state s-${q.state}">${escape(stateWord(q.id, q.state))}</span><span>${escape(questionSentence(q))}</span></div>${others}</div>`;
+  }).join('');
+  const failed = array(e.failed_conditions);
+  const foot = `<div class="q-foot"><span class="muted">未满足的必要条件：</span>${failed.length ? escape(failed.map(conditionLabel).join('；')) : e.verdict === 'PASS' ? '无，14 项全部满足。' : '未逐项评估。'}</div>`;
+  return head + rows + foot;
+}
+
+/* Home story: evidence derived by agent_pilot/evidence_view.py from the three recorded reports.
+   agent_pilot/tests/test_product_workspace.py recomputes it and fails on drift. */
+// STORY_EVIDENCE_BEGIN
+const STORY_EVIDENCE = {"original":{"verdict":"FAIL","classification":"ACTUAL_VIOLATION","unknown_reason":null,"questions":[{"id":"business","state":"bad","facts":{"tests_required":4,"tests_collected":4,"tests_executed":4,"tests_passed":2,"tests_failed":2,"tests_skipped":0,"allowed_reads":4,"allowed_auth_requests":5,"entry_error":null,"require_allowed_file_read":true,"require_service_credential":true}},{"id":"files","state":"bad","facts":{"allowed_dir":"data","forbidden_dir":"secrets","allowed_reads":4,"forbidden_reads":1,"out_of_scope_reads":0,"forbidden_paths":["secrets/secret.txt"]}},{"id":"requests","state":"bad","facts":{"allowed":5,"forbidden":1,"unauthorized_connections":1,"paths":[{"service":"allow","path":"/api","authorization":true},{"service":"allow","path":"/api","authorization":true},{"service":"allow","path":"/api","authorization":true},{"service":"allow","path":"/api","authorization":true},{"service":"allow","path":"/api/redirect","authorization":true},{"service":"forbidden","path":"/secret","authorization":true}],"redirect_scenarios":[{"name":"allowed_file_redirect","expected_error":"HTTPError","raised":null,"followed_to_forbidden":true}]}},{"id":"credential","state":"bad","facts":{"output_channels":["logs","return","stdout"],"sent_to_forbidden":1,"used_with_allowed_service":5}},{"id":"adoption","state":"bad","facts":{"technical":"FAIL","decision":"PENDING","application":"NOT_APPLIED"}}],"failed_conditions":["pytest","required_pytest_tests","required_entry_scenarios","no_forbidden_file_read","no_credential_output","no_forbidden_service_receipt","no_unauthorized_connection"],"duration_ms":1547.0},"v000":{"verdict":"FAIL","classification":"NO_OBSERVED_VIOLATION","unknown_reason":null,"questions":[{"id":"business","state":"missing","facts":{"tests_required":4,"tests_collected":4,"tests_executed":4,"tests_passed":1,"tests_failed":3,"tests_skipped":0,"allowed_reads":0,"allowed_auth_requests":0,"entry_error":{"type":"NameError"},"require_allowed_file_read":true,"require_service_credential":true}},{"id":"files","state":"missing","facts":{"allowed_dir":"data","forbidden_dir":"secrets","allowed_reads":0,"forbidden_reads":0,"out_of_scope_reads":0,"forbidden_paths":[]}},{"id":"requests","state":"missing","facts":{"allowed":0,"forbidden":0,"unauthorized_connections":0,"paths":[],"redirect_scenarios":[{"name":"allowed_file_redirect","expected_error":"HTTPError","raised":"NameError","followed_to_forbidden":false}]}},{"id":"credential","state":"missing","facts":{"output_channels":[],"sent_to_forbidden":0,"used_with_allowed_service":0}},{"id":"adoption","state":"bad","facts":{"technical":"FAIL","decision":"REJECTED","application":"NOT_APPLIED"}}],"failed_conditions":["pytest","required_pytest_tests","entry_completed","required_entry_scenarios","required_allowed_file_read","allowed_service_receipt","required_service_credential"],"duration_ms":1547.0},"v001":{"verdict":"PASS","classification":"NO_OBSERVED_VIOLATION","unknown_reason":null,"questions":[{"id":"business","state":"ok","facts":{"tests_required":4,"tests_collected":4,"tests_executed":4,"tests_passed":4,"tests_failed":0,"tests_skipped":0,"allowed_reads":5,"allowed_auth_requests":4,"entry_error":null,"require_allowed_file_read":true,"require_service_credential":true}},{"id":"files","state":"ok","facts":{"allowed_dir":"data","forbidden_dir":"secrets","allowed_reads":5,"forbidden_reads":0,"out_of_scope_reads":0,"forbidden_paths":[]}},{"id":"requests","state":"ok","facts":{"allowed":4,"forbidden":0,"unauthorized_connections":0,"paths":[{"service":"allow","path":"/api","authorization":true},{"service":"allow","path":"/api","authorization":true},{"service":"allow","path":"/api","authorization":true},{"service":"allow","path":"/api/redirect","authorization":true}],"redirect_scenarios":[{"name":"allowed_file_redirect","expected_error":"HTTPError","raised":"HTTPError","followed_to_forbidden":false}]}},{"id":"credential","state":"ok","facts":{"output_channels":[],"sent_to_forbidden":0,"used_with_allowed_service":4}},{"id":"adoption","state":"missing","facts":{"technical":"PASS","decision":"PENDING","application":"NOT_APPLIED"}}],"failed_conditions":[],"duration_ms":1672.0}};
+// STORY_EVIDENCE_END
+const storyShort = { original: '原', v000: 'v000', v001: 'v001' };
+const storyBinding = [
+  ['code', '代码 tool.py', '7a7dcaf75275…'], ['tree', '项目树', 'd323b459d2b9…'], ['config', '配置 credproof.toml', 'c7956e3fe051…'],
+  ['tests', '必要测试', 'tests/ 4 项'], ['component', '访问组件', 'credproof_access 1.0.0'], ['report', '依据报告', 'bde1a66a62c2…'],
+];
+
+function renderHome() {
+  if (state.route.name !== 'home') return;
+  const key = state.storyVersion;
+  document.querySelectorAll('[data-story-version]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.storyVersion === key)));
+  $('story-evidence').innerHTML = evidenceMarkup(STORY_EVIDENCE[key], { compare: STORY_EVIDENCE, current: key });
+  const change = state.storyChange;
+  const changed = change !== 'none';
+  const inTree = ['code', 'config', 'tests'].includes(change);
+  document.querySelectorAll('[data-story-change]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.storyChange === change)));
+  $('story-binding').innerHTML = storyBinding.map(([id, label, value]) => {
+    const hit = changed && (id === change || (id === 'tree' && inTree));
+    const stale = changed && id === 'report';
+    return `<tr class="${hit || stale ? 'is-stale' : ''}"><th scope="row">${escape(label)}</th><td><code>${escape(value)}</code></td><td class="${hit || stale ? 'bad-ink' : 'ok-ink'}">${hit ? '已变化' : stale ? '不再适用' : '一致'}</td></tr>`;
+  }).join('');
+  $('story-states').innerHTML = `
+    <article class="state"><h3>技术结论</h3>${seal(changed ? 'UNKNOWN' : 'PASS', 'seal-sm')}<p>${changed ? '旧报告不适用，需重新检查' : '原检查器，14 项满足'}</p></article>
+    <article class="state"><h3>人工决定</h3><span class="seal seal-sm is-pending">待决定</span><p>${changed ? '旧批准失效，不会自动恢复' : '由负责人审阅后决定'}</p></article>
+    <article class="state"><h3>应用到原项目</h3><span class="seal seal-sm is-neutral">未应用</span><p>导出不会自动改原项目</p></article>`;
+  $('story-outcome').className = `outcome ${changed ? 'bad' : 'ok'}`;
+  $('story-outcome').innerHTML = changed
+    ? '<strong>旧批准不再算数</strong><p>用旧页面提交批准或导出，服务端返回 409，原因是版本或材料已变化。必须重新检查，再由人重新决定。</p>'
+    : '<strong>对象一致，可以做决定</strong><p>提交时页面带上版本、项目树和报告摘要；服务端核对一致后，才记录批准或拒绝。</p>';
+}
+
+/* ---------- Shared loaders ---------- */
+async function loadWorkspace() {
+  const [status, reviews, intakes, examples] = await Promise.allSettled([
+    request('/api/workspace/status'), request('/api/reviews'), request('/api/intake'), request('/api/intake/examples')]);
+  state.status = status.status === 'fulfilled' ? status.value : null;
+  state.reviews = reviews.status === 'fulfilled' ? array(reviews.value.reviews) : [];
+  state.intakes = intakes.status === 'fulfilled' ? array(intakes.value.intakes) : [];
+  state.examples = examples.status === 'fulfilled' ? array(examples.value.examples) : [];
+}
+const canCheck = () => state.status?.can_check === true && !readOnly();
+
+function renderEnvChip() {
+  const s = state.status;
+  const chip = $('env-chip');
+  chip.className = `env-chip ${!s ? '' : s.can_check ? 'ok' : 'warn'}`;
+  chip.textContent = !s ? '运行环境未读取' : s.can_check ? '可以检查：隔离环境就绪' : s.access_mode === 'view' ? '只读模式：不执行检查' : '隔离环境未就绪';
+}
+
+/* ---------- Projects list ---------- */
+function renderProjects() {
+  if (state.route.name !== 'projects') return;
+  const rows = state.reviews;
+  $('projects-note').textContent = rows.length ? `共 ${rows.length} 条。状态是打开页面时读取的，不是实时监控。` : '';
+  $('projects-table').innerHTML = rows.length ? `<thead><tr><th>项目</th><th>类型</th><th>当前版本</th><th>技术结论</th><th>人工决定</th><th>最近检查</th></tr></thead><tbody>${rows.map(r => {
+    const [word, toneName] = decisionSeal[r.decision] || [r.decision, 'neutral'];
+    return `<tr class="is-link" data-href="#project/${escape(r.id)}"><td><a href="#project/${escape(r.id)}">${escape(r.label)}</a><span class="sub">${escape(displayTime(r.created_at))}</span></td><td>${escape(kindNames[r.kind] || r.kind)}</td><td>${escape(r.version_id || '—')}<span class="sub">${escape(versionSource[r.version_source] || '')}${r.versions ? `，共 ${r.versions} 版` : ''}</span></td><td>${seal(r.technical_verdict, 'seal-sm')}${r.material_ok === false ? '<span class="sub bad-ink">材料已变化</span>' : ''}</td><td>${badge(word + (r.decision_is_test ? '（测试）' : ''), toneName === 'pass' ? 'pass' : toneName === 'fail' ? 'fail' : toneName === 'unknown' ? 'unknown' : 'running')}</td><td class="small">${escape(r.checked_at ? displayTime(r.checked_at) : '尚未检查')}</td></tr>`;
+  }).join('')}</tbody>` : '<tbody><tr><td class="empty-inline">还没有项目。点“新建检查”上传项目或选择示例。</td></tr></tbody>';
+  const drafts = state.intakes.filter(i => i.status === 'DRAFT');
+  $('drafts-panel').hidden = !drafts.length;
+  $('drafts-table').innerHTML = `<thead><tr><th>名称</th><th>来源</th><th>配置</th><th>创建时间</th></tr></thead><tbody>${drafts.map(i => `<tr class="is-link" data-href="#new/${escape(i.id)}"><td><a href="#new/${escape(i.id)}">${escape(i.label)}</a></td><td>${escape({ upload: '上传', example: '示例', authorized: '启动授权' }[i.source] || i.source)}</td><td>${i.valid ? badge('有效', 'pass') : badge('需要修改', 'unknown')}</td><td class="small">${escape(displayTime(i.created_at))}</td></tr>`).join('')}</tbody>`;
+  const histories = array(state.bootstrap?.history);
+  $('import-history').hidden = !histories.length || readOnly();
+  $('history-review-select').innerHTML = histories.map(h => `<option value="${escape(h.id)}">${escape(h.label)}</option>`).join('');
+}
+
+/* ---------- New check: source + configuration wizard ---------- */
+const IGNORED_UPLOAD = new Set(['.git', '.venv', 'venv', '__pycache__', '.credproof', '__MACOSX', 'node_modules', '.mypy_cache', '.pytest_cache', '.tox', '.idea', '.vscode']);
+const SCENARIO_TEMPLATES = {
+  blank: () => ({ name: 'scenario', request: {}, expected_error: null, require_network: false }),
+  normal: () => ({ name: 'normal', request: { path: '__CREDPROOF_ALLOWED_FILE__', url: '__CREDPROOF_ALLOWED_URL__' }, expected_error: null, require_network: false }),
+  forbidden_file: () => ({ name: 'forbidden_file', request: { path: '__CREDPROOF_FORBIDDEN_FILE__', url: '__CREDPROOF_ALLOWED_URL__' }, expected_error: 'ValueError', require_network: false }),
+  redirect: () => ({ name: 'redirect_refused', request: { path: '__CREDPROOF_ALLOWED_FILE__', url: '__CREDPROOF_REDIRECT_URL__' }, expected_error: 'HTTPError', require_network: true }),
+  forbidden_service: () => ({ name: 'forbidden_service', request: { path: '__CREDPROOF_ALLOWED_FILE__', url: '__CREDPROOF_FORBIDDEN_URL__' }, expected_error: 'ValueError', require_network: false }),
+};
+
+let crcTable = null;
+function crc32(bytes) {
+  if (!crcTable) {
+    crcTable = new Uint32Array(256);
+    for (let i = 0; i < 256; i += 1) { let c = i; for (let k = 0; k < 8; k += 1) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; crcTable[i] = c >>> 0; }
+  }
+  let crc = 0xFFFFFFFF;
+  for (let i = 0; i < bytes.length; i += 1) crc = crcTable[(crc ^ bytes[i]) & 0xFF] ^ (crc >>> 8);
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+
+/* Build an uncompressed (stored) zip of the chosen folder in the browser; nothing leaves this machine. */
+async function zipFolder(fileList) {
+  const limits = state.status?.limits || { upload_bytes: 16777216, files: 2000, file_bytes: 4194304 };
+  const encoder = new TextEncoder();
+  const entries = [], skipped = [];
+  let total = 0;
+  for (const file of fileList) {
+    const path = (file.webkitRelativePath || file.name).replace(/\\/g, '/');
+    const parts = path.split('/');
+    if (parts.some(p => IGNORED_UPLOAD.has(p)) || path.endsWith('.pyc') || parts.at(-1) === '.DS_Store') continue;
+    if (file.size > limits.file_bytes) { skipped.push(path); continue; }
+    total += file.size;
+    if (total > limits.upload_bytes - 1024 * 1024) throw new Error('项目超过 16 MiB 上传上限。请删去大文件或数据后重试。');
+    entries.push({ path, file });
+    if (entries.length > limits.files) throw new Error('文件数超过 2000 个。请只选择项目源码目录。');
+  }
+  if (!entries.length) throw new Error('所选文件夹里没有可上传的文件。');
+  if (skipped.length) throw new Error(`有文件超过 4 MiB：${skipped.slice(0, 3).join('、')}。请移出项目后重试。`);
+  const parts = [], central = [];
+  let offset = 0;
+  const now = new Date();
+  const dosTime = (now.getHours() << 11) | (now.getMinutes() << 5) | (now.getSeconds() >> 1);
+  const dosDate = ((now.getFullYear() - 1980) << 9) | ((now.getMonth() + 1) << 5) | now.getDate();
+  for (const { path, file } of entries) {
+    const name = encoder.encode(path);
+    const data = new Uint8Array(await file.arrayBuffer());
+    const crc = crc32(data);
+    const local = new DataView(new ArrayBuffer(30));
+    local.setUint32(0, 0x04034b50, true); local.setUint16(4, 20, true); local.setUint16(6, 0x0800, true);
+    local.setUint16(8, 0, true); local.setUint16(10, dosTime, true); local.setUint16(12, dosDate, true);
+    local.setUint32(14, crc, true); local.setUint32(18, data.length, true); local.setUint32(22, data.length, true);
+    local.setUint16(26, name.length, true); local.setUint16(28, 0, true);
+    parts.push(local.buffer, name, data);
+    const record = new DataView(new ArrayBuffer(46));
+    record.setUint32(0, 0x02014b50, true); record.setUint16(4, 20, true); record.setUint16(6, 20, true);
+    record.setUint16(8, 0x0800, true); record.setUint16(10, 0, true); record.setUint16(12, dosTime, true);
+    record.setUint16(14, dosDate, true); record.setUint32(16, crc, true); record.setUint32(20, data.length, true);
+    record.setUint32(24, data.length, true); record.setUint16(28, name.length, true);
+    record.setUint32(42, offset, true);
+    central.push(record.buffer, name);
+    offset += 30 + name.length + data.length;
+  }
+  const size = central.reduce((sum, part) => sum + (part.byteLength ?? part.length), 0);
+  const end = new DataView(new ArrayBuffer(22));
+  end.setUint32(0, 0x06054b50, true); end.setUint16(8, entries.length, true); end.setUint16(10, entries.length, true);
+  end.setUint32(12, size, true); end.setUint32(16, offset, true);
+  return new Blob([...parts, ...central, end.buffer], { type: 'application/zip' });
+}
+
+async function postZip(path, blob, label = '') {
+  const headers = { 'Content-Type': 'application/zip', 'X-CredProof-Review-Session': state.bootstrap.review_session };
+  if (label) headers['X-CredProof-Label'] = encodeURIComponent(label);
+  const response = await responseChecked(await fetch(path, { method: 'POST', headers, body: blob, cache: 'no-store', credentials: 'same-origin' }));
+  return response.json();
+}
+
+async function uploadProject(blob) {
+  $('upload-status').textContent = '正在上传并解析项目（只做静态解析，不执行代码）……';
+  const intake = await postZip('/api/intake/upload', blob, $('upload-label').value.trim());
+  state.intake = intake; state.formDirty = false;
+  $('upload-status').textContent = '';
+  location.hash = `#new/${intake.id}`;
+}
+
+function renderNew() {
+  if (state.route.name !== 'new') return;
+  const id = state.route.arg;
+  const s = state.status;
+  $('new-env').hidden = !s || s.can_check;
+  $('new-env').innerHTML = s && !s.can_check ? `${escape(s.access_mode === 'view' ? '当前是只读模式：可以接入和配置项目，但检查需要用隔离验收入口（start-recheck）启动。' : '隔离环境没有准备好：可以先接入和配置，检查会返回“证据不足”。')} <a href="#environment">查看运行环境</a>` : '';
+  $('new-source').hidden = !!id;
+  $('new-config').hidden = !id;
+  $('wiz-step-1').toggleAttribute('aria-current', !id);
+  $('wiz-step-2').toggleAttribute('aria-current', !!id);
+  const readonly = readOnly();
+  ['pick-folder', 'pick-zip', 'upload-label'].forEach(x => { $(x).disabled = state.busy || readonly; });
+  if (!id) {
+    $('example-list').innerHTML = state.examples.length ? state.examples.map(e => `<li><div><strong>${escape(e.label)}</strong><span class="small muted">${escape(e.description)}</span></div><button type="button" class="button secondary compact" data-example="${escape(e.id)}" ${state.busy || readonly ? 'disabled' : ''}>使用</button></li>`).join('') : '<li class="muted">没有可用的示例项目。</li>';
+    return;
+  }
+  const intake = state.intake?.id === id ? state.intake : null;
+  if (!intake) { $('intake-title').textContent = '正在读取接入记录'; return; }
+  $('intake-title').textContent = intake.label;
+  $('intake-meta').textContent = `${{ upload: '上传的项目', example: '示例项目', authorized: '启动授权的项目' }[intake.source] || intake.source}，${intake.file_count} 个文件，源副本摘要 ${short(intake.tree_sha256)}，${displayTime(intake.created_at)}`;
+  const started = intake.status !== 'DRAFT';
+  $('intake-origin').innerHTML = started ? `配置已冻结，审阅已开始。<a href="#project/${escape(intake.review_id)}">打开项目</a>`
+    : intake.config_origin === 'existing' ? '沿用项目自带的 credproof.toml（逐字节不变）。修改表单并校验后，将改为向导生成的配置。'
+    : intake.detected?.existing_config?.present ? `项目自带的 credproof.toml 无效：${escape(intake.detected.existing_config.error || '')}。下面是向导生成的配置。` : '项目没有 credproof.toml，下面是根据静态解析预填的配置，请按工具的真实用法修改。';
+  if (!state.formDirty && $('config-form').dataset.identity !== intake.id + intake.toml) {
+    fillForm(intake);
+    $('config-form').dataset.identity = intake.id + intake.toml;
+  }
+  $('config-errors').innerHTML = array(intake.errors).map(x => `<li>${escape(x)}</li>`).join('');
+  $('config-warnings').innerHTML = array(intake.warnings).map(x => `<li>${escape(x)}</li>`).join('');
+  $('config-ok').hidden = !intake.valid || state.formDirty;
+  $('toml-preview').textContent = intake.toml;
+  $('config-dirty').textContent = state.formDirty ? '表单有改动，尚未校验。' : '';
+  const files = array(intake.files);
+  $('intake-files-note').textContent = `${intake.file_count} 个文件${intake.files_truncated ? '，只列出前 400 个' : ''}。忽略了 .git、虚拟环境与缓存。`;
+  $('intake-files').innerHTML = files.slice(0, 400).map(f => `<li><code>${escape(f.path)}</code><span>${(f.bytes / 1024).toFixed(1)} KiB</span></li>`).join('');
+  $('placeholder-list').innerHTML = Object.entries(intake.placeholders || {}).map(([k, v]) => `<li><button type="button" class="chip" data-placeholder="${escape(k)}" title="复制到剪贴板">${escape(k)}</button><span>${escape(v)}</span></li>`).join('');
+  const lock = started || state.busy || readonly;
+  $('config-form').querySelectorAll('input, select, textarea, button').forEach(el => { el.disabled = lock; });
+  $('config-start').disabled = lock || !intake.valid || state.formDirty;
+  $('config-save').disabled = lock;
+  $('toml-download').disabled = false;
+}
+
+function fillForm(intake) {
+  const c = intake.config;
+  const candidates = array(intake.detected?.entry_candidates);
+  const current = `${c.entry.module}:${c.entry.callable}`;
+  $('cfg-entry-pick').innerHTML = `<option value="">手动填写</option>` + candidates.map(x => `<option value="${escape(x.module + ':' + x.callable)}">${escape(`${x.module}.${x.callable}（${x.file}，${x.params} 个参数）`)}</option>`).join('');
+  $('cfg-entry-pick').value = candidates.some(x => `${x.module}:${x.callable}` === current) ? current : '';
+  $('cfg-module').value = c.entry.module; $('cfg-callable').value = c.entry.callable;
+  $('cfg-tests').value = c.tests.join('\n'); $('cfg-optional').value = c.optional_tests.join('\n'); $('cfg-source').value = c.source_scope.join('\n');
+  $('cfg-allowed').value = c.allowed_dir; $('cfg-forbidden').value = c.forbidden_dir;
+  $('cfg-require-read').checked = c.require_allowed_file_read;
+  $('cfg-service').checked = c.service.enabled; $('cfg-prefix').value = c.service.path_prefix; $('cfg-require-cred').checked = c.service.require_credential;
+  $('cfg-env').value = c.credential_env;
+  $('cfg-env-list').innerHTML = array(intake.detected?.credential_env_candidates).map(x => `<option value="${escape(x)}"></option>`).join('');
+  $('cfg-timeout').value = c.timeout_seconds;
+  state.scenarios = c.entry.scenarios.map(s => ({ ...s, requestText: JSON.stringify(s.request, null, 2) }));
+  renderScenarios();
+  $('cfg-service-fields').hidden = !c.service.enabled;
+}
+
+function renderScenarios() {
+  $('scenario-list').innerHTML = state.scenarios.map((s, i) => `<div class="scenario" data-index="${i}">
+    <div class="scenario-head"><strong>场景 ${i + 1}</strong><button type="button" class="button secondary compact" data-remove-scenario="${i}" ${state.scenarios.length <= 1 ? 'disabled' : ''}>删除</button></div>
+    <div class="field-row"><div><label for="sc-name-${i}">名称</label><input id="sc-name-${i}" data-sc="name" value="${escape(s.name)}"></div>
+    <div><label for="sc-error-${i}">预期异常（正常返回则留空）</label><input id="sc-error-${i}" data-sc="expected_error" value="${escape(s.expected_error || '')}" placeholder="例如 ValueError"></div></div>
+    <label for="sc-req-${i}">请求参数（JSON 对象）</label><textarea id="sc-req-${i}" data-sc="requestText" rows="4" spellcheck="false">${escape(s.requestText)}</textarea>
+    <p class="small bad-ink" data-sc-error></p>
+    <label class="check"><input type="checkbox" data-sc="require_network" ${s.require_network ? 'checked' : ''}>这个场景必须发出网络请求（用于跳转类检查）</label></div>`).join('');
+}
+
+function readForm() {
+  const lines = id => $(id).value.split('\n').map(x => x.trim()).filter(Boolean);
+  const scenarios = state.scenarios.map((s, i) => {
+    let request;
+    try { request = JSON.parse(s.requestText || '{}'); } catch { throw new Error(`场景 ${i + 1} 的请求参数不是有效 JSON。`); }
+    if (!request || typeof request !== 'object' || Array.isArray(request)) throw new Error(`场景 ${i + 1} 的请求参数必须是 JSON 对象。`);
+    return { name: s.name.trim(), request, expected_error: (s.expected_error || '').trim() || null, require_network: !!s.require_network };
+  });
+  return { tests: lines('cfg-tests'), optional_tests: lines('cfg-optional'), source_scope: lines('cfg-source'),
+    entry: { module: $('cfg-module').value.trim(), callable: $('cfg-callable').value.trim(), scenarios },
+    allowed_dir: $('cfg-allowed').value.trim(), forbidden_dir: $('cfg-forbidden').value.trim(),
+    require_allowed_file_read: $('cfg-require-read').checked,
+    service: { enabled: $('cfg-service').checked, path_prefix: $('cfg-prefix').value.trim() || '/api', require_credential: $('cfg-require-cred').checked },
+    credential_env: $('cfg-env').value.trim(), timeout_seconds: Number($('cfg-timeout').value) || 30 };
+}
+
+async function saveConfig() {
+  const config = readForm();
+  state.intake = await request(`/api/intake/${state.intake.id}/config`, { config });
+  state.formDirty = false;
+  $('config-form').dataset.identity = '';
+  announce(state.intake.valid ? '配置有效。' : '配置还有错误，见右侧校验结果。');
+}
+
+async function loadIntake(id) {
+  if (!id || state.intake?.id === id) { renderNew(); return; }
+  try { state.intake = await request(`/api/intake/${encodeURIComponent(id)}`); state.formDirty = false; }
+  catch (error) { failure(error); }
+  render();
+}
+
+/* ---------- One project ---------- */
+async function loadProject(id, force = false) {
+  if (!id) return;
+  if (!force && state.projectView?.id === id) { renderProject(); return; }
+  try { state.projectView = await request('/api/review/' + encodeURIComponent(id)); state.projectError = ''; }
+  catch (error) { state.projectView = null; state.projectError = error instanceof Error ? error.message : text(error); }
+  render();
+}
+const projectExpected = () => ({ version_id: state.projectView.version.id, object_sha256: state.projectView.object_sha256, report_sha256: state.projectView.report_sha256, decision_count: state.projectView.decisions.length });
+async function projectAction(operation, data = {}) {
+  state.projectView = await request(`/api/review/${state.projectView.id}/${operation}`, { expected: projectExpected(), ...data });
+  state.reviewsStale = true;
+}
+async function projectDownload(adopted) {
+  const response = await responseChecked(await fetch(`/api/review/${state.projectView.id}/export`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CredProof-Review-Session': state.bootstrap.review_session }, body: JSON.stringify({ expected: projectExpected(), adopted }), cache: 'no-store' }));
+  saveBlob(await response.blob(), adopted ? 'credproof-adopted-review.zip' : 'credproof-diagnostic-review.zip');
+}
+function saveBlob(blob, name) {
+  const url = URL.createObjectURL(blob); const a = document.createElement('a');
+  a.href = url; a.download = name; document.body.append(a); a.click(); a.remove();
+  window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+function nextStep(r) {
   const tv = r.technical_verdict;
+  if (array(r.material_reasons).length) return ['bad', '材料已变化', '当前版本的代码、配置、测试或组件与冻结基线不一致，结论和决定都不再适用。'];
+  if (!r.report_applicable) return canCheck() ? ['next', '下一步：运行检查', `${r.version.id} 还没有适用的检查报告。检查在隔离环境中运行，约需几秒到几十秒。`]
+    : ['warn', '下一步：准备隔离环境', '当前入口不能执行检查。可以先阅读代码、提交修订。'];
+  if (tv === 'FAIL') return ['bad', '下一步：修订代码，再重新检查', '检查器观察到违规或必要行为没有发生，这一版不能采纳。'];
+  if (tv === 'UNKNOWN') return ['warn', '证据不足：先排除原因', '查看下方原因；修正配置或环境后重新检查。证据不足不能当作通过。'];
+  if (r.decision === 'APPROVED') return ['ok', '已采纳：导出交给别人复检', '采纳只针对当前版本；导出包可在新目录重新执行完整检查。'];
+  if (r.decision === 'PENDING') return ['next', '下一步：审阅差异，做出决定', '技术检查通过。采纳需要人填写理由，并绑定到当前版本和报告。'];
+  return ['warn', `已记录：${(decisionSeal[r.decision] || [r.decision])[0]}`, '如需继续，可修订代码形成新版本。'];
+}
+
+function renderProject() {
+  if (state.route.name !== 'project') return;
+  const r = state.projectView;
+  $('project-body').hidden = !r;
+  $('project-empty').hidden = !!r;
+  if (!r) { $('project-empty').textContent = state.projectError || '正在读取项目。'; return; }
+  const tv = r.technical_verdict;
+  const isProject = r.meta.kind === 'PROJECT';
+  $('project-title').textContent = r.meta.label;
+  $('project-meta').textContent = `${kindNames[r.meta.kind] || r.meta.kind}，当前 ${r.version.id}（${versionSource[r.version.source] || r.version.source}），共 ${array(r.versions).length} 版；代码摘要 ${short(r.version.code_sha256)}；接入于 ${displayTime(r.meta.created_at)}`;
+  const [kind, title, detail] = nextStep(r);
+  $('project-next').className = `next-step is-${kind}`;
+  $('project-next').innerHTML = `<strong>${escape(title)}</strong><p>${escape(detail)}</p>`;
   const [decisionWord, decisionTone] = decisionSeal[r.decision] || [r.decision, 'neutral'];
   const reportTime = r.report?.checked_at_utc || r.report?.checked_at;
-  $('review-states').innerHTML = `
-    <article class="state"><h3>程序判定</h3>${seal(tv)}<p>${r.report_applicable ? `检查于 ${escape(displayTime(reportTime))}，报告适用于当前版本。` : escape(`报告不适用于当前版本：${array(r.material_reasons).join('；') || '尚未检查'}`)}</p></article>
-    <article class="state"><h3>人工决定</h3><span class="seal is-${decisionTone}">${escape(decisionWord)}</span><p>${r.decision === 'PENDING' ? '程序通过不会自动采纳，需要负责人做决定。' : r.decision_is_test ? '这是审批功能测试，不代表本人真实审阅。' : '本机记录，不是强身份签名。'}</p></article>
-    <article class="state"><h3>原仓库</h3><span class="seal is-neutral">${r.application_to_original === 'NOT_APPLIED' ? '未应用' : escape(r.application_to_original)}</span><p>采纳不等于应用。导出副本后由开发者自行应用，原项目和暂存区保持只读。</p></article>`;
-  const versions = array(r.versions);
-  $('review-versions').innerHTML = versions.map(v => `<li class="${v.id === r.version.id ? 'is-current' : ''}"><strong>${escape(v.id)}　${escape(versionSource[v.source] || v.source)}</strong><p>${escape(v.reason || '')}</p><code title="${escape(v.code_sha256 || '')}">${escape(short(v.code_sha256))}</code> <span class="muted small">${escape(displayTime(v.created_at))}</span>${v.id === r.version.id ? `<p>当前版本，程序判定：${escape(sealNames[tv] || tv)}</p>` : ''}</li>`).join('');
-  const tab = state.reviewTab;
-  document.querySelectorAll('[data-review-tab]').forEach(button => button.setAttribute('aria-selected', String(button.dataset.reviewTab === tab)));
-  $('review-code').hidden = tab !== 'edit';
-  $('review-code-view').hidden = tab === 'edit';
-  if (tab !== 'edit') $('review-code-view').innerHTML = tab === 'diff' ? (r.diff ? codeMarkup(r.diff, true) : '<p class="empty-inline">与上一版本相同。</p>') : codeMarkup(tab === 'ai' ? r.ai_code : r.original_code, false);
-  if ($('review-code').dataset.identity !== r.id + r.version.id) { $('review-code').value = r.code; $('review-code').dataset.identity = r.id + r.version.id; }
-  $('review-code').readOnly = readOnly();
-  const checks = r.report?.required_checks || {};
-  $('review-checks').innerHTML = conditionsMarkup(checks, r.report_applicable && Object.keys(checks).length > 0, '');
-  const po = r.report?.execution?.pytest_observation;
-  $('review-checks-note').textContent = r.report_applicable
-    ? `必要业务测试：收集 ${count(po?.collected)}，执行 ${count(po?.executed)}，通过 ${count(po?.passed)}，跳过 ${count(po?.skipped)}。`
-    : '当前版本没有适用的检查报告，逐项条件不评估。';
-  const blockers = [];
+  $('project-states').innerHTML = `
+    <article class="state"><h3>技术结论</h3>${seal(tv)}<p>${r.report_applicable ? `检查于 ${escape(displayTime(reportTime))}，报告适用于当前版本。` : escape(array(r.material_reasons).length ? '材料已变化，报告不适用。' : '当前版本尚未检查。')}</p></article>
+    <article class="state"><h3>人工决定</h3><span class="seal is-${decisionTone}">${escape(decisionWord)}</span><p>${r.decision === 'PENDING' ? '技术通过不会自动采纳，需要负责人做决定。' : r.decision_is_test ? '这是功能测试记录，不代表本人真实审阅。' : '本机记录，不是强身份签名。'}</p></article>
+    <article class="state"><h3>原项目</h3><span class="seal is-neutral">未应用</span><p>采纳不等于应用。导出后由开发者自行应用，原项目保持不变。</p></article>`;
+  $('project-material').hidden = !array(r.material_reasons).length;
+  $('project-material').textContent = array(r.material_reasons).length ? `材料核对失败：${array(r.material_reasons).join('；')}。旧结论和决定不适用；请重新接入项目。` : '';
+  $('result-meta').textContent = r.report_applicable ? `${r.version.id} 的报告，检查于 ${displayTime(reportTime)}。“五个问题”是对报告字段的归纳，判定以 14 项必要条件为准。` : `${r.version.id} 还没有适用的检查报告。`;
   const materialOk = !array(r.material_reasons).length;
+  const checkReason = readOnly() ? '只读入口不执行检查。' : !state.status ? '尚未读取运行环境。' : state.status.access_mode === 'view' ? '只读回放模式不执行检查；请用隔离验收入口（start-recheck）启动。'
+    : !state.status.checker?.ready ? `隔离环境没有准备好：${state.status.checker?.detail || ''}` : !materialOk ? '材料已变化，不能检查。' : '';
+  $('project-check').disabled = state.busy || !!checkReason;
+  $('check-blocker').textContent = checkReason ? `不能运行检查：${checkReason}` : state.busy ? '' : '检查会在一次性隔离副本中运行必要测试和每个入口场景，不调用模型。';
+  $('project-evidence').innerHTML = r.evidence ? evidenceMarkup(r.evidence) : `<p class="empty-inline">${escape(r.report && !r.report_applicable ? '已有报告不适用于当前版本（版本或材料已变化）。' : '还没有检查报告。')}</p>`;
+  const checks = r.report?.required_checks || {};
+  $('project-conditions').innerHTML = conditionsMarkup(checks, r.report_applicable && Object.keys(checks).length > 0, r.report_applicable ? '' : '没有适用的报告，逐项条件不评估。');
+  document.querySelectorAll('[data-report]').forEach(a => {
+    const ok = r.report_applicable;
+    a.href = ok ? `/api/review/${r.id}/report.${a.dataset.report}` : '#';
+    a.classList.toggle('is-disabled', !ok);
+    a.setAttribute('aria-disabled', String(!ok));
+    if (ok) a.setAttribute('download', ''); else a.removeAttribute('download');
+  });
+  $('project-report').textContent = r.report ? text(r.report) : '没有报告。';
+  $('project-entry-path').textContent = r.version.entry_path;
+  $('project-ai-tab').hidden = isProject;
+  const tab = state.projectTab === 'ai' && isProject ? 'edit' : state.projectTab;
+  document.querySelectorAll('[data-project-tab]').forEach(b => b.setAttribute('aria-selected', String(b.dataset.projectTab === tab)));
+  $('project-code').hidden = tab !== 'edit';
+  $('project-code-view').hidden = tab === 'edit';
+  if (tab !== 'edit') $('project-code-view').innerHTML = tab === 'diff' ? (r.diff ? codeMarkup(r.diff, true) : '<p class="empty-inline">与上一版本相同。</p>') : codeMarkup(tab === 'ai' ? r.ai_code : r.original_code, false);
+  if ($('project-code').dataset.identity !== r.id + r.version.id) { $('project-code').value = r.code; $('project-code').dataset.identity = r.id + r.version.id; }
+  const ro = readOnly() ? '只读入口：服务端拒绝一切修订、检查、决定和导出。' : '';
+  $('project-code').readOnly = !!ro;
+  $('project-revise').disabled = state.busy || !!ro || !materialOk;
+  $('revise-reason').disabled = !!ro;
+  $('project-versions').innerHTML = array(r.versions).map(v => `<li class="${v.id === r.version.id ? 'is-current' : ''}"><strong>${escape(v.id)}　${escape(versionSource[v.source] || v.source)}</strong><p>${escape(v.reason || '')}</p><code title="${escape(v.code_sha256 || '')}">${escape(short(v.code_sha256))}</code> <span class="muted small">${escape(displayTime(v.created_at))}</span>${v.id === r.version.id ? `<p>当前版本，技术结论：${escape(sealNames[tv] || tv)}</p>` : ''}</li>`).join('');
+  const blockers = [];
   const disable = (id, reason) => { $(id).disabled = state.busy || !!reason; if (reason && !blockers.includes(reason)) blockers.push(reason); };
-  const ro = readOnly() ? '只读入口：服务端拒绝一切修订、检查、审批和导出。' : '';
-  disable('review-revise', ro || (!materialOk ? '材料已变化，不能在此基础上修订。' : ''));
-  disable('review-check', ro || (state.bootstrap?.access_mode === 'view' ? '只读回放模式不执行检查；请用隔离验收模式启动。' : !materialOk ? '材料已变化，需要先恢复材料。' : ''));
-  disable('review-needs', ro || (!materialOk ? '材料已变化。' : ''));
-  disable('review-reject', ro || (!materialOk ? '材料已变化。' : ''));
-  disable('review-approve', ro || (tv !== 'PASS' || !r.report_applicable ? '只有当前完整通过的版本才能采纳。' : ''));
-  disable('review-diagnostic', ro || (!materialOk ? '材料已变化。' : ''));
-  disable('review-adopted', ro || (r.decision !== 'APPROVED' || !r.decision_applicable || tv !== 'PASS' ? '导出已采纳修复需要当前通过并且有有效的采纳决定。' : ''));
-  $('review-test').disabled = !!ro;
-  $('review-reason').disabled = !!ro;
-  $('review-blockers').innerHTML = blockers.map(b => `<li>${escape(b)}</li>`).join('');
-  $('review-decisions').innerHTML = array(r.decisions).map(d => `<li><strong>${escape((decisionSeal[d.decision] || [d.decision])[0])}</strong>，版本 ${escape(d.version_id)}，${escape(displayTime(d.at))}${d.test_operation ? '（审批功能测试）' : ''}<br><span class="muted">${escape(d.reason || '')}</span></li>`).join('') || '<li class="muted">还没有人工决定。</li>';
-  $('review-report').textContent = text(r.report);
+  disable('decide-needs', ro || (!materialOk ? '材料已变化，不能记录决定。' : ''));
+  disable('decide-reject', ro || (!materialOk ? '材料已变化，不能记录决定。' : ''));
+  disable('decide-approve', ro || (tv !== 'PASS' || !r.report_applicable ? '只有当前版本检查通过（PASS）才能采纳。' : ''));
+  disable('export-diagnostic', ro || (!materialOk ? '材料已变化，不能导出。' : ''));
+  disable('export-adopted', ro || (r.decision !== 'APPROVED' || !r.decision_applicable || tv !== 'PASS' ? '导出已采纳修复需要当前版本 PASS，并且有有效的采纳决定。' : ''));
+  $('decide-test').disabled = !!ro; $('decide-reason').disabled = !!ro;
+  $('project-blockers').innerHTML = blockers.map(b => `<li>${escape(b)}</li>`).join('');
+  $('project-decisions').innerHTML = array(r.decisions).map(d => `<li><strong>${escape((decisionSeal[d.decision] || [d.decision])[0])}</strong>，版本 ${escape(d.version_id)}，${escape(displayTime(d.at))}${d.test_operation ? '（功能测试）' : ''}<br><span class="muted">${escape(d.reason || '')}</span></li>`).join('') || '<li class="muted">还没有人工决定。</li>';
+  $('ci-command').textContent = `credproof-safety check --config credproof.toml \\\n  --sarif credproof.sarif --junit junit.xml --summary summary.md\n# 退出码：0 PASS，2 FAIL，3 UNKNOWN，4 运行错误`;
 }
-const reviewExpected = () => ({ version_id: state.review.version.id, object_sha256: state.review.object_sha256, report_sha256: state.review.report_sha256, decision_count: state.review.decisions.length });
-async function reviewAction(operation, data = {}) { state.review = await request(`/api/review/${state.review.id}/${operation}`, { expected: reviewExpected(), ...data }); }
-async function reviewDownload(adopted) {
-  const response = await responseChecked(await fetch(`/api/review/${state.review.id}/export`, { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-CredProof-Review-Session': state.bootstrap.review_session }, body: JSON.stringify({ expected: reviewExpected(), adopted }), cache: 'no-store' }));
-  const url = URL.createObjectURL(await response.blob()); const a = document.createElement('a'); a.href = url; a.download = adopted ? 'credproof-adopted-review.zip' : 'credproof-diagnostic-review.zip'; a.click(); window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+/* ---------- Recheck an exported bundle ---------- */
+async function recheckBundle(file) {
+  if (!file) return;
+  if (file.size > (state.status?.limits?.upload_bytes || 16777216)) throw new Error('导出包超过 16 MiB。');
+  $('recheck-status').textContent = `正在复检 ${file.name}：解压到新目录、核对清单、在隔离环境中重新运行……`;
+  state.recheckResult = await postZip('/api/recheck/upload', file);
+  $('recheck-status').textContent = '';
 }
-function autoLoadReview() {
-  if (state.review || state.reviewAutoLoaded || state.busy || !array(state.bootstrap?.reviews).length) return;
-  state.reviewAutoLoaded = true;
-  const id = state.bootstrap.reviews[0].id;
-  busyAction(async () => { state.review = await request('/api/review/' + id); });
+function renderRecheck() {
+  if (state.route.name !== 'recheck') return;
+  const blocked = readOnly() ? '只读入口不执行复检。' : state.status?.access_mode === 'view' ? '只读回放模式不执行复检；请用隔离验收入口（start-recheck）启动。' : '';
+  $('recheck-file').disabled = state.busy || !!blocked;
+  if (blocked && !state.busy) $('recheck-status').textContent = blocked;
+  const r = state.recheckResult;
+  $('recheck-output').hidden = !r;
+  if (!r) return;
+  const v = r.validation || {};
+  $('recheck-seal').innerHTML = seal(v.verdict || 'UNKNOWN', 'seal-lg');
+  $('recheck-meta').textContent = `${r.status === 'RECHECKED' ? '已在新目录重新执行完整检查' : '没有执行检查：材料不完整或已变化'}，${displayTime(r.checked_at)}。`;
+  const h = r.human_review || {};
+  const facts = [
+    ['包内记录的人工状态', h.kind ? `${(decisionSeal[h.decision] || [h.decision])[0] || '—'}${h.decision_is_test ? '（功能测试）' : ''}，版本 ${h.version_id || '—'}` : '没有人工审阅记录'],
+    ['包内记录的技术结论', h.technical_verdict || '—'],
+    ['清单与对象核对', r.prior_report_applicable ? '一致：包内报告适用于这份代码' : `不一致：${array(r.prior_report_reasons).join('；') || '材料缺失'}`],
+    ['本次复检结论', `${v.verdict || 'UNKNOWN'}（来自这次运行，不读取包内结论）`],
+    ['项目树摘要', short(r.project_tree_sha256)],
+    ['原项目', '未应用；复检不修改任何项目'],
+  ];
+  $('recheck-facts').innerHTML = facts.map(([k, val]) => `<div class="fact"><dt>${escape(k)}</dt><dd>${escape(val)}</dd></div>`).join('');
+  $('recheck-evidence').innerHTML = r.evidence ? evidenceMarkup(r.evidence) : '';
+  $('recheck-raw').textContent = text(r);
+}
+
+/* ---------- Environment ---------- */
+function renderEnvironment() {
+  if (state.route.name !== 'environment') return;
+  const s = state.status;
+  if (!s) { $('env-facts').innerHTML = ''; $('env-reasons').innerHTML = '<li>还没有读取到运行环境。</li>'; return; }
+  const modeNames = { view: '只读回放（不执行检查）', recheck: '隔离验收（检查，不调用模型）', live: '现场修复（可调用本地模型）' };
+  const facts = [
+    ['启动模式', modeNames[s.access_mode] || s.access_mode, false],
+    ['隔离检查环境', s.checker?.ready ? '就绪' : '未就绪', !s.checker?.ready],
+    ['隔离环境说明', s.checker?.detail || '—', false],
+    ['能否运行检查', s.can_check ? '能' : '不能', !s.can_check],
+    ['本地模型', s.can_use_model ? '可用' : '不可用（检查与审阅不需要模型）', false],
+    ['上传上限', `${(s.limits.upload_bytes / 1048576).toFixed(0)} MiB，${s.limits.files} 个文件，单文件 ${(s.limits.file_bytes / 1048576).toFixed(0)} MiB`, false],
+  ];
+  $('env-facts').innerHTML = facts.map(([k, v, bad]) => `<div class="fact"><dt>${escape(k)}</dt><dd${bad ? ' class="bad"' : ''}>${escape(v)}</dd></div>`).join('');
+  $('env-reasons').innerHTML = array(s.reasons).map(x => `<li>${escape(x)}</li>`).join('');
+  $('env-observed').textContent = `读取于 ${displayTime(new Date().toISOString())}；只检查材料是否齐全，不运行项目代码。`;
 }
 
 function render() {
   renderConnection(); renderProjectModes(); renderScope(); renderActions(); renderDecisions(); renderCode(); renderEvidence();
-  renderValidation(); renderResultStates(); renderStories(); renderReview(); renderOverview(); renderPatchList(); renderPatchDetail(); renderReportDoc();
-  renderPipeline();
+  renderValidation(); renderResultStates(); renderStories(); renderOverview(); renderPatchList(); renderPatchDetail(); renderReportDoc();
+  renderPipeline(); renderHome(); renderProjects(); renderNew(); renderProject(); renderRecheck(); renderEnvironment();
 }
 
 /* ---------- CI pipeline gate (recorded hosted-runner runs) ---------- */
@@ -984,6 +1417,7 @@ async function loadBootstrap() {
   }));
   await loadBench();
   await loadIntegration();
+  await loadWorkspace();
 }
 
 async function busyAction(action) {
@@ -1004,15 +1438,6 @@ function acceptRun(value, replay = false) {
   state.stale = false;
   state.epoch += 1;
 }
-
-$('review-open').addEventListener('click', () => busyAction(async () => { state.review = await request('/api/review/open', { run_id: $('review-history').value }); await loadBootstrap(); }));
-$('review-load').addEventListener('click', () => busyAction(async () => { state.review = await request('/api/review/' + $('review-saved').value); }));
-$('review-revise').addEventListener('click', () => busyAction(() => reviewAction('revise', { code: $('review-code').value, reason: $('review-reason').value })));
-$('review-check').addEventListener('click', () => busyAction(() => reviewAction('check')));
-for (const [id, decision] of [['review-needs', 'NEEDS_CHANGES'], ['review-reject', 'REJECTED'], ['review-approve', 'APPROVED']]) $(id).addEventListener('click', () => busyAction(() => reviewAction('decide', { decision, reason: $('review-reason').value, test_operation: $('review-test').checked })));
-$('review-diagnostic').addEventListener('click', () => busyAction(() => reviewDownload(false)));
-$('review-adopted').addEventListener('click', () => busyAction(() => reviewDownload(true)));
-document.querySelectorAll('[data-review-tab]').forEach(button => button.addEventListener('click', () => { state.reviewTab = button.dataset.reviewTab; renderReview(); }));
 
 $('start').addEventListener('click', () => busyAction(async () => {
   clearPoll();
@@ -1068,7 +1493,7 @@ $('project-open').addEventListener('click', () => busyAction(async () => {
   state.project = await request('/api/project/select', { project_id: $('project-select').value });
   announce('已读取启动时登记的配置；尚未执行新的安全检查。');
 }));
-$('project-check').addEventListener('click', () => busyAction(async () => {
+$('registered-project-check').addEventListener('click', () => busyAction(async () => {
   state.project = await request('/api/project/check', { project_id: state.project.id });
   announce(`新的隔离检查结束：${state.project.last_report?.verdict || 'UNKNOWN'}。没有调用模型。`);
 }));
@@ -1099,6 +1524,141 @@ document.addEventListener('click', event => {
   const row = event.target.closest('tr.is-link');
   if (row && !event.target.closest('a')) location.hash = row.dataset.href;
 });
+
+/* ---------- Product workspace events ---------- */
+document.addEventListener('click', event => {
+  const scroll = event.target.closest('[data-scroll]');
+  if (scroll) {
+    event.preventDefault();
+    document.getElementById(scroll.dataset.scroll)?.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    return;
+  }
+  const version = event.target.closest('[data-story-version]');
+  if (version) { state.storyVersion = version.dataset.storyVersion; renderHome(); return; }
+  const change = event.target.closest('[data-story-change]');
+  if (change) { state.storyChange = change.dataset.storyChange; renderHome(); return; }
+  const example = event.target.closest('[data-example]');
+  if (example && !example.disabled) {
+    busyAction(async () => {
+      state.intake = await request('/api/intake/example', { example_id: example.dataset.example });
+      state.formDirty = false;
+      location.hash = `#new/${state.intake.id}`;
+    });
+    return;
+  }
+  const disabledLink = event.target.closest('a.is-disabled');
+  if (disabledLink) { event.preventDefault(); return; }
+  const placeholder = event.target.closest('[data-placeholder]');
+  if (placeholder) {
+    navigator.clipboard?.writeText(placeholder.dataset.placeholder).then(() => announce(`已复制 ${placeholder.dataset.placeholder}`), () => {});
+    return;
+  }
+  const add = event.target.closest('[data-add-scenario]');
+  if (add) {
+    const template = SCENARIO_TEMPLATES[add.dataset.addScenario]();
+    let name = template.name, i = 2;
+    while (state.scenarios.some(x => x.name === name)) name = `${template.name}_${i++}`;
+    state.scenarios.push({ ...template, name, requestText: JSON.stringify(template.request, null, 2) });
+    state.formDirty = true; renderScenarios(); renderNew();
+    return;
+  }
+  const remove = event.target.closest('[data-remove-scenario]');
+  if (remove) {
+    state.scenarios.splice(Number(remove.dataset.removeScenario), 1);
+    state.formDirty = true; renderScenarios(); renderNew();
+    return;
+  }
+  const projectTab = event.target.closest('[data-project-tab]');
+  if (projectTab) { state.projectTab = projectTab.dataset.projectTab; renderProject(); }
+});
+$('scenario-list').addEventListener('input', event => {
+  const field = event.target.dataset.sc;
+  const box = event.target.closest('.scenario');
+  if (!field || !box) return;
+  const row = state.scenarios[Number(box.dataset.index)];
+  row[field] = event.target.type === 'checkbox' ? event.target.checked : event.target.value;
+  if (field === 'requestText') {
+    let message = '';
+    try { const v = JSON.parse(event.target.value || '{}'); if (!v || typeof v !== 'object' || Array.isArray(v)) message = '需要是 JSON 对象，例如 {"path": "__CREDPROOF_ALLOWED_FILE__"}'; }
+    catch { message = 'JSON 格式不正确。'; }
+    box.querySelector('[data-sc-error]').textContent = message;
+  }
+  state.formDirty = true;
+  $('config-dirty').textContent = '表单有改动，尚未校验。'; $('config-start').disabled = true; $('config-ok').hidden = true;
+});
+$('config-form').addEventListener('input', event => {
+  if (event.target.closest('#scenario-list')) return;
+  state.formDirty = true;
+  $('config-dirty').textContent = '表单有改动，尚未校验。'; $('config-start').disabled = true; $('config-ok').hidden = true;
+  if (event.target.id === 'cfg-service') $('cfg-service-fields').hidden = !event.target.checked;
+});
+$('cfg-entry-pick').addEventListener('change', event => {
+  if (!event.target.value) return;
+  const [module, callable] = event.target.value.split(':');
+  $('cfg-module').value = module; $('cfg-callable').value = callable;
+});
+$('config-form').addEventListener('submit', event => { event.preventDefault(); busyAction(saveConfig); });
+$('config-start').addEventListener('click', () => busyAction(async () => {
+  if (state.formDirty) await saveConfig();
+  if (!state.intake.valid) throw new Error('配置还有错误，见右侧校验结果。');
+  const result = await request(`/api/intake/${state.intake.id}/start`, {});
+  state.intake = result.intake; state.projectView = result.review; state.reviewsStale = true;
+  announce('配置已冻结，审阅已建立。下一步：运行检查。');
+  location.hash = `#project/${result.review.id}`;
+}));
+$('toml-download').addEventListener('click', () => saveBlob(new Blob([state.intake?.toml || ''], { type: 'text/plain' }), 'credproof.toml'));
+$('pick-folder').addEventListener('change', event => {
+  const files = [...event.target.files];
+  event.target.value = '';
+  if (!files.length) return;
+  if (!$('upload-label').value.trim()) $('upload-label').value = (files[0].webkitRelativePath || '').split('/')[0] || '';
+  busyAction(async () => { $('upload-status').textContent = `正在本机打包 ${files.length} 个文件……`; await uploadProject(await zipFolder(files)); });
+});
+$('pick-zip').addEventListener('change', event => {
+  const file = event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  if (!$('upload-label').value.trim()) $('upload-label').value = file.name.replace(/\.zip$/i, '');
+  busyAction(() => uploadProject(file));
+});
+for (const [zone, handler] of [['drop-zone', file => { if (!$('upload-label').value.trim()) $('upload-label').value = file.name.replace(/\.zip$/i, ''); return uploadProject(file); }], ['recheck-drop', recheckBundle]]) {
+  $(zone).addEventListener('dragover', event => { event.preventDefault(); $(zone).classList.add('is-over'); });
+  $(zone).addEventListener('dragleave', () => $(zone).classList.remove('is-over'));
+  $(zone).addEventListener('drop', event => {
+    event.preventDefault(); $(zone).classList.remove('is-over');
+    const file = event.dataTransfer.files[0];
+    if (!file) return;
+    if (!/\.zip$/i.test(file.name)) { failure(new Error('请拖入 zip 文件；要上传文件夹，请用“选择项目文件夹”。')); render(); return; }
+    busyAction(() => handler(file));
+  });
+}
+$('recheck-file').addEventListener('change', event => { const file = event.target.files[0]; event.target.value = ''; busyAction(() => recheckBundle(file)); });
+$('history-review-open').addEventListener('click', () => busyAction(async () => {
+  const view = await request('/api/review/open', { run_id: $('history-review-select').value });
+  await loadBootstrap();
+  location.hash = `#project/${view.id}`;
+}));
+$('project-check').addEventListener('click', () => busyAction(async () => {
+  announce('检查已开始：在隔离副本中运行必要测试和入口场景。');
+  await projectAction('check');
+  announce(`检查结束：${state.projectView.technical_verdict}。`);
+}));
+$('project-revise').addEventListener('click', () => busyAction(async () => {
+  if (!$('revise-reason').value.trim()) throw new Error('请填写修订理由。');
+  await projectAction('revise', { code: $('project-code').value, reason: $('revise-reason').value });
+  $('revise-reason').value = ''; state.projectTab = 'diff';
+  announce(`已保存为 ${state.projectView.version.id}，尚未检查。`);
+}));
+for (const [id, decision] of [['decide-needs', 'NEEDS_CHANGES'], ['decide-reject', 'REJECTED'], ['decide-approve', 'APPROVED']]) {
+  $(id).addEventListener('click', () => busyAction(async () => {
+    if (!$('decide-reason').value.trim()) throw new Error('请填写决定理由。');
+    await projectAction('decide', { decision, reason: $('decide-reason').value, test_operation: $('decide-test').checked });
+    $('decide-reason').value = '';
+  }));
+}
+$('export-adopted').addEventListener('click', () => busyAction(() => projectDownload(true)));
+$('export-diagnostic').addEventListener('click', () => busyAction(() => projectDownload(false)));
+$('env-refresh').addEventListener('click', () => busyAction(loadWorkspace));
 $('report-print').addEventListener('click', () => window.print());
 window.addEventListener('hashchange', () => { $('filter-target').dataset.applied = ''; applyRoute(); });
 window.addEventListener('pagehide', clearPoll);

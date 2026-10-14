@@ -1,0 +1,51 @@
+{
+  "source_commit": "9f83f84d73c924b19742e42bd2f826c1dad3e057",
+  "windows_test_versions": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "pytest": "8.4.2"
+  },
+  "installed_origin": {
+    "python": "3.12.14 (main, Aug 25 2026, 14:01:42) [MSC v.1944 64 bit (AMD64)]",
+    "executable": "[INSTALLED]/Scripts/python.exe",
+    "version": "0.3.0.dev38",
+    "modules": [
+      {
+        "name": "agent_pilot.web",
+        "file": "[INSTALLED]/Lib/site-packages/agent_pilot/web.py",
+        "sha256": "9080cc6050c6efcdfa385b0571d11080a83f7efe2b039a570e25131f84775e46"
+      },
+      {
+        "name": "credproof_safety.human_review",
+        "file": "[INSTALLED]/Lib/site-packages/credproof_safety/human_review.py",
+        "sha256": "4af7c89f792d211343113da8228aa6fa499ac50645e36ac47038c8e349c1c530"
+      },
+      {
+        "name": "credproof_safety.runner",
+        "file": "[INSTALLED]/Lib/site-packages/credproof_safety/runner.py",
+        "sha256": "13b546a3d63e3d5750f8107450296365c580cc65fe69b20ce431047f8b27d7e3"
+      }
+    ],
+    "available": [
+      true,
+      "reviewed rootfs, bubblewrap and Python site packages present (WSL)"
+    ]
+  },
+  "wsl_material_probe": {
+    "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+    "available": [
+      true,
+      "reviewed rootfs, bubblewrap and Python site packages present (native Linux)"
+    ],
+    "checker": {
+      "ready": true,
+      "detail": "reviewed rootfs, bubblewrap and Python site packages present (native Linux)"
+    },
+    "can_check": true,
+    "runner_sha256": "13b546a3d63e3d5750f8107450296365c580cc65fe69b20ce431047f8b27d7e3",
+    "module_origin": "fixed Windows worktree; probe reads modules only, not a read-only mount; no candidate execution",
+    "model_calls": 0
+  },
+  "wsl_probe_exit_code": 0,
+  "real_dynamic_check_evidence": "product-final and review-objects; this availability receipt itself executes no candidate",
+  "model_calls": 0
+}

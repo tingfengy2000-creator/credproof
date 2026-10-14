@@ -1,6 +1,7 @@
 """Serve editable UI against a temporary, read-only copy of disclosed history.
 
-No model, WSL probe, candidate execution, decisions or exports are available.
+No model, candidate execution, decisions or exports are available. The status
+GET may probe the operator-configured runtime's material availability only.
 Use the frozen installed wheel; only UI assets come from the frontend checkout.
 """
 import argparse
@@ -26,7 +27,7 @@ class ReadOnlyHandler(Handler):
         path = urlsplit(self.path).path
         allowed = path in ('/', '/index.html', '/styles.css', '/app.js',
                            '/api/agent/bootstrap', '/api/agent/health', '/api/project/modes', '/api/bench',
-                           '/api/integration')
+                           '/api/integration', '/api/workspace/status', '/api/reviews', '/api/intake', '/api/intake/examples')
         allowed = allowed or bool(re.fullmatch(r'/api/review/[0-9a-f]{32}', path))
         allowed = allowed or bool(re.fullmatch(r'/api/bench/patches/[A-Za-z0-9_.:-]{1,160}', path))
         if self.command != 'GET' or not allowed:
@@ -105,7 +106,7 @@ def main():
     with prepared_view(args.snapshot, args.ui_dir, args.bench_results) as app:
         with ReadOnlyServer(('127.0.0.1', args.port), app) as server:
             print(f'READ_ONLY_HISTORY: http://127.0.0.1:{server.server_address[1]}/#human-review', flush=True)
-            print('Frozen history only. No model/WSL/candidate execution. Stop with Ctrl+C.', flush=True)
+            print('Frozen history only. Runtime status probes materials; no model, candidate execution or writes. Stop with Ctrl+C.', flush=True)
             try:
                 server.serve_forever()
             except KeyboardInterrupt:

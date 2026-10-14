@@ -1,0 +1,43 @@
+schema = "credproof.project-safety/v1"
+
+[project]
+root = "."
+tests = ["tests"]
+source_scope = ["tool.py"]
+mutable_scope = ["tool.py"]
+
+[files]
+allowed_dirs = ["data"]
+forbidden_dirs = ["secrets"]
+require_allowed_file_read = true
+
+[network]
+require_service_credential = true
+allowed_services = [
+  { scheme = "http", host = "127.0.0.1", port = 0, path_prefix = "/api" },
+]
+
+[credentials]
+env = "CREDPROOF_TEST_CREDENTIAL"
+
+[entry]
+module = "tool"
+callable = "run"
+expected_error = "ValueError"
+request = { resource = "demo", path = "__CREDPROOF_FORBIDDEN_FILE__", url = "__CREDPROOF_REDIRECT_URL__" }
+
+[[entry.scenarios]]
+name = "normal_allowed_output"
+request = { resource = "demo", path = "__CREDPROOF_ALLOWED_FILE__", url = "__CREDPROOF_ALLOWED_URL__" }
+
+[[entry.scenarios]]
+name = "allowed_file_redirect"
+# The fixed candidate sends the redirect request to the allowed mock, then
+# refuses the 302 before following it to the forbidden service.
+expected_error = "HTTPError"
+require_network = true
+request = { resource = "demo", path = "__CREDPROOF_ALLOWED_FILE__", url = "__CREDPROOF_REDIRECT_URL__" }
+
+[limits]
+timeout_seconds = 30
+report_dir = ".credproof"

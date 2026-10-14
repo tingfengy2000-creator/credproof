@@ -33,6 +33,8 @@ def inventory():
         if (ROOT/'agent_pilot'/folder/'requirements.md').is_file(): paths.add(ROOT/'agent_pilot'/folder/'requirements.md')
     for example in ('material_assistant','material_assistant_fixed'):
         paths.update(p for p in (ROOT/'examples'/example).rglob('*') if p.is_file() and p.suffix in {'.py','.toml','.md'} and '__pycache__' not in p.parts)
+    # The eight benchmark targets are offered as ready-made examples on the "new check" page.
+    paths.update(p for p in (ROOT/'examples/bench').rglob('*') if p.is_file() and p.suffix in {'.py','.toml','.json'} and '__pycache__' not in p.parts)
     manifest=json.loads((ROOT/SNAPSHOT/'snapshot-manifest.json').read_text('utf8'))
     paths.add(ROOT/SNAPSHOT/'snapshot-manifest.json')
     paths.update(ROOT/SNAPSHOT/name for name in manifest['files'])

@@ -22,8 +22,8 @@ const executable = arg('executable', null);
 const patchId = arg('patch', 'b07-webhook-relay__qwen3-coder-30b__s1__r0');
 mkdirSync(out, { recursive: true });
 
-const routes = ['overview', 'patches', 'patches?origin=history', `patch/${patchId}`, `report/${patchId}`,
-  'pipeline', 'ci', 'human-review', 'workbench', 'project-entry', 'method', 'cases', 'projects', 'mechanism'];
+const routes = ['home', 'projects', 'new', 'recheck', 'environment', 'overview', 'patches', 'patches?origin=history',
+  `patch/${patchId}`, `report/${patchId}`, 'pipeline', 'ci', 'human-review', 'workbench', 'project-entry', 'method', 'cases', 'mechanism'];
 const summary = { base, channel, started_at: new Date().toISOString(), routes: {}, failures: [] };
 const fail = (where, what) => summary.failures.push(`${where}: ${what}`);
 
@@ -42,7 +42,7 @@ for (const [label, viewport] of [['desktop', { width: 1440, height: 900 }], ['mo
   page.on('request', r => { if (r.method() !== 'GET') note('writes', `${r.method()} ${r.url()}`); });
   page.on('response', r => { if (r.status() >= 400 && !r.url().endsWith('/favicon.ico')) note('http', `${r.status()} ${r.url()}`); });
 
-  for (const route of (label === 'desktop' ? routes : ['overview', 'patches', `patch/${patchId}`, 'human-review'])) {
+  for (const route of (label === 'desktop' ? routes : ['home', 'projects', 'new', 'overview', 'patches', `patch/${patchId}`])) {
     current = `${label} #${route}`;
     log[current] = { errors: [], writes: [], http: [] };
     await page.goto(`${base}/#${route}`, { waitUntil: 'networkidle' });
@@ -67,7 +67,7 @@ for (const [label, viewport] of [['desktop', { width: 1440, height: 900 }], ['mo
       return result;
     });
     log[current].facts = facts;
-    const expected = { cases: 'workbench', projects: 'project-entry', mechanism: 'method', ci: 'pipeline' }[route] || route.split(/[/?]/)[0];
+    const expected = { cases: 'workbench', 'human-review': 'projects', mechanism: 'method', ci: 'pipeline' }[route] || route.split(/[/?]/)[0];
     if (!facts.visible.includes(expected)) fail(current, `expected view ${expected}, got ${facts.visible.join(',')}`);
     if (label === 'mobile' && facts.overflow > 0) fail(current, `horizontal overflow ${facts.overflow}px`);
     if (facts.matrix && facts.matrix.misaligned) fail(current, `matrix misaligned cells ${facts.matrix.misaligned}`);

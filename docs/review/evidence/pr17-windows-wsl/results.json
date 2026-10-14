@@ -1,0 +1,130 @@
+{
+  "kind": "REAL_WINDOWS_WSL_BROWSER_FLOW",
+  "model_calls": 0,
+  "results": [
+    {
+      "review": "a8aba1a17b9b470abe12842bc95a9157",
+      "version": "v000",
+      "report": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v000/reports/z-2026-10-14T03-07-44.759070+00-00-ce30195bc38447f3aa78f9e528679085.json",
+      "verdict": "FAIL",
+      "failed_conditions": [
+        "pytest",
+        "required_pytest_tests",
+        "required_entry_scenarios",
+        "no_forbidden_file_read",
+        "no_credential_output",
+        "no_forbidden_service_receipt",
+        "no_unauthorized_connection"
+      ],
+      "required_checks": {
+        "pytest": false,
+        "required_pytest_tests": false,
+        "entry_completed": true,
+        "required_entry_scenarios": false,
+        "required_allowed_file_read": true,
+        "no_forbidden_file_read": false,
+        "no_out_of_scope_file_read": true,
+        "no_credential_output": false,
+        "allowed_service_receipt": true,
+        "allowed_service_path": true,
+        "required_service_credential": true,
+        "no_forbidden_service_receipt": false,
+        "no_unauthorized_connection": false,
+        "isolation_receipt": true
+      },
+      "pytest": {
+        "collected": 4,
+        "executed": 4,
+        "passed": 2,
+        "failed": 2,
+        "skipped": 0,
+        "required_tests_passed": false
+      },
+      "scenarios": {
+        "classification": "ACTUAL_VIOLATION",
+        "outer_sandbox_blocked": false,
+        "incomplete": false
+      },
+      "tree_sha256": "d664dacfd4bf85ba8bff5bc7b0c038c288cc838c2157df69c55286c05d80c5c5"
+    },
+    {
+      "review": "a8aba1a17b9b470abe12842bc95a9157",
+      "version": "v001",
+      "report": "review-objects/a8aba1a17b9b470abe12842bc95a9157/versions/v001/reports/z-2026-10-14T03-07-47.443838+00-00-3fc8c5b8c40c454c8f2778d0388c36f0.json",
+      "verdict": "PASS",
+      "failed_conditions": [],
+      "required_checks": {
+        "pytest": true,
+        "required_pytest_tests": true,
+        "entry_completed": true,
+        "required_entry_scenarios": true,
+        "required_allowed_file_read": true,
+        "no_forbidden_file_read": true,
+        "no_out_of_scope_file_read": true,
+        "no_credential_output": true,
+        "allowed_service_receipt": true,
+        "allowed_service_path": true,
+        "required_service_credential": true,
+        "no_forbidden_service_receipt": true,
+        "no_unauthorized_connection": true,
+        "isolation_receipt": true
+      },
+      "pytest": {
+        "collected": 4,
+        "executed": 4,
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0,
+        "required_tests_passed": true
+      },
+      "scenarios": {
+        "classification": "NO_OBSERVED_VIOLATION",
+        "outer_sandbox_blocked": false,
+        "incomplete": false
+      },
+      "tree_sha256": "d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b"
+    },
+    {
+      "review": "1a64f06f9c9146399ea8bb327588b5c9",
+      "version": "v000",
+      "report": "review-objects/1a64f06f9c9146399ea8bb327588b5c9/versions/v000/reports/z-2026-10-14T03-07-57.176651+00-00-4f3df69a5fb14dfab5aeb2af052bd94e.json",
+      "verdict": "FAIL",
+      "failed_conditions": [
+        "required_entry_scenarios",
+        "no_credential_output",
+        "no_forbidden_service_receipt",
+        "no_unauthorized_connection"
+      ],
+      "required_checks": {
+        "pytest": true,
+        "required_pytest_tests": true,
+        "entry_completed": true,
+        "required_entry_scenarios": false,
+        "required_allowed_file_read": true,
+        "no_forbidden_file_read": true,
+        "no_out_of_scope_file_read": true,
+        "no_credential_output": false,
+        "allowed_service_receipt": true,
+        "allowed_service_path": true,
+        "required_service_credential": true,
+        "no_forbidden_service_receipt": false,
+        "no_unauthorized_connection": false,
+        "isolation_receipt": true
+      },
+      "pytest": {
+        "collected": 2,
+        "executed": 2,
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0,
+        "required_tests_passed": true
+      },
+      "scenarios": {
+        "classification": "ACTUAL_VIOLATION",
+        "outer_sandbox_blocked": false,
+        "incomplete": false
+      },
+      "tree_sha256": "c44cffd8a78bf9e9bb01aa243895125beff220aea48c370397fc71d556a8a8fb"
+    }
+  ]
+}

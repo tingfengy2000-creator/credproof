@@ -1,0 +1,29 @@
+{
+  "schema": "credproof.workspace-status/v1",
+  "access_mode": "recheck",
+  "checker": {
+    "ready": true,
+    "detail": "reviewed rootfs, bubblewrap and Python site packages present (WSL)"
+  },
+  "model": {
+    "ready": false,
+    "label": "qwen3-coder:30b · 本地服务",
+    "reasons": [
+      "重新验收模式：只执行隔离检查，不启动模型。",
+      "isolation_mandatory_saved_checks_failed",
+      "isolation_runner_identity_failed",
+      "isolation_saved_probe_ready_failed",
+      "model_manifest_or_blobs_unavailable",
+      "model_runtime_executable_missing"
+    ]
+  },
+  "can_check": true,
+  "can_use_model": false,
+  "reasons": [],
+  "limits": {
+    "upload_bytes": 16777216,
+    "files": 2000,
+    "file_bytes": 4194304,
+    "expanded_bytes": 67108864
+  }
+}

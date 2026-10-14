@@ -1,0 +1,24 @@
+{
+  "checks": [
+    {
+      "name": "missing_session",
+      "status": 403,
+      "error": "review_session_required",
+      "new_check_execution": false
+    },
+    {
+      "name": "stale_binding",
+      "status": 409,
+      "error": "stale_version_or_material_changed",
+      "new_check_execution": false
+    },
+    {
+      "name": "fail_cannot_approve",
+      "status": 409,
+      "error": "approval_requires_current_complete_PASS",
+      "new_check_execution": false
+    }
+  ],
+  "session_value_published": false,
+  "model_calls": 0
+}
