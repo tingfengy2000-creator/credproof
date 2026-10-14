@@ -114,7 +114,7 @@ function failure(error) {
 }
 
 /* ---------- Routing ---------- */
-const routes = { home: '首页', projects: '我的项目', new: '新建检查', project: '项目', recheck: '复检导出包', environment: '运行环境',
+const routes = { compare: '对照与接入', home: '首页', projects: '我的项目', new: '新建检查', project: '项目', recheck: '复检导出包', environment: '运行环境',
   overview: '对照评测', patches: '补丁记录', patch: '补丁详情', report: '验收报告', pipeline: '流水线闸门',
   workbench: '案例回放', 'project-entry': '命令行接入', method: '工作原理' };
 const aliases = { cases: 'workbench', 'human-review': 'projects', top: 'home', mechanism: 'method', ci: 'pipeline', bench: 'overview', main: null };
@@ -148,6 +148,7 @@ function applyRoute() {
   if (name === 'patch' || name === 'report') loadPatch(state.route.arg);
   if (name === 'new' && state.route.arg) loadIntake(state.route.arg);
   if (name === 'project') loadProject(state.route.arg, true);
+  if (name === 'compare' && !state.compare && state.bootstrap) loadCompare().then(render);
   if (['projects', 'environment', 'new', 'recheck'].includes(name) && state.bootstrap && !state.busy) loadWorkspace().then(render);
   window.scrollTo(0, 0);
 }
@@ -1217,7 +1218,7 @@ function renderProject() {
   $('project-propose').disabled = state.busy || !!proposeReason;
   $('propose-blocker').textContent = proposeReason || '一次受控生成；新候选尚未检查，不自动采纳。随后请手动运行检查并审阅。';
   $('revise-reason').disabled = !!ro;
-  $('project-versions').innerHTML = array(r.versions).map(v => `<li class="${v.id === r.version.id ? 'is-current' : ''}"><strong>${escape(v.id)}　${escape(versionSource[v.source] || v.source)}</strong><p>${escape(v.reason || '')}</p><code title="${escape(v.code_sha256 || '')}">${escape(short(v.code_sha256))}</code> <span class="muted small">${escape(displayTime(v.created_at))}</span>${v.id === r.version.id ? `<p>当前版本，技术结论：${escape(sealNames[tv] || tv)}</p>` : ''}</li>`).join('');
+  $('project-versions').innerHTML = array(r.versions).map(v => `<li class="${v.id === r.version.id ? 'is-current' : ''}"><strong>${escape(v.id)}　${escape(versionSource[v.source] || v.source)}</strong><p>${escape(clip(v.reason || '', 300))}</p>${v.model?.name ? `<p class="small muted">模型 ${escape(modelName(v.model.name))}，请求摘要 ${escape(short(v.request_sha256))}</p>` : ''}<code title="${escape(v.code_sha256 || '')}">${escape(short(v.code_sha256))}</code> <span class="muted small">${escape(displayTime(v.created_at))}</span>${v.id === r.version.id ? `<p>当前版本，技术结论：${escape(sealNames[tv] || tv)}</p>` : ''}</li>`).join('');
   const blockers = [];
   const disable = (id, reason) => { $(id).disabled = state.busy || !!reason; if (reason && !blockers.includes(reason)) blockers.push(reason); };
   disable('decide-needs', ro || (!materialOk ? '材料已变化，不能记录决定。' : ''));
@@ -1286,7 +1287,7 @@ function renderEnvironment() {
 function render() {
   renderConnection(); renderProjectModes(); renderScope(); renderActions(); renderDecisions(); renderCode(); renderEvidence();
   renderValidation(); renderResultStates(); renderStories(); renderOverview(); renderPatchList(); renderPatchDetail(); renderReportDoc();
-  renderPipeline(); renderHome(); renderProjects(); renderNew(); renderProject(); renderRecheck(); renderEnvironment();
+  renderPipeline(); renderCompare(); renderHome(); renderProjects(); renderNew(); renderProject(); renderRecheck(); renderEnvironment();
 }
 
 /* ---------- CI pipeline gate (recorded hosted-runner runs) ---------- */
@@ -1528,6 +1529,69 @@ document.addEventListener('click', event => {
   if (row && !event.target.closest('a')) location.hash = row.dataset.href;
 });
 
+
+/* ---------- Comparison table and external onboarding (docs/compare) ---------- */
+const clip = (value, size) => { const t = String(value ?? ''); return t.length > size ? t.slice(0, size) + '…' : t; };
+const caseNames = { before: '问题版', after: '人工修复', reintroduced_defect: '重新引入缺陷', unrelated_change: '无关修改' };
+const versionSourceShort = { PROJECT_IMPORT: '接入时的代码', DEVELOPER_REVISION: '开发者修订', AI_CANDIDATE: 'AI 候选' };
+async function loadCompare() {
+  state.compareError = '';
+  try {
+    const data = await request('/api/compare');
+    if (!data || data.schema !== 'credproof.compare-page/v1') throw new Error('对照数据格式不受支持。');
+    state.compare = data;
+  } catch (error) { state.compare = null; state.compareError = error instanceof Error ? error.message : text(error); }
+}
+function methodLabel(m) { return m.id.startsWith('judge:') ? `${modelName(m.id.slice(6))} 文本裁判` : m.label; }
+function renderCompare() {
+  if (state.route.name !== 'compare') return;
+  const data = state.compare;
+  $('compare-empty').hidden = !!data;
+  $('compare-empty').textContent = state.compareError || (state.bootstrap?.compare_available === false ? '没有对照与接入数据（docs/compare）。' : '正在读取。');
+  const c = data?.comparison;
+  $('compare-table').hidden = !c;
+  if (c) {
+    const batches = [{ id: 'all', label: `全部 ${c.denominators.total}`, denominators: c.denominators, methods: c.methods },
+      ...array(c.batches).map(b => ({ ...b, label: `${{ ai: 'AI 补丁', anchors: '锚点', history: '历史补丁' }[b.id] || b.label} ${b.denominators.total}` }))];
+    const current = batches.find(b => b.id === state.compareBatch) || batches[0];
+    $('compare-batches').innerHTML = batches.map(b => `<button type="button" role="tab" data-compare-batch="${escape(b.id)}" aria-selected="${b.id === current.id}">${escape(b.label)}</button>`).join('');
+    const d = current.denominators;
+    $('compare-denominator').textContent = `${current.label || '全部'}：未满足声明条件 ${d.unsafe}，合格 ${d.good}${d.unknown ? `，证据不足 ${d.unknown}（单列）` : ''}。${current.id === 'all' ? c.denominators.note : ''}`;
+    const meta = Object.fromEntries(array(c.methods).map(m => [m.id, m]));
+    $('compare-numbers').innerHTML = `<thead><tr><th>方法</th><th class="num">放过不合格</th><th class="num">拦错合格</th><th class="num">无效回答</th><th class="num">没有记录</th><th>需要模型</th><th>例子</th></tr></thead><tbody>${array(current.methods).map(row => {
+      const m = { ...meta[row.id], ...row };
+      const cov = m.coverage || {};
+      const gate = m.id === 'credproof';
+      return `<tr class="${gate ? 'is-gate-row' : ''}"><td><strong>${escape(methodLabel(m))}</strong>${gate ? '<span class="sub">分组依据就是它自己的观察，本行按定义一致，不是独立准确率</span>' : ''}</td>
+        <td class="num ${m.accepted_unsafe ? 'bad-ink' : 'ok-ink'}"><b>${m.accepted_unsafe}</b> / ${cov.unsafe ?? '—'}</td>
+        <td class="num ${m.rejected_good ? 'bad-ink' : 'ok-ink'}"><b>${m.rejected_good}</b> / ${cov.good ?? '—'}${m.rejected_good ? `<span class="sub">其中明确拒绝 ${m.explicit_rejected_good}</span>` : ''}</td>
+        <td class="num">${m.invalid || 0}<span class="sub">覆盖 ${cov.rows ?? '—'} 份</span></td>
+        <td class="num">${m.missing || 0}${m.unknown ? `<span class="sub">证据不足 ${m.unknown}</span>` : ''}</td>
+        <td>${m.model_required ? '需要' : '不需要'}</td>
+        <td>${m.example_patch_id ? `<a href="#patch/${encodeURIComponent(m.example_patch_id)}">查看补丁</a>` : '—'}</td></tr>`;
+    }).join('')}</tbody>`;
+    $('compare-methods').innerHTML = array(c.methods).map(m => `<div><dt>${escape(methodLabel(m))}</dt><dd><span>看：${escape(m.observes)}</span><span>看不到：${escape(m.does_not_observe)}</span><span>需要：${escape(m.needs)}</span><span>规范 CI 能否做到：${escape(m.can_ci_do_this)}</span></dd></div>`).join('');
+    $('compare-limits').innerHTML = array(c.honest_limits).map(x => `<li>${escape(x)}</li>`).join('');
+    $('compare-provenance').textContent = `来源：${array(c.generated_from).map(g => `${g.path}（sha256 ${short(g.sha256)}）`).join('、')}；${c.generator}。`;
+  }
+  const o = data?.onboarding;
+  $('onboarding').hidden = !o;
+  if (!o) return;
+  $('onboarding-title').textContent = `外部项目接入：${o.project.name} ${o.project.ref}`;
+  $('onboarding-meta').textContent = `${o.environment.os}，Python ${o.environment.python}，${o.environment.browser || ''}；模型调用 ${o.environment.model_calls} 次；程序提交 ${short(o.program_source_commit)}；上游提交 ${short(o.project.commit)}，${o.project.license}`;
+  $('onboarding-scope').textContent = `范围：${o.project.scope}。`;
+  $('onboarding-steps').innerHTML = array(o.steps).map(st => `<li><strong>${escape(st.what_user_does)}</strong><span class="onboard-result ${/FAIL/.test(st.result) && !/PASS/.test(st.result) ? 'bad-ink' : /PASS|VALID|UPLOADED/.test(st.result) ? 'ok-ink' : ''}">${escape(st.result)}</span>${st.time_minutes != null ? `<span class="small muted">${escape(st.time_minutes)} 分钟</span>` : ''}</li>`).join('');
+  $('onboarding-results').innerHTML = `<thead><tr><th>版本</th><th>做了什么</th><th>结论</th><th class="num">必要测试</th><th>未满足的条件</th></tr></thead><tbody>${array(o.results).map(r => `<tr><td>${escape(r.version)}<span class="sub">${escape(versionSourceShort[r.candidate_source] || r.candidate_source)}</span></td><td>${escape(caseNames[r.case] || r.case)}</td><td>${seal(r.verdict, 'seal-sm')}</td><td class="num">${r.pytest.passed}/${r.pytest.collected}<span class="sub">上游 ${r.upstream_tests} + 适配 ${r.adapter_tests}</span></td><td class="small">${escape(array(r.failed_conditions).map(conditionLabel).join('；') || '无')}</td></tr>`).join('')}</tbody>`;
+  const e = o.exported || {};
+  $('onboarding-export').textContent = e.version ? `导出 ${e.version}（${{ PENDING: '人工待决定', APPROVED: '已采纳' }[e.decision] || e.decision}，${e.application === 'NOT_APPLIED' ? '未写回原项目' : e.application}），在新目录完整复检：${e.recheck_verdict}。` : '';
+  $('onboarding-decisions').innerHTML = array(o.config?.decisions).map(x => `<dt>${escape(x.field)}</dt><dd>${escape(x.why)}</dd>`).join('');
+  $('onboarding-manual').innerHTML = array(o.manual_judgement).map(x => `<li>${escape(x)}</li>`).join('');
+  $('onboarding-uncovered').innerHTML = array(o.not_covered).map(x => `<li>${escape(x)}</li>`).join('');
+}
+document.addEventListener('click', event => {
+  const tab = event.target.closest('[data-compare-batch]');
+  if (tab) { state.compareBatch = tab.dataset.compareBatch; renderCompare(); }
+});
 /* ---------- Product workspace events ---------- */
 document.addEventListener('click', event => {
   const scroll = event.target.closest('[data-scroll]');
@@ -1644,6 +1708,7 @@ $('history-review-open').addEventListener('click', () => busyAction(async () => 
 $('project-check').addEventListener('click', () => busyAction(async () => {
   announce('检查已开始：在隔离副本中运行必要测试和入口场景。');
   await projectAction('check');
+  state.projectTab = 'edit';
   announce(`检查结束：${state.projectView.technical_verdict}。`);
 }));
 $('project-revise').addEventListener('click', () => busyAction(async () => {

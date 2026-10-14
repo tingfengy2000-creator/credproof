@@ -495,6 +495,8 @@ class Application:
                 'review_session': self.review_session, 'reviews': self.review_workspace.list(),
                 'bench_available': self.bench_path is not None,
                 'integration_available': self.integration_path is not None,
+                'compare_available': (self.root / 'docs/compare/comparison.json').is_file()
+                                     or (self.root / 'docs/compare/onboarding-dotenv.json').is_file(),
                 'demonstrations': getattr(self, 'demonstrations', []),
                 'review_demonstration': getattr(self, 'review_demonstration', None),
                 'history': [{'id': run.id, 'case_id': run.case_id, 'created_at': run.started_at,
@@ -529,6 +531,27 @@ class Application:
         if not isinstance(data, dict) or data.get('schema') != 'credproof.ci-demo/v1' or not isinstance(data.get('controls'), list):
             raise Problem(409, '流水线演示数据格式不受支持。')
         return {**data, 'notice': '已记录的托管 runner 运行结果，不是本次现场执行。'}
+
+    def compare(self):
+        """Frozen comparison table and recorded external onboarding (docs/compare); read-only."""
+        base = self.root / 'docs/compare'
+        out = {'schema': 'credproof.compare-page/v1', 'notice': '由冻结记录生成，不是本次现场执行。'}
+        for key, name, schema in (('comparison', 'comparison.json', 'credproof.comparison/v1'),
+                                  ('onboarding', 'onboarding-dotenv.json', 'credproof.onboarding/v1')):
+            path = base / name
+            if not path.is_file():
+                out[key] = None
+                continue
+            try:
+                data = read_json(path, 4 * 1024 * 1024)
+            except (OSError, ValueError):
+                raise Problem(409, f'{name} 缺失、过大或无法解析。')
+            if not isinstance(data, dict) or data.get('schema') != schema:
+                raise Problem(409, f'{name} 格式不受支持。')
+            out[key] = data
+        if out['comparison'] is None and out['onboarding'] is None:
+            raise Problem(404, '没有对照与接入数据（docs/compare）。')
+        return out
 
     def bench_overview(self):
         data = self.bench()
@@ -1200,6 +1223,8 @@ class Handler(BaseHTTPRequestHandler):
             return self.send_json(200, app.bench_overview())
         if self.command == 'GET' and path == '/api/integration':
             return self.send_json(200, app.integration())
+        if self.command == 'GET' and path == '/api/compare':
+            return self.send_json(200, app.compare())
         bench_match = re.fullmatch(r'/api/bench/patches/([A-Za-z0-9_.:-]{1,160})', path)
         if self.command == 'GET' and bench_match:
             return self.send_json(200, app.bench_patch(bench_match[1]))

@@ -107,6 +107,18 @@ class ReadOnlyTests(unittest.TestCase):
         self.assertEqual(self.request('/api/bench/patches/..%2Fprivate')[0], 405)
         self.assertEqual(self.request('/api/bench', 'POST', {})[0], 405)
 
+    def test_comparison_materials_are_present_without_enabling_writes(self):
+        status, body = self.request('/api/compare')
+        self.assertEqual(status, 200)
+        data = json.loads(body)
+        for key, name in (('comparison', 'comparison.json'), ('onboarding', 'onboarding-dotenv.json')):
+            source = viewer.REPOSITORY/'docs/compare'/name
+            copied = self.app.root/'docs/compare'/name
+            self.assertEqual(copied.read_bytes(), source.read_bytes())
+            self.assertEqual(data[key], json.loads(source.read_text(encoding='utf8')))
+        self.assertEqual(self.request('/api/compare', 'POST', {})[0], 405)
+        self.assertEqual(self.request('/api/compare?file=/etc/passwd')[0], 400)
+
 
 def main():
     parser = argparse.ArgumentParser()

@@ -403,5 +403,28 @@ class HttpBoundaryTests(unittest.TestCase):
         self.assertEqual(status, 404)
 
 
+class CompareEndpointTests(unittest.TestCase):
+    def test_frozen_comparison_and_onboarding_are_served_read_only(self):
+        app = web.Application(root=REPOSITORY, access_mode='view')
+        data = app.compare()
+        self.assertEqual(data['comparison']['schema'], 'credproof.comparison/v1')
+        self.assertEqual(data['onboarding']['schema'], 'credproof.onboarding/v1')
+        self.assertEqual(data['comparison']['denominators']['total'], 88)
+        self.assertTrue(app.bootstrap()['compare_available'])
+        ids = [m['id'] for m in data['comparison']['methods']]
+        self.assertEqual(ids[-1], 'credproof')
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / 'agent_pilot/fixtures').mkdir(parents=True)
+            (root / 'agent_pilot/fixtures/manifest.json').write_text('{"cases": []}', encoding='utf-8')
+            empty = web.Application(root=root, access_mode='view')
+            with self.assertRaises(web.Problem):
+                empty.compare()
+            (root / 'docs/compare').mkdir(parents=True)
+            (root / 'docs/compare/comparison.json').write_text('{"schema": "other"}', encoding='utf-8')
+            with self.assertRaises(web.Problem):
+                empty.compare()
+
+
 if __name__ == '__main__':
     unittest.main()
