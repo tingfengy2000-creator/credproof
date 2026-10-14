@@ -1,0 +1,415 @@
+{
+  "schema": "credproof.comparison/v1",
+  "generated_from": [
+    {
+      "path": "docs/bench/bench-results.json",
+      "sha256": "24452e195d1f5aae52140917e98c204b6b09f270de711467b89c74b863f05558"
+    }
+  ],
+  "denominators": {
+    "total": 88,
+    "unsafe": 34,
+    "good": 53,
+    "unknown": 1,
+    "note": "unsafe 沿用冻结表 FAIL 分组，含安全违规、业务破坏和过度拒绝，不全是漏洞；good=PASS；UNKNOWN 单列。每种方法有自己的覆盖分母，缺失不当放行或拒绝。"
+  },
+  "methods": [
+    {
+      "id": "ci",
+      "label": "业务测试（CI 中的 pytest）",
+      "observes": "已有业务断言是否通过",
+      "does_not_observe": "断言未覆盖的输出、目录访问、请求与凭据去向",
+      "needs": "项目必要业务测试与其执行环境",
+      "model_required": false,
+      "can_ci_do_this": "可以。规范 CI 可运行 pytest，也可接入静态扫描和本项目的动态检查。",
+      "accepted_unsafe": 13,
+      "rejected_good": 0,
+      "explicit_rejected_good": 0,
+      "invalid": 0,
+      "unknown": 0,
+      "missing": 0,
+      "coverage": {
+        "rows": 88,
+        "unsafe": 34,
+        "good": 53
+      },
+      "example_patch_id": "b07-webhook-relay__qwen3-coder-30b__s1__r0",
+      "example_route": "#patch/b07-webhook-relay__qwen3-coder-30b__s1__r0"
+    },
+    {
+      "id": "static",
+      "label": "冻结的 Gitleaks/Bandit/Semgrep 凭据规则",
+      "observes": "源码与已配置凭据规则的匹配",
+      "does_not_observe": "本批规则未覆盖的运行时秘密值、文件与重定向行为；不代表静态工具的能力上限",
+      "needs": "固定扫描器、规则与可读源码",
+      "model_required": false,
+      "can_ci_do_this": "可以，扫描器可在规范 CI 中运行。",
+      "accepted_unsafe": 28,
+      "rejected_good": 0,
+      "explicit_rejected_good": 0,
+      "invalid": 0,
+      "unknown": 0,
+      "missing": 0,
+      "coverage": {
+        "rows": 88,
+        "unsafe": 34,
+        "good": 53
+      },
+      "example_patch_id": "b07-webhook-relay__qwen3-coder-30b__s1__r0",
+      "example_route": "#patch/b07-webhook-relay__qwen3-coder-30b__s1__r0"
+    },
+    {
+      "id": "judge:qwen2.5-coder:32b-instruct-q4_K_M",
+      "label": "qwen2.5-coder:32b-instruct-q4_K_M（文本裁判）",
+      "observes": "输入源码、规则和测试的文本分析",
+      "does_not_observe": "本次裁判不执行代码，模型解释不能代替请求回执或真实返回值",
+      "needs": "固定本地模型、裁判提示和上下文",
+      "model_required": true,
+      "can_ci_do_this": "可以编排模型裁判；仍需独立执行证据与权限边界。",
+      "accepted_unsafe": 11,
+      "rejected_good": 18,
+      "explicit_rejected_good": 12,
+      "invalid": 7,
+      "unknown": 0,
+      "missing": 21,
+      "coverage": {
+        "rows": 67,
+        "unsafe": 14,
+        "good": 53
+      },
+      "example_patch_id": "b07-webhook-relay__qwen3-coder-30b__s1__r0",
+      "example_route": "#patch/b07-webhook-relay__qwen3-coder-30b__s1__r0"
+    },
+    {
+      "id": "judge:qwen3-coder:30b",
+      "label": "qwen3-coder:30b（文本裁判）",
+      "observes": "输入源码、规则和测试的文本分析",
+      "does_not_observe": "本次裁判不执行代码，模型解释不能代替请求回执或真实返回值",
+      "needs": "固定本地模型、裁判提示和上下文",
+      "model_required": true,
+      "can_ci_do_this": "可以编排模型裁判；仍需独立执行证据与权限边界。",
+      "accepted_unsafe": 14,
+      "rejected_good": 2,
+      "explicit_rejected_good": 1,
+      "invalid": 1,
+      "unknown": 0,
+      "missing": 21,
+      "coverage": {
+        "rows": 67,
+        "unsafe": 14,
+        "good": 53
+      },
+      "example_patch_id": "b07-webhook-relay__qwen3-coder-30b__s1__r0",
+      "example_route": "#patch/b07-webhook-relay__qwen3-coder-30b__s1__r0"
+    },
+    {
+      "id": "credproof",
+      "label": "CredProof 的声明条件验收",
+      "observes": "受控执行中的输出、文件、请求与必要业务条件",
+      "does_not_observe": "未声明场景、未支持的观察通道与真实生产环境",
+      "needs": "人工配置、适配入口、必要测试和隔离环境",
+      "model_required": false,
+      "can_ci_do_this": "可以。本项目已实现 CI 接入；本行以自身观察分组，按定义一致，非独立准确率。",
+      "accepted_unsafe": 0,
+      "rejected_good": 0,
+      "explicit_rejected_good": 0,
+      "invalid": 0,
+      "unknown": 1,
+      "missing": 0,
+      "coverage": {
+        "rows": 88,
+        "unsafe": 34,
+        "good": 53
+      },
+      "example_patch_id": "b01-ticket-digest__qwen2-5-coder-32b-instruct-q4-k-m__s1__r0",
+      "example_route": "#patch/b01-ticket-digest__qwen2-5-coder-32b-instruct-q4-k-m__s1__r0"
+    }
+  ],
+  "batches": [
+    {
+      "id": "ai",
+      "label": "同一冻结批次的全部 AI 补丁",
+      "denominators": {
+        "total": 51,
+        "unsafe": 6,
+        "good": 45,
+        "unknown": 0
+      },
+      "methods": [
+        {
+          "id": "ci",
+          "accepted_unsafe": 6,
+          "rejected_good": 0,
+          "explicit_rejected_good": 0,
+          "invalid": 0,
+          "unknown": 0,
+          "missing": 0,
+          "coverage": {
+            "rows": 51,
+            "unsafe": 6,
+            "good": 45
+          },
+          "example_patch_id": "b07-webhook-relay__qwen3-coder-30b__s1__r0",
+          "example_route": "#patch/b07-webhook-relay__qwen3-coder-30b__s1__r0"
+        },
+        {
+          "id": "static",
+          "accepted_unsafe": 6,
+          "rejected_good": 0,
+          "explicit_rejected_good": 0,
+          "invalid": 0,
+          "unknown": 0,
+          "missing": 0,
+          "coverage": {
+            "rows": 51,
+            "unsafe": 6,
+            "good": 45
+          },
+          "example_patch_id": "b07-webhook-relay__qwen3-coder-30b__s1__r0",
+          "example_route": "#patch/b07-webhook-relay__qwen3-coder-30b__s1__r0"
+        },
+        {
+          "id": "judge:qwen2.5-coder:32b-instruct-q4_K_M",
+          "accepted_unsafe": 6,
+          "rejected_good": 15,
+          "explicit_rejected_good": 9,
+          "invalid": 6,
+          "unknown": 0,
+          "missing": 0,
+          "coverage": {
+            "rows": 51,
+            "unsafe": 6,
+            "good": 45
+          },
+          "example_patch_id": "b07-webhook-relay__qwen3-coder-30b__s1__r0",
+          "example_route": "#patch/b07-webhook-relay__qwen3-coder-30b__s1__r0"
+        },
+        {
+          "id": "judge:qwen3-coder:30b",
+          "accepted_unsafe": 6,
+          "rejected_good": 1,
+          "explicit_rejected_good": 1,
+          "invalid": 0,
+          "unknown": 0,
+          "missing": 0,
+          "coverage": {
+            "rows": 51,
+            "unsafe": 6,
+            "good": 45
+          },
+          "example_patch_id": "b07-webhook-relay__qwen3-coder-30b__s1__r0",
+          "example_route": "#patch/b07-webhook-relay__qwen3-coder-30b__s1__r0"
+        },
+        {
+          "id": "credproof",
+          "accepted_unsafe": 0,
+          "rejected_good": 0,
+          "explicit_rejected_good": 0,
+          "invalid": 0,
+          "unknown": 0,
+          "missing": 0,
+          "coverage": {
+            "rows": 51,
+            "unsafe": 6,
+            "good": 45
+          },
+          "example_patch_id": "b01-ticket-digest__qwen2-5-coder-32b-instruct-q4-k-m__s1__r0",
+          "example_route": "#patch/b01-ticket-digest__qwen2-5-coder-32b-instruct-q4-k-m__s1__r0"
+        }
+      ]
+    },
+    {
+      "id": "anchors",
+      "label": "漏洞原版与人工参考修复锚点",
+      "denominators": {
+        "total": 16,
+        "unsafe": 8,
+        "good": 8,
+        "unknown": 0
+      },
+      "methods": [
+        {
+          "id": "ci",
+          "accepted_unsafe": 5,
+          "rejected_good": 0,
+          "explicit_rejected_good": 0,
+          "invalid": 0,
+          "unknown": 0,
+          "missing": 0,
+          "coverage": {
+            "rows": 16,
+            "unsafe": 8,
+            "good": 8
+          },
+          "example_patch_id": "b01-ticket-digest__vulnerable",
+          "example_route": "#patch/b01-ticket-digest__vulnerable"
+        },
+        {
+          "id": "static",
+          "accepted_unsafe": 8,
+          "rejected_good": 0,
+          "explicit_rejected_good": 0,
+          "invalid": 0,
+          "unknown": 0,
+          "missing": 0,
+          "coverage": {
+            "rows": 16,
+            "unsafe": 8,
+            "good": 8
+          },
+          "example_patch_id": "b01-ticket-digest__vulnerable",
+          "example_route": "#patch/b01-ticket-digest__vulnerable"
+        },
+        {
+          "id": "judge:qwen2.5-coder:32b-instruct-q4_K_M",
+          "accepted_unsafe": 5,
+          "rejected_good": 3,
+          "explicit_rejected_good": 3,
+          "invalid": 1,
+          "unknown": 0,
+          "missing": 0,
+          "coverage": {
+            "rows": 16,
+            "unsafe": 8,
+            "good": 8
+          },
+          "example_patch_id": "b01-ticket-digest__vulnerable",
+          "example_route": "#patch/b01-ticket-digest__vulnerable"
+        },
+        {
+          "id": "judge:qwen3-coder:30b",
+          "accepted_unsafe": 8,
+          "rejected_good": 1,
+          "explicit_rejected_good": 0,
+          "invalid": 1,
+          "unknown": 0,
+          "missing": 0,
+          "coverage": {
+            "rows": 16,
+            "unsafe": 8,
+            "good": 8
+          },
+          "example_patch_id": "b01-ticket-digest__vulnerable",
+          "example_route": "#patch/b01-ticket-digest__vulnerable"
+        },
+        {
+          "id": "credproof",
+          "accepted_unsafe": 0,
+          "rejected_good": 0,
+          "explicit_rejected_good": 0,
+          "invalid": 0,
+          "unknown": 0,
+          "missing": 0,
+          "coverage": {
+            "rows": 16,
+            "unsafe": 8,
+            "good": 8
+          },
+          "example_patch_id": "b01-ticket-digest__vulnerable",
+          "example_route": "#patch/b01-ticket-digest__vulnerable"
+        }
+      ]
+    },
+    {
+      "id": "history",
+      "label": "全部历史 AI 补丁的统一复检",
+      "denominators": {
+        "total": 21,
+        "unsafe": 20,
+        "good": 0,
+        "unknown": 1
+      },
+      "methods": [
+        {
+          "id": "ci",
+          "accepted_unsafe": 2,
+          "rejected_good": 0,
+          "explicit_rejected_good": 0,
+          "invalid": 0,
+          "unknown": 0,
+          "missing": 0,
+          "coverage": {
+            "rows": 21,
+            "unsafe": 20,
+            "good": 0
+          },
+          "example_patch_id": "hist-04",
+          "example_route": "#patch/hist-04"
+        },
+        {
+          "id": "static",
+          "accepted_unsafe": 14,
+          "rejected_good": 0,
+          "explicit_rejected_good": 0,
+          "invalid": 0,
+          "unknown": 0,
+          "missing": 0,
+          "coverage": {
+            "rows": 21,
+            "unsafe": 20,
+            "good": 0
+          },
+          "example_patch_id": "hist-02",
+          "example_route": "#patch/hist-02"
+        },
+        {
+          "id": "judge:qwen2.5-coder:32b-instruct-q4_K_M",
+          "accepted_unsafe": 0,
+          "rejected_good": 0,
+          "explicit_rejected_good": 0,
+          "invalid": 0,
+          "unknown": 0,
+          "missing": 21,
+          "coverage": {
+            "rows": 0,
+            "unsafe": 0,
+            "good": 0
+          },
+          "example_patch_id": null,
+          "example_route": null
+        },
+        {
+          "id": "judge:qwen3-coder:30b",
+          "accepted_unsafe": 0,
+          "rejected_good": 0,
+          "explicit_rejected_good": 0,
+          "invalid": 0,
+          "unknown": 0,
+          "missing": 21,
+          "coverage": {
+            "rows": 0,
+            "unsafe": 0,
+            "good": 0
+          },
+          "example_patch_id": null,
+          "example_route": null
+        },
+        {
+          "id": "credproof",
+          "accepted_unsafe": 0,
+          "rejected_good": 0,
+          "explicit_rejected_good": 0,
+          "invalid": 0,
+          "unknown": 1,
+          "missing": 0,
+          "coverage": {
+            "rows": 21,
+            "unsafe": 20,
+            "good": 0
+          },
+          "example_patch_id": "hist-01",
+          "example_route": "#patch/hist-01"
+        }
+      ]
+    }
+  ],
+  "honest_limits": [
+    "全部 88 记录保留，51 AI、16 锚点、21 历史分开；不同覆盖范围不可直接排总名次。",
+    "样本是开发可见的合成小工具，不代表真实项目分布；本轮未重跑实验或模型。",
+    "rejected_good 沿用冻结汇总的非放行口径（包含 INVALID）；invalid 为交叉计数，不可相加。explicit_rejected_good 只计明确 REJECT。",
+    "静态方法只比较冻结 credential_alert 规则，不等于所有扫描器或数据流分析的能力上限。",
+    "CredProof 分组依据就是自身受控观察与必要条件，本行按定义一致，不是独立盲测或整体准确率。",
+    "规范 CI 可执行相同扫描、业务测试和隔离检查；区别在实际配置的规则与观察，不是有无 CI。"
+  ],
+  "generator": "scripts/compare/build_comparison.py --check 可复算"
+}
