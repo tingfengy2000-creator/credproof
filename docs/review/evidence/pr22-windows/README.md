@@ -32,4 +32,15 @@ node <review-worktree>/docs/review/evidence/pr22-windows/check-compare.mjs <prin
 
 浏览器命令从已安装 Playwright 1.56.1 的目录执行，使用现有 Windows Edge；不下载浏览器。不宣称这些软件/只读检查是新的模型修复或安全集成实验。旧 Agent 失败、人工修复来源及历史统计保持原样。
 
-合并后 Windows 官方嵌入式 Python 运行包与实际启动的收据将追加于本目录，区别程序源码提交、包摘要和后补证据提交；不修改旧包、不创建 Release。
+## 合并后的 Windows 运行包
+
+PR #22 已合并，包内源码提交为 **`30acb104e02e5a6227386c8df9e21ffb77f10c28`**。合并树与已审查 PR 头树完全相同；相对被测实现 `3686c28`，程序、测试、只读入口和两份数据的差异为空，只有审查证据新增。随后交付提交仅添加收据，不改变这个包。
+
+- [cp22-30acb10.zip](https://github.com/user-attachments/files/33466388/cp22-30acb10.zip)，**11,753,546 bytes**。
+- SHA-256：`66529367073b0e207685ab77591e905066e79cf75e3f9d8c0f0ecd7cdfe1dd28`。
+- [构建收据](package/receipt.json)、[完整包内文件摘要](package/file-manifest.json)、[脱敏扫描](package/scan.json)：310 个文件检查，敏感命中 **0**。
+- [实际启动/来源与必需文件核对](package/verification.json)：Windows 中文＋空格目录，直接运行 `start-credproof.cmd --port 0`；来源是随包 Python 3.12.10，`-S` 下仅包内标准库/源码路径，不使用仓库 `.venv`、WSL、模型或作者 PYTHONPATH。两份 JSON 与固定 Git blob **逐字节相同**，8 个 bench 示例配置仍存在。
+- [包内全部路由检查](console-package/summary.json)：`check-console.mjs` exit 0，PASS；无 JS/HTTP 错误和非 GET 请求；[A4 PDF](console-package/report.pdf)。[包内对照页逐批检查](compare-package/summary.json) exit 0，四批次、dotenv 四版本、390px 均通过；[截图](compare-package/compare-desktop.png)。
+- [匿名取件收据](package/anonymous-fetch.json)：8 个固定源码/证据 Raw 正文与 Git blob 比较一致；附件实际重新下载的长度、SHA-256、ZIP CRC 和两份 JSON 均通过。请求不带 Authorization/Cookie。附件不是 GitHub 自动源码 ZIP。
+
+此处复用现有 Windows 主机并用随包解释器实测，不称为新建 Windows 用户或另一台机器验收。没有新的候选执行、安全实验或模型推理。旧包不覆盖，main 不改动，不创建 Release。

@@ -1,0 +1,56 @@
+{
+  "kind": "WINDOWS_EMBEDDED_VIEW_PACKAGE_CHECK",
+  "source_commit": "30acb104e02e5a6227386c8df9e21ffb77f10c28",
+  "zip_file": "cp22-30acb10.zip",
+  "size": 11753546,
+  "sha256": "66529367073b0e207685ab77591e905066e79cf75e3f9d8c0f0ecd7cdfe1dd28",
+  "zip_crc": "PASS",
+  "files": 310,
+  "required_files": [
+    {
+      "path": "docs/compare/comparison.json",
+      "schema": "credproof.comparison/v1",
+      "zip_bytes": 13428,
+      "zip_sha256": "9cb5d326b9e1a106ee692a409c97cea9ac39051e201edf302c31b1a561b5e5ae",
+      "git_blob_bytes": 13428,
+      "git_blob_sha256": "9cb5d326b9e1a106ee692a409c97cea9ac39051e201edf302c31b1a561b5e5ae",
+      "exact_zip_checkout_equal": true,
+      "exact_zip_git_blob_equal": true,
+      "eol_mapping": "Exact Git blob bytes retained, including line endings"
+    },
+    {
+      "path": "docs/compare/onboarding-dotenv.json",
+      "schema": "credproof.onboarding/v1",
+      "zip_bytes": 7693,
+      "zip_sha256": "526edfe3e8981906f6c68f9e9ebda1be104f0ee3010bf51586e7c54a0d5e4060",
+      "git_blob_bytes": 7693,
+      "git_blob_sha256": "526edfe3e8981906f6c68f9e9ebda1be104f0ee3010bf51586e7c54a0d5e4060",
+      "exact_zip_checkout_equal": true,
+      "exact_zip_git_blob_equal": true,
+      "eol_mapping": "Exact Git blob bytes retained, including line endings"
+    }
+  ],
+  "bench_example_configs": 8,
+  "origin": {
+    "python": "3.12.10 (tags/v3.12.10:0cc8128, Apr  8 2025, 12:21:36) [MSC v.1943 64 bit (AMD64)]",
+    "executable": "runtime\\python\\python.exe",
+    "web": "agent_pilot\\web.py",
+    "launch": "agent_pilot\\launch.py",
+    "sys_path": [
+      "runtime\\python\\python312.zip",
+      "runtime\\python",
+      "."
+    ]
+  },
+  "launch": {
+    "command": "start-credproof.cmd --port 0",
+    "cwd_condition": "Windows Chinese and space path",
+    "mode": "view",
+    "actual_url": "http://127.0.0.1:63854",
+    "api_compare_matches_package": true,
+    "reviews": 1,
+    "model_ready": false
+  },
+  "model_calls": 0,
+  "candidate_executions": 0
+}
