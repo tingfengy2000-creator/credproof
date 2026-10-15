@@ -229,13 +229,27 @@ def build(args):
     p.alignment = WD_ALIGN_PARAGRAPH.CENTER
     font(p.add_run("目录"), "黑体", 16, True)
     pages = json.loads(args.toc_pages.read_text(encoding="utf-8")) if args.toc_pages else {}
-    for level, text in toc_entries(manuscript):
+    entries = toc_entries(manuscript)
+    for n, (level, text) in enumerate(entries):
         entry = doc.add_paragraph()
+        if n == 0:
+            # Real TOC field whose cached result is the static list below:
+            # Word can refresh it (更新域), so page numbers follow Word's own pagination.
+            for kind, instr in (("begin", None), (None, 'TOC \\o "1-2" \\h \\z \\u'), ("separate", None)):
+                r = entry.add_run()
+                if kind:
+                    el = OxmlElement("w:fldChar"); el.set(qn("w:fldCharType"), kind)
+                else:
+                    el = OxmlElement("w:instrText"); el.set(qn("xml:space"), "preserve"); el.text = " " + instr + " "
+                r._r.append(el)
         fmt(entry, indent=False, after=0)
         entry.paragraph_format.left_indent = Pt(0 if level == 1 else 24)
         entry.paragraph_format.tab_stops.add_tab_stop(Cm(BODY_WIDTH_CM), WD_TAB_ALIGNMENT.RIGHT, WD_TAB_LEADER.DOTS)
         font(entry.add_run(text), "宋体", 12, level == 1)
         font(entry.add_run("\t" + str(pages.get(text, "00"))), "宋体", 12)
+        if n == len(entries) - 1:
+            el = OxmlElement("w:fldChar"); el.set(qn("w:fldCharType"), "end")
+            entry.add_run()._r.append(el)
 
     lines = manuscript.split("## 摘要\n", 1)[1].splitlines()
     doc.add_page_break()
