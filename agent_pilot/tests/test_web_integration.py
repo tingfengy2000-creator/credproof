@@ -67,6 +67,8 @@ class IntegrationEndpointTests(unittest.TestCase):
 class DemoDataTests(unittest.TestCase):
     def test_committed_demo_file_matches_its_generator(self):
         import subprocess, sys
+        if not (REPOSITORY / 'docs/integration/evidence/ci-c/results.json').is_file():
+            self.skipTest('raw CI run evidence is kept in the source repository, not the release')
         result = subprocess.run([sys.executable, str(REPOSITORY / 'scripts/integration/build_ci_demo.py'), '--check'],
                                 capture_output=True, text=True, cwd=REPOSITORY)
         self.assertEqual(result.returncode, 0, result.stderr or result.stdout)
