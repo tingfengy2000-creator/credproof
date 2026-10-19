@@ -1,0 +1,188 @@
+- link "跳到主要内容":
+  - /url: "#main"
+- complementary "主导航":
+  - link "密证 CredProof Python 工具安全修改验收":
+    - /url: "#home"
+    - generic: 证
+    - strong: 密证 CredProof
+    - generic: Python 工具安全修改验收
+  - navigation "页面":
+    - link "首页":
+      - /url: "#home"
+      - text: 首页
+    - link "我的项目":
+      - /url: "#projects"
+      - text: 我的项目
+    - link "新建检查":
+      - /url: "#new"
+      - text: 新建检查
+    - link "复检导出包":
+      - /url: "#recheck"
+      - text: 复检导出包
+    - link "运行环境":
+      - /url: "#environment"
+      - text: 运行环境
+    - link "对照与接入":
+      - /url: "#compare"
+      - text: 对照与接入
+    - link "对照评测":
+      - /url: "#overview"
+      - text: 对照评测
+    - link "补丁记录":
+      - /url: "#patches"
+      - text: 补丁记录
+    - link "流水线闸门" [active]:
+      - /url: "#pipeline"
+      - text: 流水线闸门
+    - link "案例回放":
+      - /url: "#workbench"
+      - text: 案例回放
+    - link "命令行接入":
+      - /url: "#project-entry"
+      - text: 命令行接入
+    - link "工作原理":
+      - /url: "#method"
+      - text: 工作原理
+- banner:
+  - heading "流水线闸门" [level=1]
+  - link "只读模式：不执行检查":
+    - /url: "#environment"
+  - generic: 只读回放：不执行代码，不调用模型
+  - generic: 本机服务已连接
+- main:
+  - paragraph: 合并之前，流水线先看运行证据。
+  - paragraph: CredProof 作为拉取请求（PR）上的一道检查运行：业务测试全部通过，也拦得住会把凭据送到禁止服务的补丁。下面是在 GitHub 托管的 Ubuntu 24.04 虚拟机上实际运行的记录，不是本次现场执行。
+  - article:
+    - paragraph: 拉取请求
+    - heading "提交漏洞补丁的 PR" [level=3]
+    - paragraph: 入口文件与 Qwen3-Coder 30B 在评测中交回的“修复”逐字节相同，即未修改的漏洞原版。
+    - generic: 不通过
+    - table:
+      - rowgroup:
+        - row "检查任务 业务测试 CredProof 退出码":
+          - columnheader "检查任务"
+          - columnheader "业务测试"
+          - columnheader "CredProof"
+          - columnheader "退出码"
+      - rowgroup:
+        - row "Linux 直接运行 2/2 全部通过 不通过 2":
+          - cell "Linux 直接运行"
+          - cell "2/2 全部通过"
+          - cell "不通过":
+            - generic: 不通过
+          - cell "2"
+        - row "Docker 容器 2/2 全部通过 不通过 2":
+          - cell "Docker 容器"
+          - cell "2/2 全部通过"
+          - cell "不通过":
+            - generic: 不通过
+          - cell "2"
+    - heading "代码扫描告警 3 条" [level=4]
+    - list:
+      - strong: 每个声明的场景得到预期结果
+      - generic: 场景结果不符：“allowed_service_redirect_refused”预期抛出 HTTPError，实际正常返回。
+      - strong: 禁止的服务没有收到请求
+      - generic: 禁止的服务收到 1 次请求，其中 1 次携带了认证凭据。
+      - strong: 没有未授权的连接
+      - generic: 观测到向允许服务以外地址的连接尝试 1 次。
+    - paragraph: 合并被闸门拦下：业务测试通过，但运行中观测到上述违规。
+  - article:
+    - paragraph: 拉取请求
+    - heading "提交参考修复的 PR" [level=3]
+    - paragraph: 人工编写的参考修复，不是新的 AI 输出。
+    - generic: 通过
+    - table:
+      - rowgroup:
+        - row "检查任务 业务测试 CredProof 退出码":
+          - columnheader "检查任务"
+          - columnheader "业务测试"
+          - columnheader "CredProof"
+          - columnheader "退出码"
+      - rowgroup:
+        - row "Linux 直接运行 2/2 全部通过 通过 0":
+          - cell "Linux 直接运行"
+          - cell "2/2 全部通过"
+          - cell "通过":
+            - generic: 通过
+          - cell "0"
+        - row "Docker 容器 2/2 全部通过 通过 0":
+          - cell "Docker 容器"
+          - cell "2/2 全部通过"
+          - cell "通过":
+            - generic: 通过
+          - cell "0"
+    - heading "代码扫描告警" [level=4]
+    - paragraph: 没有代码扫描告警：本配置声明的 14 项条件全部满足。
+    - paragraph: 闸门放行：可以进入人工审阅与合并。
+  - region "一次 PR 检查做了什么":
+    - heading "一次 PR 检查做了什么" [level=2]
+    - paragraph: 每次 PR 运行两个互相独立的检查任务：Linux 直接运行（直接在 Linux 上准备运行时并检查（不用 Docker））；Docker 容器（从同一提交构建镜像，在容器内检查）。两个任务各自判定、各自保留完整证据。
+    - list:
+      - strong: 检出代码
+      - strong: 准备运行时或构建镜像
+      - strong: doctor 自检隔离环境
+      - strong: 逐个配置运行 check
+      - strong: 上传报告、JUnit、摘要和 SARIF
+      - strong: 按退出码判定是否放行
+  - region "接进自己的仓库":
+    - heading "接进自己的仓库" [level=2]
+    - paragraph: 不需要模型，也不需要 GPU。一个检查清单、一条命令，结论按退出码交给流水线。
+    - heading "检查哪些项目" [level=3]
+    - paragraph:
+      - text: 在
+      - code: .credproof/targets.txt
+      - text: 中每行写一个已适配项目的配置。
+    - generic: examples/bench/b07-webhook-relay/project/credproof.toml
+    - heading "在容器中运行检查" [level=3]
+    - paragraph: 非 root、不加能力、断网、只读根文件系统；隔离由容器内的沙箱完成。
+    - generic: docker run --rm \ --network none --read-only --tmpfs /tmp:exec \ --cap-drop ALL --security-opt no-new-privileges \ --security-opt seccomp=deploy/docker/seccomp-credproof.json \ --security-opt systempaths=unconfined \ -v "$PWD:/workspace:ro" -v "$PWD/credproof-out:/out" \ credproof:<版本> check --config /workspace/<配置路径> \ --source-root /workspace --sarif /out/credproof.sarif \ --junit /out/junit.xml --summary /out/summary.md
+    - heading "按退出码决定能否合并" [level=3]
+    - table:
+      - rowgroup:
+        - row "退出码 含义 闸门":
+          - columnheader "退出码"
+          - columnheader "含义"
+          - columnheader "闸门"
+      - rowgroup:
+        - row "0 通过 放行":
+          - cell "0"
+          - cell "通过"
+          - cell "放行"
+        - row "2 不通过 拦下":
+          - cell "2"
+          - cell "不通过"
+          - cell "拦下"
+        - row "3 证据不足（按不通过处理） 拦下":
+          - cell "3"
+          - cell "证据不足（按不通过处理）"
+          - cell "拦下"
+        - row "4 配置、参数或环境错误 拦下":
+          - cell "4"
+          - cell "配置、参数或环境错误"
+          - cell "拦下"
+    - heading "结果出现在哪里" [level=3]
+    - list:
+      - strong: SARIF
+      - text: ：GitHub 代码扫描告警，逐条写明未满足的条件和事实。
+      - strong: JUnit
+      - text: ：GitLab、Jenkins 等通用的测试报告，14 项条件各一个用例。
+      - strong: 摘要
+      - text: ：流水线页面上的一页中文结论，附本地复现命令。
+  - region "这套运行环境本身的验收":
+    - heading "这套运行环境本身的验收" [level=2]
+    - paragraph: 两次 PR 运行中同时完成；结论只依据实际退出码和报告。
+    - term: 冻结锚点（Linux 直接运行）
+    - definition: 16/16 一致
+    - term: 冻结锚点（Docker 容器）
+    - definition: 16/16 一致
+    - term: Docker 默认参数下
+    - definition: 自检退出 4，结论证据不足（退出 3）
+    - term: 镜像隐私扫描
+    - definition: 8,960 个文件，未豁免命中 0
+    - term: 单次检查耗时
+    - definition: 1.0–1.5 秒
+    - term: 模型调用
+    - definition: 0 次
+    - paragraph: 容器以显式选择的外层 AppArmor unconfined 方式运行，并为固定 bwrap 加载 userns 例外；限定版 AppArmor profile 尚未验收。 默认参数下判“证据不足”是预期的安全失败：沙箱建不起来时不会给出通过。
+  - paragraph: 数据来源：GitHub 托管 ubuntu-24.04 虚拟机（内核 6.17.0-1022-azure，Python 3.12.3），基础镜像 534baea6a22c；程序提交 466534c79eac，冻结锚点提交 a5b51e303315。只覆盖已适配配置声明的入口、必要测试和访问组件，使用合成凭据与本地模拟服务；两条演示只证明闸门给出一红一绿，不代表全项目安全。
+- status

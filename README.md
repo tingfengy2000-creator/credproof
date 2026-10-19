@@ -51,7 +51,7 @@
 | Python | 3.12（≥3.11 可运行查看模式） | 程序本体；核心包**只用标准库** | 始终 |
 | bubblewrap | Ubuntu 24.04 官方包 | 无特权命名空间隔离 | 隔离验收、现场 |
 | 隔离运行时 | `scripts/runtime/setup-linux.py` 生成 | 只读 rootfs、固定 bwrap、受控 venv（pytest 等） | 隔离验收、现场 |
-| pytest、requests | 见 `credproof_safety/requirements-lock.txt` | 在隔离环境中运行被测项目的业务测试 | 由运行时准备脚本按哈希安装 |
+| pytest 及其依赖 | 见 `credproof_safety/requirements-lock.txt` | 在隔离环境中运行被测项目的业务测试 | 由运行时准备脚本按哈希安装；额外项目依赖需另行适配 |
 | Qwen-Agent、ollama（Python） | 0.0.34、0.6.0，完整锁定见 `agent_pilot/requirements-lock.txt` | 本地模型候选与 Agent 试点 | 现场模式、全部测试 |
 | Ollama + Qwen 模型 | 见第四节 | 本地推理 | 现场模式 |
 | Docker | 24 及以上 | 加固容器中运行检查 | 可选（CI） |
@@ -64,15 +64,26 @@
   2. 在 Ubuntu 中安装系统包并准备运行时（系统 `python3` 必须是 Ubuntu 24.04 自带的 3.12）：
      ```sh
      sudo apt-get install -y python3 python3-venv bubblewrap ca-certificates libseccomp2
-     cd /mnt/<解压目录所在盘>/<解压目录>
+     cd "/mnt/<解压目录所在盘>/<解压目录>"
      python3 scripts/runtime/setup-linux.py --runtime-root ~/credproof-agent-runtime
+     CREDPROOF_RUNTIME_ROOT=~/credproof-agent-runtime python3 -m credproof_safety doctor
      ```
   3. 在 Windows 解压目录下新建 `config/local-runtime.json`（可复制 `config/runtime.example.json`）：
      ```json
      { "wsl_distribution": "Ubuntu-24.04", "wsl_user": "", "runtime_root": "~/credproof-agent-runtime" }
      ```
-  4. 运行 `check-runtime.cmd` 只读自检；就绪后双击 `start-recheck.cmd`。页面右上角显示“可以检查：隔离环境就绪”。
-- **现场模式**：在完成隔离验收准备的基础上，按第四节安装模型，再运行 `scripts\setup-local-agent.cmd`（创建 `.venv` 并安装锁定的 Qwen-Agent 依赖），最后双击 `start-live.cmd`。
+  4. 上一步 `doctor` 返回 `ready=true`、退出码 0，表示纯检查运行时就绪。Windows 侧可用随包 Python 只读核对工作台能否找到它：
+     ```bat
+     runtime\python\python.exe -S -c "from credproof_safety.runner import available; print(available())"
+     ```
+  5. 先关闭查看模式的服务窗口，再启动隔离验收。已有可用 Windows Python 的电脑可双击 `start-recheck.cmd`；未安装 Python 时，在解压目录的命令提示符中使用随包解释器：
+     ```bat
+     runtime\python\python.exe -S -m agent_pilot.launch --demo --mode recheck --auto-port --open-browser
+     ```
+     页面右上角应显示“可以检查：隔离环境就绪”。`start-recheck.cmd` 本身调用 PATH 中的 `python`，不自动选择随包解释器，也不自动换端口；命令行方式可避免这两项准备差异。
+- **现场模式**：按第四节准备独立模型运行时，并安装完整 Windows Python 3.12，再运行 `scripts\setup-local-agent.cmd` 创建主机侧 `.venv`，最后启动 `start-live.cmd`。随包嵌入式 Python 用于零安装查看和固定检查，不用于创建这个开发虚拟环境。
+
+`check-runtime.cmd` 检查的是**模型运行时**的完整探针与模型文件，不是纯检查运行时的 `doctor`。第三节尚未安装模型时，该命令报告模型未就绪是正常的，不影响页面按 `runner.available()` 执行固定检查。已有目录若缺少匹配的准备收据，请保留旧目录并选择新的 `--runtime-root`，不要覆盖或手改清单。包含中文或空格的解压路径，在 WSL 的 `cd` 命令中须用引号包住完整路径。
 
 ### 3.3 Linux（Ubuntu 24.04 x86_64，原生运行）
 
@@ -122,27 +133,49 @@ GitHub Actions 示例：`.github/workflows/credproof.yml` 定义了 Runner 原�
 | Agent 框架 | **Qwen-Agent 0.0.34**（原生结构化工具调用） | 命令行 `repair --strategy qwen_agent`：读取允许的代码与脱敏证据、提交候选、接收程序验收反馈 |
 | 受限补丁策略 | `bounded_patch`（单次结构化请求，返回 PATCH/STOP） | 网页“请本地模型提出候选”与 `repair --strategy bounded_patch` 使用 |
 
-**模型在系统中的位置**：模型只负责“提出候选修改”，**不参与判定**。候选保存为新版本后状态是“证据不足、待定、未应用”，必须经过同一个隔离检查器和人工决定。模型进程运行在独立的 bubblewrap 边界中：只有回环网络，代码与模型目录只读挂载，看不到项目仓库、修复历史和真实凭据。
+**模型在系统中的位置**：模型只负责“提出候选修改”，**不参与判定**。候选保存为新版本后状态是“证据不足、待定、未应用”，必须经过同一个隔离检查器和人工决定。模型进程运行在独立的 bubblewrap 边界中：只有回环网络，仅挂载本次程序准备的授权代码工作包、依赖、所选模型文件和必要驱动；不挂载整个项目仓库、修复历史或真实凭据。生成请求仍会包含授权入口、必要测试和脱敏反馈。
 
-**硬件建议**：NVIDIA 显卡，显存 ≥ 24 GB（团队测试机为 32 GB 显存）；无显卡时可用 CPU 运行但非常慢。查看、修订、审批、检查与复检**都不需要显卡**。
+**硬件与支持环境**：本版现场入口的已验证环境是 **Windows + WSL2 Ubuntu 24.04 + NVIDIA CUDA**，测试环境有 32 GB 显存。现有启动器明确挂载 WSL 驱动与 `/dev/dxg`，并选择 CUDA 后端；不能把原生 Linux 或纯 CPU 的 Ollama 可运行等同于本入口已验证。查看、人工修订、审批、固定检查与复检**都不需要显卡**。
 
-### 4.2 安装与配置（在 WSL 或 Linux 中，接第三节的运行时目录）
+### 4.2 安装与配置（当前现场入口：Windows + WSL2）
+
+**与第三节的纯检查运行时分开准备。** `setup-linux.py` 会固定其 venv 文件清单；之后直接往同一目录安装 Agent 依赖，会使原准备收据失效。为模型另选新的版本化目录，在依赖安装完成后使用现有 `agent_pilot.isolation` 入口准备和探测模型运行边界；不要修改已有 rootfs、清单或探针结果来标记就绪。以下准备命令在解压目录对应的 WSL 路径中、以普通用户运行：
 
 ```sh
-RT=~/credproof-agent-runtime                      # 与 local-runtime.json 中的 runtime_root 一致
-# 1) Agent 依赖装进运行时 venv（模型边界只读挂载这个目录）
-$RT/venv/bin/pip install -r agent_pilot/requirements-lock.txt
-# 2) Ollama：从官方发布页下载 Linux amd64 版本，解压到 $RT/ollama（应得到 $RT/ollama/bin/ollama）
-# 3) 把模型下载到运行时的模型目录
-OLLAMA_MODELS=$RT/models $RT/ollama/bin/ollama serve &          # 临时启动一次，用于下载
-OLLAMA_MODELS=$RT/models $RT/ollama/bin/ollama pull qwen3-coder:30b
-OLLAMA_MODELS=$RT/models $RT/ollama/bin/ollama pull qwen2.5-coder:32b-instruct-q4_K_M   # 可选
-kill %1                                                          # 下载完成后停止；现场模式会在隔离边界内自行启动
+RT="$HOME/credproof-model-runtime"                  # 选择尚不存在的新目录
+python3 -m venv "$RT/venv"
+"$RT/venv/bin/python" -m pip install --require-hashes -r credproof_safety/requirements-lock.txt
+"$RT/venv/bin/python" -m pip install -r agent_pilot/requirements-lock.txt
+CREDPROOF_RUNTIME_ROOT="$RT" python3 -m agent_pilot.isolation prepare
+CREDPROOF_RUNTIME_ROOT="$RT" python3 -m agent_pilot.isolation probe
 ```
+
+最后一条须返回 `ready=true`。它只执行固定的无害边界探针，不调用模型。缺依赖、权限或探针失败时先停止，不使用旧探针代替。
+
+从 [Ollama 官方发布页](https://github.com/ollama/ollama/releases) 获取 Linux amd64 **完整归档**（现有运行记录使用 0.34.4），按发布页的校验信息核对后解压到 `$RT/ollama`：须同时有 `bin/ollama` 和 `lib/ollama/`，包括启动器使用的 `cuda_v12` 库，不能只复制可执行文件。手动归档的安装说明见 [官方 Linux 文档](https://docs.ollama.com/linux)。以下为模型环境准备步骤；查看和固定检查不需要下载模型权重。
+
+下载模型是联网准备阶段；推理阶段由程序另启隔离服务。先确认下面的准备端口未被占用，避免把模型下载进另一份已运行服务的目录：
+
+```sh
+export OLLAMA_HOST=127.0.0.1:11436
+export OLLAMA_MODELS="$RT/models"
+export OLLAMA_NO_CLOUD=1
+"$RT/ollama/bin/ollama" serve > "$RT/model-download.log" 2>&1 &
+OLLAMA_PREP_PID=$!
+# 确认本进程仍在运行，并在另一终端确认此地址的服务已就绪后执行 pull。
+"$RT/ollama/bin/ollama" pull qwen3-coder:30b
+# 仅需要备选模型时再下载；不是启动查看/检查模式的必要条件。
+# "$RT/ollama/bin/ollama" pull qwen2.5-coder:32b-instruct-q4_K_M
+kill "$OLLAMA_PREP_PID"                            # 只停止本次启动的准备进程
+wait "$OLLAMA_PREP_PID" 2>/dev/null || true
+unset OLLAMA_HOST OLLAMA_MODELS OLLAMA_NO_CLOUD
+```
+
+在 Windows 的 `config/local-runtime.json` 中把 `runtime_root` 改为这份模型运行时（例如 `~/credproof-model-runtime`）；WSL 发行版和用户保持实际值。需要回到第三节独立的纯检查运行时，切回其目录即可。配置及模型目录只放在操作者机器上，不打进发布包。
 
 - 选择模型：设置环境变量 `CREDPROOF_MODEL_PROFILE=qwen3`（默认）或 `qwen25`。
 - 程序会核对模型清单摘要，不做任何自动回退：`qwen3` 为 `06c1097efce0431c2045fe7b2e5108366e43bee1b4603a7aded8f21689e90bca`，`qwen25` 为 `b92d6a0bd47ee79114298de0177bf920c05a706d12633950b3936778492bef41`。若上游更新了同名标签导致摘要不同，现场模式会拒绝启动并说明原因。
-- Windows 主机侧：运行 `scripts\setup-local-agent.cmd`（Python 3.12 虚拟环境 + 锁定依赖），然后 `start-live.cmd`；`check-runtime.cmd` 会只读检查隔离材料与模型清单是否就绪。
+- Windows 主机侧：安装完整 Python 3.12 后，运行 `scripts\setup-local-agent.cmd`（创建 Python 3.12 虚拟环境并安装锁定依赖），再运行 `check-runtime.cmd`，确认保存的完整隔离探针、模型清单及文件就绪后启动 `start-live.cmd`。此自检只读，不等于执行了新的模型边界实验；实际提案仍须通过本次启动的边界检查。旧案例工作台的现场任务另需可信安装解释器 `program_python`，未配置会明确拒绝，不回退到历史安装。
 - 预算上限（防止无限调用）：单任务最多 4 次模型请求、3 个候选、上下文 16K、单次请求 120 秒、总计 900 秒；网页单次提案只发 1 次请求。
 
 ---

@@ -1,0 +1,233 @@
+{
+  "schema": "credproof.delivery-qa/v1",
+  "base_source_commit": "7693dcc6f3f9ff301d46d3f988f61fcc257446a4",
+  "tested_program": "official-embed Python 3.12.10 from extracted Chinese-and-space path",
+  "model_calls": 0,
+  "view": {
+    "windows_explorer_double_click": true,
+    "routes_verified": [
+      "#home",
+      "#new",
+      "#projects",
+      "#compare",
+      "#pipeline"
+    ],
+    "automated_edge_summary": "view-browser-summary.json",
+    "iab_console_errors": []
+  },
+  "check_runtime": {
+    "preparation": "CREATED",
+    "doctor_ready": true,
+    "setup_exit_code": 0,
+    "wsl": "Ubuntu-24.04",
+    "runtime_root": "~/credproof-release-20261019",
+    "kernel": "6.18.33.2-microsoft-standard-WSL2",
+    "python": "3.12.3"
+  },
+  "recheck_entry": "start-recheck.cmd; per-process PATH prefixed with bundled runtime/python (no system Python substitution)",
+  "review_id": "9081f4df67724effae185c75422d3da9",
+  "results": [
+    {
+      "version": "v000",
+      "source": "packaged_original",
+      "verdict": "FAIL",
+      "report": "recheck/v000/report.json",
+      "checked_at_utc": "2026-10-19T14:28:49Z",
+      "code_sha256": "a414897a532870fa9aae2d9f2cea09cf90747670df9f716f683879bdfdc72106",
+      "necessary_conditions": 14,
+      "conditions_passed": 7,
+      "failed_checks": [
+        "pytest",
+        "required_pytest_tests",
+        "required_entry_scenarios",
+        "no_forbidden_file_read",
+        "no_credential_output",
+        "no_forbidden_service_receipt",
+        "no_unauthorized_connection"
+      ],
+      "pytest_exit_code": 1,
+      "pytest_collected": 4,
+      "pytest_executed": 4,
+      "pytest_passed": 2,
+      "pytest_failed": 2,
+      "entry_scenarios": [
+        {
+          "name": "normal_allowed_output",
+          "complete": null,
+          "keys": [
+            "name",
+            "expected_error",
+            "require_network",
+            "request",
+            "entry_returned",
+            "raised",
+            "request_observations"
+          ]
+        },
+        {
+          "name": "allowed_file_redirect",
+          "complete": null,
+          "keys": [
+            "name",
+            "expected_error",
+            "require_network",
+            "request",
+            "entry_returned",
+            "raised",
+            "request_observations"
+          ]
+        }
+      ],
+      "credential_output_channels": [
+        "stdout",
+        "logs",
+        "return"
+      ],
+      "file_attempts": {
+        "file_attempts": 13,
+        "forbidden_file_attempts": 1,
+        "out_of_scope_file_attempts": 0,
+        "connection_attempts": 6,
+        "forbidden_service_receipts": 1,
+        "credential_success_evidence": true
+      },
+      "requests": [
+        {
+          "service": "allow",
+          "path": "/api",
+          "authorization_present": true,
+          "credential_ok": true
+        },
+        {
+          "service": "allow",
+          "path": "/api",
+          "authorization_present": true,
+          "credential_ok": true
+        },
+        {
+          "service": "allow",
+          "path": "/api",
+          "authorization_present": true,
+          "credential_ok": true
+        },
+        {
+          "service": "allow",
+          "path": "/api",
+          "authorization_present": true,
+          "credential_ok": true
+        },
+        {
+          "service": "allow",
+          "path": "/api/redirect",
+          "authorization_present": true,
+          "credential_ok": true
+        },
+        {
+          "service": "forbidden",
+          "path": "/secret",
+          "authorization_present": true,
+          "credential_ok": true
+        }
+      ],
+      "application": "NOT_APPLIED",
+      "human_decision": "PENDING"
+    },
+    {
+      "version": "v001",
+      "source": "developer_submitted_packaged_fixed_control_NOT_AI_GENERATED",
+      "verdict": "PASS",
+      "report": "recheck/v001/report.json",
+      "checked_at_utc": "2026-10-19T14:29:29Z",
+      "code_sha256": "f90196cb9bd8775f283c67b779e16ab0a052510693a83a8512d186f12833b360",
+      "necessary_conditions": 14,
+      "conditions_passed": 14,
+      "failed_checks": [],
+      "pytest_exit_code": 0,
+      "pytest_collected": 4,
+      "pytest_executed": 4,
+      "pytest_passed": 4,
+      "pytest_failed": 0,
+      "entry_scenarios": [
+        {
+          "name": "normal_allowed_output",
+          "complete": null,
+          "keys": [
+            "name",
+            "expected_error",
+            "require_network",
+            "request",
+            "entry_returned",
+            "raised",
+            "request_observations"
+          ]
+        },
+        {
+          "name": "allowed_file_redirect",
+          "complete": null,
+          "keys": [
+            "name",
+            "expected_error",
+            "require_network",
+            "request",
+            "entry_returned",
+            "raised",
+            "request_observations"
+          ]
+        }
+      ],
+      "credential_output_channels": [],
+      "file_attempts": {
+        "file_attempts": 11,
+        "forbidden_file_attempts": 0,
+        "out_of_scope_file_attempts": 0,
+        "connection_attempts": 4,
+        "forbidden_service_receipts": 0,
+        "credential_success_evidence": true
+      },
+      "requests": [
+        {
+          "service": "allow",
+          "path": "/api",
+          "authorization_present": true,
+          "credential_ok": true
+        },
+        {
+          "service": "allow",
+          "path": "/api",
+          "authorization_present": true,
+          "credential_ok": true
+        },
+        {
+          "service": "allow",
+          "path": "/api",
+          "authorization_present": true,
+          "credential_ok": true
+        },
+        {
+          "service": "allow",
+          "path": "/api/redirect",
+          "authorization_present": true,
+          "credential_ok": true
+        }
+      ],
+      "application": "NOT_APPLIED",
+      "human_decision": "PENDING"
+    }
+  ],
+  "model_installation_scope": {
+    "guide_reviewed": true,
+    "fixed_prepare_probe_tested": true,
+    "new_agent_dependency_installation": false,
+    "new_ollama_installation": false,
+    "new_model_download": false,
+    "new_inference": false
+  },
+  "preserved_precheck_failure": {
+    "action": "agent_pilot.isolation probe without model prepare, against pure-check runtime",
+    "exit_code": 1,
+    "status": "ISOLATION_ERROR",
+    "reason": "Isolation facilities changed since the probe",
+    "source": "prior command output, not recreated raw stdout",
+    "explanation": "Pure-check setup receipt and model-boundary runner identity differ; keep pure-check runtime untouched and use separate prepare -> probe for the model environment."
+  }
+}

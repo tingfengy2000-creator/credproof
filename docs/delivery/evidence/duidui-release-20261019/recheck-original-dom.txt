@@ -1,0 +1,167 @@
+- link "跳到主要内容":
+  - /url: "#main"
+- complementary "主导航":
+  - link "密证 CredProof Python 工具安全修改验收":
+    - /url: "#home"
+    - generic: 证
+    - strong: 密证 CredProof
+    - generic: Python 工具安全修改验收
+  - navigation "页面":
+    - link "首页":
+      - /url: "#home"
+      - text: 首页
+    - link "我的项目":
+      - /url: "#projects"
+      - text: 我的项目
+    - link "新建检查":
+      - /url: "#new"
+      - text: 新建检查
+    - link "复检导出包":
+      - /url: "#recheck"
+      - text: 复检导出包
+    - link "运行环境":
+      - /url: "#environment"
+      - text: 运行环境
+    - link "对照与接入":
+      - /url: "#compare"
+      - text: 对照与接入
+    - link "对照评测":
+      - /url: "#overview"
+      - text: 对照评测
+    - link "补丁记录":
+      - /url: "#patches"
+      - text: 补丁记录
+    - link "流水线闸门":
+      - /url: "#pipeline"
+      - text: 流水线闸门
+    - link "案例回放":
+      - /url: "#workbench"
+      - text: 案例回放
+    - link "命令行接入":
+      - /url: "#project-entry"
+      - text: 命令行接入
+    - link "工作原理":
+      - /url: "#method"
+      - text: 工作原理
+- banner:
+  - heading "项目" [level=1]
+  - link "可以检查：隔离环境就绪":
+    - /url: "#environment"
+  - generic: 隔离验收：执行检查，不调用模型
+  - generic: 本机服务已连接
+- main:
+  - link "返回我的项目":
+    - /url: "#projects"
+    - text: 返回我的项目
+  - heading "资料助手（问题版本）" [level=2]
+  - paragraph: 项目检查，当前 v000（接入时的代码），共 1 版；代码摘要 a414897a5328；接入于 2026/10/19 22:28:41
+  - strong: 下一步：修订代码，再重新检查
+  - paragraph: 检查器观察到违规或必要行为没有发生，这一版不能采纳。
+  - generic "三个独立状态":
+    - article:
+      - heading "技术结论" [level=3]
+      - generic: 不通过
+      - paragraph: 检查于 2026/10/19 22:28:49，报告适用于当前版本。
+    - article:
+      - heading "人工决定" [level=3]
+      - generic: 待决定
+      - paragraph: 技术通过不会自动采纳，需要负责人做决定。
+    - article:
+      - heading "原项目" [level=3]
+      - generic: 未应用
+      - paragraph: 采纳不等于应用。导出后由开发者自行应用，原项目保持不变。
+  - region "检查结果":
+    - heading "检查结果" [level=2]
+    - paragraph: v000 的报告，检查于 2026/10/19 22:28:49。“五个问题”是对报告字段的归纳，判定以 14 项必要条件为准。
+    - button "运行检查":
+      - text: 运行检查
+    - paragraph: 检查会在一次性隔离副本中运行必要测试和每个入口场景，不调用模型。
+    - generic: FAIL
+    - generic: 实际违规：观察到越界读取、禁止请求或凭据外流。
+    - generic: 用时 2.6 秒
+    - strong: 正常业务还在吗？
+    - text: 必要测试是否执行；文件是否实际读取；允许服务是否收到认证请求
+    - generic: 部分失败
+    - generic: 必要测试 4/4 执行、2 项通过；允许资料访问 4 次（要求必须读取）；允许服务收到带凭据的请求 5 次（要求必须认证）。
+    - strong: 文件有没有读出范围？
+    - text: 声明的允许目录与实际访问观察
+    - generic: 越界
+    - generic: 允许目录 data/ 访问 4 次；禁止目录 secrets/ 访问 1 次（secrets/secret.txt）；范围外访问 0 次。
+    - strong: 请求有没有到不该去的地方？
+    - text: 初始请求、跳转，以及允许和禁止服务各自的回执
+    - generic: 到了禁止处
+    - generic: 允许服务收到 5 次请求，禁止服务收到 1 次，未授权连接 1 次。 场景 allowed_file_redirect：跟随跳转到了禁止服务。
+    - strong: 凭据去了哪里？
+    - text: 已观察到的输出通道和禁止服务匹配结果，全部脱敏
+    - generic: 外流
+    - generic: 凭据出现在日志、返回值、标准输出中；禁止服务收到带凭据的请求 1 次。
+    - strong: 现在能不能采纳？
+    - text: 技术结论、人工决定、应用状态分别显示
+    - generic: 不能采纳
+    - generic: 技术结论 FAIL；人工决定：待决定；未应用到原项目。
+    - generic: 未满足的必要条件：业务测试进程正常结束；必要业务测试全部执行并通过；每个声明的场景得到预期结果；没有读取禁止目录；返回值、输出、日志和异常中没有凭据；禁止的服务没有收到请求；没有未授权的连接
+    - generic "14 项必要条件"
+    - generic: 下载报告：
+    - link "JSON":
+      - /url: /api/review/9081f4df67724effae185c75422d3da9/report.json
+    - link "SARIF（代码扫描）":
+      - /url: /api/review/9081f4df67724effae185c75422d3da9/report.sarif
+    - link "JUnit":
+      - /url: /api/review/9081f4df67724effae185c75422d3da9/report.junit
+    - link "中文摘要":
+      - /url: /api/review/9081f4df67724effae185c75422d3da9/report.md
+    - generic "完整检查报告（原始数据，凭据已脱敏）"
+  - region "代码与修订":
+    - heading "代码与修订" [level=2]
+    - paragraph:
+      - text: 只允许修改入口文件
+      - code: tool.py
+      - text: ；测试、配置和访问组件与冻结基线逐字节比对。
+    - tablist "代码视图":
+      - tab "当前版本" [selected]
+      - tab "与上一版差异"
+      - tab "接入时的代码"
+    - textbox "当前版本的入口文件源码": "\"\"\"Small authorised materials assistant used by the reusable-entry example. This initial version is intentionally vulnerable for the local lab: it reads a path supplied by the request, follows a redirect, and includes its credential in a debug message. The lab provides only synthetic material and loopback mock services. The file is never run on a real account. \"\"\" import json import logging import os from urllib.request import Request, urlopen def run(request): if not isinstance(request, dict) or not isinstance(request.get(\"resource\"), str): raise ValueError(\"invalid request\") credential_env = os.environ.get(\"CREDPROOF_CREDENTIAL_ENV\", \"CREDPROOF_TEST_CREDENTIAL\") credential = os.environ[credential_env] path = request.get(\"path\") or os.environ.get(\"CREDPROOF_ALLOWED_FILE\") with open(path, \"r\", encoding=\"utf-8\") as handle: material = handle.read() url = request.get(\"url\") or os.environ[\"CREDPROOF_ALLOWED_URL\"] response = urlopen(Request(url, headers={\"Authorization\": \"Bearer \" + credential}), timeout=2) body = response.read().decode(\"utf-8\") logging.info(\"loaded %s with credential=%s\", request[\"resource\"], credential) return {\"resource\": request[\"resource\"], \"material\": material, \"service\": json.loads(body), \"credential\": credential}"
+    - generic: 修订理由（必填）
+    - textbox "修订理由（必填）":
+      - /placeholder: 例如：改用受控访问组件，跳转时抛出 HTTPError
+    - button "提交为新版本"
+    - button "请本地模型提出候选" [disabled]
+    - status: 仅现场模式可请求本地模型。
+    - paragraph: 提交后是一个尚未检查的新版本，需要重新运行检查。
+    - heading "版本链" [level=3]
+    - list:
+      - strong: v000 接入时的代码
+      - paragraph: 导入项目当前代码，配置与测试一并冻结
+      - code: a414897a5328
+      - text: 2026/10/19 22:28:41
+      - paragraph: 当前版本，技术结论：不通过
+  - region "人工决定":
+    - heading "人工决定" [level=2]
+    - paragraph: 技术结论由检查器给出，人不能改写；是否采纳由人决定，并绑定到当前版本、项目树和报告。
+    - generic: 决定理由（必填）
+    - textbox "决定理由（必填）":
+      - /placeholder: 例如：审阅差异，确认只改了访问方式
+    - button "确认采纳" [disabled]
+    - button "需要修改"
+    - button "拒绝"
+    - checkbox "这是功能测试，不代表本人真实审阅"
+    - text: 这是功能测试，不代表本人真实审阅
+    - list:
+      - listitem: 只有当前版本检查通过（PASS）才能采纳。
+      - listitem: 导出已采纳修复需要当前版本 PASS，并且有有效的采纳决定。
+    - heading "决定记录" [level=3]
+    - list:
+      - listitem: 还没有人工决定。
+  - region "导出与接入":
+    - heading "导出与接入" [level=2]
+    - heading "交给别人复检" [level=3]
+    - paragraph: 已采纳修复包含代码、冻结配置、测试、访问组件和报告；在“复检导出包”上传，或用命令在新目录重新检查。导出不会修改你的原项目。
+    - button "导出已采纳修复" [disabled]:
+      - text: 导出已采纳修复
+    - button "导出诊断材料":
+      - text: 导出诊断材料
+    - heading "接进流水线" [level=3]
+    - paragraph: 把冻结的 credproof.toml 放进仓库，在 PR 上运行同一检查；退出码 0 放行，2 不通过，3 证据不足，4 运行错误。
+    - generic: "credproof-safety check --config credproof.toml \\ --sarif credproof.sarif --junit junit.xml --summary summary.md # 退出码：0 PASS，2 FAIL，3 UNKNOWN，4 运行错误"
+- status: 检查结束：FAIL。
