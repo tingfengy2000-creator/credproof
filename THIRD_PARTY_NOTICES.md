@@ -1,20 +1,17 @@
-# 开源来源与 AI 辅助说明
+# 第三方组件说明
 
-> 当前初赛候选版使用本地 Qwen3-Coder、Qwen-Agent 与 Ollama。当前来源、版本、许可及 AI 辅助开发披露以 [Agent 来源说明](docs/local-agent/reliability/source-attribution.md) 为准。下文保留原验收器阶段的归属记录，其中“本轮”仅指当时版本，不代表当前候选功能。项目自有代码的正式分发许可仍由作者确认；此文件不替作者授权。
+本作品由 DUIDUI队 开发。下列第三方组件归各自权利人所有，均按其许可使用；作品自有代码中的检测思路、14 项必要条件、证据绑定、三状态审阅、导出复检、工作台与评测方法由本队实现。
 
-## 历史验收器阶段
-- **Gitleaks v8.28.0**：本轮真实使用的检测引擎，MIT License。来源：https://github.com/gitleaks/gitleaks/tree/v8.28.0 。下载脚本校验同一官方 release 发布的 SHA256；原 LICENSE 保留在本机 `.tools/gitleaks-8.28.0/LICENSE`。二进制不提交 Git。若以后分发二进制，须同时附带对应许可证。
-- **Python 标准库与 Git**：负责受限 AST 检查、受控样例执行、数据序列化和读取 Git index。未调用 Git checkout、hooks 或被扫描仓库测试脚本。
-- **自写部分**：本轮契约冻结、精确允许修改、证据绑定、三态聚合、复检入口、受控样例、基线策略及实验汇总由本项目实现。检测器本身不是本作品创新。
-- **Codex 辅助**：设计推敲、代码草拟、自动检查和文档整理使用 Codex 辅助完成；作者需要审阅代码、核对原始实验记录并能够解释结论。不得声称全部代码人工逐行独立编写。
-- **本轮无 Qwen 推理、预训练、微调或真实凭据验证**。配置只识别明确的合成标记，实验衡量验收机制，不能据此证明真实秘密检测召回率。
+| 组件 | 用途 | 许可 | 是否随包分发 |
+|---|---|---|---|
+| Python 3.12.10 Windows 嵌入式发行版 | Windows 查看模式的随包运行时 | PSF License（原许可文件保留在 `runtime/python/`） | 是 |
+| bubblewrap | 隔离执行的命名空间沙箱 | LGPL-2.0-or-later | 否，由运行时准备脚本从 Ubuntu 官方源按固定哈希下载 |
+| pytest、iniconfig、packaging、pluggy、requests 等 | 在隔离环境中运行被测项目的业务测试 | MIT / Apache-2.0 等（见各包元数据） | 否，按 `credproof_safety/requirements-lock.txt` 的哈希安装 |
+| Qwen-Agent 0.0.34 及其依赖 | 本地模型 Agent 与工具调用 | Apache-2.0 等 | 否，按 `agent_pilot/requirements-lock.txt` 安装 |
+| Ollama | 本地模型推理服务 | MIT | 否，用户自行从官方发布页安装 |
+| Qwen3-Coder 30B、Qwen2.5-Coder 32B Instruct | 本地候选修复模型 | 各模型发布页所列许可 | 否，权重不随包分发 |
+| python-dotenv v1.2.2 | 外部开源组件接入示例（`examples/external/`），其中的目录越界缺陷为人工注入，不是上游漏洞 | BSD-3-Clause（原许可保留在示例目录） | 是（源码副本） |
+| Gitleaks、Bandit、Semgrep 社区规则 | 对照评测中的静态方法，以及早期验收器原型 | MIT / Apache-2.0 / LGPL-2.1 等 | 否 |
+| Docker 默认 seccomp 配置 | 容器加固配置的来源基线（`deploy/docker/`） | Apache-2.0（`LICENSE.moby-profiles` 保留） | 是（配置文件） |
 
-已有 V2 模拟原型与设计保留；其依赖和材料不属于本轮 CLI 核心的运行依赖。
-
-## preliminary.4 外部组件
-
-PyPA Twine 配置读取组件：Apache License 2.0。固定来源及许可证位于 docs/external-scenario/twine/upstream-before 与 upstream-fixed；PR #1240 与前后提交见 source.json。保留上游版权及归属；本项目新增受限组件适配、裁判和材料交付，不声称上游逻辑自行研发。视频制作工具 Pillow 11.3.0、imageio-ffmpeg 0.6.0 仅用于离线素材编码，不随程序分发模型或编码器二进制。
-
-## reusable-tool-safety 外部项目
-
-`examples/external/python-dotenv-v1.2.2` 保留 python-dotenv v1.2.2 的上游源码、测试、`README.md`、`CHANGELOG.md`、`pyproject.toml` 和 BSD-3-Clause `LICENSE`。来源为上游标签固定提交 `36004e0e34be7665ff2b11a8a4005144f76f176d`：https://github.com/theskumar/python-dotenv 。CredProof 的两个 `credproof_entry*.py` 是本项目为受控目录读取验证增加的薄适配/人工注入，不是上游漏洞、CVE 或上游认可；上游测试结构和版权保留。
+所有实验均使用每次随机生成的合成凭据和隔离环境内的本地模拟服务，不涉及真实账户或外部系统。
