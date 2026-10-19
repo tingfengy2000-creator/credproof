@@ -45,6 +45,8 @@ SINGLE_FILES = (
     'docs/integration/ci-demo.json', 'docs/ui/PRODUCT-API.md',
     'experiments/reusable-tool-safety/20261004-external-dotenv-v5/summary.json',
     'scripts/derive-project-public-bundle.py',
+    'scripts/integration/build_ci_demo.py',
+    'docs/reusable-tool-safety/acceptance/20261010-format-normalized/public-evidence/normalized-candidate.py',
     'docs/reusable-tool-safety/acceptance/20261007-return-redirect/original-report.json',
     'docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/initial-report.json',
     'docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/component-controls-final/unchanged-original-report.json',

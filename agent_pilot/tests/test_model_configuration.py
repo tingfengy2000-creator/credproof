@@ -46,6 +46,9 @@ def test_durable_claim_prevents_new_directory_restart(tmp_path,monkeypatch):
 
 
 def test_old_instructions_api_and_schema_unchanged():
+    import pytest
+    if not (Path(__file__).resolve().parents[2]/'.git').exists():
+        pytest.skip('compares with a historical Git revision; needs a Git checkout')
     import agent_pilot.bounded_patch as bp
     previous=subprocess.check_output(['git','-c','safe.directory='+str(Path(__file__).resolve().parents[2]),'show','7011959e795f3bde442d3f4899ea5097ab42528a:agent_pilot/bounded_patch.py'])
     import ast

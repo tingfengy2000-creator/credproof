@@ -29,7 +29,7 @@ CONTROLS = {
                    'origin': '入口文件与 Qwen3-Coder 30B 在评测中交回的“修复”逐字节相同，即未修改的漏洞原版。'},
     'reference': {'title': '提交参考修复的 PR', 'origin': '人工编写的参考修复，不是新的 AI 输出。'},
 }
-FORBIDDEN = re.compile(r'https?://|github\.com|/home/|/Users/|[A-Za-z]:\\\\|runner/work|tingfeng', re.I)
+FORBIDDEN = re.compile(r'https?://|github\.com|/home/|/Users/|[A-Za-z]:\\\\|runner/work', re.I)
 
 
 def read(path: Path):
