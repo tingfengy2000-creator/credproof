@@ -28,7 +28,9 @@ from build import BATCH, PYTHON_SHA, PYTHON_URL, SNAPSHOT  # noqa: E402
 # Program, tests and examples: every tracked file under these roots.
 CODE_ROOTS = ('credproof/', 'credproof_safety/', 'credproof_access/', 'agent_pilot/', 'tests/',
               'config/', 'deploy/', 'examples/', '.github/workflows/',
-              'scripts/bench/', 'scripts/compare/', 'scripts/ci/', 'scripts/runtime/')
+              'scripts/bench/', 'scripts/compare/', 'scripts/ci/', 'scripts/runtime/',
+              # Evidence the test suite and the comparison page read.
+              'docs/compare/onboarding-dotenv/', 'docs/external-scenario/twine/')
 # Historical pilot bundles keep the original operator's paths; not needed to run.
 EXCLUDED_ROOTS = ('examples/local-agent/',)
 SINGLE_FILES = (
@@ -42,6 +44,11 @@ SINGLE_FILES = (
     'docs/bench/bench-results.json', 'docs/compare/comparison.json', 'docs/compare/onboarding-dotenv.json',
     'docs/integration/ci-demo.json', 'docs/ui/PRODUCT-API.md',
     'experiments/reusable-tool-safety/20261004-external-dotenv-v5/summary.json',
+    'scripts/derive-project-public-bundle.py',
+    'docs/reusable-tool-safety/acceptance/20261007-return-redirect/original-report.json',
+    'docs/reusable-tool-safety/acceptance/20261007-return-redirect/context-budget-pilot-v8/public-evidence/initial-report.json',
+    'docs/reusable-tool-safety/acceptance/20261009-component-assisted/public-evidence/component-controls-final/unchanged-original-report.json',
+    'docs/reusable-tool-safety/acceptance/20261010-format-normalized/public-evidence/original-model-response.json',
 )
 
 
