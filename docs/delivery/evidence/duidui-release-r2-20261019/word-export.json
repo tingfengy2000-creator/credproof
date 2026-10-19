@@ -1,0 +1,397 @@
+{
+  "include_document_properties_in_pdf": false,
+  "application": "Microsoft Word",
+  "toc_text": "摘要\t5\r第一章 作品概述\t6\r1.1 背景：AI在写补丁，谁来验收AI\t6\r1.2 问题：三种“看起来修好了”\t6\r1.3 相关工作与差距\t7\r1.4 作品定位与特色\t8\r1.5 应用场景与前景\t10\r1.6 实用性：直接进入日常开发流程\t11\r第二章 作品设计与实现\t13\r2.1 设计目标与关键指标\t13\r2.2 总体架构\t13\r2.3 业务流程\t16\r2.4 数据流设计\t17\r2.5 关键技术一：隔离执行与行为级观测\t19\r2.6 关键技术二：14项必要条件与三值判定\t21\r2.7 关键技术三：受控访问组件\t22\r2.8 关键技术四：三状态分离与对象绑定\t23\r2.9 产品实现：从接入到复检\t24\r2.10 流水线集成\t30\r2.11 作品自身的安全设计\t31\r2.12 技术栈与工程规模\t32\r第三章 作品测试与分析\t33\r3.1 测试方案与环境\t33\r3.2 实验一：真实案例闭环——资料助手\t34\r3.3 实验二：bench-v1多方法对照\t35\r3.4 实验三：开源组件python-dotenv——业务全绿不等于安全\t38\r3.5 实验四：本地模型候选进入同一审阅链\t39\r3.6 实验五：CI流水线门禁\t39\r3.7 作品自身的安全与功能测试\t40\r3.8 性能与资源\t40\r3.9 结果分析与局限\t41\r第四章 创新性说明\t42\r4.1 与现有方案的对比\t42\r4.2 创新点一：面向AI补丁的双向证据验收\t42\r4.3 创新点二：三状态分离与对象强绑定的可复检交付\t43\r4.4 创新点三：把14项机器条件翻译成五个决策问题\t43\r4.5 创新点四：一套检查器贯通网页、命令行与流水线\t43\r4.6 定位说明\t43\r第五章 总结\t44\r5.1 作品总结\t44\r5.2 研发过程\t44\r5.3 后续计划\t45\r参考文献\t46\r附录一 其他文档\t48\rA.1 运行方式\t48\rA.2 命令行接入\t49\rA.3 配置文件示例（资料助手）\t50\rA.4 交付清单\t51\r附录二 参赛作品声明\t52\r",
+  "pages": 52,
+  "pdf_bytes": 3310150,
+  "headings": [
+    {
+      "adjusted_page": 5,
+      "text": "摘要",
+      "start": 4386,
+      "page": 5
+    },
+    {
+      "adjusted_page": 6,
+      "text": "第一章 作品概述",
+      "start": 4898,
+      "page": 6
+    },
+    {
+      "adjusted_page": 6,
+      "text": "1.1 背景：AI在写补丁，谁来验收AI",
+      "start": 4907,
+      "page": 6
+    },
+    {
+      "adjusted_page": 6,
+      "text": "1.2 问题：三种“看起来修好了”",
+      "start": 5512,
+      "page": 6
+    },
+    {
+      "adjusted_page": 7,
+      "text": "1.3 相关工作与差距",
+      "start": 6229,
+      "page": 7
+    },
+    {
+      "adjusted_page": 8,
+      "text": "1.4 作品定位与特色",
+      "start": 6747,
+      "page": 8
+    },
+    {
+      "adjusted_page": 10,
+      "text": "1.5 应用场景与前景",
+      "start": 7801,
+      "page": 10
+    },
+    {
+      "adjusted_page": 11,
+      "text": "1.6 实用性：直接进入日常开发流程",
+      "start": 8646,
+      "page": 11
+    },
+    {
+      "adjusted_page": 13,
+      "text": "第二章 作品设计与实现",
+      "start": 9252,
+      "page": 13
+    },
+    {
+      "adjusted_page": 13,
+      "text": "2.1 设计目标与关键指标",
+      "start": 9264,
+      "page": 13
+    },
+    {
+      "adjusted_page": 13,
+      "text": "2.2 总体架构",
+      "start": 9770,
+      "page": 13
+    },
+    {
+      "adjusted_page": 16,
+      "text": "2.3 业务流程",
+      "start": 10227,
+      "page": 16
+    },
+    {
+      "adjusted_page": 17,
+      "text": "2.4 数据流设计",
+      "start": 10390,
+      "page": 17
+    },
+    {
+      "adjusted_page": 19,
+      "text": "2.5 关键技术一：隔离执行与行为级观测",
+      "start": 10688,
+      "page": 19
+    },
+    {
+      "adjusted_page": 21,
+      "text": "2.6 关键技术二：14项必要条件与三值判定",
+      "start": 11257,
+      "page": 21
+    },
+    {
+      "adjusted_page": 22,
+      "text": "2.7 关键技术三：受控访问组件",
+      "start": 11688,
+      "page": 22
+    },
+    {
+      "adjusted_page": 23,
+      "text": "2.8 关键技术四：三状态分离与对象绑定",
+      "start": 11947,
+      "page": 23
+    },
+    {
+      "adjusted_page": 24,
+      "text": "2.9 产品实现：从接入到复检",
+      "start": 12415,
+      "page": 24
+    },
+    {
+      "adjusted_page": 30,
+      "text": "2.10 流水线集成",
+      "start": 13709,
+      "page": 30
+    },
+    {
+      "adjusted_page": 31,
+      "text": "2.11 作品自身的安全设计",
+      "start": 14111,
+      "page": 31
+    },
+    {
+      "adjusted_page": 32,
+      "text": "2.12 技术栈与工程规模",
+      "start": 14522,
+      "page": 32
+    },
+    {
+      "adjusted_page": 33,
+      "text": "第三章 作品测试与分析",
+      "start": 14826,
+      "page": 33
+    },
+    {
+      "adjusted_page": 33,
+      "text": "3.1 测试方案与环境",
+      "start": 14838,
+      "page": 33
+    },
+    {
+      "adjusted_page": 34,
+      "text": "3.2 实验一：真实案例闭环——资料助手",
+      "start": 15726,
+      "page": 34
+    },
+    {
+      "adjusted_page": 35,
+      "text": "3.3 实验二：bench-v1多方法对照",
+      "start": 16506,
+      "page": 35
+    },
+    {
+      "adjusted_page": 38,
+      "text": "3.4 实验三：开源组件python-dotenv——业务全绿不等于安全",
+      "start": 18175,
+      "page": 38
+    },
+    {
+      "adjusted_page": 39,
+      "text": "3.5 实验四：本地模型候选进入同一审阅链",
+      "start": 18571,
+      "page": 39
+    },
+    {
+      "adjusted_page": 39,
+      "text": "3.6 实验五：CI流水线门禁",
+      "start": 18982,
+      "page": 39
+    },
+    {
+      "adjusted_page": 40,
+      "text": "3.7 作品自身的安全与功能测试",
+      "start": 19317,
+      "page": 40
+    },
+    {
+      "adjusted_page": 40,
+      "text": "3.8 性能与资源",
+      "start": 19696,
+      "page": 40
+    },
+    {
+      "adjusted_page": 41,
+      "text": "3.9 结果分析与局限",
+      "start": 19962,
+      "page": 41
+    },
+    {
+      "adjusted_page": 42,
+      "text": "第四章 创新性说明",
+      "start": 20588,
+      "page": 42
+    },
+    {
+      "adjusted_page": 42,
+      "text": "4.1 与现有方案的对比",
+      "start": 20598,
+      "page": 42
+    },
+    {
+      "adjusted_page": 42,
+      "text": "4.2 创新点一：面向AI补丁的双向证据验收",
+      "start": 20880,
+      "page": 42
+    },
+    {
+      "adjusted_page": 43,
+      "text": "4.3 创新点二：三状态分离与对象强绑定的可复检交付",
+      "start": 21105,
+      "page": 43
+    },
+    {
+      "adjusted_page": 43,
+      "text": "4.4 创新点三：把14项机器条件翻译成五个决策问题",
+      "start": 21315,
+      "page": 43
+    },
+    {
+      "adjusted_page": 43,
+      "text": "4.5 创新点四：一套检查器贯通网页、命令行与流水线",
+      "start": 21529,
+      "page": 43
+    },
+    {
+      "adjusted_page": 43,
+      "text": "4.6 定位说明",
+      "start": 21721,
+      "page": 43
+    },
+    {
+      "adjusted_page": 44,
+      "text": "第五章 总结",
+      "start": 21851,
+      "page": 44
+    },
+    {
+      "adjusted_page": 44,
+      "text": "5.1 作品总结",
+      "start": 21858,
+      "page": 44
+    },
+    {
+      "adjusted_page": 44,
+      "text": "5.2 研发过程",
+      "start": 22233,
+      "page": 44
+    },
+    {
+      "adjusted_page": 45,
+      "text": "5.3 后续计划",
+      "start": 22446,
+      "page": 45
+    },
+    {
+      "adjusted_page": 46,
+      "text": "参考文献",
+      "start": 22620,
+      "page": 46
+    },
+    {
+      "adjusted_page": 48,
+      "text": "附录一 其他文档",
+      "start": 25708,
+      "page": 48
+    },
+    {
+      "adjusted_page": 48,
+      "text": "A.1 运行方式",
+      "start": 25717,
+      "page": 48
+    },
+    {
+      "adjusted_page": 49,
+      "text": "A.2 命令行接入",
+      "start": 26136,
+      "page": 49
+    },
+    {
+      "adjusted_page": 50,
+      "text": "A.3 配置文件示例（资料助手）",
+      "start": 26534,
+      "page": 50
+    },
+    {
+      "adjusted_page": 51,
+      "text": "A.4 交付清单",
+      "start": 27315,
+      "page": 51
+    },
+    {
+      "adjusted_page": 52,
+      "text": "附录二 参赛作品声明",
+      "start": 27623,
+      "page": 52
+    }
+  ],
+  "version": "16.0",
+  "kind": "MICROSOFT_WORD_TOC_AND_PDF_EXPORT",
+  "build": "16.0.20430",
+  "sections": [
+    {
+      "width": 595.3,
+      "index": 1,
+      "height": 841.9,
+      "orientation": 0,
+      "last_page": 1,
+      "first_page": 1
+    },
+    {
+      "width": 595.3,
+      "index": 2,
+      "height": 841.9,
+      "orientation": 0,
+      "last_page": 2,
+      "first_page": 2
+    },
+    {
+      "width": 595.3,
+      "index": 3,
+      "height": 841.9,
+      "orientation": 0,
+      "last_page": 14,
+      "first_page": 3
+    },
+    {
+      "width": 841.9,
+      "index": 4,
+      "height": 595.3,
+      "orientation": 1,
+      "last_page": 16,
+      "first_page": 15
+    },
+    {
+      "width": 595.3,
+      "index": 5,
+      "height": 841.9,
+      "orientation": 0,
+      "last_page": 17,
+      "first_page": 17
+    },
+    {
+      "width": 841.9,
+      "index": 6,
+      "height": 595.3,
+      "orientation": 1,
+      "last_page": 18,
+      "first_page": 18
+    },
+    {
+      "width": 595.3,
+      "index": 7,
+      "height": 841.9,
+      "orientation": 0,
+      "last_page": 19,
+      "first_page": 19
+    },
+    {
+      "width": 841.9,
+      "index": 8,
+      "height": 595.3,
+      "orientation": 1,
+      "last_page": 20,
+      "first_page": 20
+    },
+    {
+      "width": 595.3,
+      "index": 9,
+      "height": 841.9,
+      "orientation": 0,
+      "last_page": 21,
+      "first_page": 21
+    },
+    {
+      "width": 841.9,
+      "index": 10,
+      "height": 595.3,
+      "orientation": 1,
+      "last_page": 23,
+      "first_page": 22
+    },
+    {
+      "width": 595.3,
+      "index": 11,
+      "height": 841.9,
+      "orientation": 0,
+      "last_page": 52,
+      "first_page": 24
+    }
+  ],
+  "remove_personal_information": true
+}
