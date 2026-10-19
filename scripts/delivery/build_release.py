@@ -34,7 +34,7 @@ CODE_ROOTS = ('credproof/', 'credproof_safety/', 'credproof_access/', 'agent_pil
 # Historical pilot bundles keep the original operator's paths; not needed to run.
 EXCLUDED_ROOTS = ('examples/local-agent/',)
 SINGLE_FILES = (
-    'README.md', '项目简介.pdf', 'THIRD_PARTY_NOTICES.md', 'pyproject.toml', 'start-credproof.cmd', 'start-credproof.sh', 'start-recheck.cmd', 'start-live.cmd',
+    'README.md', '项目简介.pdf', '评委操作手册.pdf', 'THIRD_PARTY_NOTICES.md', 'pyproject.toml', 'start-credproof.cmd', 'start-credproof.sh', 'start-recheck.cmd', 'start-live.cmd',
     'check-runtime.cmd', '.gitattributes', '.credproof/targets.txt',
     'scripts/delivery/launch.ps1', 'scripts/delivery/launcher/launcher.c', 'scripts/delivery/launcher/launcher.rc',
     'scripts/delivery/launcher/credproof.ico', 'scripts/delivery/launcher/build.sh', 'scripts/delivery/launcher/CredProof.exe', 'scripts/delivery/scan.py', 'scripts/delivery/view_readonly.py',
