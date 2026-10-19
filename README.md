@@ -137,7 +137,22 @@ GitHub Actions 示例：`.github/workflows/credproof.yml` 定义了 Runner 原�
 
 **硬件与支持环境**：本版现场入口的已验证环境是 **Windows + WSL2 Ubuntu 24.04 + NVIDIA CUDA**，测试环境有 32 GB 显存。现有启动器明确挂载 WSL 驱动与 `/dev/dxg`，并选择 CUDA 后端；不能把原生 Linux 或纯 CPU 的 Ollama 可运行等同于本入口已验证。查看、人工修订、审批、固定检查与复检**都不需要显卡**。
 
-### 4.2 安装与配置（当前现场入口：Windows + WSL2）
+### 4.2 需要另行下载的内容（体积较大，不随包分发）
+
+查看模式和隔离验收都**不需要**下载下列模型；只有现场模式（请本地模型提出候选）才需要。
+
+| 内容 | 大小 | 官方下载 / 安装说明 |
+|---|---|---|
+| Ollama（Linux amd64 完整归档） | 较大（含 CUDA 运行库） | 发布页：<https://github.com/ollama/ollama/releases>；Linux 手动安装说明：<https://docs.ollama.com/linux>（归档地址 `https://ollama.com/download/ollama-linux-amd64.tar.zst`） |
+| Qwen3-Coder 30B（`qwen3-coder:30b`，默认） | 约 19 GB | <https://ollama.com/library/qwen3-coder> |
+| Qwen2.5-Coder 32B Instruct（`qwen2.5-coder:32b-instruct-q4_K_M`，可选） | 约 20 GB | <https://ollama.com/library/qwen2.5-coder> |
+| Qwen-Agent 0.0.34 | 随 `pip install -r agent_pilot/requirements-lock.txt` 自动安装 | 项目主页：<https://github.com/QwenLM/Qwen-Agent> |
+| WSL2 + Ubuntu 24.04（Windows 上做隔离检查时需要） | — | <https://learn.microsoft.com/windows/wsl/install>（命令 `wsl --install -d Ubuntu-24.04`） |
+| Python 3.12（Windows 开发环境或现场模式主机侧需要） | — | <https://www.python.org/downloads/windows/> |
+
+模型通过 `ollama pull` 下载（见 4.3），程序会核对模型清单摘要；如果上游已更新同名标签，现场模式会拒绝启动并说明原因，不会自动换用其他模型。
+
+### 4.3 安装与配置（当前现场入口：Windows + WSL2）
 
 **与第三节的纯检查运行时分开准备。** `setup-linux.py` 会固定其 venv 文件清单；之后直接往同一目录安装 Agent 依赖，会使原准备收据失效。为模型另选新的版本化目录，在依赖安装完成后使用现有 `agent_pilot.isolation` 入口准备和探测模型运行边界；不要修改已有 rootfs、清单或探针结果来标记就绪。以下准备命令在解压目录对应的 WSL 路径中、以普通用户运行：
 
