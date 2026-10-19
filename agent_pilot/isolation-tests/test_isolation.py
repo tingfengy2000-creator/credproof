@@ -32,7 +32,7 @@ class IsolationTests(unittest.TestCase):
             self.assertEqual(record['probe_processes']['wall']['status'], 'TIMEOUT')
 
     def test_runtime_location_does_not_follow_service_home(self):
-        self.assertEqual(str(runner.BASE), '/home/tingfeng/credproof-agent-runtime/isolation')
+        self.assertEqual(runner.BASE, Path.home() / 'credproof-agent-runtime' / 'isolation')
 
     def fake_facilities(self, base):
         (base / 'tools/usr/bin').mkdir(parents=True)

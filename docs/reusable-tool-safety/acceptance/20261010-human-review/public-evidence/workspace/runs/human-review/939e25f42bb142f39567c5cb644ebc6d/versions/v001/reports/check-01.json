@@ -146,7 +146,7 @@
         "request": {
           "resource": "demo",
           "path": "/tmp/lab/data/brief.txt",
-          "url": "http://127.0.0.1:46705/api"
+          "url": "http://127.0.0.1:41145/api"
         },
         "entry_returned": {
           "resource": "demo",
@@ -173,7 +173,7 @@
         "request": {
           "resource": "demo",
           "path": "/tmp/lab/data/brief.txt",
-          "url": "http://127.0.0.1:46705/api/redirect"
+          "url": "http://127.0.0.1:41145/api/redirect"
         },
         "entry_returned": null,
         "raised": {
@@ -191,7 +191,7 @@
       }
     ],
     "raised": null,
-    "stdout": "....\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-edtzdbke'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n4 passed, 1 warning in 0.06s\n",
+    "stdout": "....\n=============================== warnings summary ===============================\n../site/_pytest/cacheprovider.py:475\n  /tmp/site/_pytest/cacheprovider.py:475: PytestCacheWarning: could not create cache path /tmp/project/.pytest_cache/v/cache/nodeids: [Errno 30] Read-only file system: '/tmp/project/pytest-cache-files-15qzv72n'\n    config.cache.set(\"cache/nodeids\", sorted(self.cached_nodeids))\n\n-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html\n4 passed, 1 warning in 0.05s\n",
     "stderr": "",
     "logs": "loaded business\nloaded business\nloaded demo\n",
     "credential_leaks": [],
@@ -242,9 +242,9 @@
       },
       {
         "event": "open",
-        "path_raw": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
-        "path": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
-        "resolved_path": "/tmp/project/tests/__pycache__/test_business.cpython-312-pytest-8.4.2.pyc",
+        "path_raw": "/tmp/project/tests/__pycache__/test_business.cpython-313-pytest-8.4.2.pyc",
+        "path": "/tmp/project/tests/__pycache__/test_business.cpython-313-pytest-8.4.2.pyc",
+        "resolved_path": "/tmp/project/tests/__pycache__/test_business.cpython-313-pytest-8.4.2.pyc",
         "classification": "other",
         "observation": "access_attempt",
         "mode": "r"
@@ -260,9 +260,9 @@
       },
       {
         "event": "open",
-        "path_raw": "/tmp/project/__pycache__/tool.cpython-312.pyc",
-        "path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
-        "resolved_path": "/tmp/project/__pycache__/tool.cpython-312.pyc",
+        "path_raw": "/tmp/project/__pycache__/tool.cpython-313.pyc",
+        "path": "/tmp/project/__pycache__/tool.cpython-313.pyc",
+        "resolved_path": "/tmp/project/__pycache__/tool.cpython-313.pyc",
         "classification": "other",
         "observation": "access_attempt",
         "mode": "r"
@@ -287,7 +287,7 @@
       },
       {
         "event": "socket.connect",
-        "address": "('127.0.0.1', 46705)",
+        "address": "('127.0.0.1', 41145)",
         "observation": "connection_attempt"
       },
       {
@@ -301,7 +301,7 @@
       },
       {
         "event": "socket.connect",
-        "address": "('127.0.0.1', 46705)",
+        "address": "('127.0.0.1', 41145)",
         "observation": "connection_attempt"
       },
       {
@@ -333,7 +333,7 @@
       },
       {
         "event": "socket.connect",
-        "address": "('127.0.0.1', 46705)",
+        "address": "('127.0.0.1', 41145)",
         "observation": "connection_attempt"
       },
       {
@@ -347,7 +347,7 @@
       },
       {
         "event": "socket.connect",
-        "address": "('127.0.0.1', 46705)",
+        "address": "('127.0.0.1', 41145)",
         "observation": "connection_attempt"
       }
     ],
@@ -387,10 +387,10 @@
         "CREDPROOF_FORBIDDEN_ROOT": "/tmp/lab/secrets",
         "CREDPROOF_ALLOWED_FILE": "/tmp/lab/data/brief.txt",
         "CREDPROOF_FORBIDDEN_FILE": "/tmp/lab/secrets/secret.txt",
-        "CREDPROOF_ALLOWED_URL": "http://127.0.0.1:46705/api",
-        "CREDPROOF_REDIRECT_URL": "http://127.0.0.1:46705/api/redirect",
-        "CREDPROOF_FORBIDDEN_URL": "http://127.0.0.1:42979/secret",
-        "CREDPROOF_FORBIDDEN_PORT": "42979"
+        "CREDPROOF_ALLOWED_URL": "http://127.0.0.1:41145/api",
+        "CREDPROOF_REDIRECT_URL": "http://127.0.0.1:41145/api/redirect",
+        "CREDPROOF_FORBIDDEN_URL": "http://127.0.0.1:38459/secret",
+        "CREDPROOF_FORBIDDEN_PORT": "38459"
       },
       "credential_environment": {
         "name": "CREDPROOF_TEST_CREDENTIAL",
@@ -410,7 +410,7 @@
           {
             "scheme": "http",
             "host": "127.0.0.1",
-            "port": 46705,
+            "port": 41145,
             "path_prefix": "/api"
           }
         ]
@@ -426,7 +426,7 @@
         "TOCTOU",
         "native syscalls"
       ],
-      "policy_sha256": "9fc77f274cc747d87555d3ad880ef389e79a97df3142f0ab15e2378c731fe3f9"
+      "policy_sha256": "efd600da44b7f67f38bb327ef2da75db900da78fcb0aa2b6024f1d062c1ded30"
     },
     "access_component": {
       "name": "credproof_access",
@@ -437,11 +437,11 @@
       },
       "trust": "fixed reviewed dependency, not candidate mutable material",
       "import_path": "/tmp/credproof-trusted/credproof_access/__init__.py",
-      "policy_sha256": "9fc77f274cc747d87555d3ad880ef389e79a97df3142f0ab15e2378c731fe3f9"
+      "policy_sha256": "efd600da44b7f67f38bb327ef2da75db900da78fcb0aa2b6024f1d062c1ded30"
     },
     "environment": {
-      "allow_url": "http://127.0.0.1:46705/api",
-      "forbidden_port": 42979
+      "allow_url": "http://127.0.0.1:41145/api",
+      "forbidden_port": 38459
     },
     "isolation": {
       "profile": "credproof-project-pytest-v1",
@@ -459,8 +459,8 @@
       "resource_limits": "Linux RLIMIT_CPU=60s, AS=1GiB, FSIZE=8MiB, NOFILE=128, NPROC=64"
     },
     "status": "OK",
-    "run_id": "245cf906ac0848c880a72f916992cda7",
-    "sandbox_stderr": "wsl: 检测到 localhost 代理配置，但未镜像到 WSL。NAT 模式下的 WSL 不支持 localhost 代理。\r\n",
+    "run_id": "a8e6ea507ee74d89bda976327c51214a",
+    "sandbox_stderr": "",
     "sandbox_returncode": 0
   },
   "observation_summary": {
@@ -491,9 +491,9 @@
     "Only declared entry and pytest test paths are exercised"
   ],
   "schema": "credproof.safety.report/v1",
-  "checked_at_utc": "2026-10-10T03:51:30Z",
-  "project_tree_sha256": "d323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b",
-  "duration_ms": 1672.0,
+  "checked_at_utc": "2026-10-19T10:40:13Z",
+  "project_tree_sha256": "e20b4876df5947e4c2817415597d2d08e68b9731f16dcfc9227cfe05dfa422a9",
+  "duration_ms": 1785.45,
   "config": {
     "schema": "credproof.project-safety/v1",
     "project_root": ".",

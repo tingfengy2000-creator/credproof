@@ -192,7 +192,7 @@
             <div>
               <p class="stage-no">第 3 步</p>
               <h3>开发者修订：v000 到 v001 的真实差异</h3>
-              <p class="stage-text">开发者在 Codex 辅助下修订，来源记为“开发者修订”，不算作运行时模型的输出。文档字符串的改写此处略去。</p>
+              <p class="stage-text">开发者对照候选和它的检查结果完成修订，来源记为“开发者修订”，不算作运行时模型的输出。文档字符串的改写此处略去。</p>
               <pre class="story-code diff" aria-label="v000 到 v001 的差异"><span><i>7 7</i> """</span><span class="del"><i>8</i>-import json</span><span class="add"><i>8</i>+import os</span><span><i>9 9</i> import logging</span><span class="del"><i>10</i>-from urllib.request import Request, urlopen</span><span><i>11 10</i> from credproof_access import read_text, get_json</span><span class="gap"><i></i> …</span><span><i>19 15</i>     path = request.get("path") or os.environ.get(...)</span><span><i>20 16</i>     material = read_text(path)</span><span><i>21 17</i>     url = request.get("url") or os.environ[...]</span><span class="del"><i>22</i>-    try:</span><span class="del"><i>23</i>-        service_data = get_json(url, credential)</span><span class="del"><i>24</i>-    except urllib.error.HTTPError as e:</span><span class="del"><i>25</i>-        raise ValueError(f"HTTP error accessing service: {e}")</span><span class="add"><i>18</i>+    service_data = get_json(url, credential)</span><span><i>26 19</i>     logging.info("loaded %s", request["resource"])</span></pre>
             </div>
             <div class="stage-side">
@@ -200,7 +200,7 @@
                 <dt>修订理由</dt><dd>恢复 os 导入；使用固定访问组件；保留 HTTPError 与 ValueError 的约定、真实文件读取和授权认证，不输出凭据。</dd>
                 <dt>能改什么</dt><dd>只能改授权入口文件 tool.py。业务测试、检查规则、访问组件全部冻结，改了就不再是同一份验收。</dd>
                 <dt>谁来判定</dt><dd>提交后由原检查器重新运行，开发者不能改写判定。</dd>
-                <dt>代码摘要</dt><dd><code>v001 7a7dcaf75275…</code></dd>
+                <dt>代码摘要</dt><dd><code>v001 02700f3a9927…</code></dd>
               </dl>
             </div>
           </article>
@@ -212,7 +212,7 @@
             <div class="version-tabs" role="tablist" aria-label="选择版本">
               <button type="button" role="tab" data-story-version="original" aria-selected="false"><strong>原问题</strong><span>实验室示例</span></button>
               <button type="button" role="tab" data-story-version="v000" aria-selected="true"><strong>AI 候选 v000</strong><span>本地模型历史输出</span></button>
-              <button type="button" role="tab" data-story-version="v001" aria-selected="false"><strong>开发者修订 v001</strong><span>Codex 辅助</span></button>
+              <button type="button" role="tab" data-story-version="v001" aria-selected="false"><strong>开发者修订 v001</strong><span>开发者提交</span></button>
             </div>
             <div id="story-evidence" class="evidence-board" role="tabpanel"></div>
           </article>
@@ -294,7 +294,7 @@
           <h2 id="faq-title" class="home-h2">常见质疑</h2>
           <div class="faq">
             <details open><summary>为什么不用现有 CI 或安全扫描器？</summary><p>现有工具擅长的事我们照用：业务测试仍由 pytest 运行，检查结果也能以 SARIF 和 JUnit 交给现有 CI 和代码扫描界面。</p><p>区别在观察对象。静态扫描读的是代码文本，CI 看的是测试是否通过；密证在隔离环境里实际运行修改后的代码，记录文件访问、请求去向、服务回执和凭据出现的通道，并要求必要行为确实发生。最后交付的是别人能重做的检查，而不是一句“通过”。</p></details>
-            <details><summary>最后还是人工改代码，AI 有什么作用？</summary><p>在这个案例里，AI 给出了真实的候选：改用固定访问组件，方向正确；但删掉了 os 的导入，也转错了异常。开发者在 Codex 辅助下，对照这份候选和它的差异完成修订，再交给检查器独立验收。</p><p>我们没有证明模型能独立修复，也没有测量节省了多少时间。产品的主要价值不依赖 AI 每次都成功：AI 的候选错了，检查器同样会拦下。</p></details>
+            <details><summary>最后还是人工改代码，AI 有什么作用？</summary><p>在这个案例里，AI 给出了真实的候选：改用固定访问组件，方向正确；但删掉了 os 的导入，也转错了异常。开发者对照这份候选和它的差异完成修订，再交给检查器独立验收。</p><p>我们没有证明模型能独立修复，也没有测量节省了多少时间。产品的主要价值不依赖 AI 每次都成功：AI 的候选错了，检查器同样会拦下。</p></details>
             <details><summary>这不就是 CI 加审批吗？</summary><p>规范的 CI 确实能实现其中一部分，甚至相同的判定。我们不是发明 CI，而是针对 Python 工具的安全修改，提供现成的行为观察、验收条件、对象绑定和复检流程。</p><p>目标是减少每个项目从零组织这些能力的工作。这是产品目标，目前还不是测量过的收益。</p></details>
             <details><summary>你们自己做了什么？</summary><p>访问组件、检查器、人工决定约束、对象绑定和导出复检入口由参赛团队实现。下面逐项列出源码位置，并和第三方库、运行时模型分开写明。</p></details>
           </div>

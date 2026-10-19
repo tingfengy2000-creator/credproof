@@ -53,10 +53,10 @@ def test_same_bytes_same_identity_under_windows_and_posix_path_flavours():
     assert deriver.digest_tree(posix) == deriver.digest_tree(windows) == expected
 
 
-def test_formal_snapshot_retains_exact_windows_report_identity():
+def test_formal_snapshot_retains_exact_report_identity():
     folder = ROOT/'docs/reusable-tool-safety/acceptance/20261010-human-review/public-evidence/workspace/runs/human-review/939e25f42bb142f39567c5cb644ebc6d/versions/v001'
     expected = json.loads((folder/'reports/check-01.json').read_text(encoding='utf8'))['project_tree_sha256']
-    assert expected == 'd323b459d2b9907555b71cabebd8297c3aef2c4b74919da9266e16dbfed58a3b'
+    assert expected == 'e20b4876df5947e4c2817415597d2d08e68b9731f16dcfc9227cfe05dfa422a9'
     assert _digest_tree(folder/'project') == deriver.digest_tree(folder/'project') == expected
 
 

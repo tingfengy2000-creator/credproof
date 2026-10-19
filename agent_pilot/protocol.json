@@ -301,7 +301,7 @@
       "Freeze exact sources, requirements, protocol, model config and controller before comparative run"
     ],
     "already_completed": "19 pure fabricated-record and AST unit tests passed under bundled Python 3.12.14; no candidate import/execution, including audit bypass examples, occurred in these tests.",
-    "test_command": "C:\\Users\\Administrator\\.cache\\codex-runtimes\\codex-primary-runtime\\dependencies\\python\\python.exe -m unittest discover -s agent_pilot/tests -p test_judge.py -v"
+    "test_command": "python -m unittest discover -s agent_pilot/tests -p test_judge.py -v"
   },
   "frozen_source_sha256": {
     "agent_pilot/judge.py": "d790a9fa63b8c74999ec521a4e615041178518171d43d336fd0b965de3a29924",

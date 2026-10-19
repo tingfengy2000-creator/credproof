@@ -54,7 +54,7 @@ report = {
     'implementation_commit': manifest['pre_frozen_implementation_commit'],
     'manifest_sha256': hashlib.sha256(manifest_bytes).hexdigest(),
     'python': sys.version,
-    'command': "wsl --exec bash -lc 'cd /mnt/e/比赛/密证_CredProof-local-agent && /home/tingfeng/credproof-agent-runtime/venv/bin/python -B -' (stdin = exact README executable preflight block)",
+    'command': "wsl --exec bash -lc 'cd /mnt/e/比赛/密证_CredProof-local-agent && ~/credproof-agent-runtime/venv/bin/python -B -' (stdin = exact README executable preflight block)",
     'model_calls': 0, 'candidate_executions': 0,
     'static_and_fabricated_checks': [], 'cases': [], 'errors': [],
     'limits': ['Finite reviewed source profile and exact full synthetic credential matching only.',
@@ -221,7 +221,7 @@ if report['status'] != 'PASS':
 $readme = Get-Content -Raw -LiteralPath "agent_pilot/holdout-v1/README.md"
 $part = ($readme -split "# BEGIN EXECUTABLE PREFLIGHT\r?\n", 2)[1]
 $validationScript = ($part -split "# END EXECUTABLE PREFLIGHT", 2)[0]
-$validationScript | wsl --exec bash -lc 'cd /mnt/e/比赛/密证_CredProof-local-agent && /home/tingfeng/credproof-agent-runtime/venv/bin/python -B -'
+$validationScript | wsl --exec bash -lc 'cd /mnt/e/比赛/密证_CredProof-local-agent && ~/credproof-agent-runtime/venv/bin/python -B -'
 ```
 
 ## 实际首轮验证记录

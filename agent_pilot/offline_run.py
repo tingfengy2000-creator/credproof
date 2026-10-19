@@ -50,7 +50,7 @@ def network_receipt():
     return {'at_utc': datetime.now(timezone.utc).isoformat(), 'network_namespace': os.readlink('/proc/self/ns/net'),
             'interfaces': interfaces, 'ipv4_routes': Path('/proc/net/route').read_text(),
             'ipv6_routes': Path('/proc/net/ipv6_route').read_text(), 'outside_connect_tests': attempts,
-            'boundary': 'Local child network namespace; no host firewall/proxy or Codex network change'}
+            'boundary': 'Local child network namespace; no host firewall/proxy or host network change'}
 
 
 def main():

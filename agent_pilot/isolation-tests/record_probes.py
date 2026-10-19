@@ -10,6 +10,11 @@ from datetime import datetime, timezone
 ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 from agent_pilot.isolation import BOOTSTRAP, RUNNER, probe_isolation
+import os
+
+# Runtime account inside WSL/Linux that owns the prepared isolation runtime.
+RUNTIME_USER = os.environ.get('CREDPROOF_RUNTIME_USER', 'credproof')
+SERVICE_HOME = os.environ.get('CREDPROOF_SERVICE_HOME', f'/home/{RUNTIME_USER}/credproof-agent-runtime/service-home')
 
 
 def nested_probe():
@@ -18,11 +23,11 @@ def nested_probe():
               'request': {'operation': 'probe'}}
     # Fixed trusted launcher. Only lo is brought up; no veth or route is created.
     outer = "import subprocess\nsubprocess.run(['/usr/sbin/ip','link','set','lo','up'],check=True)\n" + BOOTSTRAP
-    command = ['env', 'HOME=/home/tingfeng/credproof-agent-runtime/service-home',
+    command = ['env', 'HOME=' + SERVICE_HOME,
                'unshare', '--user', '--map-root-user', '--net', '--fork',
                'python3', '-I', '-c', outer]
     if sys.platform != 'linux':
-        command = ['wsl.exe', '-d', 'Ubuntu-24.04', '-u', 'tingfeng', '--', *command]
+        command = ['wsl.exe', '-d', 'Ubuntu-24.04', '-u', RUNTIME_USER, '--', *command]
     result = subprocess.run(command, input=json.dumps(packet).encode(),
                             capture_output=True, timeout=30)
     if result.returncode:
@@ -41,6 +46,6 @@ if __name__ == '__main__':
               'normal_checks': len(normal.get('checks', {})), 'nested_checks': len(nested.get('checks', {})),
               'runner_id': hashlib.sha256(RUNNER.read_bytes()).hexdigest(),
               'candidate_executed': False, 'observations': destination.name,
-              'nested_parent_home': '/home/tingfeng/credproof-agent-runtime/service-home'}
+              'nested_parent_home': SERVICE_HOME}
     print(json.dumps(result, indent=2))
     raise SystemExit(0 if normal.get('ready') and nested.get('ready') else 2)

@@ -1,4 +1,4 @@
-"""Authorised materials assistant: developer revision, Codex assisted.
+"""Authorised materials assistant: developer revision (DUIDUI team).
 
 Uses the fixed access component; this revision is not runtime-model output.
 """

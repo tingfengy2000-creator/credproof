@@ -7,7 +7,7 @@
   - 随仓库保存，测试时不联网下载。
   - 使用前提：需要安装 `jsonschema`（`pip install .[test]`）。本地未安装时，Schema 校验测试会显式跳过；设置 `CREDPROOF_REQUIRE_SARIF_SCHEMA=1`（CI 中使用）时，未安装直接判为失败。
 - `report-formats/`：报告样例，供 `test_report_formats.py` 使用。
-  - **来源**：其中 5 份是 5060 容器原型上运行真实检查器得到的报告，只保留派生格式会用到的字段：
+  - **来源**：其中 5 份是 Linux 容器原型上运行真实检查器得到的报告，只保留派生格式会用到的字段：
     - b07 漏洞原版 FAIL；
     - b07 参考修复 PASS；
     - b01 日志泄密；

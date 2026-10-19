@@ -44,7 +44,7 @@ class RuntimeConfigTests(unittest.TestCase):
         paths = runtime_config.runtime_paths(value)
         self.assertEqual('/opt/review-runtime/isolation/rootfs', paths['rootfs'])
         self.assertEqual('/opt/review-runtime/venv/bin/python', paths['python'])
-        self.assertNotIn('tingfeng', '\n'.join(paths.values()))
+        self.assertTrue(all(v.startswith('/opt/review-runtime') for v in paths.values() if v.startswith('/')))
 
     def test_execution_runtime_paths_resolve_tilde_inside_wsl(self):
         value = {**runtime_config.DEFAULTS, 'runtime_root': '~/credproof-agent-runtime'}
@@ -117,7 +117,7 @@ class RuntimeConfigTests(unittest.TestCase):
         self.assertEqual(argv[argv.index('--case-id') + 1], 'p01')
         self.assertEqual(argv[argv.index('--project-id') + 1], 'assistant-original')
         self.assertTrue(argv[argv.index('--config') + 1].endswith(str(Path('examples') / 'material_assistant' / 'credproof.toml')))
-        self.assertNotIn('tingfeng', argv)
+        self.assertFalse([a for a in argv if '/home/' in a or 'Users' in a])
         self.assertNotIn('sh', argv)
         with patch.object(web, 'runtime_observation', return_value={**observation, 'isolation_ready': False}):
             with self.assertRaises(ValueError):

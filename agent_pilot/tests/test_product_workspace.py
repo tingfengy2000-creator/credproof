@@ -319,7 +319,7 @@ class HttpBoundaryTests(unittest.TestCase):
 
     def test_readonly_whitelist_allows_intake_list_but_no_write(self):
         import importlib.util
-        spec = importlib.util.spec_from_file_location('product_readonly', REPOSITORY / 'docs/handoff/frontend-5060/view-readonly.py')
+        spec = importlib.util.spec_from_file_location('product_readonly', REPOSITORY / 'scripts/delivery/view_readonly.py')
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
         self.server.RequestHandlerClass = module.ReadOnlyHandler

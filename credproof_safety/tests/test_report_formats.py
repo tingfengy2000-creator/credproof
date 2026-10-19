@@ -1,6 +1,6 @@
 """Derived CI formats (contract docs/integration/CONTRACT.md §3.1-3.3).
 
-Fixtures are trimmed real reports from the 5060 container prototype (b07
+Fixtures are trimmed real reports from the Linux container prototype (b07
 vulnerable/reference, b01 log leak, b05 forbidden read, default-Docker
 UNKNOWN) plus two synthetic UNKNOWN shapes taken from project._verdict.
 Each fixture deliberately carries absolute paths, a user-like path and a
