@@ -1,6 +1,6 @@
 # 产品工作区接口约定（P1）
 
-适用分支：`feat/product-workspace-5060`。本文件先于实现确定，前端只按这里的字段工作；字段变化必须先改本文件。
+本文件先于实现确定，前端只按这里的字段工作；字段变化必须先改本文件。
 
 ## 1. 用户真实流程
 
@@ -25,7 +25,7 @@ AI 候选（P2）使用第 5.2 节接口；仅现场模式且模型边界就绪�
 - 所有新增的写操作都要求 `X-CredProof-Review-Session` 与启动时生成的会话值一致。
 - 浏览器从不提交路径、命令或判决。项目内容只能以压缩包字节上传，或从服务端登记的示例/授权项目复制。
 - 错误统一为 `{"error": "<机器可读代码或中文说明>"}`，HTTP 4xx；不返回宿主路径。
-- 只读交接入口（`view-readonly.py`）只放行新增的 `GET /api/workspace/status`、`GET /api/reviews`、`GET /api/intake`、`GET /api/intake/examples`；它们只读已有状态，所有 POST 仍拒绝。状态查询可以探测操作者配置的运行时材料是否存在，不执行项目或模型。
+- 只读入口（`scripts/delivery/view_readonly.py`）只放行新增的 `GET /api/workspace/status`、`GET /api/reviews`、`GET /api/intake`、`GET /api/intake/examples`；它们只读已有状态，所有 POST 仍拒绝。状态查询可以探测操作者配置的运行时材料是否存在，不执行项目或模型。
 - 项目自带有效 `credproof.toml` 时，草稿逐字节沿用原文件（`config_origin = "existing"`）；用户保存表单后才改为向导生成（`"form"`）。
 
 ## 3. 环境状态
