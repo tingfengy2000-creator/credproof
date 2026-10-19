@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>密证 CredProof 项目简介</title>
+<style>
+  @page { size: A4; margin: 13mm 14mm 12mm; }
+  :root { --navy:#1E4D7A; --ink:#1F2B38; --muted:#5B6777; --line:#D5DCE5; --pass:#2E7A57; --fail:#B23A2E; --amber:#9A6A0B; --soft:#F2F5F9; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:"Noto Sans CJK SC","Noto Sans SC",sans-serif; color:var(--ink); font-size:10.2pt; line-height:1.6; }
+  h1 { font-size:24pt; margin:0; color:var(--navy); letter-spacing:.5px; }
+  h2 { font-size:13pt; color:var(--navy); margin:14px 0 6px; padding-bottom:3px; border-bottom:1.5px solid var(--navy); }
+  p { margin:4px 0; }
+  .sub { font-size:12pt; color:var(--ink); margin-top:2px; }
+  .team { color:var(--muted); font-size:10pt; margin-top:2px; }
+  .hook { margin:10px 0 8px; padding:9px 12px; background:var(--soft); border-left:4px solid var(--navy); font-size:11pt; }
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .card { border:1px solid var(--line); border-radius:6px; padding:8px 10px; }
+  .card b { color:var(--navy); }
+  .num { font-size:17pt; font-weight:700; color:var(--fail); line-height:1.2; }
+  .num.ok { color:var(--pass); }
+  .risk { border-top:3px solid var(--navy); }
+  .risk h3 { margin:0 0 3px; font-size:11pt; color:var(--navy); }
+  .flow { display:flex; gap:4px; align-items:stretch; margin:6px 0 4px; }
+  .step { flex:1; background:var(--soft); border:1px solid var(--line); border-radius:6px; padding:6px 7px; font-size:9pt; }
+  .step b { display:block; color:var(--navy); font-size:9.8pt; }
+  .arrow { align-self:center; color:var(--navy); font-weight:700; }
+  figure { margin:6px 0 2px; }
+  figure img { width:100%; display:block; border:1px solid var(--line); border-radius:4px; margin:0 auto; }
+  figure.w70 img { width:60%; }
+  figure { break-inside: avoid; }
+  figure.w80 img { width:72%; }
+  figure.crop img { height:78mm; object-fit:cover; object-position:top; }
+  figcaption { font-size:8.6pt; color:var(--muted); text-align:center; margin-top:3px; }
+  table { width:100%; border-collapse:collapse; font-size:8.8pt; line-height:1.45; }
+  th, td { border:1px solid var(--line); padding:4px 6px; text-align:left; vertical-align:top; }
+  th { background:var(--soft); color:var(--navy); }
+  .page { page-break-after:always; }
+  .page:last-child { page-break-after:auto; }
+  .small { font-size:8.8pt; color:var(--muted); }
+  code { font-family:"Noto Sans Mono CJK SC",monospace; font-size:8.8pt; background:var(--soft); padding:0 3px; border-radius:3px; }
+  ul { margin:3px 0; padding-left:18px; }
+  li { margin:1px 0; }
+</style>
+</head>
+<body>
+
+<section class="page">
+  <h1>密证 CredProof</h1>
+  <div class="sub">AI 生成安全补丁的可信验收与人机协同修复平台</div>
+  <div class="team">DUIDUI队　·　第五届中国研究生网络安全创新大赛 · 创意作品赛</div>
+
+  <div class="hook"><b>AI 说“修好了”，凭什么采纳？</b>　业务测试只看“该做的做了没有”，密钥扫描和静态分析看不到运行时的凭据去向，让大模型审代码又给不出可核对的事实。CredProof 让修改后的代码在隔离环境里真正跑一遍，用运行证据回答这个问题。</div>
+
+  <h2>我们发现的问题：三种“看起来修好了”</h2>
+  <div class="grid3">
+    <div class="card"><div class="num">6 / 51</div><b>业务全绿，凭据却被带走</b><p>同一批 51 个 AI 补丁中，6 个会跟随跳转把认证头带给未授权服务。业务测试、凭据扫描规则和两个本地大模型裁判<b>全部放行</b>。</p></div>
+    <div class="card"><div class="num">117 / 117</div><b>测试全绿，仍在越界读取</b><p>开源组件 python-dotenv 重新引入目录越界缺陷后，117 项业务测试全部通过，工具仍读取禁止目录中的密钥文件。</p></div>
+    <div class="card"><div class="num">1 / 4</div><b>什么都没做，所以“没违规”</b><p>一份 AI 候选一运行就报错，必要测试只过 1 项。它不泄密、不越界，只因为它根本没读资料、没访问服务。</p></div>
+  </div>
+
+  <h2>我们的做法：一次隔离运行，同时守住三条底线</h2>
+  <div class="grid3">
+    <div class="card risk"><h3>不泄密</h3><p>每次检查随机生成合成凭据，在返回值、标准输出、日志、异常中逐一查找。</p></div>
+    <div class="card risk"><h3>不乱读</h3><p>审计钩子在打开文件前记录真实路径，<code>../</code> 穿越、符号链接都绕不过去；还要求<b>必须读到</b>授权资料。</p></div>
+    <div class="card risk"><h3>不乱连</h3><p>本地模拟“允许 / 禁止”两个服务，允许服务故意返回跳转；还要求<b>必须带凭据</b>访问到允许服务。</p></div>
+  </div>
+  <p style="margin-top:6px">再加上“必要业务测试全部执行并通过”，共 <b>14 项必要条件</b>，给出 <b style="color:var(--pass)">通过</b> / <b style="color:var(--fail)">不通过</b> / <b style="color:var(--amber)">证据不足</b> 三值结论；隔离没建立、测试没跑到，一律判证据不足，绝不显示通过。</p>
+
+  <div class="flow">
+    <div class="step"><b>① 接入</b>浏览器上传项目，静态识别入口与测试，向导生成配置</div><div class="arrow">→</div>
+    <div class="step"><b>② 隔离检查</b>bubblewrap 一次性副本，只读系统、仅回环网络</div><div class="arrow">→</div>
+    <div class="step"><b>③ 五问证据</b>业务、文件、请求、凭据、能否采纳</div><div class="arrow">→</div>
+    <div class="step"><b>④ 人工决定</b>AI 只提候选；程序判定；人决定采纳</div><div class="arrow">→</div>
+    <div class="step"><b>⑤ 导出复检</b>结论绑定代码摘要，在新目录重新执行</div>
+  </div>
+
+  <figure class="w70"><img src="img/s_home.jpg" alt="工作台首页"><figcaption>工作台首页：用一个真实 AI 修复案例回答“凭什么采纳”</figcaption></figure>
+</section>
+
+<section class="page">
+  <h2>系统架构</h2>
+  <figure class="w80"><img src="img/fig_arch.png" alt="总体架构"><figcaption>五层架构：使用者与入口、本机工作台服务、判定层、隔离执行层（信任边界）、数据与可选的本地模型</figcaption></figure>
+
+  <h2>运行证据：真实结果</h2>
+  <figure><img src="img/chart_ai.png" alt="51 个 AI 补丁"><figcaption>同一冻结批次 51 个 AI 补丁：6 个跳转泄露补丁被其余四种方法全部放行，CredProof 全部拦截（禁止服务实际收到了带凭据的请求）</figcaption></figure>
+  <div class="grid2">
+    <figure><img src="img/chart_dotenv.png" alt="python-dotenv"><figcaption>开源组件 python-dotenv 四个版本：重新引入缺陷后测试全绿，仍判不通过；无关修改不误报</figcaption></figure>
+    <figure><img src="img/chart_case.png" alt="资料助手"><figcaption>真实案例三个版本的五个问题：AI 候选被识别为“没有发生”而不是“安全”</figcaption></figure>
+  </div>
+</section>
+
+<section class="page">
+  <h2>产品界面</h2>
+  <figure class="w70"><img src="img/s_project_fail_c.jpg" alt="项目证据页" style="width:64%"><figcaption>项目证据页：三种状态并列；五个问题逐项给出事实，例如“禁止服务收到 1 次请求，跟随跳转到禁止服务”</figcaption></figure>
+
+  <h2>实用性：直接进入日常开发流程</h2>
+  <table>
+    <tr><th style="width:22%">维度</th><th>具体做法</th></tr>
+    <tr><td>接入快</td><td>浏览器选择文件夹或压缩包即可；自动识别入口函数、测试目录和凭据变量；也可用命令行 <code>init</code> 生成配置。</td></tr>
+    <tr><td>跑得快、成本低</td><td>单次完整检查中位数 1.62 秒；检查、复检、审批都不需要显卡；不调用付费 API。</td></tr>
+    <tr><td>融入流水线</td><td>同一检查器作为 CI 合并门禁，退出码 0/2/3/4 决定放行或拦下，输出 SARIF 与 JUnit；已在 GitHub Actions 原生与加固容器作业上实测。</td></tr>
+    <tr><td>管住以后的提交</td><td>导出回归断言放进项目测试，同类问题再次出现会被日常测试拦下。</td></tr>
+    <tr><td>可交付、可复核</td><td>导出包带代码、配置、测试、组件、报告与清单，甲方或审计方在自己的目录重新执行即可复核。</td></tr>
+    <tr><td>数据不出域</td><td>全部在本机运行，只用合成凭据和本地模拟服务；可选的本地模型（Qwen3-Coder 30B / Qwen2.5-Coder 32B，经 Ollama）只提候选、不参与判定。</td></tr>
+  </table>
+
+  <h2>创新点</h2>
+  <ul>
+    <li><b>双向证据验收：</b>“没做不该做的”与“确实做了该做的”同时作为通过条件，并用“证据不足”区分“没测到”和“确实安全”，专门识别一刀切拒绝、提前崩溃、表面脱敏等 AI 补丁的典型假修复。</li>
+    <li><b>三状态分离与对象强绑定：</b>技术结论、人工决定、原项目应用互相独立；报告、决定、导出包都绑定确切的代码与报告摘要，材料一变即失效，复检在新目录重新执行。</li>
+    <li><b>把 14 项机器条件翻译成 5 个决策问题：</b>负责人不读原始日志也能做出采纳决定，“没有发生”让人一眼区分“修好了”和“什么都没做”。</li>
+    <li><b>一套检查器贯通网页、命令行与 CI：</b>同一判定、同一份报告，个人开发、团队审阅和流水线门禁口径一致。</li>
+  </ul>
+
+  <h2>如何运行</h2>
+  <p><b>Windows：</b>解压后双击 <code>start-credproof.cmd</code>，无需安装任何软件（随包 Python 3.12）。<b>macOS / Linux：</b><code>sh start-credproof.sh</code>。真实隔离检查（Linux / WSL2 + bubblewrap）、Docker、本地模型的安装配置见发布包中的 <code>README.md</code>。</p>
+</section>
+
+</body>
+</html>
