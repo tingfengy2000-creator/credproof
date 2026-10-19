@@ -11,7 +11,7 @@
 **Windows 10 / 11（无需安装任何软件）**
 
 1. 完整解压压缩包（不要只拷贝启动文件）。
-2. 双击 `start-credproof.cmd`。程序使用随包的 Python 3.12.10（`runtime/python/`），自动打开浏览器；若 8765 端口被占用会自动换一个空闲端口。
+2. 双击 `密证CredProof.exe`（与双击 `start-credproof.cmd` 完全等价）。程序使用随包的 Python 3.12.10（`runtime/python/`），自动打开浏览器；若 8765 端口被占用会自动换一个空闲端口。
 3. 关闭时在黑色窗口按 `Ctrl+C`。
 
 **macOS / Linux**：需要已安装 Python ≥ 3.11，在本目录运行 `sh start-credproof.sh`。
@@ -245,6 +245,7 @@ deploy/                  Dockerfile、seccomp 与 AppArmor 配置
 docs/                    工作台展示用的冻结数据（评测结果、对照表、CI 结果、外部组件记录、审阅快照）与接口约定 PRODUCT-API.md
 experiments/             历史 Agent 试点案例 h01/h03/h07 的原始记录（首页“案例回放”使用）
 runtime/python/          Windows 随包 Python 3.12.10（官方嵌入式发行版，保留其许可）
+密证CredProof.exe        Windows 双击启动器（运行 start-credproof.cmd；源码在 scripts/delivery/launcher/）
 start-*.cmd / .sh        启动脚本；check-runtime.cmd 为只读环境自检
 ```
 
@@ -274,6 +275,7 @@ start-*.cmd / .sh        启动脚本；check-runtime.cmd 为只读环境自检
 
 ## 九、常见问题
 
+- **双击 `密证CredProof.exe` 时出现“Windows 已保护你的电脑”**：这是系统对未签名程序的常规提示，点“更多信息”→“仍要运行”即可；也可以直接双击 `start-credproof.cmd`，效果相同。该启动器只是在同一窗口中运行 `start-credproof.cmd`，源码见 `scripts/delivery/launcher/launcher.c`，可用其中的 `build.sh` 重新编译。
 - **双击后窗口一闪而过 / 提示无法启动**：请确认已完整解压（含 `runtime/python/`），并检查系统 TEMP 目录可写。
 - **页面显示“隔离环境未就绪”**：查看模式下这是正常的；需要真实检查时按第三节准备运行时，再用 `start-recheck.cmd` 启动。
 - **端口被占用**：启动器会自动换用空闲端口，并在窗口中打印实际地址。
