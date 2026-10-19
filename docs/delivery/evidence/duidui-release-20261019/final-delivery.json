@@ -1,0 +1,37 @@
+{
+  "schema": "credproof.final-delivery-receipt/v1",
+  "source_commit": "0b71811fa62890d3fd2e0dc1c1d15b2cb35eb7a6",
+  "tested_program_base": "7693dcc6f3f9ff301d46d3f988f61fcc257446a4",
+  "delivery_commit": "FOLLOW_UP_RECEIPT_COMMIT_NOT_PACKAGE_SOURCE",
+  "zip_file": "DUIDUI队-密证CredProof.zip",
+  "zip_bytes": 15530094,
+  "zip_sha256": "c1dc9a9083525386c4cb5f5563e670e05739d576b702088c3afbccd77f3d720d",
+  "official_python_zip_sha256": "4acbed6dd1c744b0376e3b1cf57ce906f9dc9e95e68824584c8099a63025a3c3",
+  "source_members": 460,
+  "all_archive_members": 496,
+  "archive_crc": "PASS",
+  "fresh_extraction_all_member_hashes": "PASS",
+  "compared_to_original_archive": {
+    "source_commit": "7693dcc6f3f9ff301d46d3f988f61fcc257446a4",
+    "zip_sha256": "ab0d40df191b2433016ab5e8353412bcea36fb8fe6bed6a7e0140573e8dfd5fb",
+    "different_members": [
+      "README.md",
+      "release.json"
+    ],
+    "program_runtime_rules_tests_and_frozen_records_byte_equal": true
+  },
+  "forbidden_term_hits": 0,
+  "forbid_rule_outside_repository_and_archive": true,
+  "supplemental_pdf_text_scan": "TEXT_EXTRACTED_NO_FORBIDDEN_TERM_HITS",
+  "new_model_calls": 0,
+  "final_embedded_import_smoke": "PASS; -S; both code modules import from final extracted package",
+  "secrets_models_rootfs_venv_operator_config_included": false,
+  "check_revision_check_result": [
+    "FAIL",
+    "PASS"
+  ],
+  "human_state": "PENDING",
+  "application_state": "NOT_APPLIED",
+  "frozen_snapshot_unchanged_files": 27,
+  "verification_harness_note": "First final-package import subprocess exited 0, but the host verifier decoded its Windows-localized path stdout as UTF-8 and raised UnicodeDecodeError; repeated only this static import with -X utf8. No model or candidate was rerun; archive remained unchanged."
+}
