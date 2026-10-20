@@ -1049,6 +1049,7 @@ function renderNew() {
   const started = intake.status !== 'DRAFT';
   $('intake-origin').innerHTML = started ? `配置已冻结，审阅已开始。<a href="#project/${escape(intake.review_id)}">打开项目</a>`
     : intake.config_origin === 'existing' ? '沿用项目自带的 credproof.toml（逐字节不变）。修改表单并校验后，将改为向导生成的配置。'
+    : intake.config_origin === 'form' && intake.detected?.existing_config?.valid ? '已按表单生成配置，代替项目自带的 credproof.toml；原项目文件不受影响。'
     : intake.detected?.existing_config?.present ? `项目自带的 credproof.toml 无效：${escape(intake.detected.existing_config.error || '')}。下面是向导生成的配置。` : '项目没有 credproof.toml，下面是根据静态解析预填的配置，请按工具的真实用法修改。';
   if (!state.formDirty && $('config-form').dataset.identity !== intake.id + intake.toml) {
     fillForm(intake);
