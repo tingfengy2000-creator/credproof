@@ -39,6 +39,7 @@ EXCLUDED_FILES = {
     'agent_pilot/holdout-v1/README.md', 'agent_pilot/ui/README.md', 'agent_pilot/protocol-before-safety-fix.json',
     'credproof_safety/tests/data/README.md', 'deploy/docker/README.md',
     'docs/compare/onboarding-dotenv/README.md', 'docs/external-scenario/twine/README.md',
+    'docs/external-scenario/twine/freeze-before-run.json',
 }
 SINGLE_FILES = (
     'README.md', '项目简介.pdf', '评委操作手册.pdf', 'THIRD_PARTY_NOTICES.md', 'pyproject.toml', 'start-credproof.cmd', 'start-credproof.sh', 'start-recheck.cmd', 'start-live.cmd',
