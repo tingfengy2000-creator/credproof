@@ -38,7 +38,7 @@ class ReadOnlyHandler(Handler):
 class ReadOnlyApplication(Application):
     def bootstrap(self):
         data = super().bootstrap()
-        data['frontend_handoff'] = {
+        data['read_only_entry'] = {
             'mode': 'READ_ONLY_HISTORY', 'read_only': True,
             'new_model_calls': 0, 'candidate_execution_enabled': False,
             'decision_writes_enabled': False, 'exports_enabled': False,

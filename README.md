@@ -2,7 +2,7 @@
 
 **参赛队伍：DUIDUI队**　|　作品：AI 生成安全补丁的可信验收与人机协同修复平台
 
-本目录是作品的**完整源码与可执行程序**。界面怎么用，请看同目录的《评委操作手册.pdf》（带截图，逐页说明每个按钮）。一句话介绍：CredProof 把 Python 工具的修改（不论来自 AI、外包还是开发者自己）放进一次性隔离副本中真实运行，同时检查**不泄密、不乱读、不乱连**三类风险和必要业务是否仍然成立，给出“通过 / 不通过 / 证据不足”三值结论，再由人决定是否采纳，结论可导出、可在新目录复检。图文版介绍见同目录的《项目简介.pdf》。
+本目录是作品的**完整源码与可执行程序**。界面怎么用，请看同目录的《评委操作手册.pdf》（含启动方法与各页面的操作步骤）。一句话介绍：CredProof 把 Python 工具的修改（不论来自 AI、外包还是开发者自己）放进一次性隔离副本中真实运行，同时检查**不泄密、不乱读、不乱连**三类风险和必要业务是否仍然成立，给出“通过 / 不通过 / 证据不足”三值结论，再由人决定是否采纳，结论可导出、可在新目录复检。图文版介绍见同目录的《项目简介.pdf》。
 
 ---
 
@@ -115,7 +115,7 @@ docker run --rm --network none --read-only --tmpfs /tmp:exec \
   -v "$PWD:/workspace:ro" -v "$PWD/credproof-out:/out" credproof:release doctor
 ```
 
-`doctor` 就绪后，把最后的 `doctor` 换成 `check --config /workspace/<项目>/credproof.toml` 即可。容器的安全配置说明见 `deploy/docker/README.md`；在启用 AppArmor 用户命名空间限制的主机上，还需按该文档加载 `deploy/apparmor/credproof-bwrap`。不加这些参数时，检查器会拒绝降级运行，返回“证据不足”（退出码 3），不会给出“通过”。
+`doctor` 就绪后，把最后的 `doctor` 换成 `check --config /workspace/<项目>/credproof.toml` 即可。容器以非 root、只读根文件系统、无网络、去除全部能力并使用固定 seccomp 配置运行；在启用 AppArmor 用户命名空间限制的主机上，还需为 bubblewrap 加载 `deploy/apparmor/credproof-bwrap`。不加这些参数时，检查器会拒绝降级运行，返回“证据不足”（退出码 3），不会给出“通过”。
 
 GitHub Actions 示例：`.github/workflows/credproof.yml` 定义了 Runner 原生与加固容器两个作业，输出 SARIF、JUnit 与中文摘要；`examples/ci/credproof-safety.yml.example` 是自托管 Runner 的最小示例。
 
@@ -242,7 +242,7 @@ credproof/               早期验收器原型（Gitleaks 扫描 + 单行修复�
 examples/                资料助手（问题版/修复版）、8 个评测目标 b01–b08（含参考修复）、python-dotenv 适配示例、CI 示例
 scripts/                 bench（评测生成/裁判/汇总）、compare（对照表生成）、ci（流水线作业）、runtime（运行时准备与镜像扫描）、delivery（启动与打包工具）及演示脚本
 deploy/                  Dockerfile、seccomp 与 AppArmor 配置
-docs/                    工作台展示用的冻结数据（评测结果、对照表、CI 结果、外部组件记录、审阅快照）与接口约定 PRODUCT-API.md
+docs/                    工作台展示用的冻结数据（评测结果、对照表、CI 结果、外部组件记录、审阅快照）
 experiments/             历史 Agent 试点案例 h01/h03/h07 的原始记录（首页“案例回放”使用）
 runtime/python/          Windows 随包 Python 3.12.10（官方嵌入式发行版，保留其许可）
 密证CredProof.exe        Windows 双击启动器（运行 start-credproof.cmd；源码在 scripts/delivery/launcher/）

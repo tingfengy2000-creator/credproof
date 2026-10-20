@@ -33,6 +33,14 @@ CODE_ROOTS = ('credproof/', 'credproof_safety/', 'credproof_access/', 'agent_pil
               'docs/compare/onboarding-dotenv/', 'docs/external-scenario/twine/')
 # Historical pilot bundles keep the original operator's paths; not needed to run.
 EXCLUDED_ROOTS = ('examples/local-agent/',)
+# Internal development notes are kept in the repository but not shipped; the
+# release holds the program, its tests, examples and the data the workbench reads.
+EXCLUDED_FILES = {
+    'agent_pilot/holdout-v1/README.md', 'agent_pilot/ui/README.md', 'agent_pilot/protocol-before-safety-fix.json',
+    'credproof_safety/tests/data/README.md', 'deploy/docker/README.md',
+    'docs/compare/onboarding-dotenv/README.md', 'docs/external-scenario/twine/README.md',
+    'docs/external-scenario/twine/freeze-before-run.json',
+}
 SINGLE_FILES = (
     'README.md', '项目简介.pdf', '评委操作手册.pdf', 'THIRD_PARTY_NOTICES.md', 'pyproject.toml', 'start-credproof.cmd', 'start-credproof.sh', 'start-recheck.cmd', 'start-live.cmd',
     'check-runtime.cmd', '.gitattributes', '.credproof/targets.txt',
@@ -43,7 +51,7 @@ SINGLE_FILES = (
     'scripts/run-exported-regression-check.py', 'scripts/prepare-human-review-demo.py',
     # Frozen data shown by the workbench (read-only, no recomputation).
     'docs/bench/bench-results.json', 'docs/compare/comparison.json', 'docs/compare/onboarding-dotenv.json',
-    'docs/integration/ci-demo.json', 'docs/ui/PRODUCT-API.md',
+    'docs/integration/ci-demo.json',
     'experiments/reusable-tool-safety/20261004-external-dotenv-v5/summary.json',
     'scripts/derive-project-public-bundle.py',
     'scripts/integration/build_ci_demo.py',
@@ -63,7 +71,7 @@ def tracked():
 def inventory():
     files = tracked()
     paths = {p for p in files if p.startswith(CODE_ROOTS) and not p.startswith(EXCLUDED_ROOTS)
-             and '__pycache__' not in p}
+             and '__pycache__' not in p and p not in EXCLUDED_FILES}
     for name in SINGLE_FILES:
         if name not in files:
             raise ValueError('missing_release_file: ' + name)

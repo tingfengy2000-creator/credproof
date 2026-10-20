@@ -51,7 +51,7 @@ const selectedCase = () => array(state.bootstrap?.cases).find(item => item.id ==
 const isRunning = () => !!state.run && activeStatuses.has(state.run.status) && !state.replay;
 const runPath = id => `${API}/runs/${encodeURIComponent(id)}`;
 const announce = message => { $('announcement').textContent = message; };
-const readOnly = () => state.bootstrap?.frontend_handoff?.read_only === true;
+const readOnly = () => state.bootstrap?.read_only_entry?.read_only === true;
 const noExecution = () => readOnly() || state.bootstrap?.access_mode === 'view';
 const short = value => typeof value === 'string' ? value.slice(0, 12) : '—';
 const modelName = name => {
@@ -162,12 +162,12 @@ function renderConnection() {
   $('error-banner').textContent = state.error
     ? `${state.error}${state.stale ? ' 下方是上次取得的记录，尚未确认当前状态。' : ''}` : '';
   const mode = state.bootstrap?.access_mode;
-  const chip = readOnly() ? '只读交接入口：拒绝一切写入、检查和导出'
+  const chip = readOnly() ? '只读查看入口：拒绝一切写入、检查和导出'
     : { view: '只读回放：不执行代码，不调用模型', recheck: '隔离验收：执行检查，不调用模型', live: '现场修复：可调用本地模型' }[mode] || '正在读取运行模式';
   $('mode-chip').textContent = chip;
   $('mode-chip').classList.toggle('is-readonly', noExecution());
   $('readonly-banner').hidden = !readOnly();
-  $('readonly-banner').textContent = readOnly() ? (state.bootstrap.frontend_handoff.notice || '只读历史材料：本入口不会产生新的检查、审批或导出。') : '';
+  $('readonly-banner').textContent = readOnly() ? (state.bootstrap.read_only_entry.notice || '只读历史材料：本入口不会产生新的检查、审批或导出。') : '';
   renderEnvChip();
   document.body.classList.toggle('is-busy', state.busy || isRunning());
   document.body.classList.toggle('is-stale', state.stale);
@@ -784,7 +784,7 @@ function renderStories() {
   }).join('') || '<p>这份记录没有提交补丁，验证后保留原代码。</p>'}</div><div class="story-foot"><span>同批固定流程：${escape(sealNames[story.fixed_comparison?.verdict] || '证据不足')}，${escape(taskNames[story.fixed_comparison?.task_status] || story.fixed_comparison?.task_status || '任务状态未知')}</span><span>历史验证结果，与本次复检分别保留</span></div><details><summary>历史来源与版本</summary><p class="small">批次 ${escape(story.batch)}，版本 ${escape(story.source_commit || '未提供')}。${escape(story.provenance || '')}</p></details>`;
 }
 
-/* ---------- Product workspace (docs/ui/PRODUCT-API.md) ---------- */
+/* ---------- Product workspace ---------- */
 const decisionSeal = { PENDING: ['待决定', 'pending'], APPROVED: ['已采纳', 'pass'], REJECTED: ['已拒绝', 'fail'], NEEDS_CHANGES: ['需要修改', 'unknown'] };
 const versionSource = { AI_HISTORY: 'AI 原件（历史响应导入，未重新推理）', AI_CANDIDATE: 'AI 候选（本次现场生成）', DEVELOPER_REVISION: '开发者修订', PROJECT_IMPORT: '接入时的代码' };
 const kindNames = { PROJECT: '项目检查', AI_HISTORY: 'AI 候选审阅' };
@@ -1049,6 +1049,7 @@ function renderNew() {
   const started = intake.status !== 'DRAFT';
   $('intake-origin').innerHTML = started ? `配置已冻结，审阅已开始。<a href="#project/${escape(intake.review_id)}">打开项目</a>`
     : intake.config_origin === 'existing' ? '沿用项目自带的 credproof.toml（逐字节不变）。修改表单并校验后，将改为向导生成的配置。'
+    : intake.config_origin === 'form' && intake.detected?.existing_config?.valid ? '已按表单生成配置，代替项目自带的 credproof.toml；原项目文件不受影响。'
     : intake.detected?.existing_config?.present ? `项目自带的 credproof.toml 无效：${escape(intake.detected.existing_config.error || '')}。下面是向导生成的配置。` : '项目没有 credproof.toml，下面是根据静态解析预填的配置，请按工具的真实用法修改。';
   if (!state.formDirty && $('config-form').dataset.identity !== intake.id + intake.toml) {
     fillForm(intake);

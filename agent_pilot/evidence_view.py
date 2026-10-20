@@ -32,7 +32,7 @@ def _lab_relative(path):
 
 
 def five_questions(report, *, decision='PENDING', application='NOT_APPLIED', applicable=True):
-    """Return the summary described in docs/ui/PRODUCT-API.md section 5.
+    """Return the five-question summary of a check report.
 
     ``report`` is a credproof.safety.report/v1 dictionary (already redacted by
     the checker).  ``None`` means there is no applicable report.
