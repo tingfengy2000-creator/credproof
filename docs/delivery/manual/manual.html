@@ -87,23 +87,47 @@
 
 <section class="page">
   <h2>4. 首页：一个真实案例</h2>
-  <p>首页用“资料助手”这个小工具讲完整流程：它按请求读取一份资料，再带着凭据调用一个服务。六步分别是：原问题 → AI 候选及遗漏 → 开发者修订 → 安全与业务验收 → 待人工采纳 → 导出复检。点页面上方的 1–6 可直接跳到对应步骤。</p>
-  <figure class="s80"><img src="img/m_stage2.jpg"><figcaption>图 2　第 2 步：AI 候选“方向对了，但漏了东西”，标注 a、b、c 对应三处遗漏</figcaption></figure>
-  <h3>第 4 步：选一个版本，看五个问题</h3>
-  <p>点击三个按钮“原问题 / AI 候选 v000 / 开发者修订 v001”切换版本。每个问题右侧的小标签会同时显示三个版本的状态，便于对比：原问题是“越界、外流”，AI 候选是“没有发生”，开发者修订是“正常”。</p>
-  <figure class="s80"><img src="img/m_stage4.jpg"><figcaption>图 3　第 4 步：同一配置、同一组必要测试、同一个检查器下的三个版本</figcaption></figure>
+  <p>首页用“资料助手”这个小工具讲完整流程：它按请求读取一份资料，再带着凭据调用一个服务。案例分六步：原问题 → AI 候选及遗漏 → 开发者修订 → 安全与业务验收 → 待人工采纳 → 导出复检。在首页往下滚动，或点案例上方的数字 1–6，可直接跳到对应步骤。</p>
+  <h3>第 1 步：原问题，三条风险路径</h3>
+  <p>左侧是原版 <code>tool.py</code>，红色行和编号 1–3 标出三处问题；右侧示意图画出风险路径。业务测试 4 项能过 2 项，看上去“基本能用”，但完整检查判 <span class="tag bad">FAIL</span>，7 项必要条件未满足：</p>
+  <ul>
+    <li><b>路径不设限</b>：按请求给的路径直接打开文件，实际读到了 <code>secrets/secret.txt</code>（不乱读）。</li>
+    <li><b>跟随跳转</b>：允许服务返回 302 后，<code>urlopen</code> 自动跟到禁止服务 <code>/secret</code>，认证头一起带过去（不乱连）。</li>
+    <li><b>凭据外流</b>：凭据写进日志、作为返回值交出，标准输出里也能看到（不泄密）。</li>
+  </ul>
+  <figure class="s80"><img src="img/m_stage1.jpg"><figcaption>图 2　第 1 步：原版代码中的三处问题与对应的风险路径</figcaption></figure>
 </section>
 
 <section class="page">
-  <h3>第 5 步：批准的是哪一份？</h3>
-  <p>右侧按钮模拟“没有变化 / 改了代码 / 改了配置 / 换了访问组件 / 删了必要测试”。点任意一个变化，下方表格会标出哪一项不再一致，并说明此时旧批准失效、服务端会拒绝过期页面的提交（HTTP 409）。</p>
-  <figure class="s80"><img src="img/m_stage5.jpg"><figcaption>图 4　第 5 步：技术结论、人工决定、应用到原项目三种状态分开显示</figcaption></figure>
-  <p>第 6 步说明导出包如何在新目录重新执行完整检查。页面底部的“常见质疑”回答了“为什么不用现有 CI 或扫描器”“AI 有什么作用”等问题，“我们做了什么，哪些来自别处”列出了团队实现的部分与第三方组件。</p>
+  <h3>第 2 步：AI 候选，方向对了但漏了东西</h3>
+  <p>这是本地模型给出的历史修复候选，演示中原样导入为 v000，没有重新推理。右侧“做对的部分”说明它把读文件和调服务改成了固定访问组件；“遗漏的部分”用 a、b、c 对应代码中的三处标注：删掉了 <code>import os</code> 导致第 17 行报错、异常转换与要求冲突、残留无用导入。</p>
+  <p>重点看右下方的提示：只找违规的检查在这一版上什么也找不到，因为它什么都没做成；密证仍判 <span class="tag bad">FAIL</span>，理由是资料没读、服务没认证、必要测试 3 项失败。</p>
+  <figure class="s80"><img src="img/m_stage2.jpg"><figcaption>图 3　第 2 步：AI 候选“方向对了，但漏了东西”，标注 a、b、c 对应三处遗漏</figcaption></figure>
+  <h3>第 3 步：开发者修订，v000 到 v001 的真实差异</h3>
+  <p>左侧是 v000 到 v001 的代码差异（红色删除、绿色新增）：恢复 <code>os</code> 导入，去掉错误的异常转换，保留固定访问组件。右侧说明三件事：修订理由；只能改授权入口文件 <code>tool.py</code>，业务测试、检查规则和访问组件全部冻结；提交后由原检查器重新运行，开发者不能改写判定。版本来源记为“开发者修订”，不算作模型输出。</p>
+  <figure class="s80"><img src="img/m_stage3.jpg"><figcaption>图 4　第 3 步：开发者修订的代码差异与修订规则</figcaption></figure>
+</section>
+
+<section class="page">
+  <h3>第 4 步：安全与业务验收，选一个版本看五个问题</h3>
+  <p>点击三个按钮“原问题 / AI 候选 v000 / 开发者修订 v001”切换版本。三个版本使用同一份配置、同一组必要测试、同一个检查器。每个问题右侧的小标签同时显示三个版本的状态，便于对比：原问题是“越界、外流”，AI 候选是“没有发生”，开发者修订是“正常”。</p>
+  <figure class="s80"><img src="img/m_stage4.jpg"><figcaption>图 5　第 4 步：同一配置、同一组必要测试、同一个检查器下的三个版本</figcaption></figure>
+  <h3>第 5 步：技术通过，仍待人工采纳</h3>
+  <p>v001 检查通过，但技术结论、人工决定、应用到原项目是三个独立状态，任何一个都不会替另一个做决定。FAIL 的版本不能被批准（服务端返回 409）；批准后再次检查，批准不会自动恢复。</p>
+  <p>右侧“批准的是哪一份？”可以点击“没有变化 / 改了代码 / 改了配置 / 换了访问组件 / 删了必要测试”。点任意一个变化，下方表格会标出哪一项不再一致，并说明旧批准失效、服务端会拒绝过期页面的提交（HTTP 409）。</p>
+  <figure class="s80"><img src="img/m_stage5.jpg"><figcaption>图 6　第 5 步：技术结论、人工决定、应用到原项目三种状态分开显示</figcaption></figure>
+</section>
+
+<section class="page">
+  <h3>第 6 步：导出复检，材料移走后别人能不能重做</h3>
+  <p>导出的是同一个对象：代码、配置、必要测试、访问组件和报告摘要。页面用四栏说明复检过程：导出同一对象 → 匿名取件并核对清单 → 在新目录用原检查器完整复检 → 用普通 pytest 运行导出的回归测试（修复版 0 项失败，重新引入缺陷 1 项失败，无关改动 0 项失败）。复检方得到的是新的运行证据，而不是信任一份保存的“通过”；导出也不会自动把代码应用到原项目。实际操作见第 7 节“复检导出包”。</p>
+  <figure class="s80"><img src="img/m_stage6.jpg"><figcaption>图 7　第 6 步：导出复检的四个环节</figcaption></figure>
+  <p>六步之后，页面底部的“常见质疑”回答了“为什么不用现有 CI 或扫描器”“AI 有什么作用”等问题，“我们做了什么，哪些来自别处”列出了团队实现的部分与第三方组件。</p>
 </section>
 
 <section class="page">
   <h2>5. 新建检查：接入一个项目</h2>
-  <figure><img src="img/m_new_source.jpg"><figcaption>图 5　新建检查第 1 步：上传项目，或使用示例项目</figcaption></figure>
+  <figure><img src="img/m_new_source.jpg"><figcaption>图 8　新建检查第 1 步：上传项目，或使用示例项目</figcaption></figure>
   <ol>
     <li><b>选择项目。</b>三种方式任选：点“选择项目文件夹”选整个项目目录（页面会在浏览器里打包后上传）；点“选择 zip 文件”；或在右侧示例中点“使用”。示例包括首页案例“资料助手（问题版本）”和 8 个对照评测目标。上传上限 16 MiB、2000 个文件、单个文件 4 MiB，自动忽略 <code>.git</code>、虚拟环境和缓存；系统<b>只做静态解析，不执行上传的代码</b>。</li>
     <li><b>填写检查配置。</b>系统自动识别入口函数、必要测试目录和凭据环境变量并预填。逐项核对：
@@ -119,13 +143,13 @@
 </section>
 
 <section class="page">
-  <figure class="s80"><img src="img/m_wizard.jpg"><figcaption>图 6　配置向导：入口、必要测试、文件与服务边界；右侧为 credproof.toml 实时预览和项目文件清单</figcaption></figure>
-  <figure class="s80"><img src="img/m_wizard_scenarios.jpg"><figcaption>图 7　入口场景：占位符说明、两个场景示例和快捷添加按钮</figcaption></figure>
+  <figure class="s80"><img src="img/m_wizard.jpg"><figcaption>图 9　配置向导：入口、必要测试、文件与服务边界；右侧为 credproof.toml 实时预览和项目文件清单</figcaption></figure>
+  <figure class="s80"><img src="img/m_wizard_scenarios.jpg"><figcaption>图 10　入口场景：占位符说明、两个场景示例和快捷添加按钮</figcaption></figure>
 </section>
 
 <section class="page">
   <h2>6. 项目页：读结论、改代码、做决定、导出</h2>
-  <figure><img src="img/m_project_top.jpg"><figcaption>图 8　项目页顶部：三种状态并列，右侧给出“下一步”</figcaption></figure>
+  <figure><img src="img/m_project_top.jpg"><figcaption>图 11　项目页顶部：三种状态并列，右侧给出“下一步”</figcaption></figure>
   <h3>6.1 三种状态</h3>
   <table>
     <tr><th style="width:18%">状态</th><th>含义</th></tr>
@@ -136,28 +160,28 @@
   <h3>6.2 检查结果与五个问题</h3>
   <p>点右上“运行检查”在隔离环境中运行（查看模式下此按钮不可用）。结果用五个问题归纳 14 项必要条件：正常业务还在吗、文件有没有读出范围、请求有没有到不该去的地方、凭据去了哪里、现在能不能采纳。每个问题有状态标签和具体计数，颜色含义：<span class="tag ok">正常</span>　<span class="tag bad">违规 / 不可采纳</span>　<span class="tag mid">没有发生 / 待定</span>　<span class="tag unk">未知</span>。</p>
   <p>点“14 项必要条件”可展开逐项结果；“下载报告”提供 JSON、SARIF（代码扫描）、JUnit 和中文摘要；“完整检查报告”展示原始数据，凭据已脱敏。</p>
-  <figure class="s65"><img src="img/m_project_evidence.jpg"><figcaption>图 9　问题版本的检查结果：读取了 secrets/secret.txt，禁止服务收到请求，凭据出现在日志、返回值和标准输出</figcaption></figure>
+  <figure class="s65"><img src="img/m_project_evidence.jpg"><figcaption>图 12　问题版本的检查结果：读取了 secrets/secret.txt，禁止服务收到请求，凭据出现在日志、返回值和标准输出</figcaption></figure>
 </section>
 
 <section class="page">
   <h3>6.3 代码与修订</h3>
   <p>右上可切换“当前版本 / 与上一版差异 / 接入时的代码”（AI 历史记录还有“AI 原件”）。直接在编辑框修改入口文件，<b>填写修订理由</b>后点“提交为新版本”。系统只允许修改入口文件，测试、配置和访问组件与冻结基线逐字节比对。提交后是一个尚未检查的新版本，需要再点“运行检查”。“请本地模型提出候选”只在现场模式可用，生成的候选同样只是一个新版本。下方“版本链”列出每个版本的来源、摘要、时间和技术结论。</p>
-  <figure class="s55"><img src="img/m_code.jpg"><figcaption>图 10　代码与修订：编辑区、修订理由、版本链（v000 接入时的代码 → v001 开发者修订，技术结论通过）</figcaption></figure>
+  <figure class="s55"><img src="img/m_code.jpg"><figcaption>图 13　代码与修订：编辑区、修订理由、版本链（v000 接入时的代码 → v001 开发者修订，技术结论通过）</figcaption></figure>
   <h3>6.4 人工决定</h3>
   <p>填写“决定理由”后点“确认采纳 / 需要修改 / 拒绝”。不通过的版本无法采纳。演示时请勾选“这是功能测试，不代表本人真实审阅”。每次决定都追加保存在“决定记录”中，绑定当前版本、项目树和报告；之后代码、配置或测试一变，旧决定即失效。</p>
-  <figure class="s65"><img src="img/m_decide.jpg"><figcaption>图 11　人工决定与决定记录</figcaption></figure>
+  <figure class="s65"><img src="img/m_decide.jpg"><figcaption>图 14　人工决定与决定记录</figcaption></figure>
   <h3>6.5 导出与接入</h3>
   <p>“导出已采纳修复”需要当前版本通过且已采纳，生成的 zip 包含代码、冻结配置、测试、访问组件和报告，可交给他人在“复检导出包”页面复检；“导出诊断材料”任何状态都可导出。右侧给出接入 CI 流水线的命令：退出码 0 放行，2 不通过，3 证据不足，4 运行错误。</p>
-  <figure class="s80"><img src="img/m_export.jpg"><figcaption>图 12　导出与接入</figcaption></figure>
+  <figure class="s80"><img src="img/m_export.jpg"><figcaption>图 15　导出与接入</figcaption></figure>
 </section>
 
 <section class="page">
   <h2>7. 复检导出包</h2>
   <p>把“导出已采纳修复”得到的 zip 拖到页面中，或点“选择导出包”。服务端在新目录解压、核对清单，然后<b>重新执行完整检查</b>；结论来自这次运行，不读取包里保存的“通过”。页面分别显示包内记录的人工状态、包内技术结论和本次复检结论。查看模式下复检不可用。</p>
-  <figure class="s80"><img src="img/m_recheck.jpg"><figcaption>图 13　复检导出包</figcaption></figure>
+  <figure class="s80"><img src="img/m_recheck.jpg"><figcaption>图 16　复检导出包</figcaption></figure>
   <h2>8. 运行环境</h2>
   <p>只读显示当前启动模式、隔离检查环境是否就绪、能否运行检查、本地模型是否可用、上传上限，以及三种启动方式的说明。环境没准备好时检查结论是“证据不足”，绝不会在本机直接运行被测代码。</p>
-  <figure class="s80"><img src="img/m_environment.jpg"><figcaption>图 14　运行环境（隔离验收模式下显示“就绪”）</figcaption></figure>
+  <figure class="s80"><img src="img/m_environment.jpg"><figcaption>图 17　运行环境（隔离验收模式下显示“就绪”）</figcaption></figure>
 </section>
 
 <section class="page">
@@ -172,8 +196,8 @@
     <tr><td>命令行接入</td><td>四步接入命令：生成配置、检查、请求修复（需本地模型）、导出回归测试。</td></tr>
     <tr><td>工作原理</td><td>“AI 提出、程序判定、人决定”的六步流程和三种结论的定义。</td></tr>
   </table>
-  <figure class="s65"><img src="img/m_compare.jpg"><figcaption>图 15　对照与接入</figcaption></figure>
-  <figure class="s65"><img src="img/m_pipeline.jpg"><figcaption>图 16　流水线闸门</figcaption></figure>
+  <figure class="s65"><img src="img/m_compare.jpg"><figcaption>图 18　对照与接入</figcaption></figure>
+  <figure class="s65"><img src="img/m_pipeline.jpg"><figcaption>图 19　流水线闸门</figcaption></figure>
 </section>
 
 <section>
