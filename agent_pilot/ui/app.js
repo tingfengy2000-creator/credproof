@@ -51,7 +51,7 @@ const selectedCase = () => array(state.bootstrap?.cases).find(item => item.id ==
 const isRunning = () => !!state.run && activeStatuses.has(state.run.status) && !state.replay;
 const runPath = id => `${API}/runs/${encodeURIComponent(id)}`;
 const announce = message => { $('announcement').textContent = message; };
-const readOnly = () => state.bootstrap?.frontend_handoff?.read_only === true;
+const readOnly = () => state.bootstrap?.read_only_entry?.read_only === true;
 const noExecution = () => readOnly() || state.bootstrap?.access_mode === 'view';
 const short = value => typeof value === 'string' ? value.slice(0, 12) : '—';
 const modelName = name => {
@@ -162,12 +162,12 @@ function renderConnection() {
   $('error-banner').textContent = state.error
     ? `${state.error}${state.stale ? ' 下方是上次取得的记录，尚未确认当前状态。' : ''}` : '';
   const mode = state.bootstrap?.access_mode;
-  const chip = readOnly() ? '只读交接入口：拒绝一切写入、检查和导出'
+  const chip = readOnly() ? '只读查看入口：拒绝一切写入、检查和导出'
     : { view: '只读回放：不执行代码，不调用模型', recheck: '隔离验收：执行检查，不调用模型', live: '现场修复：可调用本地模型' }[mode] || '正在读取运行模式';
   $('mode-chip').textContent = chip;
   $('mode-chip').classList.toggle('is-readonly', noExecution());
   $('readonly-banner').hidden = !readOnly();
-  $('readonly-banner').textContent = readOnly() ? (state.bootstrap.frontend_handoff.notice || '只读历史材料：本入口不会产生新的检查、审批或导出。') : '';
+  $('readonly-banner').textContent = readOnly() ? (state.bootstrap.read_only_entry.notice || '只读历史材料：本入口不会产生新的检查、审批或导出。') : '';
   renderEnvChip();
   document.body.classList.toggle('is-busy', state.busy || isRunning());
   document.body.classList.toggle('is-stale', state.stale);
