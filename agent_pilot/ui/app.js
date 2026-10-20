@@ -784,7 +784,7 @@ function renderStories() {
   }).join('') || '<p>这份记录没有提交补丁，验证后保留原代码。</p>'}</div><div class="story-foot"><span>同批固定流程：${escape(sealNames[story.fixed_comparison?.verdict] || '证据不足')}，${escape(taskNames[story.fixed_comparison?.task_status] || story.fixed_comparison?.task_status || '任务状态未知')}</span><span>历史验证结果，与本次复检分别保留</span></div><details><summary>历史来源与版本</summary><p class="small">批次 ${escape(story.batch)}，版本 ${escape(story.source_commit || '未提供')}。${escape(story.provenance || '')}</p></details>`;
 }
 
-/* ---------- Product workspace (docs/ui/PRODUCT-API.md) ---------- */
+/* ---------- Product workspace ---------- */
 const decisionSeal = { PENDING: ['待决定', 'pending'], APPROVED: ['已采纳', 'pass'], REJECTED: ['已拒绝', 'fail'], NEEDS_CHANGES: ['需要修改', 'unknown'] };
 const versionSource = { AI_HISTORY: 'AI 原件（历史响应导入，未重新推理）', AI_CANDIDATE: 'AI 候选（本次现场生成）', DEVELOPER_REVISION: '开发者修订', PROJECT_IMPORT: '接入时的代码' };
 const kindNames = { PROJECT: '项目检查', AI_HISTORY: 'AI 候选审阅' };

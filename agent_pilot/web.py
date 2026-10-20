@@ -1074,7 +1074,7 @@ class Handler(BaseHTTPRequestHandler):
             raise Problem(403, 'review_session_required')
 
     def route_workspace(self, path, app):
-        """Product workspace endpoints (docs/ui/PRODUCT-API.md). Returns True when handled."""
+        """Product workspace endpoints. Returns True when handled."""
         from .intake import IntakeError, LIMITS
         from urllib.parse import unquote
         if self.command == 'GET' and path == '/api/workspace/status':
